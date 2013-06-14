@@ -1,0 +1,10 @@
+Info Forager
+------------
+
+The aim of this game is to find as much relevant info as possible given a budget.
+
+Relevant information is quantified as gain. And the budget in tokens.
+The cost of querying and the cost of viewing is in tokens.
+
+An abstracted search interface is used - that has various configurations.
+

@@ -1,0 +1,19 @@
+QueryRun
+--------
+
+
+The aim of the game is to enter as many good queries as possible for a given topic (defined by a category).
+
+Queries are scored according to how many unique relevant documents that they bring back.
+
+For example,
+
+Query 1 brings back 2 relevant documents    Total: 2
+Query 2 brings back 3 relevant documents    Total: 4    (of which only 2 out of the 3 were unique)
+Query 3 brings back 4 relevant documents    Total: 8
+Query 4 brings back 3 relevant documents    Total: 8    (of which none were new/unique)
+...
+...
+
+..
+
