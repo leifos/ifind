@@ -1,0 +1,108 @@
+html, body {
+	font-family: arial, helvetica, sans-serif;
+	color: #636466;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	height: 100%;
+}
+body {
+	background: #bdbdbd;
+}
+#container {
+    padding: 60px;
+	margin: 0 auto;
+}
+input, select {
+	
+}
+a:link, a:visited, a:hover, a:active {
+	color: #6dcff6;
+	outline: 0;
+}
+a:hover {
+	
+}
+a img {
+	border: 0;
+}
+img {
+	vertical-align: top;
+}
+p {
+	font-size: 12px;
+	margin: 9px 0;
+	line-height: 140%;
+}
+h1 {
+	font-size: 22px;
+	font-weight: bold;
+	margin: 20px 0;
+}
+h2 {
+    font-size: 21px;
+    font-weight: normal;
+}
+h3 {
+    font-weight: bold;
+}
+em {
+    font-style: italic;
+}
+strong {
+    font-weight: bold;
+}
+.clearBoth {
+	clear: both;
+}
+
+.example .timer {
+    height: 54px;
+    margin: 15px;
+}
+.example {
+    float: left;
+    width: 30%;
+    min-height: 639px;
+    border: 1px solid black;
+    padding: 20px;
+}
+.exampleD {
+    min-height: 760px;
+}
+.example pre {
+    clear: both;
+}
+#startBtn, #resetBtn {
+    display: inline-block;
+    border: 1px solid black;
+    color: #fff;
+    background: #333;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    padding: 8px;
+    text-decoration: none;
+}
+#startBtn:hover, #resetBtn:hover {
+    background: #bbb;
+}
+#resetBtn {
+    margin-left: 12px;
+}
+pre {
+    background: #000;
+    padding: 15px;
+    font-family: 'monaco', 'lucida console', 'courier';
+    line-height: 20px;
+}
+#resetMe, #startMe, #stopMe {
+    border: 2px solid white;
+    padding: 10px;
+    color: black;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    float: left;
+    width: 50px;
+    height: 61px;
+}

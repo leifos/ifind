@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Wrappers available in the PuppyIR Framework &mdash; PuppyIR 2.05 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.05',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 2.05 documentation" href="index.html" />
+    <link rel="next" title="The structure and the PuppyIR repository" href="repo.html" />
+    <link rel="prev" title="Frequently Asked Questions" href="faq.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="repo.html" title="The structure and the PuppyIR repository"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 2.05 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="wrappers-available-in-the-puppyir-framework">
+<span id="wrappers"></span><h1>Wrappers available in the PuppyIR Framework<a class="headerlink" href="#wrappers-available-in-the-puppyir-framework" title="Permalink to this headline">¶</a></h1>
+<p>The PuppyIR framework contains a number of varied search engine wrappers. In this section - an overview of these wrappers, in terms of their category, is provided in order to provide an easy access guide to what is available (to enable a developer to select what best suits the application they have in mind). This is intended as a supplement to the <a class="reference internal" href="api2.0.html#api"><em>PuppyIR API Reference</em></a> section which contains details of the implementation of these wrappers.</p>
+<p>Please note that wrappers can, and do, appear in multiple categories as some wrappers are more general purpose than other, more specific, services. Also, the generic &#8216;web&#8217; results category is not listed but is provided by, for example, <em>&#8216;Bing&#8217;</em> please see the API guide for more.</p>
+<p>Some of these wrappers require API keys (again, see the API reference for details) in these cases, this requires the developer to sign up for said key on the respective search service webpages for the API in question.</p>
+<div class="section" id="book-services">
+<h2>Book Services<a class="headerlink" href="#book-services" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>&#8216;GoogleBooks&#8217;</strong> this wrapper provides access to the Google Books data store, you can search for books and, in some cases, retrieve samples or whole books for reading (you need to embed the samples if used in an application).</li>
+</ul>
+</div>
+<div class="section" id="image-services">
+<h2>Image Services<a class="headerlink" href="#image-services" title="Permalink to this headline">¶</a></h2>
+<p>These wrappers provide the ability to search for and retrieve image results.</p>
+<ul class="simple">
+<li><strong>&#8216;Bing&#8217;</strong> and <strong>&#8216;BingV2&#8217;</strong></li>
+<li><strong>&#8216;Flickr&#8217;</strong></li>
+<li><strong>&#8216;Picassa&#8217;</strong></li>
+</ul>
+</div>
+<div class="section" id="information-services">
+<h2>Information Services<a class="headerlink" href="#information-services" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>&#8216;Wikipedia&#8217;</strong> and <strong>&#8216;Simple Wikipedia&#8217;</strong> allow the searching of wikipedia&#8217;s database. They results consist only of a link, snippet (summary) and a title, hence, this is not suitable if you require a large amount of textual content; but ideal for providing a short description for children.</li>
+</ul>
+</div>
+<div class="section" id="location-based-searching">
+<h2>Location Based Searching<a class="headerlink" href="#location-based-searching" title="Permalink to this headline">¶</a></h2>
+<p>These services allow for searching for: either results in a defined location or for a location itself.</p>
+<p>N.B. Google Geocode should be used to retrieve the geo-coordinates and/or bounding box to use with the other services as their location based parameter(s).</p>
+<p>For an example of this in action, a prototype (it should be noted, that this prototype was abandoned and the code is quite rough in addition to it not being styled) is available which you can download via:</p>
+<div class="highlight-python"><pre>$ svn co https://puppyir.svn.sourceforge.net/svnroot/puppyir/branches/working/LSee LSee
+$ cd LSee
+$ python manage.py runserver</pre>
+</div>
+<p>Visit: <a class="reference external" href="http://localhost:8000/lsee">http://localhost:8000/lsee</a></p>
+<ul class="simple">
+<li><strong>&#8216;Flickr&#8217;</strong> allows for the retrieval of geotagged images within a defined bounding box.</li>
+<li><strong>&#8216;Google Geocode&#8217;</strong> this service allows results to be retrieved for locations, for example, if you search for &#8216;Edinburgh&#8217; it will return details of the various Edinburgh&#8217;s around the world (like their location/latitude).</li>
+<li><strong>&#8216;Twitter&#8217;</strong> allows for the retrieval of geotagged tweets made within a box defined by a point - the origin - with a radius to define a box around the point.</li>
+<li><strong>&#8216;YouTubeV2&#8217;</strong> allows for the retrieval of geotagged videos from within a box defined by a point - the origin - with a radius to define a box around the point.</li>
+</ul>
+</div>
+<div class="section" id="movie-services">
+<h2>Movie Services<a class="headerlink" href="#movie-services" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>&#8216;Rotten Tomatoes&#8217;</strong> allows for the retrieval of details about movies like: the cast and aggregated review score etc.</li>
+</ul>
+</div>
+<div class="section" id="music-services">
+<h2>Music Services<a class="headerlink" href="#music-services" title="Permalink to this headline">¶</a></h2>
+<p>N.B. YouTube and YouTubeV2 are also, arguably, a music based services due to the large proportion of music based content.</p>
+<ul class="simple">
+<li><strong>&#8216;ITunes&#8217;</strong></li>
+<li><strong>&#8216;LastFM&#8217;</strong></li>
+<li><strong>&#8216;Soundcloud&#8217;</strong></li>
+<li><strong>&#8216;Spotify&#8217;</strong></li>
+</ul>
+</div>
+<div class="section" id="news-services">
+<h2>News Services<a class="headerlink" href="#news-services" title="Permalink to this headline">¶</a></h2>
+<p>These wrappers provide the ability to search for news stories</p>
+<ul class="simple">
+<li><strong>&#8216;Bing&#8217;</strong> and <strong>&#8216;BingV2&#8217;</strong> allow for the searching of the &#8216;news&#8217; results.</li>
+<li><strong>&#8216;Guardian&#8217;</strong> is a wrapper for the search api of the UK based newspaper: the Guardian. While UK based this service also provides a large variety of stories about events the world over.</li>
+</ul>
+</div>
+<div class="section" id="social-network-and-social-news-services">
+<h2>Social Network and Social News Services<a class="headerlink" href="#social-network-and-social-news-services" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>&#8216;Digg&#8217;</strong> a social news website for sharing items which are then rated by the community - this acting as a method of filtering the quality of results.</li>
+<li><strong>&#8216;Twitter&#8217;</strong> a social network for posting short messages.</li>
+</ul>
+</div>
+<div class="section" id="spelling-suggestions-and-dictionary-based-results">
+<h2>Spelling Suggestions and Dictionary based results<a class="headerlink" href="#spelling-suggestions-and-dictionary-based-results" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>&#8216;BingV2&#8217;</strong> using the &#8216;spell&#8217; source type spelling corrections to a query.</li>
+<li><strong>&#8216;Wordnik&#8217;</strong> this service provides a spelling correction feature, in addition to providing definitions of words and examples of words in context (via selections of text from various web pages).</li>
+<li><strong>&#8216;WebSpellChecker&#8217;</strong> allows for searching for spelling corrections in a variety of languages - there is no extra information returned however just the spelling correction suggestion.</li>
+</ul>
+</div>
+<div class="section" id="video-services">
+<h2>Video Services<a class="headerlink" href="#video-services" title="Permalink to this headline">¶</a></h2>
+<p>These wrappers provide the ability to search for videos. It should be noted that Bing&#8217;s search engine strongly favours YouTube results so there is a lot of overlap if both it and YouTube are used in the same application.</p>
+<ul class="simple">
+<li><strong>&#8216;BingV2&#8217;</strong></li>
+<li><strong>&#8216;YouTube&#8217;</strong> and <strong>&#8216;YouTubeV2&#8217;</strong> results from YouTube come with an embed URL so they can be played in-line (as seen in the MaSe and aMuSeV3 prototypes).</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wrappers available in the PuppyIR Framework</a><ul>
+<li><a class="reference internal" href="#book-services">Book Services</a></li>
+<li><a class="reference internal" href="#image-services">Image Services</a></li>
+<li><a class="reference internal" href="#information-services">Information Services</a></li>
+<li><a class="reference internal" href="#location-based-searching">Location Based Searching</a></li>
+<li><a class="reference internal" href="#movie-services">Movie Services</a></li>
+<li><a class="reference internal" href="#music-services">Music Services</a></li>
+<li><a class="reference internal" href="#news-services">News Services</a></li>
+<li><a class="reference internal" href="#social-network-and-social-news-services">Social Network and Social News Services</a></li>
+<li><a class="reference internal" href="#spelling-suggestions-and-dictionary-based-results">Spelling Suggestions and Dictionary based results</a></li>
+<li><a class="reference internal" href="#video-services">Video Services</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="previous chapter">Frequently Asked Questions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="repo.html"
+                        title="next chapter">The structure and the PuppyIR repository</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/wrappers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="repo.html" title="The structure and the PuppyIR repository"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="Frequently Asked Questions"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 2.05 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.
+    </div>
+  </body>
+</html>

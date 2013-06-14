@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending the Result Pipeline &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="next" title="Adding new Search Engine Wrappers" href="extendingSearchEngine.html" />
+    <link rel="prev" title="Extending the Query Pipeline" href="extendingQuery.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extendingSearchEngine.html" title="Adding new Search Engine Wrappers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="extendingQuery.html" title="Extending the Query Pipeline"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="extending-the-result-pipeline">
+<span id="id1"></span><h1>Extending the Result Pipeline<a class="headerlink" href="#extending-the-result-pipeline" title="Permalink to this headline">¶</a></h1>
+<p>This section details adding new Result Filters and Result Modifiers.</p>
+<p>Note: there is an optional parameter for both called &#8216;order&#8217;, this parameter is used to indicate the precedence of the filter or modifier in question.</p>
+<div class="section" id="the-orderable-base-class">
+<h2>The Orderable base class<a class="headerlink" href="#the-orderable-base-class" title="Permalink to this headline">¶</a></h2>
+<p>Both filters and modifiers extend the base class Orderable, which is included below for reference purposes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Orderable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This contains the attributes common to both filters and modifiers: the order (this defines the order in which a filter or a modifier is executed in their respective pipelines).</p>
+<p>Note: this class is detailed for reference only, since it is not expected that this base class will be modified when extending PuppyIR.</p>
+</div>
+<div class="section" id="creating-new-result-filters">
+<h2>Creating new Result Filters<a class="headerlink" href="#creating-new-result-filters" title="Permalink to this headline">¶</a></h2>
+<p>All Result Filters must extend the base class ResultFilter, in order to be compatible with the other PuppyIR components. Like with the Orderable class it is included for reference purposes below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ResultFilter</span><span class="p">(</span><span class="n">Orderable</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Abstract result filter.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot; Return a boolean of whether this filter succeeded. &quot;&quot;&quot;</span>
+
+      <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The filter method <em>must</em> return either: true or false - depending upon whether, or not, the defined criteria is met.</p>
+<div class="section" id="example-result-filter">
+<h3>Example Result Filter<a class="headerlink" href="#example-result-filter" title="Permalink to this headline">¶</a></h3>
+<p>For example, a <strong>ProfanityFilter</strong> that rejects results if their title does not pass the WDYL, or &#8216;What Do You Love&#8217;, service&#8217;s test (this is a Google web service that checks for the presence of naughty words):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">puppy.result</span> <span class="kn">import</span> <span class="n">ResultFilter</span>
+<span class="kn">from</span> <span class="nn">puppy.query.filter.profanity_filter</span> <span class="kn">import</span> <span class="n">WdylProfanityFilter</span> <span class="k">as</span> <span class="n">WQF</span>
+
+<span class="kn">import</span> <span class="nn">urllib</span>
+
+<span class="k">class</span> <span class="nc">WdylProfanityFilter</span><span class="p">(</span><span class="n">ResultFilter</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot; Filters results with profanity in them by using the wdyl service.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">WdylProfanityFilter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="n">WQF</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+  <span class="c"># Go through each result and check each field doesn&#39;t contain words in the exclusion list</span>
+      <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]):</span>
+              <span class="k">yield</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>Note, in the above example, what needs to be done to conform to the ResultFilter standard. Beyond this, what a new filter does is up to you - the developer.</p>
+</div>
+</div>
+<div class="section" id="creating-new-result-modifiers">
+<h2>Creating new Result Modifiers<a class="headerlink" href="#creating-new-result-modifiers" title="Permalink to this headline">¶</a></h2>
+<p>All Result Modifiers must extend the base class ResultModifier in order to be compatible with the other PuppyIR components. It is included for reference purposes below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ResultModifier</span><span class="p">(</span><span class="n">Orderable</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot; Change result. &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot; Return a result, modified. &quot;&quot;&quot;</span>
+      <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The modify method <em>must</em> be passed and also return a response object.</p>
+<div class="section" id="example-result-modifier">
+<h3>Example Result Modifier<a class="headerlink" href="#example-result-modifier" title="Permalink to this headline">¶</a></h3>
+<p>For example, a modifier called <strong>TitleBlackListModifier</strong> that replaces blacklisted words in the title with ***.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">puppy.result</span> <span class="kn">import</span> <span class="n">ResultModifier</span>
+
+
+<span class="k">class</span> <span class="nc">TitleBlackListModifier</span><span class="p">(</span><span class="n">ResultModifier</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Modify processes result entry content and replaces blacklisted words</span>
+
+<span class="sd">  Options:</span>
+<span class="sd">  * order (int): modifier precedence</span>
+<span class="sd">  * terms (str): terms that, if appearing in the result, will be replaced with ***</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Constructor for BlackListResultModifier.</span>
+
+<span class="sd">      Parameters:</span>
+<span class="sd">      * order (int): filter precedence</span>
+<span class="sd">      * terms (str): separated by + characters</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+
+      <span class="nb">super</span><span class="p">(</span><span class="n">TitleBlackListModifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="s">&quot;Modify search results based on a blacklist.&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="n">terms</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">black_list</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">,</span> <span class="n">terms</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;+&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+
+  <span class="k">def</span> <span class="nf">apply_black_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_string</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Replaces words in black list for *** characters.</span>
+
+<span class="sd">      Parameters:</span>
+<span class="sd">      * black_list_string: string with words included in the black list</span>
+<span class="sd">      * input_string: string with words separated by blank spaces</span>
+
+<span class="sd">      Returns:</span>
+<span class="sd">      * ouput_string: string of words separated by blank spaces which</span>
+<span class="sd">      words included in the black list has been replaced by ***</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      <span class="n">input_list</span> <span class="o">=</span> <span class="n">input_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+      <span class="n">output_string</span> <span class="o">=</span> <span class="n">input_string</span>
+
+      <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">:</span>
+          <span class="k">try</span><span class="p">:</span>
+              <span class="n">input_filtered</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">lower</span><span class="p">())))</span>
+          <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+               <span class="n">tmp</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+               <span class="n">input_filtered</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">tmp</span><span class="p">)))</span>
+
+          <span class="k">if</span> <span class="n">input_filtered</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">black_list</span><span class="p">:</span>
+              <span class="k">if</span> <span class="n">input_filtered</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s">&#39; &#39;</span><span class="p">:</span>
+                  <span class="n">output_string</span> <span class="o">=</span> <span class="n">output_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="s">&#39;***&#39;</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">output_string</span>
+
+  <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Filters the results according to black list -</span>
+<span class="sd">      censoring any blacklisted words occurring in results.</span>
+
+<span class="sd">      Parameters:</span>
+<span class="sd">      * results (puppy.model.Opensearch.Response): results to be filtered</span>
+
+<span class="sd">      Returns:</span>
+<span class="sd">      * results_returned (puppy.model.Opensearch.Response): filtered results</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+          <span class="n">result</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_black_list</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">])</span>
+          <span class="k">yield</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>Note, in the above example, what needs to be done to conform to the ResultModifier standard. Beyond this, what a new modifier does is up to you - the developer.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending the Result Pipeline</a><ul>
+<li><a class="reference internal" href="#the-orderable-base-class">The Orderable base class</a></li>
+<li><a class="reference internal" href="#creating-new-result-filters">Creating new Result Filters</a><ul>
+<li><a class="reference internal" href="#example-result-filter">Example Result Filter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-new-result-modifiers">Creating new Result Modifiers</a><ul>
+<li><a class="reference internal" href="#example-result-modifier">Example Result Modifier</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="extendingQuery.html"
+                        title="previous chapter">Extending the Query Pipeline</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extendingSearchEngine.html"
+                        title="next chapter">Adding new Search Engine Wrappers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/extendingResult.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extendingSearchEngine.html" title="Adding new Search Engine Wrappers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="extendingQuery.html" title="Extending the Query Pipeline"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

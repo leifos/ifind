@@ -1,0 +1,159 @@
+{% extends "pagefetch/base.html" %}
+{% block scripts %}
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/leaderboard.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/gameredirect.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/jsor-jcarousel-7bb2e0a/lib/jquery.jcarousel.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('#leaderboards').jcarousel({
+            visible: 2
+        });
+     });
+</script>
+
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}pagefetch/javascript/jsor-jcarousel-7bb2e0a/skins/pagefetch/skin.css">
+
+{% endblock %}
+
+{% block content %}
+
+<div style="position:relative;">
+<p align="center"> Check out the highest scoring PageFetch players! </p>
+</br>
+
+    <div class="leaderboard_carousel">
+        <ul id="leaderboards" class="jcarousel-skin-tango">
+
+        <li>
+            <div align="center">
+            {% if alltime_leaderboard %}
+            <img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/alltimebestgame.png"/>
+            </br>
+            <!--<p> Who has the best game of all time?  Find out here! </p>-->
+            <table class="leaderboard" id="alltime_leaderboard" border="1" align="center">
+                <tr>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/rank.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/name.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/score.png"/></td>
+                </tr>
+                {% for game in alltime_leaderboard %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{game.player_id}}</td>
+                    <td>{{game.total_score}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p> Game Leaderboard information currently unavailable.  Sorry!</p>
+            </br>
+            {% endif %}
+            </div>
+        </li>
+
+        <li>
+            {% if leaderboard %}
+            <img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/bestplayers.png"/>
+            </br>
+            <table class="leaderboard" id="alltime_leaderboard" border="1">
+                <tr>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/rank.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/name.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/score.png"/></td>
+                </tr>
+                {% for player in leaderboard %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{player.user}}</td>
+                    <td>{{player.total_score}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p> Leaderboard information currently unavailable.  Sorry! &#x2639; </p>
+            </br>
+            {% endif %}
+        </li>
+
+        <li>
+            {% if game_leaderboard %}
+            <img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/topplayersweekly.png"/>
+            </br>
+            <!--<p> Who has the best game over the past week?  Find out here! </p>-->
+            <table class="leaderboard" id="alltime_leaderboard" border="1">
+                <tr>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/rank.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/name.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/score.png"/></td>
+                </tr>
+                {% for game in game_leaderboard %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{game.player_id}}</td>
+                    <td>{{game.total_score}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p> Game Leaderboard information currently unavailable.  Sorry!</p>
+            </br>
+            {% endif %}
+        </li>
+
+        <li>
+            {% if school_leaderboard %}
+            <img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/bestscorebyschool.png"/>
+            </br>
+            <!--<p> Who has the best game over the past week?  Find out here! </p>-->
+            <table class="leaderboard" id="alltime_leaderboard" border="1">
+                <tr>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/rank.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/name.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/score.png"/></td>
+                </tr>
+                {% for key, value in school_leaderboard %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p> Game Leaderboard information currently unavailable.  Sorry!</p>
+            </br>
+            {% endif %}
+        </li>
+
+
+        <li>
+            {% if age_leaderboard %}
+            <img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/bestscorebyage.png"/>
+            </br>
+            <!--<p> Who has the best game over the past week?  Find out here! </p>-->
+            <table class="leaderboard" id="alltime_leaderboard" border="1">
+                <tr>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/rank.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/name.png"/></td>
+                    <td><img src="{{MEDIA_URL}}pagefetch/LeaderboardImages/score.png"/></td>
+                </tr>
+                {% for key, value in age_leaderboard %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p> Game Leaderboard information currently unavailable.  Sorry!</p>
+            </br>
+            {% endif %}
+        </li>
+        </ul>
+
+    </div>
+</div>
+{% endblock %}

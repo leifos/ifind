@@ -1,0 +1,143 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>puppy.search.exceptions &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="../../../index.html" />
+    <link rel="up" title="puppy.search" href="../search.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PuppyIR 3.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../search.html" accesskey="U">puppy.search</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for puppy.search.exceptions</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="SearchEngineError"><a class="viewcode-back" href="../../../api3.0.html#puppy.search.exceptions.SearchEngineError">[docs]</a><span class="k">class</span> <span class="nc">SearchEngineError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Use for exceptions in which the search engine wrapper fails - this can be for multiple reasons, </span>
+<span class="sd">    for example: the lack of a proxy server in config or a search service being down. Callers should respond</span>
+<span class="sd">    to this, in a way that fails gracefully. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searchEngineName</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="o">**</span><span class="n">extras</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">searchEngineName</span> <span class="o">=</span> <span class="n">searchEngineName</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="o">=</span> <span class="n">extras</span>
+
+    <span class="c"># Standard one line output with no formatting - for logging on a server etc</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="n">errorMessage</span> <span class="o">=</span> <span class="s">&quot;SearchService &#39;{0}&#39; failed with a &#39;{1}&#39;: {2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchEngineName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+      <span class="k">for</span> <span class="n">extra</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">:</span>
+        <span class="n">errorMessage</span> <span class="o">+=</span> <span class="s">&quot;, {0}: {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="n">extra</span><span class="p">])</span>
+
+      <span class="k">return</span> <span class="n">errorMessage</span>
+
+    <span class="c"># This method outputs the same error message but formats it to be more readable for during app development</span>
+    <span class="k">def</span> <span class="nf">formattedStr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+      <span class="n">errorMessage</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">!!! SearchService &#39;{0}&#39; failed with a &#39;{1}&#39;: {2}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchEngineName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">:</span>
+        <span class="n">errorMessage</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Extra details for the error message</span><span class="se">\n</span><span class="s">---------------------------------------&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">extra</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">:</span>
+          <span class="n">errorMessage</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">{0}) {1}: {2} </span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">extra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="n">extra</span><span class="p">])</span>
+          <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        
+      <span class="k">return</span> <span class="n">errorMessage</span>
+</div>
+<div class="viewcode-block" id="ApiKeyError"><a class="viewcode-back" href="../../../api3.0.html#puppy.search.exceptions.ApiKeyError">[docs]</a><span class="k">class</span> <span class="nc">ApiKeyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Use for exceptions in which the API for a wrapper, which requires one, has not been supplied. Callers should</span>
+<span class="sd">    respond in such a way that the developer, it is not intended for users of an application, are aware of the issue</span>
+<span class="sd">    and so can take the necessary steps to rectify the issue.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searchEngineName</span><span class="p">,</span> <span class="n">apiFieldName</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">searchEngineName</span> <span class="o">=</span> <span class="n">searchEngineName</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">apiFieldName</span> <span class="o">=</span> <span class="n">apiFieldName</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="s">&quot;SearchService &#39;{0}&#39; failed because the API key was not supplied in config with the fieldname: &#39;{1}&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">searchEngineName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apiFieldName</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PuppyIR 3.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../search.html" >puppy.search</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

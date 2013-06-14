@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending the Query Pipeline &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="next" title="Extending the Result Pipeline" href="extendingResult.html" />
+    <link rel="prev" title="Pipeline Tutorial: DeeSe (Detective Search)" href="pipeline-tutorial.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extendingResult.html" title="Extending the Result Pipeline"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pipeline-tutorial.html" title="Pipeline Tutorial: DeeSe (Detective Search)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="extending-the-query-pipeline">
+<span id="id1"></span><h1>Extending the Query Pipeline<a class="headerlink" href="#extending-the-query-pipeline" title="Permalink to this headline">¶</a></h1>
+<p>This section details adding new Query Filters and Query Modifiers.</p>
+<p>Note: there is an optional parameter for both called &#8216;order&#8217;, this parameter is used to indicate the precedence of the filter or modifier in question.</p>
+<div class="section" id="the-query-operator-base-class">
+<h2>The Query Operator base class<a class="headerlink" href="#the-query-operator-base-class" title="Permalink to this headline">¶</a></h2>
+<p>Both filters and modifiers extend the base class QueryOperator class, which is included below for reference purposes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">_QueryOperator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Abstract class for query filters.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+</pre></div>
+</div>
+<p>This contains the attributes common to both filters and modifiers: name, description and order (this defines the order in which a filter or a modifier is executed in their respective pipelines). It is the base class for both the QueryFilter and QueryModifier classes, which are detailed in the following sections.</p>
+</div>
+<div class="section" id="creating-new-query-filters">
+<h2>Creating new Query Filters<a class="headerlink" href="#creating-new-query-filters" title="Permalink to this headline">¶</a></h2>
+<p>All Query Filters must extend the base class QueryFilter in order to be compatible with the other PuppyIR components. Like with the QueryOperator class it is included for reference purposes below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">QueryFilter</span><span class="p">(</span><span class="n">_QueryOperator</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Base class for query filters&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+  <span class="nd">@ensure_query</span>
+  <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The filter method <em>must</em> return either: true or false - depending upon whether, or not, the defined criteria is met.</p>
+<div class="section" id="example-query-filter">
+<h3>Example Query Filter<a class="headerlink" href="#example-query-filter" title="Permalink to this headline">¶</a></h3>
+<p>For example, a <strong>BlackListFilter</strong> that rejects queries if they contain blacklisted words could be written as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">puppy.query</span> <span class="kn">import</span> <span class="n">QueryFilter</span>
+<span class="kn">from</span> <span class="nn">puppy.model</span> <span class="kn">import</span> <span class="n">Query</span>
+
+
+<span class="k">class</span> <span class="nc">BlackListFilter</span><span class="p">(</span><span class="n">QueryFilter</span><span class="p">):</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">BlackListFilter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&quot;Rejects queries containing any blacklisted terms.&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">terms</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+
+  <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Rejects queries containing any of the defined blacklisted terms.</span>
+
+<span class="sd">      Parameters:</span>
+
+<span class="sd">      * query (puppy.model.Query): original query</span>
+
+<span class="sd">      Returns:</span>
+
+<span class="sd">      * query (puppy.model.Query): filtered query</span>
+
+<span class="sd">      &quot;&quot;&quot;</span>
+      <span class="n">original_terms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">search_terms</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+      <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="n">original_terms</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note, in the above example, what needs to be done to conform to the QueryFilter standard. Beyond this, what a new filter does is up to you - the developer.</p>
+</div>
+</div>
+<div class="section" id="creating-new-query-modifiers">
+<h2>Creating new Query Modifiers<a class="headerlink" href="#creating-new-query-modifiers" title="Permalink to this headline">¶</a></h2>
+<p>All Query Modifiers must extend the base class QueryModifier in order to be compatible with the other PuppyIR components. It is included for reference purposes below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">QueryModifier</span><span class="p">(</span><span class="n">_QueryOperator</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+      <span class="c"># shortcut for modify</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+  <span class="nd">@ensure_query</span>
+  <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The modify method <em>must</em> be passed and also return a query object.</p>
+<div class="section" id="example-query-modifier">
+<h3>Example Query Modifier<a class="headerlink" href="#example-query-modifier" title="Permalink to this headline">¶</a></h3>
+<p>For example, a <strong>TermExpansionModifier</strong> that appends extra terms onto a query for example adding &#8220;for kids&#8221; to each query could be written as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">puppy.query</span> <span class="kn">import</span> <span class="n">QueryModifier</span>
+<span class="kn">from</span> <span class="nn">puppy.model</span> <span class="kn">import</span> <span class="n">Query</span>
+
+<span class="k">class</span> <span class="nc">TermExpansionModifier</span><span class="p">(</span><span class="n">QueryModifier</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Expands original query terms with extra terms.&quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">TermExpansionModifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&quot;Expands original query terms with extra terms.&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="n">terms</span>
+
+
+  <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      Expands query with additional terms.</span>
+
+<span class="sd">      Parameters:</span>
+
+<span class="sd">      * query (puppy.model.Query): original query</span>
+
+<span class="sd">      Returns:</span>
+
+<span class="sd">      * query (puppy.model.Query): expanded query</span>
+
+<span class="sd">      &quot;&quot;&quot;</span>
+      <span class="n">query</span><span class="o">.</span><span class="n">search_terms</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">query</span><span class="o">.</span><span class="n">search_terms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms</span><span class="p">])</span>
+      <span class="k">return</span> <span class="n">query</span>
+</pre></div>
+</div>
+<p>Note, in the above example, what needs to be done to conform to the QueryModifier standard. Beyond this, what a new modifier does is up to you - the developer.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending the Query Pipeline</a><ul>
+<li><a class="reference internal" href="#the-query-operator-base-class">The Query Operator base class</a></li>
+<li><a class="reference internal" href="#creating-new-query-filters">Creating new Query Filters</a><ul>
+<li><a class="reference internal" href="#example-query-filter">Example Query Filter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-new-query-modifiers">Creating new Query Modifiers</a><ul>
+<li><a class="reference internal" href="#example-query-modifier">Example Query Modifier</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pipeline-tutorial.html"
+                        title="previous chapter">Pipeline Tutorial: DeeSe (Detective Search)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extendingResult.html"
+                        title="next chapter">Extending the Result Pipeline</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/extendingQuery.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extendingResult.html" title="Extending the Result Pipeline"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pipeline-tutorial.html" title="Pipeline Tutorial: DeeSe (Detective Search)"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

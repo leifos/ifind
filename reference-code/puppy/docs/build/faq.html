@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Frequently Asked Questions &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="next" title="The structure and the PuppyIR repository" href="repo.html" />
+    <link rel="prev" title="Adding new Search Engine Wrappers" href="extendingSearchEngine.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="repo.html" title="The structure and the PuppyIR repository"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="extendingSearchEngine.html" title="Adding new Search Engine Wrappers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="frequently-asked-questions">
+<span id="faq"></span><h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<p>The following are questions regarding the usage of the PuppyIR framework; it will be added to and amended over time.</p>
+<div class="section" id="what-s-the-difference-between-bing-bingv2-and-which-should-i-use">
+<h2>What&#8217;s the difference between Bing/BingV2 and which should I use?<a class="headerlink" href="#what-s-the-difference-between-bing-bingv2-and-which-should-i-use" title="Permalink to this headline">¶</a></h2>
+<p><strong>Bing</strong> uses the old version of the Bing Search API, which does not require an API key and allows applications to search all the different source types apart from videos. <strong>BingV2</strong> however, uses the latest version of the API, which allows for not only video searching, but also retrieval of multiple source types in one call (i.e. get Video and News results for query X). However, to use the <strong>BingV2</strong> wrapper you require an API key, which you get by <a class="reference external" href="http://www.bing.com/toolbox/bingdeveloper/">registering</a> as a Bing developer and adding details about your application. <strong>BingV2</strong> also allows for new filters to be used like only retrieving square images (amongst other options), see API reference page for the full details: <a class="reference internal" href="api3.0.html#puppy-bingv2"><em>BingV2 (API Version 2.2)</em></a>. It is, therefore, dependent upon the needs our your application to dictate which wrapper you should use.</p>
+</div>
+<div class="section" id="why-can-t-you-limit-the-results-from-relatedsearch-in-bing-and-bingv2">
+<h2>Why can&#8217;t you limit the results from RelatedSearch in Bing and BingV2<a class="headerlink" href="#why-can-t-you-limit-the-results-from-relatedsearch-in-bing-and-bingv2" title="Permalink to this headline">¶</a></h2>
+<p>Microsoft have not yet enabled the ability to limit the number of results retrieved for this source type (as in their other source-types). It is, therefore, down to the developer to select a subset of these results if they wish to limit the results.</p>
+</div>
+<div class="section" id="why-can-t-you-you-search-for-videos-in-the-bing-wrapper">
+<h2>Why can&#8217;t you you search for Videos in the Bing wrapper?<a class="headerlink" href="#why-can-t-you-you-search-for-videos-in-the-bing-wrapper" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Bing</strong> wrapper uses the old version of Microsoft&#8217;s Bing Search API; using the RSS/Atom feed output format. However, this version of the API does not support searching with the video source-type.</p>
+</div>
+<div class="section" id="how-does-the-offset-affect-which-page-of-results-is-retrieved-and-why-not-just-use-page-number">
+<h2>How does the offset affect which page of results is retrieved and why not, just use page number?<a class="headerlink" href="#how-does-the-offset-affect-which-page-of-results-is-retrieved-and-why-not-just-use-page-number" title="Permalink to this headline">¶</a></h2>
+<p>An offset is used in all the search engine wrappers instead of a page number, because the number of the first page of results varies between search engines: some are 0-indexed and some 1-indexed. Therefore, in order to implement a generalised method the aforementioned offset is used with <em>0</em> retrieving the first page and <em>1</em> the second (i.e. go 1 page past the first page) etc.</p>
+</div>
+<div class="section" id="what-s-the-difference-between-youtube-youtubev2-and-which-should-i-use">
+<h2>What&#8217;s the difference between YouTube/YouTubeV2 and which should I use?<a class="headerlink" href="#what-s-the-difference-between-youtube-youtubev2-and-which-should-i-use" title="Permalink to this headline">¶</a></h2>
+<p><strong>YouTube</strong> uses the old version of the YouTube API which allows for no customisation options. Whereas, <strong>YouTubeV2</strong>, uses the latest version of the YouTube API which allows for greater customisation via a variety of options like <em>resultsPerPage</em> and location based searching - see the API documentation for full details: <a class="reference internal" href="api3.0.html#puppy-youtubev2"><em>YouTubeV2 (API Version 2.0)</em></a>. So, if you just want a basic search service, use the <strong>YouTube</strong> wrapper, but, if you want to customise your search service and take advantage of the new API features, use <strong>YouTubeV2</strong>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#what-s-the-difference-between-bing-bingv2-and-which-should-i-use">What&#8217;s the difference between Bing/BingV2 and which should I use?</a></li>
+<li><a class="reference internal" href="#why-can-t-you-limit-the-results-from-relatedsearch-in-bing-and-bingv2">Why can&#8217;t you limit the results from RelatedSearch in Bing and BingV2</a></li>
+<li><a class="reference internal" href="#why-can-t-you-you-search-for-videos-in-the-bing-wrapper">Why can&#8217;t you you search for Videos in the Bing wrapper?</a></li>
+<li><a class="reference internal" href="#how-does-the-offset-affect-which-page-of-results-is-retrieved-and-why-not-just-use-page-number">How does the offset affect which page of results is retrieved and why not, just use page number?</a></li>
+<li><a class="reference internal" href="#what-s-the-difference-between-youtube-youtubev2-and-which-should-i-use">What&#8217;s the difference between YouTube/YouTubeV2 and which should I use?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="extendingSearchEngine.html"
+                        title="previous chapter">Adding new Search Engine Wrappers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="repo.html"
+                        title="next chapter">The structure and the PuppyIR repository</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/faq.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="repo.html" title="The structure and the PuppyIR repository"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="extendingSearchEngine.html" title="Adding new Search Engine Wrappers"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

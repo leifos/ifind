@@ -1,0 +1,1613 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PuppyIR API Reference &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="prev" title="Known issues with the PuppyIR framework" href="issues.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="issues.html" title="Known issues with the PuppyIR framework"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="puppyir-api-reference">
+<span id="api"></span><h1>PuppyIR API Reference<a class="headerlink" href="#puppyir-api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="puppy-service">
+<h2>puppy.service<a class="headerlink" href="#puppy-service" title="Permalink to this headline">¶</a></h2>
+<p>This module contains classes for building a service.</p>
+<span class="target" id="module-puppy.service"></span><div class="section" id="servicemanager">
+<h3>ServiceManager<a class="headerlink" href="#servicemanager" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.service.ServiceManager">
+<em class="property">class </em><tt class="descclassname">puppy.service.</tt><tt class="descname">ServiceManager</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#puppy.service.ServiceManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages a collection of search services for a PuppyIR Service</p>
+<dl class="method">
+<dt id="puppy.service.ServiceManager.add_search_service">
+<tt class="descname">add_search_service</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#puppy.service.ServiceManager.add_search_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a search service</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.ServiceManager.remove_search_service">
+<tt class="descname">remove_search_service</tt><big>(</big><em>service_or_name</em><big>)</big><a class="headerlink" href="#puppy.service.ServiceManager.remove_search_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an exisiting search service</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="searchservice">
+<h3>SearchService<a class="headerlink" href="#searchservice" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.service.SearchService">
+<em class="property">class </em><tt class="descclassname">puppy.service.</tt><tt class="descname">SearchService</tt><big>(</big><em>service_manager</em>, <em>name</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models the configuration of a QueryFilter pipeline, Search Engine, and a ResultFilter pipeline.</p>
+<dl class="method">
+<dt id="puppy.service.SearchService.add_filters">
+<tt class="descname">add_filters</tt><big>(</big><em>*filters</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.add_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one or more filters. Detects filter type (e.g., QueryFilter,
+ResultModifier) and places in appropriate pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.add_query_filter">
+<tt class="descname">add_query_filter</tt><big>(</big><em>query_filter</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.add_query_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add filter to query filter pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.add_query_modifier">
+<tt class="descname">add_query_modifier</tt><big>(</big><em>query_modifier</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.add_query_modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add modifier to query modifier pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.add_result_filter">
+<tt class="descname">add_result_filter</tt><big>(</big><em>result_filter</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.add_result_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add filter to result filter pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.add_result_modifier">
+<tt class="descname">add_result_modifier</tt><big>(</big><em>result_modifier</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.add_result_modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add filter to result filter pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.clear_filters">
+<tt class="descname">clear_filters</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.service.SearchService.clear_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all existing filters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.replace_filters">
+<tt class="descname">replace_filters</tt><big>(</big><em>*filters</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.replace_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace existing filters with new filters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.search">
+<tt class="descname">search</tt><big>(</big><em>query</em>, <em>offset=0</em>, <em>highlight=False</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search with query and result filter pipelines active.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>query (puppy.model.Query): search query</li>
+<li>offset (int): result offset</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>results (puppy.model.Response): search results</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.service.SearchService.simplesearch">
+<tt class="descname">simplesearch</tt><big>(</big><em>query</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#puppy.service.SearchService.simplesearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search without query and result filter pipelines.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>query (puppy.model.Query): search query</li>
+<li>offset (int): result offset</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>results (puppy.model.Response): search results</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.pipeline">
+<span id="puppy-pipeline"></span><h2>puppy.pipeline<a class="headerlink" href="#module-puppy.pipeline" title="Permalink to this headline">¶</a></h2>
+<p>This module contains an alternate paradigm for creating a PuppyIR based service, where you construct one Pipeline, store multiple search engines and then either: search all or, search a specific one using the Pipeline. See: <a class="reference internal" href="pipeline.html#pipeline-architecture"><em>Paradigm 2 - One Pipeline, Many Search Engines</em></a> for an explanation of this paradigm and <a class="reference internal" href="pipeline-tutorial.html#pipeline-puppyir-tutorial"><em>Pipeline Tutorial: DeeSe (Detective Search)</em></a> for details about how to go about using it to create an application.</p>
+<div class="section" id="pipelineservice">
+<h3>PipelineService<a class="headerlink" href="#pipelineservice" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.pipeline.PipelineService">
+<em class="property">class </em><tt class="descclassname">puppy.pipeline.</tt><tt class="descname">PipelineService</tt><big>(</big><em>config</em>, <em>name</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models the configuration of a Pipeline (QueryFilters/Modifiers and ResultFilters/Modifiers) and the search engines using the Pipeline</p>
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.add_filters">
+<tt class="descname">add_filters</tt><big>(</big><em>*filters</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.add_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one or more filters. Detects filter type (e.g., QueryFilter, ResultModifier) and places in appropriate pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.add_query_filter">
+<tt class="descname">add_query_filter</tt><big>(</big><em>query_filter</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.add_query_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add filter to query filter pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.add_query_modifier">
+<tt class="descname">add_query_modifier</tt><big>(</big><em>query_modifier</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.add_query_modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add modifier to query modifier pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.add_result_filter">
+<tt class="descname">add_result_filter</tt><big>(</big><em>result_filter</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.add_result_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add filter to result filter pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.add_result_modifier">
+<tt class="descname">add_result_modifier</tt><big>(</big><em>result_modifier</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.add_result_modifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add filter to result filter pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.clear_filters">
+<tt class="descname">clear_filters</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.clear_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all existing filters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.replace_filters">
+<tt class="descname">replace_filters</tt><big>(</big><em>*filters</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.replace_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace existing filters with new filters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.searchAll">
+<tt class="descname">searchAll</tt><big>(</big><em>query</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.searchAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search all the search engines currently stored by our &#8216;SearchEngineManager&#8217; using the query and result pipeline as currently defined.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>query (puppy.model.Query): search query</li>
+<li>offset (int): result offset</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>results_dict (dictionary of puppy.model.Response): the key being the name of the search egine and the value the reponse object</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.PipelineService.searchSpecificEngine">
+<tt class="descname">searchSpecificEngine</tt><big>(</big><em>query</em>, <em>searchEngineName</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#puppy.pipeline.PipelineService.searchSpecificEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search a specific search engine only, if it&#8217;s currently stored by our &#8216;SearchEngineManager&#8217; using the query and result pipeline as currently defined.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>query (puppy.model.Query): search query</li>
+<li>searchEngineName (str): the name of the search engine to search which will be searched if it&#8217;s currently stored</li>
+<li>offset (int): result offset</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>results_dict (dictionary of puppy.model.Response): the key being the name of the search egine and the value the reponse object</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="searchenginemanager">
+<h3>SearchEngineManager<a class="headerlink" href="#searchenginemanager" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.pipeline.SearchEngineManager">
+<em class="property">class </em><tt class="descclassname">puppy.pipeline.</tt><tt class="descname">SearchEngineManager</tt><a class="headerlink" href="#puppy.pipeline.SearchEngineManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages a collection of search engines the Pipeline Manager can act upon</p>
+<dl class="method">
+<dt id="puppy.pipeline.SearchEngineManager.add_search_engine">
+<tt class="descname">add_search_engine</tt><big>(</big><em>search_engine_name</em>, <em>search_engine</em><big>)</big><a class="headerlink" href="#puppy.pipeline.SearchEngineManager.add_search_engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a search engine to the Pipeline Manager if it&#8217;s valid and not already stored by the Manager</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.SearchEngineManager.clear_search_engines">
+<tt class="descname">clear_search_engines</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.pipeline.SearchEngineManager.clear_search_engines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all existing search engines.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.SearchEngineManager.get_search_engine">
+<tt class="descname">get_search_engine</tt><big>(</big><em>search_engine_name</em><big>)</big><a class="headerlink" href="#puppy.pipeline.SearchEngineManager.get_search_engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the specified search engine is stored return it, otherwise, return None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.SearchEngineManager.get_search_engines">
+<tt class="descname">get_search_engines</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.pipeline.SearchEngineManager.get_search_engines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the currently stored search engines</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.pipeline.SearchEngineManager.remove_search_engine">
+<tt class="descname">remove_search_engine</tt><big>(</big><em>search_engine_name</em><big>)</big><a class="headerlink" href="#puppy.pipeline.SearchEngineManager.remove_search_engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removed a search engine from the Pipeline Manager if it&#8217;s currently stored by the Manager</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.search">
+<span id="puppy-search"></span><h2>puppy.search<a class="headerlink" href="#module-puppy.search" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="searchengine">
+<h3>SearchEngine<a class="headerlink" href="#searchengine" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.SearchEngine">
+<em class="property">class </em><tt class="descclassname">puppy.search.</tt><tt class="descname">SearchEngine</tt><big>(</big><em>service</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.SearchEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract search engine interface.</p>
+<dl class="method">
+<dt id="puppy.search.SearchEngine.configure_opener">
+<tt class="descname">configure_opener</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.search.SearchEngine.configure_opener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure urllib2 opener with network proxy if one has been added to the parent services config dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.search.SearchEngine.search">
+<tt class="descname">search</tt><big>(</big><em>query</em>, <em>offset=0</em><big>)</big><a class="headerlink" href="#puppy.search.SearchEngine.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a search, retrieve the results and process them into the response format.</p>
+<p>N.B. This should be implemented in the derived classes.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>query (puppy.model.Query): query object</li>
+<li>offset (int): result offset</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>results (puppy.model.Response): results of the search</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.search.exceptions">
+<span id="puppy-search-exceptions"></span><h2>puppy.search.exceptions<a class="headerlink" href="#module-puppy.search.exceptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="searchengineerror">
+<h3>SearchEngineError<a class="headerlink" href="#searchengineerror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.exceptions.SearchEngineError">
+<em class="property">class </em><tt class="descclassname">puppy.search.exceptions.</tt><tt class="descname">SearchEngineError</tt><big>(</big><em>searchEngineName</em>, <em>error</em>, <em>**extras</em><big>)</big><a class="reference internal" href="_modules/puppy/search/exceptions.html#SearchEngineError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.search.exceptions.SearchEngineError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use for exceptions in which the search engine wrapper fails - this can be for multiple reasons, 
+for example: the lack of a proxy server in config or a search service being down. Callers should respond
+to this, in a way that fails gracefully.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="apikeyerror">
+<h3>ApiKeyError<a class="headerlink" href="#apikeyerror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.exceptions.ApiKeyError">
+<em class="property">class </em><tt class="descclassname">puppy.search.exceptions.</tt><tt class="descname">ApiKeyError</tt><big>(</big><em>searchEngineName</em>, <em>apiFieldName</em><big>)</big><a class="reference internal" href="_modules/puppy/search/exceptions.html#ApiKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.search.exceptions.ApiKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use for exceptions in which the API for a wrapper, which requires one, has not been supplied. Callers should
+respond in such a way that the developer, it is not intended for users of an application, are aware of the issue
+and so can take the necessary steps to rectify the issue.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.search.engine">
+<span id="puppy-search-engine"></span><h2>puppy.search.engine<a class="headerlink" href="#module-puppy.search.engine" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bing">
+<span id="puppy-bing"></span><h3>Bing<a class="headerlink" href="#bing" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Bing">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Bing</tt><big>(</big><em>service</em>, <em>source='web'</em>, <em>adult='Strict'</em>, <em>market='en-GB'</em>, <em>resultsPerPage=10</em>, <em>lat=None</em>, <em>lon=None</em>, <em>radius=5</em>, <em>sites=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Bing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing search engine wrapper.</p>
+<p>Note: you can only use location based searching with sourcetypes &#8216;web&#8217; and &#8216;phonebook&#8217;; however, with web, it doesn&#8217;t appear to have any effect.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>sites: if you wish to search a specific website(s) for results</li>
+<li>source (str): web, image, news are the options</li>
+<li>adult (str): strict, i.e. safesearch not recommended to change from the default</li>
+<li>market (str): i.e. which area&#8217;s results are prioritised more - en-gb is the UK</li>
+<li>resultsPerPage (int): How many results per page</li>
+<li>lat (double): the latitude of the place you want to search in</li>
+<li>lon (double): the longitude of the place you want to search in</li>
+<li>radius (int): the radius to retrieve results from around lat and lon; 0-250miles is the limit</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="bingv2-api-version-2-2">
+<span id="puppy-bingv2"></span><h3>BingV2 (API Version 2.2)<a class="headerlink" href="#bingv2-api-version-2-2" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.BingV2">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">BingV2</tt><big>(</big><em>service</em>, <em>source='Web'</em>, <em>adult='Strict'</em>, <em>market='en-GB'</em>, <em>resultsPerPage=8</em>, <em>filters=None</em>, <em>sortBy=None</em>, <em>newsCategory=None</em>, <em>sites=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.BingV2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bing search engine wrapper for Version 2.2 of the API - allowing for a large variety of source types to be searched.</p>
+<p>One of the key advantages of using this wrapper is using the new features and also being able to use multiple sources to create a mash-up.
+i.e. source=&#8221;Web+Image&#8221; gets results from the web and also image search services.</p>
+<p>You must include your application&#8217;s Bing ID in your service manage config to use this service. It should be under the identifier &#8220;bing_api_key&#8221;</p>
+<p>If you use the &#8216;Spell&#8217; source, then you must set the &#8216;market&#8217; parameter to match the language you are querying in i.e. English UK set Market to en-gb or Dutch set it to nl-nl</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>source (str): what source the results should come from, valid options are: Web, News, Video, Image, Spell, RelatedSearch.</li>
+<li>adult (str):  Strict is the default, not recommended to change this</li>
+<li>market (str): For UK: en-GB, For Netherlands: nl-NL etc</li>
+<li>resultsPerPage (int): How many results per page</li>
+</ul>
+<p>&#8211; &#8216;Image&#8217; and &#8216;Video&#8217; only &#8211;
+* filters (str): filter options split up by &#8216;+&#8217; you can only have one of each type see Bing API documentation for what these are</p>
+<p>&#8211; &#8216;Video&#8217; and &#8216;News&#8217; only &#8211;
+* sortBy (str): sort news by either &#8216;Date&#8217; or &#8216;Relevance&#8217;</p>
+<p>&#8211; &#8216;News&#8217; only &#8211;
+* newsCategory (str): what sort of news is wanted - see BingAPI for list of options, for example: &#8216;rt_ScienceAndTechnology&#8217;</p>
+</dd></dl>
+
+</div>
+<div class="section" id="digg">
+<h3>Digg<a class="headerlink" href="#digg" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Digg">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Digg</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>sort=None</em>, <em>topic=None</em>, <em>media='all'</em>, <em>max_date=None</em>, <em>min_date=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Digg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Digg search engine wrapper.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): How many results per page</li>
+<li>sort (str): how to sort results (see Digg site for a list of the options) an example is &#8216;submit_date-desc&#8217; to sort via the item&#8217;s submit date</li>
+<li>topic (str): restrict the search to a specific topic (see Digg site for a list of them)</li>
+<li>media (str): options are: &#8216;all&#8217;, &#8216;news&#8217;, &#8216;videos&#8217;, &#8216;images&#8217;</li>
+<li>max_date (unix timestamp - converted to str): latest date results returned were posted</li>
+<li>min_date (unix timestamp - converted to str): earliest date results returned were posted</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="emmasearch">
+<h3>EmmaSearch<a class="headerlink" href="#emmasearch" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.EmmaSearch">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">EmmaSearch</tt><big>(</big><em>service</em>, <em>age='v'</em>, <em>resultsPerPage=10</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.EmmaSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>EmmaSearch search engine.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>age (str): values - &#8216;v&#8217; for adults (shows all &#8216;a&#8217; and &#8216;k&#8217; results too), &#8216;a&#8217; for teenagers, and &#8216;k&#8217; for children</li>
+<li>resultsPerPage (int): How many results per page - the default for the emma search service is 10</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="emmasearch-sql-server-version">
+<h3>EmmaSearch SQL Server version<a class="headerlink" href="#emmasearch-sql-server-version" title="Permalink to this headline">¶</a></h3>
+<p>A new version of the above (EmmaSearch) wrapper allowing for searching the Emma Hospital database using a Microsoft&#8217;s SQL server.</p>
+<p>Due to this SQL Server import being an extra (see the installation section for details about installing it), rather than required, you cannot import this wrapper from &#8216;<em>puppy.search.engine</em>&#8216; like the above wrappers; you import them using the code below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">puppy.search.engine.emmasearchMSSQL</span> <span class="kn">import</span> <span class="n">EmmaSearchMSSQL</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="flickr">
+<h3>Flickr<a class="headerlink" href="#flickr" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Flickr">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Flickr</tt><big>(</big><em>service</em>, <em>sortBy='relevance'</em>, <em>safeSearch=3</em>, <em>mediaType='photos'</em>, <em>resultsPerPage=8</em>, <em>bbox=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Flickr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flickr search engine.</p>
+<p>You must include your application&#8217;s Flickr ID in your service manage config to use this service
+it should be under the identifier &#8220;flickr_api_key&#8221;</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>sortBy (str):  how we sort results, default is relevance see Flickr API for more details</li>
+<li>safeSearch (int): default is 3, i.e. strict, not recommended to change this</li>
+<li>mediaType (str): all, photos, videos are the options</li>
+<li>resultsPerPage (int): How many results per page</li>
+<li>bbox (str): replace the names with the values of the corners of the bounding box &#8216;swLongitude,swLatitude,neLongitude,neLatitude&#8217;</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="google-geocode">
+<h3>Google Geocode<a class="headerlink" href="#google-geocode" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.GoogleGeocode">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">GoogleGeocode</tt><big>(</big><em>service</em>, <em>sensor='false'</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.GoogleGeocode" title="Permalink to this definition">¶</a></dt>
+<dd><p>GoogleGeocode search service.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>sensor(str): does your device have a GPS sensor or not, not recommended to change from &#8216;false&#8217; but the other option is, naturally, &#8216;true&#8217; - must be lowercase</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="google-depreciated">
+<h3>Google (depreciated)<a class="headerlink" href="#google-depreciated" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Google">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Google</tt><big>(</big><em>service</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Google" title="Permalink to this definition">¶</a></dt>
+<dd><p>Google search engine.</p>
+<p>Google have regrettfully retired this search api</p>
+<p>Code is left here for reference purposes</p>
+</dd></dl>
+
+</div>
+<div class="section" id="google-books">
+<h3>Google Books<a class="headerlink" href="#google-books" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.GoogleBooks">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">GoogleBooks</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>langRestrict=None</em>, <em>filter=None</em>, <em>orderBy='relevance'</em>, <em>printType=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.GoogleBooks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Google&#8217;s Books search engine api.</p>
+<p>See Google&#8217;s documentation for how to specify advanced queries e.g. Hobbit+inauthor:Tolkien</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): How many results per page</li>
+<li>langRestrict (str): restrict results to a certain language i.e. &#8216;en&#8217; for English</li>
+<li>filter (str): filter volumes by type/availabilty, valid values - &#8216;partial&#8217;, &#8216;full&#8217;, &#8216;free-ebooks&#8217;, &#8216;paid-ebooks&#8217;, &#8216;ebooks&#8217;</li>
+<li>orderBy (str): order either by &#8216;relevance&#8217; or &#8216;newest&#8217;</li>
+<li>printType (str): &#8216;all&#8217;, &#8216;books&#8217; or &#8216;magazines&#8217; restrict the results to either all or one of the preceding types of media only</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="guardian">
+<h3>Guardian<a class="headerlink" href="#guardian" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Guardian">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Guardian</tt><big>(</big><em>service</em>, <em>orderBy='newest'</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Guardian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guardian search engine api for searching for news stories.</p>
+<p>Warning: &#8216;StandFirst&#8217; is the result field used for description; it is a form of abstract for the news story. It can however, contain html tags and so 
+when processing these results in an application this needs to be taken into account.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>orderBy (str): the options are - &#8216;newest&#8217;, &#8216;oldest&#8217; and &#8216;relevance&#8217;</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="itunes">
+<h3>iTunes<a class="headerlink" href="#itunes" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.ITunes">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">ITunes</tt><big>(</big><em>service</em>, <em>country='gb'</em>, <em>lang='en_gb'</em>, <em>media=None</em>, <em>resultsPerPage=8</em>, <em>explicit=False</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.ITunes" title="Permalink to this definition">¶</a></dt>
+<dd><p>iTunes search engine wrapper - allowing for Track, Album and Artist search results to be retrieved</p>
+<p>If you change either lang or country change the other variable to match i.e. change lang to &#8216;en_gb&#8217; you should also change
+country to &#8216;gb&#8217; to match or vice-versa.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>country (str): Which iTunes store to search i.e. &#8216;gb&#8217; for the UK and &#8216;us&#8217; for the USA etc</li>
+<li>lang (str): the language the results should be returned in</li>
+<li>media(str): the media type you want to search for (see iTunes documentation for others e.g. &#8216;movie&#8217; etc)</li>
+<li>resultsPerPage (int): How many results per page</li>
+<li>explicit (boolean): Do we want to return results marked as including explicit content (not recommended to change this)</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="lastfm">
+<h3>LastFM<a class="headerlink" href="#lastfm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.LastFm">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">LastFm</tt><big>(</big><em>service</em>, <em>source='track'</em>, <em>resultsPerPage=8</em>, <em>artist=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.LastFm" title="Permalink to this definition">¶</a></dt>
+<dd><p>LastFM search engine wrapper - allowing for Track, Album and Artist search results to be retrieved</p>
+<p>You must include your application&#8217;s LastFM ID in your service manage config to use this service. It should be under the identifier &#8220;last_fm_api_key&#8221;</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>source (str): What to search for, valid types: &#8216;track&#8217;, &#8216;album&#8217; and &#8216;artist&#8217;</li>
+<li>resultsPerPage (int): How many results per page</li>
+</ul>
+<p>&#8211; &#8216;Track&#8217; Only Parameters &#8211;
+* artist (str): the artist for the tracks you are searching for</p>
+</dd></dl>
+
+</div>
+<div class="section" id="opensearch">
+<h3>OpenSearch<a class="headerlink" href="#opensearch" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.OpenSearch">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">OpenSearch</tt><big>(</big><em>service</em>, <em>url</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.OpenSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>OpenSearch search engine.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="picassa">
+<h3>Picassa<a class="headerlink" href="#picassa" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Picassa">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Picassa</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>access='public'</em>, <em>kind='photo'</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Picassa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Picassa search engine.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): select how many results per page</li>
+<li>access (str): public, private (it is not recommended to change to private), all, visible</li>
+<li>kind (str): photo is the only working option</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="rotten-tomatoes">
+<h3>Rotten Tomatoes<a class="headerlink" href="#rotten-tomatoes" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.RottenTomatoes">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">RottenTomatoes</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.RottenTomatoes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotten Tomatoes search engine.</p>
+<p>You must include your application&#8217;s Rotten Tomatoes ID in your service manage config to use this service
+it should be under the identifier &#8220;rotten_tomatoes_api_key&#8221;</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): How many results per page</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="simplewikipedia">
+<h3>SimpleWikipedia<a class="headerlink" href="#simplewikipedia" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.SimpleWikipedia">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">SimpleWikipedia</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.SimpleWikipedia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple Wikipedia search engine.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): How many results per page - note with Wiki only one page of results is returned.</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="solr">
+<h3>Solr<a class="headerlink" href="#solr" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Solr">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Solr</tt><big>(</big><em>service</em>, <em>url</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Solr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solr search engine.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="soundcloud">
+<h3>SoundCloud<a class="headerlink" href="#soundcloud" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.SoundCloud">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">SoundCloud</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>order=None</em>, <em>tags=None</em>, <em>filter=None</em>, <em>genres=None</em>, <em>types=None</em>, <em>bpmFilter=None</em>, <em>durationFilter=None</em>, <em>createdFilter=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.SoundCloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>SoundCliud search engine wrapper for a music sharing application allowing the searching for tracks.</p>
+<p>You must include your api key for Wordnik in your service manage config to use this service. It should be under the identifier &#8220;soundcloud_api_key&#8221;</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): the number of results to return for a search query</li>
+<li>order (str): the order to return results in, valid values are &#8216;created_at&#8217; and &#8216;hotness&#8217; (this later one being popularity of tracks)</li>
+<li>tags (str): a comma separated string of tags to look for along with the query</li>
+<li>filter (str): filter via the access category, valid values are: &#8216;all&#8217;, &#8216;public&#8217;, &#8216;private&#8217;, &#8216;streamable&#8217;, &#8216;downloadable&#8217;</li>
+<li>genres (str):  a comma separated string of genres to look for along with the query (see the SoundCloud site for a list of genres)</li>
+<li>types (str): a comma separated string of types of track to look for along with the query (see the SoundCloud site for a list of types - examples are &#8216;live&#8217; or &#8216;demo&#8217;)</li>
+<li>bpmFilter (dict): filters via beats per minute, with the fields being &#8216;from&#8217; and &#8216;to&#8217; their values both being ints</li>
+<li>durationFilter (dict): filters via duration of the track, with the fields being &#8216;from&#8217; and &#8216;to&#8217; their values both being ints with the units being milliseconds</li>
+<li>createdFilter (dict): filters via when the track was created, with the fields being a string of format: &#8216;yyyy-mm-dd hh:mm:ss&#8217;</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="spotify">
+<h3>Spotify<a class="headerlink" href="#spotify" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Spotify">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Spotify</tt><big>(</big><em>service</em>, <em>source='tracks'</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Spotify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spotify search engine.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>source (str):  what sort of results should be returned, the options are: &#8216;tracks&#8217;, &#8216;albums&#8217;, &#8216;artists&#8217;</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="twitter">
+<h3>Twitter<a class="headerlink" href="#twitter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Twitter">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Twitter</tt><big>(</big><em>service</em>, <em>language='en'</em>, <em>type='mixed'</em>, <em>geocode=None</em>, <em>resultsPerPage=9</em>, <em>includeEntities=False</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Twitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Twitter search engine.</p>
+<p>Geocode format is: latitude,longitude,radius - for example: &#8216;37.781157,-122.398720,1mi&#8217;</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>language (str): en = English, de = German etc</li>
+<li>type (str): what sort of results to get can be - mixed, recent, popular</li>
+<li>geocode (str): to get queries around a specific location</li>
+<li>includeEntities (boolean): if this is true then a lot of meta-data is included (mentions, associated images, associated urls)</li>
+<li>resultsPerPage (int): results per page</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="webspellchecker">
+<h3>WebSpellChecker<a class="headerlink" href="#webspellchecker" title="Permalink to this headline">¶</a></h3>
+<p>Register for an API key here: <a class="reference external" href="http://www.webservius.com/services/spellcheck/spellcheck">http://www.webservius.com/services/spellcheck/spellcheck</a></p>
+<dl class="class">
+<dt id="puppy.search.engine.WebSpellChecker">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">WebSpellChecker</tt><big>(</big><em>service</em>, <em>language='en_GB'</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.WebSpellChecker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Web Spell Checker&#8217;s search engine api.</p>
+<p>You must include your application&#8217;s Web Spell Checker Api key in your service manager config to use this service
+It should be under the identifier &#8220;web_spell_api_key&#8221;</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>language (str): the language/dictionary to check again i.e. &#8216;en_US&#8217; for American English, &#8216;nl_NL&#8217; for Dutch etc (this is case sensative)</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="wikipedia">
+<h3>Wikipedia<a class="headerlink" href="#wikipedia" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Wikipedia">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Wikipedia</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>wikiLanguage='en'</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Wikipedia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wikipedia search engine.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): How many results per page - note with Wiki only one page of results is returned.</li>
+<li>wikiLanguage(str): which wiki api you want to search, default is en (English), nl (Dutch) is another example</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="wordnik">
+<h3>Wordnik<a class="headerlink" href="#wordnik" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Wordnik">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Wordnik</tt><big>(</big><em>service</em>, <em>source='Definitions'</em>, <em>resultsPerPage=8</em>, <em>sourceDictionaries=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Wordnik" title="Permalink to this definition">¶</a></dt>
+<dd><p>Worknik search engine wrapper for their dictionary based API. This wrapper allows for searching for spelling corrections, examples of the usage of a word (in web results),
+and also definitions for a word.</p>
+<p>This API is only for English however, other languages are not supported.</p>
+<p>You must include your api key for Wordnik in your service manage config to use this service. It should be under the identifier &#8220;wordnik_api_key&#8221;</p>
+<p>With sourceDictionaries (see below) you can select multiple values i.e. ahd,webster but this will just return the first definition from ahd or if it doesn&#8217;t have one from webster</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>source (str): what source the results should come from, valid options are: &#8216;Suggestions&#8217;, &#8216;Examples&#8217;, &#8216;Definitions&#8217;</li>
+<li>resultsPerPage (int): How many (the maximum number) results to return</li>
+</ul>
+<p>&#8211; Definitions Only Parameters &#8211;
+* sourceDictionaries (str): the dictionary to search, if blank it defaults to the first definition. Other options are: &#8216;all&#8217;, &#8216;ahd&#8217;, &#8216;century&#8217;, &#8216;wiktionary&#8217;, &#8216;webster&#8217;, &#8216;wordnet&#8217;</p>
+</dd></dl>
+
+</div>
+<div class="section" id="yahoo">
+<h3>Yahoo<a class="headerlink" href="#yahoo" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.Yahoo">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">Yahoo</tt><big>(</big><em>service</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.Yahoo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yahoo search engine.</p>
+<p>You must include your application&#8217;s Yahoo ID in your service manage config to use this service. It should be under the identifier &#8220;yahoo_api_key&#8221;</p>
+</dd></dl>
+
+</div>
+<div class="section" id="youtube">
+<span id="puppy-youtube"></span><h3>YouTube<a class="headerlink" href="#youtube" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.YouTube">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">YouTube</tt><big>(</big><em>service</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.YouTube" title="Permalink to this definition">¶</a></dt>
+<dd><p>YouTube search engine.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="youtubev2-api-version-2-0">
+<span id="puppy-youtubev2"></span><h3>YouTubeV2 (API Version 2.0)<a class="headerlink" href="#youtubev2-api-version-2-0" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.YouTubeV2">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.</tt><tt class="descname">YouTubeV2</tt><big>(</big><em>service</em>, <em>resultsPerPage=8</em>, <em>safeSearch='strict'</em>, <em>orderBy='relevance'</em>, <em>format=None</em>, <em>location=None</em>, <em>locationRadius=None</em>, <em>onlyLocation=False</em>, <em>**args</em><big>)</big><a class="headerlink" href="#puppy.search.engine.YouTubeV2" title="Permalink to this definition">¶</a></dt>
+<dd><p>YouTube search engine API version 2.</p>
+<p>The orderBy parameter allows results to be filtered by their language relevence - see below for more.</p>
+<p>N.B. in the text below replace &lt;languageCode&gt; with a code i.e. English: &#8216;en&#8217;, Dutch: &#8216;nl&#8217; depending upon your applications needs.</p>
+<p>Parameters:</p>
+<ul>
+<li><p class="first">resultsPerPage (int): results per page</p>
+</li>
+<li><p class="first">safeSearch (str) : default is strict it&#8217;s not recommended to change this</p>
+</li>
+<li><p class="first">orderBy: (str)  rating, viewCount, relevance, relevance_lang_&lt;languageCode&gt;</p>
+</li>
+<li><p class="first">format (int): this defines if videos must conform to a standard for example 5 means only videos that can be embedded</p>
+</li>
+<li><p class="first">location (str): defines the location the videos should be from, in the format &#8216;lat,lon&#8217;</p>
+</li>
+<li><dl class="first docutils">
+<dt>locationRadius (str): format is &#8216;&lt;radius&gt;&lt;unit&gt;&#8217; the radius around the location, within which results should be return from</dt>
+<dd><p class="first last">the valid units are: m, km, ft and mi</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">onlyLocation (boolean): only return results with a location (i.e. a geotag)</p>
+</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="whoosh-wrappers">
+<h2>Whoosh wrappers<a class="headerlink" href="#whoosh-wrappers" title="Permalink to this headline">¶</a></h2>
+<p>The following two wrappers both require Whoosh to be installed, for instructions for installing Whoosh see <a class="reference internal" href="installation.html#requirements-and-installation"><em>Requirements and Installation</em></a>.</p>
+<p>Due to Whoosh being an extra, rather than required, you cannot import them from &#8216;<em>puppy.search.engine</em>&#8216; like the above wrappers; you import them using the code below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">puppy.search.engine.whooshQueryEngine</span> <span class="kn">import</span> <span class="n">WhooshQueryEngine</span>
+<span class="kn">from</span> <span class="nn">puppy.search.engine.whooshQuerySuggestEngine</span> <span class="kn">import</span> <span class="n">WhooshQuerySuggestEngine</span>
+</pre></div>
+</div>
+<div class="section" id="module-puppy.search.engine.whooshQueryEngine">
+<span id="whoosh-query-engine"></span><h3>Whoosh Query Engine<a class="headerlink" href="#module-puppy.search.engine.whooshQueryEngine" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.whooshQueryEngine.WhooshQueryEngine">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.whooshQueryEngine.</tt><tt class="descname">WhooshQueryEngine</tt><big>(</big><em>service</em>, <em>whoosh_query_index_dir=''</em>, <em>resultsPerPage=8</em>, <em>**args</em><big>)</big><a class="reference internal" href="_modules/puppy/search/engine/whooshQueryEngine.html#WhooshQueryEngine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.search.engine.whooshQueryEngine.WhooshQueryEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whoosh Query log search engine.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): select how many results per page</li>
+<li>whoosh_query_index_dir (str): the absolute path for where you want queries indexed at</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="module-puppy.search.engine.whooshQuerySuggestEngine">
+<span id="whoosh-query-suggest-engine"></span><h3>Whoosh Query Suggest Engine<a class="headerlink" href="#module-puppy.search.engine.whooshQuerySuggestEngine" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.search.engine.whooshQuerySuggestEngine.WhooshQuerySuggestEngine">
+<em class="property">class </em><tt class="descclassname">puppy.search.engine.whooshQuerySuggestEngine.</tt><tt class="descname">WhooshQuerySuggestEngine</tt><big>(</big><em>service</em>, <em>whoosh_query_index_dir=''</em>, <em>resultsPerPage=8</em>, <em>**args</em><big>)</big><a class="reference internal" href="_modules/puppy/search/engine/whooshQuerySuggestEngine.html#WhooshQuerySuggestEngine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.search.engine.whooshQuerySuggestEngine.WhooshQuerySuggestEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whoosh Query log search engine.</p>
+<p>Paramters:</p>
+<ul class="simple">
+<li>resultsPerPage (int): select how many results per page</li>
+<li>whoosh_query_index_dir (str): the absolute path for where you want queries indexed at</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.model">
+<span id="puppy-model"></span><h2>puppy.model<a class="headerlink" href="#module-puppy.model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="response">
+<span id="puppy-response"></span><h3>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.model.Response">
+<em class="property">class </em><tt class="descclassname">puppy.model.</tt><tt class="descname">Response</tt><big>(</big><em>results={}</em><big>)</big><a class="headerlink" href="#puppy.model.Response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data model for search results.  Response has four main attributes:</p>
+<ul class="simple">
+<li>feed: dictionary of information about the search results {title,
+* description, etc}</li>
+<li>entries: list of search results [{title, link, summary, etc}, ...]</li>
+<li>namespaces: list of namespaces [&#8220;<a class="reference external" href="http://a9.com/-/spec/opensearch/1.1/">http://a9.com/-/spec/opensearch/1.1/</a>&#8221;,
+* ...]</li>
+<li>version: source type of orginal results &#8220;rss/atom/json&#8221;</li>
+</ul>
+<dl class="method">
+<dt id="puppy.model.Response.get_itemsperpage">
+<tt class="descname">get_itemsperpage</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Response.get_itemsperpage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of results per page, as reported by the search engine (usually, 10, except for Google, 8)</p>
+<p>This number is used mainly by page algorithms.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>opensearch_itemsperpage: the itemsperpage value</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Response.get_startindex">
+<tt class="descname">get_startindex</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Response.get_startindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the start item for the current &#8220;page&#8221;, as reported by the search engine. It is usually 0 or items per page * page number</p>
+<p>This number is used mainly by page algorithms.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>opensearch_startindex: the startindex value</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Response.get_totalresults">
+<tt class="descname">get_totalresults</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Response.get_totalresults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number total of results, as reported by the search engine.</p>
+<p>This number is used mainly by page algorithms.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>opensearch_totalresults: the total_results value</li>
+</ul>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="puppy.model.Response.parse_feed">
+<em class="property">static </em><tt class="descname">parse_feed</tt><big>(</big><em>xml_feed</em><big>)</big><a class="headerlink" href="#puppy.model.Response.parse_feed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a RSS/ATOM feed of Opensearch results</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="puppy.model.Response.parse_json_suggestions">
+<em class="property">static </em><tt class="descname">parse_json_suggestions</tt><big>(</big><em>json_doc</em><big>)</big><a class="headerlink" href="#puppy.model.Response.parse_json_suggestions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a JSON document of Opensearch suggestions</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="puppy.model.Response.parse_xml_suggestions">
+<em class="property">static </em><tt class="descname">parse_xml_suggestions</tt><big>(</big><em>xml_doc</em><big>)</big><a class="headerlink" href="#puppy.model.Response.parse_xml_suggestions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a XML document of Opensearch suggestions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Response.to_atom">
+<tt class="descname">to_atom</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Response.to_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an XML from a OpenSearch Response.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>response_xml (str): OpenSearch Response as an ATOM feed</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Response.to_json">
+<tt class="descname">to_json</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Response.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates JSON from a Response object.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>response_json (str): Response as JSON</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Response.to_rss">
+<tt class="descname">to_rss</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Response.to_rss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an RSS feed from a Response object.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>response_xml (str): Response as RSS feed</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="query">
+<span id="puppy-query"></span><h3>Query<a class="headerlink" href="#query" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.model.Query">
+<em class="property">class </em><tt class="descclassname">puppy.model.</tt><tt class="descname">Query</tt><big>(</big><em>search_terms</em><big>)</big><a class="headerlink" href="#puppy.model.Query" title="Permalink to this definition">¶</a></dt>
+<dd><p>OpenSearch Query.</p>
+<p>Models an OpenSearch Query element.</p>
+<p>See: <a class="reference external" href="http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_Query_element">http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_Query_element</a></p>
+<dl class="staticmethod">
+<dt id="puppy.model.Query.parse_xml">
+<em class="property">static </em><tt class="descname">parse_xml</tt><big>(</big><em>oss_xml</em><big>)</big><a class="headerlink" href="#puppy.model.Query.parse_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse OpenSearch Query XML.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>oss_xml (str): OpenSearch Query XML</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>puppy.model.OpenSearch.Query</li>
+</ul>
+<p>TODO code Query.parse_xml()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Query.write_xml">
+<tt class="descname">write_xml</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Query.write_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates XML for OpenSearch Query.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>query_xml (str): OpenSearch Query as XML</li>
+</ul>
+<p>TODO code Query.write_xml()</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="description">
+<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.model.Description">
+<em class="property">class </em><tt class="descclassname">puppy.model.</tt><tt class="descname">Description</tt><a class="headerlink" href="#puppy.model.Description" title="Permalink to this definition">¶</a></dt>
+<dd><p>OpenSearch Description.</p>
+<p>Models an OpenSearch Description document.</p>
+<p>See: <a class="reference external" href="http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_description_document">http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_description_document</a></p>
+<dl class="staticmethod">
+<dt id="puppy.model.Description.parse_xml">
+<em class="property">static </em><tt class="descname">parse_xml</tt><big>(</big><em>oss_xml</em><big>)</big><a class="headerlink" href="#puppy.model.Description.parse_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse OpenSearch Description XML.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>oss_xml (str): OpenSearch Description XML</li>
+</ul>
+<p>Returns:</p>
+<ul class="simple">
+<li>puppy.model.OpenSearch.Description</li>
+</ul>
+<p>TODO code Description.parse_xml()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.model.Description.write_xml">
+<tt class="descname">write_xml</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.model.Description.write_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates XML for an OpenSearch Description document.</p>
+<p>Returns:</p>
+<ul class="simple">
+<li>description_xml (str): OpenSearch Description document as XML</li>
+</ul>
+<p><strong>TODO code Description.write_xml()</strong></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.query">
+<span id="id1"></span><h2>puppy.query<a class="headerlink" href="#module-puppy.query" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="queryfilter">
+<h3>QueryFilter<a class="headerlink" href="#queryfilter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.QueryFilter">
+<em class="property">class </em><tt class="descclassname">puppy.query.</tt><tt class="descname">QueryFilter</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.query.QueryFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for filters that can reject queries, e.g., by detecting
+profanity.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="querymodifier">
+<h3>QueryModifier<a class="headerlink" href="#querymodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.QueryModifier">
+<em class="property">class </em><tt class="descclassname">puppy.query.</tt><tt class="descname">QueryModifier</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.query.QueryModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all query modifiers</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.query.exceptions">
+<span id="puppy-query-exceptions"></span><h2>puppy.query.exceptions<a class="headerlink" href="#module-puppy.query.exceptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="queryrejectionerror">
+<h3>QueryRejectionError<a class="headerlink" href="#queryrejectionerror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.exceptions.QueryRejectionError">
+<em class="property">class </em><tt class="descclassname">puppy.query.exceptions.</tt><tt class="descname">QueryRejectionError</tt><a class="reference internal" href="_modules/puppy/query/exceptions.html#QueryRejectionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.query.exceptions.QueryRejectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise when a filter rejects a query, e.g., because profanity is
+detected.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="queryfiltererror">
+<h3>QueryFilterError<a class="headerlink" href="#queryfiltererror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.exceptions.QueryFilterError">
+<em class="property">class </em><tt class="descclassname">puppy.query.exceptions.</tt><tt class="descname">QueryFilterError</tt><a class="reference internal" href="_modules/puppy/query/exceptions.html#QueryFilterError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.query.exceptions.QueryFilterError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use for exceptions in which the filter operationally failed and the
+filter&#8217;s function cannot be realized. Callers should respond to this as if
+a modification or rejection decision cannot be made, as opposed to
+<tt class="xref py py-class docutils literal"><span class="pre">puppy.query.QueryRejectionError</span></tt>, in which case the query should
+not be issued.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="querymodifiererror">
+<h3>QueryModifierError<a class="headerlink" href="#querymodifiererror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.exceptions.QueryModifierError">
+<em class="property">class </em><tt class="descclassname">puppy.query.exceptions.</tt><tt class="descname">QueryModifierError</tt><a class="reference internal" href="_modules/puppy/query/exceptions.html#QueryModifierError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.query.exceptions.QueryModifierError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use for exceptions in which the modifier operationally failed and the
+modifier&#8217;s function cannot be realized. Callers should respond to this as if
+a modification or rejection decision cannot be made, as opposed to
+<tt class="xref py py-class docutils literal"><span class="pre">puppy.query.QueryRejectionError</span></tt>, in which case the query should
+not be issued.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.query.filter">
+<span id="puppy-query-filter"></span><h2>puppy.query.filter<a class="headerlink" href="#module-puppy.query.filter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="blacklistfilter">
+<h3>BlackListFilter<a class="headerlink" href="#blacklistfilter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.filter.BlackListFilter">
+<em class="property">class </em><tt class="descclassname">puppy.query.filter.</tt><tt class="descname">BlackListFilter</tt><big>(</big><em>order=0</em>, <em>terms=''</em><big>)</big><a class="headerlink" href="#puppy.query.filter.BlackListFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>The BlackList filter looks at the query to check if any terms are contained within the black list if so, they are rejected.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+<li>terms: a string containing all the blacklisted terms separated by spaces i.e. &#8216; &#8216;</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="wdyl-profanity-filter">
+<h3>WDYL Profanity Filter<a class="headerlink" href="#wdyl-profanity-filter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.filter.WdylProfanityQueryFilter">
+<em class="property">class </em><tt class="descclassname">puppy.query.filter.</tt><tt class="descname">WdylProfanityQueryFilter</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.query.filter.WdylProfanityQueryFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rejects queries containing profanity using WDYL (by Google).</p>
+<p>What this does is query the service, which returns a JSON response of true or false depending upon the presence, or not, of profanity.</p>
+<p>Warning: there is a marked delay in waiting for a response from this service - overuse can lead to poor performance.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="suggestionfilter">
+<h3>SuggestionFilter<a class="headerlink" href="#suggestionfilter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.filter.SuggestionFilter">
+<em class="property">class </em><tt class="descclassname">puppy.query.filter.</tt><tt class="descname">SuggestionFilter</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.query.filter.SuggestionFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a set of suggestions based upon the query search terms.</p>
+<p>As of July 2011, Sergio&#8217;s web service no longer responds and is therefore not usable.</p>
+<p>Paramters:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="whooshquerylogger">
+<h3>WhooshQueryLogger<a class="headerlink" href="#whooshquerylogger" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="about-the-whoosh-query-logger">
+<h4>About the Whoosh Query Logger<a class="headerlink" href="#about-the-whoosh-query-logger" title="Permalink to this headline">¶</a></h4>
+<p>The Whoosh Query Logger, like the search engine wrappers for Whoosh, requires Whoosh to be installed, for instructions for installing Whoosh see <a class="reference internal" href="installation.html#requirements-and-installation"><em>Requirements and Installation</em></a>.</p>
+<p>Due to Whoosh being an extra, rather than required, you cannot import it from &#8216;<em>puppy.query.filter</em>&#8216; like the above filters; you import the Whoosh Query Logger using the code below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">puppy.query.filter.whooshQueryLogger</span> <span class="kn">import</span> <span class="n">WhooshQueryLogger</span>
+</pre></div>
+</div>
+<span class="target" id="module-puppy.query.filter.whooshQueryLogger"></span><dl class="class">
+<dt id="puppy.query.filter.whooshQueryLogger.WhooshQueryLogger">
+<em class="property">class </em><tt class="descclassname">puppy.query.filter.whooshQueryLogger.</tt><tt class="descname">WhooshQueryLogger</tt><big>(</big><em>order=0</em>, <em>whoosh_query_index_dir=''</em>, <em>unique=True</em><big>)</big><a class="reference internal" href="_modules/puppy/query/filter/whooshQueryLogger.html#WhooshQueryLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.query.filter.whooshQueryLogger.WhooshQueryLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs the queries in a Whoosh Index, 
+Creates a Whoosh Index to store queries if there is no index in the dir given
+with a Schema(title=ID(unique=True, stored=True), content=TEXT(stored=True), ncontent=NGRAM(stored=True), issued=DATETIME(stored=True))
+Parameters:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+<li>whoosh_query_index_dir (string): path to the directory of the index</li>
+<li>unique (boolean): indicates whether all queries are stored, or only unique queries (i.e. if unique=True)</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="module-puppy.query.modifier">
+<span id="puppy-query-modifier"></span><h2>puppy.query.modifier<a class="headerlink" href="#module-puppy.query.modifier" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="spellingmodifier">
+<span id="puppy-spelling-mod"></span><h3>SpellingModifier<a class="headerlink" href="#spellingmodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.modifier.SpellingCorrectingModifier">
+<em class="property">class </em><tt class="descclassname">puppy.query.modifier.</tt><tt class="descname">SpellingCorrectingModifier</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.query.modifier.SpellingCorrectingModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>This modifies queries by replacing mispelt words with the first &#8220;correct&#8221; spelling found.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>order (int): modifier precedence</li>
+<li>language (string): this defines which dictionary to use, it defaults to en_US - change this as required</li>
+</ul>
+<p>Warning: this requires the PyEnchant library to be installed</p>
+</dd></dl>
+
+</div>
+<div class="section" id="termexpansionmodifier">
+<h3>TermExpansionModifier<a class="headerlink" href="#termexpansionmodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.modifier.TermExpansionModifier">
+<em class="property">class </em><tt class="descclassname">puppy.query.modifier.</tt><tt class="descname">TermExpansionModifier</tt><big>(</big><em>order=0</em>, <em>terms=''</em><big>)</big><a class="headerlink" href="#puppy.query.modifier.TermExpansionModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands original query terms with extra terms.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>order (int): modifier precedence</li>
+<li>terms (string): the terms to be appended to the query</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="kidsmodifier">
+<h3>KidsModifier<a class="headerlink" href="#kidsmodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.query.modifier.KidsModifier">
+<em class="property">class </em><tt class="descclassname">puppy.query.modifier.</tt><tt class="descname">KidsModifier</tt><big>(</big><em>order=0</em>, <em>modifiers=None</em><big>)</big><a class="headerlink" href="#puppy.query.modifier.KidsModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for QueryModifiers aiming to modify queries to be more
+child-directed, e.g., appending for kids to query, creating Q -&gt; Q.
+After modification, the Google Suggest service is checked for the
+presence of Q; if it exists as a frequenty query, Q is returned to
+the caller; otherwise, Q (the original query) is returned (hence a null
+operation).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="kidifyquerymodifier">
+<h3>KidifyQueryModifier<a class="headerlink" href="#kidifyquerymodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descclassname">puppy.query.modifier.</tt><tt class="descname">KidsModifier</tt><big>(</big><em>order=0</em>, <em>modifiers=None</em><big>)</big></dt>
+<dd><p>Base class for QueryModifiers aiming to modify queries to be more
+child-directed, e.g., appending for kids to query, creating Q -&gt; Q.
+After modification, the Google Suggest service is checked for the
+presence of Q; if it exists as a frequenty query, Q is returned to
+the caller; otherwise, Q (the original query) is returned (hence a null
+operation).</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.result">
+<span id="puppy-result"></span><h2>puppy.result<a class="headerlink" href="#module-puppy.result" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="resultfilter">
+<h3>ResultFilter<a class="headerlink" href="#resultfilter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.ResultFilter">
+<em class="property">class </em><tt class="descclassname">puppy.result.</tt><tt class="descname">ResultFilter</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.result.ResultFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract result filter.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="resultmodifier">
+<h3>ResultModifier<a class="headerlink" href="#resultmodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.ResultModifier">
+<em class="property">class </em><tt class="descclassname">puppy.result.</tt><tt class="descname">ResultModifier</tt><big>(</big><em>order=0</em><big>)</big><a class="headerlink" href="#puppy.result.ResultModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change result.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.result.exceptions">
+<span id="puppy-result-exceptions"></span><h2>puppy.result.exceptions<a class="headerlink" href="#module-puppy.result.exceptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="resultfiltererror">
+<h3>ResultFilterError<a class="headerlink" href="#resultfiltererror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.exceptions.ResultFilterError">
+<em class="property">class </em><tt class="descclassname">puppy.result.exceptions.</tt><tt class="descname">ResultFilterError</tt><a class="reference internal" href="_modules/puppy/result/exceptions.html#ResultFilterError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.result.exceptions.ResultFilterError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use for exceptions in which the filter operationally failed and the
+filter&#8217;s function cannot be realized. Callers should respond to this as if
+a rejection decision cannot be made.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="resultmodifiererror">
+<h3>ResultModifierError<a class="headerlink" href="#resultmodifiererror" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.exceptions.ResultModifierError">
+<em class="property">class </em><tt class="descclassname">puppy.result.exceptions.</tt><tt class="descname">ResultModifierError</tt><a class="reference internal" href="_modules/puppy/result/exceptions.html#ResultModifierError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#puppy.result.exceptions.ResultModifierError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use for exceptions in which the modifier operationally failed and the
+modifier&#8217;s function cannot be realized. Callers should respond to this as if
+a modification cannot be made to the result.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.result.filter">
+<span id="puppy-result-filter"></span><h2>puppy.result.filter<a class="headerlink" href="#module-puppy.result.filter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="age-filter">
+<h3>Age Filter<a class="headerlink" href="#age-filter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.filter.AgeFilter">
+<em class="property">class </em><tt class="descclassname">puppy.result.filter.</tt><tt class="descname">AgeFilter</tt><big>(</big><em>age</em>, <em>ageField=None</em>, <em>ageTolerance=3</em>, <em>minAgeField='minAge'</em>, <em>maxAgeField='maxAge'</em>, <em>order=0</em>, <em>rejectUnclassified=False</em><big>)</big><a class="headerlink" href="#puppy.result.filter.AgeFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters search results based on either a specific age or if the age is within an age range defined by the result.</p>
+<p>Note: there is no default value for &#8216;age&#8217; it must be passed to this filter so that it can be customised for the application using it.</p>
+<p>Options:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+<li>age (integer) : the age of the user the results should be filtered for</li>
+<li>ageField (str) : the field name for the age in the results</li>
+<li>ageTolerance (int): if results just have an age field this defines the tolerance for accepting results i.e. within 3 years of the &#8216;age&#8217; parameter - must be &gt;= 0</li>
+<li>maxAgeField (str) : the field name for the maximum age in the results</li>
+<li>minAgeField (str) : the field name for the minimum age (if used)</li>
+<li>rejectUnclassified (boolean): if set to true results without an age classificiation will be rejected automatically</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="duplicate-filter">
+<h3>Duplicate Filter<a class="headerlink" href="#duplicate-filter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.filter.DuplicateFilter">
+<em class="property">class </em><tt class="descclassname">puppy.result.filter.</tt><tt class="descname">DuplicateFilter</tt><big>(</big><em>order=0</em>, <em>existingResults=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#puppy.result.filter.DuplicateFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters search results and rejects ones already stored by an application. This is done by default by checking the link field
+of new results against a list of ones currently stored by the application. If found, they are rejected.</p>
+<p>Options:</p>
+<ul class="simple">
+<li>order (int): defines when, in the pipeline, this filter will be executed</li>
+<li>existing results (list of str): urls already stored in the application - we want to avoid getting these again.</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="exclusionfilter">
+<h3>ExclusionFilter<a class="headerlink" href="#exclusionfilter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.filter.ExclusionFilter">
+<em class="property">class </em><tt class="descclassname">puppy.result.filter.</tt><tt class="descname">ExclusionFilter</tt><big>(</big><em>order=0</em>, <em>terms=''</em>, <em>customFields=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#puppy.result.filter.ExclusionFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters search results based on a list of words to exclude, if any of these are found the
+result in question is rejected.</p>
+<p>Options:</p>
+<ul class="simple">
+<li>order (int): defines when, in the pipeline, this filter will be executed</li>
+<li>terms (str): terms that, if appearing in the result, will cause it to be rejected - separated by &#8220;+&#8217;s&#8221;</li>
+<li>customFields (list of str): extra fields in the results to filter with the exclusion list - depedendent upon their existence in the search service results</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="profanityfilter">
+<h3>ProfanityFilter<a class="headerlink" href="#profanityfilter" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.filter.WdylProfanityFilter">
+<em class="property">class </em><tt class="descclassname">puppy.result.filter.</tt><tt class="descname">WdylProfanityFilter</tt><big>(</big><em>order=0</em>, <em>customFields=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#puppy.result.filter.WdylProfanityFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters results with profanity in them by using the wsdl service.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Pros:</dt>
+<dd><ul class="first last simple">
+<li>no hardcoded blacklist. they do the effort in keeping the service
+effective</li>
+</ul>
+</dd>
+<dt>Cons:</dt>
+<dd><ul class="first last simple">
+<li>URL call. This can mean delay. Effort should be made to parallelize the
+pipeline so that this effect is minimal.</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>Parameters:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+<li>customFields (list of str): extra fields in the results to filter with the
+exclusion list - depedendent upon their existence in the search service
+results</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="suitabilityfilter">
+<h3>SuitabilityFilter<a class="headerlink" href="#suitabilityfilter" title="Permalink to this headline">¶</a></h3>
+<p>This filter evaluates a result on its suitability for children by assigning it a score of 0 (unsuitable) to 1.0 (100% suitable). For an example of how to use this filter check out the SeSu prototype - see <a class="reference internal" href="prototypes.html#prototypes"><em>Running Prototypes</em></a> for details on how to install and run this prototype.</p>
+<p>N.B. this filter requires Java to be installed and present on the system path (see: <a class="reference internal" href="installation.html#requirements-and-installation"><em>Requirements and Installation</em></a> for more).</p>
+<dl class="class">
+<dt id="puppy.result.filter.SuitabilityFilter">
+<em class="property">class </em><tt class="descclassname">puppy.result.filter.</tt><tt class="descname">SuitabilityFilter</tt><big>(</big><em>order=0</em>, <em>threshold=0.0</em><big>)</big><a class="headerlink" href="#puppy.result.filter.SuitabilityFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters search results based on the results&#8217; suitability for children.</p>
+<p>Parameters:</p>
+<ul class="simple">
+<li>order (int): filter precedence</li>
+<li>threshold (double): confidence score to accept a page (e.g. 0.5)</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.result.modifier">
+<span id="puppy-result-modifier"></span><h2>puppy.result.modifier<a class="headerlink" href="#module-puppy.result.modifier" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="blacklistmodifier">
+<h3>BlackListModifier<a class="headerlink" href="#blacklistmodifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.modifier.BlackListResultModifier">
+<em class="property">class </em><tt class="descclassname">puppy.result.modifier.</tt><tt class="descname">BlackListResultModifier</tt><big>(</big><em>order=0</em>, <em>terms=''</em>, <em>customFields=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#puppy.result.modifier.BlackListResultModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify processes result entry content and replaces blacklisted words</p>
+<p>Options:</p>
+<ul class="simple">
+<li>order (int): modifier precedence</li>
+<li>terms (str): terms that, if appearing in the result, will be replaced with <a href="#id2"><span class="problematic" id="id3">**</span></a><a href="#id4"><span class="problematic" id="id5">*</span></a></li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="urldecorator">
+<h3>URLDecorator<a class="headerlink" href="#urldecorator" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.result.modifier.URLDecorator">
+<em class="property">class </em><tt class="descclassname">puppy.result.modifier.</tt><tt class="descname">URLDecorator</tt><big>(</big><em>args</em>, <em>order=0</em><big>)</big><a class="headerlink" href="#puppy.result.modifier.URLDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates links to search results with given pre- and suffixes, returning [prefix]+url+[suffix].</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-puppy.logging">
+<span id="puppy-logging"></span><h2>puppy.logging<a class="headerlink" href="#module-puppy.logging" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="querylogger">
+<h3>QueryLogger<a class="headerlink" href="#querylogger" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.logging.QueryLogger">
+<em class="property">class </em><tt class="descclassname">puppy.logging.</tt><tt class="descname">QueryLogger</tt><big>(</big><em>search_service</em>, <em>log_mode=0</em>, <em>log_dir=None</em>, <em>log_period='midnight'</em>, <em>log_maxbytes=1000000000</em><big>)</big><a class="headerlink" href="#puppy.logging.QueryLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs queries for a SearchService.</p>
+<p>The QueryLogger will log all queries submitted to a SearchService, sending them to:</p>
+<ol class="loweralpha simple">
+<li>current directory, if there is no given log_dir</li>
+<li>specific directory, if a log_dir filepath is given (by constructor or config)</li>
+</ol>
+<p>The QueryLogger has five logging modes:</p>
+<ol class="loweralpha simple">
+<li>OneBigFile - single file that grows endlessly</li>
+<li>Rotational - files rotate when log file size is = 1GB</li>
+<li>Timed - files rotate every day at midnight</li>
+<li>Permanent Rotating - files rate when the log file size is reached taking a unique name for each new log</li>
+<li>Gzip Permanent Rotating - same as above by using Gz compression</li>
+</ol>
+<dl class="method">
+<dt id="puppy.logging.QueryLogger.create_logger">
+<tt class="descname">create_logger</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.logging.QueryLogger.create_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new logger with a specific handler</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.logging.QueryLogger.get_log_dir">
+<tt class="descname">get_log_dir</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.logging.QueryLogger.get_log_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the log_dir if none was passed in the constructor.</p>
+<p>Checks the service config files, then defaults to creating 
+a log directory in the current working directory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.logging.QueryLogger.log">
+<tt class="descname">log</tt><big>(</big><em>query</em>, <em>processed=False</em><big>)</big><a class="headerlink" href="#puppy.logging.QueryLogger.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>logs a query using a simple [ISO Timestamp, Query Terms] format</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="eventlogger">
+<h3>EventLogger<a class="headerlink" href="#eventlogger" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="puppy.logging.EventLogger">
+<em class="property">class </em><tt class="descclassname">puppy.logging.</tt><tt class="descname">EventLogger</tt><big>(</big><em>application_name</em>, <em>log_mode=0</em>, <em>log_dir=None</em>, <em>log_period='midnight'</em>, <em>log_maxbytes=1000000000</em><big>)</big><a class="headerlink" href="#puppy.logging.EventLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>The EventLogger will log all events submitted to it from an application (either standalone or Django)</p>
+<ol class="loweralpha simple">
+<li>current directory, if there is no given log_dir</li>
+<li>specific directory, if a log_dir filepath is given by the constructor</li>
+</ol>
+<p>The EventLogger has three logging modes:</p>
+<ol class="loweralpha simple">
+<li>OneBigFile - single file that grows endlessly</li>
+<li>Rotational - files rotate when log file size is = 1GB by default; can be changed via log_maxbytes</li>
+<li>Timed - files rotate every day at midnight</li>
+<li>Permanent Rotating - files rate when the log file size is reached taking a unique name for each new log</li>
+<li>Gzip Permanent Rotating - same as above by using Gz compression</li>
+</ol>
+<dl class="method">
+<dt id="puppy.logging.EventLogger.create_logger">
+<tt class="descname">create_logger</tt><big>(</big><big>)</big><a class="headerlink" href="#puppy.logging.EventLogger.create_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new logger with a specific handler</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.logging.EventLogger.get_log_dir">
+<tt class="descname">get_log_dir</tt><big>(</big><em>log_dir</em><big>)</big><a class="headerlink" href="#puppy.logging.EventLogger.get_log_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Works out what the log directory will be. There are three cases:</p>
+<ol class="arabic simple">
+<li>A log dir is given by the constructor and exits - use it</li>
+<li>A log dir is given by does not exist - make it and use it</li>
+<li>A log dir is not given then create one from current path</li>
+</ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="puppy.logging.EventLogger.log">
+<tt class="descname">log</tt><big>(</big><em>identifier</em>, <em>action</em>, <em>**data</em><big>)</big><a class="headerlink" href="#puppy.logging.EventLogger.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs a query using a simple [ISO Timestamp, Identifier, Action, Data] format</p>
+<ul class="simple">
+<li>Identifier (str): what identifies this log entry to a user i.e. IP address, Cookie Number etc</li>
+<li>Action (str): the action the user has done i.e. page request</li>
+<li>Data (str): associated data to the action done</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PuppyIR API Reference</a><ul>
+<li><a class="reference internal" href="#puppy-service">puppy.service</a><ul>
+<li><a class="reference internal" href="#servicemanager">ServiceManager</a></li>
+<li><a class="reference internal" href="#searchservice">SearchService</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.pipeline">puppy.pipeline</a><ul>
+<li><a class="reference internal" href="#pipelineservice">PipelineService</a></li>
+<li><a class="reference internal" href="#searchenginemanager">SearchEngineManager</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.search">puppy.search</a><ul>
+<li><a class="reference internal" href="#searchengine">SearchEngine</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.search.exceptions">puppy.search.exceptions</a><ul>
+<li><a class="reference internal" href="#searchengineerror">SearchEngineError</a></li>
+<li><a class="reference internal" href="#apikeyerror">ApiKeyError</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.search.engine">puppy.search.engine</a><ul>
+<li><a class="reference internal" href="#bing">Bing</a></li>
+<li><a class="reference internal" href="#bingv2-api-version-2-2">BingV2 (API Version 2.2)</a></li>
+<li><a class="reference internal" href="#digg">Digg</a></li>
+<li><a class="reference internal" href="#emmasearch">EmmaSearch</a></li>
+<li><a class="reference internal" href="#emmasearch-sql-server-version">EmmaSearch SQL Server version</a></li>
+<li><a class="reference internal" href="#flickr">Flickr</a></li>
+<li><a class="reference internal" href="#google-geocode">Google Geocode</a></li>
+<li><a class="reference internal" href="#google-depreciated">Google (depreciated)</a></li>
+<li><a class="reference internal" href="#google-books">Google Books</a></li>
+<li><a class="reference internal" href="#guardian">Guardian</a></li>
+<li><a class="reference internal" href="#itunes">iTunes</a></li>
+<li><a class="reference internal" href="#lastfm">LastFM</a></li>
+<li><a class="reference internal" href="#opensearch">OpenSearch</a></li>
+<li><a class="reference internal" href="#picassa">Picassa</a></li>
+<li><a class="reference internal" href="#rotten-tomatoes">Rotten Tomatoes</a></li>
+<li><a class="reference internal" href="#simplewikipedia">SimpleWikipedia</a></li>
+<li><a class="reference internal" href="#solr">Solr</a></li>
+<li><a class="reference internal" href="#soundcloud">SoundCloud</a></li>
+<li><a class="reference internal" href="#spotify">Spotify</a></li>
+<li><a class="reference internal" href="#twitter">Twitter</a></li>
+<li><a class="reference internal" href="#webspellchecker">WebSpellChecker</a></li>
+<li><a class="reference internal" href="#wikipedia">Wikipedia</a></li>
+<li><a class="reference internal" href="#wordnik">Wordnik</a></li>
+<li><a class="reference internal" href="#yahoo">Yahoo</a></li>
+<li><a class="reference internal" href="#youtube">YouTube</a></li>
+<li><a class="reference internal" href="#youtubev2-api-version-2-0">YouTubeV2 (API Version 2.0)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#whoosh-wrappers">Whoosh wrappers</a><ul>
+<li><a class="reference internal" href="#module-puppy.search.engine.whooshQueryEngine">Whoosh Query Engine</a></li>
+<li><a class="reference internal" href="#module-puppy.search.engine.whooshQuerySuggestEngine">Whoosh Query Suggest Engine</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.model">puppy.model</a><ul>
+<li><a class="reference internal" href="#response">Response</a></li>
+<li><a class="reference internal" href="#query">Query</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.query">puppy.query</a><ul>
+<li><a class="reference internal" href="#queryfilter">QueryFilter</a></li>
+<li><a class="reference internal" href="#querymodifier">QueryModifier</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.query.exceptions">puppy.query.exceptions</a><ul>
+<li><a class="reference internal" href="#queryrejectionerror">QueryRejectionError</a></li>
+<li><a class="reference internal" href="#queryfiltererror">QueryFilterError</a></li>
+<li><a class="reference internal" href="#querymodifiererror">QueryModifierError</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.query.filter">puppy.query.filter</a><ul>
+<li><a class="reference internal" href="#blacklistfilter">BlackListFilter</a></li>
+<li><a class="reference internal" href="#wdyl-profanity-filter">WDYL Profanity Filter</a></li>
+<li><a class="reference internal" href="#suggestionfilter">SuggestionFilter</a></li>
+<li><a class="reference internal" href="#whooshquerylogger">WhooshQueryLogger</a><ul>
+<li><a class="reference internal" href="#about-the-whoosh-query-logger">About the Whoosh Query Logger</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.query.modifier">puppy.query.modifier</a><ul>
+<li><a class="reference internal" href="#spellingmodifier">SpellingModifier</a></li>
+<li><a class="reference internal" href="#termexpansionmodifier">TermExpansionModifier</a></li>
+<li><a class="reference internal" href="#kidsmodifier">KidsModifier</a></li>
+<li><a class="reference internal" href="#kidifyquerymodifier">KidifyQueryModifier</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.result">puppy.result</a><ul>
+<li><a class="reference internal" href="#resultfilter">ResultFilter</a></li>
+<li><a class="reference internal" href="#resultmodifier">ResultModifier</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.result.exceptions">puppy.result.exceptions</a><ul>
+<li><a class="reference internal" href="#resultfiltererror">ResultFilterError</a></li>
+<li><a class="reference internal" href="#resultmodifiererror">ResultModifierError</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.result.filter">puppy.result.filter</a><ul>
+<li><a class="reference internal" href="#age-filter">Age Filter</a></li>
+<li><a class="reference internal" href="#duplicate-filter">Duplicate Filter</a></li>
+<li><a class="reference internal" href="#exclusionfilter">ExclusionFilter</a></li>
+<li><a class="reference internal" href="#profanityfilter">ProfanityFilter</a></li>
+<li><a class="reference internal" href="#suitabilityfilter">SuitabilityFilter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.result.modifier">puppy.result.modifier</a><ul>
+<li><a class="reference internal" href="#blacklistmodifier">BlackListModifier</a></li>
+<li><a class="reference internal" href="#urldecorator">URLDecorator</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-puppy.logging">puppy.logging</a><ul>
+<li><a class="reference internal" href="#querylogger">QueryLogger</a></li>
+<li><a class="reference internal" href="#eventlogger">EventLogger</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="issues.html"
+                        title="previous chapter">Known issues with the PuppyIR framework</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api3.0.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="issues.html" title="Known issues with the PuppyIR framework"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

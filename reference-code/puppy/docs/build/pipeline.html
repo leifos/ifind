@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Paradigm 2 - One Pipeline, Many Search Engines &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="next" title="Running Prototypes" href="prototypes.html" />
+    <link rel="prev" title="Paradigm 1 - One Pipeline, One Search Engine" href="service.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="prototypes.html" title="Running Prototypes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="service.html" title="Paradigm 1 - One Pipeline, One Search Engine"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="paradigm-2-one-pipeline-many-search-engines">
+<span id="pipeline-architecture"></span><h1>Paradigm 2 - One Pipeline, Many Search Engines<a class="headerlink" href="#paradigm-2-one-pipeline-many-search-engines" title="Permalink to this headline">¶</a></h1>
+<p>The core idea behind this alternate paradigm is that you create and manage one pipeline - to which search engines can then be added. This is in contrast to the ‘search service’ paradigm (<a class="reference internal" href="service.html#service-architecture"><em>Paradigm 1 - One Pipeline, One Search Engine</em></a>), where each search service, and its associated search engine wrapper, has its own distinct pipeline. Like with the ‘Search Service’ paradigm, there is a query pipeline and the result pipeline, but, in addition to this, there is an additional pipeline: the search engine pipeline (which makes use of a search engine manager; this is equivalent, in most respects, to the ‘Search Service Manager’ from the ‘search service’ paradigm).</p>
+<p>The picture below shows how all these components relate to each other:</p>
+<div class="figure align-center">
+<img alt="_images/puppy-pipeline-architecture.png" src="_images/puppy-pipeline-architecture.png" />
+<p class="caption"><em>The basic architecture of a PuppyIR application, using the &#8216;Pipeline Service&#8217; paradigm.</em></p>
+</div>
+<div class="section" id="description-of-the-components">
+<h2>Description of the components<a class="headerlink" href="#description-of-the-components" title="Permalink to this headline">¶</a></h2>
+<p>Each of the key components, shown in the picture above, are summarised (in terms of how they relate to this paradigm) below; except for the ‘Query Logger’ and ‘Config’ components as these are identical to those found in the ‘Search Service’ architecture.</p>
+<p>The roles of the components are as follows:</p>
+<ul class="simple">
+<li><strong>Pipeline Service</strong>: this is the main component in this paradigm as it is in charge of managing and running the pipeline it defines (i.e. all the filters and modifiers). It also contains the next key component, the &#8216;search engine manager&#8217;.</li>
+<li><strong>Search Engine Manager</strong>: this component is, roughly, equivalent to the &#8216;search service manager&#8217; as found in the ‘search service’ paradigm; except that it manages search engines as opposed to search services. Its main tasks are adding and removing search engines.</li>
+<li><strong>Search Engine</strong>: this is the component managed by the search engine manager and is the same as in the ‘search service’ paradigm; except that it’s linked to the &#8216;pipeline service&#8217; not a search service. Like in ‘search service’ each search engine has a name assigned to it and the &#8216;search engine manager&#8217; looks for, deletes and retrieves search engines using this variable.</li>
+<li><strong>Query and Result Pipelines</strong>: these are exactly the same as their counterparts in the ‘search service’ paradigm, excepting that they are stored by a &#8216;pipeline service&#8217;.</li>
+</ul>
+</div>
+<div class="section" id="data-flow-in-the-pipeline-paradigm">
+<h2>Data flow in the &#8216;Pipeline&#8217; paradigm<a class="headerlink" href="#data-flow-in-the-pipeline-paradigm" title="Permalink to this headline">¶</a></h2>
+<p>The data flow in this paradigm is a little more complicated than in the ‘search service’ paradigm, due to the extra complexity introduced by having multiple search engines associated with one pipeline. The picture below shows the data flow between a user issuing a query and their receiving the result(s) of this query.</p>
+<div class="figure align-center">
+<img alt="_images/puppy-pipeline-data-flow.png" src="_images/puppy-pipeline-data-flow.png" />
+<p class="caption"><em>The basic data-flow diagram for the &#8216;Pipeline Service&#8217; paradigm.</em></p>
+</div>
+<p>The &#8216;pipeline service&#8217; is passed a query, by the user/client, via one of two methods: search all or search specific. From here, the query pipeline is run (once; even if there are multiple search engines - since they all have the same query and query pipeline), first going through all the filters and then all the modifiers. Following this, the &#8216;search engine manager&#8217; is called to retrieve either: all the search engines it manages, or one specific one. The next step is to run through the &#8216;search engine pipeline&#8217; with the results of the previous step. (1) shows the entry point for this process, at this stage either each search engine will be processed in turn or, in the case of a specific search, only one will be processed (as defined by the search specific call).</p>
+<p>In the above diagram, the section under the label &#8216;Result Pipeline&#8217; shows how the processing of a search engine works:</p>
+<ul class="simple">
+<li>the processed query is passed to the current search engine (going through the pipeline);</li>
+<li>next, the search method for this search engine is called and the results retrieved;</li>
+<li>then the result filters, followed by the result modifiers are run (this step is the same as the result pipeline from &#8216;search service&#8217; - just applied to each search engine in turn);</li>
+<li>lastly, the results from the current search engine are added to the overall &#8216;results&#8217; at (2).</li>
+</ul>
+<p>Once the above process has been completed, for each search engine, the overall &#8216;results&#8217; are returned - (3) shows the point at which the overall &#8216;results&#8217; are complete and can then be returned to the user/client.</p>
+</div>
+<div class="section" id="on-filters-modifiers-and-query-logging">
+<h2>On Filters, Modifiers and Query Logging<a class="headerlink" href="#on-filters-modifiers-and-query-logging" title="Permalink to this headline">¶</a></h2>
+<p>Within the query and result pipelines there are both filters and modifiers. Filters are executed first and then, following this, the modifiers are executed.</p>
+<p>The distinction between a filter and a modifier is as follows:</p>
+<ul class="simple">
+<li><strong>Filters</strong>: these reject or accept a query, or result, based on a defined criteria. For example a blacklist filter rejects queries containing one or more blacklisted words.</li>
+<li><strong>Modifiers</strong>: these change the content of a query, or result, based on a defined behaviour. For example, appending “for kids” to every query.</li>
+</ul>
+<p>There are many different filters and modifiers available for both of these pipelines, please consult the <a class="reference internal" href="api3.0.html#api"><em>PuppyIR API Reference</em></a> page for details of what is available.</p>
+<p>There are two points at which queries can be logged: before the query goes through the query pipeline and after; i.e. un-processed and processed. The default is to log queries before processing - if a query logger has been added. The code below shows how to add a query logger and set it so that processed queries are logged, in addition to un-processed ones:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">puppy.logging</span> <span class="kn">import</span> <span class="n">QueryLogger</span>
+<span class="kn">from</span> <span class="nn">puppy.pipeline</span> <span class="kn">import</span> <span class="n">PipelineService</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;log_dir&quot;</span><span class="p">:</span> <span class="s">&quot;/path/to/log/dir&quot;</span><span class="p">}</span> <span class="c"># Sets the log directory</span>
+<span class="n">pm</span> <span class="o">=</span> <span class="n">PipelineService</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">query_logger</span> <span class="o">=</span> <span class="n">QueryLogger</span><span class="p">(</span><span class="n">pm</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">postLogging</span> <span class="o">=</span> <span class="bp">True</span> <span class="c"># Activate post-pipeline query logging</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-query-and-results-formats">
+<h2>The Query and Results formats<a class="headerlink" href="#the-query-and-results-formats" title="Permalink to this headline">¶</a></h2>
+<p>Referring to the data flow diagram above, the formats of a query and results are:</p>
+<ul class="simple">
+<li>A query is in the &#8216;Query&#8217; format (for more see: <a class="reference internal" href="api3.0.html#puppy-query"><em>Query</em></a>).</li>
+<li>The results format is a Python dictionary, with one entry for each search engine; the key being the named assigned to the search engine and the value being the response (for more see: <a class="reference internal" href="api3.0.html#puppy-response"><em>Response</em></a>) object returned from the search call (for the search engine in question).</li>
+</ul>
+<p>Both the Query and Response formats are implementations of the OpenSearch specification; for more details, see the links below:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_Query_element">OpenSearch Query</a>.</li>
+<li><a class="reference external" href="http://www.opensearch.org/Specifications/OpenSearch/1.1#OpenSearch_response_elements">OpenSearch Response</a>.</li>
+</ul>
+</div>
+<div class="section" id="possible-advantages-of-using-this-architecture">
+<h2>Possible advantages of using this architecture<a class="headerlink" href="#possible-advantages-of-using-this-architecture" title="Permalink to this headline">¶</a></h2>
+<p>This paradigm has the potential to be more efficient than the ‘search service’ paradigm, in terms of code and effort on the part of a developer/researcher, in the following ways:</p>
+<ul class="simple">
+<li>If you want the same pipeline (filters etc) for multiple services you only need to set the pipeline up once and can just add the search engines you want to the &#8216;search engine manager&#8217; (contained by your &#8216;pipeline service&#8217;).</li>
+<li>Related to the above point, is that the Query pipeline is only run once with &#8216;searchAll&#8217; because all the search engines use the same pipeline.</li>
+<li>Less code for getting results - just a simple &#8216;searchAll&#8217; call rather than a search call for each search service and the associated code to handle this.</li>
+</ul>
+</div>
+<div class="section" id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<p>An example of the usage of this paradigm is given in: <a class="reference internal" href="pipeline-tutorial.html#pipeline-puppyir-tutorial"><em>Pipeline Tutorial: DeeSe (Detective Search)</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Paradigm 2 - One Pipeline, Many Search Engines</a><ul>
+<li><a class="reference internal" href="#description-of-the-components">Description of the components</a></li>
+<li><a class="reference internal" href="#data-flow-in-the-pipeline-paradigm">Data flow in the &#8216;Pipeline&#8217; paradigm</a></li>
+<li><a class="reference internal" href="#on-filters-modifiers-and-query-logging">On Filters, Modifiers and Query Logging</a></li>
+<li><a class="reference internal" href="#the-query-and-results-formats">The Query and Results formats</a></li>
+<li><a class="reference internal" href="#possible-advantages-of-using-this-architecture">Possible advantages of using this architecture</a></li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="service.html"
+                        title="previous chapter">Paradigm 1 - One Pipeline, One Search Engine</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="prototypes.html"
+                        title="next chapter">Running Prototypes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pipeline.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="prototypes.html" title="Running Prototypes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="service.html" title="Paradigm 1 - One Pipeline, One Search Engine"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>MaSe: Mashup Search</title>
+    <link href="{{ MEDIA_URL }}css/mase.css" rel="stylesheet" title="basestyle" type="text/css">
+	
+		<script src="{{ MEDIA_URL }}javascripts/jquery-1.7.min.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/show_hide_results.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/jquery-jScale.js" type="text/javascript"></script>         
+		<script src="{{ MEDIA_URL }}javascripts/jquery-cookie.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/validate_search_box.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/sortable.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/title_edit.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/mase_cookie.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/video_resize.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/image_resize.js" type="text/javascript"></script>
+		<script src="{{ MEDIA_URL }}javascripts/mase_query.js" type="text/javascript"></script>	
+		<script src="{{ MEDIA_URL }}javascripts/resize_columns.js" type="text/javascript"></script>	
+		<script src="{{ MEDIA_URL }}javascripts/favourites.js" type="text/javascript"></script>		
+  </head>
+  <body>
+	
+	<!-- The Javascript/JQuery needs this value so this element gives access to the variable's value -->
+	<div id="media_url" style = "display: none;">{{ MEDIA_URL }}</div> 
+	<!-- End site_media div -->
+	
+	<!-- begin #header -->
+	<div id="header">				
+				
+		<div id="title">
+			<h1 id="searchEngineTitle">MaSe</h1>
+			<input id="titleEdit" name="myText" type="text" value=''/>
+		</div>
+			
+		<div id="search">
+			<form id="searchForm" action="" onsubmit="return validate_form(this)" method="post">
+				<p>
+					<a href="#" onclick = "javascript: addFavourite()"><img src="{{ MEDIA_URL }}pictures/Fav.png" id="favLogo" alt="add favourite" /></a>
+					<!-- cross-site request forgery protection -->
+					{% csrf_token %} 
+					<input type="text" name="query" value="{{ query }}" id="query"  />
+					<input type="hidden" name="searchEngineName" value="MaSe" id="searchEngineName"/>
+					<!--input type="submit" value="Search" />-->
+					<a href="#" onclick = "javascript: submitMaseQuery()"><img src="{{ MEDIA_URL }}pictures/Search.png" id="searchLogo" alt="search" /></a>
+				</p>
+			</form>	
+		</div>
+				
+		<div id="logo">
+			<a href="">
+				<img src="{{ MEDIA_URL }}pictures/maseLogo.png" id="maseLogo" />
+			</a>
+		</div>
+				
+	</div>
+	<!-- end #header -->
+	
+	
+		<div id="mainSection">
+			
+					<div id= "leftColumn" class="resultArea">
+						
+						<div id = "favouritesSection" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_favouritessmall.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Favourites</strong>
+							</div>
+
+								<div class = "fullResults">	
+									<p>
+										My favourite queries:
+									</p>
+									
+									<div id= "myFavourites">
+									</div>
+
+								</div>
+						</div>
+						
+						<div id = "customiseColour" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_smallpaw.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Colour your search engine</strong>
+							</div>
+
+							<div id = "colourMaseOptions" class = "fullResults">					
+									<a href="#" rel="red" class='changeStyle'><img src="{{ MEDIA_URL }}pictures/paw-red.png" class="pawImage" /></a>
+									<a href="#" rel="green" class='changeStyle'><img src="{{ MEDIA_URL }}pictures/paw-green.png"class="pawImage" /></a>
+									<a href="#" rel="blue" class='changeStyle'><img src="{{ MEDIA_URL }}pictures/paw-blue.png" class="pawImage" /></a>
+									<a href="#" rel="purple" class='changeStyle'><img src="{{ MEDIA_URL }}pictures/paw-purple.png" class="pawImage" /></a>
+									<a href="#" rel="yellow" class='changeStyle'><img src="{{ MEDIA_URL }}pictures/paw-yellow.png" class="pawImage" /></a>
+									<a href="#" rel="pink" class='changeStyle'><img src="{{ MEDIA_URL }}pictures/paw-pink.png" class="pawImage" /></a>
+							</div>
+						</div>
+
+							{% if wiki_results %}
+							<div id = "wikiResults" class="resultsBox">
+								<div class="resultsBoxOptions">
+									<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+								</div>
+								<div class='resultsBoxHeader'>
+									<img src="{{ MEDIA_URL }}pictures/logo_wikipedia.png" class="resultsIcon" />
+									<strong class="resultsBoxTitle">Wikipedia Results</strong>
+								</div>
+
+								<div class = "fullResults">					
+									{% for result in wiki_results %}
+										<p><a href="{{ result.link }}" target="new">{{ result.title }}</a></p>
+										<p>{{ result.summary }}</p>
+									{% endfor %}
+								</div>
+							</div>
+
+							{% endif %}
+
+							{% if pastQueries %}
+								<div id = "pastQueries" class="resultsBox">
+									<div class="resultsBoxOptions">
+										<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+									</div>
+									<div class='resultsBoxHeader'>
+										<img src="{{ MEDIA_URL }}pictures/logo_pastQueries.png" class="resultsIcon" />
+										<strong class="resultsBoxTitle">Past Queries</strong>
+									</div>
+
+									<div class = "fullResults">	
+										
+										{% if pastQueries|length == 0 %}
+											<p>There are no past queries yet, get searching!</p>
+										{% endif %}
+										
+										<p>
+										{% for query in pastQueries %}
+											 <a href="?query={{ query }}"> {{ query }}</a>&nbsp;/&nbsp;
+										{% endfor %}
+										</p>
+									</div>	
+								</div>
+							{% endif %}
+
+							{% if query_suggest_search %}	
+								<div id = "querySuggestions" class="resultsBox">
+									<div class="resultsBoxOptions">
+										<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+									</div>
+									<div class='resultsBoxHeader'>
+										<img src="{{ MEDIA_URL }}pictures/logo_querySuggestions.png" class="resultsIcon" />
+										<strong class="resultsBoxTitle">Query Suggestions</strong>
+									</div>
+
+									<div class = "fullResults">
+										
+										{% if query_suggest_results|length == 0 %}
+											<p>There are no suggestions for the query: '{{ query }}'</p>
+										{% endif %}
+
+										{% for query in query_suggest_results %}
+											 <a href="?query={{ query.title }}"> {{ query.title }}</a>&nbsp;/&nbsp;
+										{% endfor %}
+
+									
+									</div>
+								</div>					
+							{% endif %}
+
+
+					</div>
+
+					<div id= "middleColumn" class="resultArea">
+						
+						{% if spelling_suggestion %}
+						<div id = "spellingResults" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_bing.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Spelling Suggestions</strong>
+							</div>
+
+							<div class = "fullResults">	
+								
+								{% if spelling_suggestion_results|length == 0 %}
+									<p>There are no spelling suggestions for the query: '{{ query }}'</p>
+								{% endif %}
+												
+								{% for result in spelling_suggestion_results %}
+									<p><a href="?query={{ result.suggestion }}">{{ result.suggestion }}</a></p>
+								{% endfor %}
+							</div>
+						</div>
+
+
+						{% endif %}
+
+						{% if web_results %}
+						<div id = "webResults" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_webResults.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Web Results</strong>
+							</div>
+
+							<div class = "fullResults">					
+									{% for result in web_results %}
+									<p><a href="{{ result.link }}" target="new">{{ result.title }}{{ result.shortUrl }}</a></p>
+									<p>{{ result.summary }}</p>
+								{% endfor %}
+							</div>
+						</div>
+
+
+						{% endif %}
+
+						{% if news_results %}
+						<div id = "newsResults" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_news.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">News Results</strong>
+							</div>
+
+							<div class = "fullResults">					
+									{% for result in news_results %}
+									<p><a href="{{ result.link }}" target="new">{{ result.title }}{{ result.shortUrl }}</a></p>
+									<p>{{ result.summary }}</p>
+								{% endfor %}
+							</div>
+						</div>
+
+
+						{% endif %}
+
+						{% if twitter_results %}
+						<div id = "twitterResults" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_twitter.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Twitter Results</strong>
+							</div>
+
+								<div class = "fullResults">	
+								{% for result in twitter_results %}
+									<p><a href="{{ result.link }}" target="new">{{ result.title }}</a></p>
+								{% endfor %}
+								</div>
+						</div>
+						{% endif %}
+
+					</div>
+
+
+					<div id= "rightColumn" class="resultArea">	
+						
+						
+						<div id = "aboutSection" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_smallpaw.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">About</strong>
+							</div>
+
+								<div class = "fullResults" id="aboutOptions">	
+									<p>
+										Application by Leif, Doug and Kelly, 2011; Puppy Cartoon Logo © Catriona Dowie, 2011 (used with permission)
+									</p>
+
+								</div>
+						</div>
+						
+
+						{% if image_results %}
+						<div id = "imageResults" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_bing.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Image Results</strong>
+							</div>
+
+								<div class = "fullResults" id="bingResults">	
+								{% for result in image_results %}
+									 <a href="{{ result.link }}" target="new"><img src = "{{ result.thumbnail }}" alt="{{ result.title }}" class="imageThumbnail" width="{{ result.thumbnailWidth }}" height ="{{ result.thumbnailHeight }}"></a>
+								{% endfor %}
+								</div>
+						</div>
+						{% endif %}
+
+
+						{% if video_results %}	
+						<div id = "videoResults" class="resultsBox">
+							<div class="resultsBoxOptions">
+								<strong class='showFullResults' onclick="javascript: show_hide_results(this)">-</strong>
+							</div>
+							<div class='resultsBoxHeader'>
+								<img src="{{ MEDIA_URL }}pictures/logo_youtube.png" class="resultsIcon" />
+								<strong class="resultsBoxTitle">Video Results</strong>
+							</div>
+
+							<div class = "fullResults" id="youtubeResults">	
+								{% for result in video_results %}
+									<iframe src="{{ result.embedUrl }}" class="embeddedVideo"></iframe>
+								{% endfor %}
+							</div>
+						</div>
+						{% endif %}	
+
+					</div>
+	
+		</div>
+		
+		
+	
+					
+								
+</body>
+</html>

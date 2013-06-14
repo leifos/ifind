@@ -1,0 +1,14 @@
+{% extends "pagefetch/base.html" %}
+{% block scripts %}
+    <script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/jquery.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/home.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/gameredirect.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="centre">
+        <h1> You're now registered to play PageFetch!</h1>
+        <button class="playnow-button" id="play"><img src="{{MEDIA_URL}}pagefetch/Buttons/play_now.png"></button>
+        <p><a href="/pagefetch/howtoplay/"><img src="{{MEDIA_URL}}pagefetch/Buttons/how_to_play.png"></a></p>
+     </div>
+{% endblock content %}

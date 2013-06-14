@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview and background of the PuppyIR Framework &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="next" title="Requirements and Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to the PuppyIR Framework Documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Requirements and Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the PuppyIR Framework Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="overview-and-background-of-the-puppyir-framework">
+<span id="overview"></span><h1>Overview and background of the PuppyIR Framework<a class="headerlink" href="#overview-and-background-of-the-puppyir-framework" title="Permalink to this headline">¶</a></h1>
+<p>The framework is part of the PuppyIR project <a class="footnote-reference" href="#f1" id="id1">[1]</a>, as funded by the European Union, which is investigating children&#8217;s information retrieval (IR). The project&#8217;s long term goal is to work towards universal access of information for both children and adults. As part of this, the framework is being developed as a suite of tools to assist developers and researchers in rapidly developing interaction IR applications for children.</p>
+<p>In summary, it aims to:</p>
+<ol class="arabic simple">
+<li>Simplify the process of building interactive IR services;</li>
+<li>provide a disparate and extensive suite of components, specifically tailored for children;</li>
+<li>incorporate current research findings in children&#8217;s IR;</li>
+<li>be highly extensible (in all the main sections, and their respective components, of the framework), so that the framework can be adapted for an applications specific needs;</li>
+<li>and, to provide extensive documentation [this document] with tutorials detailing how to use, extend and customise all the different parts of the framework.</li>
+</ol>
+<div class="section" id="the-main-features-of-the-framework">
+<h2>The main features of the framework<a class="headerlink" href="#the-main-features-of-the-framework" title="Permalink to this headline">¶</a></h2>
+<p>In this Chapter, the key functionalities of the framework are introduced and discussed; links are provided to the Chapters that provide more detailed commentary (and examples) of each functionality discussed here. To accomplish the aims listed above, the framework offers a developer, or researcher, a large variety of functionalities and associated components. These are split up into several distinct sections of the framework (for a full list, of all the individual components in these sections, please see consult the <a class="reference internal" href="api3.0.html#api"><em>PuppyIR API Reference</em></a>).</p>
+<div class="section" id="data-formatting">
+<h3>Data Formatting<a class="headerlink" href="#data-formatting" title="Permalink to this headline">¶</a></h3>
+<p>PuppyIR provides a standardised format for both queries and the results of a search, called a response. This is so that all the components are able to interoperate and also because having this consistency, makes it easier for developers/researchers to make use of these elements in their applications. This standardised format is an implementation of the <a class="reference external" href="http://www.opensearch.org/Specifications/OpenSearch/1.1">OpenSearch Standard</a> and the frameworks model of them can be found in PuppyIR&#8217;s &#8216;query&#8217; and &#8216;response&#8217; classes; which are used by all the components that deal with such data. Many search services and API&#8217;s support this standard, but, in some cases, some processing is required - in order to present data in a form that it is compliant with the OpenSearch standard (there are many examples of this processing in the framework&#8217;s search engine wrappers).</p>
+</div>
+<div class="section" id="architectural-paradigms">
+<h3>Architectural Paradigms<a class="headerlink" href="#architectural-paradigms" title="Permalink to this headline">¶</a></h3>
+<p>There are two paradigms, included with the framework, for developers/researchers to use to build PuppyIR based applications, these are:</p>
+<ol class="arabic simple">
+<li><strong>One Pipeline, One Search Engine (Search Service)</strong>: this is the standard (in terms of prototype and demonstrator adoption) paradigm for creating PuppyIR based applications. In it, a unique query and result pipeline is created for each search service. A search service is then linked to a source, i.e. a search engine wrapper like Bing or YouTube so that it can retrieve and process results. See: <a class="reference internal" href="service.html#service-architecture"><em>Paradigm 1 - One Pipeline, One Search Engine</em></a> for a more in-depth discussion of this paradigm.</li>
+<li><strong>One Pipeline, Many Search Engines (Pipeline Service)</strong>: an alternative to the search service paradigm, where only one query and result pipeline is created, various search engine wrappers can the be associated with the pipeline (defined by the pipeline service). Either search all, or search specific (i.e. search a specific search engine wrapper associated with the pipeline service) can be used to retrieve results using the defined query &amp; result pipelines. See: <a class="reference internal" href="pipeline.html#pipeline-architecture"><em>Paradigm 2 - One Pipeline, Many Search Engines</em></a> for a more in-depth discussion of this paradigm.</li>
+</ol>
+<p>A developer/researcher can select the paradigm that is most suited to their application; no matter which one is used, the same components and options (for configuring them) are available. This is due to all the components being generalised, in terms of their: interface, methods and parameters. All of the paradigms, however, make use of the &#8216;query&#8217; and &#8216;response&#8217; formats as mentioned earlier (however, the a pipeline service returns &#8216;response&#8217; objects in a slightly different way).</p>
+</div>
+<div class="section" id="event-and-query-logging">
+<h3>Event and Query Logging<a class="headerlink" href="#event-and-query-logging" title="Permalink to this headline">¶</a></h3>
+<p>Included with the framework are two kinds of logger, both of these are designed to assist developers and researchers in evaluating their applications, they are: (1) a query logger and (2), an event logger. Between these two kinds of logger, any kind of data required to be logged can be, for evaluation/analytical purposes.</p>
+<p>Both the Search and Pipeline Services provide the ability to log queries, sent to the service in question, by a user. It is possible to log such queries at two distinct stages:</p>
+<ol class="arabic simple">
+<li><strong>Un-processed</strong>: the query passed to the service in question before it goes through the query pipeline.</li>
+<li><strong>Processed</strong>: the query after it has gone through the pipeline (assuming it was not rejected during processing), for example it may have been extended via new terms being appended or spelling mistakes automatically being corrected.</li>
+</ol>
+<p>This allows two key areas to be investigated: (1) what sort of queries the users are sending and (2), the results of the query pipeline(s), defined in the application, on these queries.</p>
+<p>The event logger provides a developer with a component that allows them to log only the details they wish (for the event being logged) to be logged for their specific application. This is possible via a keyword arguments parameter to the log method. However, an &#8216;identifier&#8217; and &#8216;type&#8217; must be supplied in order to differentiate the different events and assist with categorisation for analysis of the log file(s).</p>
+</div>
+<div class="section" id="testing-and-exception-handling">
+<h3>Testing and Exception Handling<a class="headerlink" href="#testing-and-exception-handling" title="Permalink to this headline">¶</a></h3>
+<p>The PuppyIR framework comes with a variety of custom exceptions for its components and also a unit test suite. These are discussed, in-depth, in <a class="reference internal" href="exceptions.html#exceptionsinpuppyir"><em>Exception Handling in PuppyIR</em></a> and <a class="reference internal" href="test-suite.html#the-puppyir-framework-test-suite"><em>The PuppyIR Framework Test Suite</em></a>.</p>
+</div>
+<div class="section" id="filters-and-modifiers">
+<h3>Filters and Modifiers<a class="headerlink" href="#filters-and-modifiers" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="api3.0.html#api"><em>PuppyIR API Reference</em></a> contains the full details of all the varied filters and modifiers that come with the PuppyIR framework. Examples include: a query filter, that rejects queries containing profanity; a suitability filter, that evaluates the suitability of a web result (for children) then accepts or rejects it based on a minimum score and a term expansion modifier, that adds extra terms to a user&#8217;s query (like &#8216;for kids&#8217; to skew results in certain ways).</p>
+</div>
+</div>
+<div class="section" id="search-engine-wrappers">
+<h2>Search Engine Wrappers<a class="headerlink" href="#search-engine-wrappers" title="Permalink to this headline">¶</a></h2>
+<p>The PuppyIR framework contains a number of varied search engine wrappers. In this section - an overview of these wrappers, in terms of their category, is provided in order to provide an easy access guide to what is available (to enable a developer to select what best suits the application they have in mind). For more details of the implementation and usage of these wrappers please refer to the <a class="reference internal" href="api3.0.html#api"><em>PuppyIR API Reference</em></a>.</p>
+<p>Please note that wrappers can, and do, appear in multiple categories as some wrappers are more general purpose than other, more specific, services. Also, the generic &#8216;web&#8217; results category is not listed but is provided by, for example, <em>Bing</em> please see the API guide for more.</p>
+<p>Some of these wrappers require API keys (again, see the API reference for details) in these cases, this requires the developer to sign up for said key on the respective search service webpages for the API in question.</p>
+<div class="section" id="book-services">
+<h3>Book Services<a class="headerlink" href="#book-services" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="92%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>GoogleBooks</strong></td>
+<td>This wrapper provides access to the Google Books data store, you can search for books and, in some cases, retrieve samples or whole books for reading (you need to embed the samples if used in an application).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="image-services">
+<h3>Image Services<a class="headerlink" href="#image-services" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Bing</strong> and <strong>BingV2</strong></td>
+<td>Allows for the retrieval of images using Bing&#8217;s search API, including options like only get widescreen images.</td>
+</tr>
+<tr class="row-odd"><td><strong>Flickr</strong></td>
+<td>Retrieves images from the Flickr web service, including lots of details like geotags and more.</td>
+</tr>
+<tr class="row-even"><td><strong>Picassa</strong></td>
+<td>Retrieves images from the Picassa web service.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="information-services">
+<h3>Information Services<a class="headerlink" href="#information-services" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="92%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Wikipedia</strong></td>
+<td>Allows the searching of wikipedia&#8217;s database. They results consist only of a link, snippet (summary) and a title, hence, this is not suitable if you require a large amount of textual content; but it is ideal for providing a short description for children.</td>
+</tr>
+<tr class="row-odd"><td><strong>Simple Wikipedia</strong></td>
+<td>An alternate version of the above wrapper, using the Simple Wikipedia variant of the Wikipedia API.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="location-based-searching">
+<h3>Location Based Searching<a class="headerlink" href="#location-based-searching" title="Permalink to this headline">¶</a></h3>
+<p>These services allow for searching for: either results in a defined location or for a location itself.</p>
+<p>N.B. Google Geocode should be used to retrieve the geo-coordinates and/or bounding box to use with the other services as their location based parameter(s).</p>
+<p>For an example of this in action, a prototype (it should be noted, that this prototype was abandoned and the code is quite rough in addition to it not being styled) is available which you can download via:</p>
+<div class="highlight-python"><pre>$ svn co https://puppyir.svn.sourceforge.net/svnroot/puppyir/branches/working/LSee LSee
+$ cd LSee
+$ python manage.py runserver</pre>
+</div>
+<p>Visit: <a class="reference external" href="http://localhost:8000/lsee">http://localhost:8000/lsee</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Flickr</strong></td>
+<td>Allows for the retrieval of geotagged images within a defined bounding box.</td>
+</tr>
+<tr class="row-odd"><td><strong>Google Geocode</strong></td>
+<td>This service allows results to be retrieved for locations, for example, if you search for &#8216;Edinburgh&#8217; it will return details of the various Edinburgh&#8217;s around the world (like their location/latitude).</td>
+</tr>
+<tr class="row-even"><td><strong>Twitter</strong></td>
+<td>Allows for the retrieval of geotagged tweets made within a box defined by a point - the origin - with a radius to define a box around the point.</td>
+</tr>
+<tr class="row-odd"><td><strong>YouTube V2</strong></td>
+<td>Allows for the retrieval of geotagged videos from within a box defined by a point - the origin - with a radius to define a box around the point.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="movie-services">
+<h3>Movie Services<a class="headerlink" href="#movie-services" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Rotten Tomatoes</strong></td>
+<td>Allows for the retrieval of details about movies like: the cast and aggregated review score etc.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="music-services">
+<h3>Music Services<a class="headerlink" href="#music-services" title="Permalink to this headline">¶</a></h3>
+<p>N.B. <strong>YouTube</strong> and <strong>YouTubeV2</strong> are also, arguably, a music based services due to the large proportion of music based content.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>ITunes</strong></td>
+<td>The iTunes wrapper allows you to search for not only music, but also forms of media such as movies and TV shows.</td>
+</tr>
+<tr class="row-odd"><td><strong>LastFM</strong></td>
+<td>Allows for searching for music using LastFM, specifically, you can search for: tracks, albums and artists.</td>
+</tr>
+<tr class="row-even"><td><strong>Soundcloud</strong></td>
+<td>This wrapper allows you to search for music on the Soundcloud service, using advanced searching parameters like genre and beats per minute.</td>
+</tr>
+<tr class="row-odd"><td><strong>Spotify</strong></td>
+<td>Allows for searching for music using Spotify (and get links to play the songs), specifically, you can search for: tracks, albums and artists.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="news-services">
+<h3>News Services<a class="headerlink" href="#news-services" title="Permalink to this headline">¶</a></h3>
+<p>These wrappers provide the ability to search for news stories.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Bing</strong> and <strong>BingV2</strong></td>
+<td>Allow for the searching of the &#8216;news&#8217; results.</td>
+</tr>
+<tr class="row-odd"><td><strong>Guardian</strong></td>
+<td>Is a wrapper for the search api of the UK based newspaper: the Guardian. While UK based this service also provides a large variety of stories about events the world over.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="social-network-and-social-news-services">
+<h3>Social Network and Social News Services<a class="headerlink" href="#social-network-and-social-news-services" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Digg</strong></td>
+<td>A social news website for sharing items which are then rated by the community - this acting as a method of filtering the quality of results.</td>
+</tr>
+<tr class="row-odd"><td><strong>Twitter</strong></td>
+<td>A social network for posting short messages.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="spelling-suggestions-and-dictionary-based-results">
+<h3>Spelling Suggestions and Dictionary based results<a class="headerlink" href="#spelling-suggestions-and-dictionary-based-results" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>BingV2</strong></td>
+<td>Using the <em>spell</em> source type spelling corrections to a query.</td>
+</tr>
+<tr class="row-odd"><td><strong>Wordnik</strong></td>
+<td>This service provides a spelling correction feature, in addition to providing definitions of words and examples of words in context (via selections of text from various web pages).</td>
+</tr>
+<tr class="row-even"><td><strong>Web Spell Checker</strong></td>
+<td>Allows for searching for spelling corrections in a variety of languages - there is no extra information returned however just the spelling correction suggestion.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="video-services">
+<h3>Video Services<a class="headerlink" href="#video-services" title="Permalink to this headline">¶</a></h3>
+<p>These wrappers provide the ability to search for videos. It should be noted that Bing&#8217;s search engine strongly favours YouTube results so there is a lot of overlap if both it and YouTube are used in the same application.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>BingV2</strong></td>
+<td>Allows for the retrieval of video results using Bing&#8217;s search API.</td>
+</tr>
+<tr class="row-odd"><td><strong>YouTube</strong> and <strong>YouTubeV2</strong></td>
+<td>Results from YouTube come with an embed URL so they can be played in-line (as seen in the MaSe and aMuSeV3 prototypes).</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="extensibility-of-the-framework">
+<h2>Extensibility of the framework<a class="headerlink" href="#extensibility-of-the-framework" title="Permalink to this headline">¶</a></h2>
+<p>As stated in the aims detailed earlier, the extensibility of the framework and its components is a key aspect of its design. In is possible to add, customise and extend all of the components, discussed above, for use in a PuppyIR based application. However, several distinct areas have been selected to be written up for this document, i.e. the process for going about adding new components is detailed. These areas were identified as being the most likely for developers/researchers to wish to extend and are described briefly below.</p>
+<div class="section" id="id2">
+<h3>Search Engine Wrappers<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>It is expected that the area, of the framework, especially, is one with great potential for future expansion and development. This is due to the inevitable influx of new API&#8217;s and updates to the ones currently supported by the PuppyIR framework. The section detailing this area, therefore, looks at how to write new wrappers that are compatibly both with the architectural paradigms as well as the other components that interact with search engine wrappers (i.e. filters etc). See: <a class="reference internal" href="extendingSearchEngine.html#extending-the-search-engine"><em>Adding new Search Engine Wrappers</em></a> for more details on this.</p>
+</div>
+<div class="section" id="query-and-result-filters-modifiers">
+<h3>Query and Result Filters/Modifiers<a class="headerlink" href="#query-and-result-filters-modifiers" title="Permalink to this headline">¶</a></h3>
+<p>The other areas identified as being a likely candidate for extension, are the filters and modifiers available in both the query (<a class="reference internal" href="extendingQuery.html#extending-the-query-pipeline"><em>Extending the Query Pipeline</em></a>) &amp; result (<a class="reference internal" href="extendingResult.html#extending-the-result-pipeline"><em>Extending the Result Pipeline</em></a>) pipelines. A lot of the filters and modifiers included with the framework were developed as part of, or in response to, the latest research in children&#8217;s information retrieval hence, this being a likely area to get added to as researchers/developers explore new methods &amp; techniques.</p>
+</div>
+</div>
+<div class="section" id="other-features-and-aspects">
+<h2>Other features and aspects<a class="headerlink" href="#other-features-and-aspects" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="which-version-of-python-is-the-framework-for">
+<h3>Which version of Python is the framework for?<a class="headerlink" href="#which-version-of-python-is-the-framework-for" title="Permalink to this headline">¶</a></h3>
+<p>The PuppyIR framework is designed, built and maintained using Python 2.7; Python 3.x is not supported and earlier versions may have compatibility issue. It is, therefore, recommended to upgrade to Python 2.7 rather than using earlier versions. For details of some of the known Python compatibility issues please consult the <a class="reference internal" href="issues.html#issues"><em>Known issues with the PuppyIR framework</em></a> page.</p>
+</div>
+<div class="section" id="standalone-services">
+<h3>Standalone Services<a class="headerlink" href="#standalone-services" title="Permalink to this headline">¶</a></h3>
+<p>The PuppyIR framework can be used to build a standalone service for research and development purposes. This mode has minimal requirements and simplifies the process of building custom search services that do not require a user interface. See <a class="reference internal" href="standalone-service.html#building-a-standalone-puppyir-service"><em>Building a Standalone PuppyIR Service</em></a> for more information.</p>
+</div>
+<div class="section" id="proxy-server-support">
+<h3>Proxy Server Support<a class="headerlink" href="#proxy-server-support" title="Permalink to this headline">¶</a></h3>
+<p>Many workplaces and research institutions use a proxy server and so, any applications created, using PuppyIR, would need to go through such a proxy server. The framework, therefore, offers a simple interface for its components that enables developers/researchers to easily set-up the components they are using to work with a defined proxy server. The code below shows how to create a service in both the paradigms, included with the framework:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Set-up a config setting for a proxy server</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;proxyhost&quot;</span><span class="p">:</span> <span class="s">&quot;http://your-proxy-server-address&quot;</span><span class="p">}</span>
+
+<span class="c"># -- Paradigm 1 and proxy servers --</span>
+<span class="c"># ----------------------------------</span>
+
+<span class="c"># Create a service manager and set it to use config</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">ServiceManager</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c"># Create a search service for Bing Web</span>
+<span class="n">ss</span> <span class="o">=</span> <span class="n">SearchService</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="s">&quot;bing_web&quot;</span><span class="p">)</span>
+
+<span class="c"># Set our new search service to use the Bing wrapper</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">search_engine</span> <span class="o">=</span> <span class="n">Bing</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+
+<span class="c"># Add new search service to ServiceManager</span>
+<span class="n">sm</span><span class="o">.</span><span class="n">add_search_service</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+
+<span class="c"># -- Paradigm 2 and proxy servers --</span>
+<span class="c"># ----------------------------------</span>
+
+<span class="c"># Create a Pipeline Service called &#39;myPipeline&#39; using config</span>
+<span class="n">pipelineService</span> <span class="o">=</span> <span class="n">PipelineService</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&quot;myPipeline&quot;</span><span class="p">)</span>
+
+<span class="c"># Create a Bing search engine wrapper</span>
+<span class="n">bing</span> <span class="o">=</span> <span class="n">Bing</span><span class="p">(</span><span class="n">pipelineService</span><span class="p">)</span>
+
+<span class="c"># Add Bing to our search engine manager (this stores all our search engines)</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">searchEngineManager</span><span class="o">.</span><span class="n">add_search_engine</span><span class="p">(</span><span class="s">&quot;Bing&quot;</span><span class="p">,</span> <span class="n">bing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="django-support">
+<h3>Django support<a class="headerlink" href="#django-support" title="Permalink to this headline">¶</a></h3>
+<p>The PuppyIR framework can be integrated with the Django web application framework to provide a toolkit for rapidly prototyping and deploying search services for children on the web.  PuppyIR includes a number of components that augment the existing Django functionality. See <a class="reference internal" href="django-service.html#building-a-puppyir-django-service"><em>BaSe Tutorial: Building a PuppyIR/Django Service</em></a> for more information.</p>
+<p>N.B. Django is provided as an example, the framework can also work with other Python based web application frameworks as no parts of the framework are tied into Django.</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>For more details about the PuppyIR project, please visit the project&#8217;s website at: <a class="reference external" href="http://www.puppyir.eu/">http://www.puppyir.eu/</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Overview and background of the PuppyIR Framework</a><ul>
+<li><a class="reference internal" href="#the-main-features-of-the-framework">The main features of the framework</a><ul>
+<li><a class="reference internal" href="#data-formatting">Data Formatting</a></li>
+<li><a class="reference internal" href="#architectural-paradigms">Architectural Paradigms</a></li>
+<li><a class="reference internal" href="#event-and-query-logging">Event and Query Logging</a></li>
+<li><a class="reference internal" href="#testing-and-exception-handling">Testing and Exception Handling</a></li>
+<li><a class="reference internal" href="#filters-and-modifiers">Filters and Modifiers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#search-engine-wrappers">Search Engine Wrappers</a><ul>
+<li><a class="reference internal" href="#book-services">Book Services</a></li>
+<li><a class="reference internal" href="#image-services">Image Services</a></li>
+<li><a class="reference internal" href="#information-services">Information Services</a></li>
+<li><a class="reference internal" href="#location-based-searching">Location Based Searching</a></li>
+<li><a class="reference internal" href="#movie-services">Movie Services</a></li>
+<li><a class="reference internal" href="#music-services">Music Services</a></li>
+<li><a class="reference internal" href="#news-services">News Services</a></li>
+<li><a class="reference internal" href="#social-network-and-social-news-services">Social Network and Social News Services</a></li>
+<li><a class="reference internal" href="#spelling-suggestions-and-dictionary-based-results">Spelling Suggestions and Dictionary based results</a></li>
+<li><a class="reference internal" href="#video-services">Video Services</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extensibility-of-the-framework">Extensibility of the framework</a><ul>
+<li><a class="reference internal" href="#id2">Search Engine Wrappers</a></li>
+<li><a class="reference internal" href="#query-and-result-filters-modifiers">Query and Result Filters/Modifiers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-features-and-aspects">Other features and aspects</a><ul>
+<li><a class="reference internal" href="#which-version-of-python-is-the-framework-for">Which version of Python is the framework for?</a></li>
+<li><a class="reference internal" href="#standalone-services">Standalone Services</a></li>
+<li><a class="reference internal" href="#proxy-server-support">Proxy Server Support</a></li>
+<li><a class="reference internal" href="#django-support">Django support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to the PuppyIR Framework Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Requirements and Installation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Requirements and Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the PuppyIR Framework Documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

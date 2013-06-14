@@ -1,0 +1,30 @@
+{% extends "pagefetch/base.html" %}
+{% block scripts %}
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/spriteTimer.1.3.6/js/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/gameredirect.js"></script>
+{% endblock %}
+{% block content %}
+<div class="centre">
+<p>Look below to see how many points you need to get a status!</p>
+</br>
+<table class="leaderboard" id="status-table" border="1">
+<tr>
+<td>Status</td>
+<td>Points Required</td>
+</tr>
+{% for possible_status in status_data %}
+<tr>
+<td><img src="{{MEDIA_URL}}pagefetch/Status/{{possible_status}}.png"></td>
+<td>{{possible_status.points_required}}</td>
+</tr>
+{% empty %}
+	<p> Status information currently unavailable.  Sorry! &#x2639; </p>
+	</br>
+{% endfor %}
+</table>
+</br>
+<p><button class="playagain-button" id="play">Play again</button></p>
+<p><a class="centre" href="http://www.surveymonkey.com/s/RJTC32W"><img src="{{MEDIA_URL}}pagefetch/Buttons/feedback.png"></a></p>
+<p><a href="/pagefetch/leaderboard/"><img src="{{MEDIA_URL}}pagefetch/Buttons/leaderboards.png"></a></p>
+</div>
+{% endblock %}

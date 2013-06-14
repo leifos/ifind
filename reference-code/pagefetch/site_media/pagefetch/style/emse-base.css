@@ -1,0 +1,550 @@
+
+
+.askEmmaResultImage {
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	clear: right;
+	height: 110px;
+}
+
+.clearBoth {
+	clear: both;
+}
+
+#bigFlowerIcon {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: url(../../images/icon_green_flower_big.png) top left no-repeat;
+	width: 180px;
+	height: 179px;
+}
+
+#rolloverKid {
+position: absolute;
+left: 200px;
+}
+
+#bigScreenIcon {
+	position: absolute;
+	top: 0px;
+	left: 700px;
+	background: url(../../images/bigshapescreen.png) top right no-repeat;
+	width: 341px;
+	height: 274px;
+}
+
+#searchBox {
+	position: relative;
+	margin: 0px;
+	width: 750px;
+	z-index: 1;
+}
+
+#boy {
+	background: url(../../images/boy_clothes.png);
+	position: absolute;
+	top: 30px;
+	left: 0px;
+	width: 119px;
+	height: 181px;
+}
+
+#kidThoughtBox p {
+	font-weight: bold;
+	color: white;
+}
+
+#girl {
+	background: url(../../images/girl_clothes.png);
+	position: absolute;
+	display: none;
+	top: 25px;
+	left: -15px;
+	width: 126px;
+	height: 181px;
+}
+
+
+#dialogBox {
+	background: #87a5cc;	
+	position: absolute;
+	top: 20px;
+	left: 160px;
+	width: 330px;
+	height: 75px;
+	padding: 20px 20px 5px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#dialogBoxCurves{
+	background: url(dialogBoxCurvesBlue.png) no-repeat;
+	margin-top: 10px;
+	height: 50px;
+	width: 55px;
+	float: left;
+	margin-left: -43px;
+}
+
+#dogalogBox {
+	background: #99CCFF;	
+	position: absolute;
+	top: 205px;
+	left: 200px;
+	width: 330px;
+	height: auto;
+	padding: 0px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#dogalogBoxResult {
+	background: #00CC33;	
+	position: absolute;
+	top: 500px;
+	left: 660px;
+	width: 280px;
+	height: auto;
+	padding: 0px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#dogalogBoxFind {
+	background: #99CCFF;	
+	position: absolute;
+	top: 285px;
+	left: 660px;
+	width: 140px;
+	height: 80px;
+	padding: 0px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#dogalogBoxGood {
+	background: #99CCFF;	
+	position: absolute;
+	top: 285px;
+	left: 990px;
+	width: 100px;
+	height: auto;
+	padding: 0px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#dogalogBoxCurves{
+	background: url(dialogBoxCurvesBrown.png) no-repeat;
+	background-position: -55px;
+	height: 50px;
+	width: 55px;
+	float: right;
+	margin-right: -57px;
+}
+
+#dogalogBoxCurvesFind{
+	background: url(dialogBoxCurvesBlue.png) no-repeat;
+	background-position: -55px;
+	height: 100px;
+	width: 55px;
+	float: right;
+	margin-right: -40px;
+}
+
+#dogalogBoxCurvesGood{
+	background: url(dialogBoxCurvesBrown.png) no-repeat;
+	background-position: -55px;
+	height: 20px;
+	width: 55px;
+	float: left;
+	margin-right: -40px;
+}
+
+
+#dogThoughtBox {
+	background: #d8ad7c;	
+	position: absolute;
+	top: 70px;
+	left: 690px;
+	width: 150px;
+	height: auto;
+	padding: 20px 20px 10px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#thoughtBubbles {
+	background: url(../../images/thoughtBubblesBrown.png) no-repeat;
+	height: 50px;
+	width: 55px;
+	float: left;
+	margin-left: -73px;
+}
+
+#kidThoughtBox {
+	display: none;
+	background: #87a5cc;	
+	position: absolute;
+	color: white;
+	top: 10px;
+	left: -180px;
+	width: 100px;
+	height: auto;
+	padding: 5px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;	
+}
+
+#kidThoughtBubbles {
+	background: url(../../images/thoughtBubblesBlue.png) no-repeat;
+	height: 50px;
+	width: 55px;
+	float: right;
+	margin-right: -73px;
+	background-position: -55px;
+}
+
+
+#bodyBrowser {
+	background: url(../../images/boy_bodyBrowser.png) no-repeat center;
+	position: fixed;
+	display: none;
+	top: 20px;
+	left: 20px;
+	width: 400px;
+	height: 550px;
+	z-index: 2;
+}
+
+#searchHeader {
+	color: #d7e0ed;
+	font-size: 24px;
+	margin: 0px 0px 10px 0px;
+}
+
+.searchbox{
+	border: 1px solid #999;
+	width: 257px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #666;	
+	padding: 7px;
+}
+
+#puppy{
+	background: url(../../images/puppy_sitting.png);
+	position: absolute;
+	top: 100px;
+	left: 550px;
+	width: 90px;
+	height: 126px;
+}
+
+#puppy:hover{
+	background: url(../../images/puppy_sitting_earup.png);
+}
+
+#puppyEvaluationBox {
+	display: none;
+	background: #d8ad7c;	
+	position: absolute;
+	color: white;
+	z-index: 2000;
+	top: -80px;
+	left: -10px;
+	width: 90px;
+	height: auto;
+	padding: 5px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	font-weight: bold;	
+}
+
+#footer{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background-color: #fff200;
+    padding: 10px 10px 5px 10px;
+    height: 20px;
+    width: 142px;
+    border-top-right-radius: 20px;
+    -webkit-top-right-radius: 20px;
+   -moz-border-top-right-radius: 20px;
+}
+
+#footer, #footer a {
+	font-size: 10px;
+	color: #333;
+}
+
+#footerIcons{
+	background: url(../../images/icon_group.png);
+	position: absolute;
+	bottom: 20px;
+	left: 880px;
+	width: 134px;
+	height: 134px;
+}
+
+#emmaThoughtBox p {
+	font-weight: bold;
+	color: white;
+}
+
+#emmaThoughtBox {
+	display:none;
+	background: #c04126;	
+	position: absolute;
+	color: white;
+	top: 500px;
+	left: 170px;
+	width: 80px;
+	height: 80px;
+	padding: 5px 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;	
+}
+
+#emmaThoughtBubbles {
+	background: url(../../images/dialogboxcurvesRed.png) no-repeat;
+	margin-top: 30px;
+	height: 50px;
+	width: 55px;
+	float: left;
+	margin-left: -70px;
+}
+
+
+#askEmma{
+	background: url(../../images/ask_emma.png);
+	position: absolute;
+	top: 490px;
+	left: 20px;
+	width: 134px;
+	height: 134px;
+}
+
+#askEmma h1 {
+	color: #666;
+	font-size: 20px;
+	margin: 140px 0px 0px;
+	text-decoration: none;
+}
+
+.askEmmaLink {
+	background: #eee url(../../images/ask_emma_small.png) left no-repeat;	
+	border: 1px solid #ddd;
+	font: 13px/25px Arial, helvetica, sans-serif !important;
+	text-decoration: none;
+	font-weight: bold;
+	width: 70px;
+	margin-right: 5px;
+	padding: 2px 5px 2px 35px;
+	border-radius: 4;
+}
+
+.closeLink {
+	background: #eee url(../../images/close.png) left no-repeat;	
+	border: 1px solid #ddd;
+	font: 13px/25px Arial, helvetica, sans-serif !important;
+	text-decoration: none;
+	font-weight: bold;
+	width: 40px;
+	padding: 2px 5px 2px 20px;
+	border-radius: 4;
+}
+
+.puppyLink {
+	background: #eee url(../../images/puppy_tiny.png) left no-repeat;	
+	border: 1px solid #ddd;
+	margin-right: 5px;
+	font: 13px/25px Arial, helvetica, sans-serif !important;
+	text-decoration: none;
+	font-weight: bold;
+	width: 70px;
+	padding: 2px 5px 2px 35px;
+	border-radius: 4;
+}
+
+.puppyLink:hover {
+	color: #000 !important;
+	background: #fff url(../../images/puppy_tiny.png) left no-repeat;	
+}
+
+
+
+.askEmmaButton, .emmasummary {
+	display: inline;
+}
+
+.emmasummary {
+	margin-top: 0px;
+	font: 18px Arial, helvetica, sans-serif !important;
+}
+
+.askEmmaSummary {
+	margin: 10px;
+	font: 18px Arial, helvetica, sans-serif !important;
+}
+
+
+.askEmmaLink:hover {
+	color: #000 !important;
+	background: #fff url(../../images/ask_emma_small.png) left no-repeat;	
+}
+
+
+.expandLink {
+	background: #eee;	
+	border: 1px solid #ddd;
+	font: 13px/25px Arial, helvetica, sans-serif !important;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 2px 7px;
+	border-radius: 4;
+	margin-right: 5px;
+}
+
+.expandLink:hover {
+	color: #000 !important;
+	background: #fff;
+}
+
+
+a:hover #askEmma h1 {
+	color: black;
+}
+
+
+#dogThoughtBox h1 {
+	font-size: 18px;
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 0px;
+	padding-bottom: 10px;
+}
+
+#dogThoughtBox ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+#dogThoughtBox li {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+
+#dogThoughtBox li a {
+	display: block;
+	margin: 0px -20px;
+	padding: 10px 20px;
+	border-top: 2px solid white;
+}
+
+#dogThoughtBox li a:hover {
+	display: block;
+	background: #e9be8d;
+}
+
+.result a {
+	color: blue !important;	
+}
+
+p.askEmmaTerm {
+display: inline-block;
+background: yellow;
+padding: 20px;
+margin: 10px 0px;
+border-radius: 20px;
+font-weight: normal !important;
+}
+
+
+.resultTitle {
+	font: 18px Arial, helvetica, sans-serif !important;
+	color: blue !important;
+	margin-bottom: 5px !important;
+	font-weight: bold !important;
+}
+
+.emmalink {
+	display: none;
+}
+
+.summary {
+	margin-top: 0px;
+	font: 18px Arial, helvetica, sans-serif !important;
+	margin-bottom: 20px;
+}
+
+
+.noResultSummary {	
+	font: 18px Arial, helvetica, sans-serif !important;
+	padding: 20px;
+}
+
+#dogalogBox p {
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 25px;
+}
+
+#dogalogBoxFind p {
+	color: #ffffff;
+	font-size: 16px;
+	line-height: 25px;
+}
+
+#dogalogBoxGood p {
+	color: #ffffff;
+	font-size: 16px;
+	line-height: 25px;
+}
+
+#dogalogBoxResult p {
+	color: #ffffff;
+	font-size: 16px;
+	line-height: 25px;
+	float: center;
+}
+
+#dogThoughtBox li a, #dogalogBox a{
+	color: #f7ede2;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#dogThoughtBox li a:hover, #dogalogBox a:hover{
+	color: white;
+}
+
+.resultFrame {
+background-color: #eee;
+border-radius: 20px;
+width: 600px;
+margin: 20px auto;
+overflow: auto;
+vertical-align: center;
+height: auto;
+padding: 20px 10px;
+text-align: left;
+}
+

@@ -1,0 +1,52 @@
+{% block css %}
+<head>
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}pagefetch/style/style.css" />
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}pagefetch/style/gamepage_style.css" />
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}pagefetch/style/emse-base.css" />
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/jquery.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/jquery.flyoffpage.full.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/spriteTimer.1.3.6/js/jquery.spriteTimer-1.3.6.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/jquery.imageoverlay.1.3.2/jquery.ImageOverlay.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}pagefetch/javascript/gamepage.js"></script>
+{% endblock %}
+<title>PageFetch - Let's Play!</title>
+</head>
+<div style="width: 1150">
+	<div class="rounded-corners" id="red-border-game">
+		<div class="rounded-corners" id="blue-border-game">
+			<div class="rounded-corners" id="green-border-game">
+			
+				{% block header %}
+                <a href="/pagefetch/home"><img src="{{MEDIA_URL}}pagefetch/Logos/logo_colour.png" alt="PageFetch"></a>
+                <div class="left-div" id="timer-div">
+					<div class="left-div">
+						{% if user.is_authenticated %}
+							<label id="username" class="user-info"> Hello, <strong>{{user.username}}</strong>! </label> </br> </br>
+                        {% else %}
+							<script> window.location = "/pagefetch/home/" </script>
+                        {% endif %}
+						</br><label id="timer-label">Time Remaining:</label>
+					</div> <!-- left-div? -->
+                    <div id='timer' class='timer'></div>
+				</div> <!-- timer div-->
+				
+			</div> <!-- green border -->
+				
+			{% endblock header %}
+            
+			<!-- main game content -->
+			<center>
+            <div id="query_container">
+				<div id="game_view"></div>
+            </div> 
+			</center>
+			
+		<!-- {% block content %}    
+			<div id="results_view" class="parent-content"></div>
+		{% endblock %}--->
+		<div style="clear: both;"></div>
+		</div> <!-- blue border -->
+	</div> <!-- red red border -->
+</div>

@@ -1,0 +1,123 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>puppy.query.exceptions &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="../../../index.html" />
+    <link rel="up" title="puppy.query" href="../query.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PuppyIR 3.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../query.html" accesskey="U">puppy.query</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for puppy.query.exceptions</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="QueryFilterError"><a class="viewcode-back" href="../../../api3.0.html#puppy.query.exceptions.QueryFilterError">[docs]</a><span class="k">class</span> <span class="nc">QueryFilterError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Use for exceptions in which the filter operationally failed and the</span>
+<span class="sd">    filter&#39;s function cannot be realized. Callers should respond to this as if</span>
+<span class="sd">    a modification or rejection decision cannot be made, as opposed to</span>
+<span class="sd">    :class:`puppy.query.QueryRejectionError`, in which case the query should</span>
+<span class="sd">    not be issued. &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="QueryModifierError"><a class="viewcode-back" href="../../../api3.0.html#puppy.query.exceptions.QueryModifierError">[docs]</a><span class="k">class</span> <span class="nc">QueryModifierError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Use for exceptions in which the modifier operationally failed and the</span>
+<span class="sd">    modifier&#39;s function cannot be realized. Callers should respond to this as if</span>
+<span class="sd">    a modification or rejection decision cannot be made, as opposed to</span>
+<span class="sd">    :class:`puppy.query.QueryRejectionError`, in which case the query should</span>
+<span class="sd">    not be issued. &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="QueryRejectionError"><a class="viewcode-back" href="../../../api3.0.html#puppy.query.exceptions.QueryRejectionError">[docs]</a><span class="k">class</span> <span class="nc">QueryRejectionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Raise when a filter rejects a query, e.g., because profanity is</span>
+<span class="sd">    detected. &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PuppyIR 3.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../query.html" >puppy.query</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

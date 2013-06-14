@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pipeline Tutorial: DeeSe (Detective Search) &mdash; PuppyIR 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PuppyIR 3.0 documentation" href="index.html" />
+    <link rel="next" title="Extending the Query Pipeline" href="extendingQuery.html" />
+    <link rel="prev" title="MaSe Tutorial: Create Your Own Mash-Up Search Interface" href="mase-tutorial.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extendingQuery.html" title="Extending the Query Pipeline"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mase-tutorial.html" title="MaSe Tutorial: Create Your Own Mash-Up Search Interface"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pipeline-tutorial-deese-detective-search">
+<span id="pipeline-puppyir-tutorial"></span><h1>Pipeline Tutorial: DeeSe (Detective Search)<a class="headerlink" href="#pipeline-tutorial-deese-detective-search" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>If you have not installed the PuppyIR framework and/or Django, please go to <a class="reference internal" href="installation.html#requirements-and-installation"><em>Requirements and Installation</em></a> to get everything set up. Also, before starting this tutorial, it is recommended that you read the background page on the pipeline paradigm (<a class="reference internal" href="pipeline.html#pipeline-architecture"><em>Paradigm 2 - One Pipeline, Many Search Engines</em></a>) as this provides a conceptual description of the various components and how they work together.</p>
+<p>The first step is to checkout the latest version of the tutorial from the PuppyIR SourceForge page and run it with the following commands:</p>
+<div class="highlight-python"><pre>$ svn co https://puppyir.svn.sourceforge.net/svnroot/puppyir/trunk/prototypes/deese-tutorial
+$ cd /path/to/deese-tutorial
+$ python manage.py runserver</pre>
+</div>
+<p>N.B. depending on your OS and SVN version, you may need to add &#8216; deese-tutorial&#8217; to the end of the above svn checkout command.</p>
+<p>Now visit: <a class="reference external" href="http://localhost:8000/deese">http://localhost:8000/deese</a> to see the initial version of the application.</p>
+<p>If you get stuck at any point during this tutorial, please consult the <em>service-complete.py</em> file in the <em>deese</em> folder, this contains the &#8220;answer&#8221; to this tutorial; along with code comments explaining each step.</p>
+</div>
+<div class="section" id="deesee-background">
+<h2>DeeSee background<a class="headerlink" href="#deesee-background" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial is, in a sense, a companion piece to the BaSe and IfSe tutorials in that it shows how to implement similar functionality using the &#8216;pipeline&#8217; paradigm. The scenario in this tutorial  concerns a situation where the &#8216;pipeline&#8217; paradigm is more suited the application than the &#8216;service&#8217; paradigm.</p>
+<p>The scenario is: you are working on an application for a team of Detectives to enable them to investigate several suspects (who have been stealing data off online websites). These suspects are well versed in electronic communication and are keeping a watch on the search history of the Detective Agency (by looking at queries sent and for their names appearing in the results the Detectives are viewing). To this end, DeeSe aims to provide the ability to search multiple sources, but have queries and results modified to prevent the names of the suspects appearing.</p>
+<p>Therefore, for all the search services being used, one specific pipeline (for queries and results) needs to be put in place to enforce the &#8216;lack of the suspects name&#8217; rule. Now, with the &#8216;service&#8217; paradigm we would need to construct this pipeline for each and every source, but could we do it a different way? This tutorial details how, using the &#8216;pipeline&#8217; paradigm, this could be accomplished.</p>
+</div>
+<div class="section" id="creating-our-pipeline-service">
+<h2>Creating our Pipeline Service<a class="headerlink" href="#creating-our-pipeline-service" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to create a pipeline service for DeeSe, this has already been done for you; but note how to do it. Next we need to add a search engine to our pipeline service. Open up <em>service.py</em> in the DeeSe directory and enter the following code (after the comment saying start here) to add a Bing news wrapper:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Create our Pipeline Service</span>
+<span class="n">pipelineService</span> <span class="o">=</span> <span class="n">PipelineService</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&quot;myPipeline&quot;</span><span class="p">)</span>
+
+<span class="c"># ----------------------- Start Here -----------------------</span>
+
+<span class="c"># Create a Bing Search Engine for news results and limit to 5 results</span>
+<span class="n">bingNews</span> <span class="o">=</span> <span class="n">Bing</span><span class="p">(</span><span class="n">pipelineService</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">&#39;news&#39;</span><span class="p">,</span> <span class="n">resultsPerPage</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c"># Add Bing News to our search engine manager (this stores all our search engines)</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">searchEngineManager</span><span class="o">.</span><span class="n">add_search_engine</span><span class="p">(</span><span class="s">&quot;News&quot;</span><span class="p">,</span> <span class="n">bingNews</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can now search for Bing News results using the DeeSe&#8217;s search box. However, there is no filtering yet implemented... we should start creating our pipeline.</p>
+</div>
+<div class="section" id="setting-up-our-query-pipeline">
+<h2>Setting up our query pipeline<a class="headerlink" href="#setting-up-our-query-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>Currently our query pipeline is empty (it contains no filters or modifiers), so it will allow us to search using the suspects names; thus alerting them to the investigation. Lets stop this by constructing a query pipeline that will prevent this from happening. To this end, we&#8217;re going to add a query filter called <strong>BlackListFilter</strong>, which will reject queries if they contain blacklisted word(s). Let&#8217;s assume that the suspects are called: Bob and Nathan and get coding:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Let&#39;s define a variable storing the names of the suspects</span>
+<span class="n">suspects</span> <span class="o">=</span> <span class="s">&#39;Bob Nathan&#39;</span> <span class="c"># Separated by spaces</span>
+
+<span class="c"># Now let&#39;s create a black list query filter using the suspects variable</span>
+<span class="n">blacklistF</span> <span class="o">=</span> <span class="n">BlackListFilter</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="n">suspects</span><span class="p">)</span>
+
+<span class="c"># Add it to our pipeline service&#39;s query pipeline</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">add_query_filter</span><span class="p">(</span><span class="n">blacklistF</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, if you&#8217;re confident this will work, let&#8217;s try searching for &#8216;Nathan the train job&#8217; - since one of the thefts involved a rail company. Did it work (you should get a message saying the query was rejected)? If it did, lets move onto the next stage; if not, check your code against the code above or ask for help.</p>
+</div>
+<div class="section" id="but-what-about-the-results">
+<h2>But what about the results?<a class="headerlink" href="#but-what-about-the-results" title="Permalink to this headline">¶</a></h2>
+<p>The other required condition was that the results returned should not contain the suspects names. To do this we need to create a result pipeline to process the results. Let&#8217;s add a <strong>BlackListModifier</strong>, what this does is &#8220;censor&#8221; blacklisted words (by replacing them with *&#8217;s); thus, we can use this to ensure the suspects names do not appear. While we&#8217;re at it, lets also add a profanity filter to stop queries containing naughty words.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Let&#39;s add a Black List Modifier to alter the results</span>
+<span class="n">blacklistM</span> <span class="o">=</span> <span class="n">BlackListResultModifier</span><span class="p">(</span><span class="n">terms</span><span class="o">=</span><span class="n">suspects</span><span class="p">)</span>
+
+<span class="c"># Also, as an extra, let&#39;s stop any naughty words</span>
+<span class="n">profanityF</span> <span class="o">=</span> <span class="n">WdylProfanityQueryFilter</span><span class="p">()</span>
+
+<span class="c"># Now let&#39;s use the add filters method to add both in one go</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">add_filters</span><span class="p">(</span><span class="n">profanityF</span><span class="p">,</span> <span class="n">blacklistM</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Try it out, can you think of queries that, while not containing the suspects names, will return results containing their names?</p>
+<p>For the purposes of the Detective Agencies internal monitoring, all queries, both un-processed and processed (after going through the query pipeline), should be logged. Let&#8217;s add a query logger to our pipeline service and set it to log processed queries (as well as the un-processed queries).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Create a Query Logger and attach it to our Pipeline Service</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">query_logger</span> <span class="o">=</span> <span class="n">QueryLogger</span><span class="p">(</span><span class="n">pipelineService</span><span class="p">)</span>
+
+<span class="c"># Set post logging to true i.e. log processed queries (post query pipeline)</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">postLogging</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Now, search with both valid and invalid queries (i.e. ones that should be rejected). Open the log file (located in the <strong>deese_logs</strong> directory) and take a look at your query history. Note that queries that were not rejected are logged twice (un-processed and processed) and that rejected queries are only logged once. This is because when a query is rejected the search is aborted and so there never is a processed query. Also, since we never added any query modifiers the processed queries are the same as their un-processed counterpart.</p>
+</div>
+<div class="section" id="let-s-add-some-new-search-services">
+<h2>Let&#8217;s add some new search services<a class="headerlink" href="#let-s-add-some-new-search-services" title="Permalink to this headline">¶</a></h2>
+<p>Of course, just searching Bing News does not really offer the multiple search services required; let&#8217;s add Wikipedia and Bing Web as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Create Bing Web and Wikipedia Search Engines (again, limiting to 5 results)</span>
+<span class="n">bingWeb</span> <span class="o">=</span> <span class="n">Bing</span><span class="p">(</span><span class="n">pipelineService</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s">&#39;web&#39;</span><span class="p">,</span> <span class="n">resultsPerPage</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">wikipedia</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="p">(</span><span class="n">pipelineService</span><span class="p">,</span> <span class="n">resultsPerPage</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c"># Add our new Search Engines to our Search Engine Manager</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">searchEngineManager</span><span class="o">.</span><span class="n">add_search_engine</span><span class="p">(</span><span class="s">&quot;Web&quot;</span><span class="p">,</span> <span class="n">bingWeb</span><span class="p">)</span>
+<span class="n">pipelineService</span><span class="o">.</span><span class="n">searchEngineManager</span><span class="o">.</span><span class="n">add_search_engine</span><span class="p">(</span><span class="s">&quot;Wikipedia&quot;</span><span class="p">,</span> <span class="n">wikipedia</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now search for something, notice that the results appear for all of these search engines using the name we supplied for the search engines, i.e. they have Web, Wikipedia, News as their titles. Also, we did not need to alter <strong>views.py</strong> to get results from the new search engines (which you would have to do if using the <strong>service</strong> paradigm). This is because we are using the <em>searchAll</em> method call; you could also search them one by one using <em>searchSpecific</em> - which makes use of the name of the search engine. Due to this, we can easily add and remove search engines as required.</p>
+<p>As an extension task, to allow you to fully understand how DeeSe allows new search engines to be added, have a look at the <strong>index.html</strong> template. The Django template language code is fully commented, explaining the purpose of each line and how the results of each service are accessed &amp; displayed (also note how the template only shows details about a search engine if it returned one or more results). This is an example of how the overall results dictionary (see: <a class="reference internal" href="pipeline.html#pipeline-architecture"><em>Paradigm 2 - One Pipeline, Many Search Engines</em></a>) can be processed by an application.</p>
+</div>
+<div class="section" id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Congratulations, that&#8217;s you completed the tutorial. However, there is more you could do with DeeSe:</p>
+<ul class="simple">
+<li>If you look in <strong>views.py</strong> you will notice that there is code for that looks for a variable called <em>offset</em> as well as a query. This is to allow for browsing between pages of results, what changes/additions would you have to make to implement this? [Hint: you will need to change the template]</li>
+<li>Styling, perhaps you could add more images and alter the style to suit the Detectives more?</li>
+<li>Extending the pipeline, what else could you add to DeeSe in both the query and result pipelines?</li>
+<li>Are there any other search services you could add: videos, images? [Hint: you will need to alter the template]</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/puppyir-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pipeline Tutorial: DeeSe (Detective Search)</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#deesee-background">DeeSee background</a></li>
+<li><a class="reference internal" href="#creating-our-pipeline-service">Creating our Pipeline Service</a></li>
+<li><a class="reference internal" href="#setting-up-our-query-pipeline">Setting up our query pipeline</a></li>
+<li><a class="reference internal" href="#but-what-about-the-results">But what about the results?</a></li>
+<li><a class="reference internal" href="#let-s-add-some-new-search-services">Let&#8217;s add some new search services</a></li>
+<li><a class="reference internal" href="#next-steps">Next steps</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mase-tutorial.html"
+                        title="previous chapter">MaSe Tutorial: Create Your Own Mash-Up Search Interface</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extendingQuery.html"
+                        title="next chapter">Extending the Query Pipeline</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pipeline-tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="extendingQuery.html" title="Extending the Query Pipeline"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mase-tutorial.html" title="MaSe Tutorial: Create Your Own Mash-Up Search Interface"
+             >previous</a> |</li>
+        <li><a href="index.html">PuppyIR 3.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, The PuppyIR Development Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
