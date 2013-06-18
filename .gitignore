@@ -1,3 +1,6 @@
+# Pycharm
+.idea
+
 *~
 *.swp
 *.pot
@@ -7,6 +10,7 @@
 *.pyo
 .metadata
 local_settings.py
+
 # ----- C
 
 # Object files
