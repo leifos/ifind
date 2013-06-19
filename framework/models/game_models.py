@@ -1,20 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User
+import imaplib
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     age = models.IntegerField(default=0, blank=True, null=True)
     gender = models.IntegerField(default=0, blank=True, null=True)
-    is_native_english = models.BooleanField(default=True, blank=True, null=True)
-    is_staff = models.BooleanField(default=True, blank=True, null=True)
-    is_student = models.BooleanField(default=True, blanl=True, null=True)
+    is_native_english = models.BooleanField(default=True, blank=True)
+    is_staff = models.BooleanField(default=True, blank=True)
+    is_student = models.BooleanField(default=True, blank=True)
     level_of_experience = models.IntegerField(default=0, null=True)
     last_time_played = models.DateTimeField()
     no_games_played = models.IntegerField(default=0, null=True)
 
     def __unicode__(self):
         return self.user.name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=128)
+    icon = models.ImageField(null=True, upload_to='To discuss with leif')
+    desc = models.TextField(null=True)
+    is_shown = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Score(models.Model):
@@ -29,28 +40,18 @@ class Score(models.Model):
         return self.total_score
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=128)
-    icon = models.ImageField(default=0, null=True)
-    desc = models.TextField(null=True)
-    is_shown = models.BooleanField(default=True)
-
-    def __unicode__(self):
-        return self.name
-
-
 class Page(models.Model):
     category = models.ForeignKey(Category)
     title = models.CharField(max_length=128)
     level_of_difficulty = models.IntegerField(default=0, null=True)
     desc = models.TextField(null=True)
-    is_shown = models.BooleanField(default=True, null=True)
+    is_shown = models.BooleanField(default=True)
     url = models.URLField(null=True)
-    screenshot = models.ImageField(null=True)
+    screenshot = models.ImageField(null=True, upload_to='To discuss with Leif')
     snippet = models.TextField(null=True)
     no_times_shown = models.IntegerField(default=0, null=True)
     no_times_retrieved = models.IntegerField(default=0, null=True)
-    hints = models.Textfield(null=True)
+    hints = models.TextField(null=True)
 
     def __unicode__(self):
         return self.title
@@ -60,7 +61,7 @@ class Achievement(models.Model):
     name = models.CharField(max_length=128)
     level_of_achievement = models.IntegerField(default=0, null=True)
     desc = models.TextField(null=True)
-    badge_icon = models.ImageField(null=True)
+    badge_icon = models.ImageField(null=True, upload_to='To discuss with leif')
 
     def __unicode__(self):
         return self.name
