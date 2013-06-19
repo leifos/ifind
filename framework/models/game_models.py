@@ -21,7 +21,7 @@ class Score(models.Model):
     user = models.ForeignKey(User)
     category = models.ForeignKey(Category)
     total_score = models.IntegerField(default=0, null=True)
-    no_pages_found= models.IntegerField(default=0, null=True)
+    no_pages_found = models.IntegerField(default=0, null=True)
     no_pages_found_in_a_row = models.IntegerField(default=0, null=True)
     when = models.DateTimeField(auto_now=True)
 
@@ -40,7 +40,7 @@ class Category(models.Model):
 
 
 class Page(models.Model):
-    category= models.ForeignKey(Category)
+    category = models.ForeignKey(Category)
     title = models.CharField(max_length=128)
     level_of_difficulty = models.IntegerField(default=0, null=True)
     desc = models.TextField(null=True)
@@ -68,27 +68,28 @@ class Achievement(models.Model):
 
 class CurrentGame(models.Model):
     current_page = models.ForeignKey(Page)
-    category=models.ForeignKey(Category)
-    User= models.ForeignKey(User)
+    category = models.ForeignKey(Category)
+    User = models.ForeignKey(User)
     name = models.CharField(max_length=128)
     no_of_queries_issued = models.IntegerField(default=0, null=True)
     no_of_successful_queries_issued = models.IntegerField(default=0, null=True)
-    no_rounds=models.IntegerField(default=0, null=True)
-    no_rounds_completed=models.IntegerField(default=0, null=True)
-    current_score=models.IntegerField(default=0, null=True)
-    last_query=models.CharField(max_length=1000)
-    last_query_score=models.IntegerField(default=0, null=True)
-    start_time=models.DateTimeField()
-    end_time=models.DateTimeField()
+    no_rounds = models.IntegerField(default=0, null=True)
+    no_rounds_completed = models.IntegerField(default=0, null=True)
+    current_score = models.IntegerField(default=0, null=True)
+    last_query = models.CharField(max_length=1000)
+    last_query_score = models.IntegerField(default=0, null=True)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
     def __unicode__(self):
         return self.name
 
+
 class PlayerAchievement (models.Model):
     user = models.ForeignKey(User)
     achievement= models.ForeignKey(Achievement)
-    when=models.DateTimeField()
-    level=models.IntegerField(default=0, null=True)
+    when = models.DateTimeField()
+    level = models.IntegerField(default=0, null=True)
 
     def __unicode__(self):
         return self.user.name + " has achieved " + self.achievement.name
