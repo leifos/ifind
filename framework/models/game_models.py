@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     is_staff = models.BooleanField(default=True, blank=True, null=True)
     is_student = models.BooleanField(default=True, blanl=True, null=True)
     level_of_experience = models.IntegerField(default=0, null=True)
-    last_time_played = models.DateTimeField
+    last_time_played = models.DateTimeField()
     no_games_played = models.IntegerField(default=0, null=True)
 
     def __unicode__(self):
@@ -78,8 +78,8 @@ class CurrentGame(models.Model):
     current_score=models.IntegerField(default=0, null=True)
     last_query=models.CharField(max_length=1000)
     last_query_score=models.IntegerField(default=0, null=True)
-    start_time=models.DateTimeField
-    end_time=models.DateTimeField
+    start_time=models.DateTimeField()
+    end_time=models.DateTimeField()
 
     def __unicode__(self):
         return self.name
@@ -87,7 +87,7 @@ class CurrentGame(models.Model):
 class PlayerAchievement (models.Model):
     user = models.ForeignKey(User)
     achievement= models.ForeignKey(Achievement)
-    when=models.DateTimeField
+    when=models.DateTimeField()
     level=models.IntegerField(default=0, null=True)
 
     def __unicode__(self):
