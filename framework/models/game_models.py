@@ -1,35 +1,37 @@
 __author__ = 'arazzouk'
 
 from django.db import models
+from django.contrib.auth.models import User
 
-
-class User(models.Model):
-    user_name = models.CharField(max_length=128)
-    password = models.CharField(max_length=128)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
     age = models.IntegerField(default=0, blank=True, null=True)
     gender = models.IntegerField(default=0, blank=True, null=True)
-    no_games_played = models.IntegerField(default=0, null=True)
     level_of_experience = models.IntegerField(default=0, null=True)
     last_time_played = models.DateTimeField(auto_now=True)
-    #ID?
+    no_games_played = models.IntegerField(default=0, null=True)
+
     def __unicode__(self):
-        return self.subject
+        return self.user.name
 
 class Score(models.Model):
+    user = models.ForeignKey(User)
+    category = models.ForeignKey(Category)
     total_score = models.IntegerField(default=0, null=True)
-    no_pages_found_in_a_row = models.IntegerField(default=0, null=True)
     no_pages_found= models.IntegerField(default=0, null=True)
+    no_pages_found_in_a_row = models.IntegerField(default=0, null=True)
     when = models.DateTimeField(auto_now=True)
-def __unicode__(self):
-    return self.subject
+
+    def __unicode__(self):
+        return self.total_score
 
 class Category(models.Model):
     name = models.CharField(max_length=128)
     icon = models.ImageField(default=0, null=True)
     desc = models.CharField(max_length=1000, null=True)
     is_shown = models.BooleanField(default=True)
-def __unicode__(self):
-    return self.subject
+    def __unicode__(self):
+        return self.subject
 
 class Page(models.Model):
     title = models.CharField(max_length=128)
@@ -80,7 +82,7 @@ def __unicode__(self):
 class PlayerAchievement (models.Model):
     when=models.DateTimeField(auto_now=True)
     level=models.IntegerField(default=0, blank=True, null=True)
-    player_id = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     achievement_id= models.ForeignKey(Achievements)
 
 def __unicode__(self):
