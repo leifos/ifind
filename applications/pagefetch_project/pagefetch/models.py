@@ -1,7 +1,6 @@
-from django.db import models
+#from django.db import models
+import ifind.models.test
 
-# Create your models here.
-from ifind.models.game_models import *
 
 
 def add_page_to_db(title, url, image, category):
