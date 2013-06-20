@@ -1,7 +1,15 @@
+__author__ = 'leifos'
+
+
 class Query(object):
     """
     Models a Query object for use with SearchEngine interface.
 
+    Query Attributes:
+        search_terms: a string of search terms
+        lang: a string defining the language of the query/response
+        page: an integer specifying what page of results to return
+        results_per_page: (integer) the desired number of results per page
     """
     def __init__(self, terms, **kwargs):
         """
@@ -12,6 +20,9 @@ class Query(object):
 
         """
         self.terms = terms
+        self.lang = 'EN'
+        self.page = 1
+        self.results_per_page = 10
 
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -29,3 +40,12 @@ class Query(object):
         Returns human-readable string representation of query object.
         """
         return '\n'.join(['{0}: {1}'.format(key, value) for (key, value) in self.__dict__.items()])
+
+    def query_hash(self):
+        """
+        hashes the attributes of the query
+        :return: a hash string of the query
+
+        """
+        pass
+
