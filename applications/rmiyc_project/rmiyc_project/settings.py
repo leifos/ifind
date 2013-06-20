@@ -1,7 +1,16 @@
 # Django settings for rmiyc_project project.
+import os
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+sys.path.append(os.getcwd())
+from config import DATA_DIR
+from config import UPLOAD_DIR
+from config import TEMP_DIR
+from config import DATABASE_NAME
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -12,7 +21,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test.db',                      # Or path to database file if using sqlite3.
+        'NAME': DATABASE_NAME,                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
