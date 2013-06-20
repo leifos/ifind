@@ -15,7 +15,7 @@ def main():
     driver = webdriver.PhantomJS()
 
     parser = argparse.ArgumentParser(description="Take screenshots of web pages")
-    parser.add_argument("-s", "--screenshot")
+    parser.add_argument("-s", "--screenshot", action='store_true')
     parser.add_argument("-w", "--width", type=int,default=800,
                         help="browser width (default=800)")
     parser.add_argument("-H", "--height", type=int, default=600,
