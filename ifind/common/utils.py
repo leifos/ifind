@@ -1,5 +1,6 @@
 __author__ = 'leif'
 
+from selenium import webdriver
 
 def take_screen_shot(url, path, name, height, width):
     """ given the url, take a screen shot and save it to the path/name with dimensions (height, width)
@@ -14,7 +15,12 @@ def take_screen_shot(url, path, name, height, width):
         None
     """
 
-    pass
+
+    driver = webdriver.PhantomJS()
+    driver.set_window_size(width,height)
+    driver.get(url)
+    driver.save_screenshot(path + name)
+    driver.quit()
 
 
 
