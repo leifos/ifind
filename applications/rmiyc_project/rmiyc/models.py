@@ -85,7 +85,6 @@ class CurrentGame(models.Model):
         return self.user.name + ": " + self.current_page.name + " in " + self.category.name
 
 
-
 class PlayerAchievement (models.Model):
     user = models.ForeignKey(User)
     achievement= models.ForeignKey(Achievement)
@@ -102,4 +101,4 @@ class Levels (models.Model):
     level = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.user.name + " has achieved " + self.achievement.name
+        return self.xp + " : " + self.level

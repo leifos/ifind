@@ -1,6 +1,6 @@
 #from django.db import models
-import ifind.models.test
-
+#import ifind.models.test
+import game_models
 
 
 def add_page_to_db(title, url, image, category):
