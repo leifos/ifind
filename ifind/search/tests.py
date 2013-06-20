@@ -7,7 +7,7 @@ from ifind.search.response import Response
 
 q = Query('Hello World', format="ATOM")
 
-se = BingWebSearch(api_key='/aROdM5Ck7fKHR4ge30r8W/K/D84GJkcl42lL8eNMSc=')
+se = BingWebSearch(api_key='')
 
 r = se.search(q)
 
