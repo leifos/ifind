@@ -79,5 +79,21 @@ def main(file_name, category_name, append):
         # create page in models/db with category
         Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot=None).save()
 
+
+def populate_page():
+    pass
+
+
+def check_category_exists():
+    pass
+
+
+def fetch_screen_shot():
+    pass
+
+
+def get_page_title():
+    pass
+
 if __name__ == "__main__":
-    main('/Users/arazzouk/Images/Adam/urls-1.txt','business',True)
+    main('/Users/arazzouk/Images/Adam/urls-1.txt','business',False)
