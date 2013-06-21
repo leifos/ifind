@@ -39,7 +39,14 @@ def crop_screen_shot(source, destination, x1, y1, x2, y2):
     region = im.crop(box)
     region.save(destination)
 
-
+def halve_screen_shot(source,destination):
+    """ open source image, save a cropped top half to destiantion
+    """
+    im = Image.open(source)
+    [x,y] = im.size
+    box = (0,0,x,y/2)
+    region = im.crop(box)
+    region.save(destination)
 
 
 def perform_query(query_terms):

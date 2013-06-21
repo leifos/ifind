@@ -10,7 +10,8 @@ HEIGHT = 600
 #-----------------
 
 utils.take_screen_shot('http://www.facebook.com/','./','fb.png',800,600)
-utils.crop_screen_shot('fb.png')
+#utils.crop_screen_shot('fb.png')
+utils.halve_screen_shot('fb.png','hfb.png')
 
 #-----------------
 #pages = ['http://www.google.com/', 'http://www.facebook.com/', 'http://news.ycombinator.com/']
