@@ -32,7 +32,7 @@ Install yolk to check correct versions of packages with
 
 $pip install yolk
 
-To se packages installed do
+To see packages installed, do
 
 $yolk -l
 
@@ -59,7 +59,7 @@ Get google driver from
 
 https://code.google.com/p/chromedriver/downloads/list
 
-add to the path once dowaded.
+add to the path once downloaded.
 
 
 
