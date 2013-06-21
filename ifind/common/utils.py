@@ -40,13 +40,20 @@ def crop_screen_shot(source, destination, x1, y1, x2, y2):
     region.save(destination)
 
 def halve_screen_shot(source,destination):
-    """ open source image, save a cropped top half to destiantion
+    """ open source image, save a cropped top half to destination
     """
     im = Image.open(source)
     [x,y] = im.size
     box = (0,0,x,y/2)
     region = im.crop(box)
     region.save(destination)
+
+def get_page_title(driver):
+    """ return web page title
+    Args:
+        driver: initialised webdriver with widow size set and web page retrieved
+    """
+    return driver.title()
 
 
 def perform_query(query_terms):
