@@ -1,4 +1,4 @@
-.keys
+*.keys
 
 # Pycharm
 .idea
