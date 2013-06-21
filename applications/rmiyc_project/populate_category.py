@@ -1,11 +1,11 @@
 import ifind.common.utils
 import string
-#from ifind.common.pagecapture import PageCapture
+from ifind.common.pagecapture import PageCapture
 from rmiyc_project import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 from rmiyc.models import Page, Category
-
+import os
 
 def convert_url_to_filename(url):
     """Take a string and return a valid filename constructed from the string.
@@ -37,7 +37,7 @@ def read_in_urls(filename):
     f.close()
     return url_list
 
-def get_category(category_name, desc='', icon='', append=True):
+def get_category(category_name, desc='', icon='', append=False):
     if Category.objects.filter(name=category_name):
         c = Category.objects.get(name=category_name)
         if not append:
@@ -79,21 +79,27 @@ def main(file_name, category_name, append):
         # create the category in the models/db
     c = get_category(category_name)
     #For each url in the url_list
+    obj=PageCapture(800,600)
     for url in url_list:
         print url.strip()
         print '              '
         # convert the url to a filename os.path.join()
-        url_file_name = category_name + '/' + convert_url_to_filename(url.strip()) + '.png'
+        url_file_name = convert_url_to_filename(url.strip()) + '.png'
         print url_file_name
+
+
+        obj.get_webpage(url)
+
         # fetch the screen-shot
             # PageCapture
-
+        obj.take_screen_shot(url,'~/code/applications/rmiyc_project/imgs/',url_file_name,600,800)
         # get the title
             # PageCapture
-        title = 'my title '
+        title = obj.get_page_title()
+        print title
         desc = 'page description'
         # create page in models/db with category
-        Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot=None).save()
+        Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot ='~/code/applications/rmiyc_project/imgs/'+url_file_name).save()
 
 
 
