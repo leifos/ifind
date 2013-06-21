@@ -1,5 +1,8 @@
-# Pycharm
+*.keys
+
+# Pycharm / Python
 .idea
+*.pyc
 
 *~
 *.swp

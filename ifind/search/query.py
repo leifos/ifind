@@ -1,15 +1,12 @@
-__author__ = 'leifos'
-
-
 class Query(object):
     """
     Models a Query object for use with SearchEngine interface.
 
     Query Attributes:
-        search_terms: a string of search terms
-        lang: a string defining the language of the query/response
-        page: an integer specifying what page of results to return
-        results_per_page: (integer) the desired number of results per page
+        terms: a string of search terms (str)
+        lang:  a string defining the language of the query/response (str)
+        page:  an integer specifying what page of results to return (int)
+        results_per_page: the desired number of results per page    (int)
     """
     def __init__(self, terms, **kwargs):
         """
@@ -27,7 +24,7 @@ class Query(object):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    #TODO Do we let punctuation ruin an otherwise perfectly equal couple of queries? Do we strip 'em?
+    # TODO: Use query_hash here to resolve equality.
     def __eq__(self, other):
         """
         Equality method.
@@ -43,9 +40,10 @@ class Query(object):
 
     def query_hash(self):
         """
-        hashes the attributes of the query
+        Hashes the attributes of the query
         :return: a hash string of the query
 
         """
+        # TODO: Use query attributes for hashing
         pass
 
