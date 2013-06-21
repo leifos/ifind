@@ -3,7 +3,8 @@ import string
 #from ifind.common.pagecapture import PageCapture
 from rmiyc_project import settings
 from django.core.management import setup_environ
-#from rmiyc.models import Page, Category
+setup_environ(settings)
+from rmiyc.models import Page, Category
 
 
 def convert_url_to_filename(url):
@@ -19,7 +20,7 @@ def convert_url_to_filename(url):
     """
     valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
     filename = ''.join(c for c in url if c in valid_chars)
-    filename = filename.replace(' ','_') # I don't like spaces in filenames.
+    filename = filename.replace(' ','_') # to remove spaces in file names.
     return filename
 
 
@@ -53,19 +54,20 @@ def main(file_name, category_name, append):
 
     # check to see if the category exists,
         # create the category in the models/db
-    #c = Category.objects.get(name=category_name)
-    #if c:
-        #if not append:
-            #Page.objects.filter(category=c).all().delete()
-   # else:
-        #c = Category(name=category_name, icon="", desc="I am category", isshown=True)
-        #c.save()
+    num = Category.objects.filter(name=category_name).count()
+    if num != 0:
+        c = Category.objects.get(name=category_name)
+        if not append:
+            Page.objects.filter(category=c).all().delete()
+    else:
+        c = Category(name=category_name, icon="", desc="I am category", is_shown=True)
+        c.save()
     #For each url in the url_list
     for url in url_list:
         print url.strip()
         print '              '
         # convert the url to a filename
-        url_file_name=category_name +'/'+ convert_url_to_filename(url.strip()) + '.png'
+        url_file_name = category_name + '/' + convert_url_to_filename(url.strip()) + '.png'
         print url_file_name
         # fetch the screen-shot
             # PageCapture
@@ -75,9 +77,7 @@ def main(file_name, category_name, append):
         title = 'my title '
         desc = 'page description'
         # create page in models/db with category
-        #Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot=None).save()
-
-
+        Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot=None).save()
 
 if __name__ == "__main__":
     main('/Users/arazzouk/Images/Adam/urls-1.txt','business',True)
