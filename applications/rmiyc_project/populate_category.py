@@ -37,6 +37,29 @@ def read_in_urls(filename):
     f.close()
     return url_list
 
+def get_category(category_name, desc='', icon='', append=True):
+    if Category.objects.filter(name=category_name):
+        c = Category.objects.get(name=category_name)
+        if not append:
+            Page.objects.filter(category=c).all().delete()
+    else:
+        c = Category(name=category_name, icon=icon, desc=desc, is_shown=True)
+        c.save()
+    return c
+
+
+def populate_page():
+    pass
+
+
+def fetch_screen_shot():
+    pass
+
+
+def get_page_title():
+    pass
+
+
 
 def main(file_name, category_name, append):
     """
@@ -54,19 +77,12 @@ def main(file_name, category_name, append):
 
     # check to see if the category exists,
         # create the category in the models/db
-    num = Category.objects.filter(name=category_name).count()
-    if num != 0:
-        c = Category.objects.get(name=category_name)
-        if not append:
-            Page.objects.filter(category=c).all().delete()
-    else:
-        c = Category(name=category_name, icon="", desc="I am category", is_shown=True)
-        c.save()
+    c = get_category(category_name)
     #For each url in the url_list
     for url in url_list:
         print url.strip()
         print '              '
-        # convert the url to a filename
+        # convert the url to a filename os.path.join()
         url_file_name = category_name + '/' + convert_url_to_filename(url.strip()) + '.png'
         print url_file_name
         # fetch the screen-shot
@@ -80,20 +96,6 @@ def main(file_name, category_name, append):
         Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot=None).save()
 
 
-def populate_page():
-    pass
-
-
-def check_category_exists():
-    pass
-
-
-def fetch_screen_shot():
-    pass
-
-
-def get_page_title():
-    pass
 
 if __name__ == "__main__":
-    main('/Users/arazzouk/Images/Adam/urls-1.txt','business',False)
+    main('/Users/arazzouk/Images/Adam/urls-1.txt','bu',False)
