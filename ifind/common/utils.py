@@ -1,6 +1,7 @@
 __author__ = 'leif'
 
 from selenium import webdriver
+import Image
 
 def take_screen_shot(url, path, name, height, width):
     """ given the url, take a screen shot and save it to the path/name with dimensions (height, width)
@@ -14,13 +15,30 @@ def take_screen_shot(url, path, name, height, width):
     Returns:
         None
     """
-
-
     driver = webdriver.PhantomJS()
     driver.set_window_size(width,height)
     driver.get(url)
     driver.save_screenshot(path + name)
     driver.quit()
+
+
+def crop_screen_shot(source, destination, x1, y1, x2, y2):
+    """ open source image, crop it with coords upper,left bottom,right
+
+    Args:
+        source: path of image
+        destination: path of cropped image to be stored
+        x1,y1: point in upper left corner of the crop rectangle
+        x2,y2: point in the lower right corner of the crop rectangle
+
+    Returns:
+        None
+    """
+    im = Image.open(source)
+    box = (x1,y1,x2,y2)
+    region = im.crop(box)
+    region.save(destination)
+
 
 
 
