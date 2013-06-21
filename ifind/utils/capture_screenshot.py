@@ -1,58 +1,41 @@
-__author__ = 'leifos'
-__date__ = '2013-06-20'
+import argparse
+from ifind.common import utils
 
-import sys
+def main():
 
-def usage(argv):
-    '''
-    Prints the script's usage details to the console.
-    '''
-    print "Usage:"
-    print "  %s url name height width " % (argv[0])
+    #initialize phantomjs driver
+    driver = utils.webdriver.PhantomJS()
+
+    parser = argparse.ArgumentParser(description="Take screenshots of web pages")
+    parser.add_argument("-s", "--screenshot", action='store_true')
+    parser.add_argument("-w", "--width", type=int,default=800,
+                        help="browser width (default=800)")
+    parser.add_argument("-H", "--height", type=int, default=600,
+                        help="browser height (default=600)")
+    parser.add_argument("--clipwidth", type=int, default=200,
+                        help="width of clipped thumbnail (default=200)")
+    parser.add_argument("--clipheight", type=int, default=150,
+                        help="height of clipped thumbnail (default=150)")
+    parser.add_argument("-wp", "--webpage", type=str,
+                        help="webpage address")
+    parser.add_argument("-f", "--filename", type=str, default="screen.png",
+                        help="filename of saved screenshot (default=screen.png)")
+    args = parser.parse_args()
+
+    #TODO put required args into a group!
+    if not args.webpage and args.filename:
+        parser.print_help()
+        driver.quit()
+        return
+    if args.screenshot:
+        utils.take_screenshot(driver,args)
+
+    driver.quit()
 
 
-def take_screenshot(url, name='img.jpg', width=600, height=400):
-    '''
-        Args: takes a valid url string,
-        the name of the file the screen is to be saved as
-        width of the screen shot in pixels
-        height of the screen shot in pixels
-
-        Returns:
-            None
-    '''
 
 
-def is_url_valid(url):
-    """
-    Args:
-        url: a url string
-    Returns:
-        True if it is a valid url string, else False
-    """
-
-    pass
 
 
-def main(argv = None):
-    '''
-    '''
-    if argv is None:
-        argv = sys.argv
 
-    url = None
-    name = "img.jpg"
-    width = 600
-    height = 400
-    # extract args from command line
-    if len(argv) >= 2:
-        url = argv[1]
-
-        take_screenshot(url,)
-        return 0
-    else: # Invalid number of command-line arguments, print usage
-        usage(argv)
-        return 2
-
-if __name__ == '__main__':
-    sys.exit(main())
+if __name__ == '__main__' : main()
