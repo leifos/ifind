@@ -3,7 +3,7 @@ from ifind.search.query import Query
 
 q = Query('Hello World', source='image')
 
-se = BingWebSearch(api_key='5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ')
+se = BingWebSearch(api_key='')
 
 r = se.search(q)
 
