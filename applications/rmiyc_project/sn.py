@@ -1,8 +1,24 @@
 import ifind.common.utils
 
 
-def screen_shooter():
+def do():
 
+    print 'opening the file'
+    ## Open the file with read only permit
+    f = open('/Users/arazzouk/Images/Adam/urls.txt')
+    ## Read the first line
+    print 'file is opened'
+    line = f.readline()
+
+    ## If the file is not empty keep reading line one at a time
+    ## till the file is empty
+    while line:
+        print line
+        print 'hello'
+        line = f.readline()
+    f.close()
+
+    '''
     imagedir = '/Users/arazzouk/Images/Adam/'
     page = ['http://www.gla.ac.uk/schools/business/']
     name = 'b1.png'
@@ -99,17 +115,4 @@ def screen_shooter():
     name = 'b10.png'
     utils.take_screen_shot(page,imagedir,name,800,600)
 
-    #print 'opening the file'
-    ## Open the file with read only permit
-    #f = open('/Users/arazzouk/Images/Adam/urls.txt')
-    ## Read the first line
-    #print 'file is opened'
-    #line = f.readline()
-
-    ## If the file is not empty keep reading line one at a time
-    ## till the file is empty
-    #while line:
-    #     print line
-    #   print 'hello'
-    #    line = f.readline()
-    #f.close()
+    '''
