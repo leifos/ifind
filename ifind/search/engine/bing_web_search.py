@@ -13,9 +13,6 @@ class BingWebSearch(SearchEngine):
         self.rootURL = "https://api.datamarket.azure.com/Bing/SearchWeb/"
 
 
-        # Create the API URL
-
-
     def set_query_format(self, query, format="ATOM"):
         if format not in ["ATOM","JSON"]:
             query.format = "ATOM"
@@ -67,7 +64,7 @@ class BingWebSearch(SearchEngine):
             xmlTitleData =  r.find('d:title').string
             xmlURLData =  r.find('d:url').string
             xmlDescriptionData = r.find('d:description').string
-            response.add_result(xmlTitleData,xmlURLData,xmlDescriptionData)
+            response.add_result(xmlTitleData, xmlURLData, xmlDescriptionData)
 
         return response
 
