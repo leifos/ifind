@@ -1,58 +1,46 @@
-__author__ = 'leifos'
-__date__ = '2013-06-20'
+#!/usr/bin/env python
+"""
+Take & crop screenshots of web pages, save them to disk
+=============================
+Author: mtbvc <1006404b@student.gla.ac.uk>
+Date:   24/06/2013
+Version: 0.1
 
-import sys
+Usage:
+------
+    ./capture_screenshot.py [options...]
+        -wp,  --webpage         specify an url address
+        -w,   --width           width of browsew window§
+        -H,   --height          height of browser window
+        -f,   --filename        name of screen shot to be save, use full paths.
+"""
 
-def usage(argv):
-    '''
-    Prints the script's usage details to the console.
-    '''
-    print "Usage:"
-    print "  %s url name height width " % (argv[0])
+import argparse
+from ifind.common.pagecapture import PageCapture
 
+def main():
 
-def take_screenshot(url, name='img.jpg', width=600, height=400):
-    '''
-        Args: takes a valid url string,
-        the name of the file the screen is to be saved as
-        width of the screen shot in pixels
-        height of the screen shot in pixels
+    parser = argparse.ArgumentParser(description="Take screenshots of web pages")
+    parser.add_argument("-w", "--width", type=int,default=800,
+                        help="browser width (default=800)")
+    parser.add_argument("-H", "--height", type=int, default=600,
+                        help="browser height (default=600)")
+    parser.add_argument("-wp", "--webpage", type=str,
+                        help="webpage address")
+    parser.add_argument("-f", "--filename", type=str, default="screen.png",
+                        help="filename of saved screenshot (default=screen.png)")
+    args = parser.parse_args()
 
-        Returns:
-            None
-    '''
-
-
-def is_url_valid(url):
-    """
-    Args:
-        url: a url string
-    Returns:
-        True if it is a valid url string, else False
-    """
-
-    pass
-
-
-def main(argv = None):
-    '''
-    '''
-    if argv is None:
-        argv = sys.argv
-
-    url = None
-    name = "img.jpg"
-    width = 600
-    height = 400
-    # extract args from command line
-    if len(argv) >= 2:
-        url = argv[1]
-
-        take_screenshot(url,)
-        return 0
-    else: # Invalid number of command-line arguments, print usage
-        usage(argv)
+    if not args.webpage and args.filename:
+        parser.print_help()
         return 2
+    else:
+        pc = PageCapture(args.webpage,800,600)
+        pc.take_screen_shot(args.filename, args.height, args.width)
+        title = pc.get_page_title
+        print "Screen shot of %s taken and saved to %s." % (title, args.filename)
+        return 0
+
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()
