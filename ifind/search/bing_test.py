@@ -6,7 +6,7 @@ query = Query('Hello World', source_type="Web", format='JSON')
 query2 = Query('Hello World', source_type="Web", format='ATOM')
 query3 = Query('Hello World', source_type="Web", format='JSON', top=10, skip=2)
 
-search_engine = BingWebSearch(api_key="5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ")
+search_engine = BingWebSearch(api_key="")
 
 result = search_engine.search(query)
 result2 = search_engine.search(query2)
