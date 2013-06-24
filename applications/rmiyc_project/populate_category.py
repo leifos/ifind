@@ -30,7 +30,7 @@ def read_in_urls(filename):
 
     # read in file - store in a list (url_list)
     ## Open the file with read only permit
-    f = open(filename,'r')
+    f = open(filename, 'r')
     ## Read the first line
     print 'file is opened'
     url_list = []
@@ -55,7 +55,7 @@ def get_category(category_name, desc='', icon='', append=False):
     return c
 
 
-def populate_pages(url_list , category):
+def populate_pages(url_list, category):
     # create PageCapture object - specify the browser to be 800 x 600.
 
     #For each url in the url_list
@@ -68,7 +68,7 @@ def populate_pages(url_list , category):
         image_file_name = convert_url_to_filename(stripped_url)+'.png'
         obj.load_url(stripped_url)
         # fetch the screen-shot
-        fetch_screen_shot(obj, stripped_url, image_file_name)
+        fetch_screen_shot(obj,  image_file_name)
         # get the title
         title = obj.get_page_title()
         # create page in models/db with category
@@ -76,7 +76,7 @@ def populate_pages(url_list , category):
         print 'Page title= ' + title + '       has been saved!'
 
 
-def fetch_screen_shot(obj, url, image_file_name):
+def fetch_screen_shot(obj, image_file_name):
     obj.take_screen_shot(os.getcwd()+ '/imgs/'+ image_file_name)
 
 
@@ -106,4 +106,4 @@ def main(file_name, category_name, append):
 
 
 if __name__ == "__main__":
-    main('/Users/arazzouk/Images/adam/urls-1.txt','business',False)
+    main('/Users/arazzouk/Images/eng/urls.txt','engineering',False)
