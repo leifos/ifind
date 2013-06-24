@@ -94,7 +94,7 @@ def main(file_name, category_name, append):
         obj.get_webpage(url)
         # fetch the screen-shot
             # PageCapture
-        obj.take_screen_shot(url,'~/code/applications/rmiyc_project/imgs/', image_file_name, 600, 800)
+        obj.take_screen_shot(url,os.path.join(os.getcwd() , 'imgs/'), image_file_name, 600, 800)
         # get the title
             # PageCapture
         title = obj.get_page_title()
