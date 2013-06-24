@@ -6,6 +6,8 @@ from django.core.management import setup_environ
 setup_environ(settings)
 from rmiyc.models import Page, Category
 import os
+from django.core.files import File
+
 
 def convert_url_to_filename(url):
     """Take a string and return a valid filename constructed from the string.
@@ -36,6 +38,7 @@ def read_in_urls(filename):
 
     f.close()
     return url_list
+
 
 def get_category(category_name, desc='', icon='', append=False):
     if Category.objects.filter(name=category_name):
@@ -74,34 +77,24 @@ def main(file_name, category_name, append):
 
     # read in file - store in a list (url_list)
     url_list = read_in_urls(file_name)
-
     # check to see if the category exists,
         # create the category in the models/db
     c = get_category(category_name)
     #For each url in the url_list
     obj=PageCapture(800,600)
     for url in url_list:
-        print url.strip()
-        print '              '
         # convert the url to a filename os.path.join()
-        url_file_name = convert_url_to_filename(url.strip()) + '.png'
-        print url_file_name
-
-
+        url_file_name = convert_url_to_filename(url.strip())+'.png'
         obj.get_webpage(url)
-
         # fetch the screen-shot
             # PageCapture
         obj.take_screen_shot(url,'~/code/applications/rmiyc_project/imgs/',url_file_name,600,800)
         # get the title
             # PageCapture
         title = obj.get_page_title()
-        print title
-        desc = 'page description'
         # create page in models/db with category
-        Page(category=c, title=title, desc=desc, is_shown=True, url=url, screenshot ='~/code/applications/rmiyc_project/imgs/'+url_file_name).save()
-
-
+        Page(category=c, title=title, is_shown=True, url=url, screenshot ='/imgs/'+url_file_name).save()
+        print 'Page title= ' + title + '       has been saved!'
 
 if __name__ == "__main__":
     main('/Users/arazzouk/Images/Adam/urls-1.txt','bu',False)
