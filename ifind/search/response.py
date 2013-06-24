@@ -1,6 +1,3 @@
-__author__ = 'leifos'
-
-
 class Response(object):
     """
     Data model for search results.  Response has four main attributes:
@@ -12,13 +9,13 @@ class Response(object):
 
     """
 
-    def __init__(self, results=[]):
+    def __init__(self, results=None):
 
         """Constructor for Response."""
         self.query_terms = ''
-        self.result_list = results
-        self.results_per_page = len(results)
-        self.total_no_of_results = len(results)
+        self.result_list = results or []
+        self.results_per_page = 0
+        self.total_no_of_results = 0
         self.results_page = 1
 
     def __str__(self):

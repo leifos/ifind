@@ -1,12 +1,26 @@
-from ifind.search.engine.bing_web_search import BingWebSearch
+from ifind.search.engine.bing_web_searchv2 import BingWebSearch
 from ifind.search.query import Query
+import requests
 
-q = Query('Hello World', source='image')
+query = Query('Hello World', source_type="Web", format='JSON')
+query2 = Query('Hello World', source_type="Web", format='ATOM')
+query3 = Query('Hello World', source_type="Web", format='JSON', top=10, skip=2)
 
-se = BingWebSearch(api_key='')
+search_engine = BingWebSearch(api_key="5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ")
 
-r = se.search(q)
+result = search_engine.search(query)
+result2 = search_engine.search(query2)
+result3 = search_engine.search(query3)
 
-print r
+#for r in result.result_list:
+#    print r
 
-print r.print_results()
+#print
+
+#for r in result2.result_list:
+#    print r
+
+print
+
+for r in result3.result_list:
+    print r
