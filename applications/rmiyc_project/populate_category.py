@@ -57,15 +57,16 @@ def get_category(category_name, desc='', icon='', append=False):
 
 def populate_pages(url_list , category):
     # create PageCapture object - specify the browser to be 800 x 600.
-    obj = PageCapture(800, 600)
+
     #For each url in the url_list
     for url in url_list:
         # convert the url to a filename os.path.join()
         # This added a back slash / at the end of the url which caused problems
         # Strip urls from spaces
         stripped_url = url.strip()
+        obj = PageCapture(stripped_url,800, 600)
         image_file_name = convert_url_to_filename(stripped_url)+'.png'
-        obj.get_webpage(stripped_url)
+        obj.load_url(stripped_url)
         # fetch the screen-shot
         fetch_screen_shot(obj, stripped_url, image_file_name)
         # get the title
@@ -76,7 +77,7 @@ def populate_pages(url_list , category):
 
 
 def fetch_screen_shot(obj, url, image_file_name):
-    obj.take_screen_shot(url, os.path.join(os.getcwd(), 'imgs/'), image_file_name, 600, 800)
+    obj.take_screen_shot(os.getcwd()+ '/imgs/'+ image_file_name)
 
 
 def main(file_name, category_name, append):
