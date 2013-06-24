@@ -62,14 +62,16 @@ def populate_pages(url_list , category):
     for url in url_list:
         # convert the url to a filename os.path.join()
         # This added a back slash / at the end of the url which caused problems
-        image_file_name = convert_url_to_filename(url.strip())+'.png'
-        obj.get_webpage(url)
+        # Strip urls from spaces
+        stripped_url = url.strip()
+        image_file_name = convert_url_to_filename(stripped_url)+'.png'
+        obj.get_webpage(stripped_url)
         # fetch the screen-shot
-        fetch_screen_shot(obj,url,image_file_name)
+        fetch_screen_shot(obj, stripped_url, image_file_name)
         # get the title
         title = obj.get_page_title()
         # create page in models/db with category
-        Page(category=category, title=title, is_shown=True, url=url, screenshot ='/imgs/'+image_file_name).save()
+        Page(category=category, title=title, is_shown=True, url=stripped_url, screenshot ='/imgs/'+image_file_name).save()
         print 'Page title= ' + title + '       has been saved!'
 
 
@@ -103,4 +105,4 @@ def main(file_name, category_name, append):
 
 
 if __name__ == "__main__":
-    main('/Users/arazzouk/Images/Adam/urls-1.txt','bu',False)
+    main('/Users/arazzouk/Images/adam/urls-1.txt','business',False)
