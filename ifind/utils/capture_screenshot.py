@@ -1,3 +1,20 @@
+#!/usr/bin/env python
+"""
+Take & crop screenshots of web pages, save them to disk
+=============================
+Author: mtbvc <1006404b@student.gla.ac.uk>
+Date:   24/06/2013
+Version: 0.1
+
+Usage:
+------
+    ./capture_screenshot.py [options...]
+        -wp,  --webpage         specify an url address
+        -w,   --width           width of browsew window§
+        -H,   --height          height of browser window
+        -f,   --filename        name of screen shot to be save, use full paths.
+"""
+
 import argparse
 from ifind.common.pagecapture import PageCapture
 
@@ -14,7 +31,6 @@ def main():
                         help="filename of saved screenshot (default=screen.png)")
     args = parser.parse_args()
 
-    #TODO put required args into a group!
     if not args.webpage and args.filename:
         parser.print_help()
         return 2
