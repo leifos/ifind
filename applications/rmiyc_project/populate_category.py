@@ -28,6 +28,7 @@ def convert_url_to_filename(url):
 
 def read_in_urls(filename):
 
+    # read in file - store in a list (url_list)
     ## Open the file with read only permit
     f = open(filename,'r')
     ## Read the first line
@@ -42,27 +43,38 @@ def read_in_urls(filename):
 
 
 def get_category(category_name, desc='', icon='', append=False):
+    # check to see if the category exists
     if Category.objects.filter(name=category_name):
         c = Category.objects.get(name=category_name)
         if not append:
             Page.objects.filter(category=c).all().delete()
     else:
+        # create the category in the models/db
         c = Category(name=category_name, icon=icon, desc=desc, is_shown=True)
         c.save()
     return c
 
 
-def populate_page():
-    pass
+def populate_pages(url_list , category):
+    # create PageCapture object - specify the browser to be 800 x 600.
+    obj = PageCapture(800, 600)
+    #For each url in the url_list
+    for url in url_list:
+        # convert the url to a filename os.path.join()
+        # This added a back slash / at the end of the url which caused problems
+        image_file_name = convert_url_to_filename(url.strip())+'.png'
+        obj.get_webpage(url)
+        # fetch the screen-shot
+        fetch_screen_shot(obj,url,image_file_name)
+        # get the title
+        title = obj.get_page_title()
+        # create page in models/db with category
+        Page(category=category, title=title, is_shown=True, url=url, screenshot ='/imgs/'+image_file_name).save()
+        print 'Page title= ' + title + '       has been saved!'
 
 
-def fetch_screen_shot():
-    pass
-
-
-def get_page_title():
-    pass
-
+def fetch_screen_shot(obj, url, image_file_name):
+    obj.take_screen_shot(url, os.path.join(os.getcwd(), 'imgs/'), image_file_name, 600, 800)
 
 
 def main(file_name, category_name, append):
@@ -78,29 +90,17 @@ def main(file_name, category_name, append):
     :return:
     """
 
-    # create PageCapture object - specify the browser to be 800 x 600.
-
     # read in file - store in a list (url_list)
     url_list = read_in_urls(file_name)
-    # check to see if the category exists,
-        # create the category in the models/db
+    # check to see if the category exists
+    # create the category in the models/db
     c = get_category(category_name)
     #For each url in the url_list
-    obj = PageCapture(800, 600)
-    for url in url_list:
-        # convert the url to a filename os.path.join()
-        # This added a back slash / at the end of the url which caused problems
-        image_file_name = convert_url_to_filename(url.strip())+'.png'
-        obj.get_webpage(url)
         # fetch the screen-shot
-            # PageCapture
-        obj.take_screen_shot(url,os.path.join(os.getcwd() , 'imgs/'), image_file_name, 600, 800)
         # get the title
-            # PageCapture
-        title = obj.get_page_title()
         # create page in models/db with category
-        Page(category=c, title=title, is_shown=True, url=url, screenshot ='/imgs/'+image_file_name).save()
-        print 'Page title= ' + title + '       has been saved!'
+    populate_pages(url_list, c)
+
 
 if __name__ == "__main__":
     main('/Users/arazzouk/Images/Adam/urls-1.txt','bu',False)
