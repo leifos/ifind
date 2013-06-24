@@ -7,7 +7,7 @@ Version: 0.1
 
 Requires:
 ---------
-      selenium, PIP, PhantomJS
+      selenium, PIL, PhantomJS
 """
 
 from selenium import webdriver
@@ -21,10 +21,12 @@ class PageCapture:
         self.driver = webdriver.PhantomJS()
         self.driver.set_window_size(width,height)
         self.scrshot = None
-        if url is not None:
+
+        self.url = url
+        if url:
             self.load_url(url)
-        else:
-            self.url = url
+
+
 
     def load_url(self,url):
         """ url format: 'http://www.example.com'
@@ -33,11 +35,13 @@ class PageCapture:
         returns: True if the page is loaded in the driver, else False
 
         """
+        # check the url string. does it have http:// or not?
+
         self.driver.get(url)
-        page = self.driver.current_url
+        page_url = self.driver.current_url
         # if driver is loaded
-        if page != "about:blank":
-            self.url = page
+        if page_url != "about:blank":
+            self.url = page_url
             return True
         else:
             self.url = None
@@ -55,6 +59,8 @@ class PageCapture:
             Returns:
                 True if success, False otherwise
         """
+        # check filename for filetype - set save type in driver
+
         if self.url:
             success = self.driver.save_screenshot(filename)
             if success:
@@ -86,6 +92,9 @@ class PageCapture:
         else:
             print ("Take a screen shot first!")
             return False
+
+    def resize_screen_shot(self, filename, height, width):
+        pass
 
 
     def halve_screen_shot(self, filename):

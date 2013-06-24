@@ -10,7 +10,7 @@ from django.core.files import File
 
 
 def convert_url_to_filename(url):
-    """Take a string and return a valid filename constructed from the string.
+    """Take a url string and return a valid filename constructed from the string.
     Uses a whitelist approach: any characters not present in valid_chars are
     removed. Also spaces are replaced with underscores.
 
@@ -19,6 +19,12 @@ def convert_url_to_filename(url):
     and append a file extension like '.txt', so I avoid the potential of using
     an invalid filename.
 
+    >>> convert_url_to_filename("http://www.google.com")
+    'www-google-com'
+    >>> convert_url_to_filename("http://www.dcs.gla.ac.uk/~leif/index.html")
+    'www-dcs-gla-ac-uk-leif-index-html'
+    >>> convert_url_to_filename("www.ball.com/dj")
+    'www-ball-com-dj'
     """
     valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
     filename = ''.join(c for c in url if c in valid_chars)
@@ -27,7 +33,6 @@ def convert_url_to_filename(url):
 
 
 def read_in_urls(filename):
-
     # read in file - store in a list (url_list)
     ## Open the file with read only permit
     f = open(filename, 'r')
@@ -35,7 +40,11 @@ def read_in_urls(filename):
     print 'file is opened'
     url_list = []
     for line in f:
-        url_list.append(line)
+        # clean up the url
+        url = line.strip()
+        # validate the url
+        # is it a well-formed url string
+        url_list.append(url)
 
     f.close()
     print 'file is closed'
@@ -43,6 +52,15 @@ def read_in_urls(filename):
 
 
 def get_category(category_name, desc='', icon='', append=False):
+    """getter/setter function which creates or gets the category from the model
+
+    :param category_name: string
+    :param desc: string
+    :param icon: image
+    :param append: boolean, defaults to false, if false, deletes all existing pages from category
+    :return: Category object
+    """
+
     # check to see if the category exists
     if Category.objects.filter(name=category_name):
         c = Category.objects.get(name=category_name)
@@ -56,6 +74,12 @@ def get_category(category_name, desc='', icon='', append=False):
 
 
 def populate_pages(url_list, category):
+    """
+
+    :param url_list:
+    :param category:
+    :return:
+    """
     # create PageCapture object - specify the browser to be 800 x 600.
 
     #For each url in the url_list
@@ -63,21 +87,21 @@ def populate_pages(url_list, category):
         # convert the url to a filename os.path.join()
         # This added a back slash / at the end of the url which caused problems
         # Strip urls from spaces
-        stripped_url = url.strip()
-        obj = PageCapture(stripped_url,800, 600)
-        image_file_name = convert_url_to_filename(stripped_url)+'.png'
-        obj.load_url(stripped_url)
+
+        pc = PageCapture(url,800, 600)
+        url_file_name = convert_url_to_filename(url)+'.png'
+        image_file_name = os.path.join(os.getcwd(),'imgs',url_file_name)
+        print image_file_name
+        pc.load_url(url)
         # fetch the screen-shot
-        fetch_screen_shot(obj,  image_file_name)
+        pc.fetch_screen_shot(image_file_name)
         # get the title
-        title = obj.get_page_title()
+        title = pc.get_page_title()
         # create page in models/db with category
-        Page(category=category, title=title, is_shown=True, url=stripped_url, screenshot ='/imgs/'+image_file_name).save()
-        print 'Page title= ' + title + '       has been saved!'
+        Page(category=category, title=title, is_shown=True, url=url, screenshot =image_file_name).save()
+        print 'Page title= ' + title + ' has been saved!'
 
 
-def fetch_screen_shot(obj, image_file_name):
-    obj.take_screen_shot(os.getcwd()+ '/imgs/'+ image_file_name)
 
 
 def main(file_name, category_name, append):
@@ -106,4 +130,7 @@ def main(file_name, category_name, append):
 
 
 if __name__ == "__main__":
+    import doctest
+    test_results = doctest.testmod()
+    print test_results
     main('/Users/arazzouk/Images/eng/urls.txt','engineering',False)
