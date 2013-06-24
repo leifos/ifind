@@ -10,7 +10,7 @@ Usage:
 ------
     ./capture_screenshot.py [options...]
         -wp,  --webpage         specify an url address
-        -w,   --width           width of browsew window§
+        -w,   --width           width of browser window
         -H,   --height          height of browser window
         -f,   --filename        name of screen shot to be save, use full paths.
 """
@@ -36,8 +36,8 @@ def main():
         return 2
     else:
         pc = PageCapture(args.webpage,800,600)
-        pc.take_screen_shot(args.filename, args.height, args.width)
-        title = pc.get_page_title
+        pc.take_screen_shot(args.filename)
+        title = pc.get_page_title()
         print "Screen shot of %s taken and saved to %s." % (title, args.filename)
         return 0
 
