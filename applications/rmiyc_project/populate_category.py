@@ -37,6 +37,7 @@ def read_in_urls(filename):
         url_list.append(line)
 
     f.close()
+    print 'file is closed'
     return url_list
 
 
@@ -66,6 +67,10 @@ def get_page_title():
 
 def main(file_name, category_name, append):
     """
+
+    :param file_name:
+    :param category_name:
+    :param append:
     args:
         filename: takes in a filename containing a list of urls
         category_name: takes in a category_name
@@ -81,19 +86,20 @@ def main(file_name, category_name, append):
         # create the category in the models/db
     c = get_category(category_name)
     #For each url in the url_list
-    obj=PageCapture(800,600)
+    obj = PageCapture(800, 600)
     for url in url_list:
         # convert the url to a filename os.path.join()
-        url_file_name = convert_url_to_filename(url.strip())+'.png'
+        # This added a back slash / at the end of the url which caused problems
+        image_file_name = convert_url_to_filename(url.strip())+'.png'
         obj.get_webpage(url)
         # fetch the screen-shot
             # PageCapture
-        obj.take_screen_shot(url,'~/code/applications/rmiyc_project/imgs/',url_file_name,600,800)
+        obj.take_screen_shot(url,'~/code/applications/rmiyc_project/imgs/', image_file_name, 600, 800)
         # get the title
             # PageCapture
         title = obj.get_page_title()
         # create page in models/db with category
-        Page(category=c, title=title, is_shown=True, url=url, screenshot ='/imgs/'+url_file_name).save()
+        Page(category=c, title=title, is_shown=True, url=url, screenshot ='/imgs/'+image_file_name).save()
         print 'Page title= ' + title + '       has been saved!'
 
 if __name__ == "__main__":
