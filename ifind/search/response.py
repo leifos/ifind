@@ -4,7 +4,7 @@ class Response(object):
 
     Response Attributes:
         query_terms:  string representation of original query terms
-        results:      list representation of retrieved results
+        results:      list representation of retrieved results (each result being a dict)
         result_total: integer representation of total results retrieved
     """
 
@@ -25,14 +25,14 @@ class Response(object):
         """
         return '\n'.join(['{0}: {1}'.format(key, value) for (key, value) in self.__dict__.items()])
 
-    def add_result(self, title, link, summary=''):
+    def add_result(self, title, url, summary=''):
         """
         :param title: string representation of result title
-        :param link:  string representation of result url
+        :param url:  string representation of result url
         :param summary: string representation of result's summary
 
         """
-        result = {'title': title, 'link': link, 'summary': summary}
+        result = {'title': title, 'url': url, 'summary': summary}
         self.results.append(result)
         self.result_total += 1
 

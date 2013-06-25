@@ -11,4 +11,6 @@ search_engine = BingWebSearch(api_key="5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfT
 
 result = search_engine.search(query)
 
-print result
+for r in result.results:
+    print r['url']
+
