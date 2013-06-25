@@ -155,4 +155,5 @@ if __name__ == "__main__":
     import doctest
     test_results = doctest.testmod()
     print test_results
-    main('/Users/arazzouk/Images/eng/urls.txt','engineering',False)
+    if not test_results.failed:
+        main('/Users/arazzouk/Images/eng/urls.txt','engineering',False)
