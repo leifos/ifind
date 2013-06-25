@@ -43,7 +43,7 @@ def search(request):
             query = request.POST['query'].strip()
             if query:
                 query = Query(query, source_type="Web", format='JSON')
-                search_engine = BingWebSearch(api_key="")
+                search_engine = BingWebSearch(api_key="m8KBb9SgQxAAnoAl6PJRnCqdaaKQKVk3Z+iWnj4OR5s")
                 result = search_engine.search(query)
 
         return render_to_response('rmiyc/Game.html',{ 'result_list': result.result_list }, context)
