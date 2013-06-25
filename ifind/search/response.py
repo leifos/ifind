@@ -1,37 +1,45 @@
 class Response(object):
     """
-    Data model for search results.  Response has four main attributes:
-    * results_per_page: integer
-    * total_no_of_results: integer
-    * result_page: integer
-    * results_list: list of results [{title, link, summary, etc}, ...]
-    * search_query: string
+    Models a Response object for use with ifind's search interface.
 
+    Response Attributes:
+        query_terms:  string representation of original query terms
+        results:      list representation of retrieved results (each result being a dict)
+                      i.e {'title': Crow Rearing, 'url': http://etc.com, 'summary': How to rear crows?}
+        result_total: integer representation of total results retrieved
     """
 
     def __init__(self, results=None):
+        """
+        Constructs Response object.
 
-        """Constructor for Response."""
+        """
         self.query_terms = ''
-        self.result_list = results or []
-        self.results_per_page = 0
-        self.total_no_of_results = 0
-        self.results_page = 1
+        self.results = results or []
+        self.result_total = 0
 
+    # TODO
     def __str__(self):
-        return self.query_terms
+        """
+        Returns human-readable string representation of query object.
 
+        """
+        return '\n'.join(['{0}: {1}'.format(key, value) for (key, value) in self.__dict__.items()])
 
-    def add_result(self, title, link, summary='', **kwargs):
-        result_item_dict = {'title': title, 'link': link, 'summary': summary}
-        self.result_list.append(result_item_dict)
-        self.results_per_page += 1
-        self.total_no_of_results += 1
+    def add_result(self, title, url, summary=''):
+        """
+        :param title: string representation of result title
+        :param url:  string representation of result url
+        :param summary: string representation of result's summary
+
+        """
+        result = {'title': title, 'url': url, 'summary': summary}
+        self.results.append(result)
+        self.result_total += 1
 
     def print_results(self):
-        for r in self.result_list:
+        for r in self.results:
             print r
-
 
     def from_oss_feed(self, oss_xml_feed):
         """
@@ -50,7 +58,6 @@ class Response(object):
         """
         pass
 
-
     def to_atom(self):
         """
         Creates an XML from a OpenSearch Response.
@@ -60,7 +67,6 @@ class Response(object):
         * response_xml (str): OpenSearch Response as an ATOM feed
         """
         pass
-
 
     def to_json(self):
         """

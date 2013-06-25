@@ -1,56 +1,32 @@
-__author__ = 'leifos'
-
-# -*- coding: utf8 -*-
-
-import urllib2
-from ifind.search.response import Response
-from ifind.search.query import Query
-
 class SearchEngine(object):
-    """Abstract search engine interface."""
+    """
+    Abstract search engine interface.
 
-    def __init__(self, proxy_host=None, api_key=None, **kwargs):
+    """
+
+    def __init__(self, api_key=None, proxies=None):
         """
         Constructor for SearchEngine.
 
-        Parameters:
-            * kwargs: any additional invalid options that were added that the dervived clases don't handle
+        :param api_key: string representing unique API access key (optional)
+        :param proxies: dict representing proxies to use
+                        i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
         """
-
         self.name = self.__class__.__name__
         self.api_key = api_key
-        self.proxy_host = proxy_host
-        self.configure_opener()
+        self.proxies = proxies
 
-
-    def _origin(self):
-        """ This defines the default origin (0-indexed) for results retrieved from a search engine."""
-        return 0
-
-    def configure_opener(self):
-        """Configure urllib2 opener with network proxy if one has been added to the parent services config dictionary"""
-
-        if self.proxy_host:
-            proxy_support = urllib2.ProxyHandler({'http': self.proxy_host})
-            opener = urllib2.build_opener(proxy_support)
-        else:
-            opener = urllib2.build_opener()
-
-        urllib2.install_opener(opener)
+    # TODO Investigate requests exceptions with bad urls, bad keys etc, extend docstring to implementations.
 
     def search(self, query):
         """
-        Perform a search, retrieve the results and process them into the response format.
+        Performs a search, retrieves the results and returns them as an ifind response.
 
         N.B. This should be implemented in the derived classes.
 
-        Parameters:
-
-        * query (ifind.search.Query): query object
-
-        Returns:
-
-        * results (ifind.search.Response): results of the search
+        :param query: ifind.search.query.Query object
+        :returns ifind.search.response.Response object
+        :raises Requests bad url or something
 
         """
         pass

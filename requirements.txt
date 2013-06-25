@@ -26,4 +26,4 @@ PyYAML==3.10
 zope.interface==3.8.0
 redis==2.7.6
 requests==1.2.3
-PhantomJS==
+PhantomJS==1.9

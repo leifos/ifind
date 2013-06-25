@@ -1,52 +1,40 @@
 class Query(object):
     """
-    Models a Query object for use with SearchEngine interface.
+    Models a Query object for use with ifind SearchEngine interface.
 
     Query Attributes:
-        terms: a string of search terms (str)
-        lang:  a string defining the language of the query/response (str)
-        top:   an integer specifying the number of results to return (int)
-        skip:  an integer specifying the offset for the starting point of results returned (int)
+        terms:  a string of search terms
+        lang:   a string defining the language of the results
+        format: a string defining the result format (json, xml)
+        top:   an integer specifying the number of results to return
+        skip:  an integer specifying the offset of starting point for results returned
+        source_type: a string defining the type of query (web, image, video)
     """
-    def __init__(self, terms, source_type=None, **kwargs):
+    def __init__(self, terms, lang='EN', format='JSON', top=20, skip=0, source_type='web', **kwargs):
         """
-        Constructs Query object, taking optional keyword parameters as instance attributes.
-
-        :param self:
-        :param terms: the search terms of the query (str)
-        :param source_type: data type of search response
+        Constructs Query object, creating instance attributes from optional keyword parameters (**kwargs).
 
         """
         self.terms = terms
         self.source_type = source_type
-        self.format = 'ATOM'
-        self.lang = 'EN'
-        self.top = 10
-        self.skip = 0
+        self.format = format
+        self.lang = lang
+        self.top = top
+        self.skip = skip
 
-        for key, value in kwargs.items():
+        for key, value in kwargs.iteritems():
             setattr(self, key, value)
-
-    # TODO: Use query_hash here to resolve equality.
-    def __eq__(self, other):
-        """
-        Equality method.
-
-        """
-        return set(self.terms.lower()) == set(other.terms.lower())
 
     def __str__(self):
         """
         Returns human-readable string representation of query object.
+
         """
         return '\n'.join(['{0}: {1}'.format(key, value) for (key, value) in self.__dict__.items()])
 
-    def query_hash(self):
+    def __eq__(self, other):
         """
-        Hashes the attributes of the query
-        :return: a hash string of the query
+        Returns True if both querys' attributes are identical, False otherwise.
 
         """
-        # TODO: Use query attributes for hashing
-        pass
-
+        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
