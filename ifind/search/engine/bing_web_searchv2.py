@@ -5,12 +5,14 @@ import BeautifulSoup as BS
 import ifind.search.response as ifind
 from ifind.search.searchengine import SearchEngine
 
-# TODO Work out how to generalise the following into perhaps some kind of definition file per engine implementation
+# TODO Make definition file. Have constructor for derived classes load it.
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
-FORMATS = ["JSON", "ATOM"]
+KEY_REQUIRED = True
+
+FORMATS = ("JSON", "ATOM")
+
 MAX_PAGE_SIZE = 50
-MAX_RESULTS = 1000
 
 WEB_SOURCE_TYPE = 'Web'
 IMAGE_SOURCE_TYPE = 'Image'
@@ -30,30 +32,43 @@ DEFAULT_SOURCE_TYPE = WEB_SOURCE_TYPE
 
 class BingWebSearch(SearchEngine):
 
-    def __init__(self, proxy_host=None, api_key=None, **kwargs):
+    def __init__(self, **kwargs):
 
-        SearchEngine.__init__(self, proxy_host, api_key, **kwargs)
+        """
+        Constructor for BingWebSearch class, inheriting from ifind's SearchEngine.
+
+        :param api_key: string representing unique API access key (optional)
+        :param proxies: dict representing proxies to use
+                        i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
+        """
+        SearchEngine.__init__(self, **kwargs)
 
         self.rootURL = API_ENDPOINT
+        self.formats = FORMATS
+        self.max_page_size = MAX_PAGE_SIZE
+        self.source_types = SOURCE_TYPES
+
+        if (self.api_key is None) and KEY_REQUIRED:
+            print 'Key required'
+            # TODO raise API KEY Exception
 
     def search(self, query):
         """
-        Overridden search method for Microsoft's Bing Search
+        Performs a search, retrieves the results and returns them as an ifind response.
 
-        :param query: ifind.search.query.Query
+        N.B. This is derived from ifind's SearchEngine class.
 
-        :returns ifind.search.response.Response
-
-        :raises urllib2.URLError, API key error
+        :param query: ifind.search.query.Query object
+        :return ifind.search.response.Response object
+        :raises Bad request etc
 
         """
-
         query_string = self._create_query_string(query)
         results = requests.get(query_string, auth=("", self.api_key))
 
-        if query.format == "ATOM":
+        if query.format == 'ATOM':
             return self._parse_xml_response(query, results)
-        if query.format == "JSON":
+        if query.format == 'JSON':
             return self._parse_json_response(query, results)
 
         # TODO Exception handling
@@ -64,17 +79,21 @@ class BingWebSearch(SearchEngine):
         Generates & returns Bing API query string
 
         :param query: ifind.search.query.Query
-        :return: url string for rest request to bing search api
+        :return string representation of query url for REST request to bing search api
 
         """
         if query.source_type in SOURCE_TYPES:
             source_type = query.source_type
         else:
             source_type = DEFAULT_SOURCE_TYPE
-            print "*** Warning: Query's source type doesn't match engine's -- See BingWebSearch Class ***"
+            print "*** Warning: Query source type doesn't match engine's. Using engine default ***"
 
         if query.format not in FORMATS:
-            print "*** Warning: Query's response format doesn't match engine's -- See BingWebSearch Class ***"
+            print "*** Warning: Query source type doesn't match engine's. Using engine default ***"
+
+        # TODO Find a way to define format, top and skip as implementation parameters that need to be matched.
+        # TODO Although not too much hassle to just define/adapt/implement here as long as consistent between engines.
+        # TODO Maybe have a method called map_query or something that maps the query attributes to what's available.
 
         params = {'$format': query.format,
                   '$top': query.top,
@@ -93,8 +112,8 @@ class BingWebSearch(SearchEngine):
         """
         Encodes query string as defined in the Bing API Specification.
 
-        :param query_string:
-        :return encoded_string
+        :param query_string: string representation of query url for REST request to bing search api
+        :return encoded query string
 
         """
         encoded_string = string.replace(query_string, "'", '%27')
@@ -112,11 +131,10 @@ class BingWebSearch(SearchEngine):
         Parses Bing XML response and returns ifind.search.response.Response object
 
         :param query: original ifind.search.query.Query object
-        :param results: requests response object obtained from API request
+        :param results: response object (requests) obtained from API request
         :return: ifind.search.response.Response object
 
         """
-
         response = ifind.Response()
         response.query_terms = query.terms
 
@@ -134,14 +152,13 @@ class BingWebSearch(SearchEngine):
 
     def _parse_json_response(self, query, results):
         """
-        Parses Bing JSON response and returns ifind.seardh.response.Response object
+        Parses Bing JSON response and returns ifind.search.response.Response object
 
         :param query: original ifind.search.query.Query object
-        :param results: requests response object obtained from API request
+        :param results: response object (requests) obtained from API request
         :return: ifind.search.response.Response object
 
         """
-
         response = ifind.Response()
         response.query_terms = query.terms
 
@@ -154,4 +171,4 @@ class BingWebSearch(SearchEngine):
 
         # TODO Exception handling and further Response refinements
 
-        # TODO Wait for further engine implementations before trying to generalise abstract/concrete engine inheritance semantics
+        # TODO Further engine implementation needed before generalising abstract/concrete engine inheritance semantics
