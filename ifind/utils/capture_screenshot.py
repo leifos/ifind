@@ -35,7 +35,7 @@ def main():
         parser.print_help()
         return 2
     else:
-        pc = PageCapture(args.webpage,800,600)
+        pc = PageCapture(args.webpage,args.width,args.height)
         pc.take_screen_shot(args.filename)
         title = pc.get_page_title()
         print "Screen shot of %s taken and saved to %s." % (title, args.filename)
