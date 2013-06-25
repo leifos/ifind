@@ -5,6 +5,7 @@ class Response(object):
     Response Attributes:
         query_terms:  string representation of original query terms
         results:      list representation of retrieved results (each result being a dict)
+                      i.e {'title': Crow Rearing, 'url': http://etc.com, 'summary': How to rear crows?}
         result_total: integer representation of total results retrieved
     """
 
