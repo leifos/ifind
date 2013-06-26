@@ -81,15 +81,12 @@ class PageCapture:
             Returns:
                 True if success, False otherwise
         """
-        if self.url:
-            success = self.driver.save_screenshot(filename)
-            if success:
-                self.screen_shot = Image.open(filename)
-                return True
-            return False
-        else:
-            print ("Get an url first!")
-            return False
+        self._ensure_screen_shot(filename)
+        success = self.driver.save_screenshot(filename)
+        if success:
+            self.screen_shot = Image.open(filename)
+            return True
+        return False
 
     def crop_screen_shot(self, filename, x1, y1, x2, y2):
         """ open source image, crop it with coords upper,left bottom,right
@@ -109,8 +106,8 @@ class PageCapture:
         self.screen_shot = region
         region.save(filename)
 
-    def resize_screen_shot(self, filename, height, width):
-        """ resize a screen shot to size height,width and save it to
+    def resize_screen_shot(self, filename, width, height):
+        """ resize a screen shot to size width, height and save it to
             filename. If screen shot not yet made, takes a screen
             shot first.
 
@@ -118,7 +115,7 @@ class PageCapture:
         """
         self._ensure_screen_shot(filename)
         #resize() takes a tuple as an argument
-        size = (height, width)
+        size = (width, height)
         resized = self.screen_shot.resize(size,Image.ANTIALIAS)
         resized.save(filename)
 
@@ -126,18 +123,15 @@ class PageCapture:
         """ args: filename - where the screen shot will be saved to.
 
             Returns:
-                True if success, False otherwise
+                None
         """
-        if self.screen_shot:
-            [x,y] = self.screen_shot.size
-            box = (0,0,x,y/2)
-            region = self.screen_shot.crop(box)
-            region.save(filename)
-            #save the cropped image back into instance var
-            self.screen_shot = Image.open(filename)
-            return True
-        else:
-            return False
+        self._ensure_screen_shot(filename)
+        [x,y] = self.screen_shot.size
+        box = (0,0,x,y/2)
+        region = self.screen_shot.crop(box)
+        region.save(filename)
+        #save the cropped image back into instance var
+        self.screen_shot = Image.open(filename)
 
     def get_page_title(self):
         """ Returns web page title """
