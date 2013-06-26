@@ -12,7 +12,6 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.name
 
-
 class Category(models.Model):
     name = models.CharField(max_length=128)
     icon = models.ImageField(default=0, null=True)

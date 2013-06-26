@@ -11,7 +11,7 @@ MAX_QUERIES_PER_PAGE = 5
 GAME_LENGTH_IN_SECONDS = 0
 
 
-def create_game(current_game, user, cat, pages, game_type):
+def create_game(user, cat, game_type=0):
     """ create a new game for the user given the category
     set the cu
     :param user: User object
@@ -24,6 +24,9 @@ def create_game(current_game, user, cat, pages, game_type):
 
     #set starting values for game
 
+    # get the pages associated with the category (cat)
+    pages = get_pages_to_use(cat, game_type)
+
     #set starting page order for game
     create_page_ordering(pages, game)
     # now set the first page to find in the game
@@ -31,9 +34,11 @@ def create_game(current_game, user, cat, pages, game_type):
     # save to db
     update_game(game)
 
-    pass
+    return game
 
-def retrieve_game(current_game, user, game_id):
+
+
+def retrieve_game(user, game_id):
     """ find the game associated with this user, and return the
         record from models.current_game
     :param user:
@@ -79,7 +84,7 @@ def update_game(game):
 
 
 def create_page_ordering(pages, game):
-    """ given a set of pages, create the ordering of pages for the game
+    """ given a list of pages, create the ordering of pages for the game
     :param pages:
     :return:
     """
@@ -93,10 +98,21 @@ def create_page_ordering(pages, game):
 
 def set_next_page(pages, game):
     # from game get the page_list
+    page_list = get_page_list(game)
 
     # given the round, select the page_id from page_list
 
     # associate the page from the page model to game
+
+    pass
+
+
+def get_pages_to_use(cat, game_type):
+    """ select a bunch of pages given the category and the game type
+    :param cat:
+    :param game_type:
+    :return:
+    """
     pass
 
 

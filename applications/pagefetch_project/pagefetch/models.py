@@ -3,8 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import imaplib
 from pagefetch_configuration import UPLOAD_DIR
-
-
+#from ifind.models.test_model import Temp
+import ifind.models.test_model
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
