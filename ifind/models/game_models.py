@@ -13,7 +13,6 @@ class UserProfile(models.Model):
         return self.user.name
 
 
-
 class Category(models.Model):
     name = models.CharField(max_length=128)
     icon = models.ImageField(default=0, null=True)
@@ -66,7 +65,7 @@ class Achievement(models.Model):
 class CurrentGame(models.Model):
     current_page = models.ForeignKey(Page)
     category = models.ForeignKey(Category)
-    User = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=128)
     no_of_queries_issued = models.IntegerField(default=0, null=True)
     no_of_successful_queries_issued = models.IntegerField(default=0, null=True)

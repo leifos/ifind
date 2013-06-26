@@ -18,9 +18,5 @@ def convert_url_to_filename(url):
 
     pass
 
-
-if '__name__' == '__main__':
-    import doctest
-    test_results = doctest.testmod()
-    print test_results
-
+if __name__ == '__main__':
+    print "cock"
