@@ -4,9 +4,11 @@ from django.contrib.auth.models import User
 import imaplib
 from pagefetch_configuration import UPLOAD_DIR
 
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    xp= models.IntegerField(default=0)
+    xp = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
     xp_to_next_level = models.IntegerField(default=1)
     last_time_played = models.DateTimeField()
@@ -19,8 +21,8 @@ class UserProfile(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=128)
-    icon = models.ImageField(null=True, upload_to=UPLOAD_DIR)
-    desc = models.TextField(null=True)
+    icon = models.ImageField(null=True, upload_to=UPLOAD_DIR, blank=True)
+    desc = models.TextField(null=True, blank=True)
     is_shown = models.BooleanField(default=True)
 
     def __unicode__(self):
@@ -42,15 +44,15 @@ class Score(models.Model):
 class Page(models.Model):
     category = models.ForeignKey(Category)
     title = models.CharField(max_length=128)
-    level_of_difficulty = models.IntegerField(default=0, null=True)
-    desc = models.TextField(null=True)
+    level_of_difficulty = models.IntegerField(default=0, null=True, blank=True)
+    desc = models.TextField(null=True, blank=True)
     is_shown = models.BooleanField(default=True)
     url = models.URLField(null=True)
     screenshot = models.ImageField(null=True, upload_to=UPLOAD_DIR)
     snippet = models.TextField(null=True)
-    no_times_shown = models.IntegerField(default=0, null=True)
-    no_times_retrieved = models.IntegerField(default=0, null=True)
-    hints = models.CharField(max_length=256, null=True)
+    no_times_shown = models.IntegerField(default=0)
+    no_times_retrieved = models.IntegerField(default=0)
+    hints = models.CharField(max_length=256, null=True, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -72,6 +74,7 @@ class CurrentGame(models.Model):
     user = models.ForeignKey(User)
 
     no_of_queries_issued = models.IntegerField(default=0, null=True)
+    no_of_queries_issued_for_current_page = models.IntegerField(default=0, null=True)
     no_of_successful_queries_issued = models.IntegerField(default=0, null=True)
     no_rounds = models.IntegerField(default=0, null=True)
     no_rounds_completed = models.IntegerField(default=0, null=True)
@@ -80,7 +83,8 @@ class CurrentGame(models.Model):
     last_query_score = models.IntegerField(default=0, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-
+    game_type = models.IntegerField(default=0, null=True)
+    page_list = models.TextField(null=True, blank=True)
     def __unicode__(self):
         return self.user.name + ": " + self.current_page.name + " in " + self.category.name
 
@@ -103,23 +107,4 @@ class Level (models.Model):
     def __unicode__(self):
         return self.xp + " : " + self.level
 
-def add_page_to_db(title, url, image, category):
-    """ takes page details and adds a new page to the page model/db
 
-    Args:
-        title: string, the title of the page
-        url: string, the url of the page
-        image: string, path to the screenshot of the page
-        category: the Category class
-    Returns:
-        None
-
-    """
-
-def add_category(name, description, etc ):
-    """ adds a category to the category model/db
-     Args:
-        name: string
-        description: string
-        etc
-    """
