@@ -25,7 +25,7 @@ def run_query(search_terms):
 
     # Add the API key to the password manager. There IS no username.
     username = ''
-    bing_api_key = 'm8KBb9SgQxAAnoAl6PJRnCqdaaKQKVk3Z+iWnj4OR5s'
+    bing_api_key = "5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ"
     password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
     password_mgr.add_password(None, search_url, username, bing_api_key)
 
