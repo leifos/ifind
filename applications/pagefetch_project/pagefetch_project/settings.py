@@ -1,15 +1,6 @@
 # Django settings for pagefetch_project project.
 import os
-
-PROJ_PATH = os.getcwd()
-GAME_DB = os.path.join(PROJ_PATH,'game.db')
-TEMP_PATH = os.path.join(PROJ_PATH,'templates')
-STATIC_PATH = os.path.join(PROJ_PATH,'static')
-MEDIA_PATH = os.path.join(PROJ_PATH,'media')
-MEDIA_URL  = os.path.join(PROJ_PATH,'media/')
-DEPLOY = False
-DEBUG = True
-
+from configuration import DEBUG, DEPLOY, PROJ_PATH, GAME_DB, STATIC_PATH, MEDIA_PATH, MEDIA_URL, UPLOAD_DIR, TEMP_PATH
 
 TEMPLATE_DEBUG = DEBUG
 

@@ -2,9 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 import imaplib
 import os
+import sys
 
-APP_NAME = 'pagefetch'
-UPLOAD_DIR = os.path.join(os.getcwd(),'media')
+sys.path.append(os.getcwd())
+from configuration import APP_NAME
+from configuration import UPLOAD_DIR
+
+#APP_NAME = 'pagefetch'
+#UPLOAD_DIR = os.path.join(os.getcwd(),'media')
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
