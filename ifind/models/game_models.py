@@ -8,9 +8,6 @@ sys.path.append(os.getcwd())
 from configuration import APP_NAME
 from configuration import UPLOAD_DIR
 
-#APP_NAME = 'pagefetch'
-#UPLOAD_DIR = os.path.join(os.getcwd(),'media')
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     xp = models.IntegerField(default=0)
@@ -97,13 +94,13 @@ class CurrentGame(models.Model):
     current_score = models.IntegerField(default=0, null=True)
     last_query = models.CharField(max_length=256)
     last_query_score = models.IntegerField(default=0, null=True)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(auto_now_add=True)
     game_type = models.IntegerField(default=0, null=True)
     page_list = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return self.user.name + ": " + self.current_page.name + " in " + self.category.name
+        return self.user.username + ": " + self.current_page.title + " in " + self.category.name
 
     class Meta:
         app_label = APP_NAME

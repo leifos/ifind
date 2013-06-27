@@ -4,10 +4,14 @@ import json
 
 def set_page_list(game, list):
     game.page_list = json.dumps(list)
+    print game.page_list
 
 def get_page_list(game):
-    list = json.load(game.page_list)
-    return list
+    if game.page_list:
+        list = json.loads(game.page_list)
+        return list
+    else:
+        return []
 
 def add_page_to_db(title, url, image, category):
     """ takes page details and adds a new page to the page model/db

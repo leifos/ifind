@@ -11,7 +11,7 @@ class RotationOrdering(object):
     def number_of_orderings(self):
         return 1
 
-    def get_ordering(self, list, i):
+    def get_ordering(self, list, i=0):
         """ given a list (i.e. of pages, cats), return the ith ordering
 
         :param list with and id:
@@ -19,9 +19,10 @@ class RotationOrdering(object):
         :return: list of ids
         """
 
-        list = []
+        id_list = []
         for p in list:
             if p.id:
-                list.append(p.id)
+                id_list.append(p.id)
+        #id_list = id_list[::-1]
 
-        return list
+        return id_list
