@@ -3,7 +3,7 @@ __author__ = 'leif'
 from game_models import CurrentGame, Page, Category
 from random import randint
 from game_model_functions import get_page_list, set_page_list
-from ifind.utils.rotation_ordering import RotationOrdering
+from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
 
 MAX_SCORE = 1000
