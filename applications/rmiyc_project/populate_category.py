@@ -65,8 +65,6 @@ def checkUrl(url):
             false: if the url does not exist on the web
     >>> urlparse('//www.cwi.nl:80/%7Eguido/Python.html')
     ParseResult(scheme='', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html', params='', query='', fragment='')
-    >>> urlparse('www.cwi.nl/%7Eguido/Python.html')
-    ParseResult(scheme='', netloc='', path='www.cwi.nl:80/%7Eguido/Python.html', params='', query='', fragment='')
     >>> urlparse('help/Python.html')
     ParseResult(scheme='', netloc='', path='help/Python.html', params='', query='', fragment='')
 
@@ -112,10 +110,13 @@ def populate_pages(url_list, category):
     for url in url_list:
 
         # create PageCapture object - specify the browser to be 800 x 600.
+        print url
         pc = PageCapture(url,800, 600)
         url_file_name = convert_url_to_filename(url)+'.png'
         image_file_name = os.path.join(os.getcwd(), 'imgs', url_file_name)
+        print image_file_name
         pc.load_url(url)
+        print 'loaded the url'
         # fetch the screen-shot
         pc.take_screen_shot(image_file_name)
         # get the title
