@@ -72,8 +72,6 @@ def main():
     print c
     print pages
 
-    print pages.get(id=5)
-
 
     gm.create_game(u,c)
 
