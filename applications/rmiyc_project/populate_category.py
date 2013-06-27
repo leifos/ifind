@@ -4,7 +4,7 @@ from ifind.common.pagecapture import PageCapture
 from rmiyc_project import settings
 from django.core.management import setup_environ
 setup_environ(settings)
-from rmiyc.models import Page, Category
+from ifind.models.game_models import Page, Category
 import os
 from django.core.files import File
 import httplib
