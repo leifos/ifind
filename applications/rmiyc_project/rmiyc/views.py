@@ -46,7 +46,7 @@ def search(request):
                 result = search_engine.search(query)
                 print result
 
-        return render_to_response('rmiyc/game.html' ,{ 'result_list': result.results }, context)
+        return render_to_response('rmiyc/search_results.html', { 'result_list': result.results }, context)
 
 
 def search2(request):
@@ -57,4 +57,4 @@ def search2(request):
             if query:
                 result_list = run_query(query)
 
-        return render_to_response('rmiyc/game.html',{ 'result_list': result_list }, context)
+        return render_to_response('rmiyc/search_results.html',{ 'result_list': result_list },context)
