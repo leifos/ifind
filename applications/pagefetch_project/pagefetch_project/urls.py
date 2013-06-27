@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pf/', include('pagefetch.urls')),
     #url(r'^', include('pagefetch.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 )
 
 
