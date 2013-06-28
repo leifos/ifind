@@ -7,7 +7,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from ifind.models.game_models import Category, Page
 from ifind.models.game_mechanics import GameMechanic
-from ifind.search.engine.dummy_search import DummySearch
+from ifind.search.engine import EngineFactory
 import os
 
 def handle_game_input():
@@ -40,7 +40,7 @@ def main():
 
     print "This script is to test the GameMechanics and interaction with the Models"
 
-    ds = DummySearch()
+    ds = EngineFactory("Dummy")
 
     gm = GameMechanic(ds)
     print gm
@@ -99,7 +99,7 @@ def main():
             query = handle_query_input()
             gm.handle_query(query)
 
-    print '\nGame Over\n'
+    print '\nGame Over!!\n'
     print gm
 
 

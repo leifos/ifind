@@ -7,7 +7,6 @@ from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
 from ifind.search.query import Query
 from ifind.search.response import Response
-from ifind.search.engine.dummy_search import DummySearch
 
 MAX_SCORE = 1000
 MAX_QUERIES = 20
