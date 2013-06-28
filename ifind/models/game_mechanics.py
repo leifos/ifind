@@ -63,7 +63,7 @@ class GameMechanic(object):
         # if found, set self.game to game record
         if cg:
             self.game = cg
-            self.set_pages_to_use(game_type)
+            self.set_pages_to_use(0)
             found = True
 
         return found
@@ -89,6 +89,12 @@ class GameMechanic(object):
 
     def get_current_score(self):
         return self.game.current_score
+
+    def get_game_id(self):
+        return self.game.id
+
+    def get_current_page(self):
+        return self.game.current_page
 
     def _increment_queries_issued(self, query_successful=False):
         self.game.no_of_queries_issued += 1
