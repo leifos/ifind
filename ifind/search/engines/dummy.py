@@ -2,7 +2,8 @@ __author__ = 'leif'
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 
-class DummySearch(Engine):
+
+class Dummy(Engine):
     """
     This search engine makes no internet requests
     It serves up pre-programmed responses for testing

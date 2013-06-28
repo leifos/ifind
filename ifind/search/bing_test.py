@@ -15,7 +15,7 @@ query = Query('Hello Worldlings of doom', source_type="Web", format='JSON')
 
 #for r in result.results:
 
-engine = Engine("bing", api_key='')
+engine = Engine("DUMMY", api_key='')
 
 result = engine.search(query)
 
