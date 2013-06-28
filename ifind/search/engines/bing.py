@@ -4,13 +4,15 @@ import requests
 import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
+from ifind.search.exceptions import *
+
 
 # TODO Make definition file. Have constructor for derived classes load it.
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 KEY_REQUIRED = True
 
-FORMATS = ("JSON", "ATOM")
+RESULT_FORMATS = ("JSON", "ATOM")
 
 MAX_PAGE_SIZE = 50
 
@@ -27,8 +29,6 @@ SOURCE_TYPES = (
     SPELL_SOURCE_TYPE
 )
 
-DEFAULT_SOURCE_TYPE = WEB_SOURCE_TYPE
-
 
 class Bing(Engine):
 
@@ -44,13 +44,12 @@ class Bing(Engine):
         Engine.__init__(self, **kwargs)
 
         self.root_url = API_ENDPOINT
-        self.formats = FORMATS
+        self.result_formats = RESULT_FORMATS
         self.max_page_size = MAX_PAGE_SIZE
         self.source_types = SOURCE_TYPES
 
-        if (self.api_key is None) and KEY_REQUIRED:
-            print 'Key required'
-            # TODO raise API KEY Exception
+        if not self.api_key and KEY_REQUIRED:
+            raise ValueError('{0} engine API Key not supplied'.format(self.name))
 
     def search(self, query):
         """
@@ -64,7 +63,7 @@ class Bing(Engine):
 
         """
         query_string = self._create_query_string(query)
-        results = requests.get(query_string, auth=("", self.api_key))
+        results = requests.get(query_string, auth=('', self.api_key))
 
         if query.format == 'ATOM':
             return Bing._parse_xml_response(query, results)
@@ -82,18 +81,14 @@ class Bing(Engine):
         :return string representation of query url for REST request to bing search api
 
         """
-        if query.source_type in SOURCE_TYPES:
-            source_type = query.source_type
-        else:
-            source_type = DEFAULT_SOURCE_TYPE
-            print "*** Warning: Query source type doesn't match engine's. Using engine default ***"
+        if query.source_type.title() not in self.source_types:
+            raise ValueError("{0} engine doesn't support '{1}' source type".format(self.name, query.source_type))
 
-        if query.format not in FORMATS:
-            print "*** Warning: Query source type doesn't match engine's. Using engine default ***"
+        if query.format not in self.result_formats:
+            raise ValueError("{0} engine doesn't support '{1}' result format".format(self.name, query.format))
 
-        # TODO Find a way to define format, top and skip as implementation parameters that need to be matched.
-        # TODO Although not too much hassle to just define/adapt/implement here as long as consistent between engines.
-        # TODO Maybe have a method called map_query or something that maps the query attributes to what's available.
+        # TODO Create method map_query that adjusts params to match bing spec/def
+        # TODO The above source/format checks would happen in map query
 
         params = {'$format': query.format,
                   '$top': query.top,
@@ -104,7 +99,7 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return self.root_url + source_type + self._encode_symbols(query_string)
+        return self.root_url + query.source_type + self._encode_symbols(query_string)
 
         # TODO Exception Handling
 
@@ -124,7 +119,6 @@ class Bing(Engine):
 
         return encoded_string
 
-        # TODO Exception Handling
 
     @staticmethod
     def _parse_xml_response(query, results):
