@@ -24,7 +24,8 @@ class Response(object):
         Returns human-readable string representation of query object.
 
         """
-        return '\n'.join(['{0}: {1}'.format(key, value) for (key, value) in self.__dict__.items()])
+        return '\n'.join(['{0}: {1}'.format(key, value)
+                          for (key, value) in self.__dict__.items()])
 
     def add_result(self, title, url, summary=''):
         """
@@ -38,8 +39,8 @@ class Response(object):
         self.result_total += 1
 
     def print_results(self):
-        for r in self.results:
-            print r
+        for result in self.results:
+            print result
 
     def from_oss_feed(self, oss_xml_feed):
         """
