@@ -39,7 +39,8 @@ def game_stats():
 def quit_game():
     pass
 
-
+def register(request):
+    pass
 
 
 
