@@ -1,5 +1,6 @@
 *.keys
 *.db
+keys.py
 
 # Pycharm / Python
 .idea
