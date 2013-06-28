@@ -1,8 +1,8 @@
 __author__ = 'leif'
-from ifind.search.searchengine import SearchEngine
+from ifind.search.engine import Engine
 from ifind.search.response import Response
 
-class DummySearch(SearchEngine):
+class DummySearch(Engine):
     """
     This search engine makes no internet requests
     It serves up pre-programmed responses for testing
@@ -12,7 +12,7 @@ class DummySearch(SearchEngine):
     """
 
     def __init__(self, proxy_host=None, api_key=None, **kwargs):
-        SearchEngine.__init__(self, proxy_host, api_key, **kwargs)
+        Engine.__init__(self, proxy_host, api_key, **kwargs)
 
 
     def _create_response(self, query):
