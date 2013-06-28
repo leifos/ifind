@@ -1,4 +1,4 @@
-class SearchEngine(object):
+class Engine(object):
     """
     Abstract search engine interface.
 
