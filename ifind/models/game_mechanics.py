@@ -5,13 +5,15 @@ from random import randint
 from game_model_functions import get_page_list, set_page_list
 from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
+from ifind.search.query import Query
+from ifind.search.response import Response
+from ifind.search.engine.dummy_search import DummySearch
 
 MAX_SCORE = 1000
 MAX_QUERIES = 20
 MAX_PAGES = 4
 MAX_QUERIES_PER_PAGE = 5
 GAME_LENGTH_IN_SECONDS = 0
-
 
 class GameMechanic(object):
 
@@ -21,7 +23,6 @@ class GameMechanic(object):
         """
         self.game = None
         self.search_engine = search_engine
-
 
 
     def create_game(self, user, cat, game_type=0):
@@ -85,6 +86,9 @@ class GameMechanic(object):
 
     def get_max_rounds(self):
         return MAX_PAGES
+
+    def get_current_score(self):
+        return self.game.current_score
 
     def _increment_queries_issued(self, query_successful=False):
         self.game.no_of_queries_issued += 1
@@ -197,9 +201,13 @@ class GameMechanic(object):
         :param query:
         :return: ifind.search.response
         """
+        # construct ifind.search.query Query
+        iquery = Query(query)
 
         # issue query to self.search_engine
-        return True
+        iresponse = self.search_engine.search(iquery)
+
+        return iresponse
 
     def _check_result(self, response):
         """ iterates through the response looking for what rank the url is at
@@ -208,9 +216,16 @@ class GameMechanic(object):
         :param url_to_find: url string
         :return: rank of the url if found, else 0
         """
-        url_to_find = self.game.current_page
+        url_to_find = self.game.current_page.url
         # is url_to_fin in response??
-        return randint(0,10)
+
+        #iterate through response
+        i = 0
+        for result in response.results:
+            i +=1
+            if result['url'] == url_to_find:
+                return i
+        return 0
 
 
     def _score_rank(self, rank):
@@ -221,7 +236,7 @@ class GameMechanic(object):
         """
         score = 0
         if rank > 0:
-            score = round(MAX_SCORE / rank, 0)
+            score = MAX_SCORE / rank
 
         return score
 
