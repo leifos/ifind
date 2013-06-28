@@ -2,8 +2,8 @@ import json
 import string
 import requests
 import BeautifulSoup as BS
-import ifind.search.response as ifind
-from ifind.search.searchengine import SearchEngine
+from ifind.search.engine import Engine
+from ifind.search.response import Response
 
 # TODO Make definition file. Have constructor for derived classes load it.
 
@@ -30,7 +30,7 @@ SOURCE_TYPES = (
 DEFAULT_SOURCE_TYPE = WEB_SOURCE_TYPE
 
 
-class BingWebSearch(SearchEngine):
+class Bing(Engine):
 
     def __init__(self, **kwargs):
 
@@ -41,9 +41,9 @@ class BingWebSearch(SearchEngine):
         :param proxies: dict representing proxies to use
                         i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
         """
-        SearchEngine.__init__(self, **kwargs)
+        Engine.__init__(self, **kwargs)
 
-        self.rootURL = API_ENDPOINT
+        self.root_url = API_ENDPOINT
         self.formats = FORMATS
         self.max_page_size = MAX_PAGE_SIZE
         self.source_types = SOURCE_TYPES
@@ -67,9 +67,9 @@ class BingWebSearch(SearchEngine):
         results = requests.get(query_string, auth=("", self.api_key))
 
         if query.format == 'ATOM':
-            return self._parse_xml_response(query, results)
+            return Bing._parse_xml_response(query, results)
         if query.format == 'JSON':
-            return self._parse_json_response(query, results)
+            return Bing._parse_json_response(query, results)
 
         # TODO Exception handling
 
@@ -104,7 +104,7 @@ class BingWebSearch(SearchEngine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return self.rootURL + source_type + self._encode_symbols(query_string)
+        return self.root_url + source_type + self._encode_symbols(query_string)
 
         # TODO Exception Handling
 
@@ -126,7 +126,8 @@ class BingWebSearch(SearchEngine):
 
         # TODO Exception Handling
 
-    def _parse_xml_response(self, query, results):
+    @staticmethod
+    def _parse_xml_response(query, results):
         """
         Parses Bing XML response and returns ifind.search.response.Response object
 
@@ -135,22 +136,23 @@ class BingWebSearch(SearchEngine):
         :return: ifind.search.response.Response object
 
         """
-        response = ifind.Response()
+        response = Response()
         response.query_terms = query.terms
 
         xmlSoup = BS.BeautifulSoup(results.text)
 
-        for r in xmlSoup.findAll('entry'):
-            xmlTitleData = r.find('d:title').string
-            xmlURLData = r.find('d:url').string
-            xmlDescriptionData = r.find('d:description').string
-            response.add_result(xmlTitleData, xmlURLData, xmlDescriptionData)
+        for result in xmlSoup.findAll('entry'):
+            title = result.find('d:title').string
+            url = result.find('d:url').string
+            description = result.find('d:description').string
+            response.add_result(title, url, description)
 
         return response
 
         # TODO Exception Handling and further Response refinements
 
-    def _parse_json_response(self, query, results):
+    @staticmethod
+    def _parse_json_response(query, results):
         """
         Parses Bing JSON response and returns ifind.search.response.Response object
 
@@ -159,13 +161,13 @@ class BingWebSearch(SearchEngine):
         :return: ifind.search.response.Response object
 
         """
-        response = ifind.Response()
+        response = Response()
         response.query_terms = query.terms
 
         content = json.loads(results.text)
 
-        for r in content[u'd'][u'results']:
-            response.add_result(r[u'Title'], r[u'Url'], r[u'Description'])
+        for result in content[u'd'][u'results']:
+            response.add_result(result[u'Title'], result[u'Url'], result[u'Description'])
 
         return response
 
