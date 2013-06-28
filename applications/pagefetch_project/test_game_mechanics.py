@@ -7,6 +7,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from ifind.models.game_models import Category, Page
 from ifind.models.game_mechanics import GameMechanic
+from ifind.search.engine.dummy_search import DummySearch
 import os
 
 def handle_game_input():
@@ -28,10 +29,10 @@ def handle_query_input():
     return ri
 
 def clear_screen():
-    #if os.name == 'nt':
-        #os.system('cls')
-    #else:
-        #os.system('clear')
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
     pass
 
 def main():
@@ -39,22 +40,25 @@ def main():
 
     print "This script is to test the GameMechanics and interaction with the Models"
 
-    gm = GameMechanic()
+    ds = DummySearch()
+
+    gm = GameMechanic(ds)
     print gm
-    u = User.objects.filter(username='test user')
+    u = User.objects.filter(username='testy')
     if u:
         u = u[0]
     else:
-        print "Adding a test user"
-        u = User(username='test user',password='test').save()
+        print "Adding testy user"
+        u = User(username='testy',password='test')
+        u.save()
 
-    c = Category.objects.filter(name='test cat')
+    c = Category.objects.filter(name='Numbers')
 
     if c:
         c = c[0]
     else:
-        print "Adding a test cat"
-        c = Category(name='test cat', desc='pages in test cat')
+        print "Adding a Numbers Category"
+        c = Category(name='Numbers', desc='Looking for sites that around about numbers')
         c.save()
 
     pages = Page.objects.filter(category=c)
@@ -63,7 +67,7 @@ def main():
         print "Adding pages"
 
         for pn in ['one','two','three','four']:
-            p = Page(category=c, title=pn, url='www.test.com', snippet=pn, desc=('desc: ' +pn))
+            p = Page(category=c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
             p.save()
 
         pages = Page.objects.filter(category=c)
@@ -71,7 +75,6 @@ def main():
     print u
     print c
     print pages
-
 
     gm.create_game(u,c)
 
