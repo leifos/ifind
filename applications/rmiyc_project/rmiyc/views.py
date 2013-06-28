@@ -18,6 +18,7 @@ def index(request):
 
 
 def play(request, category_name):
+        print 'I have been played'
         # select the appropriate template to use
         template = loader.get_template('rmiyc/game.html')
         # Query the database for the provided category name
@@ -50,11 +51,17 @@ def search(request):
 
 
 def search2(request):
-        context = RequestContext(request)
+        print 'Search 2 has been called'
         result_list = []
         if request.method == 'POST':
             query = request.POST['query'].strip()
             if query:
                 result_list = run_query(query)
+        template = loader.get_template('rmiyc/search_results.html')
+        context = RequestContext(request, {'result_list': result_list })
+        return HttpResponse(template.render(context))
 
-        return render_to_response('rmiyc/search_results.html',{ 'result_list': result_list },context)
+
+def test(request):
+        print 'Test has beeen called '
+        pass
