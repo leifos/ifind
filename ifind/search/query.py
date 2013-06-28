@@ -10,7 +10,8 @@ class Query(object):
         skip:  an integer specifying the offset of starting point for results returned
         source_type: a string defining the type of query (web, image, video)
     """
-    def __init__(self, terms, lang='EN', format='JSON', top=20, skip=0, source_type='web', **kwargs):
+    def __init__(self, terms, lang='EN', format='JSON',
+                 top=20, skip=0, source_type='web', **kwargs):
         """
         Constructs Query object, creating instance attributes from optional keyword parameters (**kwargs).
 
@@ -30,7 +31,8 @@ class Query(object):
         Returns human-readable string representation of query object.
 
         """
-        return '\n'.join(['{0}: {1}'.format(key, value) for (key, value) in self.__dict__.items()])
+        return '\n'.join(['{0}: {1}'.format(key, value)
+                          for (key, value) in self.__dict__.items()])
 
     def __eq__(self, other):
         """
