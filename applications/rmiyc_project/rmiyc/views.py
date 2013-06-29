@@ -26,10 +26,14 @@ def play(request, category_name):
         '''
         # Query the database for the provided category name
         # render the template using the provided context and return as http response.
-        user = User.objects.get(username__exact ='john')
-        if not user:
-            user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        user = User.objects.filter(username='testy')
+        if user:
+            user = user[0]
+        else:
+            print "Adding testy user"
+            user = User(username='testy',password='test')
             user.save()
+
         c = Category.objects.get(name=category_name)
         gm = GameMechanic()
         if request.COOKIES.has_key('game_id'):
@@ -78,13 +82,27 @@ def search(request):
 
 def search2(request):
         print 'Search 2 has been called'
+        overall_results = []
         result_list = []
-        if request.method == 'POST':
+
+        print  'request.method'
+        print  request.method
+        if request.method == 'post':
             query = request.POST['query'].strip()
+            print 'Query'
+            print query
             if query:
                 result_list = run_query(query)
+        else:
+            print 'post has not been called'
+        overall_results.append(result_list)
+
+        print 'result list'
+        print result_list
+        print 'overall results'
+        print  overall_results
         template = loader.get_template('rmiyc/game.html')
-        context = RequestContext(request, {'result_list': result_list })
+        context = RequestContext(request, {'overall_results': overall_results })
         return HttpResponse(template.render(context))
 
 
