@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 # Create your views here.
 
+
 def index(request):
 
         context = RequestContext(request, {})
@@ -59,6 +60,7 @@ def play(request, category_name):
         response.set_cookie('game_id', game_id)
         return response
 
+
 def pick_category(request):
         context = RequestContext(request, {})
         # render the template using the provided context and return as http response.
@@ -85,9 +87,9 @@ def search2(request):
         overall_results = []
         result_list = []
 
-        print  'request.method'
-        print  request.method
-        if request.method == 'post':
+        print 'request.method'
+        print request.method
+        if request.method == 'POST':
             query = request.POST['query'].strip()
             print 'Query'
             print query
@@ -95,12 +97,13 @@ def search2(request):
                 result_list = run_query(query)
         else:
             print 'post has not been called'
-        overall_results.append(result_list)
+        overall_results.append({'result_list': result_list})
 
         print 'result list'
         print result_list
         print 'overall results'
-        print  overall_results
+
+        print overall_results
         template = loader.get_template('rmiyc/game.html')
         context = RequestContext(request, {'overall_results': overall_results })
         return HttpResponse(template.render(context))
@@ -110,4 +113,4 @@ def game_over(request):
         request.session.set_expiry(datetime.now())
         print 'I am a cookie and I am dying because the game is over'
         context = RequestContext(request, {})
-        return render_to_response('rmiyc/cat_picker.html', context)
+        return render_to_response('rmiyc/game_over.html', context)
