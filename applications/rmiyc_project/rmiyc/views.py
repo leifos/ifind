@@ -6,7 +6,7 @@ from ifind.search.query import Query
 from bing_search import run_query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
-from ifind.models.game_models import Category
+from ifind.models.game_models import Category,Page
 from django.contrib.auth.models import User
 from datetime import datetime
 # Create your views here.
@@ -20,11 +20,7 @@ def index(request):
 
 def play(request, category_name):
         print 'I have been played'
-        '''
-            if request.session.test_cookie_worked():
-                print "The test cookie worked!!!"
-                request.session.delete_test_cookie()
-        '''
+
         # Query the database for the provided category name
         # render the template using the provided context and return as http response.
         user = User.objects.filter(username='testy')
@@ -54,9 +50,12 @@ def play(request, category_name):
         game_id= gm.get_game_id()
         print 'my game_id is:%d ' % (game_id)
         p = gm.get_current_page()
+        s =gm.get_current_score()
+        overall_results = []
+        overall_results.append({'result_list': [], 'page': p.screenshot, 'score' :0})
 
         context = RequestContext(request, {})
-        response = render_to_response('rmiyc/game.html', context)
+        response =  render_to_response('rmiyc/game.html', { 'overall_results': overall_results }, context)
         response.set_cookie('game_id', game_id)
         return response
 

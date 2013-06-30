@@ -11,6 +11,7 @@ from configuration import TEMP_PATH
 from configuration import GAME_DB
 from configuration import MEDIA_ROOT
 from configuration import STATIC_PATH
+from configuration import  MEDIA_URL
 
 
 ADMINS = (
@@ -65,7 +66,7 @@ MEDIA_ROOT = MEDIA_ROOT
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = MEDIA_URL
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
