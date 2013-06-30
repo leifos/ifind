@@ -17,8 +17,8 @@ class Query(object):
 
         """
         self.terms = terms
-        self.source_type = source_type
-        self.format = format
+        self.source_type = source_type.lower().title()
+        self.format = format.upper()
         self.lang = lang
         self.top = top
         self.skip = skip
