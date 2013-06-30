@@ -105,18 +105,25 @@ def search2(request):
                 result_list = run_query(query)
 
         if request.COOKIES.has_key('game_id'):
+            context = RequestContext(request, {})
             gm = GameMechanic()
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
-            gm.set_next_page()
+            if gm.is_game_over():
+                response = HttpResponseRedirect('/rmiyc/game_over/')
+                # delete the cookie
+                response.delete_cookie('game_id')
+                return response
+            else:
+                gm.take_points()
+                gm.set_next_page()
 
-            p = gm.get_current_page()
-            #
-            # get the current score, which I am not sure what it does!!
-            s = gm.get_current_score()
-            overall_results.append({'result_list': result_list, 'page': p.screenshot, 'score': s})
-            context = RequestContext(request, {})
-            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
+                p = gm.get_current_page()
+                #
+                # get the current score, which I am not sure what it does!!
+                s = gm.get_last_query()
+                overall_results.append({'result_list': result_list, 'page': p.screenshot, 'score': s})
+                response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
             return response
         else:
             # the game has not been created yet
@@ -125,7 +132,6 @@ def search2(request):
 
 
 def game_over(request):
-        request.session.set_expiry(datetime.now())
         print 'I am a cookie and I am dying because the game is over'
         context = RequestContext(request, {})
         return render_to_response('rmiyc/game_over.html', context)
