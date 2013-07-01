@@ -147,4 +147,8 @@ def test(request):
     results.append({'title': 'Title1', 'link': 'Url1', 'summary': 'Description1'} )
     results.append({'title': 'Title2', 'link': 'Url2', 'summary': 'Description2'} )
     results.append({'title': 'Title3', 'link': 'Url3', 'summary': 'Description3'} )
-    return render_to_response('rmiyc/search_results.html', { 'result_list': results }, context)
+
+    overall_results = []
+    overall_results.append({'result_list': results, 'page': 'ksdfglksdjfg', 'score': 0})
+
+    return render_to_response('rmiyc/game.html', { 'overall_results': overall_results }, context)
