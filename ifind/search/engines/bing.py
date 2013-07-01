@@ -71,7 +71,7 @@ class Bing(Engine):
         #
         #
         #         if (target-response.result_total) < MAX_PAGE_SIZE:
-        #             query.skip = target - (target-response.result_total)
+        #             query.skip += query.top
         #             query.top = target-response.result_total
         #             # issue request, get response
 
