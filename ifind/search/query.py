@@ -36,7 +36,7 @@ class Query(object):
 
     def __eq__(self, other):
         """
-        Returns True if both querys' attributes are identical, False otherwise.
+        Returns True if both query's attributes are identical, False otherwise.
 
         """
         return tuple(self.__dict__.items()) == tuple(other.__dict__.items())

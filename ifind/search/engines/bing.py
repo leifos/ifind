@@ -4,10 +4,6 @@ import requests
 import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.search.exceptions import *
-
-
-# TODO Make definition file. Have constructor for derived classes load it.
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 KEY_REQUIRED = True
@@ -15,6 +11,7 @@ KEY_REQUIRED = True
 RESULT_FORMATS = ("JSON", "ATOM")
 
 MAX_PAGE_SIZE = 50
+MAX_RESULTS = 1000
 
 WEB_SOURCE_TYPE = 'Web'
 IMAGE_SOURCE_TYPE = 'Image'
@@ -43,11 +40,6 @@ class Bing(Engine):
         """
         Engine.__init__(self, **kwargs)
 
-        self.root_url = API_ENDPOINT
-        self.result_formats = RESULT_FORMATS
-        self.max_page_size = MAX_PAGE_SIZE
-        self.source_types = SOURCE_TYPES
-
         if not self.api_key and KEY_REQUIRED:
             raise ValueError('{0} engine API Key not supplied'.format(self.name))
 
@@ -62,15 +54,59 @@ class Bing(Engine):
         :raises Bad request etc
 
         """
+
+        if query.top <= MAX_PAGE_SIZE:
+            return self._issue_request(query)
+
+        # if query.top > MAX_PAGE_SIZE:
+        #     target = query.top
+        #     query.top = MAX_PAGE_SIZE
+        #     # issue initial request, get response
+        #     while response.result_total < target:
+        #
+        #         if (target-response.result_total) > MAX_PAGE_SIZE:
+        #             query.skip += MAX_PAGE_SIZE
+        #             query.top = MAX_PAGE_SIZE
+        #             # issue request, get response
+        #
+        #
+        #         if (target-response.result_total) < MAX_PAGE_SIZE:
+        #             query.skip = target - (target-response.result_total)
+        #             query.top = target-response.result_total
+        #             # issue request, get response
+
+        #if query.top <= MAX_PAGE_SIZE:
+            # create query string with query as is
+            # make query request
+            # parse and return
+
+        #if query.top > MAX_PAGE_SIZE:
+            # create query string with top = top-max_page
+
+
+
+
+
+
+
+    def _issue_request(self, query):
+
         query_string = self._create_query_string(query)
-        results = requests.get(query_string, auth=('', self.api_key))
+
+        try:
+            results = requests.get(query_string, auth=('', self.api_key))
+        except requests.exceptions.ConnectionError:
+            raise requests.exceptions.ConnectionError("Internet connectivity error")
+
+        if results.status_code == 401:
+            raise ValueError("Incorrect API Key supplied to {0} engine (401)".format(self.name))
+        if results.status_code == 400:
+            raise ValueError("Bad request sent to {0} engine API (400)".format(self.name))
 
         if query.format == 'ATOM':
             return Bing._parse_xml_response(query, results)
         if query.format == 'JSON':
             return Bing._parse_json_response(query, results)
-
-        # TODO Exception handling
 
     def _create_query_string(self, query):
         """
@@ -81,11 +117,13 @@ class Bing(Engine):
         :return string representation of query url for REST request to bing search api
 
         """
-        if query.source_type.title() not in self.source_types:
+        if query.source_type.title() not in SOURCE_TYPES:
             raise ValueError("{0} engine doesn't support '{1}' source type".format(self.name, query.source_type))
 
-        if query.format not in self.result_formats:
+        if query.format not in RESULT_FORMATS:
             raise ValueError("{0} engine doesn't support '{1}' result format".format(self.name, query.format))
+
+        #if query.
 
         # TODO Create method map_query that adjusts params to match bing spec/def
         # TODO The above source/format checks would happen in map query
@@ -99,11 +137,10 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return self.root_url + query.source_type + self._encode_symbols(query_string)
+        return API_ENDPOINT + query.source_type + Bing._encode_symbols(query_string)
 
-        # TODO Exception Handling
-
-    def _encode_symbols(self, query_string):
+    @staticmethod
+    def _encode_symbols(query_string):
         """
         Encodes query string as defined in the Bing API Specification.
 
@@ -143,8 +180,6 @@ class Bing(Engine):
 
         return response
 
-        # TODO Exception Handling and further Response refinements
-
     @staticmethod
     def _parse_json_response(query, results):
         """
@@ -164,7 +199,3 @@ class Bing(Engine):
             response.add_result(result[u'Title'], result[u'Url'], result[u'Description'])
 
         return response
-
-        # TODO Exception handling and further Response refinements
-
-        # TODO Further engine implementation needed before generalising abstract/concrete engine inheritance semantics
