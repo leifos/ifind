@@ -54,6 +54,43 @@ class Bing(Engine):
         :raises Bad request etc
 
         """
+
+        if query.top <= MAX_PAGE_SIZE:
+            return self._issue_request(query)
+
+        # if query.top > MAX_PAGE_SIZE:
+        #     target = query.top
+        #     query.top = MAX_PAGE_SIZE
+        #     # issue initial request, get response
+        #     while response.result_total < target:
+        #
+        #         if (target-response.result_total) > MAX_PAGE_SIZE:
+        #             query.skip += MAX_PAGE_SIZE
+        #             query.top = MAX_PAGE_SIZE
+        #             # issue request, get response
+        #
+        #
+        #         if (target-response.result_total) < MAX_PAGE_SIZE:
+        #             query.skip = target - (target-response.result_total)
+        #             query.top = target-response.result_total
+        #             # issue request, get response
+
+        #if query.top <= MAX_PAGE_SIZE:
+            # create query string with query as is
+            # make query request
+            # parse and return
+
+        #if query.top > MAX_PAGE_SIZE:
+            # create query string with top = top-max_page
+
+
+
+
+
+
+
+    def _issue_request(self, query):
+
         query_string = self._create_query_string(query)
 
         try:
@@ -63,7 +100,6 @@ class Bing(Engine):
 
         if results.status_code == 401:
             raise ValueError("Incorrect API Key supplied to {0} engine (401)".format(self.name))
-
         if results.status_code == 400:
             raise ValueError("Bad request sent to {0} engine API (400)".format(self.name))
 
