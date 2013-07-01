@@ -18,15 +18,6 @@ class Response(object):
         self.results = results or []
         self.result_total = 0
 
-    # TODO
-    def __str__(self):
-        """
-        Returns human-readable string representation of query object.
-
-        """
-        return '\n'.join(['{0}: {1}'.format(key, value)
-                          for (key, value) in self.__dict__.items()])
-
     def add_result(self, title, url, summary=''):
         """
         :param title: string representation of result title
@@ -41,6 +32,19 @@ class Response(object):
     def print_results(self):
         for result in self.results:
             print result
+
+    def __str__(self):
+        """
+        Returns human-readable string representation of query object.
+
+        """
+        return '\n'.join(['{0}: {1}'.format(key, value)
+                          for (key, value) in self.__dict__.items()])
+
+    def __iadd__(self, other):
+        self.results += other.results
+        self.result_total += other.result_total
+        return self
 
     def from_oss_feed(self, oss_xml_feed):
         """
@@ -78,4 +82,3 @@ class Response(object):
         * response_json (str): Response as JSON
         """
         pass
-

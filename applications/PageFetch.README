@@ -3,3 +3,40 @@ PageFetch
 
 
 Like Retrieve me if you can, not site specific though.
+
+
+
+
+Population of Pagefetch
+-----------------------
+
+- fetch_trending_queries (create as a method/class in ifind.models game_data.py)
+    using google trend api (or similar) get the top queries (top 50, if possible)
+    for a specified category
+
+    output the list of queries for that trend.
+    i.e. a list of (trend_name , query_terms)
+
+
+- fetch_results (create as a method/class in ifind.models game_data.py)
+    requires a searchengine
+    takes a list of (cat_name, query_terms)
+    issues the results to a search engine
+         from the first ten results, randomly select two urls
+         from the next ten results, randomly select two urls
+         and from the next ten, randomly select two urls
+
+    also records rank position for each url
+
+    output the list of (cat_name, urls, rank)
+
+
+- populate_pagefetch (create as a script in pagefetch_project)
+
+    - build_categories
+        takes a list of (cat_name, cat_description, trend_name)
+        adds categories to database if they dont already exist
+
+    - add_pages
+        takes a list of (cat_name, urls, rank)
+        adds/creates pages, captures page, title, etc. difficulty of page is given by the rank
