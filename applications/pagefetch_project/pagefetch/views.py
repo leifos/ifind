@@ -12,35 +12,48 @@ def index(request):
 def leaderboard(request):
     pass
 
-def login():
+def game_start(request, category_id):
+
+    # create game mechanic object to initialize game
+
+    # add game_id to session/cookie
     pass
 
-def logout():
+def game_show_cat(request):
+
+    # get the categories for the game chosen
+
     pass
 
-def start_game():
+def game_end(request):
+
+    #
+
     pass
 
-def choose_cat():
+def game_handle_search(request):
+
+    # get game_id
+
+    # create game_mechnic and retrieve game with game_id
+
+    # log the query issued
+
     pass
 
-def end_game():
+def game_next_page(request):
+
+    # get game_id
+
+    # create game_mechnic and retrieve game with game_id
+
+    # log the game state, page, and outcome
+
     pass
 
-def perform_search():
+def game_quit(request):
     pass
 
-def new_page():
-    pass
-
-def game_stats():
-    pass
-
-def quit_game():
-    pass
-
-def register(request):
-    pass
 
 
 
