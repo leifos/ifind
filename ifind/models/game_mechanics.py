@@ -7,7 +7,6 @@ from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
 from ifind.search.query import Query
 from ifind.search.response import Response
-from ifind.search.engine.dummy_search import DummySearch
 
 MAX_SCORE = 1000
 MAX_QUERIES = 20
@@ -63,7 +62,7 @@ class GameMechanic(object):
         # if found, set self.game to game record
         if cg:
             self.game = cg
-            self.set_pages_to_use(game_type)
+            self.set_pages_to_use(0)
             found = True
 
         return found
@@ -89,6 +88,12 @@ class GameMechanic(object):
 
     def get_current_score(self):
         return self.game.current_score
+
+    def get_game_id(self):
+        return self.game.id
+
+    def get_current_page(self):
+        return self.game.current_page
 
     def _increment_queries_issued(self, query_successful=False):
         self.game.no_of_queries_issued += 1

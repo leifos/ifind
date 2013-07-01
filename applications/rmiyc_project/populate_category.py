@@ -4,37 +4,13 @@ from ifind.common.pagecapture import PageCapture
 from rmiyc_project import settings
 from django.core.management import setup_environ
 setup_environ(settings)
-from rmiyc.models import Page, Category
+from ifind.models.game_models import Page, Category
 import os
 from django.core.files import File
 import httplib
 from urlparse import urlparse
+from ifind.common.utils import convert_url_to_filename, checkUrl
 
-
-def convert_url_to_filename(url):
-
-    '''
-    :param url: Takes a url string
-    :return: a valid filename constructed from the string
-
-    >>> convert_url_to_filename("http://www.google.com")
-    'www-google-com'
-    >>> convert_url_to_filename("http://www.dcs.gla.ac.uk/~leif/index.html")
-    'www-dcs-gla-ac-uk-leif-index-html'
-    >>> convert_url_to_filename("www.ball.com/dj")
-    'www-ball-com-dj'
-    '''
-
-    # Remove the http:// from the url as it is common among all the urls
-    url = url.replace('http://', '')
-    valid_chars = "-_.()/ %s%s" % (string.ascii_letters, string.digits)
-    # Uses a whitelist approach: any characters not present in valid_chars are removed
-    # spaces,slashes and dots are replaced with dashes
-    filename = ''.join(c for c in url if c in valid_chars)
-    filename = filename.replace(' ', '-')  # to replace spaces in file names with dashes.
-    filename = filename.replace('/', '-')  # to replace slashes in file names with dashes.
-    filename = filename.replace('.', '-')  # to remove dots in file names.
-    return filename
 
 
 def read_in_urls(filename):
@@ -47,8 +23,6 @@ def read_in_urls(filename):
     for line in f:
         # Strip urls from spaces
         url = line.strip()
-        # is it a well-formed url string
-        # Abdullah: url format rules are so flexible so it doesn't make sense (for me) to validate them
         # validate the url
         if checkUrl(url):
             url_list.append(url)
@@ -58,24 +32,6 @@ def read_in_urls(filename):
     return url_list
 
 
-def checkUrl(url):
-    '''
-    :param url: takes a url string
-    :return: true if the url exists on the web
-            false: if the url does not exist on the web
-    >>> urlparse('//www.cwi.nl:80/%7Eguido/Python.html')
-    ParseResult(scheme='', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html', params='', query='', fragment='')
-    >>> urlparse('www.cwi.nl/%7Eguido/Python.html')
-    ParseResult(scheme='', netloc='', path='www.cwi.nl:80/%7Eguido/Python.html', params='', query='', fragment='')
-    >>> urlparse('help/Python.html')
-    ParseResult(scheme='', netloc='', path='help/Python.html', params='', query='', fragment='')
-
-    '''
-    p = urlparse(url)
-    conn = httplib.HTTPConnection(p.netloc)
-    conn.request('HEAD', p.path)
-    resp = conn.getresponse()
-    return resp.status < 400
 
 
 def get_category(category_name, desc='', icon='', append=False):
@@ -114,6 +70,7 @@ def populate_pages(url_list, category):
         # create PageCapture object - specify the browser to be 800 x 600.
         pc = PageCapture(url,800, 600)
         url_file_name = convert_url_to_filename(url)+'.png'
+        # To change to accomodate for the new changes
         image_file_name = os.path.join(os.getcwd(), 'imgs', url_file_name)
         pc.load_url(url)
         # fetch the screen-shot
@@ -121,12 +78,12 @@ def populate_pages(url_list, category):
         # get the title
         title = pc.get_page_title()
         # create page in models/db with category
-        p = Page(category=category, title=title, is_shown=True, url=url, screenshot =image_file_name)
+        p = Page(category=category, title=title, is_shown=True, url=url, screenshot='/imgs/'+url_file_name)
         p.save()
         print 'Page title= ' + p.title + ' has been saved!'
 
 
-def main(file_name, category_name, append):
+def populate(file_name, category_name, append):
     """
 
     :param file_name:
@@ -150,10 +107,29 @@ def main(file_name, category_name, append):
         # create page in models/db with category
     populate_pages(url_list, c)
 
+import argparse
 
-if __name__ == "__main__":
-    import doctest
-    test_results = doctest.testmod()
-    print test_results
-    if not test_results.failed:
-        main('/Users/arazzouk/Images/eng/urls.txt','engineering',False)
+
+def main():
+
+    parser = argparse.ArgumentParser(description="Populate a category and the pages associated with it")
+    parser.add_argument("-a", "--append", type=int,default=False, help="")
+    parser.add_argument("-cn", "--category_name", type=str, default='engineering', help="The name of the category")
+    parser.add_argument("-fn", "--file_name",default= '/Users/arazzouk/Images/eng/urls.txt', type=str, help="The name of the file where the urls are stored in")
+
+    args = parser.parse_args()
+    if not args.file_name and args.category_name:
+        parser.print_help()
+        return 2
+
+    else:
+        import doctest
+        test_results = doctest.testmod()
+        print test_results
+        if not test_results.failed:
+            populate(args.file_name, args.category_name, args.append)
+            print "Category and pages have been populated"
+        return 0
+
+if __name__ == '__main__':
+    main()

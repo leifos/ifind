@@ -4,7 +4,7 @@ class Engine(object):
 
     """
 
-    def __init__(self, api_key=None, proxies=None):
+    def __init__(self, api_key='', proxies=None):
         """
         Constructor for SearchEngine.
 
@@ -30,3 +30,12 @@ class Engine(object):
 
         """
         pass
+
+
+def EngineFactory(engine_string, **kwargs):
+    import imp
+    import ifind.search.engines as engines
+    module_path = engines.__path__[0] + '/' + engine_string.lower() + '.py'
+    module = imp.load_source('pass', module_path)
+
+    return getattr(module, engine_string.lower().title())(**kwargs)

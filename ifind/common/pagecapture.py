@@ -81,7 +81,7 @@ class PageCapture:
             Returns:
                 True if success, False otherwise
         """
-        self._ensure_screen_shot(filename)
+        #self._ensure_screen_shot(filename)
         success = self.driver.save_screenshot(filename)
         if success:
             self.screen_shot = Image.open(filename)
