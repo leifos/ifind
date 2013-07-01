@@ -4,6 +4,24 @@ import httplib
 from urlparse import urlparse
 
 
+def read_in_urls(filename):
+    # read in file - store in a list (url_list)
+    # Open the file with read only permit
+    f = open(filename, 'r')
+    # Read the first line
+    print 'file is opened'
+    url_list = []
+    for line in f:
+        # Strip urls from spaces
+        url = line.strip()
+        # validate the url
+        if checkUrl(url):
+            url_list.append(url)
+
+    f.close()
+    print 'file is closed'
+    return url_list
+
 
 def convert_url_to_filename(url):
 
