@@ -1,12 +1,12 @@
 from django.template import RequestContext, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from ifind.search.engine.bing_web_searchv2 import BingWebSearch
+#from ifind.search.engine.bing import
 from ifind.search.query import Query
 from bing_search import run_query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
-from ifind.models.game_models import Category,Page
+from ifind.models.game_models import Category, Page
 from django.contrib.auth.models import User
 from datetime import datetime
 # Create your views here.
@@ -42,7 +42,8 @@ def play(request, category_name):
             response = HttpResponseRedirect('/rmiyc/pick_category/')
             # delete the cookie
             response.delete_cookie('game_id')
-            return  response
+            print 'I have a game_id so I am going back to category picker'
+            return response
         else:
             # create a new game
             gm.create_game(user, c, 0)
@@ -67,7 +68,6 @@ def play(request, category_name):
 def pick_category(request):
         context = RequestContext(request, {})
         # render the template using the provided context and return as http response.
-        request.session.set_test_cookie()
         return render_to_response('rmiyc/cat_picker.html', context)
 
 
@@ -78,9 +78,9 @@ def search(request):
             if query:
                 print query
                 query = Query(query, source_type="Web", format='JSON')
-                search_engine = BingWebSearch(api_key=BING_API_KEY)
-                result = search_engine.search(query)
-                print result
+                #search_engine = BingWebSearch(api_key=BING_API_KEY)
+                #result = search_engine.search(query)
+                #print result
 
         return render_to_response('rmiyc/search_results.html', { 'result_list': result.results }, context)
 
@@ -111,11 +111,14 @@ def search2(request):
             gm.retrieve_game(user,game_id)
             if gm.is_game_over():
                 response = HttpResponseRedirect('/rmiyc/game_over/')
+                print 'game is over'
                 # delete the cookie
                 response.delete_cookie('game_id')
                 return response
             else:
+
                 gm.take_points()
+                gm._increment_round(True)
                 gm.set_next_page()
 
                 p = gm.get_current_page()
@@ -128,10 +131,20 @@ def search2(request):
         else:
             # the game has not been created yet
             # redirect to play view
+            print 'the game has not been created yet'
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 
 def game_over(request):
-        print 'I am a cookie and I am dying because the game is over'
-        context = RequestContext(request, {})
-        return render_to_response('rmiyc/game_over.html', context)
+    print 'I am a cookie and I am dying because the game is over'
+    context = RequestContext(request, {})
+    return render_to_response('rmiyc/game_over.html', context)
+
+
+def test(request):
+    context = RequestContext(request, {})
+    results=[]
+    results.append({'title': 'Title1', 'link': 'Url1', 'summary': 'Description1'} )
+    results.append({'title': 'Title2', 'link': 'Url2', 'summary': 'Description2'} )
+    results.append({'title': 'Title3', 'link': 'Url3', 'summary': 'Description3'} )
+    return render_to_response('rmiyc/search_results.html', { 'result_list': results }, context)
