@@ -4,6 +4,7 @@ import requests
 import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
+from requests.exceptions import ConnectionError
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 KEY_REQUIRED = True
@@ -57,49 +58,52 @@ class Bing(Engine):
         #
         # auto query
         #
-        
+
+        # if 0 total results specified
+        if not query.top:
+            raise ValueError("Total result amount (query.top) not specified"
+                             " in {0} engine search request".format(self.name))
+
+        # if total results specified <= max page size of engine
         if query.top <= MAX_PAGE_SIZE:
-            return self._issue_request(query)
+            return self._request(query)
 
-        # if query.top <= MAX_PAGE_SIZE:
-            # create query string with query
-            # make query request
-            # parse and return
-              
-        # if query.top > MAX_PAGE_SIZE:
-        #     target = query.top
-        #     query.top = MAX_PAGE_SIZE
-        #     # issue initial request, get response
-        #     while response.result_total < target:
-        #
-        #         if (target-response.result_total) > MAX_PAGE_SIZE:
-        #             query.skip += MAX_PAGE_SIZE
-        #             query.top = MAX_PAGE_SIZE
-        #             # issue request, get response add returned response to current with '+=' operator
-        #
-        #
-        #         if (target-response.result_total) < MAX_PAGE_SIZE:
-        #             query.skip += query.top
-        #             query.top = target-response.result_total
-        #             # issue request, get response add returned response to current with '+=' operator
-        #
-        # TODO: Flow controls, test response '+=' addition (probably did already), test this. Maybe with tests.
+        if query.top > MAX_PAGE_SIZE:
 
+            target = query.top
+            query.top = MAX_PAGE_SIZE
+            query.skip = 0
+            response = self._request(query)
 
+            while response.result_total < target:
 
-    def _issue_request(self, query):
+                remaining = target - response.result_total
+
+                if remaining > MAX_PAGE_SIZE:
+                    query.skip += MAX_PAGE_SIZE
+                    query.top = MAX_PAGE_SIZE
+                    response += self._request(query)
+
+                if remaining <= MAX_PAGE_SIZE:
+                    query.skip += query.top
+                    query.top = remaining
+                    response += self._request(query)
+
+            return response
+
+    def _request(self, query):
 
         query_string = self._create_query_string(query)
 
         try:
             results = requests.get(query_string, auth=('', self.api_key))
         except requests.exceptions.ConnectionError:
-            raise requests.exceptions.ConnectionError("Internet connectivity error")
+            raise ConnectionError("Internet connectivity error with {0} engine search request".format(self.name))
 
         if results.status_code == 401:
-            raise ValueError("Incorrect API Key supplied to {0} engine (401)".format(self.name))
+            raise ValueError("Incorrect API Key supplied to {0} engine search request (401)".format(self.name))
         if results.status_code == 400:
-            raise ValueError("Bad request sent to {0} engine API (400)".format(self.name))
+            raise ValueError("Bad request sent to {0} engine search request API (400)".format(self.name))
 
         if query.format == 'ATOM':
             return Bing._parse_xml_response(query, results)
