@@ -12,7 +12,7 @@ from selenium.webdriver.common.keys import Keys
 from ifind.models.game_models import Page, Category
 from ifind.models.game_mechanics import GameMechanic
 from django.contrib.auth.models import User
-from ifind.search.engine.dummy_search import DummySearch
+from ifind.search.engine import EngineFactory
 
 class PageFetchTest(LiveServerTestCase):
 
@@ -88,7 +88,7 @@ class GameMechanicTest(TestCase):
 
 
     def test_game_scoring(self):
-        se = DummySearch()
+        se = EngineFactory("Dummy")
         u = User.objects.get(username='testy')
         c = Category.objects.get(name='Numbers')
 

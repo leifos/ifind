@@ -7,10 +7,10 @@ import redis
 
 #query = Query('test', source_type="WEB", format='ATOM')
 #query = Query('Hello World', source_type="Web", format='ATOM')
-query = Query('best laptop', source_type="Web", format='JSON', top=10, skip=0)
-query2 = Query('best laptop', source_type="Web", format='JSON', top=10, skip=4)
+query = Query('awful bus glasgow', source_type="Web", format='JSON', top=10, skip=0)
+query2 = Query('awful bus glasgow', source_type="Web", format='JSON', top=10, skip=4)
 
-engine = EngineFactory("bing", api_key='5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ')
+engine = EngineFactory("bing", api_key='')
 
 result = engine.search(query)
 result2 = engine.search(query2)
