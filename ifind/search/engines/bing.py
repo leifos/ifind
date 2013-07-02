@@ -54,10 +54,18 @@ class Bing(Engine):
         :raises Bad request etc
 
         """
-
+        #
+        # auto query
+        #
+        
         if query.top <= MAX_PAGE_SIZE:
             return self._issue_request(query)
 
+        # if query.top <= MAX_PAGE_SIZE:
+            # create query string with query
+            # make query request
+            # parse and return
+              
         # if query.top > MAX_PAGE_SIZE:
         #     target = query.top
         #     query.top = MAX_PAGE_SIZE
@@ -67,25 +75,15 @@ class Bing(Engine):
         #         if (target-response.result_total) > MAX_PAGE_SIZE:
         #             query.skip += MAX_PAGE_SIZE
         #             query.top = MAX_PAGE_SIZE
-        #             # issue request, get response
+        #             # issue request, get response add returned response to current with '+=' operator
         #
         #
         #         if (target-response.result_total) < MAX_PAGE_SIZE:
-        #             query.skip = target - (target-response.result_total)
+        #             query.skip += query.top
         #             query.top = target-response.result_total
-        #             # issue request, get response
-
-        #if query.top <= MAX_PAGE_SIZE:
-            # create query string with query as is
-            # make query request
-            # parse and return
-
-        #if query.top > MAX_PAGE_SIZE:
-            # create query string with top = top-max_page
-
-
-
-
+        #             # issue request, get response add returned response to current with '+=' operator
+        #
+        # TODO: Flow controls, test response '+=' addition (probably did already), test this. Maybe with tests.
 
 
 
