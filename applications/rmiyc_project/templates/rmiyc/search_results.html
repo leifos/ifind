@@ -1,7 +1,7 @@
  <div id ="score-div">
      {% if overall_results %}
             {% for item in overall_results %}
-                <h4>your score is : {{item.score}}</h4>
+                <h4>your score is : <div id="score-variable">{{item.score}}</div></h4>
             {% endfor %}
      {% endif %}
  </div>
