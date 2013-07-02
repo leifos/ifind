@@ -10,6 +10,7 @@ markupsafe==0.18
 mechanize==0.2.5
 mock==1.0.1
 nose==1.2.1
+oauth2=1.5.211
 numpy==1.7.1
 PIL==1.1.7
 protobuf==2.4.1
