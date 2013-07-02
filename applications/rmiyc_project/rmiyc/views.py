@@ -8,6 +8,7 @@ from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
 from ifind.models.game_models import Category, Page
 from django.contrib.auth.models import User
+from ifind.search.engine import EngineFactory
 from datetime import datetime
 # Create your views here.
 
@@ -106,7 +107,8 @@ def search2(request):
 
         if request.COOKIES.has_key('game_id'):
             context = RequestContext(request, {})
-            gm = GameMechanic()
+            ds = EngineFactory("Dummy")
+            gm = GameMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
             if gm.is_game_over():
@@ -118,17 +120,59 @@ def search2(request):
             else:
 
                 gm.take_points()
-                gm._increment_round(True)
+                #gm._increment_round(True)
+                gm.handle_query(query)
                 gm.set_next_page()
 
                 p = gm.get_current_page()
                 #
                 # get the current score, which I am not sure what it does!!
-                s = gm.get_last_query()
+                s = gm.get_last_query_score()
                 overall_results.append({'result_list': result_list, 'page': p.screenshot, 'score': s})
-                response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
+                response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
             return response
         else:
+            # the game has not been created yet
+            # redirect to play view
+            print 'the game has not been created yet'
+            return HttpResponseRedirect('/rmiyc/cat_picker/')
+
+
+def skip(request):
+
+    user = User.objects.filter(username='testy')
+    if user:
+            user = user[0]
+    else:
+            print "Adding testy user"
+            user = User(username='testy',password='test')
+            user.save()
+
+    if request.COOKIES.has_key('game_id'):
+            context = RequestContext(request, {})
+            ds = EngineFactory("Dummy")
+            gm = GameMechanic(ds)
+            game_id = request.COOKIES.get('game_id')
+            gm.retrieve_game(user,game_id)
+            if gm.is_game_over():
+                response = HttpResponseRedirect('/rmiyc/game_over/')
+                print 'game is over'
+                # delete the cookie
+                response.delete_cookie('game_id')
+                return response
+            else:
+                gm.take_points()
+                gm._increment_round(True)
+                gm.set_next_page()
+                p = gm.get_current_page()
+                #
+                print 'screenshot'
+                print p.screenshot
+                overall_results=[]
+                overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
+                response = render_to_response('rmiyc/screenshot.html', {'overall_results': overall_results}, context)
+            return response
+    else:
             # the game has not been created yet
             # redirect to play view
             print 'the game has not been created yet'

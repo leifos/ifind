@@ -11,11 +11,13 @@
     //}
     </script>
     <div id="image-div" class="span6">
+        <div id="image-box">
             {% if overall_results %}
             {% for item in overall_results %}
                 <image src='{{item.page}}' height=500 width=600> </image>
             {% endfor %}
             {% endif %}
+        </div>
     </div>
     <div class="span4">
     <div id ="search-form-div">
