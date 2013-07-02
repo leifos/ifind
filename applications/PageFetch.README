@@ -40,3 +40,75 @@ Population of Pagefetch
     - add_pages
         takes a list of (cat_name, urls, rank)
         adds/creates pages, captures page, title, etc. difficulty of page is given by the rank
+
+
+    - add_achievements
+        Add in four badges
+        b1: Played 10 Games - play 10 or more games to earn this badge
+        b2: Played All Cats - play a game in each category to earn this badge
+        b3: Find 5 Pages in a Game - in one game find at least 5 pages
+        b4: UberSearcher - Total Score is over 5,000 points.
+
+        the xp_earned = 500 for each achievement
+
+    - add_levels
+        add in 50 levels, where the xp required is 1000 per level, i.e:
+        level   0   xp  0
+                1       1000
+                2       2000
+                3       3000
+                etc
+
+    - add_noobs
+        add in three users (easy names like jim, jane and jake)
+        with password test
+
+            jim (8 games scored 0-500 in each, played all cats, xp 760)
+
+           jane (10 games scoring 400-800, played one cat, found 5 pages in one game, xp 2300)
+
+            jake (12 games, scoring 1000 points per game, played 2 games in each cat, xp 3400)
+
+
+        create the respective PlayerAchievements for each page
+            jim (b2)
+            jane( b1,b3)
+            jake (b1,b2, b4)
+
+
+
+
+
+User Profile Page
+-----------------
+
+After register, it should auto login, and ask them to fill in their user profile.
+    - create user profile
+        the profile is based on the UserProfile model
+    - edit user profile
+    - view user profile - with url mapping user/<user_name>
+        this should show the user details (username, email), the UserProfile details, highest scores for different categories, and badges/achievements.
+        also shows total_score which is the sum of the highest scores given each category
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
