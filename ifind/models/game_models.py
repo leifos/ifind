@@ -10,12 +10,12 @@ from configuration import UPLOAD_DIR
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    xp = models.IntegerField(default=0)
-    level = models.IntegerField(default=0)
-    xp_to_next_level = models.IntegerField(default=1)
-    last_time_played = models.DateTimeField()
-    no_games_played = models.IntegerField(default=0)
-    rank = models.IntegerField(default=0)
+    xp = models.IntegerField(default=0,blank=True)
+    level = models.IntegerField(default=0,blank=True)
+    xp_to_next_level = models.IntegerField(default=1,blank=True)
+    last_time_played = models.DateTimeField(null=True, blank=True)
+    no_games_played = models.IntegerField(default=0,blank=True)
+    rank = models.IntegerField(default=0,blank=True)
 
     def __unicode__(self):
         return self.user.name
@@ -72,10 +72,10 @@ class Page(models.Model):
 
 class Achievement(models.Model):
     name = models.CharField(max_length=128)
-    level_of_achievement = models.IntegerField(default=0, null=True)
-    desc = models.TextField(null=True)
-    badge_icon = models.ImageField(null=True, upload_to=UPLOAD_DIR)
-
+    level_of_achievement = models.IntegerField(default=0, blank=True)
+    desc = models.CharField(max_length=256)
+    badge_icon = models.ImageField(null=True, upload_to=UPLOAD_DIR, blank=True)
+    xp_earned = models.IntegerField(default=0, blank=True)
     def __unicode__(self):
         return self.name
 
