@@ -4,20 +4,21 @@ class Query(object):
 
     Query Attributes:
         terms:  a string of search terms
-        lang:   a string defining the language of the results
+        lang:   a string defining the language of the results (varies on engine)
         format: a string defining the result format (json, xml)
         top:   an integer specifying the number of results to return
         skip:  an integer specifying the offset of starting point for results returned
-        source_type: a string defining the type of query (web, image, video)
+        result_type: a string defining the type of query (varies on engine)
+
     """
-    def __init__(self, terms, lang='EN', format='JSON',
-                 top=20, skip=0, source_type='web', **kwargs):
+    def __init__(self, terms, lang='', format='JSON',
+                 top=10, skip=0, result_type='', **kwargs):
         """
         Constructs Query object, creating instance attributes from optional keyword parameters (**kwargs).
 
         """
         self.terms = terms
-        self.source_type = source_type.lower().title()
+        self.result_type = result_type.lower().title()
         self.format = format.upper()
         self.lang = lang
         self.top = top

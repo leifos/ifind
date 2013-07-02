@@ -7,58 +7,58 @@ from ifind.search.response import Response
 from requests.exceptions import ConnectionError
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
-KEY_REQUIRED = True
 
 RESULT_FORMATS = ("JSON", "ATOM")
 
 MAX_PAGE_SIZE = 50
 MAX_RESULTS = 1000
 
-WEB_SOURCE_TYPE = 'Web'
-IMAGE_SOURCE_TYPE = 'Image'
-VIDEO_SOURCE_TYPE = 'Video'
-NEWS_SOURCE_TYPE = 'News'
-SPELL_SOURCE_TYPE = 'Spell'
+WEB_RESULT_TYPE = 'Web'
+IMAGE_RESULT_TYPE = 'Image'
+VIDEO_RESULT_TYPE = 'Video'
+NEWS_RESULT_TYPE = 'News'
+SPELL_RESULT_TYPE = 'Spell'
 
-SOURCE_TYPES = (
-    WEB_SOURCE_TYPE,
-    IMAGE_SOURCE_TYPE,
-    NEWS_SOURCE_TYPE,
-    SPELL_SOURCE_TYPE
-)
+RESULT_TYPES = (
+    WEB_RESULT_TYPE,
+    IMAGE_RESULT_TYPE,
+    NEWS_RESULT_TYPE,
+    SPELL_RESULT_TYPE)
 
 
 class Bing(Engine):
 
-    def __init__(self, **kwargs):
+    def __init__(self, api_key='', **kwargs):
 
         """
-        Constructor for BingWebSearch class, inheriting from ifind's SearchEngine.
+        Constructor for Bing engine class, inheriting from ifind's Engine.
 
         :param api_key: string representing unique API access key (optional)
         :param proxies: dict representing proxies to use
                         i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
         """
         Engine.__init__(self, **kwargs)
+        self.api_key = api_key
 
-        if not self.api_key and KEY_REQUIRED:
+        if not self.api_key:
             raise ValueError('{0} engine API Key not supplied'.format(self.name))
 
     def search(self, query):
         """
         Performs a search, retrieves the results and returns them as an ifind response.
 
-        N.B. This is derived from ifind's SearchEngine class.
+        See: ifind's dropbox for recent Bing API specification for full list
+
+        Accepted query parameters:
+            top:    specifies the number of results to return up to MAX_PAGE_SIZE
+            skip:   specifies the offset requested for the starting point of results returned
+            format: specifies the result format i.e. 'atom' or 'json'
 
         :param query: ifind.search.query.Query object
         :return ifind.search.response.Response object
         :raises Bad request etc
 
         """
-        #
-        # auto query
-        #
-
         # if 0 total results specified
         if not query.top:
             raise ValueError("Total result amount (query.top) not specified"
@@ -119,8 +119,8 @@ class Bing(Engine):
         :return string representation of query url for REST request to bing search api
 
         """
-        if query.source_type.title() not in SOURCE_TYPES:
-            raise ValueError("{0} engine doesn't support '{1}' source type".format(self.name, query.source_type))
+        if query.result_type.title() not in RESULT_TYPES:
+            raise ValueError("{0} engine doesn't support '{1}' source type".format(self.name, query.result_type))
 
         if query.format not in RESULT_FORMATS:
             raise ValueError("{0} engine doesn't support '{1}' result format".format(self.name, query.format))
@@ -139,7 +139,7 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return API_ENDPOINT + query.source_type + Bing._encode_symbols(query_string)
+        return API_ENDPOINT + query.result_type + Bing._encode_symbols(query_string)
 
     @staticmethod
     def _encode_symbols(query_string):
