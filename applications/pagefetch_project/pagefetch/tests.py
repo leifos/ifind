@@ -103,3 +103,18 @@ class GameMechanicTest(TestCase):
         self.assertEquals(gm.get_current_score(),1000)
 
 
+class RegistrationTest(TestCase):
+
+
+    def setUp(self):
+        pass
+
+
+class LoginTest(TestCase):
+
+
+    def setUp(self):
+        pass
+
+
+
