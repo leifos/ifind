@@ -1,0 +1,22 @@
+ <div id ="score-div">
+     {% if overall_results %}
+            {% for item in overall_results %}
+                <h4>your score is : {{item.score}}</h4>
+            {% endfor %}
+     {% endif %}
+ </div>
+ <div id="search-results-div">
+     {% if overall_results %}
+     <ol>
+            {% for item in overall_results %}
+                {% for result in item.result_list %}
+                    <Li>
+                    <b>{{result.title}}</b>
+                    <br />
+                    {{result.link}}
+                    </Li>
+                {% endfor %}
+            {% endfor %}
+     </ol>
+     {% endif %}
+ </div>

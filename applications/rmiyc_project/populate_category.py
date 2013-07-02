@@ -9,29 +9,7 @@ import os
 from django.core.files import File
 import httplib
 from urlparse import urlparse
-from ifind.common.utils import convert_url_to_filename, checkUrl
-
-
-
-def read_in_urls(filename):
-    # read in file - store in a list (url_list)
-    # Open the file with read only permit
-    f = open(filename, 'r')
-    # Read the first line
-    print 'file is opened'
-    url_list = []
-    for line in f:
-        # Strip urls from spaces
-        url = line.strip()
-        # validate the url
-        if checkUrl(url):
-            url_list.append(url)
-
-    f.close()
-    print 'file is closed'
-    return url_list
-
-
+from ifind.common.utils import convert_url_to_filename, read_in_urls
 
 
 def get_category(category_name, desc='', icon='', append=False):

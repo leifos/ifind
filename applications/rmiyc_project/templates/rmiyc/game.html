@@ -1,0 +1,40 @@
+{% extends 'rmiyc/base.html' %}
+{% block container %}
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
+
+    <script>
+    //window.onbeforeunload = confirmExit;
+    //function confirmExit()
+    //{
+        //alert("confirm exit is being called");
+        // action="/rmiyc/search2/"
+    //}
+    </script>
+    <div id="image-div" class="span6">
+        <div id="image-box">
+            {% if overall_results %}
+            {% for item in overall_results %}
+                <image src='{{item.page}}' height=500 width=600> </image>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="span4">
+    <div id ="search-form-div">
+        <form id="search_form"  method="POST">
+            {% csrf_token %}
+            <div class="input-append">
+                <input  id="query"  name="query" type="text" placeholder="Enter your query here">
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn" type="button" id="skip">skip</button>
+            </div>
+        </form>
+
+    </div>
+
+    <div id="content">
+
+    </div>
+
+    </div>
+{% endblock %}
