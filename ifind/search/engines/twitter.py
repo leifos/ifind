@@ -3,7 +3,7 @@ import requests
 import oauth2 as oauth
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.search.exceptions import EngineException
+from engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.twitter.com/1.1/search/tweets.json'
 
