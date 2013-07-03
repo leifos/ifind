@@ -1,6 +1,6 @@
 ERROR = {999: "Unknown engine error ({0})",
          400: "Bad request sent to search API ({0})",
-         401: "Incorrect API Key({0})",
+         401: "Incorrect API Key ({0})",
          403: "Correct API but request refused ({0})"}
 
 
