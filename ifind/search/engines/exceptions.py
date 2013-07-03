@@ -16,7 +16,7 @@ class EngineException(object):
         self.code = code
 
         if code:
-            self.message = ERROR.get(code, 999).format(self.code)
+            self.message = ERROR.get(code, ERROR[999]).format(self.code) #TODO tidy
 
         class NewClass(ValueError):
             pass

@@ -1,20 +1,22 @@
+import requests
+import xml.dom.minidom
 from ifind.search.engine import EngineFactory
 from ifind.search.query import Query
 
-#query = Query('test', source_type="WEB", format='ATOM')
+query = Query('test', result_type="WEB", format='JSON')
 #query = Query('Hello World', source_type="Web", format='ATOM')
 #query = Query('awful bus glasgow', source_type="Web", format='JSON', top=10, skip=0)
 #query2 = Query('milk death', result_type="web", format='JSON', top=70, skip=0)
-query2 = Query("furnace", result_type='recent', top=5)
+#query2 = Query("furnace", result_type='recent', top=5)
 
-engine = EngineFactory("twitter")
+engine = EngineFactory("bing", api_key='5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ')
 
 
-response = engine.search(query2)
+response = engine.search(query)
 
-for index, result in enumerate(response):
-    print index
-    print result
+#for index, result in enumerate(response):
+    #print index
+    #print result
 
 
 # result2 = engine.search(query2)
@@ -36,3 +38,23 @@ for index, result in enumerate(response):
 # #print r_server.scard('result26')
 #
 # #r_server.sinter('dog', 'dogg')
+
+terms = "dog"
+
+search_params = {'format': 'xml',
+                 'search': terms,
+                 'action': 'opensearch'}
+
+response = requests.get('http://www.wikipedia.org/w/api.php', params=search_params)
+
+
+xmldoc = xml.dom.minidom.parseString(response.content)
+
+items = xmldoc.getElementsByTagName('Item')
+
+for item in items:
+    url = item.getElementsByTagName('Url')[0].firstChild.data
+    print url
+    #slug = re.findall(r'')
+
+#items = xml.getElementByTagName('Item')
