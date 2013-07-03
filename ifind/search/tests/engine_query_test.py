@@ -1,9 +1,5 @@
-# TODO Clean up, rename and convert into BingSearch CLI module
-
 from ifind.search.engine import EngineFactory
 from ifind.search.query import Query
-
-
 
 #query = Query('test', source_type="WEB", format='ATOM')
 #query = Query('Hello World', source_type="Web", format='ATOM')
