@@ -107,7 +107,7 @@ def search2(request):
 
         if request.COOKIES.has_key('game_id'):
             context = RequestContext(request, {})
-            ds = EngineFactory("bing",api_key=BING_API_KEY)
+            ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = GameMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
@@ -119,15 +119,14 @@ def search2(request):
                 return response
             else:
 
-                gm.take_points()
-                #gm._increment_round(True)
                 gm.handle_query(query)
-                gm.set_next_page()
-
-                p = gm.get_current_page()
-                #
                 # get the current score, which I am not sure what it does!!
                 s = gm.get_last_query_score()
+                print 'last query score is '
+                print s
+                gm.take_points()
+                gm.set_next_page()
+                p = gm.get_current_page()
                 overall_results.append({'result_list': result_list, 'page': p.screenshot, 'score': s})
                 response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
             return response
@@ -161,8 +160,7 @@ def skip(request):
                 response.delete_cookie('game_id')
                 return response
             else:
-                gm.take_points()
-                gm._increment_round(True)
+                gm._increment_round(False)
                 gm.set_next_page()
                 p = gm.get_current_page()
                 #

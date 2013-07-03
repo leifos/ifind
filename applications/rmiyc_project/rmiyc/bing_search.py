@@ -1,6 +1,6 @@
 import urllib, urllib2
 import json
-
+from keys import BING_API_KEY
 
 def run_query(search_terms):
     '''Issues a query to the Bing Search API.
@@ -25,7 +25,7 @@ def run_query(search_terms):
 
     # Add the API key to the password manager. There IS no username.
     username = ''
-    bing_api_key = "5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ"
+    bing_api_key = BING_API_KEY
     password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
     password_mgr.add_password(None, search_url, username, bing_api_key)
 

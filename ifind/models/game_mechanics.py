@@ -174,6 +174,7 @@ class GameMechanic(object):
 
         self.game.last_query_score = 0
         self.game.last_query = ''
+        self.update_game()
         # increment round here ?????
 
     def handle_query(self, query):
@@ -207,7 +208,7 @@ class GameMechanic(object):
         :return: ifind.search.response
         """
         # construct ifind.search.query Query
-        iquery = Query("rer", result_type="web")
+        iquery = Query(query, result_type="web")
 
         # issue query to self.search_engine
         iresponse = self.search_engine.search(iquery)
@@ -228,7 +229,10 @@ class GameMechanic(object):
         i = 0
         for result in response.results:
             i +=1
-            if result['url'] == url_to_find:
+            print "I am result "
+            print i
+            print result
+            if result.url == url_to_find:
                 return i
         return 0
 
