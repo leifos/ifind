@@ -9,18 +9,16 @@ from ifind.search.query import Query
 #query = Query('Hello World', source_type="Web", format='ATOM')
 #query = Query('awful bus glasgow', source_type="Web", format='JSON', top=10, skip=0)
 #query2 = Query('milk death', result_type="web", format='JSON', top=70, skip=0)
-query2 = Query("ertt", result_type='web')
+query2 = Query("furnace", result_type='recent', top=5)
 
-engine = EngineFactory("bing", api_key='5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ')
+engine = EngineFactory("twitter")
 
 
 response = engine.search(query2)
 
-print query2.result_type
-
-for result in response:
+for index, result in enumerate(response):
+    print index
     print result
-    print
 
 
 # result2 = engine.search(query2)
