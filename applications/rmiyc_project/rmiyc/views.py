@@ -107,7 +107,7 @@ def search2(request):
 
         if request.COOKIES.has_key('game_id'):
             context = RequestContext(request, {})
-            ds = EngineFactory("Dummy")
+            ds = EngineFactory("bing",api_key=BING_API_KEY)
             gm = GameMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
@@ -150,7 +150,7 @@ def skip(request):
 
     if request.COOKIES.has_key('game_id'):
             context = RequestContext(request, {})
-            ds = EngineFactory("Dummy")
+            ds = EngineFactory("bing")
             gm = GameMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)

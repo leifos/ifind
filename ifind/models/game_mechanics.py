@@ -207,7 +207,7 @@ class GameMechanic(object):
         :return: ifind.search.response
         """
         # construct ifind.search.query Query
-        iquery = Query(query)
+        iquery = Query("rer", result_type="web")
 
         # issue query to self.search_engine
         iresponse = self.search_engine.search(iquery)

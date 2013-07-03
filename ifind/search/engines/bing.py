@@ -80,6 +80,8 @@ class Bing(Engine):
             raise ValueError("Incorrect API Key supplied to {0} engine search request (401)".format(self.name))
         if results.status_code == 400:
             raise ValueError("Bad request sent to {0} engine search request API (400)".format(self.name))
+        if results.status_code != 200:
+            raise ValueError("Something bad happened with code: {0}".format(results.status_code))
 
         if query.format == 'ATOM':
             return Bing._parse_xml_response(query, results)
@@ -178,6 +180,8 @@ class Bing(Engine):
         """
         response = Response()
         response.query_terms = query.terms
+
+        print results.text
 
         content = json.loads(results.text)
 
