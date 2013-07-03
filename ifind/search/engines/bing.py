@@ -4,7 +4,7 @@ import requests
 import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from requests.exceptions import ConnectionError
+from engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
@@ -41,7 +41,7 @@ class Bing(Engine):
         self.api_key = api_key
 
         if not self.api_key:
-            raise ValueError("{0} engine 'api_key' keyword argument not specified".format(self.name))
+            raise EngineException(self.name, "'api_key' keyword argument not specified")
 
     def search(self, query):
         """
@@ -55,12 +55,18 @@ class Bing(Engine):
             format:         specifies the result format i.e. 'atom' or 'json'
             result_type:    specifies the type of query (see top of Bing source for available types)
 
-
         :param query: ifind.search.query.Query object
         :return ifind.search.response.Response object
         :raises Bad request etc
 
         """
+        if not query.top:
+            raise EngineException(self.name, "Total result amount (query.top) not specified")
+
+        if query.top > MAX_RESULTS:
+            raise EngineException(self.name, 'Requested result amount (query.top) '
+                                             'exceeds max of {0}'.format(MAX_PAGE_SIZE))
+
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
 
@@ -74,14 +80,10 @@ class Bing(Engine):
         try:
             results = requests.get(query_string, auth=('', self.api_key))
         except requests.exceptions.ConnectionError:
-            raise ConnectionError("Internet connectivity error with {0} engine search request".format(self.name))
+            raise EngineException(self.name, "Unable to send request, check internet connectivity")
 
-        if results.status_code == 401:
-            raise ValueError("Incorrect API Key supplied to {0} engine search request (401)".format(self.name))
-        if results.status_code == 400:
-            raise ValueError("Bad request sent to {0} engine search request API (400)".format(self.name))
         if results.status_code != 200:
-            raise ValueError("Something bad happened with code: {0}".format(results.status_code))
+            raise EngineException(self.name, "", code=results.status_code)
 
         if query.format == 'ATOM':
             return Bing._parse_xml_response(query, results)
@@ -113,26 +115,17 @@ class Bing(Engine):
 
     def _create_query_string(self, query):
         """
-
         Generates & returns Bing API query string
 
         :param query: ifind.search.query.Query
         :return string representation of query url for REST request to bing search api
 
         """
-        if not query.top:
-            raise ValueError("Total result amount (query.top) not specified"
-                             " in {0} engine search request".format(self.name))
-
-        if query.top > MAX_RESULTS:
-            raise ValueError("Total result amount (query.top) exceeds"
-                             " {0} engine result limit".format(self.name))
-
         if query.result_type.title() not in RESULT_TYPES:
-            raise ValueError("{0} engine doesn't support '{1}' result_type for query".format(self.name, query.result_type))
+            raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
         if query.format not in RESULT_FORMATS:
-            raise ValueError("{0} engine doesn't support '{1}' result format for query".format(self.name, query.format))
+            raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
         params = {'$format': query.format,
                   '$top': query.top,
@@ -144,6 +137,23 @@ class Bing(Engine):
             query_string += '&' + key + '=' + str(value)
 
         return API_ENDPOINT + query.result_type + Bing._encode_symbols(query_string)
+
+    @staticmethod
+    def _encode_symbols(query_string):
+        """
+        Encodes query string as defined in the Bing API Specification.
+
+        :param query_string: string representation of query url for REST request to bing search api
+        :return encoded query string
+
+        """
+        encoded_string = string.replace(query_string, "'", '%27')
+        encoded_string = string.replace(encoded_string, '"', '%27')
+        encoded_string = string.replace(encoded_string, '+', '%2b')
+        encoded_string = string.replace(encoded_string, ' ', '%20')
+        encoded_string = string.replace(encoded_string, ':', '%3a')
+
+        return encoded_string
 
     @staticmethod
     def _parse_xml_response(query, results):
@@ -181,28 +191,9 @@ class Bing(Engine):
         response = Response()
         response.query_terms = query.terms
 
-        print results.text
-
         content = json.loads(results.text)
 
         for result in content[u'd'][u'results']:
             response.add_result(result[u'Title'], result[u'Url'], result[u'Description'])
 
         return response
-
-    @staticmethod
-    def _encode_symbols(query_string):
-        """
-        Encodes query string as defined in the Bing API Specification.
-
-        :param query_string: string representation of query url for REST request to bing search api
-        :return encoded query string
-
-        """
-        encoded_string = string.replace(query_string, "'", '%27')
-        encoded_string = string.replace(encoded_string, '"', '%27')
-        encoded_string = string.replace(encoded_string, '+', '%2b')
-        encoded_string = string.replace(encoded_string, ' ', '%20')
-        encoded_string = string.replace(encoded_string, ':', '%3a')
-
-        return encoded_string

@@ -3,7 +3,7 @@ import requests
 import oauth2 as oauth
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from requests.exceptions import ConnectionError
+from engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.twitter.com/1.1/search/tweets.json'
 
@@ -68,16 +68,41 @@ class Twitter(Engine):
         :raises Bad request etc
 
         """
-
         if not query.top:
-            raise ValueError('Total result amount (query.top) not specified'
-                             ' in {0} engine search request'.format(self.name))
+            raise EngineException(self.name, 'Total result amount (query.top) not specified')
 
         if query.top > MAX_PAGE_SIZE:
-            raise ValueError('Requested result amount (query.top) exceeds'
-                             ' {0} engine max page size'.format(self.name))
+            raise EngineException(self.name, 'Requested result amount (query.top) '
+                                             'exceeds max of {0}'.format(MAX_PAGE_SIZE))
 
         return self._request(query)
+
+    def _request(self, query):
+        query_string = self._create_query_string(query)
+
+        try:
+            results = requests.get(query_string)
+        except requests.exceptions.ConnectionError:
+            raise EngineException(self.name, "Unable to send request, check internet connectivity")
+
+        if results.status_code != 200:
+            raise EngineException(self.name, "", code=results.status_code)
+
+        return Twitter._parse_json_response(query, results)
+
+    def _create_query_string(self, query):
+        """
+        Generates & returns Twitter API query string
+
+        :param query: ifind.search.query.Query
+        :return string representation of query URL for REST request to twitter search api
+
+        """
+        if query.result_type not in RESULT_TYPES:
+            raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
+
+        if query.format not in RESULT_FORMATS:
+            raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
         parameters = {'count': query.top,
                       'result_type': query.result_type,
@@ -92,11 +117,7 @@ class Twitter(Engine):
 
         request.sign_request(SIGNATURE_METHOD_HMAC_SHA1, OAUTH_CONSUMER, OAUTH_TOKEN)
 
-        query_string = request.to_url()
-
-        return Twitter._parse_json_response(query, requests.get(query_string))
-
-
+        return request.to_url()
 
     @staticmethod
     def _parse_json_response(query, results):

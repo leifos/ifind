@@ -7,7 +7,6 @@ class Engine(object):
     Abstract search engine interface.
 
     """
-
     def __init__(self, proxies=None):
         """
         Constructor for SearchEngine.
