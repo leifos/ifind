@@ -69,13 +69,7 @@ class Twitter(Engine):
 
         """
 
-        if not query.top:
-            raise ValueError('Total result amount (query.top) not specified'
-                             ' in {0} engine search request'.format(self.name))
 
-        if query.top > MAX_PAGE_SIZE:
-            raise ValueError('Requested result amount (query.top) exceeds'
-                             ' {0} engine max page size'.format(self.name))
 
         return self._request(query)
 
@@ -95,6 +89,27 @@ class Twitter(Engine):
         query_string = request.to_url()
 
         return Twitter._parse_json_response(query, requests.get(query_string))
+
+
+    def _request(self, query):
+        query_string = self._create_query_string(query)
+
+    def _create_query_string(self, query):
+        """
+        Generates & returns Twitter API query string
+
+        :param query: ifind.search.query.Query
+        :return string representation of query URL for REST request to twitter search api
+
+        """
+        if not query.top:
+            raise ValueError('Total result amount (query.top) not specified'
+                             ' in {0} engine search request'.format(self.name))
+
+        if query.top > MAX_PAGE_SIZE:
+            raise ValueError('Requested result amount (query.top) exceeds'
+                             ' {0} engine max page size'.format(self.name))
+
 
 
 

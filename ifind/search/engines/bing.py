@@ -5,6 +5,7 @@ import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from requests.exceptions import ConnectionError
+from ifind.search.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
@@ -41,7 +42,7 @@ class Bing(Engine):
         self.api_key = api_key
 
         if not self.api_key:
-            raise ValueError("{0} engine 'api_key' keyword argument not specified".format(self.name))
+            raise EngineException(self.name, "'api_key' keyword argument not specified")
 
     def search(self, query):
         """
@@ -74,14 +75,10 @@ class Bing(Engine):
         try:
             results = requests.get(query_string, auth=('', self.api_key))
         except requests.exceptions.ConnectionError:
-            raise ConnectionError("Internet connectivity error with {0} engine search request".format(self.name))
+            raise EngineException(self.name, "Internet connectivity error")
 
-        if results.status_code == 401:
-            raise ValueError("Incorrect API Key supplied to {0} engine search request (401)".format(self.name))
-        if results.status_code == 400:
-            raise ValueError("Bad request sent to {0} engine search request API (400)".format(self.name))
         if results.status_code != 200:
-            raise ValueError("Something bad happened with code: {0}".format(results.status_code))
+            raise EngineException(self.name, "", code=results.status_code)
 
         if query.format == 'ATOM':
             return Bing._parse_xml_response(query, results)
@@ -113,7 +110,6 @@ class Bing(Engine):
 
     def _create_query_string(self, query):
         """
-
         Generates & returns Bing API query string
 
         :param query: ifind.search.query.Query
