@@ -33,7 +33,7 @@ class Bing(Engine):
         """
         Constructor for Bing engine class, inheriting from ifind's Engine.
 
-        :param api_key: string representing unique API access key (optional)
+        :param api_key: string representing unique API access key
         :param proxies: dict representing proxies to use
                         i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
         """
@@ -41,7 +41,7 @@ class Bing(Engine):
         self.api_key = api_key
 
         if not self.api_key:
-            raise ValueError('{0} engine API Key not supplied'.format(self.name))
+            raise ValueError("{0} engine 'api_key' keyword argument not specified".format(self.name))
 
     def search(self, query):
         """
@@ -50,9 +50,11 @@ class Bing(Engine):
         See: ifind's dropbox for recent Bing API specification for full list
 
         Accepted query parameters:
-            top:    specifies the number of results to return up to MAX_PAGE_SIZE
-            skip:   specifies the offset requested for the starting point of results returned
-            format: specifies the result format i.e. 'atom' or 'json'
+            top:            specifies the number of results to return up to MAX_PAGE_SIZE
+            skip:           specifies the offset requested for the starting point of results returned
+            format:         specifies the result format i.e. 'atom' or 'json'
+            result_type:    specifies the type of query (see top of Bing source for available types)
+
 
         :param query: ifind.search.query.Query object
         :return ifind.search.response.Response object
@@ -110,7 +112,8 @@ class Bing(Engine):
         if query.format == 'JSON':
             return Bing._parse_json_response(query, results)
 
-    #def _multi
+    def _auto_request(self, query):
+        pass
 
     def _create_query_string(self, query):
         """
