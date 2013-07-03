@@ -61,14 +61,6 @@ class Bing(Engine):
         :raises Bad request etc
 
         """
-        if not query.top:
-            raise ValueError("Total result amount (query.top) not specified"
-                             " in {0} engine search request".format(self.name))
-
-        if query.top > MAX_RESULTS:
-            raise ValueError("Total result amount (query.top) exceeds"
-                             " {0} engine result limit".format(self.name))
-
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
 
@@ -126,11 +118,19 @@ class Bing(Engine):
         :return string representation of query url for REST request to bing search api
 
         """
+        if not query.top:
+            raise ValueError("Total result amount (query.top) not specified"
+                             " in {0} engine search request".format(self.name))
+
+        if query.top > MAX_RESULTS:
+            raise ValueError("Total result amount (query.top) exceeds"
+                             " {0} engine result limit".format(self.name))
+
         if query.result_type.title() not in RESULT_TYPES:
-            raise ValueError("{0} engine doesn't support '{1}' query result type".format(self.name, query.result_type))
+            raise ValueError("{0} engine doesn't support '{1}' result_type for query".format(self.name, query.result_type))
 
         if query.format not in RESULT_FORMATS:
-            raise ValueError("{0} engine doesn't support '{1}' query result format".format(self.name, query.format))
+            raise ValueError("{0} engine doesn't support '{1}' result format for query".format(self.name, query.format))
 
         params = {'$format': query.format,
                   '$top': query.top,

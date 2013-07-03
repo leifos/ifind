@@ -77,6 +77,8 @@ class Twitter(Engine):
             raise ValueError('Requested result amount (query.top) exceeds'
                              ' {0} engine max page size'.format(self.name))
 
+        return self._request(query)
+
         parameters = {'count': query.top,
                       'result_type': query.result_type,
                       'lang': query.lang,
