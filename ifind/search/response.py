@@ -90,9 +90,9 @@ class Response(object):
 class Result(object):
 
     def __init__(self, title, url, summary=''):
-        self.title = title
-        self.summary = summary
-        self.url = url
+        self.title = title.encode('utf-8')
+        self.summary = summary.encode('utf-8')
+        self.url = url.encode('utf-8')
 
     def __str__(self):
         return 'Title: {0}\nSummary: {1}\nURL: {2}'.format(self.title, self.summary, self.url)

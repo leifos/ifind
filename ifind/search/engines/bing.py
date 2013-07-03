@@ -61,37 +61,19 @@ class Bing(Engine):
         :raises Bad request etc
 
         """
-        # if 0 total results specified
         if not query.top:
             raise ValueError("Total result amount (query.top) not specified"
                              " in {0} engine search request".format(self.name))
 
-        # if total results specified <= max page size of engine
+        if query.top > MAX_RESULTS:
+            raise ValueError("Total result amount (query.top) exceeds"
+                             " {0} engine result limit".format(self.name))
+
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
 
         if query.top > MAX_PAGE_SIZE:
-
-            target = query.top
-            query.top = MAX_PAGE_SIZE
-            query.skip = 0
-            response = self._request(query)
-
-            while response.result_total < target:
-
-                remaining = target - response.result_total
-
-                if remaining > MAX_PAGE_SIZE:
-                    query.skip += MAX_PAGE_SIZE
-                    query.top = MAX_PAGE_SIZE
-                    response += self._request(query)
-
-                if remaining <= MAX_PAGE_SIZE:
-                    query.skip += query.top
-                    query.top = remaining
-                    response += self._request(query)
-
-            return response
+            return self._auto_request(query)
 
     def _request(self, query):
 
@@ -113,7 +95,27 @@ class Bing(Engine):
             return Bing._parse_json_response(query, results)
 
     def _auto_request(self, query):
-        pass
+
+        target = query.top
+        query.top = MAX_PAGE_SIZE
+        query.skip = 0
+        response = self._request(query)
+
+        while response.result_total < target:
+
+            remaining = target - response.result_total
+
+            if remaining > MAX_PAGE_SIZE:
+                query.skip += MAX_PAGE_SIZE
+                query.top = MAX_PAGE_SIZE
+                response += self._request(query)
+
+            if remaining <= MAX_PAGE_SIZE:
+                query.skip += query.top
+                query.top = remaining
+                response += self._request(query)
+
+        return response
 
     def _create_query_string(self, query):
         """
@@ -125,15 +127,10 @@ class Bing(Engine):
 
         """
         if query.result_type.title() not in RESULT_TYPES:
-            raise ValueError("{0} engine doesn't support '{1}' result type".format(self.name, query.result_type))
+            raise ValueError("{0} engine doesn't support '{1}' query result type".format(self.name, query.result_type))
 
         if query.format not in RESULT_FORMATS:
-            raise ValueError("{0} engine doesn't support '{1}' result format".format(self.name, query.format))
-
-        #if query.
-
-        # TODO Create method map_query that adjusts params to match bing spec/def
-        # TODO The above source/format checks would happen in map query
+            raise ValueError("{0} engine doesn't support '{1}' query result format".format(self.name, query.format))
 
         params = {'$format': query.format,
                   '$top': query.top,
@@ -145,24 +142,6 @@ class Bing(Engine):
             query_string += '&' + key + '=' + str(value)
 
         return API_ENDPOINT + query.result_type + Bing._encode_symbols(query_string)
-
-    @staticmethod
-    def _encode_symbols(query_string):
-        """
-        Encodes query string as defined in the Bing API Specification.
-
-        :param query_string: string representation of query url for REST request to bing search api
-        :return encoded query string
-
-        """
-        encoded_string = string.replace(query_string, "'", '%27')
-        encoded_string = string.replace(encoded_string, '"', '%27')
-        encoded_string = string.replace(encoded_string, '+', '%2b')
-        encoded_string = string.replace(encoded_string, ' ', '%20')
-        encoded_string = string.replace(encoded_string, ':', '%3a')
-
-        return encoded_string
-
 
     @staticmethod
     def _parse_xml_response(query, results):
@@ -206,3 +185,20 @@ class Bing(Engine):
             response.add_result(result[u'Title'], result[u'Url'], result[u'Description'])
 
         return response
+
+    @staticmethod
+    def _encode_symbols(query_string):
+        """
+        Encodes query string as defined in the Bing API Specification.
+
+        :param query_string: string representation of query url for REST request to bing search api
+        :return encoded query string
+
+        """
+        encoded_string = string.replace(query_string, "'", '%27')
+        encoded_string = string.replace(encoded_string, '"', '%27')
+        encoded_string = string.replace(encoded_string, '+', '%2b')
+        encoded_string = string.replace(encoded_string, ' ', '%20')
+        encoded_string = string.replace(encoded_string, ':', '%3a')
+
+        return encoded_string

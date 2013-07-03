@@ -113,7 +113,7 @@ class Twitter(Engine):
 
         for result in content[u'statuses']:
 
-            text = result[u'text'].encode('utf-8')
+            text = result[u'text']
             result_id = str(result[u'id'])
             user_id = result[u'user'][u'id_str']
             created_at = result[u'created_at']

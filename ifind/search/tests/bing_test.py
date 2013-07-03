@@ -8,7 +8,8 @@ from ifind.search.query import Query
 #query = Query('test', source_type="WEB", format='ATOM')
 #query = Query('Hello World', source_type="Web", format='ATOM')
 #query = Query('awful bus glasgow', source_type="Web", format='JSON', top=10, skip=0)
-query2 = Query('milk death', result_type="web", format='JSON', top=10, skip=4)
+#query2 = Query('milk death', result_type="web", format='JSON', top=70, skip=0)
+query2 = Query("ertt", result_type='web')
 
 engine = EngineFactory("bing", api_key='5VP0SQJkCyzkT1GfsWT//q4pt1zxvyaVVhltoDhfTDQ')
 
