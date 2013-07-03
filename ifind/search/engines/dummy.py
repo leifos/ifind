@@ -12,8 +12,8 @@ class Dummy(Engine):
         where x is in ['one','two','three',...,'ten']
     """
 
-    def __init__(self, proxy_host=None, api_key=None, **kwargs):
-        Engine.__init__(self, proxy_host, api_key, **kwargs)
+    def __init__(self, **kwargs):
+        Engine.__init__(self, **kwargs)
 
 
     def _create_response(self, query):
