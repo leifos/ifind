@@ -12,10 +12,10 @@ query2 = Query('milk death', source_type="mixed", format='JSON', top=10, skip=4)
 
 engine = EngineFactory("twitter")
 
-result = engine.search(query2)
+response = engine.search(query2)
 
-for result in result:
-    print result.url
+for result in response:
+    print result
 
 
 # result2 = engine.search(query2)

@@ -18,6 +18,10 @@ class Response(object):
         self.results = results or []
         self.result_total = 0
 
+    def __iter__(self):
+        for result in self.results:
+            yield result
+
     def add_result(self, title, url, summary=''):
         """
         :param title: string representation of result title
