@@ -110,6 +110,8 @@ class Bing(Engine):
         if query.format == 'JSON':
             return Bing._parse_json_response(query, results)
 
+    #def _multi
+
     def _create_query_string(self, query):
         """
 
@@ -120,7 +122,7 @@ class Bing(Engine):
 
         """
         if query.result_type.title() not in RESULT_TYPES:
-            raise ValueError("{0} engine doesn't support '{1}' source type".format(self.name, query.result_type))
+            raise ValueError("{0} engine doesn't support '{1}' result type".format(self.name, query.result_type))
 
         if query.format not in RESULT_FORMATS:
             raise ValueError("{0} engine doesn't support '{1}' result format".format(self.name, query.format))

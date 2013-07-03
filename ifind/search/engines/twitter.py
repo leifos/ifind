@@ -69,6 +69,14 @@ class Twitter(Engine):
 
         """
 
+        if not query.top:
+            raise ValueError('Total result amount (query.top) not specified'
+                             ' in {0} engine search request'.format(self.name))
+
+        if query.top > MAX_PAGE_SIZE:
+            raise ValueError('Requested result amount (query.top) exceeds'
+                             ' {0} engine max page size'.format(self.name))
+
         parameters = {'count': query.top,
                       'result_type': query.result_type,
                       'lang': query.lang,
@@ -105,13 +113,13 @@ class Twitter(Engine):
 
         for result in content[u'statuses']:
 
-            text = result[u'text']
+            text = result[u'text'].encode('utf-8')
             result_id = str(result[u'id'])
             user_id = result[u'user'][u'id_str']
             created_at = result[u'created_at']
 
             url = 'https://www.twitter.com/{0}/status/{1}'.format(user_id, result_id)
-            title = 'Tweet : {0}'.format(created_at)
+            title = '{0}'.format(created_at)
 
             response.add_result(title, url, text)
 
