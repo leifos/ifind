@@ -84,7 +84,9 @@ class Twitter(Engine):
 
         query_string = request.to_url()
 
-        return requests.get(query_string)
+        return Twitter._parse_json_response(query, requests.get(query_string))
+
+
 
     @staticmethod
     def _parse_json_response(query, results):
@@ -101,7 +103,16 @@ class Twitter(Engine):
 
         content = json.loads(results.text)
 
-        for result in content[u'd'][u'results']:
-            response.add_result(result[u'Title'], result[u'Url'], result[u'Description'])
+        for result in content[u'statuses']:
+
+            text = result[u'text']
+            result_id = str(result[u'id'])
+            user_id = result[u'user'][u'id_str']
+            created_at = result[u'created_at']
+
+            url = 'https://www.twitter.com/{0}/status/{1}'.format(user_id, result_id)
+            title = 'Tweet : {0}'.format(created_at)
+
+            response.add_result(title, url, text)
 
         return response

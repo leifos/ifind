@@ -25,8 +25,7 @@ class Response(object):
         :param summary: string representation of result's summary
 
         """
-        result = {'title': title, 'url': url, 'summary': summary}
-        self.results.append(result)
+        self.results.append(Result(title, url, summary))
         self.result_total += 1
 
     def print_results(self):
@@ -82,3 +81,14 @@ class Response(object):
         * response_json (str): Response as JSON
         """
         pass
+
+
+class Result(object):
+
+    def __init__(self, title, url, summary=''):
+        self.title = title
+        self.summary = summary
+        self.url = url
+
+    def __str__(self):
+        return 'Title: {0}\nSummary: {1}\nURL: {2}'.format(self.title, self.summary, self.url)
