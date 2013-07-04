@@ -14,6 +14,7 @@ MAX_PAGES = 4
 MAX_QUERIES_PER_PAGE = 5
 GAME_LENGTH_IN_SECONDS = 0
 
+
 class GameMechanic(object):
 
     def __init__(self, search_engine=None):
@@ -22,7 +23,6 @@ class GameMechanic(object):
         """
         self.game = None
         self.search_engine = search_engine
-
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category
@@ -43,7 +43,6 @@ class GameMechanic(object):
         self.set_next_page()
         # save to db
         self.update_game()
-
 
     def retrieve_game(self, user, game_id):
         """ find the game associated with this user, and return the
@@ -66,7 +65,6 @@ class GameMechanic(object):
             found = True
 
         return found
-
 
     def is_game_over(self):
         """ checks if the game is over
@@ -142,7 +140,6 @@ class GameMechanic(object):
         print page_list
         set_page_list(self.game, page_list)
 
-
     def set_next_page(self):
         """
         :return: True if next page is set, else False
@@ -177,7 +174,7 @@ class GameMechanic(object):
 
         self.game.last_query_score = 0
         self.game.last_query = ''
-        self.update_game()
+        #self.update_game()
         # increment round here ?????
 
     def handle_query(self, query):
@@ -239,7 +236,6 @@ class GameMechanic(object):
                 return i
         return 0
 
-
     def _score_rank(self, rank):
         """
         calculates the score based on the rank of the page
@@ -257,7 +253,6 @@ class GameMechanic(object):
 
     def get_last_query(self):
         return self.game.last_query
-
 
     def __str__(self):
         if self.game:
