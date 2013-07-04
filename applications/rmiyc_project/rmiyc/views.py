@@ -43,7 +43,6 @@ def play(request, category_name):
             response = HttpResponseRedirect('/rmiyc/pick_category/')
             # delete the cookie
             response.delete_cookie('game_id')
-            print 'I have a game_id so I am going back to category picker'
             return response
         else:
             # create a new game
@@ -52,9 +51,6 @@ def play(request, category_name):
             game_id = gm.get_game_id()
             # get the current page that is going to be displayed first to the user
             p = gm.get_current_page()
-            #
-            # get the current score, which I am not sure what it does!!
-            s = gm.get_current_score()
             # initiate the array which will hold all the result list, the page that is going to be shown and the score
             overall_results = []
             overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
@@ -62,13 +58,12 @@ def play(request, category_name):
             response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
-            #response..set_expiry(0)
+            #response.cookies.set_expiry(0)
             return response
 
 
 def pick_category(request):
         context = RequestContext(request, {})
-        # render the template using the provided context and return as http response.
         return render_to_response('rmiyc/cat_picker.html', context)
 
 
