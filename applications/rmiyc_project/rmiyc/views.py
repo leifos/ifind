@@ -27,12 +27,13 @@ def play(request, category_name):
         # Query the database for the provided category name
         c = Category.objects.get(name=category_name)
         gm = GameMechanic()
-
+        context = RequestContext(request, {})
         # This view shall be called when a new game is to start
         # Thus, there should be no cookie containing a game_id
         if request.COOKIES.has_key('game_id'):
             # redirect the player to the page where they can pick a catefory and start a new game
-            response = HttpResponseRedirect('/rmiyc/pick_category/')
+            #response = HttpResponseRedirect('/rmiyc/pick_category/')
+            response = render_to_response('rmiyc/game_over.html',context)
             # delete the cookie
             response.delete_cookie('game_id')
             return response
@@ -46,7 +47,6 @@ def play(request, category_name):
             # initiate the array which will hold all the result list, the page that is going to be shown and the score
             overall_results = []
             overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
-            context = RequestContext(request, {})
             response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
@@ -72,14 +72,16 @@ def search2(request):
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
             if gm.is_game_over():
-                response = HttpResponseRedirect('/rmiyc/game_over/')
-                print 'game is over'
+                #response = HttpResponseRedirect('/rmiyc/game_over/')
+                response = render_to_response('rmiyc/game_over.html',context)
                 # delete the cookie
                 response.delete_cookie('game_id')
                 return response
             else:
                 if request.method == 'POST':
                     query = request.POST['query'].strip()
+                    #Augement query
+                    query += ' site:gla.ac.uk '
                 if query:
                     result_list = gm.get_search_results(query)
                 gm.handle_query(query)
@@ -105,8 +107,8 @@ def display_next_page(request):
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
             if gm.is_game_over():
-                response = HttpResponseRedirect('/rmiyc/game_over/')
-                print 'game is over'
+                #response = HttpResponseRedirect('/rmiyc/game_over/')
+                response = render_to_response('rmiyc/game_over.html',context)
                 # delete the cookie
                 response.delete_cookie('game_id')
                 return response

@@ -18,5 +18,5 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^users/', include('rmiyc.urls')),
-
+    url(r'', include('rmiyc.urls')),
 )
