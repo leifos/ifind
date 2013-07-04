@@ -1,7 +1,8 @@
-ERROR = {999: "Unknown engine error ({0})",
+ERROR = {'def': "Unknown engine error ({0})",
          400: "Bad request sent to search API ({0})",
          401: "Incorrect API Key ({0})",
-         403: "Correct API but request refused ({0})"}
+         403: "Correct API but request refused ({0})",
+         404: "Bad request sent to search API ({0})"}
 
 
 class EngineException(object):
@@ -16,9 +17,10 @@ class EngineException(object):
         self.code = code
 
         if code:
-            self.message = ERROR.get(code, ERROR[999]).format(self.code) #TODO tidy
+            self.message = ERROR.get(code, ERROR['def']).format(self.code)
 
         class NewClass(ValueError):
             pass
+
         NewClass.__name__ = self.engine
         raise NewClass(self.message)

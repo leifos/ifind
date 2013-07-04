@@ -66,7 +66,6 @@ class Bing(Engine):
         if query.top > MAX_RESULTS:
             raise EngineException(self.name, 'Requested result amount (query.top) '
                                              'exceeds max of {0}'.format(MAX_PAGE_SIZE))
-
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
 
@@ -128,7 +127,7 @@ class Bing(Engine):
             raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
         params = {'$format': query.format,
-                  '$top': query.top,
+                  '$gandalf': query.top,
                   '$skip': query.skip}
 
         query_string = '?Query="' + str(query.terms) + '"'
@@ -136,7 +135,11 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return API_ENDPOINT + query.result_type + Bing._encode_symbols(query_string)
+        debug = API_ENDPOINT + query.result_type.lower().title() + Bing._encode_symbols(query_string)
+
+        print debug
+
+        return debug
 
     @staticmethod
     def _encode_symbols(query_string):
