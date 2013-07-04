@@ -9,12 +9,12 @@ class Response(object):
         result_total: integer representation of total results retrieved
     """
 
-    def __init__(self, results=None):
+    def __init__(self, query_terms, results=None):
         """
         Constructs Response object.
 
         """
-        self.query_terms = ''
+        self.query_terms = query_terms
         self.results = results or []
         self.result_total = 0
 
@@ -38,16 +38,24 @@ class Response(object):
 
     def __str__(self):
         """
-        Returns human-readable string representation of query object.
+        Returns human-readable string representation of response object.
 
         """
-        return '\n'.join(['{0}: {1}'.format(key, value)
-                          for (key, value) in self.__dict__.items()])
+
+        half_string = 'Result_total: {0}\nQuery_terms: {1}\nResults:\n\n'.format(self.result_total, self.query_terms)
+        end_string = '\n\n'.join(['{0}'.format(result) for result in self.results])
+
+        return half_string + end_string
 
     def __iadd__(self, other):
         self.results += other.results
         self.result_total += other.result_total
+
         return self
+
+    def __len__(self):
+        return self.result_total
+
 
     def from_oss_feed(self, oss_xml_feed):
         """

@@ -8,12 +8,14 @@ from ifind.search.engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
+RESULT_TYPES = ('Web', 'Image', 'Video', 'News', 'Spell')
 RESULT_FORMATS = ("JSON", "ATOM")
+
+DEFAULT_RESULT_TYPE = 'Web'
+DEFAULT_RESULT_FORMAT = "JSON"
 
 MAX_PAGE_SIZE = 50
 MAX_RESULTS = 1000
-
-RESULT_TYPES = ('Web', 'Image', 'Video', 'News', 'Spell')
 
 
 class Bing(Engine):
@@ -67,17 +69,17 @@ class Bing(Engine):
         query_string = self._create_query_string(query)
 
         try:
-            results = requests.get(query_string, auth=('', self.api_key))
+            response = requests.get(query_string, auth=('', self.api_key))
         except requests.exceptions.ConnectionError:
             raise EngineException(self.name, "Unable to send request, check internet connectivity")
 
-        if results.status_code != 200:
-            raise EngineException(self.name, "", code=results.status_code)
+        if response.status_code != 200:
+            raise EngineException(self.name, "", code=response.status_code)
 
         if query.format.upper() == 'ATOM':
-            return Bing._parse_xml_response(query, results)
+            return Bing._parse_xml_response(query, response)
         if query.format.upper() == 'JSON':
-            return Bing._parse_json_response(query, results)
+            return Bing._parse_json_response(query, response)
 
     def _auto_request(self, query):
 
@@ -110,6 +112,12 @@ class Bing(Engine):
         :return string representation of query url for REST request to bing search api
 
         """
+        if not query.result_type:
+            query.result_type = DEFAULT_RESULT_TYPE
+
+        if not query.format:
+            query.format = DEFAULT_RESULT_FORMAT
+
         if query.result_type.title() not in RESULT_TYPES:
             raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
@@ -125,11 +133,7 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        debug = API_ENDPOINT + query.result_type.lower().title() + Bing._encode_symbols(query_string)
-
-        print debug
-
-        return debug
+        return API_ENDPOINT + query.result_type.lower().title() + Bing._encode_symbols(query_string)
 
     @staticmethod
     def _encode_symbols(query_string):
@@ -158,8 +162,7 @@ class Bing(Engine):
         :return: ifind.search.response.Response object
 
         """
-        response = Response()
-        response.query_terms = query.terms
+        response = Response(query.terms)
 
         xmlSoup = BS.BeautifulSoup(results.text)
 
@@ -181,8 +184,7 @@ class Bing(Engine):
         :return: ifind.search.response.Response object
 
         """
-        response = Response()
-        response.query_terms = query.terms
+        response = Response(query.terms)
 
         content = json.loads(results.text)
 

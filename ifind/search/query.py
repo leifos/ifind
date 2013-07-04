@@ -19,7 +19,7 @@ class Query(object):
         """
         self.terms = terms
         self.result_type = result_type.lower()
-        self.format = format.upper()
+        self.format = format.lower()
         self.lang = lang
         self.top = top
         self.skip = skip
