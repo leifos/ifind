@@ -4,7 +4,7 @@ import requests
 import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from engines.exceptions import EngineException
+from ifind.search.engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
