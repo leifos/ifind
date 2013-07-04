@@ -116,7 +116,7 @@ class Bing(Engine):
         if query.format not in RESULT_FORMATS:
             raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
-        params = {'$format': query.format,
+        params = {'$format': query.format.upper(),
                   '$top': query.top,
                   '$skip': query.skip}
 
