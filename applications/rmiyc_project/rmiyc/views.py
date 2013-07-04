@@ -122,22 +122,17 @@ def search2(request):
                 gm.handle_query(query)
                 # get the current score, which I am not sure what it does!!
                 s = gm.get_last_query_score()
-                print 'last query score is '
-                print s
-                gm.take_points()
-                gm.set_next_page()
-                p = gm.get_current_page()
-                overall_results.append({'result_list': result_list, 'page': p.screenshot, 'score': s})
+                #p = gm.get_current_page()
+                overall_results.append({'result_list': result_list, 'page': None, 'score': s})
                 response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
             return response
         else:
             # the game has not been created yet
             # redirect to play view
-            print 'the game has not been created yet'
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 
-def skip(request):
+def display_next_page(request):
 
     user = User.objects.filter(username='testy')
     if user:
@@ -160,12 +155,9 @@ def skip(request):
                 response.delete_cookie('game_id')
                 return response
             else:
-                gm._increment_round(False)
+                gm. take_points()
                 gm.set_next_page()
                 p = gm.get_current_page()
-                #
-                print 'screenshot'
-                print p.screenshot
                 overall_results=[]
                 overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
                 response = render_to_response('rmiyc/screenshot.html', {'overall_results': overall_results}, context)
