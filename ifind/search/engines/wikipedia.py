@@ -1,9 +1,8 @@
-import json
 import requests
-import xml.dom.minidom as minidom
+import xml.dom.minidom
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from engines.exceptions import EngineException
+from ifind.search.engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://www.wikipedia.org/w/api.php'
 
@@ -74,7 +73,7 @@ class Wikipedia(Engine):
         """
         response = Response(query.terms)
 
-        xml_doc = minidom.parseString(results.content)
+        xml_doc = xml.dom.minidom.parseString(results.content)
         results = xml_doc.getElementsByTagName('Item')
 
         for result in results:
