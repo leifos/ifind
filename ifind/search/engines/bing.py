@@ -13,17 +13,7 @@ RESULT_FORMATS = ("JSON", "ATOM")
 MAX_PAGE_SIZE = 50
 MAX_RESULTS = 1000
 
-WEB_RESULT_TYPE = 'Web'
-IMAGE_RESULT_TYPE = 'Image'
-VIDEO_RESULT_TYPE = 'Video'
-NEWS_RESULT_TYPE = 'News'
-SPELL_RESULT_TYPE = 'Spell'
-
-RESULT_TYPES = (
-    WEB_RESULT_TYPE,
-    IMAGE_RESULT_TYPE,
-    NEWS_RESULT_TYPE,
-    SPELL_RESULT_TYPE)
+RESULT_TYPES = ('Web', 'Image', 'Video', 'News', 'Spell')
 
 
 class Bing(Engine):
@@ -41,7 +31,7 @@ class Bing(Engine):
         self.api_key = api_key
 
         if not self.api_key:
-            raise EngineException(self.name, "'api_key' keyword argument not specified")
+            raise EngineException(self.name, "'api_key=' keyword argument not specified")
 
     def search(self, query):
         """
@@ -127,7 +117,7 @@ class Bing(Engine):
             raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
         params = {'$format': query.format,
-                  '$gandalf': query.top,
+                  '$top': query.top,
                   '$skip': query.skip}
 
         query_string = '?Query="' + str(query.terms) + '"'
