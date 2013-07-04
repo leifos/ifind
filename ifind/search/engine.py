@@ -1,5 +1,6 @@
 import imp
 import ifind.search.engines as engines
+from ifind.search.engines.exceptions import EngineException
 
 
 class Engine(object):
@@ -32,7 +33,15 @@ class Engine(object):
 
 
 def EngineFactory(engine_string, **kwargs):
+
+    if not engine_string:
+        raise EngineException("EngineFactory", "Engine string not supplied")
+
     module_path = engines.__path__[0] + '/' + engine_string.lower() + '.py'
-    module = imp.load_source('pass', module_path)
+
+    try:
+        module = imp.load_source('pass', module_path)
+    except IOError:
+        raise EngineException("EngineFactory", "Engine '{0}' not found".format(engine_string))
 
     return getattr(module, engine_string.lower().title())(**kwargs)
