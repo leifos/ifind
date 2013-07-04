@@ -14,6 +14,7 @@ MAX_PAGES = 4
 MAX_QUERIES_PER_PAGE = 5
 GAME_LENGTH_IN_SECONDS = 0
 
+
 class GameMechanic(object):
 
     def __init__(self, search_engine=None):
@@ -22,7 +23,6 @@ class GameMechanic(object):
         """
         self.game = None
         self.search_engine = search_engine
-
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category
@@ -43,7 +43,6 @@ class GameMechanic(object):
         self.set_next_page()
         # save to db
         self.update_game()
-
 
     def retrieve_game(self, user, game_id):
         """ find the game associated with this user, and return the
@@ -67,7 +66,6 @@ class GameMechanic(object):
 
         return found
 
-
     def is_game_over(self):
         """ checks if the game is over
         :param game:
@@ -88,6 +86,9 @@ class GameMechanic(object):
 
     def get_current_score(self):
         return self.game.current_score
+
+    def get_search_results(self, query):
+        return self._run_query(query)
 
     def get_game_id(self):
         return self.game.id
@@ -139,7 +140,6 @@ class GameMechanic(object):
         print page_list
         set_page_list(self.game, page_list)
 
-
     def set_next_page(self):
         """
         :return: True if next page is set, else False
@@ -174,6 +174,7 @@ class GameMechanic(object):
 
         self.game.last_query_score = 0
         self.game.last_query = ''
+        #self.update_game()
         # increment round here ?????
 
     def handle_query(self, query):
@@ -207,7 +208,7 @@ class GameMechanic(object):
         :return: ifind.search.response
         """
         # construct ifind.search.query Query
-        iquery = Query("rer", result_type="web")
+        iquery = Query(query, result_type="web")
 
         # issue query to self.search_engine
         iresponse = self.search_engine.search(iquery)
@@ -228,10 +229,12 @@ class GameMechanic(object):
         i = 0
         for result in response.results:
             i +=1
-            if result['url'] == url_to_find:
+            print "I am result "
+            print i
+            print result
+            if result.url == url_to_find:
                 return i
         return 0
-
 
     def _score_rank(self, rank):
         """
@@ -250,7 +253,6 @@ class GameMechanic(object):
 
     def get_last_query(self):
         return self.game.last_query
-
 
     def __str__(self):
         if self.game:

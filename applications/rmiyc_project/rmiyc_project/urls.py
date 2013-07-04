@@ -15,4 +15,8 @@ urlpatterns = patterns('',
     url(r'^imgs/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^users/', include('rmiyc.urls')),
+    url(r'', include('rmiyc.urls')),
 )

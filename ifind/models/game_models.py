@@ -36,16 +36,15 @@ class Category(models.Model):
         app_label = APP_NAME
 
 
-class Score(models.Model):
+class HighScore(models.Model):
     user = models.ForeignKey(User)
     category = models.ForeignKey(Category)
-    total_score = models.IntegerField(default=0)
-    no_pages_found = models.IntegerField(default=0)
-    no_pages_found_in_a_row = models.IntegerField(default=0)
-    when = models.DateTimeField(auto_now=True)
+    highest_score = models.IntegerField(default=0)
+    most_no_pages_found = models.IntegerField(default=0)
+    most_no_pages_found_in_a_row = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.total_score
+        return self.highest_score
 
     class Meta:
         app_label = APP_NAME
