@@ -89,6 +89,9 @@ class GameMechanic(object):
     def get_current_score(self):
         return self.game.current_score
 
+    def get_search_results(self, query):
+        return self._run_query(query)
+
     def get_game_id(self):
         return self.game.id
 
