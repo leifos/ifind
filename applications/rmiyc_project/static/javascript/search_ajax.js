@@ -27,7 +27,7 @@ $(function()
         $.ajax
         ({
             type: "POST",
-            url: "/rmiyc/search2/",
+            url: "/rmiyc/search/",
             data:
             {
                 'query' : $('#query').val(),
