@@ -19,16 +19,17 @@ OAUTH_CONSUMER = oauth.Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)   # TO
 SIGNATURE_METHOD_HMAC_SHA1 = oauth.SignatureMethod_HMAC_SHA1()
 
 RESULT_FORMATS = ("JSON",)
+RESULT_TYPES = ('mixed', 'recent', 'popular')
+
+DEFAULT_RESULT_TYPE = 'mixed'
+DEFAULT_RESULT_FORMAT = 'XML'
 
 MAX_PAGE_SIZE = 100
-
-RESULT_TYPES = ('mixed', 'recent', 'popular')
 
 
 class Twitter(Engine):
 
     def __init__(self, **kwargs):
-
         """
         Constructor for Twitter engine class, inheriting from ifind's Engine.
 
@@ -44,11 +45,10 @@ class Twitter(Engine):
         """
         Performs a search, retrieves the results and returns them as an ifind response.
 
-        See: https://dev.twitter.com/docs/api/1.1/get/search/tweets for full list
+        See: https://dev.twitter.com/docs/api/1.1/get/search/tweets for full list.
 
         Accepted query parameters:
-
-            count:          number of tweets to return per page up to MAX_PAGE_SIZE
+            top:            number of tweets to return per page up to MAX_PAGE_SIZE
             result_type:    'mixed' includes both popular and real time results (default, optional)
                             'recent' returns only the most recent results
                             'popular' returns only the most popular results
@@ -59,8 +59,8 @@ class Twitter(Engine):
         :raises Bad request etc
 
         """
-        if not query.top:
-            raise EngineException(self.name, 'Total result amount (query.top) not specified')
+        #if not query.top:
+            #raise EngineException(self.name, 'Total result amount (query.top) not specified')
 
         if query.top > MAX_PAGE_SIZE:
             raise EngineException(self.name, 'Requested result amount (query.top) '
@@ -72,14 +72,14 @@ class Twitter(Engine):
         query_string = self._create_query_string(query)
 
         try:
-            results = requests.get(query_string)
+            response = requests.get(query_string)
         except requests.exceptions.ConnectionError:
             raise EngineException(self.name, "Unable to send request, check internet connectivity")
 
-        if results.status_code != 200:
-            raise EngineException(self.name, "", code=results.status_code)
+        if response.status_code != 200:
+            raise EngineException(self.name, "", code=response.status_code)
 
-        return Twitter._parse_json_response(query, results)
+        return Twitter._parse_json_response(query, response)
 
     def _create_query_string(self, query):
         """
@@ -89,6 +89,12 @@ class Twitter(Engine):
         :return string representation of query URL for REST request to twitter search api
 
         """
+        if not query.result_type:
+            query.result_type = DEFAULT_RESULT_TYPE
+
+        if not query.format:
+            query.format = DEFAULT_RESULT_FORMAT
+
         if query.result_type not in RESULT_TYPES:
             raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
@@ -120,8 +126,7 @@ class Twitter(Engine):
         :return: ifind.search.response.Response object
 
         """
-        response = Response()
-        response.query_terms = query.terms
+        response = Response(query.terms)
 
         content = json.loads(results.text)
 
@@ -136,5 +141,8 @@ class Twitter(Engine):
             title = '{0}'.format(created_at)
 
             response.add_result(title, url, text)
+
+            if response.result_total == query.top:
+                break
 
         return response
