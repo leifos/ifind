@@ -7,8 +7,6 @@ from engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.twitter.com/1.1/search/tweets.json'
 
-KEY_REQUIRED = True # if you count all the nonsense below as a 'key'
-
 CONSUMER_KEY = '1S2HEggPpCnDMmHQMMTt1g'
 CONSUMER_SECRET = '3ui76cSSGWB6mUsrB7dL4Pg0fhUqlfNUKfRxZSTrak'
 
@@ -24,14 +22,7 @@ RESULT_FORMATS = ("JSON",)
 
 MAX_PAGE_SIZE = 100
 
-MIXED_TYPE = 'mixed'
-RECENT_TYPE = 'recent'
-POPULAR_TYPE = 'popular'
-
-RESULT_TYPES = (
-    MIXED_TYPE,
-    RECENT_TYPE,
-    POPULAR_TYPE)
+RESULT_TYPES = ('mixed', 'recent', 'popular')
 
 
 class Twitter(Engine):
@@ -101,7 +92,7 @@ class Twitter(Engine):
         if query.result_type not in RESULT_TYPES:
             raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
-        if query.format not in RESULT_FORMATS:
+        if query.format.upper() not in RESULT_FORMATS:
             raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
         parameters = {'count': query.top,

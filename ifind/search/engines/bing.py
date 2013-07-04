@@ -4,7 +4,7 @@ import requests
 import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from engines.exceptions import EngineException
+from ifind.search.engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
@@ -74,9 +74,9 @@ class Bing(Engine):
         if results.status_code != 200:
             raise EngineException(self.name, "", code=results.status_code)
 
-        if query.format == 'ATOM':
+        if query.format.upper() == 'ATOM':
             return Bing._parse_xml_response(query, results)
-        if query.format == 'JSON':
+        if query.format.upper() == 'JSON':
             return Bing._parse_json_response(query, results)
 
     def _auto_request(self, query):
@@ -113,7 +113,7 @@ class Bing(Engine):
         if query.result_type.title() not in RESULT_TYPES:
             raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
-        if query.format not in RESULT_FORMATS:
+        if query.format.upper() not in RESULT_FORMATS:
             raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
 
         params = {'$format': query.format.upper(),
