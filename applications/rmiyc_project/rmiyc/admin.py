@@ -6,7 +6,7 @@ admin.site.register(Category)
 admin.site.register(CurrentGame)
 admin.site.register(Page)
 admin.site.register(UserProfile)
-admin.site.register(Score)
+admin.site.register(HighScore)
 admin.site.register(PlayerAchievement)
 admin.site.register(Level)
 

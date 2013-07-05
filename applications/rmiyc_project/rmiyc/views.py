@@ -32,8 +32,7 @@ def play(request, category_name):
         # Thus, there should be no cookie containing a game_id
         if request.COOKIES.has_key('game_id'):
             # redirect the player to the page where they can pick a catefory and start a new game
-            #response = HttpResponseRedirect('/rmiyc/pick_category/')
-            response = render_to_response('rmiyc/game_over.html',context)
+            response = HttpResponseRedirect('/rmiyc/pick_category/')
             # delete the cookie
             response.delete_cookie('game_id')
             return response
@@ -59,7 +58,7 @@ def pick_category(request):
         return render_to_response('rmiyc/cat_picker.html', context)
 
 
-def search2(request):
+def search(request):
 
         print 'Search 2 has been called'
         user = request.user
@@ -72,8 +71,7 @@ def search2(request):
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
             if gm.is_game_over():
-                #response = HttpResponseRedirect('/rmiyc/game_over/')
-                response = render_to_response('rmiyc/game_over.html',context)
+                response = HttpResponseRedirect('/rmiyc/game_over/')
                 # delete the cookie
                 response.delete_cookie('game_id')
                 return response
@@ -107,8 +105,7 @@ def display_next_page(request):
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
             if gm.is_game_over():
-                #response = HttpResponseRedirect('/rmiyc/game_over/')
-                response = render_to_response('rmiyc/game_over.html',context)
+                response = HttpResponseRedirect('/rmiyc/game_over/')
                 # delete the cookie
                 response.delete_cookie('game_id')
                 return response

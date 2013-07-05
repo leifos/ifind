@@ -15,6 +15,7 @@ import random
 API_KEY = 'bZZNAfF4y5xtIaa6OK/raMdhx4otEVUgBR9acT/fvbc'
 
 def get_trending_queries(filename):
+    """Extract trends from a file."""
     f = open(filename, 'r')
     trend_tuples_list = []
     for line in f:
@@ -23,6 +24,7 @@ def get_trending_queries(filename):
     return trend_tuples_list
 
 def select_ranks():
+    #TODO make this not stupid
     nums = []
     i=0
     top_range = (0,10)
@@ -36,28 +38,34 @@ def select_ranks():
     return nums
 
 def fetch_results(queries_list):
+    """Builds a list of tuples (category,url,rank) and returns it """
     myengine = EngineFactory('bing',api_key=API_KEY)
     for term in queries_list:
         query = Query(term[1], result_type="Web", format='JSON', top=30)
         response = myengine.search(query)
-        #for result in response.results:
+        #TODO implement select_ranks properly maybe (num_to_select,step)
         rank_list = select_ranks()
         result_list =[]
         for rank in rank_list:
+            #term[0] is trend categoty, term[1] is search term
             print (term[0], response.results[rank].url, rank)
             result_list.append((term[0], response.results[rank].url, rank))
     return result_list
 
 
 
-    #pass (cat,query)
-    #get result back put into a list + rank
-    #select rand 2 from top 10, 10-20, 20-30
-    #return list (cat,urls,rank)
+
+def main():
+    #TODO pass filename, etc as cmd line arguments
+    l = get_trending_queries('/Users/m/projects/ifind/applications/pagefetch_project/data/trends_20130207.txt')
+    #test
+    l =  fetch_results(l)
+    for el in l:
+        print el
 
 
-l = get_trending_queries('/Users/m/projects/ifind/applications/pagefetch_project/data/trends_20130207.txt')
-print fetch_results(l)
+if __name__ == '__main__':
+    main()
 
 
 
