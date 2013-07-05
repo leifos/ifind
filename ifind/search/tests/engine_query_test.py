@@ -1,7 +1,7 @@
 from ifind.search.engines.exceptions import SearchException
 from ifind.search.engine import EngineFactory
-#from ifind.search.query import Query
-from ifind.search.cache import *
+from ifind.search.query import Query
+#from ifind.search.cache import *
 
 #query = Query('dog', top=10)
 #query = Query('Hello World', source_type="Web", format='ATOM')
@@ -14,3 +14,12 @@ from ifind.search.cache import *
 #engine = EngineFactory("twitter")
 
 #response = engine.search(query)
+
+query = Query('Hello World', source_type="Web", format='ATOM')
+query2 = Query('awful bus glasgow', source_type="Web", format='JSON')
+
+query2.terms = 'Hello World'
+query2.format = "ATOM"
+
+
+print query == query2

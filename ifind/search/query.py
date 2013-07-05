@@ -40,4 +40,8 @@ class Query(object):
         Returns True if both query's attributes are identical, False otherwise.
 
         """
+
+        # TODO make entire bloody thing property based
+
         return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+

@@ -6,26 +6,25 @@ Is a configuration search interface for undertaking live search experiments.
 
 
 
-SearchEngine
+SearchEngine <<DONE>>
 ------------
     - An abstract interface for search engines
     - Add in some sample search engines
         - Bing
         - Twitter
-        - DBPedia
+        - Wikipedia
 
-
-EngineFactory
+EngineFactory <<DONE>>
 -------------
     - creates and returns the specified SearchEngine
 
 
-SearchEngine with Caching
+SearchEngine with Caching <<PLANNING>
 -------------------------
 
     - a SearchEngine can be created with or without a QueryCache
 
-    - QueryCache stores the Query, Response pairs (and the number of times the query has been retrieved, and last retrieved)
+    - QueryCache stores the (Query, Response) pairs (and the number of times the query has been retrieved, and last retrieved)
 
     - with a QueryCache, the search method of SearchEngine should:
         - check if their is a QueryCache,
