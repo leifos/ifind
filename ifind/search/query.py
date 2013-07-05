@@ -5,27 +5,21 @@ class Query(object):
     Query Attributes:
         terms:  a string of search terms
         lang:   a string defining the language of the results (varies on engine)
-        format: a string defining the result format (json, xml)
         top:   an integer specifying the number of results to return
         skip:  an integer specifying the offset of starting point for results returned
         result_type: a string defining the type of query (varies on engine)
 
     """
-    def __init__(self, terms, lang='', format='JSON',
-                 top=10, skip=0, result_type='', **kwargs):
+    def __init__(self, terms, top=10, lang="", result_type=""):
         """
         Constructs Query object, creating instance attributes from optional keyword parameters (**kwargs).
 
         """
         self.terms = terms
-        self.result_type = result_type.lower()
-        self.format = format.lower()
+        self.result_type = result_type
         self.lang = lang
         self.top = top
-        self.skip = skip
-
-        for key, value in kwargs.iteritems():
-            setattr(self, key, value)
+        self.skip = 0
 
     def __str__(self):
         """
@@ -40,8 +34,4 @@ class Query(object):
         Returns True if both query's attributes are identical, False otherwise.
 
         """
-
-        # TODO make entire bloody thing property based
-
         return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
-
