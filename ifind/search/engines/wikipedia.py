@@ -6,9 +6,6 @@ from ifind.search.engines.exceptions import EngineException
 
 API_ENDPOINT = 'https://www.wikipedia.org/w/api.php'
 
-RESULT_FORMATS = ("XML",)
-DEFAULT_RESULT_FORMAT = "XML"
-
 
 class Wikipedia(Engine):
 
@@ -35,17 +32,14 @@ class Wikipedia(Engine):
         :raises Bad request etc
 
         """
+        if not query.top:
+            raise EngineException(self.name, "Total result amount (query.top) not specified")
+
         return self._request(query)
 
     def _request(self, query):
 
-        if not query.format:
-            query.format = DEFAULT_RESULT_FORMAT
-
-        if query.format.upper() not in RESULT_FORMATS:
-            raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
-
-        search_params = {'format': query.format.lower(),
+        search_params = {'format': 'xml',
                          'search': query.terms,
                          'action': 'opensearch',
                          'limit': query.top}
@@ -53,13 +47,12 @@ class Wikipedia(Engine):
         try:
             response = requests.get(API_ENDPOINT, params=search_params)
         except requests.exceptions.ConnectionError:
-            raise EngineException(self.name, "", code=response.status_code)
+            raise EngineException(self.name, "Unable to send request, check connectivity")
 
         if response.status_code != 200:
             raise EngineException(self.name, "", code=response.status_code)
 
-        if query.format.upper() == 'XML':
-            return Wikipedia._parse_xml_response(query, response)
+        return Wikipedia._parse_xml_response(query, response)
 
     @staticmethod
     def _parse_xml_response(query, results):
@@ -77,6 +70,7 @@ class Wikipedia(Engine):
         results = xml_doc.getElementsByTagName('Item')
 
         for result in results:
+
             title = result.getElementsByTagName('Text')[0].firstChild.data
             url = result.getElementsByTagName('Url')[0].firstChild.data
             summary = result.getElementsByTagName('Description')[0].firstChild.data

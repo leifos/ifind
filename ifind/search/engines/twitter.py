@@ -18,11 +18,9 @@ OAUTH_CONSUMER = oauth.Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)   # TO
 
 SIGNATURE_METHOD_HMAC_SHA1 = oauth.SignatureMethod_HMAC_SHA1()
 
-RESULT_FORMATS = ("JSON",)
 RESULT_TYPES = ('mixed', 'recent', 'popular')
 
 DEFAULT_RESULT_TYPE = 'mixed'
-DEFAULT_RESULT_FORMAT = 'XML'
 
 MAX_PAGE_SIZE = 100
 
@@ -59,22 +57,22 @@ class Twitter(Engine):
         :raises Bad request etc
 
         """
-        #if not query.top:
-            #raise EngineException(self.name, 'Total result amount (query.top) not specified')
+        if not query.top:
+            raise EngineException(self.name, "Total result amount (query.top) not specified")
 
         if query.top > MAX_PAGE_SIZE:
             raise EngineException(self.name, 'Requested result amount (query.top) '
                                              'exceeds max of {0}'.format(MAX_PAGE_SIZE))
-
         return self._request(query)
 
     def _request(self, query):
+
         query_string = self._create_query_string(query)
 
         try:
             response = requests.get(query_string)
         except requests.exceptions.ConnectionError:
-            raise EngineException(self.name, "Unable to send request, check internet connectivity")
+            raise EngineException(self.name, "Unable to send request, check connectivity")
 
         if response.status_code != 200:
             raise EngineException(self.name, "", code=response.status_code)
@@ -92,25 +90,19 @@ class Twitter(Engine):
         if not query.result_type:
             query.result_type = DEFAULT_RESULT_TYPE
 
-        if not query.format:
-            query.format = DEFAULT_RESULT_FORMAT
-
         if query.result_type not in RESULT_TYPES:
             raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
-        if query.format.upper() not in RESULT_FORMATS:
-            raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
-
-        parameters = {'count': query.top,
-                      'result_type': query.result_type,
-                      'lang': query.lang,
-                      'q': query.terms}
+        search_params = {'count': query.top,
+                         'result_type': query.result_type,
+                         'lang': query.lang,
+                         'q': query.terms}
 
         request = oauth.Request.from_consumer_and_token(OAUTH_CONSUMER,
                                                         token=OAUTH_TOKEN,
                                                         http_method='GET',
                                                         http_url=API_ENDPOINT,
-                                                        parameters=parameters)
+                                                        parameters=search_params)
 
         request.sign_request(SIGNATURE_METHOD_HMAC_SHA1, OAUTH_CONSUMER, OAUTH_TOKEN)
 
@@ -142,7 +134,7 @@ class Twitter(Engine):
 
             response.add_result(title, url, text)
 
-            if response.result_total == query.top:
+            if len(response) == query.top:
                 break
 
         return response

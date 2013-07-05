@@ -1,7 +1,6 @@
 import json
 import string
 import requests
-import BeautifulSoup as BS
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.engines.exceptions import EngineException
@@ -9,10 +8,8 @@ from ifind.search.engines.exceptions import EngineException
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
 RESULT_TYPES = ('Web', 'Image', 'Video', 'News', 'Spell')
-RESULT_FORMATS = ("JSON", "ATOM")
 
 DEFAULT_RESULT_TYPE = 'Web'
-DEFAULT_RESULT_FORMAT = "JSON"
 
 MAX_PAGE_SIZE = 50
 MAX_RESULTS = 1000
@@ -35,16 +32,17 @@ class Bing(Engine):
         if not self.api_key:
             raise EngineException(self.name, "'api_key=' keyword argument not specified")
 
+        # TODO pull api key from keys.py
+
     def search(self, query):
         """
         Performs a search, retrieves the results and returns them as an ifind response.
 
-        See: ifind's dropbox for recent Bing API specification for full list
+        See: ifind's dropbox for recent Bing API specification for full parameter list
 
         Accepted query parameters:
             top:            specifies the number of results to return up to MAX_PAGE_SIZE
             skip:           specifies the offset requested for the starting point of results returned
-            format:         specifies the result format i.e. 'atom' or 'json'
             result_type:    specifies the type of query (see top of Bing source for available types)
 
         :param query: ifind.search.query.Query object
@@ -71,15 +69,12 @@ class Bing(Engine):
         try:
             response = requests.get(query_string, auth=('', self.api_key))
         except requests.exceptions.ConnectionError:
-            raise EngineException(self.name, "Unable to send request, check internet connectivity")
+            raise EngineException(self.name, "Unable to send request, check connectivity")
 
         if response.status_code != 200:
             raise EngineException(self.name, "", code=response.status_code)
 
-        if query.format.upper() == 'ATOM':
-            return Bing._parse_xml_response(query, response)
-        if query.format.upper() == 'JSON':
-            return Bing._parse_json_response(query, response)
+        return Bing._parse_json_response(query, response)
 
     def _auto_request(self, query):
 
@@ -115,16 +110,10 @@ class Bing(Engine):
         if not query.result_type:
             query.result_type = DEFAULT_RESULT_TYPE
 
-        if not query.format:
-            query.format = DEFAULT_RESULT_FORMAT
-
-        if query.result_type.title() not in RESULT_TYPES:
+        if query.result_type.lower().title() not in RESULT_TYPES:
             raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
-        if query.format.upper() not in RESULT_FORMATS:
-            raise EngineException(self.name, "Engine doesn't support query format type '{0}'".format(query.format))
-
-        params = {'$format': query.format.upper(),
+        params = {'$format': 'JSON',
                   '$top': query.top,
                   '$skip': query.skip}
 
@@ -151,28 +140,6 @@ class Bing(Engine):
         encoded_string = string.replace(encoded_string, ':', '%3a')
 
         return encoded_string
-
-    @staticmethod
-    def _parse_xml_response(query, results):
-        """
-        Parses Bing XML response and returns ifind.search.response.Response object
-
-        :param query: original ifind.search.query.Query object
-        :param results: response object (requests) obtained from API request
-        :return: ifind.search.response.Response object
-
-        """
-        response = Response(query.terms)
-
-        xmlSoup = BS.BeautifulSoup(results.text)
-
-        for result in xmlSoup.findAll('entry'):
-            title = result.find('d:title').string
-            url = result.find('d:url').string
-            description = result.find('d:description').string
-            response.add_result(title, url, description)
-
-        return response
 
     @staticmethod
     def _parse_json_response(query, results):
