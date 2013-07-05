@@ -14,6 +14,7 @@ class Engine(object):
 
         :param proxies: dict representing proxies to use
                         i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
+
         """
         self.name = self.__class__.__name__
         self.proxies = proxies
@@ -21,8 +22,6 @@ class Engine(object):
     def search(self, query):
         """
         Performs a search, retrieves the results and returns them as an ifind response.
-
-        N.B. This should be implemented in the derived classes.
 
         :param query: ifind.search.query.Query object
         :returns ifind.search.response.Response object
