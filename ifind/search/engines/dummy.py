@@ -17,8 +17,8 @@ class Dummy(Engine):
 
 
     def _create_response(self, query):
-        response = Response()
-        response.query_terms = query.terms
+        response = Response(query.terms)
+
 
         matches = ['one','two','three','four','five','six','seven','eight','nine','ten']
         result_list = ['rand','rand','rand','rand','rand','rand','rand','rand','rand','rand']
