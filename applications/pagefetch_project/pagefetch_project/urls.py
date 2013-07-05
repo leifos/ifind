@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from settings import DEBUG
-from settings import MEDIA_ROOT
+#from settings import MEDIA_ROOT
 from settings import DEPLOY
 
 

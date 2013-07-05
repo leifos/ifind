@@ -5,6 +5,16 @@ Search Lab
 Is a configuration search interface for undertaking live search experiments.
 
 
+Response
+--------
+    - (addable results) result item to handle additional attributes from search engine results
+
+Query
+-----
+    - remove the format parameter
+
+
+
 
 SearchEngine <<DONE>>
 ------------
