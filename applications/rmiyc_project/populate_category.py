@@ -93,7 +93,7 @@ def main():
     parser = argparse.ArgumentParser(description="Populate a category and the pages associated with it")
     parser.add_argument("-a", "--append", type=int,default=False, help="")
     parser.add_argument("-cn", "--category_name", type=str, default='engineering', help="The name of the category")
-    parser.add_argument("-fn", "--file_name",default= '/Users/arazzouk/Images/eng/urls.txt', type=str, help="The name of the file where the urls are stored in")
+    parser.add_argument("-fn", "--file_name",default= os.getcwd() + '/data/urls.txt', type=str, help="The name of the file where the urls are stored in")
 
     args = parser.parse_args()
     if not args.file_name and args.category_name:
