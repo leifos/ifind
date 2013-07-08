@@ -3,13 +3,15 @@
 {% block container %}
 <div class="hero-unit">
         <ul class="thumbnails text-center">
+         {% if scores %}
+            {% for item in scores %}
             <li class="span3">
             <a href="/rmiyc/play/engineering" class="thumbnail">
                 <div class="thumbnail">
                     <h3>Undergraduate</h3>
                         <img src="{{ STATIC_URL }}imgs/undergraduate.jpg" alt="Australia's flag" height="200" width="300">
                     <br />
-                    <p>Score: {{scores.undergraduate}}</p>
+                    <p>Score: {{item.undergraduate}}</p>
                 </div>
                 </a>
             </li>
@@ -19,7 +21,7 @@
                     <h3>Postgraduate</h3>
                         <img src="{{ STATIC_URL }}imgs/postgraduate.jpg" alt="Australia's flag" height="200" width="300">
                     <br />
-                    <p>Score: {{scores.postgraduate}}</p>
+                    <p>Score: {{item.postgraduate}}</p>
                 </div>
                 </a>
             </li>
@@ -29,7 +31,7 @@
                     <h3>Research</h3>
                         <img src="{{ STATIC_URL }}imgs/research.jpg" alt="Australia's flag" height="200" width="300">
                     <br />
-                    <p>Score: {{scores.research}}</p>
+                    <p>Score: {{item.research}}</p>
                 </div>
                 </a>
             </li>
@@ -39,7 +41,7 @@
                     <h3>Alumni</h3>
                         <img src="{{ STATIC_URL }}imgs/alumni.png" alt="Australia's flag" height="200" width="300">
                     <br />
-                    <p>Score: {{scores.alumni}}</p>
+                    <p>Score: {{item.alumni}}</p>
                 </div>
                 </a>
             </li>
@@ -49,7 +51,7 @@
                     <h3>Student life</h3>
                         <img src="{{ STATIC_URL }}imgs/student_life.jpg" alt="Australia's flag" height="200" width="300">
                     <br />
-                    <p>Score: {{scores.student_life}}</p>
+                    <p>Score: {{item.student_life}}</p>
                 </div>
                 </a>
             </li>
@@ -59,10 +61,12 @@
                     <h3>About Glasgow uni</h3>
                         <img src="{{ STATIC_URL }}imgs/about_glasgow.jpg" alt="Australia's flag" height="200" width="300">
                     <br />
-                    <p>Score: {{scores.about_glasgow}}</p>
+                    <p>Score: {{item.about_glasgow}}</p>
                 </div>
                 </a>
             </li>
+            {% endfor %}
+         {% endif %}
         </ul>
       </div>
 {% endblock %}
