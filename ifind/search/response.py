@@ -22,7 +22,7 @@ class Response(object):
         for result in self.results:
             yield result
 
-    def add_result(self, title, url, summary='', **kwargs):
+    def add_result(self, title="", url="", summary="", **kwargs):
         """
         :param title: string representation of result title
         :param url:  string representation of result url
@@ -96,14 +96,17 @@ class Response(object):
 
 
 class Result(object):
+    # requires string arguments
+    def __init__(self, title="", url="", summary="", **kwargs):
 
-    def __init__(self, title, url, summary='', **kwargs):
-        self.title = title.encode('utf-8').rstrip()
-        self.summary = summary.encode('utf-8').rstrip()
-        self.url = url.encode('utf-8').rstrip()
+        self.title = title
+        self.summary = summary
+        self.url = url
 
         for key, value in kwargs.items():
-            setattr(self, key, value.rstrip())
+            setattr(self, key, value)
+
+        self.__dict__ = {key: value.encode('utf-8').rstrip() for key, value in self.__dict__.items()}
 
     def __str__(self):
-        return "\n".join("{0}: {1}".format(key, value) for key, value in vars(self).items())
+        return "\n".join("{0}: {1}".format(key, value) for key, value in self.__dict__.items())
