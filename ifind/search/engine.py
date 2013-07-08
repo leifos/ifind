@@ -39,7 +39,7 @@ def EngineFactory(engine_string, **kwargs):
     module_path = engines.__path__[0] + '/' + engine_string.lower() + '.py'
 
     try:
-        module = imp.load_source('pass', module_path)
+        module = imp.load_source('engine', module_path)
     except IOError:
         raise EngineException("EngineFactory", "Engine '{0}' not found".format(engine_string))
 

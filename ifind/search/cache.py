@@ -8,12 +8,6 @@ from ifind.search.engines.exceptions import SearchException, EngineException
 
 MODULE = os.path.basename(__file__).split('.')[0].title()
 
-HOST = 'localhost'
-PORT = 6379
-DB = 0
-
-
-
 #   SearchEngine can be created with or without a QueryCache
 #
 #   QueryCache stores query response (
@@ -29,21 +23,55 @@ DB = 0
 #
 
 
-class Connect(object):
+class RedisConn(object):
 
     def __init__(self, host="localhost", port=6379, db=0):
+
         self.host = host
         self.port = port
         self.db = db
 
     def connect(self):
+
         try:
             redis.StrictRedis(host=self.host, port=self.port).ping()
         except redis.ConnectionError:
-            raise SearchException(MODULE, "Failed to establish connection to redis server @ {0}:{1}".format(HOST, PORT))
+            raise SearchException(MODULE, "Failed to establish connection to "
+                                          "redis server @ {0}:{1}".format(self.host, self.port))
+
+        return redis.StrictRedis(host=self.host, port=self.port, db=self.db)
 
 
+class QueryCache(object):
 
+    def __init__(self, engine, host='localhost', port=6379, db=0,
+                 limit=1000, expires=60 * 60 * 24, cache_type='engine'):
+
+        self.engine_name = engine.name.lower()
+
+        self.host = host
+        self.port = port
+        self.db = db
+
+        self.limit = limit
+        self.expires = expires
+        self.cache_type = cache_type
+
+        self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
+
+    def make_key(self, key):
+
+        if self.cache_type == 'engine':
+            return "QueryCache::{0}::{1}".format(self.engine_name, key)
+        if self.cache_type == 'instance':
+            return "QueryCache::{0}::{1}".format(id(self), key)
+
+    def get_set_name(self):
+
+        if self.cache_type == 'engine':
+            return "QueryCache::{0}-keys".format(self.engine_name)
+        if self.cache_type == 'instance':
+            return "QueryCache::{0}-keys".format(id(self))
 
 #   1. Engine is instantiated and an optional cache parameter can be supplied
 #
