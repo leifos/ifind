@@ -128,11 +128,9 @@ class Twitter(Engine):
             result_id = str(result[u'id'])
             user_id = result[u'user'][u'id_str']
             created_at = result[u'created_at']
-
             url = 'https://www.twitter.com/{0}/status/{1}'.format(user_id, result_id)
-            title = '{0}'.format(created_at)
 
-            response.add_result(title, url, text)
+            response.add_result(title=created_at, url=url, summary=text)
 
             if len(response) == query.top:
                 break
