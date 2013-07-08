@@ -22,14 +22,14 @@ class Response(object):
         for result in self.results:
             yield result
 
-    def add_result(self, title, url, summary=''):
+    def add_result(self, title="", url="", summary="", **kwargs):
         """
         :param title: string representation of result title
         :param url:  string representation of result url
         :param summary: string representation of result's summary
 
         """
-        self.results.append(Result(title, url, summary))
+        self.results.append(Result(title, url, summary, **kwargs))
         self.result_total += 1
 
     def print_results(self):
@@ -96,11 +96,17 @@ class Response(object):
 
 
 class Result(object):
+    # requires string arguments
+    def __init__(self, title="", url="", summary="", **kwargs):
 
-    def __init__(self, title, url, summary=''):
-        self.title = title.encode('utf-8')
-        self.summary = summary.encode('utf-8')
-        self.url = url.encode('utf-8')
+        self.title = title
+        self.summary = summary
+        self.url = url
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        self.__dict__ = {key: value.encode('utf-8').rstrip() for key, value in self.__dict__.items()}
 
     def __str__(self):
-        return 'Title: {0}\nSummary: {1}\nURL: {2}'.format(self.title, self.summary, self.url)
+        return "\n".join("{0}: {1}".format(key, value) for key, value in self.__dict__.items())

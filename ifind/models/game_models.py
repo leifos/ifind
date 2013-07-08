@@ -75,6 +75,7 @@ class Achievement(models.Model):
     desc = models.CharField(max_length=256)
     badge_icon = models.ImageField(null=True, upload_to=UPLOAD_DIR, blank=True)
     xp_earned = models.IntegerField(default=0, blank=True)
+    achievement_class = models.CharField(max_length=128)
     def __unicode__(self):
         return self.name
 
@@ -107,7 +108,7 @@ class CurrentGame(models.Model):
 class PlayerAchievement (models.Model):
     user = models.ForeignKey(User)
     achievement= models.ForeignKey(Achievement)
-    when = models.DateTimeField()
+    when = models.DateTimeField(auto_now_add=True)
     level = models.IntegerField(default=0, null=True)
 
     def __unicode__(self):

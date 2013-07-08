@@ -1,5 +1,6 @@
 __author__ = 'leif'
 
+
 from game_models import CurrentGame, Page, Category
 from random import randint
 from game_model_functions import get_page_list, set_page_list
@@ -7,6 +8,8 @@ from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
 from ifind.search.query import Query
 from ifind.search.response import Response
+
+
 
 MAX_SCORE = 1000
 MAX_QUERIES = 20
@@ -17,12 +20,17 @@ GAME_LENGTH_IN_SECONDS = 0
 
 class GameMechanic(object):
 
-    def __init__(self, search_engine=None):
+    def __init__(self, search_engine=None, max_score=1000, max_queries=20, max_pages=4, max_queries_per_page=5,game_length_in_seconds=0):
         """
         :return: GameMechanic object
         """
         self.game = None
         self.search_engine = search_engine
+        self.max_score = max_score
+        self.max_queries = max_queries
+        self.max_pages = max_pages
+        self.max_queries_per_page = max_pages
+        self.game_length_in_seconds = game_length_in_seconds
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category
@@ -229,9 +237,6 @@ class GameMechanic(object):
         i = 0
         for result in response.results:
             i +=1
-            print "I am result "
-            print i
-            print result
             if result.url == url_to_find:
                 return i
         return 0

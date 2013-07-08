@@ -5,19 +5,20 @@ import sys
 from ifind.common.pagecapture import PageCapture
 from ifind.models.game_models import Page, Category
 from ifind.common.utils import convert_url_to_filename, read_in_urls
+
 sys.path.append(os.getcwd())
-from configuration import MEDIA_ROOT
+from configuration import DATA_DIR
 
 
-def set_page_list(game, list):
-    game.page_list = json.dumps(list)
+def set_page_list(game, page_list):
+    game.page_list = json.dumps(page_list)
     print game.page_list
 
 
 def get_page_list(game):
     if game.page_list:
-        list = json.loads(game.page_list)
-        return list
+        page_list = json.loads(game.page_list)
+        return page_list
     else:
         return []
 
@@ -59,7 +60,7 @@ def populate_pages(url_list, category):
         pc = PageCapture(url,800, 600)
         url_file_name = convert_url_to_filename(url)+'.png'
         # To change to accomodate for the new changes
-        image_file_name = os.path.join(os.getcwd(), MEDIA_ROOT, url_file_name)
+        image_file_name = os.path.join(DATA_DIR, url_file_name)
         pc.load_url(url)
         # fetch the screen-shot
         pc.take_screen_shot(image_file_name)
