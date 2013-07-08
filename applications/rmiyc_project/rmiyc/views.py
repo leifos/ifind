@@ -55,7 +55,10 @@ def play(request, category_name):
 
 def pick_category(request):
         context = RequestContext(request, {})
-        return render_to_response('rmiyc/cat_picker.html', context)
+        scores=[]
+        scores.append({'postgraduate': 10, 'undergraduate': 80, 'research': 0, 'about_glasgow': 0, 'alumni': 0, 'student_life': 0})
+        print scores
+        return render_to_response('rmiyc/cat_picker.html', {'scores': scores}, context)
 
 
 def search(request):
