@@ -130,7 +130,7 @@ class Twitter(Engine):
             created_at = result[u'created_at']
 
             url = 'https://www.twitter.com/{0}/status/{1}'.format(user_id, result_id)
-            title = '{0}'.format(created_at)
+            title = created_at
 
             response.add_result(title, url, text)
 
