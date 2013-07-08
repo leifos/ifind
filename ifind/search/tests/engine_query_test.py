@@ -1,7 +1,7 @@
 
 from ifind.search.engine import EngineFactory
 from ifind.search.query import Query
-#from ifind.search.cache import *
+from ifind.search.cache import *
 
 #query = Query('dog', top=10)
 query = Query('glasgow', top=10)
@@ -12,7 +12,14 @@ query = Query('glasgow', top=10)
 #raise SearchException(__file__.split('/')[-1].split('.')[0], "PROBLEM")
 
 engine = EngineFactory("wikipedia")
+engine2 = EngineFactory("wikipedia")
 
-response = engine.search(query)
+#response = engine.search(query)
 
-print response
+#print response
+
+cache = QueryCache(engine)
+
+print cache.get_set_name()
+
+#print cache.connection.randomkey()
