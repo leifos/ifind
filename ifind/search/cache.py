@@ -2,6 +2,8 @@
 
 import os
 import redis
+import pickle
+import base64
 from ifind.search.engines.exceptions import SearchException, EngineException
 
 MODULE = os.path.basename(__file__).split('.')[0].title()
@@ -10,10 +12,7 @@ HOST = 'localhost'
 PORT = 6379
 DB = 0
 
-try:
-    redis.StrictRedis(host=HOST, port=PORT).ping()
-except redis.ConnectionError:
-    raise SearchException(MODULE, "Failed to establish connection to redis server @ {0}:{1}".format(HOST, PORT))
+
 
 #   SearchEngine can be created with or without a QueryCache
 #
@@ -30,6 +29,18 @@ except redis.ConnectionError:
 #
 
 
+class Connect(object):
+
+    def __init__(self, host="localhost", port=6379, db=0):
+        self.host = host
+        self.port = port
+        self.db = db
+
+    def connect(self):
+        try:
+            redis.StrictRedis(host=self.host, port=self.port).ping()
+        except redis.ConnectionError:
+            raise SearchException(MODULE, "Failed to establish connection to redis server @ {0}:{1}".format(HOST, PORT))
 
 
 
