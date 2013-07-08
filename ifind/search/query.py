@@ -34,4 +34,7 @@ class Query(object):
         Returns True if both query's attributes are identical, False otherwise.
 
         """
-        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+        return hash(self) == hash(other)
+
+    def __hash__(self):
+        return hash(tuple(self.__dict__.items()))

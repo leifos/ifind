@@ -59,12 +59,12 @@ class QueryCache(object):
 
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
-    def make_key(self, key):
+    def make_key(self, query):
 
         if self.cache_type == 'engine':
-            return "QueryCache::{0}::{1}".format(self.engine_name, key)
+            return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
         if self.cache_type == 'instance':
-            return "QueryCache::{0}::{1}".format(id(self), key)
+            return "QueryCache::{0}::{1}".format(id(self), hash(query))
 
     def get_set_name(self):
 
@@ -72,6 +72,40 @@ class QueryCache(object):
             return "QueryCache::{0}-keys".format(self.engine_name)
         if self.cache_type == 'instance':
             return "QueryCache::{0}-keys".format(id(self))
+
+    def store(self, query, response, expires=None):
+
+        key = self.make_key(query)
+        value = base64.b64encode(pickle.dumps(response))
+        set_name = self.get_set_name()
+
+        while self.connection.scard(set_name) >= self.limit:
+            self.connection.spop(set_name) # random deletion atm, not great
+
+        if expires is None:
+            expires = self.expires
+
+        pipe = self.connection.pipeline()
+        pipe.setex(key, expires, value) # rework expiry to use scoring, maybe, find out requirements
+        pipe.sadd(set_name, key)
+        pipe.execute()
+
+    def get(self, query):
+
+        key = self.make_key(query)
+        set_name = self.get_set_name()
+
+        if key in self:
+            value = self.connection.get(key)
+            if value is None:  # expired
+                self.connection.srem(set_name, key)
+                raise SearchException(MODULE, "cache: {0} key: {1} has expired".format(set_name, key))
+            return value
+        raise SearchException(MODULE, "cache: {0) key: {1}".format(set_name, key))
+
+    def __contains__(self, key):
+        return self.connection.sismember(self.get_set_name(), key)
+
 
 #   1. Engine is instantiated and an optional cache parameter can be supplied
 #
