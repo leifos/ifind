@@ -39,7 +39,7 @@ class Twitter(Engine):
         if not CONSUMER_KEY or not CONSUMER_SECRET or not ACCESS_TOKEN_KEY or not ACCESS_TOKEN_SECRET:
             raise ValueError('{0} engine OAuth details not supplied'.format(self.name))
 
-    def search(self, query):
+    def _search(self, query):
         """
         Performs a search, retrieves the results and returns them as an ifind response.
 

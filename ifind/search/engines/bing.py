@@ -34,7 +34,7 @@ class Bing(Engine):
 
         # TODO pull api key from keys.py
 
-    def search(self, query):
+    def _search(self, query):
         """
         Performs a search, retrieves the results and returns them as an ifind response.
 
