@@ -8,55 +8,24 @@ Version: 0.1
 Requires:
 ---------
 """
-from ifind.models.game_models import Category #,Page
+#TODO(mtbvc): if game_model_functions gets refactored a bit this
+#can be made nicer, so refactore populate_pages() and other functs.
 
+from ifind.models import game_model_functions
+import argparse
+import os
 
-def build_categories(cat_name, cat_description, trend_name):
-    """Add categories to database."""
-    # check to see if the category exists
-    if Category.objects.filter(name=cat_name):
-        c = Category.objects.get(name=cat_name)
-        #if not append:
-        #    Page.objects.filter(category=c).all().delete()
-    else:
-        # create the category in the models/db
-        c = Category(name=cat_name, desc=cat_description, is_shown=True)
-        c.save()
-    return c
-
-def add_pages(cat_name, url, rank):
-    """Add page and related data to database."""
+#fetch data for population from file
+def get_trending_queries(filename):
+    """Extract population data from a file.
+       Returns a list of tuples created from comma separated values in file
     """
-
-    :param url_list: a list of the urls for the pages that are going to be populated
-    :param category: the category in which the pages fall into
-    :return:
-    """
-
-    """
-
-    #For each url in the url_list
-    for url in url_list:
-
-        # create PageCapture object - specify the browser to be 800 x 600.
-        pc = PageCapture(url,800, 600)
-        url_file_name = convert_url_to_filename(url)+'.png'
-        # To change to accomodate for the new changes
-        image_file_name = os.path.join(os.getcwd(), 'imgs', url_file_name)
-        pc.load_url(url)
-        # fetch the screen-shot
-        pc.take_screen_shot(image_file_name)
-        # get the title
-        title = pc.get_page_title()
-        # create page in models/db with category
-        p = Page(category=category, title=title, is_shown=True, url=url, screenshot='/imgs/'+url_file_name)
-        p.save()
-        print 'Page title= ' + p.title + ' has been saved!'
-
-
-        """
-
-
+    f = open(filename, 'r')
+    trend_tuples_list = []
+    for line in f:
+        trend_tuples_list.append(tuple((line.strip()).split(',')))
+    f.close()
+    return trend_tuples_list
 
 #########
 def add_achievements():
@@ -67,3 +36,39 @@ def add_levels():
 
 #add people... put these functions in another file?
 
+def main():
+
+    parser = argparse.ArgumentParser(
+        description="Populate a category and the pages associated with it")
+    parser.add_argument("-a", "--append", type=int,default=True,
+                        help="if set to false deletes category from database\
+                        if already present.")
+    #TODO(mtbvc):won't need this
+    parser.add_argument("-cn", "--category_name", type=str,
+                        help="Name of category.")
+    parser.add_argument("-f", "--filename",
+                        default= os.getcwd() + '/data/game_data.txt', type=str,
+                        help="relative path to population data file")
+
+    args = parser.parse_args()
+    if args.filename:
+        data_list = get_trending_queries(args.filename)
+        for data_tuple in data_list:
+            cat=game_model_functions.get_category(data_tuple[0],append=args.append)
+            #data_tuple[1] is url
+            game_model_functions.populate_pages([data_tuple[1]],cat)
+        return 0
+    else:
+        print parser.print_help()
+        return 2
+        #import doctest
+        #test_results = doctest.testmod()
+        #print test_results
+        #if not test_results.failed:
+        #    populate(args.file_name, args.category_name, args.append)
+        #    print "Category and pages have been populated"
+        #return 0
+
+
+if __name__ == '__main__':
+    main()

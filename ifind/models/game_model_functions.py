@@ -67,7 +67,7 @@ def populate_pages(url_list, category):
         # get the title
         title = pc.get_page_title()
         # create page in models/db with category
-        p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', MEDIA_ROOT, url_file_name))
+        p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', DATA_DIR, url_file_name))
         p.save()
         print 'Page title= ' + p.title + ' has been saved!'
 
