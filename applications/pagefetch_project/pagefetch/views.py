@@ -2,6 +2,12 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+#@login_required
+def user_profile(request):
+    user_profile = request.user.get_profile()
+    url = user_profile.url
+    context = RequestContext(request)
+    return render_to_response(url, {}, context)
 
 def test(request):
     context = RequestContext(request)

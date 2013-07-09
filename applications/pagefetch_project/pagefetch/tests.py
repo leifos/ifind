@@ -172,7 +172,7 @@ class GameAchievementTest(TestCase):
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
         # the All Cats achievement is triggered
         print "here"
-        #self.assertEquals(len(new_achievements_list),1)
+        self.assertEquals(len(new_achievements_list),1)
 
         # the high scores were increased
         for s in hs:
@@ -181,7 +181,7 @@ class GameAchievementTest(TestCase):
 
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
         # The high scorer achievement is triggered
-        #self.assertEquals(len(new_achievements_list),1)
+        self.assertEquals(len(new_achievements_list),1)
 
 
 
