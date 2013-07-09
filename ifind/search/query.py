@@ -1,18 +1,22 @@
 class Query(object):
     """
-    Models a Query object for use with ifind SearchEngine interface.
-
-    Query Attributes:
-        terms:  a string of search terms
-        lang:   a string defining the language of the results (varies on engine)
-        top:   an integer specifying the number of results to return
-        skip:  an integer specifying the offset of starting point for results returned
-        result_type: a string defining the type of query (varies on engine)
+    Models a Query object for use with ifind's searching interface.
 
     """
     def __init__(self, terms, top=10, lang="", result_type=""):
         """
-        Constructs Query object, creating instance attributes from optional keyword parameters (**kwargs).
+        Query constructor.
+
+        Args:
+            terms (str): Search terms.
+
+        Kwargs:
+            top (int): maximum number of results to return
+            lang (str): preferred language of returned results (engine specific)
+            result_type (str): type of query (engine specific)
+
+        Attributes:
+            skip (int): offset of starting point for results returned
 
         """
         self.terms = terms
@@ -31,10 +35,14 @@ class Query(object):
 
     def __eq__(self, other):
         """
-        Returns True if both query's attributes are identical, False otherwise.
+        Returns True if both querys hash to the same value, False otherwise.
 
         """
         return hash(self) == hash(other)
 
     def __hash__(self):
+        """
+        Returns hash of tupled instance attributes of query.
+
+        """
         return hash(tuple(self.__dict__.items()))
