@@ -18,6 +18,10 @@ class Query(object):
         Attributes:
             skip (int): offset of starting point for results returned
 
+        Usage:
+            query = Query("hello world")
+            query = Query("hello world", top=20)
+
         """
         self.terms = terms
         self.result_type = result_type
