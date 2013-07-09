@@ -11,7 +11,7 @@ class Engine(object):
     """
     def __init__(self, cache_type=None, proxies=None):
         """
-        Engine constructor for ifind search engine object.
+        Engine constructor.
 
         Kwargs:
             cache_type (str): Type of cache to use i.e.'instance' or 'engine'.
