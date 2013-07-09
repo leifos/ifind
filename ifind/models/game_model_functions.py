@@ -8,7 +8,7 @@ from ifind.common.utils import convert_url_to_filename, read_in_urls
 
 sys.path.append(os.getcwd())
 from configuration import DATA_DIR
-
+from configuration import MEDIA_ROOT
 
 def set_page_list(game, page_list):
     game.page_list = json.dumps(page_list)
@@ -45,7 +45,7 @@ def get_category(category_name, desc='', icon='', append=False):
     return c
 
 
-def populate_pages(url_list, category):
+def populate_pages(url_list, category, halved_screen_shot=False):
     """
 
     :param url_list: a list of the urls for the pages that are going to be populated
@@ -63,16 +63,21 @@ def populate_pages(url_list, category):
         image_file_name = os.path.join(DATA_DIR, url_file_name)
         pc.load_url(url)
         # fetch the screen-shot
-        pc.take_screen_shot(image_file_name)
+        if halved_screen_shot:
+            pc.halve_screen_shot(image_file_name)
+        else:
+            pc.take_screen_shot(image_file_name)
+
         # get the title
         title = pc.get_page_title()
         # create page in models/db with category
-        p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', DATA_DIR, url_file_name))
+        # Abdullah , using DATA_DIR did not work for me because it uses the current working directory in the url.
+        p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', MEDIA_ROOT, url_file_name))
         p.save()
         print 'Page title= ' + p.title + ' has been saved!'
 
 
-def populate(file_name, category_name, append):
+def populate(file_name, category_name, append, halved_screen_shot):
     """
 
     :param file_name:
@@ -94,7 +99,7 @@ def populate(file_name, category_name, append):
         # fetch the screen-shot
         # get the title
         # create page in models/db with category
-    populate_pages(url_list, c)
+    populate_pages(url_list, c, halved_screen_shot)
 
 
 def add_page_to_db(title, url, image, category):
