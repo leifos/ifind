@@ -156,6 +156,6 @@ class Bing(Engine):
         content = json.loads(results.text)
 
         for result in content[u'd'][u'results']:
-            response.add_result(result[u'Title'], result[u'Url'], result[u'Description'])
+            response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'])
 
         return response

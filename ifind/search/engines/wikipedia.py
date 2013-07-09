@@ -75,6 +75,6 @@ class Wikipedia(Engine):
             url = result.getElementsByTagName('Url')[0].firstChild.data
             summary = result.getElementsByTagName('Description')[0].firstChild.data
 
-            response.add_result(title, url, summary)
+            response.add_result(title=title, url=url, summary=summary)
 
         return response
