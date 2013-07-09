@@ -89,6 +89,12 @@ class GameMechanic(object):
     def get_round_no(self):
         return self.game.no_rounds+1
 
+    def inc_no_rounds_in_a_row(self):
+        self.game.no_rounds_in_a_row += 1
+
+    def reset_no_rounds_in_a_row(self):
+        self.game.no_rounds_in_a_row = 0
+
     def get_max_rounds(self):
         return MAX_PAGES
 

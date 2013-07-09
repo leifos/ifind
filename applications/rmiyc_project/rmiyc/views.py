@@ -5,9 +5,10 @@ from django.shortcuts import render_to_response
 from ifind.search.query import Query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
-from ifind.models.game_models import Category, Page
+from ifind.models.game_models import Category, Page, HighScore
 from django.contrib.auth.models import User
 from ifind.search.engine import EngineFactory
+from rmiyc_mechanics import RMIYCMechanic
 from datetime import datetime
 # Create your views here.
 
@@ -26,7 +27,7 @@ def play(request, category_name):
         user = request.user
         # Query the database for the provided category name
         c = Category.objects.get(name=category_name)
-        gm = GameMechanic()
+        gm = RMIYCMechanic()
         context = RequestContext(request, {})
         # This view shall be called when a new game is to start
         # Thus, there should be no cookie containing a game_id
@@ -54,10 +55,41 @@ def play(request, category_name):
 
 
 def pick_category(request):
+
         context = RequestContext(request, {})
         scores=[]
-        scores.append({'postgraduate': 10, 'undergraduate': 80, 'research': 0, 'about_glasgow': 0, 'alumni': 0, 'student_life': 0})
-        print scores
+
+        postgraduate_score = 0
+        undergraduate_score = 0
+        research_score = 0
+        alumni_score = 0
+        student_life_score = 0
+        about_glasgow_score = 0
+
+        hs_list = HighScore.objects.filter(user=request.user)
+
+        for item in hs_list:
+            if item.category.name == 'postgraduate':
+                postgraduate_score = item.highest_score
+                print 'postgraduate'
+            if item.category.name == 'undergraduate':
+                undergraduate_score = item.highest_score
+                print 'undergraduate'
+            if item.category.name == 'research':
+                research_score = item.highest_score
+                print 'research'
+            if item.category.name == 'alumni':
+                alumni_score = item.highest_score
+                print 'alumni'
+            if item.category.name == 'student_life':
+                student_life_score = item.highest_score
+                print 'student_life'
+            if item.category.name == 'about_glasgow':
+                about_glasgow_score = item.highest_score
+                print 'about_glasgow'
+
+        scores.append({'postgraduate': postgraduate_score, 'undergraduate': undergraduate_score, 'research': research_score,
+                       'about_glasgow': about_glasgow_score, 'alumni': alumni_score, 'student_life': student_life_score})
         return render_to_response('rmiyc/cat_picker.html', {'scores': scores}, context)
 
 
@@ -70,7 +102,7 @@ def search(request):
         if request.COOKIES.has_key('game_id'):
             context = RequestContext(request, {})
             ds = EngineFactory("bing", api_key=BING_API_KEY)
-            gm = GameMechanic(ds)
+            gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user,game_id)
             if gm.is_game_over():
@@ -104,7 +136,7 @@ def display_next_page(request):
     if request.COOKIES.has_key('game_id'):
             context = RequestContext(request, {})
             ds = EngineFactory("bing", api_key=BING_API_KEY)
-            gm = GameMechanic(ds)
+            gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
             if gm.is_game_over():
@@ -114,6 +146,7 @@ def display_next_page(request):
                 return response
             else:
                 gm.take_points()
+                gm.reset_no_rounds_in_a_row()
                 gm.set_next_page()
                 gm.update_game()
                 p = gm.get_current_page()

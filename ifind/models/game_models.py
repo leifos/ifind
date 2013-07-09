@@ -44,7 +44,7 @@ class HighScore(models.Model):
     most_no_pages_found_in_a_row = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.highest_score
+        return  self.category.name
 
     class Meta:
         app_label = APP_NAME
@@ -98,6 +98,8 @@ class CurrentGame(models.Model):
     end_time = models.DateTimeField(auto_now_add=True)
     game_type = models.IntegerField(default=0, null=True)
     page_list = models.TextField(null=True, blank=True)
+    no_rounds_in_a_row = models.IntegerField(default=0)
+
 
     def __unicode__(self):
         return self.user.username + ": " + self.current_page.title + " in " + self.category.name
