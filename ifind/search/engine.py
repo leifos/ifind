@@ -1,5 +1,6 @@
 import imp
 import ifind.search.engines as engines
+import ifind.search.cache as cache
 from ifind.search.engines.exceptions import EngineException
 
 
@@ -8,7 +9,7 @@ class Engine(object):
     Abstract search engine interface.
 
     """
-    def __init__(self, proxies=None):
+    def __init__(self, cache_type=None, proxies=None):
         """
         Constructor for SearchEngine.
 
@@ -17,6 +18,7 @@ class Engine(object):
 
         """
         self.name = self.__class__.__name__
+        self._cache = cache.QueryCache(self, cache_type=cache_type)
         self.proxies = proxies
 
     def search(self, query):
