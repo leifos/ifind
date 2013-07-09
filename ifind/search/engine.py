@@ -30,6 +30,18 @@ class Engine(object):
         :raises Requests bad url or something
 
         """
+        if self._cache:
+
+            if query in self._cache:
+                print "********************** cache"
+                return self._cache.get(query)
+
+            response = self._search(query)
+            self._cache.store(query, response)
+            print "********************** request"
+            return response
+
+    def _search(self, query):
         pass
 
 
