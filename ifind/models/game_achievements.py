@@ -75,7 +75,12 @@ class GameAchievementChecker(object):
         self.user=user
 
     def check_and_set_new_achievements(self, userprofile, highscores, currentgame):
-
+        """ test whether the crtieria are met for achievements that have not yet been awarded
+        :param userprofile:
+        :param highscores:
+        :param currentgame:
+        :return:
+        """
         # get list of the users current player achievements
         cpal = PlayerAchievement.objects.filter(user=self.user)
 
@@ -113,7 +118,9 @@ class GameAchievementChecker(object):
 
 
     def _test_achievement(self, achievement, userprofile, highscores, currentgame):
-        """
+        """ For the given achievement (ifind.models.game_models.Achievement),
+        instantiate the related class and then check the criteria
+
         :return: true, if the achievement criteria are met, else false
 
         """

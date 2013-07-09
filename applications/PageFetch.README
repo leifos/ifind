@@ -92,6 +92,24 @@ After register, it should auto login, and ask them to fill in their user profile
 
 
 
+Game Achievements / Awards
+--------------------------
+    - A set of classes that encapsulate the criteria for each achievement,
+    and a managing class to handle the checking and awarding of achievements.
+
+    - See classes created in ifind.models.game_achievements
+    - GameAchievement class is the abstract which Achievements are derived
+        - two have been implemented
+            - HighScorer
+            - AllCats
+            - More to be added corresponding to the achievements listed in the database
+
+    - GameAchievementChecker goes through the achievements
+    and checks whether the user's stats met the criteria
+    and will subsequently awards them (i.e. creates the PlayerAchievement record).
+
+
+
 
 
 

@@ -7,6 +7,7 @@ import base64
 from ifind.search.engines.exceptions import SearchException, EngineException
 
 MODULE = os.path.basename(__file__).split('.')[0].title()
+CACHE_TYPES = ('engine', 'instance')
 
 #   SearchEngine can be created with or without a QueryCache
 #
@@ -45,7 +46,7 @@ class RedisConn(object):
 class QueryCache(object):
 
     def __init__(self, engine, host='localhost', port=6379, db=0,
-                 limit=1000, expires=60 * 60 * 24, cache_type='engine'):
+                 limit=1000, expires=60 * 60 * 24, cache_type=None):
 
         self.engine_name = engine.name.lower()
 
@@ -55,23 +56,58 @@ class QueryCache(object):
 
         self.limit = limit
         self.expires = expires
-        self.cache_type = cache_type
+        self.cache_type = cache_type or 'engine'
 
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
-    def make_key(self, key):
+    def make_key(self, query):
 
-        if self.cache_type == 'engine':
-            return "QueryCache::{0}::{1}".format(self.engine_name, key)
-        if self.cache_type == 'instance':
-            return "QueryCache::{0}::{1}".format(id(self), key)
+        if self.cache_type.lower() == 'engine':
+            return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
+        if self.cache_type.lower() == 'instance':
+            return "QueryCache::{0}::{1}".format(id(self), hash(query))
 
     def get_set_name(self):
 
-        if self.cache_type == 'engine':
+        if self.cache_type.lower() == 'engine':
             return "QueryCache::{0}-keys".format(self.engine_name)
-        if self.cache_type == 'instance':
+        if self.cache_type.lower() == 'instance':
             return "QueryCache::{0}-keys".format(id(self))
+
+    def store(self, query, response, expires=None):
+
+        key = self.make_key(query)
+        value = base64.b64encode(pickle.dumps(response))
+        set_name = self.get_set_name()
+
+        while self.connection.scard(set_name) >= self.limit:
+            self.connection.spop(set_name) # random deletion atm, not great
+
+        if expires is None:
+            expires = self.expires
+
+        pipe = self.connection.pipeline()
+        pipe.setex(key, expires, value)  # rework expiry to use scoring, maybe, find out requirements
+        pipe.sadd(set_name, key)
+        pipe.execute()
+
+    def get(self, query):
+
+        key = self.make_key(query)
+        set_name = self.get_set_name()
+
+        if key in self:
+            value = self.connection.get(key)
+            if value is None:  # expired
+                self.connection.srem(set_name, key)
+                raise SearchException(MODULE, "cache: {0} key: {1} has expired".format(set_name, key))
+            return pickle.loads(base64.b64decode(value))
+
+        raise SearchException(MODULE, "cache: {0) key: {1}".format(set_name, key))
+
+    def __contains__(self, key):
+        return self.connection.sismember(self.get_set_name(), key)
+
 
 #   1. Engine is instantiated and an optional cache parameter can be supplied
 #
