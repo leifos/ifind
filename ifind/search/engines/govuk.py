@@ -29,6 +29,9 @@ class Govuk(Engine):
         except requests.exceptions.ConnectionError:
             raise EngineException(self.name, "Unable to send request, check connectivity")
 
+        if response.status_code != 200:
+            raise EngineException(self.name, "", code=response.status_code)
+
         return Govuk._parse_json_response(query, response)
 
 
