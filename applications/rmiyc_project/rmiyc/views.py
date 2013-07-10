@@ -25,6 +25,12 @@ def play(request, category_name):
 
         print 'I have been played'
         user = request.user
+
+        if not user.is_authenticated():
+            users_count = User.objects.all().count()
+            user = User(username='anonymous' + str(users_count), password='test')
+            user.save()
+
         # Query the database for the provided category name
         c = Category.objects.get(name=category_name)
         gm = RMIYCMechanic()
@@ -59,37 +65,33 @@ def pick_category(request):
         context = RequestContext(request, {})
         scores=[]
 
-        postgraduate_score = 0
-        undergraduate_score = 0
-        research_score = 0
-        alumni_score = 0
-        student_life_score = 0
-        about_glasgow_score = 0
-
-        hs_list = HighScore.objects.filter(user=request.user)
-
-        for item in hs_list:
-            if item.category.name == 'postgraduate':
-                postgraduate_score = item.highest_score
-                print 'postgraduate'
-            if item.category.name == 'undergraduate':
-                undergraduate_score = item.highest_score
-                print 'undergraduate'
-            if item.category.name == 'research':
-                research_score = item.highest_score
-                print 'research'
-            if item.category.name == 'alumni':
-                alumni_score = item.highest_score
-                print 'alumni'
-            if item.category.name == 'student_life':
-                student_life_score = item.highest_score
-                print 'student_life'
-            if item.category.name == 'about_glasgow':
-                about_glasgow_score = item.highest_score
-                print 'about_glasgow'
-
-        scores.append({'postgraduate': postgraduate_score, 'undergraduate': undergraduate_score, 'research': research_score,
+        if request.user.is_authenticated():
+            postgraduate_score = 0
+            undergraduate_score = 0
+            research_score = 0
+            alumni_score = 0
+            student_life_score = 0
+            about_glasgow_score = 0
+            hs_list = HighScore.objects.filter(user=request.user)
+            for item in hs_list:
+                if item.category.name == 'postgraduate':
+                    postgraduate_score = item.highest_score
+                if item.category.name == 'undergraduate':
+                    undergraduate_score = item.highest_score
+                if item.category.name == 'research':
+                    research_score = item.highest_score
+                if item.category.name == 'alumni':
+                    alumni_score = item.highest_score
+                if item.category.name == 'student_life':
+                    student_life_score = item.highest_score
+                if item.category.name == 'about_glasgow':
+                    about_glasgow_score = item.highest_score
+            scores.append({'postgraduate': postgraduate_score, 'undergraduate': undergraduate_score, 'research': research_score,
                        'about_glasgow': about_glasgow_score, 'alumni': alumni_score, 'student_life': student_life_score})
+        else:
+            scores.append({'postgraduate': 0, 'undergraduate': 0, 'research': 0,
+                       'about_glasgow': 0, 'alumni': 0, 'student_life': 0})
+
         return render_to_response('rmiyc/cat_picker.html', {'scores': scores}, context)
 
 
@@ -164,3 +166,6 @@ def game_over(request):
     print 'I am a cookie and I am dying because the game is over'
     context = RequestContext(request, {})
     return render_to_response('rmiyc/game_over.html', context)
+
+
+

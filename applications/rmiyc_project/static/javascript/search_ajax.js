@@ -62,6 +62,11 @@ function search_success(data, textStatus, jqXHR)
         $('#skip').text('take points');
         $('#search').text('search again');
     }
+    else
+    {
+        $('#skip').text('skip');
+        $('#search').text('search');
+    }
 }
 
 function display_next_page_success(data, textStatus, jqXHR)
