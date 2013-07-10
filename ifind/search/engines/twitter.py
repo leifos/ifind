@@ -27,7 +27,7 @@ MAX_PAGE_SIZE = 100
 
 class Twitter(Engine):
     """
-    Bing search engine.
+    Twitter search engine.
 
     """
 
