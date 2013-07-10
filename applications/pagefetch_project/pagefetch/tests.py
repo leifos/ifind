@@ -10,7 +10,7 @@ from django.test import TestCase
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from ifind.models.game_models import Page, Category, UserProfile
+from ifind.models.game_models import Page, Category, UserProfile, Achievement
 from ifind.models.game_models import CurrentGame, HighScore
 from ifind.models.game_mechanics import GameMechanic
 from django.contrib.auth.models import User
@@ -134,14 +134,20 @@ class GameAchievementTest(TestCase):
             Page.objects.get_or_create(category=c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
 
         Category.objects.get_or_create(name='Letters', desc='Looking for sites that  about letters')
+        self.assertEquals(len(Category.objects.all()), 2)
+
+        Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
+        Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
 
 
     def test_achievements(self):
+        self.setUp()
         print "here"
         u = User.objects.get(username='testy')
         c = Category.objects.get(name='Numbers')
         p = Page.objects.all()[0]
 
+        print u, c, p
         cg = CurrentGame(category=c, current_page=p, user=u)
 
         up = UserProfile.objects.get(user=u)
@@ -169,6 +175,9 @@ class GameAchievementTest(TestCase):
         HighScore(user=u,category=c,highest_score=1000).save()
 
         hs = HighScore.objects.filter(user=u)
+        print "*****************"
+        for i in hs:
+            print i.highest_score
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
         # the All Cats achievement is triggered
         print "here"
@@ -187,6 +196,7 @@ class GameAchievementTest(TestCase):
 
 
 class RegistrationTest(TestCase):
+    #TODO(mtbvc):...
 
 
     def setUp(self):

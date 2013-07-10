@@ -112,7 +112,7 @@ class PlayerAchievement (models.Model):
     level = models.IntegerField(default=0, null=True)
 
     def __unicode__(self):
-        return self.user.name + " has achieved " + self.achievement.name
+        return self.user.username + " has achieved " + self.achievement.name
 
     class Meta:
         app_label = APP_NAME
