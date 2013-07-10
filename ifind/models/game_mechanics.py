@@ -89,11 +89,11 @@ class GameMechanic(object):
     def get_round_no(self):
         return self.game.no_rounds+1
 
-    def inc_no_rounds_in_a_row(self):
-        self.game.no_rounds_in_a_row += 1
+    def double_bonus(self):
+        self.game.bonus *= 2
 
-    def reset_no_rounds_in_a_row(self):
-        self.game.no_rounds_in_a_row = 0
+    def reset_bonus(self):
+        self.game.bonus = 100
 
     def get_max_rounds(self):
         return MAX_PAGES
@@ -119,7 +119,10 @@ class GameMechanic(object):
     def _increment_round(self, round_successful=False):
         self.game.no_rounds += 1
         if round_successful:
+            self.double_bonus()
             self.game.no_rounds_completed += 1
+        else:
+            self.reset_bonus()
 
     def _increment_score(self, points=0):
         self.game.current_score += points
@@ -212,7 +215,7 @@ class GameMechanic(object):
 
         results = self._run_query( query)
         rank = self._check_result(results)
-        score = self._score_rank(rank)
+        score = self._score_rank(rank, self.game.bonus)
         return score
 
     def _run_query(self, query):
@@ -247,7 +250,7 @@ class GameMechanic(object):
                 return i
         return 0
 
-    def _score_rank(self, rank):
+    def _score_rank(self, rank, bonus=0):
         """
         calculates the score based on the rank of the page
         :param rank: integer

@@ -146,7 +146,6 @@ def display_next_page(request):
                 return response
             else:
                 gm.take_points()
-                gm.reset_no_rounds_in_a_row()
                 gm.set_next_page()
                 gm.update_game()
                 p = gm.get_current_page()

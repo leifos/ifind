@@ -15,13 +15,20 @@ class RMIYCMechanic(GameMechanic):
         self.super().__init__()
     '''
 
-    def _score_rank(self, rank):
+    def _score_rank(self, rank, bonus):
         """
         calculates the score based on the rank of the page
         :param rank: integer
         :return: integer
         """
-        top = 10
-        x = top+1
-        score = 100 * (x-rank)
-        return score
+        print 'bonus'
+        print bonus
+        if(rank>0):
+            top = 10
+            x = top+1
+            print 'score with no bonus'
+            print 100 * (x-rank)
+
+            return bonus + 100 * (x-rank)
+        else:
+            return 0
