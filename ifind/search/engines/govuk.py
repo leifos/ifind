@@ -8,20 +8,67 @@ API_ENDPOINT = 'https://www.gov.uk/api/search.json?q=court+claim+for+money'
 
 
 class Govuk(Engine):
+    """
+    GOV.uk search engine.
 
+    """
     def __init__(self, **kwargs):
+        """
+        GOV.uk engine constructor.
 
+        Kwargs:
+            See Engine.
+
+        Usage:
+            See EngineFactory.
+
+        """
         Engine.__init__(self, **kwargs)
 
     def _search(self, query):
+        """
+        Concrete method of Engine's interface method 'search'.
+        Performs a search and retrieves the results as an ifind Response.
 
+        Args:
+            query (ifind Query): object encapsulating details of a search query.
+
+        Query Kwargs:
+            top (int): specifies maximum amount of results to return, no minimum guarantee
+
+        Returns:
+            ifind Response: object encapulsating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        """
         if not query.top:
             raise EngineException(self.name, "Total result amount (query.top) not specified")
 
         return self._request(query)
 
     def _request(self, query):
+        """
+        Issues a single request to the API_ENDPOINT and returns the result as
+        an ifind Response.
 
+        Args:
+            query (ifind Query): object encapsulating details of a search query.
+
+        Returns:
+            ifind Response: object encapsulating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        """
         search_params = {'q': query.terms}
 
         try:
@@ -37,7 +84,20 @@ class Govuk(Engine):
 
     @staticmethod
     def _parse_json_response(query, results):
+        """
+        Parses GOV.uk's JSON response and returns as an ifind Response.
 
+        Args:
+            query (ifind Query): object encapsulating details of a search query.
+            results : requests library response object containing search results.
+
+        Returns:
+            ifind Response: object encapsulating a search request's results.
+
+        Usage:
+            Private method.
+
+        """
         response = Response(query.terms)
 
         content = json.loads(results.text)
