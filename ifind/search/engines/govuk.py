@@ -1,3 +1,4 @@
+import json
 import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
@@ -6,7 +7,7 @@ from ifind.search.engines.exceptions import EngineException
 API_ENDPOINT = 'https://www.gov.uk/api/search.json?q=court+claim+for+money'
 
 
-class GovUK(Engine):
+class Govuk(Engine):
 
     def __init__(self, **kwargs):
 
@@ -28,8 +29,24 @@ class GovUK(Engine):
         except requests.exceptions.ConnectionError:
             raise EngineException(self.name, "Unable to send request, check connectivity")
 
-        import pprint
-        pprint.pprint(response.content)
+        return Govuk._parse_json_response(query, response)
 
 
-        return GovUK._parse_json_response(query, response)
+    @staticmethod
+    def _parse_json_response(query, results):
+
+        response = Response(query.terms)
+
+        content = json.loads(results.text)
+
+        for result in content[u'results']:
+            text = result[u'details'][u'description']
+            title = result[u'title']
+            url = result[u'web_url']
+
+            response.add_result(title=title, url=url, summary=text)
+
+            if len(response) == query.top:
+                break
+
+        return response
