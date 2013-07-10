@@ -49,7 +49,6 @@ def fetch_results(queries_list):
         result_list =[]
         for rank in rank_list:
             #term[0] is trend categoty, term[1] is search term
-            print (term[0], response.results[rank].url, rank)
             result_list.append((term[0], response.results[rank].url, rank))
     return result_list
 
@@ -58,15 +57,22 @@ def fetch_results(queries_list):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--filename', type=str)
-    #args = parser.parse_args()
-    #TODO(mtbvc): pass filename, etc as cmd line arguments
-    l = get_trending_queries('/Users/m/projects/ifind/applications/pagefetch_project/data/trends_20130207.txt')
-    #test
-    l2 =  fetch_results(l)
-    for el in l2:
-        #TODO fix this
-        print (el[0] + "," + el[1])
+    parser.add_argument('-s', '--source', type=str, default='data/trends.txt',
+                        help='path to source file for trend data')
+    parser.add_argument('-d', '--destination', type=str,
+                        help='path to destination file for returned results.')
+    args = parser.parse_args()
+
+    if not args.destination:
+        parser.print_help()
+        return 2
+    else:
+        trends_list = get_trending_queries(args.source)
+        results_list =  fetch_results(trends_list)
+        destination_file = open(args.destination, 'w')
+        for result in results_list:
+            #TODO(mtbvc): use string.format()
+            destination_file.write(result[0] + "," + result[1] + "," + result[2])
 
 
 if __name__ == '__main__':

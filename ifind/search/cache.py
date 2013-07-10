@@ -1,31 +1,19 @@
-### TEST CODE ###
-
 import os
 import redis
 import pickle
 import base64
+from time import strftime, gmtime
 from ifind.search.engines.exceptions import SearchException, EngineException
 
 MODULE = os.path.basename(__file__).split('.')[0].title()
 CACHE_TYPES = ('engine', 'instance')
 
-#   SearchEngine can be created with or without a QueryCache
-#
-#   QueryCache stores query response (
-#   (stores the number of times the query has been retrieved, and last retrieved)
-#
-# - with a QueryCache, the search method of SearchEngine should:
-#     - check if their is a QueryCache,
-#         if query is in cache,
-#           return response
-#         else:
-#           perform search request
-#           store response in cache
-#
-
 
 class RedisConn(object):
+    """
+    Object to handle redis connection and configuration.
 
+    """
     def __init__(self, host="localhost", port=6379, db=0):
 
         self.host = host
@@ -33,7 +21,19 @@ class RedisConn(object):
         self.db = db
 
     def connect(self):
+        """
+        Connect method fails silently, ping is used to validate connection.
 
+        Returns:
+            StrictRedis client instance: Redis client object.
+
+        Raises:
+            CacheException
+
+        Usage:
+            connection = RedisConn(host='localhost', port=6379, db=0).connect()
+
+        """
         try:
             redis.StrictRedis(host=self.host, port=self.port).ping()
         except redis.ConnectionError:
@@ -44,10 +44,32 @@ class RedisConn(object):
 
 
 class QueryCache(object):
+    """
+    An object representing a query cache, assigned to an Engine instance upon its
+    instantiation. Allows for the caching of ifind Response objects.
+
+    """
 
     def __init__(self, engine, host='localhost', port=6379, db=0,
-                 limit=1000, expires=60 * 60 * 24, cache_type=None):
+                 limit=1000, expires=60 * 60 * 24):
+        """
+        QueryCache contructor.
 
+        Args:
+            engine (ifind Engine): reference to engine that's instantiating the cache.
+
+        Kwargs:
+            host (str): hostname of redis server.
+            port (int): port of redis server.
+            db (int): database of redis server.
+            limit (int): maximum amount of keys allowed in cache.
+            expires (int): amount of time for key to remain in database (seconds(.
+
+        Usage:
+            cache = QueryCache(engine)
+            cache = QueryCache(engine, limit = 10, expires=60)
+
+        """
         self.engine_name = engine.name.lower()
 
         self.host = host
@@ -56,118 +78,92 @@ class QueryCache(object):
 
         self.limit = limit
         self.expires = expires
-        self.cache_type = cache_type or 'engine'
+        self.cache_type = engine.cache_type
 
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
-    def make_key(self, query):
+    def store(self, query, response, expires=None):
+        """
+        Serialises and stores a search response, keyed by its corresponding query.
 
+        Args:
+            query (ifind Query): object encapsulating details of search query.
+            response (ifind Response): object encapsulating a search request's results.
+
+        Kwargs:
+            expires (int): amount of time for key to remain in database (seconds)
+
+        Usage:
+            cache.store(query, response)
+            cache.store(query, response, expires=60 * 60)
+
+        """
+
+        # check limits
+
+        if expires is None:
+            expires = self.expires
+
+        key = self._make_key(query)
+        value = base64.b64encode(pickle.dumps(response))
+
+        pipe = self.connection.pipeline()
+        pipe.hmset(key, {'response': value, 'count': 0, 'last': ''})
+        pipe.expire(key, expires)
+        pipe.execute()
+
+    def get(self, query):
+        """
+        Retrieves a query's response, returning None if not found.
+
+        Args:
+            query (ifind Query): object encapsulating details of search query.
+
+        Returns:
+            ifind Response: object encapsulating a search request's results.
+
+        Usage:
+            response = cache.get(query)
+
+        """
+        key = self._make_key(query)
+        value = self.connection.hget(key, 'response')
+
+        if value:
+            pipe = self.connection.pipeline()
+            pipe.hincrby(key, 'count', 1)
+            pipe.hset(key, 'last', strftime("%Y/%m/%d %H:%M:%S", gmtime()))
+            pipe.execute()
+            return pickle.loads(base64.b64decode(value))
+        else:
+            return None
+
+    def _make_key(self, query):
+        """
+        Creates key string for query, depending on cache type specified.
+
+        Args:
+            query (ifind Query): object encapsulating details of search query.
+
+        Returns:
+            str: query's unique key to be used as lookup in cache
+
+        Usage:
+            Private method.
+
+        """
         if self.cache_type.lower() == 'engine':
             return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
         if self.cache_type.lower() == 'instance':
             return "QueryCache::{0}::{1}".format(id(self), hash(query))
 
-    def get_set_name(self):
+    def __contains__(self, query):
+        """
+        Special containment override for 'in' operator.
 
-        if self.cache_type.lower() == 'engine':
-            return "QueryCache::{0}-keys".format(self.engine_name)
-        if self.cache_type.lower() == 'instance':
-            return "QueryCache::{0}-keys".format(id(self))
+        Usage:
+            response = engine.search(query)
+            print len(response) --> 10
 
-    def store(self, query, response, expires=None):
-
-        key = self.make_key(query)
-        value = base64.b64encode(pickle.dumps(response))
-        set_name = self.get_set_name()
-
-        while self.connection.scard(set_name) >= self.limit:
-            self.connection.spop(set_name) # random deletion atm, not great
-
-        if expires is None:
-            expires = self.expires
-
-        pipe = self.connection.pipeline()
-        pipe.setex(key, expires, value)  # rework expiry to use scoring, maybe, find out requirements
-        pipe.sadd(set_name, key)
-        pipe.execute()
-
-    def get(self, query):
-
-        key = self.make_key(query)
-        set_name = self.get_set_name()
-
-        if key in self:
-            value = self.connection.get(key)
-            if value is None:  # expired
-                self.connection.srem(set_name, key)
-                raise SearchException(MODULE, "cache: {0} key: {1} has expired".format(set_name, key))
-            return pickle.loads(base64.b64decode(value))
-
-        raise SearchException(MODULE, "cache: {0) key: {1}".format(set_name, key))
-
-    def __contains__(self, key):
-        return self.connection.sismember(self.get_set_name(), key)
-
-
-#   1. Engine is instantiated and an optional cache parameter can be supplied
-#
-#           If cache='instance' then only cached responses keyed to that instance will be returned
-#           If cache='engine' then only cached responses keyed to that engine will be returned
-#           If cache=None then nothing happens with regards to caching
-#
-#   2. Engine's constructor creates a QueryCache object and self.cache references that.
-#
-#           Inside QueryCache you'd have the following attributes/methods:
-#
-# l             imit: no of encoded strings (responses) to cache
-#               expire: key expiry time in seconds
-#               host: redis host
-#               port: redis port
-#               db: redis db number
-#               connection: uses simple connection object to establish redis connection
-#
-#               make_key(self,key): returns key
-#                                   if 'engine' then something like:    "QueryCache::<Engine>::<query_key>"
-#                                   if 'instance' then something like:  "QueryCache::<Engine><ID>::<query_key>"
-#
-#               get_set_key(self): generates the key set for engine/instance
-#                                   if 'engine' then something like:     "QueryCache::<Engine>::keys"
-#                                   if 'instance' then something like:   "QueryCache::<Engine><ID>::keys"
-#
-#               store(self, key, value, expire=None): stores a key/value after space manipulations
-#                                   get key, value, name of set
-#                                   check space, make space?
-#                                   create redis pipeline
-#                                   set expiry, add key/value and execute pipeline
-#
-#               store_pickle(self, key, value): pickles, encodes and stores in cache
-
-
-
-
-
-
-
-
-
-
-
-# Due to nature of QueryCache being an attachable object, I'm assuming non-persistence.
-# i.e. When Engine instance deleted/dereferenced the cache is cleared too (regardless of engine/instance specific)
-# If persistence is wanted (which you'd likely want with cached='engine' you can do it with a QueryCache object but is
-# redundant.
-
-# ALL QUERYCACHE OBJECTS ARE GOING TO BE MAKING THE SAME CALLS TO REDIS REGARDLESS (unless QueryCache has a fallback
-# local dict cache.
-
-# What you'd probably want ultimately is singleton QueryCaches for every engine.
-#
-#
-# Twitter Engine -------> TwitterQueryCache
-# Twitter Engine -------> TwitterQueryCache
-#
-# but instead have..
-#
-# Twitter Engine ------>
-# Twitter Engine -------> TwitterQueryCache
-# Twitter Engine ------>
+        """
+        return self.connection.exists(self._make_key(query))

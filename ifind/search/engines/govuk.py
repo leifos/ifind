@@ -1,21 +1,20 @@
+import json
 import requests
-import xml.dom.minidom
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.engines.exceptions import EngineException
 
-API_ENDPOINT = 'https://www.wikipedia.org/w/api.php'
+API_ENDPOINT = 'https://www.gov.uk/api/search.json?q=court+claim+for+money'
 
 
-class Wikipedia(Engine):
+class Govuk(Engine):
     """
-    Wikipedia search engine.
+    GOV.uk search engine.
 
     """
-
     def __init__(self, **kwargs):
         """
-        Wikipedia engine constructor.
+        GOV.uk engine constructor.
 
         Kwargs:
             See Engine.
@@ -46,9 +45,6 @@ class Wikipedia(Engine):
         Usage:
             Private method.
 
-        Notes:
-            See: http://en.wikipedia.org/w/api.php for API documentation.
-
         """
         if not query.top:
             raise EngineException(self.name, "Total result amount (query.top) not specified")
@@ -73,10 +69,7 @@ class Wikipedia(Engine):
             Private method.
 
         """
-        search_params = {'format': 'xml',
-                         'search': query.terms,
-                         'action': 'opensearch',
-                         'limit': query.top}
+        search_params = {'q': query.terms}
 
         try:
             response = requests.get(API_ENDPOINT, params=search_params)
@@ -86,12 +79,13 @@ class Wikipedia(Engine):
         if response.status_code != 200:
             raise EngineException(self.name, "", code=response.status_code)
 
-        return Wikipedia._parse_xml_response(query, response)
+        return Govuk._parse_json_response(query, response)
+
 
     @staticmethod
-    def _parse_xml_response(query, results):
+    def _parse_json_response(query, results):
         """
-        Parses Wikipedia's XML response and returns as an ifind Response.
+        Parses GOV.uk's JSON response and returns as an ifind Response.
 
         Args:
             query (ifind Query): object encapsulating details of a search query.
@@ -106,15 +100,16 @@ class Wikipedia(Engine):
         """
         response = Response(query.terms)
 
-        xml_doc = xml.dom.minidom.parseString(results.content)
-        results = xml_doc.getElementsByTagName('Item')
+        content = json.loads(results.text)
 
-        for result in results:
+        for result in content[u'results']:
+            text = result[u'details'][u'description']
+            title = result[u'title']
+            url = result[u'web_url']
 
-            title = result.getElementsByTagName('Text')[0].firstChild.data
-            url = result.getElementsByTagName('Url')[0].firstChild.data
-            summary = result.getElementsByTagName('Description')[0].firstChild.data
+            response.add_result(title=title, url=url, summary=text)
 
-            response.add_result(title=title, url=url, summary=summary)
+            if len(response) == query.top:
+                break
 
         return response

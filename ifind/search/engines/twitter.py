@@ -26,35 +26,56 @@ MAX_PAGE_SIZE = 100
 
 
 class Twitter(Engine):
+    """
+    Twitter search engine.
+
+    """
 
     def __init__(self, **kwargs):
         """
-        Constructor for Twitter engine class, inheriting from ifind's Engine.
+        Twitter engine constructor.
 
-        :param proxies: dict representing proxies to use
-                        i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
+        Kwargs:
+            See Engine.
+
+        Raises:
+            EngineException
+
+        Usage:
+            engine = EngineFactory('twitter')
+
         """
         Engine.__init__(self, **kwargs)
 
         if not CONSUMER_KEY or not CONSUMER_SECRET or not ACCESS_TOKEN_KEY or not ACCESS_TOKEN_SECRET:
-            raise ValueError('{0} engine OAuth details not supplied'.format(self.name))
+            raise EngineException(self.name, 'OAuth details not supplied')
 
-    def search(self, query):
+    def _search(self, query):
         """
-        Performs a search, retrieves the results and returns them as an ifind response.
+        Concrete method of Engine's interface method 'search'.
+        Performs a search and retrieves the results as an ifind Response.
 
-        See: https://dev.twitter.com/docs/api/1.1/get/search/tweets for full list.
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
 
-        Accepted query parameters:
-            top:            number of tweets to return per page up to MAX_PAGE_SIZE
-            result_type:    'mixed' includes both popular and real time results (default, optional)
-                            'recent' returns only the most recent results
-                            'popular' returns only the most popular results
-            lang:           restricts tweets to given language by ISO 639-1 code, i.e. 'eu' (optional)
+        Query Kwargs:
+            top (int): number of tweets to return up to MAX_PAGE_SIZE
+            result_type (str): 'mixed' - popular and recent results
+                               'recent' - most recent results
+                               'popular' - most popular results
+            lang (str): restricts tweets to given language by ISO 639-1 code, i.e. 'eu'
 
-        :param query: ifind.search.query.Query object
-        :return ifind.search.response.Response object
-        :raises Bad request etc
+        Returns:
+            ifind Response: object encapulsating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        Notes:
+            https://dev.twitter.com/docs/api/1.1/get/search/tweets for full API documentation.
 
         """
         if not query.top:
@@ -66,7 +87,23 @@ class Twitter(Engine):
         return self._request(query)
 
     def _request(self, query):
+        """
+        Issues a single request to the API_ENDPOINT and returns the result as
+        an ifind Response.
 
+        Args:
+            query (ifind Query): object encapsulating details of a search query.
+
+        Returns:
+            ifind Response: object encapsulating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        """
         query_string = self._create_query_string(query)
 
         try:
@@ -81,10 +118,19 @@ class Twitter(Engine):
 
     def _create_query_string(self, query):
         """
-        Generates & returns Twitter API query string
+        Creates and returns Twitter API query string with encoded query parameters.
 
-        :param query: ifind.search.query.Query
-        :return string representation of query URL for REST request to twitter search api
+        Args:
+            query (ifind Query): object encapsulating details of a search query.
+
+        Returns:
+            str: query string for Twitter API request
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
 
         """
         if not query.result_type:
@@ -111,11 +157,17 @@ class Twitter(Engine):
     @staticmethod
     def _parse_json_response(query, results):
         """
-        Parses Bing JSON response and returns ifind.search.response.Response object
+        Parses Twitter's JSON response and returns as an ifind Response.
 
-        :param query: original ifind.search.query.Query object
-        :param results: response object (requests) obtained from API request
-        :return: ifind.search.response.Response object
+        Args:
+            query (ifind Query): object encapsulating details of a search query.
+            results : requests library response object containing search results.
+
+        Returns:
+            ifind Response: object encapsulating a search request's results.
+
+        Usage:
+            Private method.
 
         """
         response = Response(query.terms)

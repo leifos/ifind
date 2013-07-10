@@ -53,9 +53,10 @@ class HighScorer(GameAchievement):
 
     def check_achievement_criteria(self):
         total = 0
+        print "Checking highest_score achieved"
         for hs in self.highscores:
-            total += hs.high_score
-
+            total += hs.highest_score
+            print hs.highest_score
         if total > self.score_required:
             return True
         else:
@@ -81,17 +82,23 @@ class GameAchievementChecker(object):
         :param currentgame:
         :return:
         """
+        print "Entering check_and_set_new_achievements-----------------------"
+
         # get list of the users current player achievements
         cpal = PlayerAchievement.objects.filter(user=self.user)
+        print "len of cpal :" + str(len(cpal)) + "+++"
 
         # pull out the list of achievements they have obtained.
         pal = []
         for cpa in cpal:
             pal.append(cpa.achievement)
+            print "///////////////////////////////////////"
+            print cpa.achievement
 
 
         # get list of possible achievements
         aal = Achievement.objects.all()
+        print aal
 
         # exclude achievements already obtained
         al = []
@@ -100,6 +107,7 @@ class GameAchievementChecker(object):
                 al.append(a)
 
 
+        print al
         # create an empty list of new achievements
         nal = []
 
@@ -113,6 +121,7 @@ class GameAchievementChecker(object):
                 # add this PlayerAchievement to a list
                 nal.append(pa)
 
+        print nal
         # return list of new achievements
         return nal
 
@@ -136,6 +145,6 @@ class GameAchievementChecker(object):
             ga = AllCat(userprofile, highscores, currentgame)
 
         if ga:
-           outcome = ga.check_achievement_crtieria()
+           outcome = ga.check_achievement_criteria()
 
         return outcome
