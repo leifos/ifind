@@ -16,8 +16,6 @@ from datetime import datetime
 def index(request):
 
         context = RequestContext(request, {})
-        user = request.user
-        print user
         return render_to_response('rmiyc/base.html', context)
 
 
@@ -166,6 +164,5 @@ def game_over(request):
     print 'I am a cookie and I am dying because the game is over'
     context = RequestContext(request, {})
     return render_to_response('rmiyc/game_over.html', context)
-
 
 

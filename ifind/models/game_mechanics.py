@@ -90,7 +90,8 @@ class GameMechanic(object):
         return self.game.no_rounds+1
 
     def double_bonus(self):
-        self.game.bonus *= 2
+        if(self.game.bonus<3200):
+            self.game.bonus *= 2
 
     def reset_bonus(self):
         self.game.bonus = 100

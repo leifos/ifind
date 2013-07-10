@@ -1,9 +1,26 @@
 {% extends 'rmiyc/base.html' %}
+<script>
+</script>
 {% block container %}
     <div id="game-results">
         <div class="hero-unit">
-        <h1> Game is over </h1>
-        <p><a class="btn btn-primary btn-large" href="/rmiyc/pick_category/">Play again? »</a></p>
-     </div>
+            <h1> Game is over </h1>
+            <p><a class="btn btn-primary btn-large" href="/rmiyc/pick_category/">Play again? »</a></p>
+        </div>
     </div>
+     <div id ="score-div">
+                <h4>your score is : <div id="score-variable">{{item.score}}</div></h4>
+    </div>
+         <ol id="search-results-div">
+                {% for item in overall_results %}
+                    {% for result in item.result_list %}
+                        <Li>
+                        <b>{{result.title}}</b>
+                        <br />
+                        {{result.url}}
+                        </Li>
+                    {% endfor %}
+                {% endfor %}
+         </ol>
+
 {% endblock %}
