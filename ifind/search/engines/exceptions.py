@@ -1,3 +1,5 @@
+# TODO When raising an exception pass a lambda function, the function being the module/path/name thing
+
 ERROR = {'default': "Unknown engine error ({0})",
          400: "Bad request sent to search API ({0})",
          401: "Incorrect API Key ({0})",

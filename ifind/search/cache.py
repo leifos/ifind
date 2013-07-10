@@ -1,5 +1,3 @@
-### TEST CODE ###
-
 import os
 import redis
 import pickle
@@ -10,23 +8,12 @@ from ifind.search.engines.exceptions import SearchException, EngineException
 MODULE = os.path.basename(__file__).split('.')[0].title()
 CACHE_TYPES = ('engine', 'instance')
 
-#   SearchEngine can be created with or without a QueryCache
-#
-#   QueryCache stores query response (
-#   (stores the number of times the query has been retrieved, and last retrieved)
-#
-# - with a QueryCache, the search method of SearchEngine should:
-#     - check if their is a QueryCache,
-#         if query is in cache,
-#           return response
-#         else:
-#           perform search request
-#           store response in cache
-#
-
 
 class RedisConn(object):
+    """
+    Object to handle redis connection.
 
+    """
     def __init__(self, host="localhost", port=6379, db=0):
 
         self.host = host
@@ -34,7 +21,19 @@ class RedisConn(object):
         self.db = db
 
     def connect(self):
+        """
+        Connect method fails silently so ping is used to validate connection.
 
+        Returns:
+            StrictRedis client instance: Redis client object.
+
+        Raises:
+            CacheException
+
+        Usage:
+            connection = RedisConn(host='localhost', port=6379, db=0).connect()
+
+        """
         try:
             redis.StrictRedis(host=self.host, port=self.port).ping()
         except redis.ConnectionError:
@@ -45,9 +44,27 @@ class RedisConn(object):
 
 
 class QueryCache(object):
+    """
+    An object representing a query cache, assigned to an Engine instance upon its
+    instantiation. Allows for the caching of ifind Response objects.
+
+    """
 
     def __init__(self, engine, host='localhost', port=6379, db=0,
-                 limit=1000, expires=60 * 60 * 24, cache_type=None):
+                 limit=1000, expires=60 * 60 * 24):
+        """
+        QueryCache contructor.
+
+        Args:
+            engine (ifind Engine object): Reference to engine that's instantiating the cache.
+
+        Kwargs:
+            host (str): Hostname of redis server.
+            port (int): Port of redis server.
+            db (int): Database of redis server.
+            limit(int): Maximum amount of keys allowed in cache.
+            expires(int): Amount of time for key to remain in database in seconds.
+        """
 
         self.engine_name = engine.name.lower()
 
@@ -57,7 +74,7 @@ class QueryCache(object):
 
         self.limit = limit
         self.expires = expires
-        self.cache_type = cache_type
+        self.cache_type = engine.cache_type
 
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
