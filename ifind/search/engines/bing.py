@@ -16,15 +16,25 @@ MAX_RESULTS = 1000
 
 
 class Bing(Engine):
+    """
+    Bing search engine.
+
+    """
 
     def __init__(self, api_key='', **kwargs):
-
         """
-        Constructor for Bing engine class, inheriting from ifind's Engine.
+        Bing engine constructor.
 
-        :param api_key: string representing unique API access key
-        :param proxies: dict representing proxies to use
-                        i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
+        Kwargs:
+            api_key (str): string representation of api key needed to access bing search api
+            See Engine.
+
+        Raises:
+            CacheException, EngineException
+
+        Usage:
+            engine = EngineFactory('bing', api_key='etc123456etc123456etc123456')
+
         """
         Engine.__init__(self, **kwargs)
         self.api_key = api_key
@@ -36,18 +46,25 @@ class Bing(Engine):
 
     def _search(self, query):
         """
-        Performs a search, retrieves the results and returns them as an ifind response.
+        Concrete method of Engine's interface method 'search'.
+        Performs a search and retrieves the results as an ifind Response.
 
-        See: ifind's dropbox for recent Bing API specification for full parameter list
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
 
-        Accepted query parameters:
-            top:            specifies the number of results to return up to MAX_PAGE_SIZE
-            skip:           specifies the offset requested for the starting point of results returned
-            result_type:    specifies the type of query (see top of Bing source for available types)
+        Query Kwargs:
+            top (int): specifies the mamximum amount of results to return up to MAX_PAGE_SIZE.
+            skip (int): specifies the offset/starting point of results returned.
+            result_type (str): specifies the type of results to return (see top of class for available types).
 
-        :param query: ifind.search.query.Query object
-        :return ifind.search.response.Response object
-        :raises Bad request etc
+        Returns:
+            ifind Response: Object encapulsating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
 
         """
         if not query.top:
@@ -63,7 +80,23 @@ class Bing(Engine):
             return self._auto_request(query)
 
     def _request(self, query):
+        """
+        Issues a single request to the API_ENDPOINT and returns the result as
+        an ifind Response.
 
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
+
+        Returns:
+            ifind Response: Object encapsulating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        """
         query_string = self._create_query_string(query)
 
         try:
@@ -77,7 +110,20 @@ class Bing(Engine):
         return Bing._parse_json_response(query, response)
 
     def _auto_request(self, query):
+        """
+        Issues a multiple requests to the API_ENDPOINT to meet query.top
+        requirements and returns the result as an ifind Response.
 
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
+
+        Returns:
+            ifind Response: Object encapsulating a search request's results.
+
+        Usage:
+            Private method.
+
+        """
         target = query.top
         query.top = MAX_PAGE_SIZE
         query.skip = 0
@@ -101,10 +147,19 @@ class Bing(Engine):
 
     def _create_query_string(self, query):
         """
-        Generates & returns Bing API query string
+        Creates and returns Bing API query string with encoded query parameters.
 
-        :param query: ifind.search.query.Query
-        :return string representation of query url for REST request to bing search api
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
+
+        Returns:
+            str: query string for Bing API request
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
 
         """
         if not query.result_type:
@@ -127,10 +182,16 @@ class Bing(Engine):
     @staticmethod
     def _encode_symbols(query_string):
         """
-        Encodes query string as defined in the Bing API Specification.
+        Encodes certain symbols of a query string to match Bing's API specification.
 
-        :param query_string: string representation of query url for REST request to bing search api
-        :return encoded query string
+        Args:
+            query_string (str): query string for Bing API request.
+
+        Returns:
+            str: encoded query string for Bing API request.
+
+        Usage:
+            Private method.
 
         """
         encoded_string = string.replace(query_string, "'", '%27')
@@ -144,11 +205,17 @@ class Bing(Engine):
     @staticmethod
     def _parse_json_response(query, results):
         """
-        Parses Bing JSON response and returns ifind.search.response.Response object
+        Parses Bing's JSON response and returns as an ifind Response.
 
-        :param query: original ifind.search.query.Query object
-        :param results: response object (requests) obtained from API request
-        :return: ifind.search.response.Response object
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
+            results : requests library response object containing search results.
+
+        Returns:
+            ifind Response: Object encapsulating a search request's results.
+
+        Usage:
+            Private method.
 
         """
         response = Response(query.terms)

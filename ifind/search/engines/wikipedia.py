@@ -18,13 +18,13 @@ class Wikipedia(Engine):
         Wikipedia engine constructor.
 
         Kwargs:
-            See Engine
+            See Engine.
 
         Raises:
             CacheException
 
         Usage:
-            See EngineFactory
+            See EngineFactory.
 
         """
         Engine.__init__(self, **kwargs)
@@ -37,8 +37,8 @@ class Wikipedia(Engine):
         Args:
             query (ifind Query): Object encapsulating details of a search query.
 
-        Query Args:
-            top: specifies maximum amount of results to return, no minimum guarantee
+        Query Kwargs:
+            top (int): specifies maximum amount of results to return, no minimum guarantee
 
         Returns:
             ifind Response: Object encapulsating a search request's results.
@@ -104,7 +104,7 @@ class Wikipedia(Engine):
             ifind Response: Object encapsulating a search request's results.
 
         Usage:
-            Private Method.
+            Private method.
 
         """
         response = Response(query.terms)
