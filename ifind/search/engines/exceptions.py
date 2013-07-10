@@ -18,7 +18,7 @@ class SearchException(Exception):
         SearchException constructor.
 
         Args:
-            module (str): name of module that's raising the exception
+            module (str): name of module that's raising exception
             message (str): exception message to be displayed
 
         Usage:
@@ -47,7 +47,15 @@ class EngineException(SearchException):
         """
         EngineException constructor.
 
+        Args:
+            engine (str): name of engine that's raising exception
+            message (str): exception message to be displayed (ignored usually here)
 
+        Kwargs:
+            code (int): reponse status code of issued request
+
+        Usage:
+            raise EngineException("Bing", "", code=200)
 
         """
         self.code = code
