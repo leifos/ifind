@@ -35,13 +35,13 @@ class Wikipedia(Engine):
         Performs a search and retrieves the results as an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
 
         Query Kwargs:
             top (int): specifies maximum amount of results to return, no minimum guarantee
 
         Returns:
-            ifind Response: Object encapulsating a search request's results.
+            ifind Response: object encapulsating a search request's results.
 
         Raises:
             EngineException
@@ -64,10 +64,10 @@ class Wikipedia(Engine):
         an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Raises:
             EngineException
@@ -97,11 +97,11 @@ class Wikipedia(Engine):
         Parses Wikipedia's XML response and returns as an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
             results : requests library response object containing search results.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Usage:
             Private method.

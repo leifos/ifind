@@ -58,7 +58,7 @@ class Bing(Engine):
             result_type (str): specifies the type of results to return (see top of class for available types).
 
         Returns:
-            ifind Response: Object encapulsating a search request's results.
+            ifind Response: object encapulsating a search request's results.
 
         Raises:
             EngineException
@@ -85,10 +85,10 @@ class Bing(Engine):
         an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Raises:
             EngineException
@@ -115,10 +115,10 @@ class Bing(Engine):
         requirements and returns the result as an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Usage:
             Private method.
@@ -150,7 +150,7 @@ class Bing(Engine):
         Creates and returns Bing API query string with encoded query parameters.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
 
         Returns:
             str: query string for Bing API request
@@ -208,11 +208,11 @@ class Bing(Engine):
         Parses Bing's JSON response and returns as an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
             results : requests library response object containing search results.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Usage:
             Private method.

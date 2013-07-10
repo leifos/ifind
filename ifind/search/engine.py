@@ -14,8 +14,8 @@ class Engine(object):
         Engine constructor.
 
         Kwargs:
-            cache_type (str): Type of cache to use i.e.'instance' or 'engine'.
-            proxies (dict): Mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
+            cache_type (str): type of cache to use i.e.'instance' or 'engine'.
+            proxies (dict): mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
 
         Raises:
             CacheException
@@ -38,10 +38,10 @@ class Engine(object):
         Caching handled here, true search implementation deferred to subclass '_search' method.
 
         Args:
-            query (ifind Query): Object encapsulating details of search query.
+            query (ifind Query): object encapsulating details of search query.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Raises:
             CacheException
@@ -70,10 +70,10 @@ class Engine(object):
         Performs a search and retrieves the results as an ifind Response.
 
         Args:
-            query (ifind Query): Object encapsulating details of a search query.
+            query (ifind Query): object encapsulating details of a search query.
 
         Returns:
-            ifind Response: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Raises:
             See subclasses.
