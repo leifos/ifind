@@ -9,6 +9,12 @@ from ifind.common.rotation_ordering import RotationOrdering
 from ifind.search.query import Query
 from ifind.search.response import Response
 import logging
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('test.log')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 #MAX_SCORE = 1000
@@ -134,7 +140,7 @@ class GameMechanic(object):
         :return: None
         """
         self.pages = Page.objects.filter(category=self.game.category)
-        print 'number of pages: %d' % (len(self.pages))
+        self.logger.info( 'number of pages: %d' % (len(self.pages)))
         #todo(leifos): check the number of pages does exceed MAX_PAGES
 
     def generate_page_ordering(self):
@@ -147,8 +153,8 @@ class GameMechanic(object):
         print self.pages
         page_list = ro.get_ordering(self.pages)
         # set the page_list to the the game
-        print "page ordering"
-        print page_list
+
+        self.logger.debug(page_list)
         set_page_list(self.game, page_list)
 
     def set_next_page(self):
@@ -192,7 +198,7 @@ class GameMechanic(object):
         score = self._score_query(query)
         self.game.last_query = query
         self.game.last_query_score = score
-        print 'query: %s got %d points' % (query, score)
+        self.logger.info( 'query: %s got %d points' % (query, score))
         # increment query here ????
         success = False
         if score > 0:
