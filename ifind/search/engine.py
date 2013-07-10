@@ -38,10 +38,10 @@ class Engine(object):
         Caching handled here, true search implementation deferred to subclass '_search' method.
 
         Args:
-            query (ifind Query object): Object encapsulating details of search query.
+            query (ifind Query): Object encapsulating details of search query.
 
         Returns:
-            ifind Response object: Object encapsulating a search request's results.
+            ifind Response: Object encapsulating a search request's results.
 
         Raises:
             CacheException
@@ -67,13 +67,13 @@ class Engine(object):
     def _search(self, query):
         """
         Abstract search method for an Engine instance, to be implemented by subclasses.
-        Returns results of search request made from query argument.
+        Performs a search and retrieves the results as an ifind Response.
 
         Args:
-            query (ifind query Object): Object encapsulating details of search query
+            query (ifind Query): Object encapsulating details of a search query.
 
         Returns:
-            ifind Response object: Object encapsulating a search request's results.
+            ifind Response: Object encapsulating a search request's results.
 
         Raises:
             See subclasses.

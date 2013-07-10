@@ -8,28 +8,49 @@ API_ENDPOINT = 'https://www.wikipedia.org/w/api.php'
 
 
 class Wikipedia(Engine):
+    """
+    Wikipedia search engine.
+
+    """
 
     def __init__(self, **kwargs):
         """
-        Constructor for Wikipedia engine class, inheriting from ifind's Engine.
+        Wikipedia engine constructor.
 
-        :param proxies: dict representing proxies to use
-                        i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"} (optional)
+        Kwargs:
+            See Engine
+
+        Raises:
+            CacheException
+
+        Usage:
+            See EngineFactory
+
         """
         Engine.__init__(self, **kwargs)
 
     def _search(self, query):
         """
-        Performs a search, retrieves the results and returns them as an ifind response.
+        Concrete method of Engine's interface method 'search'.
+        Performs a search and retrieves the results as an ifind Response.
 
-        See: http://en.wikipedia.org/w/api.php for API documentation.
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
 
-        Accepted query parameters:
-            top:    specifies maximum amount of results to return, no guarantee on minimum
+        Query Args:
+            top: specifies maximum amount of results to return, no minimum guarantee
 
-        :param query: ifind.search.query.Query object
-        :return ifind.search.response.Response object
-        :raises Bad request etc
+        Returns:
+            ifind Response: Object encapulsating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        Notes:
+            See: http://en.wikipedia.org/w/api.php for API documentation.
 
         """
         if not query.top:
@@ -38,7 +59,23 @@ class Wikipedia(Engine):
         return self._request(query)
 
     def _request(self, query):
+        """
+        Issues a single request to the API_ENDPOINT and returns the result as
+        an ifind Response.
 
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
+
+        Returns:
+            ifind Response: Object encapsulating a search request's results.
+
+        Raises:
+            EngineException
+
+        Usage:
+            Private method.
+
+        """
         search_params = {'format': 'xml',
                          'search': query.terms,
                          'action': 'opensearch',
@@ -57,11 +94,17 @@ class Wikipedia(Engine):
     @staticmethod
     def _parse_xml_response(query, results):
         """
-        Parses Wikipedia XML response and returns ifind.search.response.Response object.
+        Parses Wikipedia's XML response and returns as an ifind Response.
 
-        :param query: original ifind.search.query.Query object
-        :param results: response object (requests) obtained from API request
-        :return: ifind.search.response.Response object
+        Args:
+            query (ifind Query): Object encapsulating details of a search query.
+            results : requests library response object containing search results.
+
+        Returns:
+            ifind Response: Object encapsulating a search request's results.
+
+        Usage:
+            Private Method.
 
         """
         response = Response(query.terms)
