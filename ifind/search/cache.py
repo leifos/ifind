@@ -11,7 +11,7 @@ CACHE_TYPES = ('engine', 'instance')
 
 class RedisConn(object):
     """
-    Object to handle redis connection.
+    Object to handle redis connection and configuration.
 
     """
     def __init__(self, host="localhost", port=6379, db=0):
@@ -22,7 +22,7 @@ class RedisConn(object):
 
     def connect(self):
         """
-        Connect method fails silently so ping is used to validate connection.
+        Connect method fails silently, ping is used to validate connection.
 
         Returns:
             StrictRedis client instance: Redis client object.
@@ -56,16 +56,20 @@ class QueryCache(object):
         QueryCache contructor.
 
         Args:
-            engine (ifind Engine object): Reference to engine that's instantiating the cache.
+            engine (ifind Engine): reference to engine that's instantiating the cache.
 
         Kwargs:
-            host (str): Hostname of redis server.
-            port (int): Port of redis server.
-            db (int): Database of redis server.
-            limit(int): Maximum amount of keys allowed in cache.
-            expires(int): Amount of time for key to remain in database in seconds.
-        """
+            host (str): hostname of redis server.
+            port (int): port of redis server.
+            db (int): database of redis server.
+            limit (int): maximum amount of keys allowed in cache.
+            expires (int): amount of time for key to remain in database (seconds(.
 
+        Usage:
+            cache = QueryCache(engine)
+            cache = QueryCache(engine, limit = 10, expires=60)
+
+        """
         self.engine_name = engine.name.lower()
 
         self.host = host
@@ -79,6 +83,21 @@ class QueryCache(object):
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
     def store(self, query, response, expires=None):
+        """
+        Serialises and stores a search response, keyed by its corresponding query.
+
+        Args:
+            query (ifind Query): object encapsulating details of search query.
+            response (ifind Response): object encapsulating a search request's results.
+
+        Kwargs:
+            expires (int): amount of time for key to remain in database (seconds)
+
+        Usage:
+            cache.store(query, response)
+            cache.store(query, response, expires=60 * 60)
+
+        """
 
         # check limits
 
@@ -94,29 +113,57 @@ class QueryCache(object):
         pipe.execute()
 
     def get(self, query):
+        """
+        Retrieves a query's response, returning None if not found.
 
+        Args:
+            query (ifind Query): object encapsulating details of search query.
+
+        Returns:
+            ifind Response: object encapsulating a search request's results.
+
+        Usage:
+            response = cache.get(query)
+
+        """
         key = self._make_key(query)
         value = self.connection.hget(key, 'response')
 
         if value:
-
             pipe = self.connection.pipeline()
             pipe.hincrby(key, 'count', 1)
             pipe.hset(key, 'last', strftime("%Y/%m/%d %H:%M:%S", gmtime()))
             pipe.execute()
-
             return pickle.loads(base64.b64decode(value))
-
         else:
-
             return None
 
     def _make_key(self, query):
+        """
+        Creates key string for query, depending on cache type specified.
 
+        Args:
+            query (ifind Query): object encapsulating details of search query.
+
+        Returns:
+            str: query's unique key to be used as lookup in cache
+
+        Usage:
+            Private method.
+
+        """
         if self.cache_type.lower() == 'engine':
             return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
         if self.cache_type.lower() == 'instance':
             return "QueryCache::{0}::{1}".format(id(self), hash(query))
 
     def __contains__(self, query):
+        """
+        Special containment override for 'in' operator.
+
+        Usage:
+            response = engine.search(query)
+            print len(response) --> 10
+
+        """
         return self.connection.exists(self._make_key(query))

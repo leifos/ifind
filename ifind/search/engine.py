@@ -14,8 +14,11 @@ class Engine(object):
         Engine constructor.
 
         Kwargs:
-            cache_type (str): Type of cache to use i.e.'instance' or 'engine'.
-            proxies (dict): Mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
+            cache_type (str): type of cache to use i.e.'instance' or 'engine'.
+            proxies (dict): mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
+
+        Attributes:
+            cache (QueryCache): instance of QueryCache, instantiated by cache_type arg
 
         Raises:
             CacheException
@@ -38,10 +41,10 @@ class Engine(object):
         Caching handled here, true search implementation deferred to subclass '_search' method.
 
         Args:
-            query (ifind Query object): Object encapsulating details of search query.
+            query (ifind Query): object encapsulating details of search query.
 
         Returns:
-            ifind Response object: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Raises:
             CacheException
@@ -61,17 +64,19 @@ class Engine(object):
                 self._cache.store(query, response)
                 print "********************** request"
                 return response
+        else:
+            return self._search(query)
 
     def _search(self, query):
         """
         Abstract search method for an Engine instance, to be implemented by subclasses.
-        Returns results of search request made from query argument.
+        Performs a search and retrieves the results as an ifind Response.
 
         Args:
-            query (ifind query Object): Object encapsulating details of search query
+            query (ifind Query): object encapsulating details of a search query.
 
         Returns:
-            ifind Response object: Object encapsulating a search request's results.
+            ifind Response: object encapsulating a search request's results.
 
         Raises:
             See subclasses.

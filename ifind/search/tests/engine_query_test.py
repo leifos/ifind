@@ -4,17 +4,13 @@ from ifind.search.query import Query
 from ifind.search.cache import *
 
 
-engine = EngineFactory('wikipedia', cache_type='engine')
+engine = EngineFactory('govuk')
 
 
-query3 = Query("grantham", top=5)
+query3 = Query("court", top=30)
 
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
-engine.search(query3)
+
+
+response = engine.search(query3)
+
+print response

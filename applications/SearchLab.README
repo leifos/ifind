@@ -29,7 +29,7 @@ EngineFactory <<DONE>>
     - creates and returns the specified SearchEngine
 
 
-SearchEngine with Caching <<PLANNING>
+SearchEngine with Caching <<DONE>>
 -------------------------
 
     - a SearchEngine can be created with or without a QueryCache
