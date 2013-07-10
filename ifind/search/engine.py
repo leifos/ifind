@@ -61,6 +61,8 @@ class Engine(object):
                 self._cache.store(query, response)
                 print "********************** request"
                 return response
+        else:
+            return self._search(query)
 
     def _search(self, query):
         """
