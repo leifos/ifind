@@ -17,6 +17,9 @@ class Engine(object):
             cache_type (str): type of cache to use i.e.'instance' or 'engine'.
             proxies (dict): mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
 
+        Attributes:
+            cache (QueryCache): instance of QueryCache, instantiated by cache_type arg
+
         Raises:
             CacheException
 
