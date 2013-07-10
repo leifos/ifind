@@ -18,7 +18,7 @@ class UserProfile(models.Model):
     rank = models.IntegerField(default=0,blank=True)
 
     def __unicode__(self):
-        return self.user.name
+        return self.user.username
 
     class Meta:
         app_label = APP_NAME
@@ -124,7 +124,7 @@ class Level (models.Model):
     level = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.xp + " : " + self.level
+        return str(self.xp) + " : " + str(self.level)
 
     class Meta:
         app_label = APP_NAME

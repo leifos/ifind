@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     #url(r'^', include('pagefetch.urls')),
     #url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^users/', include('pagefetch.urls')),
+    #url(r'^users/', include('pagefetch.urls')),
 )
 
 

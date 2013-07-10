@@ -5,5 +5,5 @@ from pagefetch import views
 
 
 urlpatterns = patterns('',
-    url(r'^', views.test, name='test'),
+    url(r'^$', views.test, name='test'),
 )
