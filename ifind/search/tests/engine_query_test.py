@@ -7,7 +7,9 @@ from ifind.search.cache import *
 engine = EngineFactory('govuk')
 
 
-query3 = Query("court", top=25)
+query3 = Query("court", top=30)
+
+
 
 response = engine.search(query3)
 

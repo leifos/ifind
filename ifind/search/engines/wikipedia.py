@@ -20,9 +20,6 @@ class Wikipedia(Engine):
         Kwargs:
             See Engine.
 
-        Raises:
-            CacheException
-
         Usage:
             See EngineFactory.
 

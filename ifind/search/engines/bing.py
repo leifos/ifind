@@ -30,7 +30,7 @@ class Bing(Engine):
             See Engine.
 
         Raises:
-            CacheException, EngineException
+            EngineException
 
         Usage:
             engine = EngineFactory('bing', api_key='etc123456etc123456etc123456')
