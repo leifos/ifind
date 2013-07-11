@@ -1,7 +1,7 @@
 __author__ = 'leif'
 
-from game_models import UserProfile, PlayerAchievement, Achievement
-from django.contrib.auth.models import User
+from game_models import PlayerAchievement, Achievement #, UserProfile
+#from django.contrib.auth.models import User
 
 
 
@@ -42,8 +42,8 @@ class AllCat(GameAchievement):
 
     def __str__(self):
         #TODO(leifos): there probably a neat way to return the class name
-
         return self.__class__.__name__
+
 
 class HighScorer(GameAchievement):
 
@@ -65,6 +65,48 @@ class HighScorer(GameAchievement):
     def __str__(self):
         #TODO(leifos): there probably a neat way to return the class name
         return self.__class__.__name__
+
+
+class UberSearcher(GameAchievement):
+
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=5000):
+        GameAchievement.__init__(self,userprofile, highscores)
+        self.score_required = score_required
+
+    def check_achievement_criteria(self):
+        total = 0
+        print "Checking highest_score achieved"
+        for hs in self.highscores:
+            total += hs.highest_score
+            print hs.highest_score
+        if total > self.score_required:
+            return True
+        else:
+            return False
+
+
+class TenGamesPlayed(GameAchievement):
+
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=10):
+        GameAchievement.__init__(self,userprofile, highscores)
+        self.score_required = score_required
+
+    def check_achievement_criteria(self):
+        if self.userprofile.no_games_played >= self.score_required:
+            return True
+        return False
+
+
+class FivePagesInAGame(GameAchievement):
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=5):
+        GameAchievement.__init__(self,userprofile, highscores)
+        self.score_required = score_required
+
+    def check_achievement_criteria(self):
+        for hs in self.highscores:
+            if hs.most_no_pages_found >= self.score_required:
+                return True
+            return False
 
 
 class GameAchievementChecker(object):
