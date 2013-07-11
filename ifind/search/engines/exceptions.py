@@ -9,8 +9,7 @@ ERROR = {'default': "Unknown engine error ({0})",
 
 class SearchException(Exception):
     """
-    Class representing an ifind search exception.
-    Automatically names itself to module exception was raised from.
+    Abstract class representing an ifind search exception.
 
     """
     def __init__(self, module, message):
@@ -18,31 +17,23 @@ class SearchException(Exception):
         SearchException constructor.
 
         Args:
-            module (str): name of module that's raising exception
+            module (str): name of module/class that's raising exception
             message (str): exception message to be displayed
 
         Usage:
             raise SearchException("Test", "this is an error")
 
         """
-
-        self.engine = module + 'Exception'
+        message = "{0} - {1}".format(module, message)
         Exception.__init__(self, message)
 
-        class NewClass(ValueError):
-            pass
 
-        NewClass.__name__ = self.engine
-        raise NewClass(self.message)
-
-
-class EngineException(SearchException):
+class EngineConnectionException(SearchException):
     """
-    Class representing an ifind engine exception.
-    Returns specific code message if status specified.
+    Thrown when an Engine connectivity error occurs.
+    Returns specific response message if status code specified.
 
     """
-
     def __init__(self, engine, message, code=None):
         """
         EngineException constructor.
@@ -52,13 +43,50 @@ class EngineException(SearchException):
             message (str): exception message to be displayed (ignored usually here)
 
         Kwargs:
-            code (int): reponse status code of issued request
+            code (int): response status code of issued request
 
         Usage:
             raise EngineException("Bing", "", code=200)
 
         """
+        self.message = message
         self.code = code
+
         if code:
             self.message = ERROR.get(code, ERROR['default']).format(self.code)
-        SearchException.__init__(self, engine, message)
+
+        SearchException.__init__(self, engine, self.message)
+
+
+class EngineLoadException(SearchException):
+    """
+    Thrown when an Engine can't be dynamically loaded.
+
+    """
+    pass
+
+
+class EngineAPIKeyException(SearchException):
+    """
+    Thrown when an Engine's API key hasn't been provided.
+
+    """
+    pass
+
+
+class QueryParamException(SearchException):
+    """
+    Thrown when a query parameters incompatible or missing.
+
+    """
+    pass
+
+
+class CacheConnectionException(SearchException):
+    """
+    Thrown when cache connectivity error occurs.
+
+    """
+    pass
+
+

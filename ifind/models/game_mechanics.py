@@ -8,14 +8,20 @@ from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
 from ifind.search.query import Query
 from ifind.search.response import Response
+import logging
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('test.log')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
-
-MAX_SCORE = 1000
-MAX_QUERIES = 20
-MAX_PAGES = 4
-MAX_QUERIES_PER_PAGE = 5
-GAME_LENGTH_IN_SECONDS = 0
+#MAX_SCORE = 1000
+#MAX_QUERIES = 20
+#MAX_PAGES = 4
+#MAX_QUERIES_PER_PAGE = 5
+#GAME_LENGTH_IN_SECONDS = 0
 
 
 class GameMechanic(object):
@@ -31,6 +37,7 @@ class GameMechanic(object):
         self.max_pages = max_pages
         self.max_queries_per_page = max_pages
         self.game_length_in_seconds = game_length_in_seconds
+        self.logger = logging.getLogger(__name__)
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category
@@ -51,6 +58,7 @@ class GameMechanic(object):
         self.set_next_page()
         # save to db
         self.update_game()
+        self.logger.info("Game Created")
 
     def retrieve_game(self, user, game_id):
         """ find the game associated with this user, and return the
@@ -59,7 +67,7 @@ class GameMechanic(object):
         :param game_id:
         :return: True, if game is found, else False, if not
         """
-
+        self.logger.info("Retrieving Game")
         self.game = None
         found = False
         # look up model for game_id
@@ -80,8 +88,9 @@ class GameMechanic(object):
         :return: True if the end game criteria have been met, else False
         """
         # example criteria for the game end
-        print 'round: %d max-pages: %d' % (self.get_round_no(),MAX_PAGES)
-        if (self.get_round_no() > MAX_PAGES):
+        s = 'round: %d max-pages: %d' % (self.get_round_no(),self.max_pages)
+        self.logger.info(s )
+        if (self.get_round_no() > self.max_pages):
             return True
         else:
             return False
@@ -97,7 +106,7 @@ class GameMechanic(object):
         self.game.bonus = 100
 
     def get_max_rounds(self):
-        return MAX_PAGES
+        return self.max_pages
 
     def get_current_score(self):
         return self.game.current_score
@@ -141,7 +150,7 @@ class GameMechanic(object):
         :return: None
         """
         self.pages = Page.objects.filter(category=self.game.category)
-        print 'number of pages: %d' % (len(self.pages))
+        self.logger.info( 'number of pages: %d' % (len(self.pages)))
         #todo(leifos): check the number of pages does exceed MAX_PAGES
 
     def generate_page_ordering(self):
@@ -154,8 +163,8 @@ class GameMechanic(object):
         print self.pages
         page_list = ro.get_ordering(self.pages)
         # set the page_list to the the game
-        print "page ordering"
-        print page_list
+
+        self.logger.debug(page_list)
         set_page_list(self.game, page_list)
 
     def set_next_page(self):
@@ -199,7 +208,7 @@ class GameMechanic(object):
         score = self._score_query(query)
         self.game.last_query = query
         self.game.last_query_score = score
-        print 'query: %s got %d points' % (query, score)
+        self.logger.info( 'query: %s got %d points' % (query, score))
         # increment query here ????
         success = False
         if score > 0:
@@ -259,7 +268,7 @@ class GameMechanic(object):
         """
         score = 0
         if rank > 0:
-            score = MAX_SCORE / rank
+            score = self.max_score / rank
 
         return score
 
