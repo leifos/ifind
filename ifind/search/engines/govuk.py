@@ -2,7 +2,7 @@ import json
 import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.search.engines.exceptions import EngineException
+from ifind.search.engines.exceptions import EngineConnectionException, QueryParamException
 
 API_ENDPOINT = 'https://www.gov.uk/api/search.json?q=court+claim+for+money'
 
@@ -47,7 +47,7 @@ class Govuk(Engine):
 
         """
         if not query.top:
-            raise EngineException(self.name, "Total result amount (query.top) not specified")
+            raise QueryParamException(self.name, "Total result amount (query.top) not specified")
 
         return self._request(query)
 
@@ -74,10 +74,10 @@ class Govuk(Engine):
         try:
             response = requests.get(API_ENDPOINT, params=search_params)
         except requests.exceptions.ConnectionError:
-            raise EngineException(self.name, "Unable to send request, check connectivity")
+            raise EngineConnectionException(self.name, "Unable to send request, check connectivity")
 
         if response.status_code != 200:
-            raise EngineException(self.name, "", code=response.status_code)
+            raise EngineConnectionException(self.name, "", code=response.status_code)
 
         return Govuk._parse_json_response(query, response)
 

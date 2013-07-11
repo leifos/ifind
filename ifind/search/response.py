@@ -103,7 +103,6 @@ class Response(object):
 
         return self
 
-
     def from_oss_feed(self, oss_xml_feed):
         """
         Populates the Response object using the data from an Open Search response feed
