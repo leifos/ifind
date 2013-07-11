@@ -9,5 +9,5 @@ urlpatterns = patterns('',
         url(r'^search/$', views.search2, name='search2'),
         url(r'^game_over/$', views.game_over, name='game_over'),
         #url(r'^display_next_page/$', views.display_next_page, name='display_next_page'),
-        url(r'^display_next_page/$', views.display_next_page2, name='display_next_page2'),
+        url(r'^display_next_page/$', views.display_next_page, name='display_next_page'),
 )

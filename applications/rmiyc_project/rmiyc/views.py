@@ -170,9 +170,7 @@ def search2(request):
                 json_objects = json.dumps(objects)
 
                 s = gm.get_last_query_score()
-                #quoted_score = urllib.quote(s)
-                s=0
-                Json_results = {"results": json_objects ,"score":s ,"screenshot":"screenshot"}
+                Json_results = {"results": json_objects ,"score":s}
                 data = json.dumps(Json_results)
                 return HttpResponse(data, mimetype='application/json')
         else:
@@ -230,10 +228,16 @@ def display_next_page(request):
                 gm.set_next_page()
                 gm.update_game()
                 p = gm.get_current_page()
-                overall_results=[]
-                overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
-                response = render_to_response('rmiyc/screenshot.html', {'overall_results': overall_results}, context)
-            return response
+                objects = []
+                data1 = p.screenshot
+                quoted_screenshot = str(data1)
+                print quoted_screenshot
+                objects.append({"screenshot":quoted_screenshot})
+                data = json.dumps(objects)
+                print '********************************'
+                print data
+                print '********************************'
+                return HttpResponse(data, mimetype='application/json')
     else:
             # the game has not been created yet
             # redirect to play view

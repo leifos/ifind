@@ -80,10 +80,13 @@ function search_success(data, textStatus, jqXHR)
 
 function display_next_page_success(data, textStatus, jqXHR)
 {
+    var obj = jQuery.parseJSON(data);
+    alert(obj);
     $('#skip').text('skip');
     $('#search').text('search');
     $('#image-box').hide();
     $('#score-div').hide();
     $('#search-results-div').hide();
-    $('#image-div').html(data);
+    alert(obj.screenshot);
+    $('#image-div').html("<image src=" + obj.screenshot + "height='500' width='600'> </image>");
 }
