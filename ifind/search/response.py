@@ -126,33 +126,6 @@ class Response(object):
 
         return self
 
-    def from_oss_feed(self, oss_xml_feed):
-        """
-        Populates the Response object using the data from an Open Search response feed
-
-        """
-        pass
-
-    def to_rss(self):
-        """
-        Creates an RSS feed from a Response object.
-
-        Returns:
-
-        * response_xml (str): Response as RSS feed
-        """
-        pass
-
-    def to_atom(self):
-        """
-        Creates an XML from a OpenSearch Response.
-
-        Returns:
-
-        * response_xml (str): OpenSearch Response as an ATOM feed
-        """
-        pass
-
 
 class Result(object):
     """
