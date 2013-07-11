@@ -1,12 +1,10 @@
-import ifind.search.cache as cache
-
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
 from nose.tools import assert_raises
 
+import ifind.search.cache as cache
 from ifind.search.engine import EngineFactory
-
-from ifind.search.engines.exceptions import DynamicException
+from exceptions import DynamicException
 
 class TestCache(object):
 
