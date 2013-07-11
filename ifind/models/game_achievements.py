@@ -106,12 +106,11 @@ class FivePagesInAGame(GameAchievement):
     def check_achievement_criteria(self):
         print 'checking FivePagesInAGame criteria'
         for hs in self.highscores:
-            print ':::::::'
-            print id(hs)
+            print '::::::::::::::::::::::::::::::::::::'
             print hs.most_no_pages_found
             if hs.most_no_pages_found >= self.score_required:
                 return True
-            return False
+        return False
 
 
 class GameAchievementChecker(object):
@@ -198,9 +197,14 @@ class GameAchievementChecker(object):
             ga = TenGamesPlayed(userprofile, highscores, currentgame)
 
         if achievement.achievement_class == 'FivePagesInAGame':
-            ga = FivePagesInAGame(userprofile, highscores, currentgame)
+            for hs in highscores:
+                ga = FivePagesInAGame(userprofile, highscores, currentgame)
 
         if ga:
-           outcome = ga.check_achievement_criteria()
+            highscores = ga.highscores
+            for hs in highscores:
+                print "hellllllllllllllu"
+                print hs.most_no_pages_found
+            outcome = ga.check_achievement_criteria()
 
         return outcome
