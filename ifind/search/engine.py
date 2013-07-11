@@ -1,7 +1,7 @@
 import imp
 import ifind.search.engines as engines
 import ifind.search.cache as cache
-from ifind.search.engines.exceptions import EngineLoadException
+from exceptions import EngineLoadException
 
 
 class Engine(object):
