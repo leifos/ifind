@@ -1,3 +1,7 @@
+import jsonpickle
+import json
+
+
 class Response(object):
     """
     Models a Response object for use with ifind's search interface.
@@ -44,6 +48,25 @@ class Response(object):
         """
         self.results.append(Result(title, url, summary, **kwargs))
         self.result_total += 1
+
+    def to_json(self):
+        """
+        Serialises Response and returns it as JSON.
+
+        Returns:
+            str: json string of Response
+
+        Usage:
+            response = engine.search(query)
+            json_response = response.to_json()
+
+        """
+        response_dict = json.loads(jsonpickle.encode(self.__dict__))
+
+        for result in response_dict[u'results']:
+            del result[u'py/object']
+
+        return json.dumps(response_dict)
 
     def __str__(self):
         """
@@ -127,16 +150,6 @@ class Response(object):
         Returns:
 
         * response_xml (str): OpenSearch Response as an ATOM feed
-        """
-        pass
-
-    def to_json(self):
-        """
-        Creates JSON from a Response object.
-
-        Returns:
-
-        * response_json (str): Response as JSON
         """
         pass
 
