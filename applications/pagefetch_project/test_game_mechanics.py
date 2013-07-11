@@ -9,6 +9,8 @@ from ifind.models.game_models import Category, Page
 from ifind.models.game_mechanics import GameMechanic
 from ifind.search.engine import EngineFactory
 import os
+from ifind.common.setuplogger import create_ifind_logger
+
 
 def handle_game_input():
     state = 0
@@ -37,6 +39,9 @@ def clear_screen():
 
 def main():
 
+    logger = create_ifind_logger('test_game_mech.log')
+    logger.info("Program started")
+    logger.info('Testing game mechanics')
 
     print "This script is to test the GameMechanics and interaction with the Models"
 
@@ -101,7 +106,7 @@ def main():
 
     print '\nGame Over!!\n'
     print gm
-
+    logger.info("Done!")
 
 if __name__ == '__main__':
     main()
