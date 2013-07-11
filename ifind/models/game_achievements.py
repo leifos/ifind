@@ -98,12 +98,17 @@ class TenGamesPlayed(GameAchievement):
 
 
 class FivePagesInAGame(GameAchievement):
+
     def __init__(self, userprofile, highscores, currentgame=None, score_required=5):
         GameAchievement.__init__(self,userprofile, highscores)
         self.score_required = score_required
 
     def check_achievement_criteria(self):
+        print 'checking FivePagesInAGame criteria'
         for hs in self.highscores:
+            print ':::::::'
+            print id(hs)
+            print hs.most_no_pages_found
             if hs.most_no_pages_found >= self.score_required:
                 return True
             return False
@@ -185,6 +190,15 @@ class GameAchievementChecker(object):
 
         if achievement.achievement_class == 'AllCat':
             ga = AllCat(userprofile, highscores, currentgame)
+
+        if achievement.achievement_class == 'UberSearcher':
+            ga = UberSearcher(userprofile, highscores, currentgame)
+
+        if achievement.achievement_class == 'TenGamesPlayed':
+            ga = TenGamesPlayed(userprofile, highscores, currentgame)
+
+        if achievement.achievement_class == 'FivePagesInAGame':
+            ga = FivePagesInAGame(userprofile, highscores, currentgame)
 
         if ga:
            outcome = ga.check_achievement_criteria()
