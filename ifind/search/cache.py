@@ -3,7 +3,7 @@ import redis
 import pickle
 import base64
 from time import strftime, gmtime
-from ifind.search.engines.exceptions import SearchException, EngineException
+from ifind.search.engines.exceptions import CacheConnectionException
 
 MODULE = os.path.basename(__file__).split('.')[0].title()
 CACHE_TYPES = ('engine', 'instance')
@@ -14,6 +14,7 @@ class RedisConn(object):
     Object to handle redis connection and configuration.
 
     """
+
     def __init__(self, host="localhost", port=6379, db=0):
 
         self.host = host
@@ -37,8 +38,8 @@ class RedisConn(object):
         try:
             redis.StrictRedis(host=self.host, port=self.port).ping()
         except redis.ConnectionError:
-            raise SearchException(MODULE, "Failed to establish connection to "
-                                          "redis server @ {0}:{1}".format(self.host, self.port))
+            raise CacheConnectionException(MODULE, "Failed to establish connection to "
+                                                   "redis server @ {0}:{1}".format(self.host, self.port))
 
         return redis.StrictRedis(host=self.host, port=self.port, db=self.db)
 
