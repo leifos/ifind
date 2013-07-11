@@ -1,9 +1,9 @@
 import json
 import requests
 import oauth2 as oauth
-from engine import Engine
-from response import Response
-from exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from ifind.search.engine import Engine
+from ifind.search.response import Response
+from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://api.twitter.com/1.1/search/tweets.json'
 

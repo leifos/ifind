@@ -1,8 +1,8 @@
 import json
 import requests
-from engine import Engine
-from response import Response
-from exceptions import EngineConnectionException, QueryParamException
+from ifind.search.engine import Engine
+from ifind.search.response import Response
+from ifind.search.exceptions import EngineConnectionException, QueryParamException
 
 API_ENDPOINT = 'https://www.gov.uk/api/search.json?q=court+claim+for+money'
 

@@ -6,7 +6,7 @@ import json
 # from ifind.search.cache import *
 #
 #
-engine = EngineFactory('govuk')
+engine = EngineFactory('twitter')
 #
 #
 query3 = Query("court", top=3)
