@@ -1,3 +1,7 @@
+import jsonpickle
+import json
+
+
 class Response(object):
     """
     Models a Response object for use with ifind's search interface.
@@ -44,6 +48,25 @@ class Response(object):
         """
         self.results.append(Result(title, url, summary, **kwargs))
         self.result_total += 1
+
+    def to_json(self):
+        """
+        Serialises Response and returns it as JSON.
+
+        Returns:
+            str: json string of Response
+
+        Usage:
+            response = engine.search(query)
+            json_response = response.to_json()
+
+        """
+        response_dict = json.loads(jsonpickle.encode(self.__dict__))
+
+        for result in response_dict[u'results']:
+            del result[u'py/object']
+
+        return json.dumps(response_dict)
 
     def __str__(self):
         """
@@ -103,42 +126,17 @@ class Response(object):
 
         return self
 
-    def from_oss_feed(self, oss_xml_feed):
+    def __eq__(self, other):
         """
-        Populates the Response object using the data from an Open Search response feed
+        Overrides '==' operator, returns True if both responses hash to the same value.
+
+        Usage:
+            response = Response("hello world")
+            response2 = Response("hello world")
+            print response == response2 --> False
 
         """
-        pass
-
-    def to_rss(self):
-        """
-        Creates an RSS feed from a Response object.
-
-        Returns:
-
-        * response_xml (str): Response as RSS feed
-        """
-        pass
-
-    def to_atom(self):
-        """
-        Creates an XML from a OpenSearch Response.
-
-        Returns:
-
-        * response_xml (str): OpenSearch Response as an ATOM feed
-        """
-        pass
-
-    def to_json(self):
-        """
-        Creates JSON from a Response object.
-
-        Returns:
-
-        * response_json (str): Response as JSON
-        """
-        pass
+        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
 
 
 class Result(object):
@@ -181,3 +179,15 @@ class Result(object):
 
         """
         return "\n".join("{0}: {1}".format(key, value) for key, value in self.__dict__.items())
+
+    def __eq__(self, other):
+        """
+        Overrides '==' operator, returns True if both responses hash to the same value.
+
+        Usage:
+            response = Response("hello world")
+            response2 = Response("hello world")
+            print response == response2 --> False
+
+        """
+        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())

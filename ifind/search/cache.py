@@ -3,7 +3,8 @@ import redis
 import pickle
 import base64
 from time import strftime, gmtime
-from ifind.search.engines.exceptions import CacheConnectionException
+from ifind.search.exceptions import CacheConnectionException
+
 
 MODULE = os.path.basename(__file__).split('.')[0].title()
 CACHE_TYPES = ('engine', 'instance')

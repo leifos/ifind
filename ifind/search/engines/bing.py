@@ -3,7 +3,7 @@ import string
 import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.search.engines.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
