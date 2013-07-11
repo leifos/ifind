@@ -169,15 +169,15 @@ def search2(request):
 
                 s = gm.get_last_query_score()
 
-                quoted_score = urllib.quote(s)
+                #quoted_score = urllib.quote(s)
 
-                overall_results ={}
+                overall_results =[]
                 overall_results.append({'result_list': result_list, 'page': "", 'score': s})
 
-                response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
+                response = render_to_response('rmiyc/search_results.html', {'overall_results': []}, context)
 
-                print json.dumps(overall_results)
-            return json.dumps(overall_results)
+                print json.dumps(result_list)
+            return json.dumps(result_list)
         else:
             # the game has not been created yet
             # redirect to play view
