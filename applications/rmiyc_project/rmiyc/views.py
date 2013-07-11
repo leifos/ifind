@@ -176,8 +176,8 @@ def search2(request):
 
                 response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
 
-                print overall_results
-            return response
+                print json.dumps(overall_results)
+            return json.dumps(overall_results)
         else:
             # the game has not been created yet
             # redirect to play view
