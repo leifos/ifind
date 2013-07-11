@@ -126,6 +126,18 @@ class Response(object):
 
         return self
 
+    def __eq__(self, other):
+        """
+        Overrides '==' operator, returns True if both responses hash to the same value.
+
+        Usage:
+            response = Response("hello world")
+            response2 = Response("hello world")
+            print response == response2 --> False
+
+        """
+        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+
 
 class Result(object):
     """
@@ -167,3 +179,15 @@ class Result(object):
 
         """
         return "\n".join("{0}: {1}".format(key, value) for key, value in self.__dict__.items())
+
+    def __eq__(self, other):
+        """
+        Overrides '==' operator, returns True if both responses hash to the same value.
+
+        Usage:
+            response = Response("hello world")
+            response2 = Response("hello world")
+            print response == response2 --> False
+
+        """
+        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
