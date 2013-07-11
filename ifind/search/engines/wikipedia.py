@@ -1,9 +1,8 @@
 import requests
 import xml.dom.minidom
-from engine import Engine
-from response import Response
-from exceptions import QueryParamException, EngineConnectionException
-
+from ifind.search.engine import Engine
+from ifind.search.response import Response
+from ifind.search.exceptions import QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://www.wikipedia.org/w/api.php'
 

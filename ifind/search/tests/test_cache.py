@@ -4,7 +4,6 @@ from nose.tools import assert_raises
 
 import ifind.search.cache as cache
 from ifind.search.engine import EngineFactory
-from exceptions import DynamicException
 
 class TestCache(object):
 

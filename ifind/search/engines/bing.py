@@ -1,9 +1,9 @@
 import json
 import string
 import requests
-from engine import Engine
-from response import Response
-from exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from ifind.search.engine import Engine
+from ifind.search.response import Response
+from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 
