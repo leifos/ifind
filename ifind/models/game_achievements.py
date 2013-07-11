@@ -53,10 +53,8 @@ class HighScorer(GameAchievement):
 
     def check_achievement_criteria(self):
         total = 0
-        print "Checking highest_score achieved"
         for hs in self.highscores:
             total += hs.highest_score
-            print hs.highest_score
         if total > self.score_required:
             return True
         else:
@@ -75,10 +73,8 @@ class UberSearcher(GameAchievement):
 
     def check_achievement_criteria(self):
         total = 0
-        print "Checking highest_score achieved"
         for hs in self.highscores:
             total += hs.highest_score
-            print hs.highest_score
         if total > self.score_required:
             return True
         else:
@@ -104,10 +100,7 @@ class FivePagesInAGame(GameAchievement):
         self.score_required = score_required
 
     def check_achievement_criteria(self):
-        print 'checking FivePagesInAGame criteria'
         for hs in self.highscores:
-            print '::::::::::::::::::::::::::::::::::::'
-            print hs.most_no_pages_found
             if hs.most_no_pages_found >= self.score_required:
                 return True
         return False
@@ -128,8 +121,6 @@ class GameAchievementChecker(object):
         :param currentgame:
         :return:
         """
-        print "Entering check_and_set_new_achievements-----------------------"
-
         # get list of the users current player achievements
         cpal = PlayerAchievement.objects.filter(user=self.user)
         print "len of cpal :" + str(len(cpal)) + "+++"
@@ -138,13 +129,9 @@ class GameAchievementChecker(object):
         pal = []
         for cpa in cpal:
             pal.append(cpa.achievement)
-            print "///////////////////////////////////////"
-            print cpa.achievement
-
 
         # get list of possible achievements
         aal = Achievement.objects.all()
-        print aal
 
         # exclude achievements already obtained
         al = []
@@ -152,8 +139,6 @@ class GameAchievementChecker(object):
             if a not in pal:
                 al.append(a)
 
-
-        print al
         # create an empty list of new achievements
         nal = []
 
@@ -167,7 +152,6 @@ class GameAchievementChecker(object):
                 # add this PlayerAchievement to a list
                 nal.append(pa)
 
-        print nal
         # return list of new achievements
         return nal
 
@@ -201,10 +185,6 @@ class GameAchievementChecker(object):
                 ga = FivePagesInAGame(userprofile, highscores, currentgame)
 
         if ga:
-            highscores = ga.highscores
-            for hs in highscores:
-                print "hellllllllllllllu"
-                print hs.most_no_pages_found
             outcome = ga.check_achievement_criteria()
 
         return outcome
