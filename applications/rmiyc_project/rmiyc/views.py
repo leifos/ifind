@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from ifind.search.engine import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
 from datetime import datetime
+import urllib, urllib2
 # Create your views here.
 
 
@@ -120,6 +121,10 @@ def search(request):
                 gm.handle_query(query)
                 gm.update_game()
                 # get the last query score
+                print '*********************************'
+                print  result_list
+                print '*********************************'
+
                 s = gm.get_last_query_score()
                 overall_results.append({'result_list': result_list, 'page': None, 'score': s})
                 response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
@@ -127,6 +132,81 @@ def search(request):
         else:
             # the game has not been created yet
             # redirect to play view
+            return HttpResponseRedirect('/rmiyc/cat_picker/')
+
+
+def search2(request):
+
+        print 'Search 2 has been called'
+        user = request.user
+
+        result_list = []
+        if request.COOKIES.has_key('game_id'):
+            context = RequestContext(request, {})
+            ds = EngineFactory("bing", api_key=BING_API_KEY)
+            gm = RMIYCMechanic(ds)
+            game_id = request.COOKIES.get('game_id')
+            gm.retrieve_game(user,game_id)
+            if gm.is_game_over():
+                response = HttpResponseRedirect('/rmiyc/game_over/')
+                # delete the cookie
+                response.delete_cookie('game_id')
+                return response
+            else:
+                if request.method == 'POST':
+                    query = request.POST['query'].strip()
+                    #Augement query
+                    query += ' site:gla.ac.uk '
+                if query:
+                    result_list = gm.get_search_results(query)
+                gm.handle_query(query)
+                gm.update_game()
+                # get the last query score
+                print '*********************************'
+                print  result_list
+                print '*********************************'
+
+                s = gm.get_last_query_score()
+
+                quoted_score = urllib.quote(s)
+
+                overall_results ={}
+                overall_results.append({'result_list': result_list, 'page': None, 'score': s})
+                response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
+            return response
+        else:
+            # the game has not been created yet
+            # redirect to play view
+            return HttpResponseRedirect('/rmiyc/cat_picker/')
+
+
+def display_next_page2(request):
+
+    user = request.user
+    if request.COOKIES.has_key('game_id'):
+            context = RequestContext(request, {})
+            ds = EngineFactory("bing", api_key=BING_API_KEY)
+            gm = RMIYCMechanic(ds)
+            game_id = request.COOKIES.get('game_id')
+            gm.retrieve_game(user, game_id)
+            if gm.is_game_over():
+                response = HttpResponseRedirect('/rmiyc/game_over/')
+                # delete the cookie
+                response.delete_cookie('game_id')
+                return response
+            else:
+                gm.take_points()
+                gm.set_next_page()
+                gm.update_game()
+                p = gm.get_current_page()
+                overall_results=[]
+                overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
+                response = render_to_response('rmiyc/screenshot.html', {'overall_results': overall_results}, context)
+            return response
+    else:
+            # the game has not been created yet
+            # redirect to play view
+            print 'the game has not been created yet'
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 
