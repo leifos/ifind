@@ -11,7 +11,7 @@ from ifind.search.engine import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
 from datetime import datetime
 import urllib, urllib2
-import json
+import simplejson,json
 # Create your views here.
 
 
@@ -162,22 +162,19 @@ def search2(request):
                     result_list = gm.get_search_results(query)
                 gm.handle_query(query)
                 gm.update_game()
+
                 # get the last query score
-                print '*********************************'
-                print  result_list
-                print '*********************************'
+                objects = []
+                for item in result_list:
+                    objects.append({"title": item.title, "link": item.url, "summary": item.summary})
+                json_objects = json.dumps(objects)
 
                 s = gm.get_last_query_score()
-
                 #quoted_score = urllib.quote(s)
-
-                overall_results =[]
-                overall_results.append({'result_list': result_list, 'page': "", 'score': s})
-
-                response = render_to_response('rmiyc/search_results.html', {'overall_results': []}, context)
-
-                print json.dumps(result_list)
-            return json.dumps(result_list)
+                s=0
+                Json_results = {"results": json_objects ,"score":s ,"screenshot":"screenshot"}
+                data = json.dumps(Json_results)
+                return HttpResponse(data, mimetype='application/json')
         else:
             # the game has not been created yet
             # redirect to play view

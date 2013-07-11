@@ -54,10 +54,19 @@ $(function()
 
 function search_success(data, textStatus, jqXHR)
 {
-    $('#content').html(data);
+    var obj = jQuery.parseJSON(data);
+    var obj_list = jQuery.parseJSON(obj.results);
+    var html_string = ""
+    $(obj_list).each(function()
+        {
+            html_string+= "<Li> <b>" + this.title + "</b> <br />" +this.link +"</Li>"
+        }
+    );
+    $('#search-results-ol').html(html_string);
+    $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
     $('#query').val("");
-    var x = $('#score-variable').text();
-    if(x!= 0)
+    //var x = $('#score-variable').text();
+    if(obj.score != 0)
     {
         $('#skip').text('take points');
         $('#search').text('search again');
