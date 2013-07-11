@@ -11,6 +11,7 @@ from ifind.search.engine import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
 from datetime import datetime
 import urllib, urllib2
+import json
 # Create your views here.
 
 
@@ -171,8 +172,11 @@ def search2(request):
                 quoted_score = urllib.quote(s)
 
                 overall_results ={}
-                overall_results.append({'result_list': result_list, 'page': None, 'score': s})
+                overall_results.append({'result_list': result_list, 'page': "", 'score': s})
+
                 response = render_to_response('rmiyc/search_results.html', {'overall_results': overall_results}, context)
+
+                print overall_results
             return response
         else:
             # the game has not been created yet

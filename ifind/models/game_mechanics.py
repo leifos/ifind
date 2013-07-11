@@ -112,7 +112,7 @@ class GameMechanic(object):
         return self.game.current_score
 
     def get_search_results(self, query):
-        return self._run_query(query)
+        return self._run_query2(query)
 
     def get_game_id(self):
         return self.game.id
@@ -241,6 +241,20 @@ class GameMechanic(object):
         iresponse = self.search_engine.search(iquery)
 
         return iresponse
+
+    def _run_query2(self, query):
+        """ constructs ifind.search.query, and issues it to the search_engine
+
+        :param query:
+        :return: ifind.search.response
+        """
+        # construct ifind.search.query Query
+        iquery = Query(query, result_type="web")
+
+        # issue query to self.search_engine
+        iresponse = self.search_engine.search(iquery)
+
+        return iresponse.to_json
 
     def _check_result(self, response):
         """ iterates through the response looking for what rank the url is at
