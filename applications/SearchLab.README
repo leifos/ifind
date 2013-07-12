@@ -5,11 +5,11 @@ Search Lab
 Is a configuration search interface for undertaking live search experiments.
 
 
-Response
+Response <<DONE>>
 --------
     - (addable results) result item to handle additional attributes from search engine results
 
-Query
+Query <<DONE>>
 -----
     - remove the format parameter
 
@@ -47,7 +47,7 @@ SearchEngine with Caching <<DONE>>
                 perform search request
                 store results in cache
 
-
+    - full testing and logging suite <<IN PROGRESS>>
 
 
 
