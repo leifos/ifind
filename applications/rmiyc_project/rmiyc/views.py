@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from ifind.search.query import Query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
-from ifind.models.game_models import Category, Page, HighScore
+from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
 from django.contrib.auth.models import User
 from ifind.search.engine import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
@@ -141,6 +141,43 @@ def search(request):
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 
+def search2(request):
+
+        print 'Search 2 has been called'
+        user = request.user
+        result_list = []
+        if request.COOKIES.has_key('game_id'):
+            context = RequestContext(request, {})
+            ds = EngineFactory("bing", api_key=BING_API_KEY)
+            gm = RMIYCMechanic(ds)
+            game_id = request.COOKIES.get('game_id')
+            gm.retrieve_game(user,game_id)
+            if request.method == 'POST':
+                query = request.POST['query'].strip()
+                #Augement query
+                query += ' site:gla.ac.uk '
+            if query:
+                result_list = gm.get_search_results(query)
+            gm.handle_query(query)
+            gm.update_game()
+            # get the last query score
+            objects = []
+            for item in result_list:
+                objects.append({"title": item.title, "link": item.url, "summary": item.summary})
+            json_objects = json.dumps(objects)
+            s = gm.get_last_query_score()
+            if gm.is_game_over():
+                Json_results = {"results": json_objects ,"score":s ,"is_game_over":1}
+            else:
+                Json_results = {"results": json_objects ,"score":s ,"is_game_over":0}
+            data = json.dumps(Json_results)
+            return HttpResponse(data, mimetype='application/json')
+        else:
+            # the game has not been created yet
+            # redirect to play view
+            return HttpResponseRedirect('/rmiyc/cat_picker/')
+
+
 def display_next_page(request):
 
     user = request.user
@@ -176,10 +213,52 @@ def display_next_page(request):
             print 'the game has not been created yet'
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
+def display_next_page2(request):
+
+    user = request.user
+    if request.COOKIES.has_key('game_id'):
+            context = RequestContext(request, {})
+            ds = EngineFactory("bing", api_key=BING_API_KEY)
+            gm = RMIYCMechanic(ds)
+            game_id = request.COOKIES.get('game_id')
+            gm.retrieve_game(user, game_id)
+            gm.take_points()
+            gm.set_next_page()
+            gm.update_game()
+            p = gm.get_current_page()
+            data1 = p.screenshot
+            quoted_screenshot = str(data1)
+            print quoted_screenshot
+            if gm.is_game_over():
+                objects = {"screenshot":quoted_screenshot, "is_game_over":1}
+            else:
+                objects = {"screenshot":quoted_screenshot, "is_game_over":0}
+            data = json.dumps(objects)
+            print '********************************'
+            print data
+            print '********************************'
+            return HttpResponse(data, mimetype='application/json')
+    else:
+            # the game has not been created yet
+            # redirect to play view
+            print 'the game has not been created yet'
+            return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 def game_over(request):
     print 'I am a cookie and I am dying because the game is over'
     context = RequestContext(request, {})
-    return render_to_response('rmiyc/game_over.html', context)
+    user = request.user
+    if request.COOKIES.has_key('game_id'):
+        game_id = request.COOKIES.get('game_id')
+        ds = EngineFactory("bing", api_key=BING_API_KEY)
+        gm = RMIYCMechanic(ds)
+        game = gm.retrieve_game(user, game_id)
+        statistics =[]
+        statistics.append({'score': gm.get_current_score(), 'no_queries':gm.get_no_of_queries_issued(),
+                           'no_successful_queries': gm.get_no_of_successful_queries_issued(),
+                           'no_round': gm.get_round_no(), 'no_successful_round': gm.get_no_rounds_completed()})
+        response = render_to_response('rmiyc/game_over.html',{'statistics': statistics}, context)
+        response.delete_cookie('game_id')
+        return response
 
 

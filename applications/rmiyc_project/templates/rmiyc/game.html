@@ -2,6 +2,14 @@
 {% block container %}
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
     <div id="image-div" class="span6">
+        <div>
+            {% if user.is_authenticated %}
+            <p>{{ user.username }}.
+            <div id="game_updates">
+
+            </div>
+            </p>
+        </div>
         <div id="image-box">
             {% if overall_results %}
             {% for item in overall_results %}

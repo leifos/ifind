@@ -100,6 +100,15 @@ class GameMechanic(object):
     def get_current_score(self):
         return self.game.current_score
 
+    def get_no_of_queries_issued(self):
+        return self.game.no_of_queries_issued
+
+    def get_no_of_successful_queries_issued(self):
+        return self.game.no_of_successful_queries_issued
+
+    def get_no_rounds_completed(self):
+        return self.game.no_rounds_completed
+
     def get_search_results(self, query):
         return self._run_query(query)
 
