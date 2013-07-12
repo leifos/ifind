@@ -8,20 +8,8 @@ from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
 from ifind.search.query import Query
 from ifind.search.response import Response
-import logging
-logger = logging.getLogger(__name__)
-handler = logging.FileHandler('test.log')
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+from ifind.common.setuplogger import get_ifind_logger
 
-
-#MAX_SCORE = 1000
-#MAX_QUERIES = 20
-#MAX_PAGES = 4
-#MAX_QUERIES_PER_PAGE = 5
-#GAME_LENGTH_IN_SECONDS = 0
 
 
 class GameMechanic(object):
@@ -37,7 +25,8 @@ class GameMechanic(object):
         self.max_pages = max_pages
         self.max_queries_per_page = max_pages
         self.game_length_in_seconds = game_length_in_seconds
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_ifind_logger(__name__)
+
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category

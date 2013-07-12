@@ -1,8 +1,8 @@
 __author__ = 'leif'
 
-from game_models import UserProfile, PlayerAchievement, Achievement
 from django.contrib.auth.models import User
-
+from game_models import UserProfile, PlayerAchievement, Achievement
+import logging
 
 
 class GameAchievement(object):
@@ -16,7 +16,7 @@ class GameAchievement(object):
         self.userprofile = userprofile
         self.highscores = highscores
         self.currentgame = currentgame
-
+        self.logger = logging.getLogger(__name__)
 
     def check_achievement_criteria(self):
         pass
@@ -26,6 +26,7 @@ class AllCat(GameAchievement):
 
     def __init__(self, userprofile, highscores, currentgame=None, num_of_cats = 2):
         GameAchievement.__init__(self,userprofile, highscores)
+        self.logger.info("AllCats Achievement set to %d cats", num_of_cats)
         self.num_of_cats = num_of_cats
 
     def check_achievement_criteria(self):
@@ -35,6 +36,7 @@ class AllCat(GameAchievement):
         but we could also check to make sure they have score points in each category, too
         :return:
         """
+        self.logger.info("AllCats Achievement check being performed")
         if len(self.highscores) == self.num_of_cats:
             return True
         else:
