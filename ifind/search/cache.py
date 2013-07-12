@@ -102,7 +102,6 @@ class QueryCache(object):
             cache.store(query, response, expires=60 * 60)
 
         """
-
         if query in self:
             return
 
