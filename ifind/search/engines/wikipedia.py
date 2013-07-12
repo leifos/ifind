@@ -2,7 +2,7 @@ import requests
 import xml.dom.minidom
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.search.engines.exceptions import EngineException
+from ifind.search.exceptions import QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://www.wikipedia.org/w/api.php'
 
@@ -51,7 +51,7 @@ class Wikipedia(Engine):
 
         """
         if not query.top:
-            raise EngineException(self.name, "Total result amount (query.top) not specified")
+            raise QueryParamException(self.name, "Total result amount (query.top) not specified")
 
         return self._request(query)
 
@@ -81,10 +81,10 @@ class Wikipedia(Engine):
         try:
             response = requests.get(API_ENDPOINT, params=search_params)
         except requests.exceptions.ConnectionError:
-            raise EngineException(self.name, "Unable to send request, check connectivity")
+            raise EngineConnectionException(self.name, "Unable to send request, check connectivity")
 
         if response.status_code != 200:
-            raise EngineException(self.name, "", code=response.status_code)
+            raise EngineConnectionException(self.name, "", code=response.status_code)
 
         return Wikipedia._parse_xml_response(query, response)
 

@@ -138,6 +138,7 @@ class GameAchievementTest(TestCase):
 
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
         Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
+        Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
 
 
     def test_achievements(self):
@@ -191,6 +192,30 @@ class GameAchievementTest(TestCase):
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
         # The high scorer achievement is triggered
         self.assertEquals(len(new_achievements_list),1)
+
+        #testing FivePagesInAGame achievemnt class
+        c = Category.objects.get(name='Letters')
+        # add a score in for the other category
+        HighScore(user=u,category=c,most_no_pages_found=2).save()
+        hs = HighScore.objects.filter(user=u)
+
+        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        self.assertEquals(len(new_achievements_list),0)
+
+        c = Category.objects.get(name='Letters')
+        HighScore(user=u,category=c,most_no_pages_found=5).save()
+        hs = HighScore.objects.filter(user=u)
+        for i in hs:
+            print '+++++++++++'
+            print id(i)
+            print i.most_no_pages_found
+        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        self.assertEquals(len(new_achievements_list),1)
+
+
+
+
+
 
 
 

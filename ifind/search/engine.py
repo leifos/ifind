@@ -1,7 +1,7 @@
 import imp
 import ifind.search.engines as engines
 import ifind.search.cache as cache
-from ifind.search.engines.exceptions import EngineException
+from ifind.search.exceptions import EngineLoadException
 
 
 class Engine(object):
@@ -111,7 +111,7 @@ def EngineFactory(engine_string, **kwargs):
 
     """
     if not engine_string:
-        raise EngineException("EngineFactory", "Engine string not supplied")
+        raise EngineLoadException("EngineFactory", "Engine string not supplied")
 
     # get path of subclass
     module_path = engines.__path__[0] + '/' + engine_string.lower() + '.py'
@@ -120,7 +120,7 @@ def EngineFactory(engine_string, **kwargs):
     try:
         module = imp.load_source('engine', module_path)
     except IOError:
-        raise EngineException("EngineFactory", "Engine '{0}' not found".format(engine_string))
+        raise EngineLoadException("EngineFactory", "Engine '{0}' not found".format(engine_string))
 
     # return subclass, instantiated by kwargs
     return getattr(module, engine_string.lower().title())(**kwargs)

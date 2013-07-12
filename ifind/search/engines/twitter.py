@@ -3,7 +3,7 @@ import requests
 import oauth2 as oauth
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from engines.exceptions import EngineException
+from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://api.twitter.com/1.1/search/tweets.json'
 
@@ -48,7 +48,7 @@ class Twitter(Engine):
         Engine.__init__(self, **kwargs)
 
         if not CONSUMER_KEY or not CONSUMER_SECRET or not ACCESS_TOKEN_KEY or not ACCESS_TOKEN_SECRET:
-            raise EngineException(self.name, 'OAuth details not supplied')
+            raise EngineAPIKeyException(self.name, 'OAuth details not supplied')
 
     def _search(self, query):
         """
@@ -79,11 +79,11 @@ class Twitter(Engine):
 
         """
         if not query.top:
-            raise EngineException(self.name, "Total result amount (query.top) not specified")
+            raise QueryParamException(self.name, "Total result amount (query.top) not specified")
 
         if query.top > MAX_PAGE_SIZE:
-            raise EngineException(self.name, 'Requested result amount (query.top) '
-                                             'exceeds max of {0}'.format(MAX_PAGE_SIZE))
+            raise QueryParamException(self.name, 'Requested result amount (query.top) '
+                                                 'exceeds max of {0}'.format(MAX_PAGE_SIZE))
         return self._request(query)
 
     def _request(self, query):
@@ -109,10 +109,10 @@ class Twitter(Engine):
         try:
             response = requests.get(query_string)
         except requests.exceptions.ConnectionError:
-            raise EngineException(self.name, "Unable to send request, check connectivity")
+            raise EngineConnectionException(self.name, "Unable to send request, check connectivity")
 
         if response.status_code != 200:
-            raise EngineException(self.name, "", code=response.status_code)
+            raise EngineConnectionException(self.name, "", code=response.status_code)
 
         return Twitter._parse_json_response(query, response)
 
@@ -137,7 +137,7 @@ class Twitter(Engine):
             query.result_type = DEFAULT_RESULT_TYPE
 
         if query.result_type not in RESULT_TYPES:
-            raise EngineException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
+            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
 
         search_params = {'count': query.top,
                          'result_type': query.result_type,
