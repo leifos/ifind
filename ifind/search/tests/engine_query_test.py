@@ -9,11 +9,11 @@ import json
 engine = EngineFactory('twitter')
 #
 #
-query3 = Query("court", top=3)
+query3 = Query("court", top=5, result_type='recent')
 #
 #
 #
 response = engine.search(query3)
-#
+response2 = engine.search(query3)
 
-pprint.pprint(json.loads(response.to_json()))
+print response2 == response

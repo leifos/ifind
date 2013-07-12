@@ -82,6 +82,8 @@ class QueryCache(object):
         self.expires = expires
         self.cache_type = engine.cache_type
 
+        self.set_name = self.get_set_name()
+
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
     def store(self, query, response, expires=None):
@@ -101,7 +103,12 @@ class QueryCache(object):
 
         """
 
-        # check limits
+        if query in self:
+            return
+
+        while self.connection.zcard(self.set_name) >= self.limit:
+            key = self.connection.zremrangebyrank(self.set_name, 0, 0)
+            self.connection.delete(key)
 
         if expires is None:
             expires = self.expires
@@ -111,6 +118,7 @@ class QueryCache(object):
 
         pipe = self.connection.pipeline()
         pipe.hmset(key, {'response': value, 'count': 0, 'last': ''})
+        pipe.zadd(self.set_name, 0, key)
         pipe.expire(key, expires)
         pipe.execute()
 
@@ -135,6 +143,7 @@ class QueryCache(object):
             pipe = self.connection.pipeline()
             pipe.hincrby(key, 'count', 1)
             pipe.hset(key, 'last', strftime("%Y/%m/%d %H:%M:%S", gmtime()))
+            pipe.zincrby(self.set_name, key, 1)
             pipe.execute()
             return pickle.loads(base64.b64decode(value))
         else:
@@ -158,6 +167,13 @@ class QueryCache(object):
             return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
         if self.cache_type.lower() == 'instance':
             return "QueryCache::{0}::{1}".format(id(self), hash(query))
+
+    def get_set_name(self):
+
+        if self.cache_type.lower() == 'engine':
+            return "QueryCache::{0}-keys".format(self.engine_name)
+        if self.cache_type.lower() == 'instance':
+            return "QueryCache::{0}-keys".format(id(self))
 
     def __contains__(self, query):
         """
