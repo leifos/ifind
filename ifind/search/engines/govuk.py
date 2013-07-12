@@ -81,7 +81,6 @@ class Govuk(Engine):
 
         return Govuk._parse_json_response(query, response)
 
-
     @staticmethod
     def _parse_json_response(query, results):
         """
