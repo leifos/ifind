@@ -7,7 +7,7 @@ from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
 from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
 from django.contrib.auth.models import User
-from ifind.search.engine import EngineFactory
+from ifind.search import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
 from datetime import datetime
 import urllib, urllib2
