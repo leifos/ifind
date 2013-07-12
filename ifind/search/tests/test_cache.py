@@ -14,12 +14,12 @@ from ifind.search.exceptions import CacheConnectionException
 
 class TestEngineCache(object):
     """
-    Test 'engine' cache type.
+    Test suite for QueryCache using an 'engine' cache type.
 
     """
     def setup(self):
         """
-        Mock engine, set up query/response before every test case.
+        Creates engine, cache and a query/response pair as instance attributes.
 
         """
         # mock engine
@@ -116,14 +116,23 @@ class TestEngineCache(object):
         # check that new cache has query/response available
         assert_equal(c2.get(self.query), self.response)
 
+    def teardown(self):
+        self.c.connection.flushdb()
+
 
 class TestInstanceCache(TestEngineCache):
     """
-    Identical to TestEngineCache except tests 'instance' cache type.
+    Identical test suite for QueryCache except using an 'instance' cache type.
 
     """
     def setup(self):
+        """
+        Creates engine, cache and a query/response pair as instance attributes.
 
+        Notes:
+            Overridden method.
+
+        """
         self.engine = create_engine("TestEngine", "instance")
 
         self.c = cache.QueryCache(self.engine)
@@ -137,6 +146,9 @@ class TestInstanceCache(TestEngineCache):
         Checks that cache persistence behaviour is maintained.
 
         i.e. New engines use new/volatile cache as type is 'instance'.
+
+        Notes:
+            Overridden method.
 
         """
         # create engine with identical attributes to default engine
