@@ -1,6 +1,6 @@
-import imp
-import ifind.search.engines as engines
-import ifind.search.cache as cache
+import importlib
+from ifind.search.cache import QueryCache
+from ifind.search.engines import ENGINE_LIST
 from ifind.search.exceptions import EngineLoadException
 
 
@@ -31,7 +31,7 @@ class Engine(object):
 
         self.cache_type = cache_type
         if cache_type:
-            self._cache = cache.QueryCache(self)
+            self._cache = QueryCache(self)
 
         self.proxies = proxies
 
@@ -88,39 +88,84 @@ class Engine(object):
         pass
 
 
-def EngineFactory(engine_string, **kwargs):
+class EngineFactory(object):
     """
-    Public class method that instantiates and returns an Engine subclass, keyed by
-    the 'engine_string' argument.
-
-    Args:
-        engine_string (str): Name of Engine subclass to instantiate.
-
-    Kwargs:
-        Accepts kwargs defined by the Engine subclass being instantiated.
-
-    Returns:
-        ifind Engine object: Instance of parameterised Engine subclass
-
-    Raises:
-        EngineException, see subclasses.
-
-    Usage:
-        engine = EngineFactory('wikipedia')
-        engine = EngineFactory('bing', cache_type='engine')
+    Public class representing an ifind search engine factory.
 
     """
-    if not engine_string:
-        raise EngineLoadException("EngineFactory", "Engine string not supplied")
+    def __init__(self, engine=None, **kwargs):
+        """
+        Constructor that instantiates and returns an Engine subclass, keyed by
+        the 'engine' argument, or None otherwise.
 
-    # get path of subclass
-    module_path = engines.__path__[0] + '/' + engine_string.lower() + '.py'
+        Args:
+            engine (str): Name of Engine subclass to instantiate.
 
-    # load subclass from path
-    try:
-        module = imp.load_source('engine', module_path)
-    except IOError:
-        raise EngineLoadException("EngineFactory", "Engine '{0}' not found".format(engine_string))
+        Kwargs:
+            Accepted kwargs defined by the Engine subclass being instantiated.
 
-    # return subclass, instantiated by kwargs
-    return getattr(module, engine_string.lower().title())(**kwargs)
+        Returns:
+            ifind Engine object: Dynamically dispatched instance of Engine subclass.
+
+        Raises:
+            EngineLoadException.
+            See subclasses.
+
+        Usage:
+            engine = EngineFactory('wikipedia')
+            engine = EngineFactory('bing', cache_type='engine')
+            engine_list = EngineFactory().engines()
+
+        """
+        if engine:
+            EngineFactory._dispatch(engine, **kwargs)
+        else:
+            return
+
+    def engines(self):
+        """
+        Returns list of available engines.
+
+        """
+        return ENGINE_LIST
+
+    @staticmethod
+    def _dispatch(engine, **kwargs):
+        """
+        Returns instantiated Engine sublass instance.
+
+        Args:
+            engine (str): name of Engine subclass to instantiate
+
+        KWargs:
+            Accepted kwargs defined by the Engine subclass being instantiated.
+
+        Returns:
+            ifind Engine object: Dynamically dispatched instance of Engine subclass.
+
+        Raises:
+            EngineLoadException.
+            See subclasses.
+
+        Usage:
+            Private method.
+
+        """
+        # if engine in subclass list
+        if engine.lower() in ENGINE_LIST:
+            # import module
+            module = importlib.import_module('ifind.search.engines.{}'.format(engine.lower()))
+            # return instantiated class
+            return getattr(module, engine.lower().title())(**kwargs)
+        else:
+            raise EngineLoadException("EngineFactory", "Engine '{}' not found".format(engine.lower().title()))
+
+    def __contains__(self, engine):
+        """
+        Special containment override for 'in' operator.
+
+        Usage:
+            print 'bing' in EngineFactory() --> True
+
+        """
+        return engine.lower in ENGINE_LIST
