@@ -5,7 +5,7 @@ from ifind.search import Response
 
 engine = EngineFactory('twitter')
 query = Query("test harness", top=3)
-#response = engine.search(query)
+
 
 # iterate through supported engines
 for engine in EngineFactory():
