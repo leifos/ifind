@@ -9,7 +9,7 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 from django.test import LiveServerTestCase
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.common.keys import Keys
 from ifind.models.game_models import Page, Category, UserProfile, Achievement
 from ifind.models.game_models import CurrentGame, HighScore
 from ifind.models.game_mechanics import GameMechanic
@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from ifind.search.engine import EngineFactory
 from ifind.models.game_achievements import GameAchievementChecker
 
+#from ifind.common import pagecapture
 class PageFetchTest(LiveServerTestCase):
 
     def setUp(self):
@@ -176,12 +177,8 @@ class GameAchievementTest(TestCase):
         HighScore(user=u,category=c,highest_score=1000).save()
 
         hs = HighScore.objects.filter(user=u)
-        print "*****************"
-        for i in hs:
-            print i.highest_score
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
         # the All Cats achievement is triggered
-        print "here"
         self.assertEquals(len(new_achievements_list),1)
 
         # the high scores were increased
@@ -205,10 +202,6 @@ class GameAchievementTest(TestCase):
         c = Category.objects.get(name='Letters')
         HighScore(user=u,category=c,most_no_pages_found=5).save()
         hs = HighScore.objects.filter(user=u)
-        for i in hs:
-            print '+++++++++++'
-            print id(i)
-            print i.most_no_pages_found
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
         self.assertEquals(len(new_achievements_list),1)
 
