@@ -18,6 +18,8 @@ from ifind.search.engine import EngineFactory
 from ifind.models.game_achievements import GameAchievementChecker
 
 #from ifind.common import pagecapture
+from ifind.common.setuplogger import create_ifind_logger
+
 class PageFetchTest(LiveServerTestCase):
 
     def setUp(self):
@@ -124,7 +126,12 @@ class GameAchievementTest(TestCase):
 
 
     def setUp(self):
-        print "Setting up Game Achievements for Player Test"
+
+
+        self.logger = create_ifind_logger('test_game_achievements.log')
+
+        #print "Setting up Game Achievements for Player Test"
+        self.logger.info("Setting up Game Achievemtns for Player Test.")
         User.objects.get_or_create(username='testy', password='test')
         u = User.objects.get(username='testy')
         UserProfile.objects.get_or_create(user=u)
@@ -144,12 +151,12 @@ class GameAchievementTest(TestCase):
 
     def test_achievements(self):
         self.setUp()
-        print "here"
+        #print "here"
+        self.logger.info("Entering test_achievements")
         u = User.objects.get(username='testy')
         c = Category.objects.get(name='Numbers')
         p = Page.objects.all()[0]
 
-        print u, c, p
         cg = CurrentGame(category=c, current_page=p, user=u)
 
         up = UserProfile.objects.get(user=u)
