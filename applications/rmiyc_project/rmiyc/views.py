@@ -28,6 +28,8 @@ def play(request, category_name):
 
         if not user.is_authenticated():
             users_count = User.objects.all().count()
+            print '**********************************'
+            print str(users_count)
             user = User(username='anonymous' + str(users_count), password='test')
             user.save()
 

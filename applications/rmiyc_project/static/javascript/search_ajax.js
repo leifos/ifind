@@ -68,10 +68,10 @@ function search_success(data, textStatus, jqXHR)
             html_string+= "<Li> <b>" + this.title + "</b> <br />" +this.link +"</Li>";
         }
     );
-    $('#num-queries').html("you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page <br />");
-    $('#game_updates').html("you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
+    $('#num-queries').html("<p>you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page</p> <br />");
+    $('#game_updates').html("<p>you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
         " were completed successfully. <br />" +
-        "you have" + obj.no_remaining_rounds + " remaining rounds");
+        "you have" + obj.no_remaining_rounds + " remaining rounds </p>");
     $('#search-results-ol').html(html_string);
     $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
     $('#query').val("");
@@ -96,10 +96,10 @@ function display_next_page_success(data, textStatus, jqXHR)
         window.onbeforeunload= null;
         return false;
     }
-    $('#num-queries').html("you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page <br />");
-    $('#game_updates').html("you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
+    $('#num-queries').html("<p>you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page</p> <br />");
+    $('#game_updates').html("<p>you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
         " were completed successfully. <br />" +
-        "you have" + obj.no_remaining_rounds + " remaining rounds");
+        "you have" + obj.no_remaining_rounds + " remaining rounds </p>");
 
     $('#search-results-ol').html("");
     $('#score-div').html("");

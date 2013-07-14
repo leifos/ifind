@@ -12,9 +12,6 @@
             <div id="image-box">
                 {% if overall_results %}
                 {% for item in overall_results %}
-                you have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
-                you have issued : {{item.no_of_queries_issued_for_current_page}} queries for this web page <br />
-                you have {{item.no_remaining_rounds}} remaining rounds
                     <image src='{{item.page}}' width="1000" height="1000"> </image>
                 {% endfor %}
                 {% endif %}

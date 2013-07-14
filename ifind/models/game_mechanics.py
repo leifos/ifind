@@ -109,6 +109,9 @@ class GameMechanic(object):
     def get_no_of_queries_issued_for_current_page(self):
         return self.game.no_of_queries_issued_for_current_page
 
+    def reset_no_of_queries_issued_for_current_page(self):
+        self.game.no_of_queries_issued_for_current_page = 0
+
     def get_no_rounds_completed(self):
         return self.game.no_rounds_completed
 
@@ -185,6 +188,7 @@ class GameMechanic(object):
 
         if r < l:
             page_id = page_list[r]
+            self.reset_no_of_queries_issued_for_current_page()
             print r, page_id
         else:
             return False
