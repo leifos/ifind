@@ -54,15 +54,24 @@
           <a class="brand" href="#">Retrieve me if you can!</a>
           <div class="nav-inverse nav-collapse collapse  ">
             <ul class="nav">
-              <li class="active"><a href="#home">Home</a></li>
+              <li class="active"><a href="#about">Home</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
+            {% if user.is_authenticated %}
+              <ul class="nav pull-right">
+              <li class="active"><a href="#about">Welcome {{ user.username }} !</a></li>
+              <li><a href="/accounts/logout/">Log out</a></li>
+            </ul>
+            {% else %}
             <form class="navbar-form pull-right">
               <input class="span2" type="text" placeholder="Email">
               <input class="span2" type="password" placeholder="Password">
               <button type="submit" class="btn">Sign in</button>
+              <a class="btn btn-primary " href="/accounts/register/">register »</a>
             </form>
+
+            {% endif %}
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -71,19 +80,17 @@
     <div class="container">
      {% block container %}
      <div class="hero-unit">
-        <h1>Retrieve me if you can</h1>
+        <h2>Retrieve me if you can</h2>
         <p>"Retrieve me if you can" is a fun game where you will be shown a web page and you have to type in a query to retrieve it. <br />
-            The higher rank in the search results you retrieve it, the more rewards you get! <br />
-            <a class="btn btn-primary" href="/rmiyc/how_to_play/">how to play? »</a></p>
+            The higher rank in the search results you retrieve it, the more rewards you get!
+            <br />
+            <a class="btn btn-warning btn-large" href="/rmiyc/how_to_play/">how to play? »</a></p>
 
         {% if user.is_authenticated %}
-            <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
-            <p><a class="btn btn-primary btn-large" href="/accounts/logout/">logout »</a></p>
-            <p><a class="btn btn-primary btn-large" href="/rmiyc/pick_category/">Play »</a></p>
+            <p><a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play »</a></p>
         {% else %}
             <p>Welcome, new user. Please log in.</p>
             <p><a class="btn btn-primary btn-large" href="/accounts/login/">login »</a></p>
-            <p><a class="btn btn-primary btn-large" href="/accounts/register/">register »</a></p>
         {% endif %}
      </div>
      {% endblock %}
@@ -105,7 +112,5 @@
     <!--<script src="{{ STATIC_URL }}javascript/bootstrap-collapse.js"></script>-->
     <!--<script src="{{ STATIC_URL }}javascript/bootstrap-carousel.js"></script>-->
     <!--<script src="{{ STATIC_URL }}javascript/bootstrap-typeahead.js"></script> -->
-
-  
 
 <sfmsg id="sfMsgId" data="{&quot;imageCount&quot;:0,&quot;ip&quot;:&quot;1.1.1.1&quot;}"></sfmsg></body></html>

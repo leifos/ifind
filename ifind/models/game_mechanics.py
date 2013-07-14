@@ -106,8 +106,14 @@ class GameMechanic(object):
     def get_no_of_successful_queries_issued(self):
         return self.game.no_of_successful_queries_issued
 
+    def get_no_of_queries_issued_for_current_page(self):
+        return self.game.no_of_queries_issued_for_current_page
+
     def get_no_rounds_completed(self):
         return self.game.no_rounds_completed
+
+    def get_remaining_rounds(self):
+        return self.get_max_rounds() - self.get_round_no()
 
     def get_search_results(self, query):
         return self._run_query(query)

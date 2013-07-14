@@ -1,45 +1,46 @@
 {% extends 'rmiyc/base.html' %}
 {% block container %}
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
-    <div id="image-div" class="span6">
-        <div>
-            {% if user.is_authenticated %}
-            <p>{{ user.username }}.
-            <div id="game_updates">
+     <div class="span6">
+        <div id="game_updates">
 
-            </div>
-            {% endif %}
-            </p>
         </div>
-        <div id="image-box">
-            {% if overall_results %}
-            {% for item in overall_results %}
-                <image src='{{item.page}}' width="600" height="600"> </image>
-            {% endfor %}
-            {% endif %}
+        <div id="num-queries">
+
+         </div>
+        <div id="image-div" >
+            <div id="image-box">
+                {% if overall_results %}
+                {% for item in overall_results %}
+                you have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
+                you have issued : {{item.no_of_queries_issued_for_current_page}} queries for this web page <br />
+                you have {{item.no_remaining_rounds}} remaining rounds
+                    <image src='{{item.page}}' width="1000" height="1000"> </image>
+                {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </div>
+
+
     <div class="span4">
-    <div id ="search-form-div">
-        <form id="search_form"  method="POST">
-            {% csrf_token %}
-            <div class="input-append">
-                <input  id="query"  name="query" type="text" placeholder="Enter your query here" />
-                <button class="btn btn-primary" id="search" type="submit">search</button>
-                <button class="btn" type="button" id="skip">skip</button>
+        <div id ="search-form-div">
+            <form id="search_form"  method="POST">
+                {% csrf_token %}
+                <div class="input-append">
+                    <input  id="query"  name="query" type="text" placeholder="Enter your query here" />
+                    <button class="btn btn-primary" id="search" type="submit">search</button>
+                    <button class="btn" type="button" id="skip">skip</button>
+                </div>
+            </form>
+        </div>
+        <div id="content">
+            <div id ="score-div">
             </div>
-        </form>
-
-    </div>
-
-    <div id="content">
-         <div id ="score-div">
-         </div>
-         <div id="search-results-div">
-            <ol id="search-results-ol">
-            </ol>
-         </div>
-    </div>
-
+            <div id="search-results-div">
+                <ol id="search-results-ol">
+                </ol>
+            </div>
+        </div>
     </div>
 {% endblock %}

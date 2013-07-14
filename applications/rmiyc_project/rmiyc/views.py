@@ -53,7 +53,12 @@ def play(request, category_name):
             p = gm.get_current_page()
             # initiate the array which will hold all the result list, the page that is going to be shown and the score
             overall_results = []
-            overall_results.append({'result_list': [], 'page': p.screenshot, 'score': 0})
+            overall_results.append({
+                    'result_list': [], 'page': p.screenshot, 'score': 0 ,
+                    'no_round': gm.get_round_no(), 'no_successful_round': gm.get_no_rounds_completed(),
+                    'no_of_queries_issued_for_current_page' :gm.get_no_of_queries_issued_for_current_page(),
+                    'no_remaining_rounds': gm.get_remaining_rounds()
+            })
             response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
@@ -96,51 +101,6 @@ def pick_category(request):
         return render_to_response('rmiyc/cat_picker.html', {'scores': scores}, context)
 
 
-def search(request):
-
-        print 'Search 2 has been called'
-        user = request.user
-
-        result_list = []
-        if request.COOKIES.has_key('game_id'):
-            context = RequestContext(request, {})
-            ds = EngineFactory("bing", api_key=BING_API_KEY)
-            gm = RMIYCMechanic(ds)
-            game_id = request.COOKIES.get('game_id')
-            gm.retrieve_game(user,game_id)
-            if gm.is_game_over():
-                # delete the cookie
-                Json_results = {"results": [] ,"score":0 ,"is_game_over":1}
-                data = json.dumps(Json_results)
-                response = HttpResponse(data, mimetype='application/json')
-                response.delete_cookie('game_id')
-                return response
-            else:
-                if request.method == 'POST':
-                    query = request.POST['query'].strip()
-                    #Augement query
-                    query += ' site:gla.ac.uk '
-                if query:
-                    result_list = gm.get_search_results(query)
-                gm.handle_query(query)
-                gm.update_game()
-
-                # get the last query score
-                objects = []
-                for item in result_list:
-                    objects.append({"title": item.title, "link": item.url, "summary": item.summary})
-                json_objects = json.dumps(objects)
-
-                s = gm.get_last_query_score()
-                Json_results = {"results": json_objects ,"score":s ,"is_game_over":0}
-                data = json.dumps(Json_results)
-                return HttpResponse(data, mimetype='application/json')
-        else:
-            # the game has not been created yet
-            # redirect to play view
-            return HttpResponseRedirect('/rmiyc/cat_picker/')
-
-
 def search2(request):
 
         print 'Search 2 has been called'
@@ -167,9 +127,19 @@ def search2(request):
             json_objects = json.dumps(objects)
             s = gm.get_last_query_score()
             if gm.is_game_over():
-                Json_results = {"results": json_objects ,"score":s ,"is_game_over":1}
+                Json_results = {
+                    "results": json_objects, "score": s, "is_game_over": 1,
+                    "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
+                    "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
+                    "no_remaining_rounds": gm.get_remaining_rounds()
+                }
             else:
-                Json_results = {"results": json_objects ,"score":s ,"is_game_over":0}
+                Json_results = {
+                    "results": json_objects, "score": s, "is_game_over": 0,
+                    "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
+                    "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
+                    "no_remaining_rounds": gm.get_remaining_rounds()
+                }
             data = json.dumps(Json_results)
             return HttpResponse(data, mimetype='application/json')
         else:
@@ -177,41 +147,6 @@ def search2(request):
             # redirect to play view
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
-
-def display_next_page(request):
-
-    user = request.user
-    if request.COOKIES.has_key('game_id'):
-            context = RequestContext(request, {})
-            ds = EngineFactory("bing", api_key=BING_API_KEY)
-            gm = RMIYCMechanic(ds)
-            game_id = request.COOKIES.get('game_id')
-            gm.retrieve_game(user, game_id)
-            if gm.is_game_over():
-                Json_results = {"screenshot":"", "is_game_over":1}
-                data = json.dumps(Json_results)
-                response = HttpResponse(data, mimetype='application/json')
-                response.delete_cookie('game_id')
-                return response
-            else:
-                gm.take_points()
-                gm.set_next_page()
-                gm.update_game()
-                p = gm.get_current_page()
-                data1 = p.screenshot
-                quoted_screenshot = str(data1)
-                print quoted_screenshot
-                objects = {"screenshot":quoted_screenshot, "is_game_over":0}
-                data = json.dumps(objects)
-                print '********************************'
-                print data
-                print '********************************'
-                return HttpResponse(data, mimetype='application/json')
-    else:
-            # the game has not been created yet
-            # redirect to play view
-            print 'the game has not been created yet'
-            return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 def display_next_page2(request):
 
@@ -230,9 +165,19 @@ def display_next_page2(request):
             quoted_screenshot = str(data1)
             print quoted_screenshot
             if gm.is_game_over():
-                objects = {"screenshot":quoted_screenshot, "is_game_over":1}
+                objects = {
+                    "screenshot": quoted_screenshot, "is_game_over": 1,
+                    "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
+                    "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
+                    "no_remaining_rounds": gm.get_remaining_rounds()
+                    }
             else:
-                objects = {"screenshot":quoted_screenshot, "is_game_over":0}
+                objects = {
+                    "screenshot": quoted_screenshot, "is_game_over": 0,
+                    "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
+                    "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
+                    "no_remaining_rounds": gm.get_remaining_rounds()
+                }
             data = json.dumps(objects)
             print '********************************'
             print data
