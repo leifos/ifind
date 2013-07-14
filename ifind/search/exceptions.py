@@ -90,3 +90,9 @@ class CacheConnectionException(SearchException):
     pass
 
 
+class InvalidQueryException(SearchException):
+    """
+    Thrown when an invalid query is passed to engine's search method.
+
+    """
+    pass

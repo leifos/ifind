@@ -166,7 +166,8 @@ class Bing(Engine):
             query.result_type = DEFAULT_RESULT_TYPE
 
         if query.result_type.lower().title() not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
+            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+                                                 .format(query.result_type))
 
         params = {'$format': 'JSON',
                   '$top': query.top,

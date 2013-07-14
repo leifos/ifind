@@ -3,8 +3,8 @@ import string
 import random
 
 from nose.tools import assert_equal
-from nose.tools import assert_not_equal
 from nose.tools import assert_raises
+from nose.tools import assert_not_equal
 
 import ifind.search.cache as cache
 from ifind.search.query import Query
@@ -12,7 +12,7 @@ from ifind.search.response import Response
 from ifind.search.exceptions import CacheConnectionException
 
 
-class TestEngineCache(object):
+class TestQueryCacheEngine(object):
     """
     Test suite for QueryCache using an 'engine' cache type.
 
@@ -62,8 +62,6 @@ class TestEngineCache(object):
         Checks that cache size (limit) integrity is maintained.
 
         """
-        import random
-
         # set random limit
         self.c.limit = random.randint(0, 100)
         variance = random.randint(1, 6)
@@ -120,7 +118,7 @@ class TestEngineCache(object):
         self.c.connection.flushdb()
 
 
-class TestInstanceCache(TestEngineCache):
+class TestQueryCacheInstance(TestQueryCacheEngine):
     """
     Identical test suite for QueryCache except using an 'instance' cache type.
 

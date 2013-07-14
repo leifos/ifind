@@ -1,7 +1,9 @@
 import importlib
+from ifind.search.query import Query
 from ifind.search.cache import QueryCache
 from ifind.search.engines import ENGINE_LIST
 from ifind.search.exceptions import EngineLoadException
+from ifind.search.exceptions import InvalidQueryException
 
 
 class Engine(object):
@@ -33,7 +35,7 @@ class Engine(object):
         if cache_type:
             self._cache = QueryCache(self)
 
-        self.proxies = proxies
+        self.proxies = proxies # TODO engine proxies
 
     def search(self, query):
         """
@@ -47,7 +49,7 @@ class Engine(object):
             ifind Response: object encapsulating a search request's results.
 
         Raises:
-            CacheException
+            CacheException, InvalidQueryException
 
         Usage:
             query = Query('hello world')
@@ -55,6 +57,10 @@ class Engine(object):
             response = engine.search(query)
 
         """
+        if not isinstance(query, Query):
+            raise InvalidQueryException('Engine', 'Expected type {}'
+                                        .format("<class 'ifind.search.query.Query'>"))
+
         if self.cache_type:
             if query in self._cache:
                 print "********************** cache"

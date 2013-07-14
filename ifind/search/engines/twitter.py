@@ -137,7 +137,8 @@ class Twitter(Engine):
             query.result_type = DEFAULT_RESULT_TYPE
 
         if query.result_type not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'".format(query.result_type))
+            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+                                                 .format(query.result_type))
 
         search_params = {'count': query.top,
                          'result_type': query.result_type,
