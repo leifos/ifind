@@ -87,11 +87,36 @@ class GameMechanic(object):
     def get_round_no(self):
         return self.game.no_rounds+1
 
+    def double_bonus(self):
+        if(self.game.bonus<3200):
+            self.game.bonus *= 2
+
+    def reset_bonus(self):
+        self.game.bonus = 100
+
     def get_max_rounds(self):
         return self.max_pages
 
     def get_current_score(self):
         return self.game.current_score
+
+    def get_no_of_queries_issued(self):
+        return self.game.no_of_queries_issued
+
+    def get_no_of_successful_queries_issued(self):
+        return self.game.no_of_successful_queries_issued
+
+    def get_no_of_queries_issued_for_current_page(self):
+        return self.game.no_of_queries_issued_for_current_page
+
+    def reset_no_of_queries_issued_for_current_page(self):
+        self.game.no_of_queries_issued_for_current_page = 0
+
+    def get_no_rounds_completed(self):
+        return self.game.no_rounds_completed
+
+    def get_remaining_rounds(self):
+        return self.get_max_rounds() - self.get_round_no()
 
     def get_search_results(self, query):
         return self._run_query(query)
@@ -111,7 +136,10 @@ class GameMechanic(object):
     def _increment_round(self, round_successful=False):
         self.game.no_rounds += 1
         if round_successful:
+            self.double_bonus()
             self.game.no_rounds_completed += 1
+        else:
+            self.reset_bonus()
 
     def _increment_score(self, points=0):
         self.game.current_score += points
@@ -160,6 +188,7 @@ class GameMechanic(object):
 
         if r < l:
             page_id = page_list[r]
+            self.reset_no_of_queries_issued_for_current_page()
             print r, page_id
         else:
             return False
@@ -204,7 +233,7 @@ class GameMechanic(object):
 
         results = self._run_query( query)
         rank = self._check_result(results)
-        score = self._score_rank(rank)
+        score = self._score_rank(rank, self.game.bonus)
         return score
 
     def _run_query(self, query):
@@ -220,6 +249,20 @@ class GameMechanic(object):
         iresponse = self.search_engine.search(iquery)
 
         return iresponse
+
+    def _run_query2(self, query):
+        """ constructs ifind.search.query, and issues it to the search_engine
+
+        :param query:
+        :return: ifind.search.response
+        """
+        # construct ifind.search.query Query
+        iquery = Query(query, result_type="web")
+
+        # issue query to self.search_engine
+        iresponse = self.search_engine.search(iquery)
+
+        return iresponse.to_json
 
     def _check_result(self, response):
         """ iterates through the response looking for what rank the url is at
@@ -239,7 +282,7 @@ class GameMechanic(object):
                 return i
         return 0
 
-    def _score_rank(self, rank):
+    def _score_rank(self, rank, bonus=0):
         """
         calculates the score based on the rank of the page
         :param rank: integer

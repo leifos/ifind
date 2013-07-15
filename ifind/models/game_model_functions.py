@@ -64,7 +64,8 @@ def populate_pages(url_list, category, halved_screen_shot=False):
         pc.load_url(url)
         # fetch the screen-shot
         if halved_screen_shot:
-            pc.halve_screen_shot(image_file_name)
+            pc.crop_screen_shot(image_file_name,0,0,1000,1000)
+            #pc.halve_screen_shot(image_file_name)
         else:
             pc.take_screen_shot(image_file_name)
 

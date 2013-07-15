@@ -1,31 +1,43 @@
 {% extends 'rmiyc/base.html' %}
 {% block container %}
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
-    <div id="image-div" class="span6">
-        <div id="image-box">
-            {% if overall_results %}
-            {% for item in overall_results %}
-                <image src='{{item.page}}' width="500" height="300"> </image>
-            {% endfor %}
-            {% endif %}
+     <div class="span6">
+        <div id="game_updates">
+
+        </div>
+        <div id="num-queries">
+
+         </div>
+        <div id="image-div" >
+            <div id="image-box">
+                {% if overall_results %}
+                {% for item in overall_results %}
+                    <image src='{{item.page}}' width="1000" height="1000"> </image>
+                {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </div>
+
+
     <div class="span4">
-    <div id ="search-form-div">
-        <form id="search_form"  method="POST">
-            {% csrf_token %}
-            <div class="input-append">
-                <input  id="query"  name="query" type="text" placeholder="Enter your query here" />
-                <button class="btn btn-primary" id="search" type="submit">search</button>
-                <button class="btn" type="button" id="skip">skip</button>
+        <div id ="search-form-div">
+            <form id="search_form"  method="POST">
+                {% csrf_token %}
+                <div class="input-append">
+                    <input  id="query"  name="query" type="text" placeholder="Enter your query here" />
+                    <button class="btn btn-primary" id="search" type="submit">search</button>
+                    <button class="btn" type="button" id="skip">skip</button>
+                </div>
+            </form>
+        </div>
+        <div id="content">
+            <div id ="score-div">
             </div>
-        </form>
-
-    </div>
-
-    <div id="content">
-
-    </div>
-
+            <div id="search-results-div">
+                <ol id="search-results-ol">
+                </ol>
+            </div>
+        </div>
     </div>
 {% endblock %}

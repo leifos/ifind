@@ -54,22 +54,57 @@ $(function()
 
 function search_success(data, textStatus, jqXHR)
 {
-    $('#content').html(data);
+    var obj = jQuery.parseJSON(data);
+    if (obj.is_game_over == 1)
+    {
+        window.location ="/rmiyc/game_over";
+        window.onbeforeunload= null;
+        return false;
+    }
+    var obj_list = jQuery.parseJSON(obj.results);
+    var html_string = ""
+    $(obj_list).each(function()
+        {
+            html_string+= "<Li> <b>" + this.title + "</b> <br />" +this.link +"</Li>";
+        }
+    );
+    $('#num-queries').html("<p>you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page</p> <br />");
+    $('#game_updates').html("<p>you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
+        " were completed successfully. <br />" +
+        "you have" + obj.no_remaining_rounds + " remaining rounds </p>");
+    $('#search-results-ol').html(html_string);
+    $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
     $('#query').val("");
-    var x = $('#score-variable').text();
-    if(x!= 0)
+    if(obj.score != 0)
     {
         $('#skip').text('take points');
         $('#search').text('search again');
+    }
+    else
+    {
+        $('#skip').text('skip');
+        $('#search').text('search');
     }
 }
 
 function display_next_page_success(data, textStatus, jqXHR)
 {
+    var obj = jQuery.parseJSON(data);
+    if (obj.is_game_over == 1)
+    {
+        window.location ="/rmiyc/game_over";
+        window.onbeforeunload= null;
+        return false;
+    }
+    $('#num-queries').html("<p>you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page</p> <br />");
+    $('#game_updates').html("<p>you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
+        " were completed successfully. <br />" +
+        "you have" + obj.no_remaining_rounds + " remaining rounds </p>");
+
+    $('#search-results-ol').html("");
+    $('#score-div').html("");
     $('#skip').text('skip');
     $('#search').text('search');
     $('#image-box').hide();
-    $('#score-div').hide();
-    $('#search-results-div').hide();
-    $('#image-div').html(data);
+    $('#image-div').html("<image src= '" + obj.screenshot + "' height='1000' width='1000'> </image>");
 }
