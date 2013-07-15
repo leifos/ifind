@@ -86,6 +86,12 @@ class QueryCache(object):
 
         self.connection = RedisConn(host=self.host, port=self.port, db=self.db).connect()
 
+    def __del__(self):
+        if self.cache_type == 'instance':
+            for key in self.connection.zrange(self.set_name, 0, -1):
+                self.connection.delete(key)
+            self.connection.delete(self.set_name)
+
     def store(self, query, response, expires=None):
         """
         Serialises and stores a search response, keyed by its corresponding query.
@@ -165,14 +171,14 @@ class QueryCache(object):
         if self.cache_type.lower() == 'engine':
             return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
         if self.cache_type.lower() == 'instance':
-            return "QueryCache::{0}::{1}".format(id(self), hash(query))
+            return "QueryCache::{2}{0}::{1}".format(id(self), hash(query), self.engine_name)
 
     def get_set_name(self):
 
         if self.cache_type.lower() == 'engine':
             return "QueryCache::{0}-keys".format(self.engine_name)
         if self.cache_type.lower() == 'instance':
-            return "QueryCache::{0}-keys".format(id(self))
+            return "QueryCache::{1}{0}-keys".format(id(self), self.engine_name)
 
     def __contains__(self, query):
         """
