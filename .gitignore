@@ -1,6 +1,8 @@
+# Misc
 *.keys
 *.db
 keys.py
+tester.py
 
 # Pycharm / Python
 .idea
