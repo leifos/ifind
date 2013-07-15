@@ -25,8 +25,6 @@ class PageFetchTest(LiveServerTestCase):
     def setUp(self):
 
         User.objects.get_or_create(username='leif', password='test', is_superuser=True)
-
-
         self.browser = webdriver.PhantomJS()
         self.browser.implicitly_wait(3)
 
@@ -71,17 +69,20 @@ class GameModelTest(TestCase):
 
     def setUp(self):
         User.objects.get_or_create(username='testy', password='test')
+        self.logger = create_ifind_logger('game_model_teset.log')
 
 
     def test_add_cat(self):
-        print "Testing whether the numbers cat has been successfully added"
+        self.logger.info("Testing whether the numbers cat has been successfully added")
+        #print "Testing whether the numbers cat has been successfully added"
         Category.objects.get_or_create(name='Numbers', desc='Looking for sites that around about numbers')
 
         cats = Category.objects.all()
         self.assertEquals(len(cats), 1)
 
     def test_add_pages(self):
-        print "Testing whether four pages are added to the Numbers Cat."
+        self.logger.info("Testing whether four pages are added to the Numbers Cat.")
+        #print "Testing whether four pages are added to the Numbers Cat."
         Category.objects.get_or_create(name='Numbers', desc='Looking for sites that around about numbers')[0]
         c = Category.objects.get(name='Numbers')
 
@@ -96,6 +97,7 @@ class GameMechanicTest(TestCase):
 
 
     def setUp(self):
+        self.logger = create_ifind_logger("game_mechanic_test.log")
         print "Setting up Game Mechanic Test"
         User.objects.get_or_create(username='testy', password='test')
         Category.objects.get_or_create(name='Numbers', desc='Looking for sites that around about numbers')
@@ -105,20 +107,23 @@ class GameMechanicTest(TestCase):
 
 
     def test_game_scoring(self):
-        print "Testing Game Scoring with a Dummy SearchEngine"
+        self.logger.info("Testing Game Scoring with a Dummy SearchEngine")
+        #print "Testing Game Scoring with a Dummy SearchEngine"
         se = EngineFactory("Dummy")
         u = User.objects.get(username='testy')
         c = Category.objects.get(name='Numbers')
 
         gm = GameMechanic(se)
         gm.create_game(u,c)
-        print "Checking if the category Numbers has four pages."
+        self.logger.info("Checking if the category Numbers has four pages.")
+        #print "Checking if the category Numbers has four pages."
         self.assertEquals(len(gm.pages), 4)
 
         gm.handle_query('one')
         gm.take_points()
         gm.set_next_page()
-        print "Checking whether the query, one, scores 1000 points - which it should given the data and dummy search engine"
+        self.logger.info("Checking whether the query, one, scores 1000 points - which it should given the data and dummy search engine")
+        #print "Checking whether the query, one, scores 1000 points - which it should given the data and dummy search engine"
         self.assertEquals(gm.get_current_score(),1000)
 
 
