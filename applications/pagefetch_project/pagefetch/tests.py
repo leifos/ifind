@@ -152,11 +152,14 @@ class GameAchievementTest(TestCase):
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
         Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
         Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
+        Achievement.objects.get_or_create(name="TenGamesPlayed", desc='', xp_earned=7, achievement_class='TenGamesPlayed')
+        Achievement.objects.get_or_create(name="UberSearcher", desc='', xp_earned=7, achievement_class='UberSearcher')
+
 
 
     def test_achievements(self):
         self.setUp()
-        #print "here"
+        print "testing achievements"
         self.logger.info("Entering test_achievements")
         u = User.objects.get(username='testy')
         c = Category.objects.get(name='Numbers')
@@ -209,15 +212,51 @@ class GameAchievementTest(TestCase):
         hs = HighScore.objects.filter(user=u)
 
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        #should not trigger achievement
         self.assertEquals(len(new_achievements_list),0)
 
         c = Category.objects.get(name='Letters')
         HighScore(user=u,category=c,most_no_pages_found=5).save()
         hs = HighScore.objects.filter(user=u)
         new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        #should trigger FivePagesInAGame achievement
         self.assertEquals(len(new_achievements_list),1)
 
+        #Test TenGamesPlayed
+        c = Category.objects.get(name='Letters')
+        # add a score in for the other category
+        up.no_games_played = 9
+        up.save()
+        hs = HighScore.objects.filter(user=u)
+        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        #should not trigger achievement
+        self.assertEquals(len(new_achievements_list),0)
 
+        c = Category.objects.get(name='Letters')
+        # add a score in for the other category
+        up.no_games_played = 10
+        up.save()
+        hs = HighScore.objects.filter(user=u)
+        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        #should trigger achievement
+        self.assertEquals(len(new_achievements_list),1)
+
+        #Test UberSearcher
+        c = Category.objects.get(name='Letters')
+        # add a score in for the other category
+        HighScore(user=u,category=c, highest_score=3000).save()
+        hs = HighScore.objects.filter(user=u)
+        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        #should not trigger achievement
+        self.assertEquals(len(new_achievements_list),0)
+
+        c = Category.objects.get(name='Letters')
+        # add a score in for the other category
+        HighScore(user=u,category=c, highest_score=50000).save()
+        hs = HighScore.objects.filter(user=u)
+        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        #should trigger achievement
+        self.assertEquals(len(new_achievements_list),1)
 
 
 
