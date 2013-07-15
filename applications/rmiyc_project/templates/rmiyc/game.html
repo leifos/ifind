@@ -2,12 +2,16 @@
 {% block container %}
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
      <div class="span6">
+        <div style="border:2px solid #663300; padding:10px 10px 10px 10px;  background:#FFFFFF; width:500px; border-radius:25px;">
         <div id="game_updates">
-
+            you are <strong> in round no : 1 </strong>, 0  rounds were completed successfully. <br />
+            you have  3  remaining rounds
         </div>
         <div id="num-queries">
-
-         </div>
+            you have issued : 0 queries for this web page"
+        </div>
+        </div>
+        <br />
         <div id="image-div" >
             <div id="image-box">
                 {% if overall_results %}
@@ -21,15 +25,18 @@
 
 
     <div class="span4">
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <div id ="search-form-div">
-            <form id="search_form"  method="POST">
-                {% csrf_token %}
-                <div class="input-append">
-                    <input  id="query"  name="query" type="text" placeholder="Enter your query here" />
-                    <button class="btn btn-primary" id="search" type="submit">search</button>
-                    <button class="btn" type="button" id="skip">skip</button>
-                </div>
-            </form>
+            <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="Enter your query here" />
+            <br />
+            <br />
+            <a class="btn btn-primary btn-large" id="search" ><i class="icon-search icon-white"></i> search</a> &nbsp &nbsp &nbsp
+            <a class="btn btn-large" type="button" id="skip"><i class="icon-forward"></i> skip</a>
         </div>
         <div id="content">
             <div id ="score-div">
