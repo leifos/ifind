@@ -11,7 +11,7 @@ class Engine(object):
     Abstract class representing an ifind search engine.
 
     """
-    def __init__(self, cache_type=None, proxies=None):
+    def __init__(self, cache=None, proxies=None):
         """
         Engine constructor.
 
@@ -31,8 +31,8 @@ class Engine(object):
         """
         self.name = self.__class__.__name__
 
-        self.cache_type = cache_type
-        if cache_type:
+        self.cache_type = cache
+        if cache:
             self._cache = QueryCache(self)
 
         self.proxies = proxies # TODO engine proxies
@@ -105,7 +105,9 @@ class EngineFactory(object):
         engine (str): Name of Engine subclass to instantiate.
 
     Kwargs:
-        Accepted kwargs defined by the Engine subclass being instantiated.
+        cache (str): Type of cache to associate with engine.
+                     'engine' is persistent across engines
+                     'instance' is valid only for that instance
 
     Returns:
         ifind Engine object: Dynamically dispatched instance of Engine subclass.
@@ -115,8 +117,8 @@ class EngineFactory(object):
         See subclasses.
 
     Usage:
-        engine = EngineFactory('wikipedia')
-        engine = EngineFactory('bing', cache_type='engine')
+        engine = EngineFactory('govuk')
+        engine = EngineFactory('bing', cache='engine')
         engine_list = EngineFactory().engines()
 
         """
