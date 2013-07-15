@@ -162,10 +162,12 @@ class Bing(Engine):
             Private method.
 
         """
-        if not query.result_type:
-            query.result_type = DEFAULT_RESULT_TYPE
+        result_type = query.result_type
 
-        if query.result_type.lower().title() not in RESULT_TYPES:
+        if not result_type:
+            result_type = DEFAULT_RESULT_TYPE
+
+        if result_type.lower().title() not in RESULT_TYPES:
             raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
 
@@ -178,7 +180,7 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return API_ENDPOINT + query.result_type.lower().title() + Bing._encode_symbols(query_string)
+        return API_ENDPOINT + result_type + Bing._encode_symbols(query_string)
 
     @staticmethod
     def _encode_symbols(query_string):
