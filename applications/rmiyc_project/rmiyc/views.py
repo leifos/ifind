@@ -16,7 +16,6 @@ import simplejson,json
 
 
 def index(request):
-
         context = RequestContext(request, {})
         return render_to_response('rmiyc/base.html', context)
 
@@ -179,6 +178,7 @@ def display_next_page(request):
             # redirect to play view
             print 'the game has not been created yet'
             return HttpResponseRedirect('/rmiyc/cat_picker/')
+
 
 def game_over(request):
     print 'I am a cookie and I am dying because the game is over'

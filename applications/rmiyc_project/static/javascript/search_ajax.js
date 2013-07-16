@@ -76,6 +76,7 @@ function search_success(data, textStatus, jqXHR)
         window.onbeforeunload= null;
         return false;
     }
+
     var obj_list = jQuery.parseJSON(obj.results);
     var html_string = ""
     $(obj_list).each(function()
