@@ -19,10 +19,8 @@ from ifind.models.game_achievements import GameAchievementChecker
 
 #from ifind.common import pagecapture
 from ifind.common.setuplogger import create_ifind_logger
-
-
-
-from ifind.models.game_models import PlayerAchievement
+#from ifind.models.game_models import PlayerAchievement
+from ifind.models import game_achievements
 
 class PageFetchTest(LiveServerTestCase):
 
@@ -87,11 +85,15 @@ class GameModelTest(TestCase):
     def test_add_pages(self):
         self.logger.info("Testing whether four pages are added to the Numbers Cat.")
         #print "Testing whether four pages are added to the Numbers Cat."
-        Category.objects.get_or_create(name='Numbers', desc='Looking for sites that around about numbers')[0]
+        Category.objects.get_or_create(name='Numbers',
+                                       desc='Looking for sites that around\
+                                       about numbers')[0]
         c = Category.objects.get(name='Numbers')
 
         for pn in ['one','two','three','four']:
-            Page.objects.get_or_create(category=c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
+            Page.objects.get_or_create(category=c, title=pn,
+                                       url='www.'+pn+'.com', snippet=pn,
+                                       desc=('desc: ' +pn))
 
         page = Page.objects.all()
         self.assertEquals(len(page), 4)
@@ -104,10 +106,14 @@ class GameMechanicTest(TestCase):
         self.logger = create_ifind_logger("game_mechanic_test.log")
         print "Setting up Game Mechanic Test"
         User.objects.get_or_create(username='testy', password='test')
-        Category.objects.get_or_create(name='Numbers', desc='Looking for sites that around about numbers')
+        Category.objects.get_or_create(
+            name='Numbers', desc='Looking for sites that around about numbers')
+
         c = Category.objects.get(name='Numbers')
         for pn in ['one','two','three','four']:
-            Page.objects.get_or_create(category=c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
+            Page.objects.get_or_create(category=c, title=pn,
+                                       url='www.'+pn+'.com', snippet=pn,
+                                       desc=('desc: ' +pn))
 
 
     def test_game_scoring(self):
@@ -126,8 +132,10 @@ class GameMechanicTest(TestCase):
         gm.handle_query('one')
         gm.take_points()
         gm.set_next_page()
-        self.logger.info("Checking whether the query, one, scores 1000 points - which it should given the data and dummy search engine")
-        #print "Checking whether the query, one, scores 1000 points - which it should given the data and dummy search engine"
+        self.logger.info("Checking whether the query, one, scores 1000 points-\
+                         which it should given the data and dummy search engine")
+        #print "Checking whether the query, one, scores 1000 points -
+        #which it should given the data and dummy search engine"
         self.assertEquals(gm.get_current_score(),1000)
 
 
@@ -151,10 +159,11 @@ class GameAchievementTest(TestCase):
             Page.objects.get_or_create(category=self.c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
 
         Category.objects.get_or_create(name='Letters', desc='Looking for sites that  about letters')
+        self.c1 = Category.objects.get(name='Letters')
         self.assertEquals(len(Category.objects.all()), 2)
 
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
-        Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
+        self.allcat = Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
         Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
         Achievement.objects.get_or_create(name="TenGamesPlayed", desc='', xp_earned=7, achievement_class='TenGamesPlayed')
         Achievement.objects.get_or_create(name="UberSearcher", desc='', xp_earned=7, achievement_class='UberSearcher')
@@ -166,45 +175,42 @@ class GameAchievementTest(TestCase):
 
     def test_achievements(self):
         print "testing achievements"
-        self.logger.info("Entering test_achievements")
         # make sure there are no highscores so far
         hs = HighScore.objects.filter(user=self.u)
         self.assertEquals(len(hs),0)
-
-
         # get the latest highscores
-
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # check that no achievements are awarded
         self.assertEquals(len(new_achievements_list),0)
-
         HighScore(user=self.u,category=self.c,highest_score=5000).save()
-
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # still no achievements should be awarded yet
         self.assertEquals(len(new_achievements_list),0)
 
-
-        c = Category.objects.get(name='Letters')
+    def test_all_cats(self):
         # add a score in for the other category
-        HighScore(user=self.u,category=c,highest_score=1000).save()
-
+        HighScore(user=self.u,category=self.c,highest_score=1000).save()
+        HighScore(user=self.u,category=self.c1,highest_score=1000).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
         # the All Cats achievement is triggered
-        self.assertEquals(len(new_achievements_list),1)
+        self.assertEquals(new_achievements_list[0].achievement, self.allcat[0])
 
+    def test_highscorer(self):
+        HighScore(user=self.u,category=self.c,highest_score=9000).save()
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
+        # The high scorer achievement is triggered
+        self.assertEquals(len(new_achievements_list), 0)
         # the high scores were increased
+        hs = HighScore.objects.filter(user=self.u)
         for s in hs:
             s.highest_score += 3000
             s.save()
-
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
         # The high scorer achievement is triggered
         self.assertEquals(len(new_achievements_list),1)
-        print 'hawehfalhfalsfjasfas----'
-        print PlayerAchievement.objects.filter(user=self.u)
 
     def test_fives_pages_in_game(self):
         #testing FivePagesInAGame achievemnt class
