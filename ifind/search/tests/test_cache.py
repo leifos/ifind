@@ -1,14 +1,12 @@
-import mock
-import string
 import random
+
+from . import gen_query, create_engine
 
 from nose.tools import assert_equal
 from nose.tools import assert_raises
 from nose.tools import assert_not_equal
 
 import ifind.search.cache as cache
-from ifind.search.query import Query
-from ifind.search.response import Response
 from ifind.search.exceptions import CacheConnectionException
 
 
@@ -30,7 +28,7 @@ class TestQueryCacheEngine(object):
         self.c.connection.flushdb()
 
         # create default query/response test pair
-        for pair in gen_query_response():
+        for pair in gen_query(response=True):
             self.query, self.response = pair
 
     def test_bad_connection(self):
@@ -63,11 +61,12 @@ class TestQueryCacheEngine(object):
 
         """
         # set random limit
-        self.c.limit = random.randint(0, 100)
+        self.c.limit = random.randint(0, 50)
         variance = random.randint(1, 6)
 
         # generate too many response/query pairs and store in cache
-        for pair in gen_query_response(self.c.limit + variance):
+        for pair in gen_query(count=self.c.limit + variance, response=True):
+            # requires expiry parameter to be present as None
             self.c.store(pair, None)
 
         # check to see that limit matches key set cardinality
@@ -136,7 +135,7 @@ class TestQueryCacheInstance(TestQueryCacheEngine):
         self.c = cache.QueryCache(self.engine)
         self.c.connection.flushdb()
 
-        for pair in gen_query_response():
+        for pair in gen_query(response=True):
             self.query, self.response = pair
 
     def test_cache_persistence(self):
@@ -163,7 +162,6 @@ class TestQueryCacheInstance(TestQueryCacheEngine):
         # check that new cache does not have query/response available
         assert_equal(c2.get(self.query), None)
 
-
     def test_cache_keys_deleted(self):
         """
         Checks that the cache keys are deleted when engine de-referenced/destroyed.
@@ -187,26 +185,3 @@ class TestQueryCacheInstance(TestQueryCacheEngine):
 
         # check that saved key is no longer present
         assert_equal(c.connection.exists(key), False)
-
-
-def gen_query_response(count=1):
-    """
-    Utility generator that yields 'count' query/response pairs, randomly generated.
-
-    """
-    for x in xrange(count):
-        length = random.randint(1, 10)
-        query = Query(''.join(random.choice(string.lowercase) for x in xrange(length)))
-        response = Response(query.terms)
-        yield query, response
-
-
-def create_engine(name, cache_type):
-    """
-    Utility function to return mocked engine instance object.
-
-    """
-    engine = mock.Mock()
-    engine.name = name
-    engine.cache_type = cache_type
-    return engine
