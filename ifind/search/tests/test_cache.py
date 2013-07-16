@@ -164,6 +164,31 @@ class TestQueryCacheInstance(TestQueryCacheEngine):
         assert_equal(c2.get(self.query), None)
 
 
+    def test_cache_keys_deleted(self):
+        """
+        Checks that the cache keys are deleted when engine de-referenced/destroyed.
+
+        """
+        # create engine with identical attributes to default engine
+        engine = create_engine(self.engine.name, self.engine.cache_type)
+        # create new cache for engine
+        c = cache.QueryCache(engine)
+        # store instance query/response
+        c.store(self.query, self.response)
+
+        # save key name
+        key = c._make_key(self.query)
+
+        # delete/de-reference cache
+        del c
+
+        # create new instance cache
+        c = cache.QueryCache(engine)
+
+        # check that saved key is no longer present
+        assert_equal(c.connection.exists(key), False)
+
+
 def gen_query_response(count=1):
     """
     Utility generator that yields 'count' query/response pairs, randomly generated.
