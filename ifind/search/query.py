@@ -24,7 +24,7 @@ class Query(object):
 
         """
         self.terms = terms
-        self.result_type = result_type
+        self.result_type = result_type.lower()
         self.lang = lang
         self.top = top
         self.skip = 0
