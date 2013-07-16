@@ -84,6 +84,9 @@ class GameMechanic(object):
         else:
             return False
 
+    def handle_game_over(self):
+        pass
+
     def get_round_no(self):
         return self.game.no_rounds+1
 

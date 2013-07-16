@@ -112,6 +112,7 @@ def search(request):
                 #Augement query
                 query += ' site:gla.ac.uk '
             if query:
+
                 result_list = gm.get_search_results(query)
 
             gm.handle_query(query)

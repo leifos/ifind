@@ -2,9 +2,7 @@
 
 {% block container %}
 <div class="hero-unit">
-        <p>
-            Please pick a category for your game !
-        </p>
+        <image src="{{ STATIC_URL }}imgs/pick.jpg" width="300" height="200"> </image>
         <ul class="thumbnails text-center">
          {% if scores %}
             {% for item in scores %}

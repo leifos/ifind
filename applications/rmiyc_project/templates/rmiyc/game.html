@@ -29,7 +29,7 @@
         </div>
         <br />
         <div style="border:3px dotted #663300; padding:10px 10px 10px 10px;  background:#FFFFFF; width:250px; border-radius:25px;">
-        <div id="game_updates">
+        <div id="game_updates" style="font: Harrington">
             <strong> round no : 1 <br />
             remaining rounds : 3 </strong>
         </div>
@@ -38,8 +38,10 @@
         </div>
         </div>
         <br />
+         <image src="{{ STATIC_URL }}imgs/query.jpg" width="300" height="200"> </image>
+         <!--<p style="color: #663300"><strong>Enter your query here ! </strong> <p>-->
         <div id ="search-div">
-            <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="Enter your query here" />
+            <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="e.g: aerospace systems" />
             <br />
             <br />
             <a class="btn btn-primary btn-large" id="search" ><i class="icon-search icon-white"></i> search</a>  &nbsp &nbsp
