@@ -104,14 +104,12 @@ def search(request):
         user = request.user
         result_list = []
         if request.COOKIES.has_key('game_id'):
-            context = RequestContext(request, {})
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
-
-            if request.method == 'POST':
-                query = request.POST['query'].strip()
+            if request.method == 'GET':
+                query = request.GET['query'].strip()
                 #Augement query
                 query += ' site:gla.ac.uk '
             if query:
