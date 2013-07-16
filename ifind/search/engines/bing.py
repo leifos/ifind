@@ -180,8 +180,6 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        print result_type
-
         return API_ENDPOINT + result_type + Bing._encode_symbols(query_string)
 
     @staticmethod
