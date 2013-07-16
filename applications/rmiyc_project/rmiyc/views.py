@@ -22,26 +22,22 @@ def index(request):
 
 
 def play(request, category_name):
-
-        print 'I have been played'
+        # Get the current user
         user = request.user
-
+        # If the user is anonymous, then a new user will be created
         if not user.is_authenticated():
             users_count = User.objects.all().count()
-            print '**********************************'
-            print str(users_count)
             user = User(username='anonymous' + str(users_count), password='test')
             user.save()
 
         # Query the database for the provided category name
-        category_name='engineering'
         c = Category.objects.get(name=category_name)
         gm = RMIYCMechanic()
         context = RequestContext(request, {})
         # This view shall be called when a new game is to start
         # Thus, there should be no cookie containing a game_id
         if request.COOKIES.has_key('game_id'):
-            # redirect the player to the page where they can pick a catefory and start a new game
+            # redirect the player to the page where they can pick a category and start a new game
             response = HttpResponseRedirect('/rmiyc/pick_category/')
             # delete the cookie
             response.delete_cookie('game_id')
@@ -58,7 +54,7 @@ def play(request, category_name):
             overall_results.append({
                     'result_list': [], 'page': p.screenshot, 'score': 0 ,
                     'no_round': gm.get_round_no(), 'no_successful_round': gm.get_no_rounds_completed(),
-                    'no_of_queries_issued_for_current_page' :gm.get_no_of_queries_issued_for_current_page(),
+                    'no_of_queries_issued_for_current_page': gm.get_no_of_queries_issued_for_current_page(),
                     'no_remaining_rounds': gm.get_remaining_rounds()
             })
             response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
@@ -103,9 +99,8 @@ def pick_category(request):
         return render_to_response('rmiyc/cat_picker.html', {'scores': scores}, context)
 
 
-def search2(request):
+def search(request):
 
-        print 'Search 2 has been called'
         user = request.user
         result_list = []
         if request.COOKIES.has_key('game_id'):
@@ -113,13 +108,15 @@ def search2(request):
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
-            gm.retrieve_game(user,game_id)
+            gm.retrieve_game(user, game_id)
+
             if request.method == 'POST':
                 query = request.POST['query'].strip()
                 #Augement query
                 query += ' site:gla.ac.uk '
             if query:
                 result_list = gm.get_search_results(query)
+
             gm.handle_query(query)
             gm.update_game()
             # get the last query score
@@ -150,11 +147,10 @@ def search2(request):
             return HttpResponseRedirect('/rmiyc/cat_picker/')
 
 
-def display_next_page2(request):
+def display_next_page(request):
 
     user = request.user
     if request.COOKIES.has_key('game_id'):
-            context = RequestContext(request, {})
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
@@ -163,9 +159,7 @@ def display_next_page2(request):
             gm.set_next_page()
             gm.update_game()
             p = gm.get_current_page()
-            data1 = p.screenshot
-            quoted_screenshot = str(data1)
-            print quoted_screenshot
+            quoted_screenshot = str(p.screenshot)
             if gm.is_game_over():
                 objects = {
                     "screenshot": quoted_screenshot, "is_game_over": 1,
@@ -181,9 +175,6 @@ def display_next_page2(request):
                     "no_remaining_rounds": gm.get_remaining_rounds()
                 }
             data = json.dumps(objects)
-            print '********************************'
-            print data
-            print '********************************'
             return HttpResponse(data, mimetype='application/json')
     else:
             # the game has not been created yet

@@ -64,13 +64,14 @@
               <li><a href="/accounts/logout/">Log out</a></li>
             </ul>
             {% else %}
-            <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Email">
-              <input class="span2" type="password" placeholder="Password">
-              <button type="submit" class="btn">Sign in</button>
+            <form class="navbar-form pull-right" method="post"  action="?next={{ next|default:"/" }}">
+              {% csrf_token %}
+              <input  id="id_username" class="span2" type="text" placeholder="Email">
+              <input id="id_password" class="span2" type="password" placeholder="Password">
+              <input type="submit" class="btn" value="Log in" />
               <a class="btn btn-primary " href="/accounts/register/">register »</a>
+              {{ form.password }}
             </form>
-
             {% endif %}
           </div><!--/.nav-collapse -->
         </div>

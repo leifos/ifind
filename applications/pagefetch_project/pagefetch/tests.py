@@ -20,6 +20,10 @@ from ifind.models.game_achievements import GameAchievementChecker
 #from ifind.common import pagecapture
 from ifind.common.setuplogger import create_ifind_logger
 
+
+
+from ifind.models.game_models import PlayerAchievement
+
 class PageFetchTest(LiveServerTestCase):
 
     def setUp(self):
@@ -138,13 +142,13 @@ class GameAchievementTest(TestCase):
         #print "Setting up Game Achievements for Player Test"
         self.logger.info("Setting up Game Achievemtns for Player Test.")
         User.objects.get_or_create(username='testy', password='test')
-        u = User.objects.get(username='testy')
-        UserProfile.objects.get_or_create(user=u)
+        self.u = User.objects.get(username='testy')
+        UserProfile.objects.get_or_create(user=self.u)
 
         Category.objects.get_or_create(name='Numbers', desc='Looking for sites that about numbers')
-        c = Category.objects.get(name='Numbers')
+        self.c = Category.objects.get(name='Numbers')
         for pn in ['one','two','three','four']:
-            Page.objects.get_or_create(category=c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
+            Page.objects.get_or_create(category=self.c, title=pn, url='www.'+pn+'.com', snippet=pn, desc=('desc: ' +pn))
 
         Category.objects.get_or_create(name='Letters', desc='Looking for sites that  about letters')
         self.assertEquals(len(Category.objects.all()), 2)
@@ -152,44 +156,42 @@ class GameAchievementTest(TestCase):
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
         Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
         Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
+        Achievement.objects.get_or_create(name="TenGamesPlayed", desc='', xp_earned=7, achievement_class='TenGamesPlayed')
+        Achievement.objects.get_or_create(name="UberSearcher", desc='', xp_earned=7, achievement_class='UberSearcher')
 
+        self.p = Page.objects.all()[0]
+        self.cg = CurrentGame(category=self.c, current_page=self.p, user=self.u)
+        self.up = UserProfile.objects.get(user=self.u)
+        self.gac = GameAchievementChecker(self.u)
 
     def test_achievements(self):
-        self.setUp()
-        #print "here"
+        print "testing achievements"
         self.logger.info("Entering test_achievements")
-        u = User.objects.get(username='testy')
-        c = Category.objects.get(name='Numbers')
-        p = Page.objects.all()[0]
-
-        cg = CurrentGame(category=c, current_page=p, user=u)
-
-        up = UserProfile.objects.get(user=u)
         # make sure there are no highscores so far
-        hs = HighScore.objects.filter(user=u)
+        hs = HighScore.objects.filter(user=self.u)
         self.assertEquals(len(hs),0)
 
-        gac = GameAchievementChecker(u)
 
         # get the latest highscores
 
-        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # check that no achievements are awarded
         self.assertEquals(len(new_achievements_list),0)
 
-        HighScore(user=u,category=c,highest_score=5000).save()
+        HighScore(user=self.u,category=self.c,highest_score=5000).save()
 
-        hs = HighScore.objects.filter(user=u)
-        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # still no achievements should be awarded yet
         self.assertEquals(len(new_achievements_list),0)
 
+
         c = Category.objects.get(name='Letters')
         # add a score in for the other category
-        HighScore(user=u,category=c,highest_score=1000).save()
+        HighScore(user=self.u,category=c,highest_score=1000).save()
 
-        hs = HighScore.objects.filter(user=u)
-        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
         # the All Cats achievement is triggered
         self.assertEquals(len(new_achievements_list),1)
 
@@ -198,25 +200,60 @@ class GameAchievementTest(TestCase):
             s.highest_score += 3000
             s.save()
 
-        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
         # The high scorer achievement is triggered
         self.assertEquals(len(new_achievements_list),1)
+        print 'hawehfalhfalsfjasfas----'
+        print PlayerAchievement.objects.filter(user=self.u)
 
+    def test_fives_pages_in_game(self):
         #testing FivePagesInAGame achievemnt class
-        c = Category.objects.get(name='Letters')
         # add a score in for the other category
-        HighScore(user=u,category=c,most_no_pages_found=2).save()
-        hs = HighScore.objects.filter(user=u)
+        HighScore(user=self.u,category=self.c,most_no_pages_found=2).save()
+        hs = HighScore.objects.filter(user=self.u)
 
-        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
+        #should not trigger achievement
         self.assertEquals(len(new_achievements_list),0)
 
-        c = Category.objects.get(name='Letters')
-        HighScore(user=u,category=c,most_no_pages_found=5).save()
-        hs = HighScore.objects.filter(user=u)
-        new_achievements_list = gac.check_and_set_new_achievements(up,hs,cg)
+        HighScore(user=self.u,category=self.c,most_no_pages_found=5).save()
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
+        #should trigger FivePagesInAGame achievement
+        self.assertEquals(len(new_achievements_list),2) #1
+
+    def test_ten_games_played(self):
+        #Test TenGamesPlayed
+        # add a score in for the other category
+        self.up.no_games_played = 9
+        self.up.save()
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
+        #should not trigger achievement
+        self.assertEquals(len(new_achievements_list),0)
+
+        # add a score in for the other category
+        self.up.no_games_played = 10
+        self.up.save()
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
+        #should trigger achievement
         self.assertEquals(len(new_achievements_list),1)
 
+    def test_uber_searcher(self):
+        #Test UberSearcher
+        # add a score in for the other category
+        HighScore(user=self.u,category=self.c, highest_score=3000).save()
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
+        #should not trigger achievement
+        self.assertEquals(len(new_achievements_list),0)
+
+        # add a score in for the other category
+        HighScore(user=self.u,category=self.c, highest_score=50000).save()
+        hs = HighScore.objects.filter(user=self.u)
+        new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
+        self.assertEquals(len(new_achievements_list),3)#1
 
 
 
@@ -224,20 +261,19 @@ class GameAchievementTest(TestCase):
 
 
 
-
-class RegistrationTest(TestCase):
-    #TODO(mtbvc):...
-
-
-    def setUp(self):
-        pass
-
-
-class LoginTest(TestCase):
-
-
-    def setUp(self):
-        pass
-
-
+#class RegistrationTest(TestCase):
+#    #TODO(mtbvc):...
+#
+#
+#    def setUp(self):
+#        pass
+#
+#
+#class LoginTest(TestCase):
+#
+#
+#    def setUp(self):
+#        pass
+#
+#
 

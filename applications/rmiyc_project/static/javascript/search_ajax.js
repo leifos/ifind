@@ -8,7 +8,7 @@ $(function()
 
     $(document).keypress(function(event)
     {
-        if(event.which == 13 && event.ctrlKey)
+        if(event.ctrlKey && event.which == 13)
         {
             event.preventDefault();
             $.ajax
@@ -19,9 +19,26 @@ $(function()
                 dataType: 'html'
             });
         }
+        else if(event.which == 13)
+        {
+             event.preventDefault();
+            $.ajax
+            ({
+                type: "POST",
+                url: "/rmiyc/search/",
+                data:
+                {
+                    'query' : $('#query').val(),
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: search_success,
+                dataType: 'html'
+            });
+        }
     });
 
-    $('#search_form').submit(function(event)
+
+    $('#search').click(function(event)
     {
         event.preventDefault();
         $.ajax
@@ -68,22 +85,22 @@ function search_success(data, textStatus, jqXHR)
             html_string+= "<Li> <b>" + this.title + "</b> <br />" +this.link +"</Li>";
         }
     );
-    $('#num-queries').html("<p>you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page</p> <br />");
-    $('#game_updates').html("<p>you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
-        " were completed successfully. <br />" +
-        "you have" + obj.no_remaining_rounds + " remaining rounds </p>");
+    $('#num-queries').html("<strong>no queries issued for this page : " + obj.no_of_queries_issued_for_current_page + "</strong>");
+    $('#game_updates').html("<strong> round no : " +  obj.no_round + "  <br /> " +
+        "remaining rounds : " + obj.no_remaining_rounds + "</strong>");
+
     $('#search-results-ol').html(html_string);
     $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
     $('#query').val("");
     if(obj.score != 0)
     {
-        $('#skip').text('take points');
-        $('#search').text('search again');
+        $('#skip').html("<i class='icon-forward'></i> take points");
+        $('#search').html('<i class="icon-search icon-white"></i> search again');
     }
     else
     {
-        $('#skip').text('skip');
-        $('#search').text('search');
+        $('#skip').html("<i class='icon-forward'></i> skip");
+        $('#search').html('<i class="icon-search icon-white"></i> search');
     }
 }
 
@@ -92,19 +109,19 @@ function display_next_page_success(data, textStatus, jqXHR)
     var obj = jQuery.parseJSON(data);
     if (obj.is_game_over == 1)
     {
-        window.location ="/rmiyc/game_over";
         window.onbeforeunload= null;
+        window.location ="/rmiyc/game_over";
         return false;
     }
-    $('#num-queries').html("<p>you have issued :" + obj.no_of_queries_issued_for_current_page+" queries for this web page</p> <br />");
-    $('#game_updates').html("<p>you have <strong> played : " +  obj.no_round + " rounds </strong>, " + obj.no_successful_round +
-        " were completed successfully. <br />" +
-        "you have" + obj.no_remaining_rounds + " remaining rounds </p>");
+
+    $('#num-queries').html("<strong>no queries issued for this page : " + obj.no_of_queries_issued_for_current_page + "</strong>");
+    $('#game_updates').html("<strong>round no : " +  obj.no_round + "  <br /> " +
+        "remaining rounds : " + obj.no_remaining_rounds + "</strong>");
 
     $('#search-results-ol').html("");
     $('#score-div').html("");
-    $('#skip').text('skip');
-    $('#search').text('search');
+    $('#skip').html("<i class='icon-forward'></i> skip");
+    $('#search').html('<i class="icon-search icon-white"></i> search');
     $('#image-box').hide();
     $('#image-div').html("<image src= '" + obj.screenshot + "' height='1000' width='1000'> </image>");
 }
