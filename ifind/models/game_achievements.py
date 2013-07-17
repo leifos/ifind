@@ -1,7 +1,7 @@
 __author__ = 'leif'
 
-from django.contrib.auth.models import User
-from game_models import UserProfile, PlayerAchievement, Achievement
+#from django.contrib.auth.models import User
+from game_models import PlayerAchievement, Achievement #, UserProfile
 import logging
 
 class GameAchievement(object):
@@ -124,7 +124,6 @@ class GameAchievementChecker(object):
         """
         # get list of the users current player achievements
         cpal = PlayerAchievement.objects.filter(user=self.user)
-        print "len of cpal :" + str(len(cpal)) + "+++"
 
         # pull out the list of achievements they have obtained.
         pal = []
@@ -169,21 +168,30 @@ class GameAchievementChecker(object):
         # need some reflection in here to inspect whether the achievement class specified exists or not
         outcome = False
         ga =  None
-        if achievement.achievement_class == 'HighScorer':
-            ga = HighScorer(userprofile, highscores, currentgame)
 
-        if achievement.achievement_class == 'AllCat':
-            ga = AllCat(userprofile, highscores, currentgame)
+        classes = {'HighScorer': HighScorer, 'AllCat': AllCat,
+                   'UberSearcher': UberSearcher,
+                   'TenGamesPlayed': TenGamesPlayed,
+                   'FivePagesInAGame': FivePagesInAGame}
+        if achievement.achievement_class in classes:
+            gac = classes[achievement.achievement_class]
+            ga = gac(userprofile, highscores, currentgame)
 
-        if achievement.achievement_class == 'UberSearcher':
-            ga = UberSearcher(userprofile, highscores, currentgame)
+        #if achievement.achievement_class == 'HighScorer':
+        #    ga = HighScorer(userprofile, highscores, currentgame)
 
-        if achievement.achievement_class == 'TenGamesPlayed':
-            ga = TenGamesPlayed(userprofile, highscores, currentgame)
+        #if achievement.achievement_class == 'AllCat':
+        #    ga = AllCat(userprofile, highscores, currentgame)
 
-        if achievement.achievement_class == 'FivePagesInAGame':
-            for hs in highscores:
-                ga = FivePagesInAGame(userprofile, highscores, currentgame)
+        #if achievement.achievement_class == 'UberSearcher':
+        #    ga = UberSearcher(userprofile, highscores, currentgame)
+
+        #if achievement.achievement_class == 'TenGamesPlayed':
+        #    ga = TenGamesPlayed(userprofile, highscores, currentgame)
+
+        #if achievement.achievement_class == 'FivePagesInAGame':
+        #    for hs in highscores:
+        #        ga = FivePagesInAGame(userprofile, highscores, currentgame)
 
         if ga:
             outcome = ga.check_achievement_criteria()
