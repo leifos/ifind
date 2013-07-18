@@ -35,7 +35,7 @@ class Populate:
         jake = User(username="Jake")
         jim.set_password("test")
         jane.set_password("test")
-        jake.set_password("test")   
+        jake.set_password("test")
         jim.save()
         jane.save()
         jake.save()
