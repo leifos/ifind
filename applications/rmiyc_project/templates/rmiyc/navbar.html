@@ -25,29 +25,30 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">David Maxwell <strong class="caret"></strong></a>
                         <ul class="dropdown-menu">
-                            <li><a href="?">View Profile</a></li>
-                            <li><a href="?">Logout</a></li>
+                            <li><a href="/profile/{{ user.username }}">View Profile</a></li>
+                            <li><a href="/accounts/logout/?next=/rmiyc">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
                 {% elif not user.is_authenticated and not minimal_navbar %}
                 <ul class="nav pull-right">
 
-                    <li><a href="/users/sign_up">Register</a></li>
+                    <li><a href="/accounts/register/">Register</a></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+                        <a class="dropdown-toggle" href="#" id="login-dropdown" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
                         <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-                            <form action="#" method="post" accept-charset="UTF-8">
+                            <form action="/accounts/login/?next=/rmiyc" method="post" accept-charset="UTF-8">
+                                {% csrf_token %}
                                 <div class="control-group">
-                                    <label class="control-label" for="username">Username</label>
+                                    <label class="control-label" for="id_username">Username</label>
                                     <div class="controls">
-                                        <input type="text" id="username" placeholder="Username" />
+                                        <input type="text" id="id_username" name="username" placeholder="Username" />
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label" for="password">Password</label>
+                                    <label class="control-label" for="id_password">Password</label>
                                     <div class="controls">
-                                        <input type="password" id="password" placeholder="Password" />
+                                        <input type="password" id="id_password" name="password" placeholder="Password" />
                                     </div>
                                 </div>
                                 <div class="control-group">
