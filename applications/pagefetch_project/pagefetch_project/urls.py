@@ -8,6 +8,8 @@ from settings import DEPLOY
 from django.contrib import admin
 admin.autodiscover()
 
+from pagefetch import views
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'pagefetch_project.views.home', name='home'),
@@ -22,7 +24,11 @@ urlpatterns = patterns('',
     #url(r'^', include('pagefetch.urls')),
     #url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^accounts/logout',views.logout),
+    url(r'^accounts/login', include('registration.backends.simple.urls')),
     #url(r'^users/', include('pagefetch.urls')),
+    url(r'^users/', views.user_profile),
+    url(r'', views.user_profile),
 )
 
 
