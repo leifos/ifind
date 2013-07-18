@@ -10,7 +10,7 @@ Requires:
       selenium, PIL, PhantomJS
 """
 from selenium import webdriver
-import Image
+from PIL import Image
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
