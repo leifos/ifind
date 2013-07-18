@@ -14,11 +14,9 @@ import urllib, urllib2
 import simplejson,json
 # Create your views here.
 
-
 def index(request):
         context = RequestContext(request, {})
         return render_to_response('rmiyc/base.html', context)
-
 
 def play(request, category_name):
         # Get the current user
