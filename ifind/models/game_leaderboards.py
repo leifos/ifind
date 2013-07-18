@@ -1,6 +1,7 @@
 __author__ = 'leif'
 
 from ifind.models.game_models import HighScore, UserProfile
+from ifind.common.utils import encode_string_to_url
 from django.contrib.auth.models import User
 from django.db.models import Max, Sum, Avg
 
@@ -35,7 +36,10 @@ class GameLeaderboard(object):
 
             entry = {'rank': i+1, 'username': hs.user.username, 'score': hs.highest_score}
             if hs.category:
+                print hs.category
                 entry['category'] = hs.category.name
+                entry['category_url'] = encode_string_to_url(hs.category.name)
+            print entry
             leaders.append(entry)
 
         return leaders
@@ -54,11 +58,10 @@ class HighScoresLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self):
         highscores = HighScore.objects.values('user').annotate(highest_score=Sum('highest_score')).order_by('-highest_score')[:self.top]
-        print highscores
+
         leaders = list()
 
         for i, hs in enumerate(highscores):
-            print hs
             username = User.objects.get(id=hs['user'])
 
             entry = {'rank': i+1, 'username': username, 'score': hs['highest_score']}

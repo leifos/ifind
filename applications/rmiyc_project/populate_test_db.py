@@ -13,7 +13,7 @@ from django.core.management import setup_environ
 setup_environ(settings)
 
 from django.contrib.auth.models import User
-from ifind.models.game_models import UserProfile, Achievement, Level, HighScore, Category
+from ifind.models.game_models import UserProfile, Achievement, Level, HighScore, Category, PlayerAchievement
 
 
 
@@ -36,12 +36,18 @@ class Populate(object):
             points+=increase
 
     def players(self):
-        jim = User(username="Jim", password='Jim')
-        jane = User(username="Jane", password='Jane')
-        jake = User(username="Jake", password='Jake')
+        jim = User(username="Jim")
+        jane = User(username="Jane")
+        jake = User(username="Jake")
+        anon = User(username="Anon")
+        anon.set_password("test")
+        jim.set_password("test")
+        jane.set_password("test")
+        jake.set_password("test")
         jim.save()
         jane.save()
         jake.save()
+        anon.save()
         UserProfile(user=jim, xp=760, no_games_played=8).save()
         UserProfile(user=jane, xp=2300, no_games_played=10).save()
         UserProfile(user=jake, xp=4300, no_games_played=12).save()
@@ -67,8 +73,12 @@ class Populate(object):
         HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=700).save()
 
 
-
-
+    def player_achievements(self):
+        jim = User.objects.filter(username='Jim')
+        ac1 = Achievement.objects.filter(name="AllCat")
+        ac2 = Achievement.objects.filter(name="UberSearcher")
+        PlayerAchievement(user=jim[0], achievement=ac1[0]).save()
+        PlayerAchievement(user=jim[0], achievement=ac2[0]).save()
 
 def main():
     populate = Populate()
@@ -77,6 +87,7 @@ def main():
     populate.levels(10,1000)
     populate.achievements()
     populate.highscores()
+    populate.player_achievements()
 
 
 
