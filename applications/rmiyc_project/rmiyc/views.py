@@ -6,6 +6,7 @@ from ifind.search.query import Query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
 from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
+from ifind.models.game_avatar import GameAvatar
 from django.contrib.auth.models import User
 from ifind.search import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
@@ -60,6 +61,10 @@ def play(request, category_name):
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
+
+
+
+
             return response
 
 
