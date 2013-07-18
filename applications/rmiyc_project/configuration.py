@@ -9,7 +9,7 @@ STATIC_PATH = os.path.join(PROJ_PATH, 'static/')
 MEDIA_PATH = ''
 MEDIA_URL = ''
 MEDIA_ROOT = 'data/'
-UPLOAD_DIR = os.path.join(os.getcwd(), 'imgs/')
+UPLOAD_DIR =  'upload/imgs/'
 DATA_DIR = os.path.join(PROJ_PATH, 'data')
 
 DEPLOY = False
