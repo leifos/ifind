@@ -66,9 +66,9 @@ class Populate(object):
         HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=100000).save()
         HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Postgraduate")[0],highest_score=10000).save()
         HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="Research")[0],highest_score=5000).save()
-        HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=5000).save()
+        HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Alumni")[0],highest_score=5000).save()
         HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=500).save()
-        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Postgraduate")[0],highest_score=20).save()
+        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Research")[0],highest_score=20).save()
         HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="Research")[0],highest_score=800).save()
         HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=700).save()
 
