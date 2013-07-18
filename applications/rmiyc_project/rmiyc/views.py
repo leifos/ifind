@@ -57,7 +57,7 @@ def play(request, category_name):
 
             avatar.update(current_game=gm.game)
 
-            msg = avatar.send()
+            msg = avatar.get()
 
             overall_results = []
             overall_results.append({
@@ -97,7 +97,7 @@ def pick_category(request):
             hs = HighScore.objects.filter(user=request.user)
 
 
-        msg = avatar.send()
+        msg = avatar.get()
 
         return render_to_response('rmiyc/cat_picker.html', {'cats': cats, 'avatar': msg}, context)
 
@@ -106,6 +106,14 @@ def search(request):
 
         user = request.user
         result_list = []
+
+        avatar = GameAvatar('Search')
+        if user != 'anon':
+            avatar.update(user=user)
+
+        msg = avatar.get()
+
+
         if request.COOKIES.has_key('game_id'):
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
@@ -132,14 +140,16 @@ def search(request):
                     "results": json_objects, "score": s, "is_game_over": 1,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
-                    "no_remaining_rounds": gm.get_remaining_rounds()
+                    "no_remaining_rounds": gm.get_remaining_rounds(),
+                    "avatar": msg
                 }
             else:
                 Json_results = {
                     "results": json_objects, "score": s, "is_game_over": 0,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
-                    "no_remaining_rounds": gm.get_remaining_rounds()
+                    "no_remaining_rounds": gm.get_remaining_rounds(),
+                    "avatar": msg
                 }
             data = json.dumps(Json_results)
             return HttpResponse(data, mimetype='application/json')
