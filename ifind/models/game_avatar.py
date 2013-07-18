@@ -116,7 +116,7 @@ class CategoryPage(PageHandler):
         # "Pick a category!"
 
         messages = ["Pick a category!",
-                    "The research one looks good...",
+                    "The first one looks good...",
                     "Log in to see your high scores for each category!",
                     "Choose a category!"]
 
@@ -144,13 +144,13 @@ class GamePage(PageHandler):
 
         # Assumptions: user_profile=None, current_game
 
-        pass
+        return "Anonymous dude is starting..."
 
     def _get_user_message(self):
 
         # Assumptions: user_profile, current_game
 
-        pass
+        return "Authorised legit dude is starting..."
 
 
 class GameAvatar (object):
@@ -191,7 +191,7 @@ class GameAvatar (object):
             self.page = page
 
         if user is not None:
-            self.user_profile = user
+            self.user = user
 
         if current_game is not None:
             self.current_game = current_game
