@@ -1,13 +1,36 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http import HttpResponse
+from ifind.models import game_models
+from django.contrib.auth import authenticate
+
 
 #@login_required
 def user_profile(request):
-    user_profile = request.user.get_profile()
-    url = user_profile.url
-    context = RequestContext(request)
-    return render_to_response(url, {}, context)
+    #request.session.flush()
+    #user_profile = request.user.get_profile()
+    #url = user_profile.url
+    #context = RequestContext(request)
+    #return render_to_response(url, {}, context)
+    user = request.user
+    print user
+    if request.user.is_authenticated():
+        #test this works how i think it should..
+        return HttpResponse("hello " + str(request.user) + '<a href="/accounts/logout/">log out</a>')
+    else:
+        return HttpResponse("not logged in")
+   # return HttpResponse("wassup")
+
+
+def logout(request):
+    logout(request)
+
+def login(request):
+    #new_user = authenticate(username=request.POST['username'], password=request.POST['password'])
+    login(request)
+    return user_profile(request)
+
 
 def test(request):
     context = RequestContext(request)
@@ -64,3 +87,5 @@ def game_quit(request):
 
 
 
+
+    return HttpResponse("wassup")
