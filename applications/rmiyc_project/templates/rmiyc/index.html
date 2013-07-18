@@ -1,4 +1,7 @@
 {% extends 'rmiyc/base.html' %}
+{% block title %}
+        Index
+{% endblock %}
 {% block container %}
     <h1>Retrieve Me If You Can</h1>
     <p class="lead">A tagline which is simple to understand, and lets people know exactly what this game is.</p>
@@ -139,11 +142,10 @@
             The higher rank in the search results you retrieve it, the more rewards you get!
             <br />
             <a class="btn btn-warning btn-large" href="/rmiyc/how_to_play/">how to play? »</a></p>
-
         {% if user.is_authenticated %}
             <p><a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play »</a></p>
         {% else %}
-            <p>Welcome, new user. Please log in.</p>
+            <p><a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play »</a></p>
             <p><a class="btn btn-primary btn-large" href="/accounts/login/">login »</a></p>
         {% endif %}
      </div>

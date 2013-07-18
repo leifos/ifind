@@ -25,14 +25,12 @@ class PageHandler(object):
     Each instance encapsulates a page's potential responses & related logic.
 
     """
-
-    def __init__(self, page, user_profile=None, high_scores=None, current_game=None):
+    def __init__(self, page, user=None, current_game=None):
 
         self.page = page
-        self.user_profile = user_profile
-        self.high_scores = high_scores
+        self.user = user
         self.current_game = current_game
-        self.logged_in = True if user_profile else False
+        self.logged_in = True if user else False
 
     def get_message(self):
         """
@@ -69,25 +67,27 @@ class IndexPage(PageHandler):
     Page handler implementation of Index Page
 
     """
+
+    UNIVERSALS = ["Fancy a game?",
+                  "Play a game!",
+                  "Go for it!"]
+
     def _get_anonymous_message(self):
 
-        # Assumptions: user_profile=None, high_scores=None, current_game=None
-
-        # "Welcome to RetrieveMeIfYouCan!"
-        # "Why don't you try a game?"
-        # "Check out how to play!"
+        # Assumptions: user=None, current_game=None
 
         messages = ["Why don't you try a game?",
                     "Check out how to play!",
                     "Have you registered an account yet?",
-                    "Welcome to Retrieve Me if You Can!",
-                    "Fancy a game?"]
+                    "Welcome to Retrieve Me if You Can!"]
+
+        messages += self.UNIVERSALS
 
         return random.choice(messages)
 
     def _get_user_message(self):
 
-        # Assumptions: user_profile, high_scores, current_game=None
+        # Assumptions: user, current_game=None
 
         # "Fancy a game?"
         # "You've played X games, why not try another?"
@@ -97,7 +97,9 @@ class IndexPage(PageHandler):
         # "Checked out your profile lately?"
         # "You're currently ranked Xth. You can do better!"
 
-        return "Would you like to log out?"
+        messages = []
+
+        return "I am logged in and at index page"
 
 
 class CategoryPage(PageHandler):
@@ -108,7 +110,7 @@ class CategoryPage(PageHandler):
 
     def _get_anonymous_message(self):
 
-        # Assumptions: user_profile=None, high_scores=None, current_game=None
+        # Assumptions: user_profile=None, current_game=None
 
         # "If you log in/register you can see your high scores for every category!"
         # "Pick a category!"
@@ -122,7 +124,7 @@ class CategoryPage(PageHandler):
 
     def _get_user_message(self):
 
-        # Assumptions: user_profile, high_scores, current_game=None
+        # Assumptions: user_profile, current_game=None
 
         # "Pick a category!"
         # "You've not played any games in X category!"
@@ -140,25 +142,27 @@ class GamePage(PageHandler):
 
     def _get_anonymous_message(self):
 
-        # Assumptions: user_profile, high_scores, current_game
+        # Assumptions: user_profile=None, current_game
 
-        if self.user_profile.no_games_played == 0:
-            return "You can't get achievements without logging in :("
+        pass
 
+    def _get_user_message(self):
 
+        # Assumptions: user_profile, current_game
+
+        pass
 
 
 class GameAvatar (object):
 
-    def __init__(self, page=None, user_profile=None, high_scores=None, current_game=None):
+    def __init__(self, page=None, user=None, current_game=None):
 
         self.page = page
-        self.user_profile = user_profile
-        self.high_scores = high_scores
+        self.user = user
         self.current_game = current_game
 
         if page:
-            self._handler = self._get_handler(page, user_profile, high_scores, current_game)
+            self._handler = self._get_handler(page, user, current_game)
 
     def send(self):
         """
@@ -172,7 +176,7 @@ class GameAvatar (object):
         """
         return self._handler.get_message()
 
-    def update(self, page=None, user_profile=None, high_scores=None, current_game=None):
+    def update(self, page=None, user=None, current_game=None):
         """
         Update critical GameAvatar attributes, arguments are flexibly optional.
 
@@ -186,16 +190,13 @@ class GameAvatar (object):
         if page is not None:
             self.page = page
 
-        if user_profile is not None:
-            self.user_profile = user_profile
-
-        if high_scores is not None:
-            self.high_scores = high_scores
+        if user is not None:
+            self.user_profile = user
 
         if current_game is not None:
             self.current_game = current_game
 
-        self._handler = self._get_handler(self.page, self.user_profile, self.high_scores, self.current_game)
+        self._handler = self._get_handler(self.page, self.user, self.current_game)
 
     def _get_handler(self, page, *args):
         """
