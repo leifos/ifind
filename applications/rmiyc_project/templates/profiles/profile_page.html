@@ -13,7 +13,21 @@
         {% if view_perm %}
          {{ user.username }} is logged in. <br />
          level : {{level}} <br />
-         experience points : {{xp}}
+         experience points : {{xp}} <br />
+
+         Highscores:
+         {% for item in highscores %}
+
+            {{item.highest_score}},
+
+         {% endfor %} <br />
+
+         Achievements:
+         {% for item in achievements %}
+               {{item.achievement.name}},
+         {% endfor %} <br />
+
+         <a href="/profiles/">edit profile</a>
 
        {% endif %}
 

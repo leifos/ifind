@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'registration',
 
 )
+
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window for django-registration
 AUTH_PROFILE_MODULE = "accounts.UserProfile" #changed from pagefetch. 17/07
 
