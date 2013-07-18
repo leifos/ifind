@@ -39,7 +39,7 @@ class Populate(object):
         jim = User(username="Jim")
         jane = User(username="Jane")
         jake = User(username="Jake")
-        anon = User(username="Anon")
+        anon = User(username="anon")
         anon.set_password("test")
         jim.set_password("test")
         jane.set_password("test")

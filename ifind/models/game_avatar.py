@@ -5,29 +5,39 @@ import random
 import inspect
 import pprint as pp
 
-#################
-# PAGE HANDLERS #
-#################
+DEBUG = True
+
+####################
+# CONTEXT HANDLERS #
+####################
+
+# Pages
 
 INDEX = "IndexPage"
 CATEGORY = 'CategoryPage'
 GAME = 'GamePage'
 GAME_OVER = 'GameOverPage'
 
-HANDLERS = (INDEX, CATEGORY, GAME, GAME_OVER)
+# Ajax
 
-DEBUG = True
+SEARCH = 'Search'
+
+HANDLERS = (INDEX,
+            CATEGORY,
+            GAME,
+            GAME_OVER,
+            SEARCH)
 
 
-class PageHandler(object):
+class Handler(object):
     """
     Abstract class representing a site page.
     Each instance encapsulates a page's potential responses & related logic.
 
     """
-    def __init__(self, page, user=None, current_game=None):
+    def __init__(self, context, user=None, current_game=None):
 
-        self.page = page
+        self.context = context
         self.user = user
         self.current_game = current_game
         self.logged_in = True if user else False
@@ -62,7 +72,7 @@ class PageHandler(object):
         pass
 
 
-class IndexPage(PageHandler):
+class IndexPage(Handler):
     """
     Page handler implementation of Index Page
 
@@ -102,7 +112,7 @@ class IndexPage(PageHandler):
         return "I am logged in and at index page"
 
 
-class CategoryPage(PageHandler):
+class CategoryPage(Handler):
     """
     Page handler implementation of Category Page
 
@@ -110,13 +120,13 @@ class CategoryPage(PageHandler):
 
     def _get_anonymous_message(self):
 
-        # Assumptions: user_profile=None, current_game=None
+        # Assumptions: user=None, current_game=None
 
         # "If you log in/register you can see your high scores for every category!"
         # "Pick a category!"
 
         messages = ["Pick a category!",
-                    "The research one looks good...",
+                    "The first one looks good...",
                     "Log in to see your high scores for each category!",
                     "Choose a category!"]
 
@@ -124,7 +134,7 @@ class CategoryPage(PageHandler):
 
     def _get_user_message(self):
 
-        # Assumptions: user_profile, current_game=None
+        # Assumptions: user, current_game=None
 
         # "Pick a category!"
         # "You've not played any games in X category!"
@@ -134,7 +144,7 @@ class CategoryPage(PageHandler):
         return "Pick a category"
 
 
-class GamePage(PageHandler):
+class GamePage(Handler):
     """
     Page handler implementation of a Game Page (when playing)
 
@@ -142,32 +152,52 @@ class GamePage(PageHandler):
 
     def _get_anonymous_message(self):
 
-        # Assumptions: user_profile=None, current_game
+        # Assumptions: user=None, current_game
 
-        pass
+        return "Anonymous dude is starting.."
 
     def _get_user_message(self):
 
-        # Assumptions: user_profile, current_game
+        # Assumptions: user, current_game
 
-        pass
+        return "Authorised legit dude is starting..."
+
+
+class Search(Handler):
+    """
+    Handler implementation of a Search query AJAX request.
+
+    """
+    def _get_anonymous_message(self):
+
+        # Assumptions: user=None, current_game
+
+        return "Anonymous dude has searched!"
+
+    def _get_user_message(self):
+
+        # Assumptions: user, current_game
+
+        return "Authorised legit dude has searched!"
+
+
+
 
 
 class GameAvatar (object):
 
-    def __init__(self, page=None, user=None, current_game=None):
+    def __init__(self, context=None, user=None, current_game=None):
 
-        self.page = page
+        self.context = context
         self.user = user
         self.current_game = current_game
 
-        if page:
-            self._handler = self._get_handler(page, user, current_game)
+        if context:
+            self._handler = self._get_handler(context, user, current_game)
 
-    def send(self):
+    def get(self):
         """
-        Send message to javascript avatar.
-        (For now returns message to caller)
+        Returns message within context of GameAvatar's arguments.
 
         Usage:
             avatar = GameAvatar(arg1, arg2, etc)
@@ -176,7 +206,7 @@ class GameAvatar (object):
         """
         return self._handler.get_message()
 
-    def update(self, page=None, user=None, current_game=None):
+    def update(self, context=None, user=None, current_game=None):
         """
         Update critical GameAvatar attributes, arguments are flexibly optional.
 
@@ -187,23 +217,23 @@ class GameAvatar (object):
             avatar.send()
 
         """
-        if page is not None:
-            self.page = page
+        if context is not None:
+            self.page = context
 
         if user is not None:
-            self.user_profile = user
+            self.user = user
 
         if current_game is not None:
             self.current_game = current_game
 
-        self._handler = self._get_handler(self.page, self.user, self.current_game)
+        self._handler = self._get_handler(self.context, self.user, self.current_game)
 
-    def _get_handler(self, page, *args):
+    def _get_handler(self, context, *args):
         """
         Instantiate and return appropriate page handler using instance page attribute.
 
         """
         for name, obj in inspect.getmembers(sys.modules[__name__]):
             if inspect.isclass(obj):
-                if obj.__name__ == page:
-                    return obj(page, *args)
+                if obj.__name__ == context:
+                    return obj(context, *args)

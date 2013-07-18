@@ -1,90 +1,37 @@
 {% extends 'rmiyc/base.html' %}
+
 {% block title %}
         Pick a category!
 {% endblock %}
+
 {% block container %}
 <div class="well">
-    <h1>Pick a category!</h1>
-    When you pick a category, all the pages that you are going to be shown will belong to this category.
+    <h2>{{avatar}}</h2>
+    <!--When you pick a category, all the pages that you are going to be shown will belong to this category.-->
 </div>
 <div class="well">
         <ul class="thumbnails centre text-center">
-         {% if scores %}
-            {% for item in scores %}
+
+            {% for c in cats %}
+
             <li class="span3.5">
-            <a href="/rmiyc/play/engineering" class="thumbnail">
+            <a href="/rmiyc/play/{{c.url}}" class="thumbnail">
                 <div>
-                    <h3>Undergraduate</h3>
-                    <img src="{{ STATIC_URL }}imgs/undergraduate.jpg" class ="img-rounded" alt="undergraduate category" height="200" width="300">
+                    <h3>{{c.name}}</h3>
+                    <img src="{{c.icon}}" class ="img-rounded" alt="{{c.name}}" height="200" width="300">
                     <br />
                     {% if user.is_authenticated %}
-                        <p>Score: {{item.undergraduate}}</p>
-                    {% endif %}
-                </div>
-            </a>
-            </li>
-            <li class="span3.5">
-            <a href="/rmiyc/play/engineering" class="thumbnail">
-                <div>
-                    <h3>Postgraduate</h3>
-                    <img src="{{ STATIC_URL }}imgs/postgraduate.jpg" class ="img-rounded" alt="postgraduate category" height="200" width="300">
-                    <br />
-                    {% if user.is_authenticated %}
-                        <p>Score: {{item.postgraduate}}</p>
-                    {% endif %}
-                </div>
-            </a>
-            </li>
-            <li class="span3.5">
-            <a href="/rmiyc/play/engineering" class="thumbnail">
-                <div>
-                    <h3>Research</h3>
-                    <img src="{{ STATIC_URL }}imgs/research.jpg" class ="img-rounded" alt="research category" height="200" width="300">
-                    <br />
-                    {% if user.is_authenticated %}
-                        <p>Score: {{item.research}}</p>
-                    {% endif %}
-                </div>
-            </a>
-            </li>
-            <li class="span3.5">
-            <a href="/rmiyc/play/engineering" class="thumbnail">
-                <div>
-                    <h3>Alumni</h3>
-                    <img src="{{ STATIC_URL }}imgs/alumni.png" class ="img-rounded" alt="alumni category" height="200" width="300">
-                    <br />
-                    {% if user.is_authenticated %}
-                        <p>Score: {{item.alumni}}</p>
-                    {% endif %}
-                </div>
-            </a>
-            </li>
-            <li class="span3.5">
-            <a href="#" class="thumbnail">
-                <div>
-                    <h3>Student life</h3>
-                    <img src="{{ STATIC_URL }}imgs/student_life.jpg" class ="img-rounded" alt="student's life category" height="200" width="300">
-                    <br />
-                    {% if user.is_authenticated %}
-                        <p>Score: {{item.student_life}}</p>
-                    {% endif %}
-                </div>
-            </a>
-            </li>
-            <li class="span3.5">
-            <a href="#" class="thumbnail">
-                <div>
-                    <h3>About Glasgow uni</h3>
-                    <img src="{{ STATIC_URL }}imgs/about_glasgow.jpg" class ="img-rounded" alt="about Glasgow Uni category" height="200" width="300">
-                    <br />
-                    {% if user.is_authenticated %}
-                        <p>Score: {{item.about_glasgow}}</p>
+                        <p>Score: {{c.score}}</p>
                     {% endif %}
                 </div>
             </a>
             </li>
             {% endfor %}
-         {% endif %}
+
+
         </ul>
       </div>
 {% endblock %}
+
+
+
