@@ -76,6 +76,13 @@ def pick_category(request):
         context = RequestContext(request, {})
         scores=[]
 
+
+        cats = Category
+
+        avatar = GameAvatar('CategoryPage')
+        if request.user:
+            avatar.update(user=request.user)
+
         if request.user.is_authenticated():
             postgraduate_score = 0
             undergraduate_score = 0
@@ -83,7 +90,8 @@ def pick_category(request):
             alumni_score = 0
             student_life_score = 0
             about_glasgow_score = 0
-            hs_list = HighScore.objects.filter(user=request.user)
+            hs_list = HighScore.objects.filter(user=u)
+
             for item in hs_list:
                 if item.category.name == 'postgraduate':
                     postgraduate_score = item.highest_score
