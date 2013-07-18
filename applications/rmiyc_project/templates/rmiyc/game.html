@@ -3,9 +3,18 @@
         Game is on!
 {% endblock %}
 {% block container %}
+
      <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
      <div class="span6">
-        <image src="{{ STATIC_URL }}imgs/rmiyc1.jpg" width="500" height="200"> </image>
+        <div class="well">
+            <div id="icon-div">
+
+            </div>
+            <div id="avatar-div">
+
+            </div>
+        <!--<image src="{{ STATIC_URL }}imgs/rmiyc1.jpg" width="500" height="200"> </image> -->
+        </div>
         <div id="image-div" class="well">
             <div id="image-box">
                 {% if overall_results %}
