@@ -9,7 +9,7 @@ Version: 0.1
 """
 #from ifind.models import game_model_functions
 from django.contrib.auth.models import User
-from ifind.models.game_models import UserProfile, Achievement, Level, HighScore, Category
+from ifind.models.game_models import UserProfile, Achievement, Level, HighScore, Category, PlayerAchievement
 
 class Populate:
 
@@ -67,7 +67,12 @@ class Populate:
         HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=700).save()
 
 
-
+    def player_achievements(self):
+        jim = User.objects.filter(username='Jim')
+        ac1 = Achievement.objects.filter(name="AllCat")
+        ac2 = Achievement.objects.filter(name="UberSearcher")
+        PlayerAchievement(user=jim[0], achievement=ac1[0]).save()
+        PlayerAchievement(user=jim[0], achievement=ac2[0]).save()
 
 def main():
     populate = Populate()
@@ -76,6 +81,7 @@ def main():
     populate.levels(10,1000)
     populate.achievements()
     populate.highscores()
+    populate.player_achievements()
 
 
 
