@@ -1,0 +1,42 @@
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Retrieve me if you can!</a>
+          <div class="nav-inverse nav-collapse collapse">
+            {% if not minimal_navbar %}
+            <ul class="nav">
+              <li class="active"><a href="#about">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+            {% endif %}
+
+            <ul class="nav pull-right">
+            {% if user.is_authenticated %}
+              <li class="active"><a href="#about">Logged in as {{ user.username }}</a></li>
+              {% if not minimal_navbar %}<li><a href="/accounts/logout/">Log out</a></li>{% endif %}
+                          {% if minimal_navbar %}
+                <a class="btn btn-primary" href="#">Leave Game</a>
+              {% endif %}
+            </ul>
+            {% else %}
+            {% if minimal_navbar %}
+                <a class="btn btn-primary" href="#">Leave Game</a>
+              {% endif %}
+            {% if not minimal_navbar %}
+            <form class="navbar-form pull-right" method="post"  action="?next={{ next|default:"/" }}">
+              {% csrf_token %}
+              <input  id="id_username" class="span2" type="text" placeholder="Email">
+              <input id="id_password" class="span2" type="password" placeholder="Password">
+              <input type="submit" class="btn" value="Log in" />
+              <a class="btn btn-primary " href="/accounts/register/">register »</a>
+              {{ form.password }}
+            </form>
+            {% endif %}
+            {% endif %}
+
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
