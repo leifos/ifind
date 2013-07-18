@@ -11,7 +11,7 @@ from ifind.search import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
 from datetime import datetime
 import urllib, urllib2
-import simplejson,json
+import json
 # Create your views here.
 
 def index(request):
