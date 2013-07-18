@@ -7,12 +7,28 @@
         <h3>Profile</h3>
         {% if user_profile %}
 
-            {{user_profile.username}}
+            Viewing {{user_profile.username}}'s profile page. <br /><br />
         {% endif %}
 
-        {% if user.is_authenticated %}
-         {{ user.username }}
-          test
+        {% if view_perm %}
+         {{ user.username }} is logged in. <br />
+         level : {{level}} <br />
+         experience points : {{xp}} <br />
+
+         Highscores:
+         {% for item in highscores %}
+
+            {{item.highest_score}},
+
+         {% endfor %} <br />
+
+         Achievements:
+         {% for item in achievements %}
+               {{item.achievement.name}},
+         {% endfor %} <br />
+
+         <a href="/profiles/">edit profile</a>
+
        {% endif %}
 
 
