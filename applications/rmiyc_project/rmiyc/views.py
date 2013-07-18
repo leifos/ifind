@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from ifind.search.query import Query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
-from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
+from ifind.models.game_models import Category, Page, HighScore ,CurrentGame, UserProfile
 from ifind.models.game_avatar import GameAvatar
 from django.contrib.auth.models import User
 from ifind.search import EngineFactory
@@ -21,12 +21,20 @@ def index(request):
 
 def play(request, category_name):
         # Get the current user
-        user = request.user
-        # If the user is anonymous, then a new user will be created
-        if not user.is_authenticated():
-            users_count = User.objects.all().count()
-            user = User(username='anonymous' + str(users_count), password='test')
-            user.save()
+        username = request.user
+
+        u = User.objects.get(username=username)
+
+        if u is None:
+            u = User.objects.get(username='anon')
+
+        #####################
+
+        avatar = GameAvatar('GamePage', user=u)
+        print avatar.send()
+
+        ####################
+
 
         # Query the database for the provided category name
         c = Category.objects.get(name=category_name)
@@ -42,7 +50,7 @@ def play(request, category_name):
             return response
         else:
             # create a new game
-            gm.create_game(user, c, 0)
+            gm.create_game(u, c, 0)
             # get the game_id to assign it later to a cookie
             game_id = gm.get_game_id()
             # get the current page that is going to be displayed first to the user
@@ -59,9 +67,6 @@ def play(request, category_name):
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
-
-
-
 
             return response
 
@@ -200,5 +205,3 @@ def game_over(request):
         response = render_to_response('rmiyc/game_over.html',{'statistics': statistics}, context)
         response.delete_cookie('game_id')
         return response
-
-
