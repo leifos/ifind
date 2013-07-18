@@ -33,12 +33,15 @@ class Populate:
         jim = User(username="Jim")
         jane = User(username="Jane")
         jake = User(username="Jake")
+        anon = User(username="Anon")
+        anon.set_password("test")
         jim.set_password("test")
         jane.set_password("test")
         jake.set_password("test")
         jim.save()
         jane.save()
         jake.save()
+        anon.save()
         UserProfile(user=jim, xp=760, no_games_played=8).save()
         UserProfile(user=jane, xp=2300, no_games_played=10).save()
         UserProfile(user=jake, xp=4300, no_games_played=12).save()
@@ -62,7 +65,6 @@ class Populate:
         HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Postgraduate")[0],highest_score=20).save()
         HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="Research")[0],highest_score=800).save()
         HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=700).save()
-
 
 
 
