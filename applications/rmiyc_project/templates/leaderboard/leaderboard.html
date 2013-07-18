@@ -1,9 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Test</title>
-</head>
-<body>
-test
-</body>
-</html>
+{% extends 'rmiyc/base.html' %}
+
+{% block container %}
+   <div class="hero-unit">
+        <h2>Retrieve me if you can</h2>
+
+        <h3>High Scores</h3>
+        {% if high_scores %}
+            {% for item in high_scores %}
+            <p>{{item.rank}} <a href='/profile/{{item.username}}'>{{item.username}}</a>  {{item.score}} </p>
+            {%endfor%}
+        {% endif %}
+
+
+        <h3>Category High Scores</h3>
+        {% if cat_high_scores %}
+            {% for item in cat_high_scores %}
+              <p>{{item.rank}} <a href='/profile/{{item.username}}'>{{item.username}}</a> <a href='/play/{{item.category_url}}'>{{item.category}}</a> {{item.score}} </p>
+
+            {%endfor%}
+        {% endif %}
+
+     </div>
+{% endblock %}
+
