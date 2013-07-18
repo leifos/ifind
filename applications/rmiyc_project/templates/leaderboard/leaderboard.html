@@ -4,6 +4,15 @@
     <title>Test</title>
 </head>
 <body>
-test
+
+<div>
+     {% if high_scores %}
+            {% for item in high_scores %}
+            <p>{{item.rank}} {{item.username}} {{item.category}} {{item.score}} </p>
+            {%endfor%}
+    {% endif %}
+</div>
+
+
 </body>
 </html>
