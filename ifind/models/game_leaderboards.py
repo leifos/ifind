@@ -2,6 +2,7 @@ __author__ = 'leif'
 
 from ifind.models.game_models import HighScore, UserProfile
 from django.contrib.auth.models import User
+from django.db.models import Max, Sum, Avg
 
 # ranking based on highest total score (top x players)
 # ranking of players based on level/xp
@@ -31,17 +32,46 @@ class GameLeaderboard(object):
         leaders = list()
 
         for i, hs in enumerate(highscores):
-            leaders.append({'rank': i+1, 'username': hs.user.username, 'category': hs.category.name, 'score': hs.highest_score})
+
+            entry = {'rank': i+1, 'username': hs.user.username, 'score': hs.highest_score}
+            if hs.category:
+                entry['category'] = hs.category.name
+            leaders.append(entry)
 
         return leaders
 
 
-class HighScoresLeaderboard(GameLeaderboard):
+class CatHighScoresLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self):
         hs = HighScore.objects.all().order_by('highest_score')[:self.top]
+        return self.highscores_to_list(hs)
+
+    def __str__(self):
+        return 'Highest Category Scores'
+
+class HighScoresLeaderboard(GameLeaderboard):
+
+    def get_leaderboard(self):
+        highscores = HighScore.objects.values('user').annotate(highest_score=Sum('highest_score'))
+        print highscores
+        leaders = list()
+
+        for i, hs in enumerate(highscores):
+            print hs
+            username = User.objects.get(id=hs['user'])
+
+            entry = {'rank': i+1, 'username': username, 'score': hs['highest_score']}
+            leaders.append(entry)
+
+        return leaders
+
+
+
+
+        print hs
         return self.highscore_to_list(hs)
 
-
-
+    def __str__(self):
+        return 'Highest Overall Scores'
 
