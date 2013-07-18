@@ -93,13 +93,17 @@ function search_success(data, textStatus, jqXHR)
     $('#query').val("");
     if(obj.score != 0)
     {
-        $('#skip').html("<i class='icon-forward'></i> take points");
+        $('#skip').html("<i class='icon-forward icon-white'></i> take points");
+        $('#skip').removeClass("btn-error").addClass("btn-success");
         $('#search').html('<i class="icon-search icon-white"></i> search again');
+        $('#content').removeClass("alert-error").addClass("alert-success");
     }
     else
     {
-        $('#skip').html("<i class='icon-forward'></i> skip");
+        $('#skip').html("<i class='icon-forward icon-white'></i> skip");
+        $('#skip').removeClass("btn-success").addClass("btn-danger");
         $('#search').html('<i class="icon-search icon-white"></i> search');
+        $('#content').removeClass("alert-success").addClass("alert-error");
     }
 }
 
@@ -119,7 +123,7 @@ function display_next_page_success(data, textStatus, jqXHR)
 
     $('#search-results-ol').html("");
     $('#score-div').html("");
-    $('#skip').html("<i class='icon-forward'></i> skip");
+    $('#skip').html("<i class='icon-forward icon-white'></i> skip");
     $('#search').html('<i class="icon-search icon-white"></i> search');
     $('#image-box').hide();
     $('#image-div').html("<image src= '" + obj.screenshot + "' height='1000' width='1000'> </image>");
