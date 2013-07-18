@@ -1,5 +1,8 @@
 $(function()
 {
+    //$('#fade-away').flyOffPage({
+    //    duration: 400 // 400 milliseconds (0.4 seconds)
+    //});
     window.onbeforeunload = confirmExit;
     function confirmExit()
     {
@@ -76,7 +79,6 @@ function search_success(data, textStatus, jqXHR)
         window.onbeforeunload= null;
         return false;
     }
-
     var obj_list = jQuery.parseJSON(obj.results);
     var html_string = ""
     $(obj_list).each(function()
@@ -87,7 +89,6 @@ function search_success(data, textStatus, jqXHR)
     $('#num-queries').html("<strong>no queries issued for this page : " + obj.no_of_queries_issued_for_current_page + "</strong>");
     $('#game_updates').html("<strong> round no : " +  obj.no_round + "  <br /> " +
         "remaining rounds : " + obj.no_remaining_rounds + "</strong>");
-
     $('#search-results-ol').html(html_string);
     $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
     $('#query').val("");
@@ -109,6 +110,7 @@ function search_success(data, textStatus, jqXHR)
 
 function display_next_page_success(data, textStatus, jqXHR)
 {
+    $('#skip').removeClass("btn-success").addClass("btn-danger");
     var obj = jQuery.parseJSON(data);
     if (obj.is_game_over == 1)
     {
@@ -116,11 +118,9 @@ function display_next_page_success(data, textStatus, jqXHR)
         window.location ="/rmiyc/game_over";
         return false;
     }
-
     $('#num-queries').html("<strong>no queries issued for this page : " + obj.no_of_queries_issued_for_current_page + "</strong>");
     $('#game_updates').html("<strong>round no : " +  obj.no_round + "  <br /> " +
         "remaining rounds : " + obj.no_remaining_rounds + "</strong>");
-
     $('#search-results-ol').html("");
     $('#score-div').html("");
     $('#skip').html("<i class='icon-forward icon-white'></i> skip");

@@ -5,6 +5,7 @@
 {% block container %}
 
      <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
+     <!-- <script type="text/javascript" src="{{ STATIC_URL }}javascript/flyoffpage.min.js"></script> -->
      <div class="span6">
         <div class="well">
             <div id="icon-div">
@@ -45,7 +46,7 @@
             <br />
             <!-- style="background: #663300"  -->
             <a class="btn btn-primary" id="search" ><i class="icon-search icon-white"></i> search</a>  &nbsp
-            <a class="btn btn-error" type="button" id="skip"><i class="icon-forward icon-white"></i> skip</a>
+            <a class="btn btn-danger"  id="skip"><i class="icon-forward icon-white"></i> skip</a>
         </div>
         <div id="content"  class="alert alert-success">
             <div id ="score-div">
@@ -56,6 +57,11 @@
             <div id="search-results-div">
                 <ol id="search-results-ol">
                 </ol>
+            </div>
+            <div id="fade-away" class="well">
+                Hello Hello Hello Hello Hello Hello Hello Hello Hello
+                Hello Hello Hello Hello Hello Hello Hello Hello Hello
+                Hello Hello Hello Hello Hello Hello Hello Hello Hello
             </div>
         </div>
     </div>
