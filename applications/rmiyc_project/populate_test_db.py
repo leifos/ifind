@@ -30,9 +30,12 @@ class Populate:
             points+=increase
 
     def players(self):
-        jim = User(username="Jim", password='Jim')
-        jane = User(username="Jane", password='Jane')
-        jake = User(username="Jake", password='Jake')
+        jim = User(username="Jim")
+        jane = User(username="Jane")
+        jake = User(username="Jake")
+        jim.set_password("test")
+        jane.set_password("test")
+        jake.set_password("test")   
         jim.save()
         jane.save()
         jake.save()

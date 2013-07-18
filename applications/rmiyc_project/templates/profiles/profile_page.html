@@ -1,0 +1,22 @@
+{% extends 'rmiyc/base.html' %}
+
+{% block container %}
+   <div class="hero-unit">
+        <h2>Retrieve me if you can</h2>
+
+        <h3>Profile</h3>
+        {% if user_profile %}
+
+            {{user_profile.username}}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+         {{ user.username }}
+          test
+       {% endif %}
+
+
+     </div>
+{% endblock %}
+
+
