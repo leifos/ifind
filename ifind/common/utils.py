@@ -15,7 +15,7 @@ def read_in_urls(filename):
         # Strip urls from spaces
         url = line.strip()
         # validate the url
-        if checkUrl(url):
+        if check_url(url):
             url_list.append(url)
 
     f.close()
@@ -49,7 +49,7 @@ def convert_url_to_filename(url):
     return filename
 
 
-def checkUrl(url):
+def check_url(url):
     '''
     :param url: takes a url string
     :return: true if the url exists on the web
@@ -69,5 +69,32 @@ def checkUrl(url):
     return resp.status < 400
 
 
+def encode_string_to_url(str):
+    """ takes as string (like a name) and replaces the spaces for underscores to make a string for a url
+    :param str: string
+    :return: encoded string with underscores for spaces
+    >>> encode_string_to_url('hello')
+    'hello'
+    >>> encode_string_to_url('hello world')
+    'hello_world'
+    >>> encode_string_to_url(' hello world ')
+    'hello_world'
+
+    """
+    s = str.strip()
+    return s.replace(' ', '_')
+
+
+
+def decode_url_to_string(urlstr):
+    """ takes a string (which has been part of a url) that has previously been encoded, and converts it back to a normal string
+    :param urlstr: takes part of a urlstr that represents a string name
+    :return: the string without the underscores
+    >>> decode_url_to_string('hello_world')
+    'hello world'
+    """
+    return urlstr.replace('_', ' ')
+
 if __name__ == '__main__':
-    print "cock"
+    import doctest
+    doctest.testmod()

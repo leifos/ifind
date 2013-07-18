@@ -1,0 +1,24 @@
+{% extends 'rmiyc/base.html' %}
+
+{% block container %}
+   <div class="hero-unit">
+        <h2>Retrieve me if you can</h2>
+
+        <h3>Profile</h3>
+        {% if user_profile %}
+
+            Viewing {{user_profile.username}}'s profile page. <br /><br />
+        {% endif %}
+
+        {% if view_perm %}
+         {{ user.username }} is logged in. <br />
+         level : {{level}} <br />
+         experience points : {{xp}}
+
+       {% endif %}
+
+
+     </div>
+{% endblock %}
+
+
