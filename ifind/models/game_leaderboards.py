@@ -44,8 +44,8 @@ class GameLeaderboard(object):
 class CatHighScoresLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self):
-        hs = HighScore.objects.all().order_by('highest_score')[:self.top]
-        return self.highscores_to_list(hs)
+        hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
+        return self.highscore_to_list(hs)
 
     def __str__(self):
         return 'Highest Category Scores'
@@ -53,7 +53,7 @@ class CatHighScoresLeaderboard(GameLeaderboard):
 class HighScoresLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self):
-        highscores = HighScore.objects.values('user').annotate(highest_score=Sum('highest_score'))
+        highscores = HighScore.objects.values('user').annotate(highest_score=Sum('highest_score')).order_by('-highest_score')[:self.top]
         print highscores
         leaders = list()
 
@@ -66,11 +66,6 @@ class HighScoresLeaderboard(GameLeaderboard):
 
         return leaders
 
-
-
-
-        print hs
-        return self.highscore_to_list(hs)
 
     def __str__(self):
         return 'Highest Overall Scores'
