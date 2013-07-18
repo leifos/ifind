@@ -16,7 +16,6 @@ import simplejson,json
 
 
 def index(request):
-
         context = RequestContext(request, {})
         return render_to_response('rmiyc/base.html', context)
 
@@ -104,17 +103,16 @@ def search(request):
         user = request.user
         result_list = []
         if request.COOKIES.has_key('game_id'):
-            context = RequestContext(request, {})
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
-
-            if request.method == 'POST':
-                query = request.POST['query'].strip()
+            if request.method == 'GET':
+                query = request.GET['query'].strip()
                 #Augement query
                 query += ' site:gla.ac.uk '
             if query:
+
                 result_list = gm.get_search_results(query)
 
             gm.handle_query(query)
@@ -181,6 +179,7 @@ def display_next_page(request):
             # redirect to play view
             print 'the game has not been created yet'
             return HttpResponseRedirect('/rmiyc/cat_picker/')
+
 
 def game_over(request):
     print 'I am a cookie and I am dying because the game is over'
