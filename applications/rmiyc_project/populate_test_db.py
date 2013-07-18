@@ -8,10 +8,16 @@ Date:   18/07/2013
 Version: 0.1
 """
 #from ifind.models import game_model_functions
+from rmiyc_project import settings
+from django.core.management import setup_environ
+setup_environ(settings)
+
 from django.contrib.auth.models import User
 from ifind.models.game_models import UserProfile, Achievement, Level, HighScore, Category
 
-class Populate:
+
+
+class Populate(object):
 
     def achievements(self):
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')

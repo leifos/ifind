@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^users/', include('rmiyc.urls')),
     url(r'^leaderboard/', include('leaderboard.urls')),
-    url(r'^users/(?P<profile_page>\w+)', include('profiles.urls'), name='profile_page'),
+    #url(r'^users/(?P<username>\w+)', include('profiles.urls'), name='profile_page'),
 
     url(r'', include('rmiyc.urls')),
 
