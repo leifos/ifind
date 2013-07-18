@@ -16,7 +16,7 @@ import json
 
 def index(request):
         context = RequestContext(request, {})
-        return render_to_response('rmiyc/base.html', context)
+        return render_to_response('rmiyc/index.html', context)
 
 def play(request, category_name):
         # Get the current user
