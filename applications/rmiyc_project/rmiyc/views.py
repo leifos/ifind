@@ -16,7 +16,7 @@ import json
 
 def index(request):
         context = RequestContext(request, {})
-        return render_to_response('rmiyc/base.html', context)
+        return render_to_response('rmiyc/index.html', context)
 
 def play(request, category_name):
         # Get the current user
@@ -38,7 +38,6 @@ def play(request, category_name):
             response = HttpResponseRedirect('/rmiyc/pick_category/')
             # delete the cookie
             response.delete_cookie('game_id')
-            return response
         else:
             # create a new game
             gm.create_game(user, c, 0)
@@ -54,11 +53,12 @@ def play(request, category_name):
                     'no_of_queries_issued_for_current_page': gm.get_no_of_queries_issued_for_current_page(),
                     'no_remaining_rounds': gm.get_remaining_rounds()
             })
-            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
+            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results, 'minimal_navbar': True}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
-            return response
+
+        return response
 
 
 def pick_category(request):

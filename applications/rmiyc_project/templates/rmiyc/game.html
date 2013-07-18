@@ -1,24 +1,29 @@
 {% extends 'rmiyc/base.html' %}
+{% block title %}
+        Game is on!
+{% endblock %}
 {% block container %}
-    <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
+     <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
      <div class="span6">
-        <image src="{{ STATIC_URL }}imgs/rmiyc.jpg" width="400" height="200"> </image>
+            <image src="{{ STATIC_URL }}imgs/rmiyc.jpg" width="400" height="25"> </image>
         <br />
-        <div id="image-div" >
+        <div id="image-div" class="well">
             <div id="image-box">
                 {% if overall_results %}
                 {% for item in overall_results %}
-                    <image src='{{item.page}}' width="1000" height="1000"> </image>
+                    <image src='{{item.page}}' class ="img-rounded" width="1000" height="1000"> </image>
                 {% endfor %}
                 {% endif %}
             </div>
         </div>
     </div>
-    <div class="span4">
+    <div class="span5">
         <br />
         <br />
         <br />
-        <div style="border:3px dotted #663300; padding:10px 10px 10px 10px;  background:#FFFFFF; width:250px; border-radius:25px;">
+        <!-- <div style="border:3px dotted #663300; padding:10px 10px 10px 10px;  background:#FFFFFF; width:250px; border-radius:25px;">
+        -->
+        <div class="well text-warning">
             {% if user.is_authenticated %}
                 <strong>Hello {{ user.username }} ! <br />
                 score : 67788088 </strong>
@@ -27,27 +32,32 @@
                 score : 67788088 </strong>
             {% endif %}
         </div>
-        <br />
-        <div style="border:3px dotted #663300; padding:10px 10px 10px 10px;  background:#FFFFFF; width:250px; border-radius:25px;">
-        <div id="game_updates" style="font: Harrington">
-            <strong> round no : 1 <br />
-            remaining rounds : 3 </strong>
+        <div class="well text-info">
+            <div id="game_updates" >
+                <strong> round no : 1 <br />
+                remaining rounds : 3 </strong>
+            </div>
+            <div id="num-queries">
+                 <strong>queries issued for this page : 0 </strong>
+            </div>
         </div>
-        <div id="num-queries">
-             <strong>queries issued for this page : 0 </strong>
-        </div>
-        </div>
-        <br />
+        <!--
          <image src="{{ STATIC_URL }}imgs/query.jpg" width="300" height="200"> </image>
+        -->
+        <!--
+         style="border-color: #663300 ;background-color: #FFFFFF"
+        -->
          <!--<p style="color: #663300"><strong>Enter your query here ! </strong> <p>-->
-        <div id ="search-div">
+        <div id ="search-div" class="well text-info">
+            <h3>Enter your query here ! </h3>
             <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="e.g: aerospace systems" />
             <br />
             <br />
-            <a class="btn btn-primary btn-large" id="search" ><i class="icon-search icon-white"></i> search</a>  &nbsp &nbsp
-            <a class="btn btn-large" type="button" id="skip"><i class="icon-forward"></i> skip</a>
+            <!-- style="background: #663300"  -->
+            <a class="btn btn-primary" id="search" ><i class="icon-search icon-white"></i> search</a>  &nbsp
+            <a class="btn" type="button" id="skip"><i class="icon-forward"></i> skip</a>
         </div>
-        <div id="content">
+        <div id="content"  class="well">
             <div id ="score-div">
             </div>
             <div id="search-results-div">
