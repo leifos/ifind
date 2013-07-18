@@ -10,6 +10,7 @@ from ifind.models.game_avatar import GameAvatar
 from django.contrib.auth.models import User
 from ifind.search import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
+from ifind.common.utils import encode_string_to_url, decode_url_to_string
 from datetime import datetime
 import urllib, urllib2
 import json
@@ -21,17 +22,22 @@ def index(request):
 
 def play(request, category_name):
         # Get the current user
-        user = request.user
+        context = RequestContext(request, {})
+
+        avatar = GameAvatar('GamePage')
+
+        u = request.user
         # If the user is anonymous, then a new user will be created
-        if not user.is_authenticated():
-            users_count = User.objects.all().count()
-            user = User(username='anonymous' + str(users_count), password='test')
-            user.save()
+        if not u.is_authenticated():
+            u = User.objects.get(username='anon')
+        else:
+            avatar.update(user=u)
 
         # Query the database for the provided category name
-        c = Category.objects.get(name=category_name)
+
+        c = Category.objects.get(name=decode_url_to_string(category_name))
+
         gm = RMIYCMechanic()
-        context = RequestContext(request, {})
         # This view shall be called when a new game is to start
         # Thus, there should be no cookie containing a game_id
         if request.COOKIES.has_key('game_id'):
@@ -42,12 +48,17 @@ def play(request, category_name):
             return response
         else:
             # create a new game
-            gm.create_game(user, c, 0)
+            gm.create_game(u, c, 0)
             # get the game_id to assign it later to a cookie
             game_id = gm.get_game_id()
             # get the current page that is going to be displayed first to the user
             p = gm.get_current_page()
             # initiate the array which will hold all the result list, the page that is going to be shown and the score
+
+            avatar.update(current_game=gm.game)
+
+            msg = avatar.send()
+
             overall_results = []
             overall_results.append({
                     'result_list': [], 'page': p.screenshot, 'score': 0 ,
@@ -55,7 +66,7 @@ def play(request, category_name):
                     'no_of_queries_issued_for_current_page': gm.get_no_of_queries_issued_for_current_page(),
                     'no_remaining_rounds': gm.get_remaining_rounds()
             })
-            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
+            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results, 'avatar':msg}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
@@ -67,46 +78,28 @@ def play(request, category_name):
 
 
 def pick_category(request):
-        print 'pick category has been called'
         context = RequestContext(request, {})
         scores=[]
 
+        #TODO(leifos): filter this
+        cats = Category.objects.filter(is_shown=True)
 
-        cats = Category
+        for c in cats:
+            c.score = 0
+            c.url = encode_string_to_url(c.name)
 
         avatar = GameAvatar('CategoryPage')
         if request.user:
             avatar.update(user=request.user)
 
         if request.user.is_authenticated():
-            postgraduate_score = 0
-            undergraduate_score = 0
-            research_score = 0
-            alumni_score = 0
-            student_life_score = 0
-            about_glasgow_score = 0
-            hs_list = HighScore.objects.filter(user=u)
+            #TODO(leifos):  get the users high score and update the cats
+            hs = HighScore.objects.filter(user=request.user)
 
-            for item in hs_list:
-                if item.category.name == 'postgraduate':
-                    postgraduate_score = item.highest_score
-                if item.category.name == 'undergraduate':
-                    undergraduate_score = item.highest_score
-                if item.category.name == 'research':
-                    research_score = item.highest_score
-                if item.category.name == 'alumni':
-                    alumni_score = item.highest_score
-                if item.category.name == 'student_life':
-                    student_life_score = item.highest_score
-                if item.category.name == 'about_glasgow':
-                    about_glasgow_score = item.highest_score
-            scores.append({'postgraduate': postgraduate_score, 'undergraduate': undergraduate_score, 'research': research_score,
-                       'about_glasgow': about_glasgow_score, 'alumni': alumni_score, 'student_life': student_life_score})
-        else:
-            scores.append({'postgraduate': 0, 'undergraduate': 0, 'research': 0,
-                       'about_glasgow': 0, 'alumni': 0, 'student_life': 0})
 
-        return render_to_response('rmiyc/cat_picker.html', {'scores': scores}, context)
+        msg = avatar.send()
+
+        return render_to_response('rmiyc/cat_picker.html', {'cats': cats, 'avatar': msg}, context)
 
 
 def search(request):
