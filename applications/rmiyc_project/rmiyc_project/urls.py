@@ -18,5 +18,9 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^users/', include('rmiyc.urls')),
+    url(r'^leaderboard/', include('leaderboard.urls')),
+    url(r'^profile/', include('profiles.urls')),
+
     url(r'', include('rmiyc.urls')),
+
 )

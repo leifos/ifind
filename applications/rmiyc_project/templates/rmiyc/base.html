@@ -43,57 +43,10 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Retrieve me if you can!</a>
-          <div class="nav-inverse nav-collapse collapse  ">
-            <ul class="nav">
-              <li class="active"><a href="#about">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-            {% if user.is_authenticated %}
-              <ul class="nav pull-right">
-              <li class="active"><a href="#about">Welcome {{ user.username }} !</a></li>
-              <li><a href="/accounts/logout/">Log out</a></li>
-            </ul>
-            {% else %}
-            <form class="navbar-form pull-right" method="post"  action="?next={{ next|default:"/" }}">
-              {% csrf_token %}
-              <input  id="id_username" class="span2" type="text" placeholder="Email">
-              <input id="id_password" class="span2" type="password" placeholder="Password">
-              <input type="submit" class="btn" value="Log in" />
-              <a class="btn btn-primary " href="/accounts/register/">register »</a>
-              {{ form.password }}
-            </form>
-            {% endif %}
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+    {% include "rmiyc/navbar.html" %}
 
     <div class="container">
      {% block container %}
-     <div class="hero-unit">
-        <h2>Retrieve me if you can</h2>
-        <p>"Retrieve me if you can" is a fun game where you will be shown a web page and you have to type in a query to retrieve it. <br />
-            The higher rank in the search results you retrieve it, the more rewards you get!
-            <br />
-            <a class="btn btn-warning btn-large" href="/rmiyc/how_to_play/">how to play? »</a></p>
-
-        {% if user.is_authenticated %}
-            <p><a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play »</a></p>
-        {% else %}
-            <p>Welcome, new user. Please log in.</p>
-            <p><a class="btn btn-primary btn-large" href="/accounts/login/">login »</a></p>
-        {% endif %}
-     </div>
      {% endblock %}
     </div> <!-- /container -->
 
