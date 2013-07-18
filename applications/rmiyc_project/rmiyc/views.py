@@ -6,6 +6,7 @@ from ifind.search.query import Query
 from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
 from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
+from ifind.models.game_avatar import GameAvatar
 from django.contrib.auth.models import User
 from ifind.search import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
@@ -54,10 +55,14 @@ def play(request, category_name):
                     'no_of_queries_issued_for_current_page': gm.get_no_of_queries_issued_for_current_page(),
                     'no_remaining_rounds': gm.get_remaining_rounds()
             })
-            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results, 'minimal_navbar': True}, context)
+            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
+
+
+
+
             return response
 
 
