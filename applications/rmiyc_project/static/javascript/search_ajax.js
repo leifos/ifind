@@ -90,8 +90,8 @@ function search_success(data, textStatus, jqXHR)
     $('#game_updates').html("<strong> round no : " +  obj.no_round + "  <br /> " +
         "remaining rounds : " + obj.no_remaining_rounds + "</strong>");
     $('#search-results-ol').html(html_string);
-    $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
-    $('#avatar-div').html("<h2>" + obj.avatar + "</h2>")
+    $('#score-div').html("<h4>Query scored :" + obj.score + "</h4>");
+    $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
     $('#query').val("");
     if(obj.score != 0)
     {

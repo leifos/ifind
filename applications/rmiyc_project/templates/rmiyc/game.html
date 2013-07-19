@@ -12,7 +12,7 @@
 
             </div>
             <div id="avatar-div">
-                <h2>{{avatar}}</h2>
+                <h3>{{avatar}}</h3>
             </div>
         <!--<image src="{{ STATIC_URL }}imgs/rmiyc1.jpg" width="500" height="200"> </image> -->
         </div>
@@ -50,14 +50,15 @@
         </div>
         <div id="content"  class="alert alert-success">
             <div id ="score-div">
-                <h4>Score:   your score will be displayed here <br />
+                <h4>Query scored:   your score will be displayed here <br />
                     Bonus:   tour bonus will be displayed here
                 </h4>
             </div>
             <br />
-            <h4>Search results:</h4>
+            <h4>Top 3 search results:</h4>
+            <br />
             <div id="search-results-div">
-                <ol id="search-results-ol" class="well well-large">
+                <ol id="search-results-ol" class="well well-large" style="overflow: auto;">
                 </ol>
             </div>
         </div>

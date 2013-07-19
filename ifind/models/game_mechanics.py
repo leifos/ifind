@@ -125,7 +125,7 @@ class GameMechanic(object):
         return self.get_max_rounds() - self.get_round_no()
 
     def get_search_results(self, query):
-        return self._run_query(query)
+        return self._run_query(query,top=3)
 
     def get_game_id(self):
         return self.game.id
@@ -242,14 +242,14 @@ class GameMechanic(object):
         score = self._score_rank(rank, self.game.bonus)
         return score
 
-    def _run_query(self, query):
+    def _run_query(self, query ,top=10):
         """ constructs ifind.search.query, and issues it to the search_engine
 
         :param query:
         :return: ifind.search.response
         """
         # construct ifind.search.query Query
-        iquery = Query(query, result_type="web")
+        iquery = Query(query, result_type="web",top=top)
 
         # issue query to self.search_engine
         iresponse = self.search_engine.search(iquery)

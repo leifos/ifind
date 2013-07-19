@@ -5,15 +5,16 @@
 {% block container %}
     <div id="game-results">
         <div class="hero-unit">
-            <h1> Game is over </h1>
+            <p class="text-error"><h1> Game is over </h1></p>
             {% if statistics %}
                 {% for item in statistics %}
-
-                <p> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
-                You have <strong> issued : {{item.no_queries}} queries </strong>, {{item.no_successful_queries}} were successful in retrieving the pages. <br />
-                You have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
-                <strong>Well done! </strong>
-                </p>
+                <div class="alert alert-success">
+                    <p> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
+                    You have <strong> issued : {{item.no_queries}} queries </strong>, {{item.no_successful_queries}} were successful in retrieving the pages. <br />
+                    You have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
+                    <strong>Well done! </strong>
+                    </p>
+                </div>
                 {% endfor %}
             {% endif %}
             <p><a class="btn btn-primary btn-large" href="/rmiyc/pick_category/">Play again? »</a></p>
