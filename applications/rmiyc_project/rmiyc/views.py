@@ -211,7 +211,7 @@ def game_over(request):
         statistics =[]
         statistics.append({'score': gm.get_current_score(), 'no_queries':gm.get_no_of_queries_issued(),
                            'no_successful_queries': gm.get_no_of_successful_queries_issued(),
-                           'no_round': gm.get_round_no(), 'no_successful_round': gm.get_no_rounds_completed()})
+                           'no_round': gm.get_final_round_no(), 'no_successful_round': gm.get_no_rounds_completed()})
         response = render_to_response('rmiyc/game_over.html',{'statistics': statistics}, context)
         response.delete_cookie('game_id')
         return response

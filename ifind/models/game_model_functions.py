@@ -23,7 +23,7 @@ def get_page_list(game):
         return []
 
 
-def get_category(category_name, desc='', icon='', append=False):
+def get_category(category_name, icon, desc ,append=False):
     """getter/setter function which creates or gets the category from the model
 
     :param category_name: string
@@ -78,7 +78,7 @@ def populate_pages(url_list, category, halved_screen_shot=False):
         print 'Page title= ' + p.title + ' has been saved!'
 
 
-def populate(file_name, category_name, append, halved_screen_shot):
+def populate(file_name, category_name, append, halved_screen_shot, icon='', desc=''):
     """
 
     :param file_name:
@@ -95,7 +95,7 @@ def populate(file_name, category_name, append, halved_screen_shot):
     url_list = read_in_urls(file_name)
     # check to see if the category exists
     # create the category in the models/db
-    c = get_category(category_name)
+    c = get_category(category_name,icon,desc)
     #For each url in the url_list
         # fetch the screen-shot
         # get the title

@@ -11,7 +11,7 @@ from configuration import TEMP_PATH
 from configuration import GAME_DB
 from configuration import MEDIA_ROOT
 from configuration import STATIC_PATH
-from configuration import  MEDIA_URL
+from configuration import MEDIA_URL
 
 
 ADMINS = (

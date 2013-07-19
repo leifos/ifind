@@ -9,7 +9,6 @@ def read_in_urls(filename):
     # Open the file with read only permit
     f = open(filename, 'r')
     # Read the first line
-    print 'file is opened'
     url_list = []
     for line in f:
         # Strip urls from spaces
@@ -19,7 +18,7 @@ def read_in_urls(filename):
             url_list.append(url)
 
     f.close()
-    print 'file is closed'
+    print 'URLs has been read successfully, the next step is taking the screenshots'
     return url_list
 
 
