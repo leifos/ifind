@@ -1,38 +1,52 @@
 {% extends 'rmiyc/base.html' %}
 
 {% block container %}
-   <div class="hero-unit">
+    <div class="hero-unit">
         <h2>Retrieve me if you can</h2>
-
         <h3>Profile</h3>
         {% if user_profile %}
-
             Viewing {{user_profile.username}}'s profile page. <br /><br />
         {% endif %}
 
         {% if view_perm %}
-         {{ user.username }} is logged in. <br />
-         level : {{level}} <br />
-         experience points : {{xp}} <br />
-
-         Highscores:
-         {% for item in highscores %}
-
-            {{item.highest_score}},
-
-         {% endfor %} <br />
-
-         Achievements:
-         {% for item in achievements %}
-               {{item.achievement.name}},
-         {% endfor %} <br />
-
-         <a href="/profiles/">edit profile</a>
+            {{ user.username }} is logged in. <br />
+            level : {{level}} <br />
+            experience points : {{xp}} <br />
+            age: {{age}} <br />
+            <a href="/profiles/">edit profile</a>
 
        {% endif %}
+    </div>
 
+    <div class="well">
+        <ul class="thumbnails centre text-center">
+        {% for item in highscores %}
+            <li class="span3.5">
+            <div>
+            <h3>{{item.category.name}}</h3>
+            <img src="{{item.category.icon}}" class ="img-rounded" alt="{{item.category.name}}" height="100" width="100">
+            <p>{{item.highest_score}}</p>
+            </div>
+            </li>
+        {% endfor %}
+        </ul>
 
-     </div>
+    </div>
+    <div class="well">
+        <ul class="thumbnails centre text-center">
+        {% for item in achievements %}
+            <li class="span3.5">
+            <div>
+            <h3>{{item.achievement.name}}</h3>
+            <img src= "{{murl}}{{item.achievement.badge_icon}}" class ="img-rounded" alt="{{item.achievement.name}}" height="100" width="100">
+            <p>{{item.}}</p>
+            </div>
+            </li>
+        {% endfor %}
+        </ul>
+
+    </div>
+
 {% endblock %}
 
 

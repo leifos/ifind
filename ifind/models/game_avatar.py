@@ -80,14 +80,13 @@ class IndexPage(Handler):
 
     UNIVERSALS = ["Fancy a game?",
                   "Play a game!",
-                  "Go for it!"]
+                  "Welcome :)"]
 
     def _get_anonymous_message(self):
 
         # Assumptions: user=None, current_game=None
 
-        messages = ["Why don't you try a game?",
-                    "Check out how to play!",
+        messages = ["Check out how to play!",
                     "Have you registered an account yet?",
                     "Welcome to Retrieve Me if You Can!"]
 
@@ -118,31 +117,47 @@ class CategoryPage(Handler):
 
     """
 
+    UNIVERSALS = ["Pick a category...",
+                  "Choose a category..."]
+
     def _get_anonymous_message(self):
 
-        # Assumptions: user=None, current_game=None
+        # user=None, current_game=None
 
-        # "If you log in/register you can see your high scores for every category!"
-        # "Pick a category!"
+        messages = ["That first category looks good...",
+                    "Log in to see your high scores!",
+                    "Any category will do..."]
 
-        messages = ["Pick a category!",
-                    "The first one looks good...",
-                    "Log in to see your high scores for each category!",
-                    "Choose a category!"]
+        messages += self.UNIVERSALS
 
         return random.choice(messages)
 
     def _get_user_message(self):
 
-        # Assumptions: user, current_game=None
+        # user, current_game=None
 
-        # "Pick a category!"
-        # "You've not played any games in X category!"
-        # "You've played A LOT of games in X category!"
-        # "Been ages since you played!"
+        messages = []
 
-        return "Pick a category"
+        #######  Recommend lesser/low scored categories. ##########
 
+        from ifind.models.game_models import HighScore
+
+        high_scores = HighScore.objects.filter(user=self.user).order_by('highest_score')
+
+        if high_scores:
+
+            category = high_scores[0].category
+            score = high_scores[0].highest_score
+
+            messages.append('Your {} score is awfully low...'.format(category))
+            messages.append('Only got {1} points for {0}?'.format(category, score))
+            messages.append('Scared of trying {0}, {1}?'.format(category, self.user))
+
+        ###########################################################
+
+        messages += self.UNIVERSALS
+
+        return random.choice(messages)
 
 class GamePage(Handler):
     """
@@ -178,10 +193,13 @@ class Search(Handler):
 
         # Assumptions: user, current_game
 
-        return "Authorised legit dude has searched!"
+        if self.current_game.last_query_score == 0:
+            # add to message list
 
+        # if their score was above 900:
+            # add to message list ("That was pretty good!")
 
-
+            return "You're shite mate"
 
 
 class GameAvatar (object):

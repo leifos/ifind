@@ -3,14 +3,23 @@ from django.contrib.auth.models import User
 import imaplib
 import os
 import sys
+from django_countries import CountryField
 
 sys.path.append(os.getcwd())
 from configuration import APP_NAME
 from configuration import UPLOAD_DIR
 
+GENDER_CHOICES = (
+    ('M', 'Male'),
+    ('F', 'Female'),
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
+    age = models.IntegerField(default=1)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    school = models.CharField(max_length=128)
+    country = CountryField()
+    city = models.CharField(max_length=128)
     xp = models.IntegerField(default=0,blank=True)
     level = models.IntegerField(default=0,blank=True)
     xp_to_next_level = models.IntegerField(default=1,blank=True)
