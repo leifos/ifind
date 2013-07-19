@@ -20,6 +20,7 @@ def profile_page(request, username):
         return render_to_response('profiles/profile_page.html', {'user_profile': u,
                                                                  'profile': user_profile,
                                                                  'level':level,
+                                                                 'age':user_profile.age,
                                                                  'achievements': achievements,
                                                                  'view_perm': view_permission,
                                                                  'highscores': highscores,
