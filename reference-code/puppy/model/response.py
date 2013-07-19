@@ -61,7 +61,6 @@ class Response(object):
     items = section.findall("{0}Item".format(ns))
     
     for item in items:
-      # TODO: parse additional metadata (e.g. wikipedia includes thumbnails)
       title = item.find("{0}Text".format(ns)).text
       summary = item.find("{0}Description".format(ns)).text
       link = item.find("{0}Url".format(ns)).text
