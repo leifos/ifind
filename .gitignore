@@ -9,6 +9,8 @@ tester.py
 .idea
 *.pyc
 
+.DS_Store
+
 *~
 *.swp
 *.pot
