@@ -89,7 +89,7 @@ def pick_category(request):
             c.url = encode_string_to_url(c.name)
 
         avatar = GameAvatar('CategoryPage')
-        if request.user != 'AnonyMousUser':
+        if request.user != 'AnonymousUser':
             print request.user
             avatar.update(user=request.user)
 
