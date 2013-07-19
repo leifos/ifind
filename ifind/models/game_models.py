@@ -8,6 +8,7 @@ sys.path.append(os.getcwd())
 from configuration import APP_NAME
 from configuration import UPLOAD_DIR
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     xp = models.IntegerField(default=0,blank=True)
