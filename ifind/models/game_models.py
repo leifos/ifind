@@ -12,6 +12,7 @@ from configuration import UPLOAD_DIR
 GENDER_CHOICES = (
     ('M', 'Male'),
     ('F', 'Female'),
+)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
