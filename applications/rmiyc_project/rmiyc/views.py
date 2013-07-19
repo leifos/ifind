@@ -89,11 +89,11 @@ def pick_category(request):
             c.url = encode_string_to_url(c.name)
 
         avatar = GameAvatar('CategoryPage')
-        if request.user:
+        if request.user != 'AnonyMousUser':
+            print request.user
             avatar.update(user=request.user)
 
         if request.user.is_authenticated():
-            #TODO(leifos):  get the users high score and update the cats
             hs = HighScore.objects.filter(user=request.user)
 
 
@@ -111,7 +111,7 @@ def search(request):
         if user != 'anon':
             avatar.update(user=user)
 
-        msg = avatar.get()
+
 
 
         if request.COOKIES.has_key('game_id'):
@@ -129,12 +129,16 @@ def search(request):
 
             gm.handle_query(query)
             gm.update_game()
+
+            avatar.update(current_game=gm.game)
+
             # get the last query score
             objects = []
             for item in result_list:
                 objects.append({"title": item.title, "link": item.url, "summary": item.summary})
             json_objects = json.dumps(objects)
             s = gm.get_last_query_score()
+            msg = avatar.get()
             if gm.is_game_over():
                 Json_results = {
                     "results": json_objects, "score": s, "is_game_over": 1,
