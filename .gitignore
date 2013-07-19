@@ -1,6 +1,7 @@
 # Misc
 *.keys
 *.db
+*.png
 
 keys.py
 tester.py

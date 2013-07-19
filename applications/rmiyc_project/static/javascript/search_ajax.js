@@ -91,6 +91,7 @@ function search_success(data, textStatus, jqXHR)
         "remaining rounds : " + obj.no_remaining_rounds + "</strong>");
     $('#search-results-ol').html(html_string);
     $('#score-div').html("<h4>your score is :" + obj.score + "</h4>");
+    $('#avatar-div').html("<h2>" + obj.avatar + "</h2>")
     $('#query').val("");
     if(obj.score != 0)
     {
