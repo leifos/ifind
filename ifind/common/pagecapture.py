@@ -54,8 +54,11 @@ class PageCapture:
         # check the url string. does it have http:// or not?
         if not self._check_url(url):
             return False
+        try:
+            self.driver.get(url)
+        except ValueError:
+            return False
 
-        self.driver.get(url)
         #set page_url to what the driver returns, a redirect might occur
         #upon request and url and driver.current_url might not be the same
         page_url = self.driver.current_url

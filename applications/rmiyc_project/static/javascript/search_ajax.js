@@ -81,7 +81,8 @@ function search_success(data, textStatus, jqXHR)
     var html_string = ""
     $(obj_list).each(function()
         {
-            html_string+= "<Li> <b>" + this.title + "</b> <br />" +this.link +"</Li>";
+            //html_string+= "<Li> <b>" + this.title + "</b> <br />" +this.link +"</Li>";
+            html_string+= "<Li> <b>" + this.title + "</b> <br /></Li>";
         }
     );
     $('#num-queries').html("<strong>no queries issued for this page : " + obj.no_of_queries_issued_for_current_page + "</strong>");
