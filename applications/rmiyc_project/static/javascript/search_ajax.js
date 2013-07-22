@@ -127,7 +127,7 @@ function display_next_page_success(data, textStatus, jqXHR)
     $('#search').html('<i class="icon-search icon-white"></i> search');
     $('#image-box').hide();
     $('#image-div').html("<image src= '" + obj.screenshot + "' height='1000' width='1000'> </image>");
-    $('#fade-away').html('hahahah')
+    $('#fade-away').fadeIn();
         $('#fade-away').flyOffPage({
         duration: 100 // 400 milliseconds (0.4 seconds)
     });
