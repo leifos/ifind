@@ -31,7 +31,7 @@ def play(request, category_name):
         if not u.is_authenticated():
             u = User.objects.get(username='anon')
         else:
-            avatar.update(user=u)
+            avatar.update(request.user)
 
         # Query the database for the provided category name
 

@@ -52,19 +52,34 @@ class Handler(object):
             pp.pprint(vars(self))
             print
 
-        if self.logged_in:
-            return self._get_user_message()
-        elif not self.logged_in:
-            return self._get_anonymous_message()
+        # get shared messages
+        messages = self._get_shared_messages()
 
-    def _get_anonymous_message(self):
+        if self.logged_in:
+            # get logged in user messages
+            messages += self._get_authenticated_messages()
+        else:
+            # get anonymous user messages
+            messages += self._get_anonymous_messages()
+
+        # pick one and return
+        return random.choice(messages)
+
+    def _get_shared_messages(self):
+        """
+        Abstract method for shared message logic.
+
+        """
+        pass
+
+    def _get_anonymous_messages(self):
         """
         Abstract method for anonymous message logic.
 
         """
         pass
 
-    def _get_user_message(self):
+    def _get_authenticated_messages(self):
         """
         Abstract method for user message logic.
 
@@ -77,27 +92,39 @@ class IndexPage(Handler):
     Page handler implementation of Index Page
 
     """
+    def _get_shared_messages(self):
+        """
+        Assumptions:
+                user = ?
+                current_game = None
 
-    UNIVERSALS = ["Fancy a game?",
-                  "Play a game!",
-                  "Welcome :)"]
+        """
+        messages = ["Fancy a game?",
+                    "Play a game!",
+                    "Welcome!"]
 
-    def _get_anonymous_message(self):
+        return messages
 
-        # Assumptions: user=None, current_game=None
+    def _get_anonymous_messages(self):
+        """
+        Assumptions:
+                user = None
+                current_game = None
 
+        """
         messages = ["Check out how to play!",
                     "Have you registered an account yet?",
                     "Welcome to Retrieve Me if You Can!"]
 
-        messages += self.UNIVERSALS
+        return messages
 
-        return random.choice(messages)
+    def _get_authenticated_messages(self):
+        """
+        Assumptions:
+                user = User
+                current_game = None
 
-    def _get_user_message(self):
-
-        # Assumptions: user, current_game=None
-
+        """
         # "Fancy a game?"
         # "You've played X games, why not try another?"
         # "You're so close to achieving X achievement!"
@@ -105,8 +132,6 @@ class IndexPage(Handler):
         # "You're around these parts pretty often!"
         # "Checked out your profile lately?"
         # "You're currently ranked Xth. You can do better!"
-
-        messages = []
 
         return "I am logged in and at index page"
 
@@ -116,29 +141,42 @@ class CategoryPage(Handler):
     Page handler implementation of Category Page
 
     """
+    def _get_shared_messages(self):
+        """
+        Assumptions:
+                user = ?
+                current_game = None
 
-    UNIVERSALS = ["Pick a category...",
-                  "Choose a category..."]
+        """
+        messages = ["Pick a category...",
+                    "Choose a category...",
+                    "Please pick a category..."]
 
-    def _get_anonymous_message(self):
+        return messages
 
-        # user=None, current_game=None
+    def _get_anonymous_messages(self):
+        """
+        Assumptions:
+                user = None
+                current_game = None
 
+        """
         messages = ["That first category looks good...",
                     "Log in to see your high scores!",
                     "Any category will do..."]
 
-        messages += self.UNIVERSALS
+        return messages
 
-        return random.choice(messages)
+    def _get_authenticated_messages(self):
+        """
+        Assumptions:
+                user = User
+                current_game = None
 
-    def _get_user_message(self):
-
-        # user, current_game=None
-
+        """
         messages = []
 
-        #######  Recommend lesser/low scored categories. ##########
+        #######  Recommend lesser/low scored categories. #######
 
         from ifind.models.game_models import HighScore
 
@@ -153,29 +191,54 @@ class CategoryPage(Handler):
             messages.append('Only got {1} points for {0}?'.format(category, score))
             messages.append('Scared of trying {0}, {1}?'.format(category, self.user))
 
-        ###########################################################
+        return messages
 
-        messages += self.UNIVERSALS
-
-        return random.choice(messages)
 
 class GamePage(Handler):
     """
     Page handler implementation of a Game Page (when playing)
 
     """
+    def _get_shared_messages(self):
+        """
+        Assumptions:
+                user=?, current_game
 
-    def _get_anonymous_message(self):
+        """
+        messages = ["Good luck!",
+                    "Search til you drop!",
+                    "The searching begins..."]
 
-        # Assumptions: user=None, current_game
+        return messages
 
-        return "Anonymous dude is starting.."
+    def _get_anonymous_messages(self):
+        """
+        Assumptions:
+                user = None
+                current_game = Game
 
-    def _get_user_message(self):
+        """
+        messages = ["Get achievements when logged in!"]
 
-        # Assumptions: user, current_game
+        return messages
 
-        return "Authorised legit dude is starting..."
+    def _get_authenticated_messages(self):
+        """
+        Assumptions:
+                user = User
+                current_game = Game
+
+        """
+        messages = []
+
+        #######  Chide for small amount of games played thus far #######
+        from ifind.models.game_models import UserProfile
+
+        user_profile = UserProfile.objects.filter(user=self.user)[0]
+
+        print "********************** " + user_profile.user
+
+        return messages
 
 
 class Search(Handler):
@@ -183,23 +246,55 @@ class Search(Handler):
     Handler implementation of a Search query AJAX request.
 
     """
-    def _get_anonymous_message(self):
+    def _get_shared_messages(self):
+        """
+        Assumptions:
+                user = ?
+                current_game = Game
 
-        # Assumptions: user=None, current_game
+        """
+        messages = []
 
-        return "Anonymous dude has searched!"
+        query_score = self.current_game.last_query_score
 
-    def _get_user_message(self):
+        ###### If user obtained 0 points with their query ######
+        if query_score == 0:
+            messages.append('You scored 0 points... unlucky...')
+            messages.append("Let's try for some points this time!")
 
-        # Assumptions: user, current_game
+        ###### If user obtained less than 500 points with their query ######
+        if 0 < query_score < 500:
+            messages.append('Good. But not great...')
+            messages.append("{} isn't a BAD score... just a bit low.".format(query_score))
 
-        if self.current_game.last_query_score == 0:
-            # add to message list
+        ###### If user obtained more than 700 points with their query ######
+        if query_score > 700:
+            messages.append('{} points? Not bad...'.format(query_score))
+            messages.append('{} points is pretty good!'.format(query_score))
 
-        # if their score was above 900:
-            # add to message list ("That was pretty good!")
+        return messages
 
-            return "You're shite mate"
+    def _get_anonymous_messages(self):
+        """
+        Assumptions:
+                user = None
+                current_game = Game
+
+        """
+        messages = []
+
+        return messages
+
+    def _get_authenticated_messages(self):
+        """
+        Assumptions:
+                user = User
+                current_game = Game
+
+        """
+        messages = []
+
+        return messages
 
 
 class GameAvatar (object):
