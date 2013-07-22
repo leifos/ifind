@@ -58,15 +58,7 @@ def play(request, category_name):
             avatar.update(current_game=gm.game)
 
             msg = avatar.get()
-
-            overall_results = []
-            overall_results.append({
-                    'result_list': [], 'page': p.screenshot, 'score': 0 ,
-                    'no_round': gm.get_round_no(), 'no_successful_round': gm.get_no_rounds_completed(),
-                    'no_of_queries_issued_for_current_page': gm.get_no_of_queries_issued_for_current_page(),
-                    'no_remaining_rounds': gm.get_remaining_rounds()
-            })
-            response = render_to_response('rmiyc/game.html', {'overall_results': overall_results, 'avatar':msg}, context)
+            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
@@ -78,6 +70,7 @@ def play(request, category_name):
 
 
 def pick_category(request):
+        print '****************************************************************'
         context = RequestContext(request, {})
         scores=[]
 
@@ -103,8 +96,10 @@ def pick_category(request):
             avatar.update(user=request.user)
 
         msg = avatar.get()
-
-        return render_to_response('rmiyc/cat_picker.html', {'cats': cats, 'avatar': msg}, context)
+        print '****************************************************************'
+        response = render_to_response('rmiyc/cat_picker.html', {'cats': cats, 'avatar': msg}, context)
+        response.delete_cookie('game_id')
+        return response
 
 
 def search(request):

@@ -3,67 +3,61 @@
         Game is on!
 {% endblock %}
 {% block container %}
+ <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
+ <!-- <script type="text/javascript" src="{{ STATIC_URL }}javascript/flyoffpage.min.js"></script> -->
+ <div class="span6">
+    <div class="well">
+        <div id="icon-div">
 
-     <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
-     <!-- <script type="text/javascript" src="{{ STATIC_URL }}javascript/flyoffpage.min.js"></script> -->
-     <div class="span6">
-        <div class="well">
-            <div id="icon-div">
-
-            </div>
-            <div id="avatar-div">
-                <h3>{{avatar}}</h3>
-            </div>
-        <!--<image src="{{ STATIC_URL }}imgs/rmiyc1.jpg" width="500" height="200"> </image> -->
         </div>
-        <div id="image-div" class="well">
-            <div id="image-box">
-                {% if overall_results %}
-                {% for item in overall_results %}
-                    <image src='{{item.page}}' class ="img-rounded" width="1000" height="1000"> </image>
-                {% endfor %}
-                {% endif %}
-            </div>
+        <div id="avatar-div">
+            <h3>{{avatar}}</h3>
         </div>
     </div>
-    <div class="span5">
-        <div class="well well-small text-info">
-            <h4>
-                <div id="game_updates" >
-                    <strong> round no : 1 <br />
-                    remaining rounds : 3 </strong>
-                </div>
-                <div id="num-queries">
-                     <strong>queries issued for this page : 0 </strong>
-                </div>
+    <div id="image-div" class="well">
+        <div id="image-box">
+            <image src="{{page}}" class ="img-rounded" width="1000" height="1000"> </image>
+        </div>
+    </div>
+</div>
+<div class="span5">
+    <div class="well well-small text-info">
+        <h4>
+            <div id="game_updates-div" >
+                <strong> round no : 1 <br />
+                remaining rounds : 3 </strong>
+            </div>
+            <div id="num-queries-div">
+                 <strong>queries issued for this page : 0 </strong>
+            </div>
+        </h4>
+    </div>
+    <div id ="search-div" class="alert alert-info">
+        <h4>Enter your query here ! </h4>
+        <br />
+        <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="e.g: aerospace systems" />
+        <br />
+        <br />
+        <!-- style="background: #663300"  -->
+        <a class="btn btn-primary" id="search-button" ><i class="icon-search icon-white"></i> search</a>  &nbsp
+        <a class="btn btn-danger"  id="skip-button"><i class="icon-forward icon-white"></i> skip</a>
+    </div>
+    <div id="content-div"  class="alert alert-success">
+        <div id ="score-div">
+            <h4>Query scored:   your score will be displayed here <br />
+                Bonus:   tour bonus will be displayed here
             </h4>
         </div>
-        <div id ="search-div" class="alert alert-info">
-            <h4>Enter your query here ! </h4>
-            <br />
-            <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="e.g: aerospace systems" />
-            <br />
-            <br />
-            <!-- style="background: #663300"  -->
-            <a class="btn btn-primary" id="search" ><i class="icon-search icon-white"></i> search</a>  &nbsp
-            <a class="btn btn-danger"  id="skip"><i class="icon-forward icon-white"></i> skip</a>
+        <br />
+        <h4>Top 3 search results:</h4>
+        <br />
+        <div id="search-results-div">
+            <ol id="search-results-ol" class="well well-large" style="overflow: auto;">
+            </ol>
         </div>
-        <div id="content"  class="alert alert-success">
-            <div id ="score-div">
-                <h4>Query scored:   your score will be displayed here <br />
-                    Bonus:   tour bonus will be displayed here
-                </h4>
-            </div>
-            <br />
-            <h4>Top 3 search results:</h4>
-            <br />
-            <div id="search-results-div">
-                <ol id="search-results-ol" class="well well-large" style="overflow: auto;">
-                </ol>
-            </div>
-            <div id="fade-away" class="well">
-                BlaBlaBlaBlaBlaBla
-            </div>
+        <div id="fade-away" class="well">
+            BlaBlaBlaBlaBlaBla
         </div>
     </div>
+</div>
 {% endblock %}
