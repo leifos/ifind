@@ -89,13 +89,10 @@ def pick_category(request):
             c.url = encode_string_to_url(c.name)
 
         avatar = GameAvatar('CategoryPage')
-        if request.user != 'AnonymousUser':
-            print request.user
-            avatar.update(user=request.user)
 
         if request.user.is_authenticated():
             hs = HighScore.objects.filter(user=request.user)
-
+            avatar.update(user=request.user)
 
         msg = avatar.get()
 
@@ -108,11 +105,8 @@ def search(request):
         result_list = []
 
         avatar = GameAvatar('Search')
-        if user != 'anon':
+        if request.user.is_authenticated():
             avatar.update(user=user)
-
-
-
 
         if request.COOKIES.has_key('game_id'):
             ds = EngineFactory("bing", api_key=BING_API_KEY)
