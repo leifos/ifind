@@ -4,6 +4,7 @@ import imaplib
 import os
 import sys
 from django_countries import CountryField
+from registration.signals import *
 
 sys.path.append(os.getcwd())
 from configuration import APP_NAME
@@ -141,4 +142,10 @@ class Level (models.Model):
 
     class Meta:
         app_label = APP_NAME
+
+#Need to signal to create a UserProfile when registering a User
+def createUserProfile(sender, user, request, **kwargs):
+    UserProfile.objects.get_or_create(user=user)
+
+user_registered.connect(createUserProfile)
 

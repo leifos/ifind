@@ -9,6 +9,7 @@ import os
 from configuration import MEDIA_URL
 
 def profile_page(request, username):
+    murl = MEDIA_URL
     context = RequestContext(request, {})
     u = User.objects.get(username=username)
     if u:
@@ -19,7 +20,6 @@ def profile_page(request, username):
         achievements = PlayerAchievement.objects.filter(user=u)
         for i in achievements:
             print MEDIA_URL + str(i.achievement.badge_icon)
-            murl = MEDIA_URL
             print i.achievement.badge_icon
         highscores = HighScore.objects.filter(user=u)
         view_permission = True
