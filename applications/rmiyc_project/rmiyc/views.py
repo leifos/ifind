@@ -85,17 +85,22 @@ def pick_category(request):
         cats = Category.objects.filter(is_shown=True)
 
         for c in cats:
-            c.score = 0
+            if request.user.is_authenticated():
+                hs = HighScore.objects.filter(user=request.user ,category=c)
+                if len(hs) >0:
+                    c.score = hs[0].highest_score
+                else:
+                    c.score = 0
+            else:
+                c.score = 0
+
             c.url = encode_string_to_url(c.name)
 
         avatar = GameAvatar('CategoryPage')
-        if request.user != 'AnonymousUser':
-            print request.user
-            avatar.update(user=request.user)
 
         if request.user.is_authenticated():
             hs = HighScore.objects.filter(user=request.user)
-
+            avatar.update(user=request.user)
 
         msg = avatar.get()
 
@@ -108,11 +113,8 @@ def search(request):
         result_list = []
 
         avatar = GameAvatar('Search')
-        if user != 'anon':
+        if request.user.is_authenticated():
             avatar.update(user=user)
-
-
-
 
         if request.COOKIES.has_key('game_id'):
             ds = EngineFactory("bing", api_key=BING_API_KEY)
@@ -140,6 +142,7 @@ def search(request):
             s = gm.get_last_query_score()
             msg = avatar.get()
             if gm.is_game_over():
+                gm.handle_game_over()
                 Json_results = {
                     "results": json_objects, "score": s, "is_game_over": 1,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
@@ -177,6 +180,7 @@ def display_next_page(request):
             p = gm.get_current_page()
             quoted_screenshot = str(p.screenshot)
             if gm.is_game_over():
+                gm.handle_game_over()
                 objects = {
                     "screenshot": quoted_screenshot, "is_game_over": 1,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
