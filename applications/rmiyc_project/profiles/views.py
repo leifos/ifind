@@ -10,6 +10,8 @@ from django.forms import ModelForm
 from forms import *
 from configuration import MEDIA_URL
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+
 
 
 def profile_page(request, username):
@@ -44,8 +46,11 @@ def profile_page(request, username):
                                                                   context)
 @login_required
 def edit_profile(request, username):
+    #if usr1 tries accessing usr2 profile edit page, redirect to usr1 edit page
+    if username != request.user.username:
+        return redirect('/profile/%s/edit_profile' % request.user.username)
     context = RequestContext(request, {})
-    usr = User.objects.get(username=username)
+    usr = User.objects.get(username=request.user.username)
     profile = UserProfile.objects.get(user=usr)
     form = ProfileForm(instance=profile)
     if request.method == 'GET':
@@ -53,8 +58,6 @@ def edit_profile(request, username):
     else:
         form = ProfileForm(request.POST)
         if form.is_valid():
-            #usr = User.objects.get(username=username)
-            #profile = UserProfile.objects.get(user=usr)
             profile.age = form.cleaned_data['age']
             profile.gender = form.cleaned_data['gender']
             profile.school = form.cleaned_data['school']
@@ -62,6 +65,7 @@ def edit_profile(request, username):
             profile.city = form.cleaned_data['city']
             profile.save()
         else:
+            return render_to_response('profiles/edit_profile.html', {'form': form}, context)
             #say form invalid
             pass
         return profile_page(request,username)

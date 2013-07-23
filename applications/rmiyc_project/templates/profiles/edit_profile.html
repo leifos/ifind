@@ -1,6 +1,10 @@
 {% extends 'rmiyc/base.html' %}
 
 {% block container %}
+    {% if form.errors %}
+        <p class="errors">Please correct the errors below: {{ form.non_field_errors }}</p>
+    {% endif %}
+
     <div class="hero-unit">
         <form action="" method="post">{% csrf_token %}
             {{ form.as_p }}

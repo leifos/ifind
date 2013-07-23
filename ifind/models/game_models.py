@@ -17,11 +17,11 @@ GENDER_CHOICES = (
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    age = models.IntegerField(default=1)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    school = models.CharField(max_length=128)
-    country = CountryField()
-    city = models.CharField(max_length=128)
+    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
+    school = models.CharField(max_length=128, blank=True)
+    country = CountryField(blank=True)
+    city = models.CharField(max_length=128, blank=True)
     xp = models.IntegerField(default=0,blank=True)
     level = models.IntegerField(default=0,blank=True)
     xp_to_next_level = models.IntegerField(default=1,blank=True)
