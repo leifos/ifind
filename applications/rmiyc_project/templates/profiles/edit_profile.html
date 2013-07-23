@@ -1,0 +1,10 @@
+{% extends 'rmiyc/base.html' %}
+
+{% block container %}
+    <div class="hero-unit">
+        <form action="" method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit" />
+            </form>
+    </div>
+{% endblock %}
