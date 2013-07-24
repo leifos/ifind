@@ -3,6 +3,16 @@
         Game is over!
 {% endblock %}
 {% block container %}
+    <script type="text/javascript">
+    $(function()
+    {
+        $('#sign-in-button').click(function(event)
+        {
+            alert ('hello');
+            $('#login-dropdown').dropdown();
+        });
+    });
+    </script>
     <div id="game-results">
         <div class="hero-unit">
             <p class="text-error"><h1> Game is over </h1></p>
@@ -17,8 +27,12 @@
                 </div>
                 {% endfor %}
             {% endif %}
-            <p><a class="btn btn-primary btn-large" href="/rmiyc/pick_category/">Play again? »</a>
+            <p><a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play again? »</a>
             <a class="btn btn-warning btn-large" href="/leaderboard/">Check leaderboard? »</a></p>
+            {% if not user.is_authenticated  %}
+                <a class="btn btn-primary btn-large" href="/account/register">Register »</a>
+                <a id="sign-in-button" class="btn btn-primary btn-large">Sign in »</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
