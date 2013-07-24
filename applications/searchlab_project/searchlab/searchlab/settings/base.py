@@ -195,12 +195,6 @@ ROOT_URLCONF = '{}.urls'.format(SITE_NAME)
 #### APP CONFIGURATION ####
 ###########################
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
 DJANGO_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -213,13 +207,13 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    # database migration helpers
+    # database migration helper
     'south',
 )
 
 # apps specific for this project
 LOCAL_APPS = (
-    'searchlab',
+    'search',
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

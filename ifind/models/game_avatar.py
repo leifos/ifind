@@ -133,7 +133,11 @@ class IndexPage(Handler):
         # "Checked out your profile lately?"
         # "You're currently ranked Xth. You can do better!"
 
-        return "I am logged in and at index page"
+        messages = []
+
+        messages.append("Hi {}, welcome back!".format(self.user.username))
+
+        return messages
 
 
 class CategoryPage(Handler):
@@ -232,11 +236,8 @@ class GamePage(Handler):
         messages = []
 
         #######  Chide for small amount of games played thus far #######
-        from ifind.models.game_models import UserProfile
 
-        user_profile = UserProfile.objects.filter(user=self.user)[0]
-
-        print "********************** " + user_profile.user
+        messages.append("Good luck {}!".format(self.user.username))
 
         return messages
 

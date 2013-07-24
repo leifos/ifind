@@ -70,7 +70,6 @@ def play(request, category_name):
 
 
 def pick_category(request):
-        print '****************************************************************'
         context = RequestContext(request, {})
         scores=[]
 
@@ -96,7 +95,6 @@ def pick_category(request):
             avatar.update(user=request.user)
 
         msg = avatar.get()
-        print '****************************************************************'
         response = render_to_response('rmiyc/cat_picker.html', {'cats': cats, 'avatar': msg}, context)
         response.delete_cookie('game_id')
         return response
@@ -214,6 +212,8 @@ def game_over(request):
         response = render_to_response('rmiyc/game_over.html',{'statistics': statistics}, context)
         response.delete_cookie('game_id')
         return response
+    else:
+        return render_to_response('rmiyc/game_over.html', context)
 
 
 def contact(request):
