@@ -1,8 +1,10 @@
 {% extends 'rmiyc/base.html' %}
+{% block container%}
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span6">
+                <div class="hero-unit">
 
-{% block container %}
-    <div class="hero-unit">
-        <h2>Retrieve me if you can</h2>
         <h3>Profile</h3>
         {% if user_profile %}
             Viewing {{user_profile.username}}'s profile page. <br /><br />
@@ -13,10 +15,21 @@
             level : {{level}} <br />
             experience points : {{xp}} <br />
             age: {{age}} <br />
-            <a href="/profile/{{user.username}}/edit_profile.html">edit profile</a>
+            <form action="/profile/{{user.username}}/edit_profile.html">
+			    <button class="btn" type="submit">Edit Profile</button>
+            </form>
+        {% endif %}
+		</div>
+        </div>
+		<div class="span6">
+			<img src="{{murl}}{{profile.profile_pic}}" class="img-polaroid" height=100 width=100 /> <br />
+		</div>
+	</div>
+</div>
 
-       {% endif %}
-    </div>
+
+
+</div>
 
     <div class="well">
         <ul class="thumbnails centre text-center">
@@ -47,6 +60,5 @@
 
     </div>
 
+
 {% endblock %}
-
-
