@@ -1,7 +1,7 @@
 __author__ = 'leif'
 
 
-from game_models import CurrentGame, Page, Category
+from game_models import CurrentGame, Page, Category, HighScore
 from random import randint
 from game_model_functions import get_page_list, set_page_list
 from ifind.common.rotation_ordering import RotationOrdering
@@ -299,6 +299,18 @@ class GameMechanic(object):
             score = self.max_score / rank
 
         return score
+
+
+    def handle_game_over(self):
+
+        if self.game.user.username != "anon":
+            hs = HighScore.objects.filter(user=self.game.user,category=self.game.category)
+            if len(hs) > 0 and self.game.current_score > hs[0].highest_score:
+                hs[0].highest_score = self.game.current_score
+                hs[0].save()
+            else:
+                HighScore(user=self.game.user,category=self.game.category, highest_score=self.game.current_score).save()
+        pass
 
     def get_last_query_score(self):
         return self.game.last_query_score

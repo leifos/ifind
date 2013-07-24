@@ -57,25 +57,31 @@ def populate_pages(url_list, category, halved_screen_shot=False):
     for url in url_list:
 
         # create PageCapture object - specify the browser to be 800 x 600.
-        pc = PageCapture(url,800, 600)
-        url_file_name = convert_url_to_filename(url)+'.png'
-        # To change to accomodate for the new changes
-        image_file_name = os.path.join(DATA_DIR, url_file_name)
-        pc.load_url(url)
-        # fetch the screen-shot
-        if halved_screen_shot:
-            pc.crop_screen_shot(image_file_name,0,0,1000,1000)
-            #pc.halve_screen_shot(image_file_name)
-        else:
-            pc.take_screen_shot(image_file_name)
+        try:
+            pc = PageCapture(url,800, 600)
+            url_file_name = convert_url_to_filename(url)+'.png'
+            # To change to accomodate for the new changes
+            image_file_name = os.path.join(DATA_DIR, url_file_name)
+            pc.load_url(url)
+            # fetch the screen-shot
+            if halved_screen_shot:
+                pc.crop_screen_shot(image_file_name,0,0,1000,1000)
+                #pc.halve_screen_shot(image_file_name)
+            else:
+                pc.take_screen_shot(image_file_name)
 
-        # get the title
-        title = pc.get_page_title()
-        # create page in models/db with category
-        # Abdullah , using DATA_DIR did not work for me because it uses the current working directory in the url.
-        p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', MEDIA_ROOT, url_file_name))
-        p.save()
-        print 'Page title= ' + p.title + ' has been saved!'
+            # get the title
+            title = pc.get_page_title()
+            # create page in models/db with category
+            # Abdullah , using DATA_DIR did not work for me because it uses the current working directory in the url.
+            p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', MEDIA_ROOT, url_file_name))
+            p.save()
+            print 'Page title= ' + p.title + ' has been saved!'
+        except ValueError:
+            print 'Page  has ((NOT)) been saved!'
+            print 'ERROR IS'
+            print ValueError
+            continue
 
 
 def populate(file_name, category_name, append, halved_screen_shot, icon='', desc=''):

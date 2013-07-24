@@ -11,11 +11,9 @@
 </div>
 <div class="well">
         <ul class="thumbnails centre text-center">
-
             {% for c in cats %}
-
-            <li class="span3.5">
-            <a href="/rmiyc/play/{{c.url}}" class="thumbnail">
+            <li class="thumbnail span3.5">
+            <a href="/rmiyc/play/{{c.url}}">
                 <div>
                     <h3>{{c.name}}</h3>
                     <img src="{{c.icon}}" class ="img-rounded" alt="{{c.name}}" height="200" width="300">
