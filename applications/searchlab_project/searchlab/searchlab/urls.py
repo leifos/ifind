@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.conf.urls import include
 from django.conf.urls import patterns
-from django.views.generic import TemplateView
 
 from django.contrib import admin
 
