@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -11,6 +11,8 @@ from forms import *
 from configuration import MEDIA_URL
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
+
 
 
 
@@ -75,9 +77,7 @@ def edit_profile(request, username):
         else:
             return render_to_response('profiles/edit_profile.html', {'profile_form': profile_form,
                                                                      'user_form': user_form},context)
-            #say form invalid
-            pass
-        return profile_page(request,username)
+        return HttpResponseRedirect(reverse('profile', args=(usr.username,)))
 
 
 
