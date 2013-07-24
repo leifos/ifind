@@ -9,8 +9,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+    url(r'', include('search.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', TemplateView.as_view(template_name='index.html'))
 
 )
 
