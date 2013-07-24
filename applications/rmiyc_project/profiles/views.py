@@ -17,21 +17,19 @@ from django.core.urlresolvers import reverse
 
 
 def profile_page(request, username):
+    view_permission = False
     murl = MEDIA_URL
     context = RequestContext(request, {})
     u = User.objects.get(username=username)
     if u:
         user_profile = u.get_profile()
-    if request.user == u:
         level = user_profile.level
         xp = user_profile.xp
         achievements = PlayerAchievement.objects.filter(user=u)
-        for i in achievements:
-            print MEDIA_URL + str(i.achievement.badge_icon)
-            print i.achievement.badge_icon
         highscores = HighScore.objects.filter(user=u)
+    if request.user == u:
         view_permission = True
-        return render_to_response('profiles/profile_page.html', {'user_profile': u,
+    return render_to_response('profiles/profile_page.html', {'user_profile': u,
                                                                  'profile': user_profile,
                                                                  'level':level,
                                                                  'murl': murl,
@@ -39,13 +37,15 @@ def profile_page(request, username):
                                                                  'achievements': achievements,
                                                                  'view_perm': view_permission,
                                                                  'highscores': highscores,
+                                                                 'total_score' : sum(i.highest_score for i in highscores),
                                                                  'xp':xp}, context)
-    else:
-        view_permission = False
-        return render_to_response('profiles/profile_page.html', {'user_profile': u,
-                                                                 'view_perm': view_permission,
-                                                                 'profile': user_profile},
-                                                                  context)
+    #else:
+    #    view_permission = False
+    #    return render_to_response('profiles/profile_page.html', {'user_profile': u,
+    #                                                             'view_perm': view_permission,
+    #                                                             'profile': user_profile},
+    #                                                              context)
+
 @login_required
 def edit_profile(request, username):
     #if usr1 tries accessing usr2 profile edit page, redirect to usr1 edit page
@@ -70,8 +70,6 @@ def edit_profile(request, username):
             profile.country = profile_form.cleaned_data['country']
             profile.city = profile_form.cleaned_data['city']
             profile.save()
-            usr.first_name = user_form.cleaned_data['first_name']
-            usr.last_name = user_form.cleaned_data['last_name']
             usr.email = user_form.cleaned_data['email']
             usr.save()
         else:

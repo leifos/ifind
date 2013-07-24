@@ -6,9 +6,9 @@ from ifind.models.game_models import UserProfile, User
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['email']
 
 class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['profile_pic', 'age', 'gender', 'school', 'country', 'city']
+        fields = ['profile_pic', 'age', 'gender', 'school', 'city', 'country']
