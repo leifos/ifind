@@ -1,16 +1,24 @@
 $(function()
 {
+
+    var game_updates_html =  "<tr><td><h4> score :</h4></td><td><h4> 0 </h4></td></tr>"+
+                             "<tr><td><h4> round no :</h4></td><td><h4> 1 </h4></td></tr>" +
+                             "<tr><td><h4> remaining rounds :</h4></td><td><h4> 3 </h4></td></tr>"+
+                             "<tr><td><h4> queries issued for this page :</h4></td><td><h4> 0 </h4></td></tr>";
+    $('#game_updates-div').html(game_updates_html);
     adjust_header_divs_height();
     adjust_body_divs_height();
-    var game_updates_html =  "<tr><td><h4> round no :</h4></td><td><h4> 1 </h4></td></tr>" +
-                             "<tr><td><h4>remaining rounds :</h4></td><td><h4> 3 </h4></td></tr>"+
-                             "<tr><td><h4>queries issued for this page :</h4></td><td><h4> 0 </h4></td></tr>";
-    $('#game_updates-div').html(game_updates_html);
+    adjust_search_input_width();
     window.onbeforeunload = confirmExit;
     function confirmExit()
     {
         return 'Are you sure you want to quit the game?';
     }
+    $(window).resize(function()
+     {
+        var search_div_width =$('#search-div').width();
+        $('#query').width(search_div_width -20);
+     });
 
     $(document).keypress(function(event)
     {
@@ -89,7 +97,7 @@ function search_success(data, textStatus, jqXHR)
         return false;
     }
     var obj_list = jQuery.parseJSON(obj.results);
-    var html_string = ""
+    var html_string = "";
     $(obj_list).each(function()
         {
             if (this.link != obj.url_to_find)
@@ -101,7 +109,8 @@ function search_success(data, textStatus, jqXHR)
         }
     );
 
-    var game_updates_html =  "<tr><td><h4> round no :</h4></td><td><h4>"+ obj.no_round +"</h4></td></tr>" +
+    var game_updates_html =  "<tr><td><h4> current score :</h4></td><td><h4>"+ obj.current_score +"</h4></td></tr>"+
+                             "<tr><td><h4> round no :</h4></td><td><h4>"+ obj.no_round +"</h4></td></tr>" +
                              "<tr><td><h4>remaining rounds :</h4></td><td><h4>"+ obj.no_remaining_rounds +"</h4></td></tr>"+
                              "<tr><td><h4>queries issued for this page :</h4></td><td><h4>" +obj.no_of_queries_issued_for_current_page+ "</h4></td></tr>";
     $('#game_updates-div').html(game_updates_html);
@@ -136,7 +145,8 @@ function display_next_page_success(data, textStatus, jqXHR)
         window.location ="/rmiyc/game_over";
         return false;
     }
-    var game_updates_html =  "<tr><td><h4> round no :</h4></td><td><h4>"+ obj.no_round +"</h4></td></tr>" +
+    var game_updates_html =  "<tr><td><h4> current score :</h4></td><td><h4>"+ obj.current_score +"</h4></td></tr>"+
+                             "<tr><td><h4> round no :</h4></td><td><h4>"+ obj.no_round +"</h4></td></tr>" +
                              "<tr><td><h4>remaining rounds :</h4></td><td><h4>"+ obj.no_remaining_rounds +"</h4></td></tr>"+
                              "<tr><td><h4>queries issued for this page :</h4></td><td><h4>" +obj.no_of_queries_issued_for_current_page+ "</h4></td></tr>";
     $('#game_updates-div').html(game_updates_html);
@@ -167,4 +177,10 @@ function adjust_body_divs_height()
     }
     $('#image-div').height(highestCol);
     $('#content-div').height(highestCol- search_div_height -search_div_margin);
+}
+
+function adjust_search_input_width()
+{
+    var search_div_width =$('#search-div').width();
+    $('#query').width(search_div_width -20);
 }
