@@ -2,7 +2,7 @@
 {% block container%}
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="well span12">
+        <div class="well span12" >
             <h3>Profile: {{user_profile.username}}</h3>
 
             <div class="span3">
@@ -12,8 +12,8 @@
                 experience points : {{xp}} <br/>
                 {% endif %}
             </div>
-            <div class="span3" style="position: relative; bottom:50px;">
-                <img src="{{murl}}{{profile.profile_pic}}" class="img-polaroid" height=100 width=100/> <br/>
+            <div class="span3">
+                <img src="{{murl}}{{profile.profile_pic}}" class="img-polaroid" height=100 width=100 style="position: relative;" /> <br/>
             </div>
         </div>
     </div>
