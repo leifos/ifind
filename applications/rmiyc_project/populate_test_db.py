@@ -56,6 +56,7 @@ class Populate(object):
         UserProfile(user=jim, xp=760, no_games_played=8).save()
         UserProfile(user=jane, xp=2300, no_games_played=10).save()
         UserProfile(user=jake, xp=4300, no_games_played=12).save()
+        UserProfile(user=anon, xp=4421, no_games_played=15).save()
 
 
     def highscores(self):

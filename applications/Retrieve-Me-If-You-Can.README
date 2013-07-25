@@ -14,5 +14,14 @@ Possible Gaming Options:
 
 
 
+Populating a test database
+---------------------------
+
+Population scripts are in ifind/applications/rmiyc_project/
+
+1. Run populate_category.py
+
+2. Run populate_test_db.py
+
 
 
