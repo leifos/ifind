@@ -11,8 +11,9 @@
         $('#header-div').height(highestCol);
         $('#sign-in-button').click(function(event)
         {
-            alert ('hello');
-            $('#login-dropdown').dropdown();
+            event.stopPropagation();
+            $('#login-dropdown').click();
+            $('#li-login-dropdown').addClass("open");
         });
     });
     </script>
@@ -40,16 +41,16 @@
     </div>
     <div id="game-results" class="span11">
         <div class="well">
-            <p><h1 class="text-error text-center"> Game is over </h1></p>
+            <p><h1 class="text-error text-center"><strong> Game is over </strong></h1></p>
             <br />
             {% if statistics %}
                 {% for item in statistics %}
                 <div class="alert alert-success">
-                    <p> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
+                    <p><h3> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
                     You have <strong> issued : {{item.no_queries}} queries </strong>, {{item.no_successful_queries}} were successful in retrieving the pages. <br />
                     You have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
                     <strong>Well done! </strong>
-                    </p>
+                    </h3></p>
                 </div>
                 {% endfor %}
             {% endif %}
@@ -57,8 +58,8 @@
                 <a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play again? »</a>
                 <a class="btn btn-warning btn-large" href="/leaderboard/">Check leaderboard? »</a>
                 {% if not user.is_authenticated  %}
-                    <a class="btn btn-primary btn-large" href="/account/register">Register »</a>
-                    <a id="sign-in-button" class="btn btn-primary btn-large">Sign in »</a>
+                    <a class="btn btn-primary btn-large" href="/accounts/register">Register »</a>
+                    <a id="sign-in-button" class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown">Sign in »</a>
                 {% endif %}
             </div>
         </div>

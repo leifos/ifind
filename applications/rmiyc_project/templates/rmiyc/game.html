@@ -3,6 +3,42 @@
         Game is on!
 {% endblock %}
 {% block container %}
+
+ <style type="text/css">
+     div.step {
+            position: relative;
+            padding-top: 50px;
+            z-index: 1;
+        }
+        div.step:after {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            padding: 3px 7px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            color: #9da0a4;
+            -webkit-border-radius: 4px 0 4px 0;
+            -moz-border-radius: 4px 0 4px 0;
+            border-radius: 4px 0 4px 0;
+        }
+        div.step1:after {
+            content: "This is the page that you have to retrive";
+        }
+
+        div.step2:after {
+            content: "Enter your query here";
+        }
+
+        div.step3:after {
+            content: "Top 10 search results";
+        }
+        div.step4:after {
+            content: "Query score";
+        }
+ </style>
  <script type="text/javascript" src="{{ STATIC_URL }}javascript/search_ajax.js"></script>
  <!-- <script type="text/javascript" src="{{ STATIC_URL }}javascript/flyoffpage.min.js"></script> -->
  <div class="span6">
@@ -14,10 +50,9 @@
             <h3>{{avatar}}</h3>
         </div>
     </div>
-    <div id="image-div" class="well align-center">
-        <h4 class="text-info">Find This page Mother Fucker! </h4>
+    <div id="image-div" class="alert alert-info align-center step step1">
         <div id="image-box">
-            <image src="{{page}}" class ="img-rounded" width="1000" height="1000"> </image>
+            <image src="{{page}}" class ="img-rounded" width="500" height="500"> </image>
         </div>
     </div>
 </div>
@@ -32,10 +67,7 @@
                 </div>
         </table>
     </div>
-    <div id ="search-div" class="alert alert-info">
-        <br />
-        <h4>Enter your query here ! </h4>
-        <br />
+    <div id ="search-div" class="alert alert-info step step2">
         <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="e.g: aerospace systems" />
         <br />
         <br />
@@ -44,16 +76,10 @@
         <a class="btn btn-danger"  id="skip-button"><i class="icon-forward icon-white align-center"></i> skip</a>
     </div>
     <div id="content-div"  class="alert alert-success">
-        <div id ="score-div">
-            <h4>Query scored:   your score will be displayed here <br />
-                Bonus:   tour bonus will be displayed here
-            </h4>
+        <div id ="score-div" class="well well-large step step4">
         </div>
-        <br />
-        <h4>Top 3 search results:</h4>
-        <br />
-        <div id="search-results-div">
-            <ol id="search-results-ol" class="well well-large" style="overflow: auto;">
+        <div id="search-results-div"  class="well well-large step step3">
+            <ol id="search-results-ol" style="overflow: auto;">
             </ol>
         </div>
     </div>

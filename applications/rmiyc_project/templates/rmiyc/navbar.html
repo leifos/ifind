@@ -17,7 +17,9 @@
                 {% endif %}
 
                 {% if minimal_navbar %}
-                <a class="pull-right btn btn-primary" id="quite-game-btn" href="#">Leave Game</a>
+                 <ul class="nav pull-right">
+                    <li><a href="/rmiyc/game_over">Leave Game</a></li>
+                </ul>
                 {% endif %}
 
                 {% if user.is_authenticated and not minimal_navbar %}

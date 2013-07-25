@@ -50,7 +50,6 @@ $(function()
         }
     });
 
-
     $('#search-button').click(function(event)
     {
         event.preventDefault();
@@ -66,12 +65,6 @@ $(function()
             dataType: 'html'
         });
 
-    });
-
-    $('#quite-game-btn').click(function(event)
-    {
-        window.location ="/rmiyc/game_over";
-        return false;
     });
 
     $('#skip-button').click(function(event)
@@ -115,7 +108,7 @@ function search_success(data, textStatus, jqXHR)
                              "<tr><td><h4>queries issued for this page :</h4></td><td><h4>" +obj.no_of_queries_issued_for_current_page+ "</h4></td></tr>";
     $('#game_updates-div').html(game_updates_html);
     $('#search-results-ol').html(html_string);
-    $('#score-div').html("<h4>Query scored :" + obj.score + "</h4>");
+    $('#score-div').html("<Strong>score :" + obj.score + "</strong>");
     $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
     $('#query').val("");
     if(obj.score != 0)
@@ -169,14 +162,16 @@ function adjust_header_divs_height()
 function adjust_body_divs_height()
 {
     var search_div_height =$('#search-div').height();
-    var search_div_margin =16;
-    var highestCol = Math.max($('#image-div').height(),search_div_height+search_div_margin);
-    if (highestCol < 500)
+    var content_div_height = $('#content-div').height();
+    var search_div_margin =$('#search-div').css("margin-bottom");
+    var variable =search_div_height + content_div_height;
+    var highestCol = Math.max($('#image-div').height(),variable);
+    if (highestCol < 650)
     {
-        highestCol=600
+        highestCol=650;
     }
     $('#image-div').height(highestCol);
-    $('#content-div').height(highestCol- search_div_height -search_div_margin);
+    $('#content-div').height(highestCol - search_div_height - 35);
 }
 
 function adjust_search_input_width()
