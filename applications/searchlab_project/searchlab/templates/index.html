@@ -10,59 +10,48 @@
 			</div>
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="span1">
-			<p>
-				Search
-			</p>
-		</div>
-		<div class="span1">
-			<div class="btn-group">
-				 <button class="btn">Action</button> <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
-				<ul class="dropdown-menu">
-					<li>
-						<a href="#">Action</a>
-					</li>
-					<li>
-						<a href="#">Another action</a>
-					</li>
-					<li>
-						<a href="#">Something else here</a>
-					</li>
-					<li class="divider">
-					</li>
-					<li class="dropdown-submenu">
-						 <a tabindex="-1" href="#">More options</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#">Action</a>
-							</li>
-							<li>
-								<a href="#">Another action</a>
-							</li>
-							<li>
-								<a href="#">Something else here</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="span10">
-			<form class="form-search">
-				<input class="input-medium search-query" type="text"> <button type="submit" class="btn">Search</button>
-			</form>
-		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="span12" id="result_div">
-			<ul>
-            {% for result in result_list %}
-                <li>{{ result }}</li>
-            {% empty %}
-                <li>No results found.</li>
-            {% endfor %}
-			</ul>
-		</div>
-	</div>
+
+    <div class="row-fluid">
+        <div class="span3"></div>
+        <div class="span6">
+           <form class="form-search">
+               <div class="row-fluid">
+                   <div class="span2">
+                        <div class="btn-group">
+                         <button class="btn" id="tn-engine">Engine</button> <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="engine-select">
+                                <li>
+                                    <a href="#">Bing</a>
+                                </li>
+                                <li>
+                                    <a href="#">Twitter</a>
+                                </li>
+                                <li>
+                                    <a href="#">Wikipedia</a>
+                                </li>
+                            </ul>
+                        </div>
+                   </div>
+                   <div class="span8">
+                       <input class="input search-query" type="text" id="input-search"/>
+                   </div>
+                   <div class="span2" id="btn-span">
+                        <button type="submit" class="btn" id="btn-submit">Search</button>
+                   </div>
+               </div>
+           </form>
+        </div>
+        <div class="span3"></div>
+    </div>
+
+    <div class="row-fluid" id="results-container">
+        <div class="span3"></div>
+
+        <div class="span6">
+            <div class="well well-large" id="result-list">
+            </div>
+        </div>
+
+        <div class="span3"></div>
+    </div>
 {% endblock %}
