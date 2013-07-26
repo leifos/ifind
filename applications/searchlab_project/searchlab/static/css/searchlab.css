@@ -1,0 +1,27 @@
+/* centered header title */
+.page-header {
+    text-align: center
+}
+
+/* margin of search form */
+.form-search {
+    margin: 0;
+}
+
+.search-query {
+    width: 98.6%;
+}
+
+#btn-span {
+    text-align: right;
+}
+
+#btn-submit {
+    margin-left: 10px;
+}
+
+#results-container {
+    margin-top: 20px;
+    background: 222;
+}
+
