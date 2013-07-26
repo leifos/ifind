@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from ifind.search import EngineFactory
 from rmiyc_mechanics import RMIYCMechanic
 from ifind.common.utils import encode_string_to_url, decode_url_to_string
+from ifind.common.setuplogger import create_ifind_logger,get_ifind_logger
 from datetime import datetime
 import urllib, urllib2
 import json
@@ -18,14 +19,13 @@ import json
 
 def index(request):
         context = RequestContext(request, {})
+        create_ifind_logger("Log")
         return render_to_response('rmiyc/index.html', context)
 
 def play(request, category_name):
         # Get the current user
         context = RequestContext(request, {})
-
         avatar = GameAvatar('GamePage')
-
         u = request.user
         # If the user is anonymous, then a new user will be created
         if not u.is_authenticated():
@@ -102,6 +102,7 @@ def search(request):
         user = request.user
         result_list = []
 
+        logger = get_ifind_logger("Log")
         avatar = GameAvatar('Search')
         if request.user.is_authenticated():
             avatar.update(user=user)
