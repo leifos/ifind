@@ -2,6 +2,9 @@
 """
 A quick population script for testing rmiyc app
 Populates the database with sample data
+
+Run populate_category.py before running this script!
+
 =============================
 Author: mtbvc <1006404b@student.gla.ac.uk>
 Date:   18/07/2013
@@ -53,27 +56,18 @@ class Populate(object):
         UserProfile(user=jim, xp=760, no_games_played=8).save()
         UserProfile(user=jane, xp=2300, no_games_played=10).save()
         UserProfile(user=jake, xp=4300, no_games_played=12).save()
-
-
-    def categories(self):
-        Category.objects.get_or_create(name='Undergraduate', desc='Looking for sites that around about numbers')
-        Category.objects.get_or_create(name='Postgraduate', desc='Looking for sites that around about numbers')
-        Category.objects.get_or_create(name='Alumni', desc='Looking for sites that around about numbers')
-        Category.objects.get_or_create(name='Research', desc='Looking for sites that around about numbers')
-        Category.objects.get_or_create(name='StudentLife', desc='Looking for sites that around about numbers')
-
-
+        UserProfile(user=anon, xp=4421, no_games_played=15).save()
 
 
     def highscores(self):
-        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=100000).save()
-        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Postgraduate")[0],highest_score=10000).save()
-        HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="Research")[0],highest_score=5000).save()
-        HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Alumni")[0],highest_score=5000).save()
-        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=500).save()
-        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="Research")[0],highest_score=20).save()
-        HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="Research")[0],highest_score=800).save()
-        HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="Undergraduate")[0],highest_score=700).save()
+        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="undergraduate")[0],highest_score=100000).save()
+        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="postgraduate")[0],highest_score=10000).save()
+        HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="research")[0],highest_score=5000).save()
+        HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="alumni")[0],highest_score=5000).save()
+        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="alumni")[0],highest_score=500).save()
+        HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="research")[0],highest_score=20).save()
+        HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="research")[0],highest_score=800).save()
+        HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="undergraduate")[0],highest_score=700).save()
 
 
     def player_achievements(self):
@@ -84,8 +78,8 @@ class Populate(object):
         PlayerAchievement(user=jim[0], achievement=ac2[0]).save()
 
 def main():
+    #TODO(mtbvc): refactor this script
     populate = Populate()
-    populate.categories()
     populate.players()
     populate.levels(10,1000)
     populate.achievements()

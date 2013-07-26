@@ -3,22 +3,65 @@
         Game is over!
 {% endblock %}
 {% block container %}
-    <div id="game-results">
-        <div class="hero-unit">
-            <p class="text-error"><h1> Game is over </h1></p>
+    <script type="text/javascript">
+    $(function()
+    {
+        var highestCol = Math.max($('#statistics-div').height(),$('#header-div').height());
+        $('#statistics-div').height(highestCol);
+        $('#header-div').height(highestCol);
+        $('#sign-in-button').click(function(event)
+        {
+            event.stopPropagation();
+            $('#login-dropdown').click();
+            $('#li-login-dropdown').addClass("open");
+        });
+    });
+    </script>
+    <div class="span6">
+        <div id="header-div" class="alert alert-block">
+            <div id="icon-div">
+
+            </div>
+            <div id="avatar-div">
+                <h3>Well done!</h3>
+            </div>
+        </div>
+    </div>
+    <div class="span5">
+        <div id="statistics-div" class="alert alert-block">
+            <table>
+                  {% if statistics %}
+                  {% for item in statistics %}
+                  <tr><td><h4> round no :</h4></td><td><h4> {{item.no_round}} </h4></td></tr>
+                  <tr><td><h4>remaining rounds :</h4></td><td><h4> 0 </h4></td></tr>
+                  {% endfor %}
+                  {% endif %}
+            </table>
+        </div>
+    </div>
+    <div id="game-results" class="span11">
+        <div class="well">
+            <p><h1 class="text-error text-center"><strong> Game is over </strong></h1></p>
+            <br />
             {% if statistics %}
                 {% for item in statistics %}
                 <div class="alert alert-success">
-                    <p> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
+                    <p><h3> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
                     You have <strong> issued : {{item.no_queries}} queries </strong>, {{item.no_successful_queries}} were successful in retrieving the pages. <br />
                     You have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
                     <strong>Well done! </strong>
-                    </p>
+                    </h3></p>
                 </div>
                 {% endfor %}
             {% endif %}
-            <p><a class="btn btn-primary btn-large" href="/rmiyc/pick_category/">Play again? »</a>
-            <a class="btn btn-warning btn-large" href="/leaderboard/">Check leaderboard? »</a></p>
+            <div class="align-center">
+                <a class="btn btn-success btn-large" href="/rmiyc/pick_category/">Play again? »</a>
+                <a class="btn btn-warning btn-large" href="/leaderboard/">Check leaderboard? »</a>
+                {% if not user.is_authenticated  %}
+                    <a class="btn btn-primary btn-large" href="/accounts/register">Register »</a>
+                    <a id="sign-in-button" class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown">Sign in »</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

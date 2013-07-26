@@ -58,13 +58,10 @@ def play(request, category_name):
             avatar.update(current_game=gm.game)
 
             msg = avatar.get()
-            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg}, context)
+            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'minimal_navbar':True}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
-
-
-
 
             return response
 
@@ -120,7 +117,7 @@ def search(request):
                 query += ' site:gla.ac.uk '
             if query:
 
-                result_list = gm.get_search_results(query)
+                result_list = gm.get_search_results(query,top=10)
 
             gm.handle_query(query)
             gm.update_game()
@@ -132,23 +129,24 @@ def search(request):
             for item in result_list:
                 objects.append({"title": item.title, "link": item.url, "summary": item.summary})
             json_objects = json.dumps(objects)
-            s = gm.get_last_query_score()
+            last_score = gm.get_last_query_score()
+            current_score = gm.get_current_score()
             msg = avatar.get()
             if gm.is_game_over():
                 gm.handle_game_over()
                 Json_results = {
-                    "results": json_objects, "score": s, "is_game_over": 1,
+                    "results": json_objects, "score": last_score, "is_game_over": 1, "url_to_find":gm.get_current_page().url,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
-                    "no_remaining_rounds": gm.get_remaining_rounds(),
+                    "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
                     "avatar": msg
                 }
             else:
                 Json_results = {
-                    "results": json_objects, "score": s, "is_game_over": 0,
+                    "results": json_objects, "score": last_score, "is_game_over": 0, "url_to_find":gm.get_current_page().url,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
-                    "no_remaining_rounds": gm.get_remaining_rounds(),
+                    "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
                     "avatar": msg
                 }
             data = json.dumps(Json_results)
@@ -171,6 +169,7 @@ def display_next_page(request):
             gm.set_next_page()
             gm.update_game()
             p = gm.get_current_page()
+            current_score = gm.get_current_score()
             quoted_screenshot = str(p.screenshot)
             if gm.is_game_over():
                 gm.handle_game_over()
@@ -178,14 +177,14 @@ def display_next_page(request):
                     "screenshot": quoted_screenshot, "is_game_over": 1,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
-                    "no_remaining_rounds": gm.get_remaining_rounds()
+                    "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
                     }
             else:
                 objects = {
                     "screenshot": quoted_screenshot, "is_game_over": 0,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
-                    "no_remaining_rounds": gm.get_remaining_rounds()
+                    "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
                 }
             data = json.dumps(objects)
             return HttpResponse(data, mimetype='application/json')

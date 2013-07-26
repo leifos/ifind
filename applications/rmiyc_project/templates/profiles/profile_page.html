@@ -1,64 +1,88 @@
 {% extends 'rmiyc/base.html' %}
 {% block container%}
 <div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span6">
-                <div class="hero-unit">
+    <div class="row-fluid">
+        <div class="well span12" >
+            <h3>Profile: {{user.username}}</h3>
 
-        <h3>Profile</h3>
-        {% if user_profile %}
-            Viewing {{user_profile.username}}'s profile page. <br /><br />
-        {% endif %}
-
-        {% if view_perm %}
-            {{ user.username }} is logged in. <br />
-            level : {{level}} <br />
-            experience points : {{xp}} <br />
-            age: {{age}} <br />
-            <form action="/profile/{{user.username}}/edit_profile.html">
-			    <button class="btn" type="submit">Edit Profile</button>
-            </form>
-        {% endif %}
-		</div>
+            <div class="span3">
+                {% if user %}
+                Total Score: {{total_score|default:0}} <br/>
+                level : {{profile.level}} <br/>
+                experience points : {{profile.xp}} <br/>
+                {% endif %}
+            </div>
+            <div class="span3">
+                <img src="{{murl}}{{profile.profile_pic}}" class="img-polaroid" height=100 width=100 style="position: relative;" /> <br/>
+            </div>
         </div>
-		<div class="span6">
-			<img src="{{murl}}{{profile.profile_pic}}" class="img-polaroid" height=100 width=100 /> <br />
-		</div>
-	</div>
-</div>
+    </div>
+    {% if view_perm %}
+    <div class="row-fluid">
+        <div class="well span12">
+            <a href="/profile/{{user.username}}/edit_profile.html">Edit Profile</a>
 
+            <div class="span3">
+                <ul>
+                    <li>email: {{user.email}}</li>
+                    <li>gender: {{profile.gender}}</li>
+                    <li>age: {{profile.age}}</li>
+                </ul>
 
-
-</div>
+            </div>
+            <div class="span3">
+                <ul>
+                    <li>school: {{profile.school}}</li>
+                    <li>country: {{profile.country}}</li>
+                    <li>city: {{profile.city}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     <div class="well">
+        <h3>Higscores</h3>
         <ul class="thumbnails centre text-center">
-        {% for item in highscores %}
+            {% for item in highscores %}
             <li class="span3.5">
-            <div>
-            <h3>{{item.category.name}}</h3>
-            <img src="{{item.category.icon}}" class ="img-rounded" alt="{{item.category.name}}" height="100" width="100">
-            <p>{{item.highest_score}}</p>
-            </div>
-            </li>
-        {% endfor %}
-        </ul>
+                <div>
+                    <h3>{{item.category.name}}</h3>
+                    <img src="{{item.category.icon}}" class="img-rounded"  alt="{{item.category.name}}" height="100" width="100">
 
+                    <p>{{item.highest_score}}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
+
     <div class="well">
+        <h3>Badges</h3>
         <ul class="thumbnails centre text-center">
-        {% for item in achievements %}
-            <li class="span3.5">
-            <div>
-            <h3>{{item.achievement.name}}</h3>
-            <img src= "{{murl}}{{item.achievement.badge_icon}}" class ="img-rounded" alt="{{item.achievement.name}}" height="100" width="100">
-            <p>{{item.}}</p>
-            </div>
-            </li>
-        {% endfor %}
-        </ul>
 
+                {% for item in achievements %}
+            <li class="span3.5">
+                    <div>
+                        <h3>{{item.achievement.name}}</h3>
+                        <img src="{{murl}}{{item.achievement.badge_icon}}" class="img-rounded"
+                        alt="{{item.achievement.name}}" height="100" width="100">
+                        <p>{{item.}}</p>
+                    </div>
+                <li/>
+                {% endfor %}
+                {% for item in available_achievements %}
+            <li class="span3.5">
+                    <div  style="opacity:0.2">
+                    <h3>{{item.name}}</h3>
+                    <img src="{{murl}}{{item.badge_icon}}" class="img-rounded"
+                         alt="{{item.name}}" height="100" width="100">
+                    <p>{{item.}}</p>
+                    </div>
+                {% endfor %}
+            </li>
+        </ul>
     </div>
 
-
+</div>
 {% endblock %}

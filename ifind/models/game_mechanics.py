@@ -124,8 +124,8 @@ class GameMechanic(object):
     def get_remaining_rounds(self):
         return self.get_max_rounds() - self.get_round_no()
 
-    def get_search_results(self, query):
-        return self._run_query(query,top=3)
+    def get_search_results(self, query, top=10):
+        return self._run_query(query,top)
 
     def get_game_id(self):
         return self.game.id

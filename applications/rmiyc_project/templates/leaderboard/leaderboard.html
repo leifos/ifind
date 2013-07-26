@@ -1,23 +1,35 @@
 {% extends 'rmiyc/base.html' %}
-
+{% block title %}
+        Leader board!
+{% endblock %}
 {% block container %}
-   <div class="hero-unit">
-        <h2>Retrieve me if you can</h2>
-
-        <h3>High Scores</h3>
+   <div class="well">
+        <h1 class="text-center text-warning">Leader board</h1>
+        <br />
+        <h3 class="text-success">High Scores</h3>
         {% if high_scores %}
+            <table class="table table-hover table-bordered">
             {% for item in high_scores %}
-            <p>{{item.rank}} <a href='/profile/{{item.username}}'>{{item.username}}</a>  {{item.score}} </p>
+                <tr class="success">
+                    <td><strong>{{item.rank}}</strong></td>
+                    <td><a href='/profile/{{item.username}}'>{{item.username}}</a></td>
+                    <td><strong>{{item.score}}</strong></td>
+                </tr>
             {%endfor%}
+            </table>
         {% endif %}
-
-
-        <h3>Category High Scores</h3>
+        <h3 class="text-success">Category High Scores</h3>
         {% if cat_high_scores %}
+            <table class="table table-hover table-bordered">
             {% for item in cat_high_scores %}
-              <p>{{item.rank}} <a href='/profile/{{item.username}}'>{{item.username}}</a> <a href='/play/{{item.category_url}}'>{{item.category}}</a> {{item.score}} </p>
-
+              <tr class="success">
+                  <td> <strong>{{item.rank}}</strong></td>
+                  <td><a href='/profile/{{item.username}}'>{{item.username}}</a></td>
+                  <td><a href='/play/{{item.category_url}}'>{{item.category}}</a></td>
+                  <td><strong>{{item.score}}</strong></td>
+              </tr>
             {%endfor%}
+            </table>
         {% endif %}
 
      </div>

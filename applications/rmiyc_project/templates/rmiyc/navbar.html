@@ -10,15 +10,16 @@
             <div class="nav-collapse collapse navbar-responsive-collapse">
                 {% if not minimal_navbar %}
                 <ul class="nav">
-                    <li><a href="/rmiyc/">Home</a></li>
+                    <li><a href="/rmiyc/">Play</a></li>
                     <li><a href="/leaderboard/">Leader board</a></li>
                     <li><a href="/rmiyc/about/">About</a></li>
-                    <li><a href="/rmiyc/contact/">Contact</a></li>
                 </ul>
                 {% endif %}
 
                 {% if minimal_navbar %}
-                <a class="pull-right btn btn-primary" href="#">Leave Game</a>
+                 <ul class="nav pull-right">
+                    <li><a href="/rmiyc/game_over">Leave Game</a></li>
+                </ul>
                 {% endif %}
 
                 {% if user.is_authenticated and not minimal_navbar %}
@@ -35,7 +36,7 @@
                 <ul class="nav pull-right">
 
                     <li><a href="/accounts/register/">Register</a></li>
-                    <li class="dropdown">
+                    <li id="li-login-dropdown" class="dropdown">
                         <a class="dropdown-toggle" href="#" id="login-dropdown" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
                         <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
                             <form action="/accounts/login/?next=/rmiyc" method="post" accept-charset="UTF-8">
