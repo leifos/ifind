@@ -1,50 +1,48 @@
-# Create your views here.
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile
+from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile, Achievement
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 import os
 from django.forms import ModelForm
 from forms import *
-from configuration import MEDIA_URL
+from configuration import MEDIA_URL, UPLOAD_DIR
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
 
 
-
 def profile_page(request, username):
     view_permission = False
-    murl = MEDIA_URL
     context = RequestContext(request, {})
-    u = User.objects.get(username=username)
-    if u:
-        user_profile = u.get_profile()
-        level = user_profile.level
-        xp = user_profile.xp
-        achievements = PlayerAchievement.objects.filter(user=u)
-        highscores = HighScore.objects.filter(user=u)
-    if request.user == u:
+    user = User.objects.get(username=username)
+    if user:
+        user_profile = user.get_profile()
+        achievements = PlayerAchievement.objects.filter(user=user)
+        #TODO(mtbvc): do the following in a cleaner way
+        #filter out achievements player got from all that are available
+        available_achievements = Achievement.objects.all()
+        player_badges = [item.achievement for item in achievements]
+        av_achievements = []
+        for item in available_achievements:
+            if item not in player_badges:
+                av_achievements.append(item)
+        print available_achievements
+        highscores = HighScore.objects.filter(user=user)
+    if request.user == user:
         view_permission = True
-    return render_to_response('profiles/profile_page.html', {'user_profile': u,
-                                                                 'profile': user_profile,
-                                                                 'level':level,
-                                                                 'murl': murl,
-                                                                 'age':user_profile.age,
-                                                                 'achievements': achievements,
-                                                                 'view_perm': view_permission,
-                                                                 'highscores': highscores,
-                                                                 'total_score' : sum(i.highest_score for i in highscores),
-                                                                 'xp':xp}, context)
-    #else:
-    #    view_permission = False
-    #    return render_to_response('profiles/profile_page.html', {'user_profile': u,
-    #                                                             'view_perm': view_permission,
-    #                                                             'profile': user_profile},
-    #                                                              context)
+    return render_to_response('profiles/profile_page.html', {'user': user,
+                                                             'profile': user_profile,
+                                                             'murl': MEDIA_URL,
+                                                             'achievements': achievements,
+                                                             'available_achievements': av_achievements,
+                                                             'view_perm': view_permission,
+                                                             'highscores': highscores,
+                                                             'total_score' : sum(i.highest_score for i in highscores)},
+                                                              context)
+
 
 @login_required
 def edit_profile(request, username):
@@ -61,17 +59,21 @@ def edit_profile(request, username):
         return render_to_response('profiles/edit_profile.html', {'profile_form': profile_form,
                                                                  'user_form': user_form},context)
     else:
-        profile_form = ProfileForm(request.POST)
-        user_form = UserForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        user_form = UserForm(data=request.POST, instance=usr)
         if profile_form.is_valid() and user_form.is_valid():
-            profile.age = profile_form.cleaned_data['age']
-            profile.gender = profile_form.cleaned_data['gender']
-            profile.school = profile_form.cleaned_data['school']
-            profile.country = profile_form.cleaned_data['country']
-            profile.city = profile_form.cleaned_data['city']
-            profile.save()
-            usr.email = user_form.cleaned_data['email']
-            usr.save()
+            if request.FILES:
+                #os.remove(profile.profile_pic.url)
+                #os.remove(os.path.join(settings.MEDIA_ROOT, profile.profile_pic.))
+                print profile.profile_pic
+                print "----"
+                print request.FILES['profile_pic']
+                print MEDIA_URL + UPLOAD_DIR + '/' + str(profile.profile_pic)
+                print profile.profile_pic.file
+                #print os.path.join(MEDIA_URL, profile.profile_pic)
+            user_form.save()
+            profile_form.save()
+
         else:
             return render_to_response('profiles/edit_profile.html', {'profile_form': profile_form,
                                                                      'user_form': user_form},context)

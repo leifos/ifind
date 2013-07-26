@@ -17,7 +17,7 @@ GENDER_CHOICES = (
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    profile_pic = models.ImageField(upload_to=UPLOAD_DIR, blank=True)
+    profile_pic = models.ImageField(upload_to=UPLOAD_DIR, blank=True, default='face.svg')
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     school = models.CharField(max_length=128, blank=True)

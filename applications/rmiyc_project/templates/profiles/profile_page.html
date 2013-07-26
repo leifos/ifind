@@ -3,13 +3,13 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="well span12" >
-            <h3>Profile: {{user_profile.username}}</h3>
+            <h3>Profile: {{user.username}}</h3>
 
             <div class="span3">
-                {% if user_profile %}
+                {% if user %}
                 Total Score: {{total_score|default:0}} <br/>
-                level : {{level}} <br/>
-                experience points : {{xp}} <br/>
+                level : {{profile.level}} <br/>
+                experience points : {{profile.xp}} <br/>
                 {% endif %}
             </div>
             <div class="span3">
@@ -24,7 +24,7 @@
 
             <div class="span3">
                 <ul>
-                    <li>email: {{user_profile.email}}</li>
+                    <li>email: {{user.email}}</li>
                     <li>gender: {{profile.gender}}</li>
                     <li>age: {{profile.age}}</li>
                 </ul>
@@ -48,8 +48,7 @@
             <li class="span3.5">
                 <div>
                     <h3>{{item.category.name}}</h3>
-                    <img src="{{item.category.icon}}" class="img-rounded" alt="{{item.category.name}}" height="100"
-                         width="100">
+                    <img src="{{item.category.icon}}" class="img-rounded"  alt="{{item.category.name}}" height="100" width="100">
 
                     <p>{{item.highest_score}}</p>
                 </div>
@@ -61,17 +60,27 @@
     <div class="well">
         <h3>Badges</h3>
         <ul class="thumbnails centre text-center">
-            {% for item in achievements %}
-            <li class="span3.5">
-                <div>
-                    <h3>{{item.achievement.name}}</h3>
-                    <img src="{{murl}}{{item.achievement.badge_icon}}" class="img-rounded"
-                         alt="{{item.achievement.name}}" height="100" width="100">
 
+                {% for item in achievements %}
+            <li class="span3.5">
+                    <div>
+                        <h3>{{item.achievement.name}}</h3>
+                        <img src="{{murl}}{{item.achievement.badge_icon}}" class="img-rounded"
+                        alt="{{item.achievement.name}}" height="100" width="100">
+                        <p>{{item.}}</p>
+                    </div>
+                <li/>
+                {% endfor %}
+                {% for item in available_achievements %}
+            <li class="span3.5">
+                    <div  style="opacity:0.2">
+                    <h3>{{item.name}}</h3>
+                    <img src="{{murl}}{{item.badge_icon}}" class="img-rounded"
+                         alt="{{item.name}}" height="100" width="100">
                     <p>{{item.}}</p>
-                </div>
+                    </div>
+                {% endfor %}
             </li>
-            {% endfor %}
         </ul>
     </div>
 
