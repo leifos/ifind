@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile
+from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile, Achievement
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 import os
@@ -21,6 +21,15 @@ def profile_page(request, username):
     if user:
         user_profile = user.get_profile()
         achievements = PlayerAchievement.objects.filter(user=user)
+        #TODO(mtbvc): do the following in a cleaner way
+        #filter out achievements player got from all that are available
+        available_achievements = Achievement.objects.all()
+        player_badges = [item.achievement for item in achievements]
+        av_achievements = []
+        for item in available_achievements:
+            if item not in player_badges:
+                av_achievements.append(item)
+        print available_achievements
         highscores = HighScore.objects.filter(user=user)
     if request.user == user:
         view_permission = True
@@ -28,6 +37,7 @@ def profile_page(request, username):
                                                              'profile': user_profile,
                                                              'murl': MEDIA_URL,
                                                              'achievements': achievements,
+                                                             'available_achievements': av_achievements,
                                                              'view_perm': view_permission,
                                                              'highscores': highscores,
                                                              'total_score' : sum(i.highest_score for i in highscores)},
