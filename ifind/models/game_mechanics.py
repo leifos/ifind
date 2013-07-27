@@ -93,6 +93,9 @@ class GameMechanic(object):
     def get_final_round_no(self):
         return self.game.no_rounds
 
+    def get_game_category_name(self):
+        return self.game.category.name
+
     def double_bonus(self):
         if(self.game.bonus<3200):
             self.game.bonus *= 2

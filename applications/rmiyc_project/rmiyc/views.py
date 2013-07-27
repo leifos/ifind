@@ -204,10 +204,10 @@ def game_over(request):
         game_id = request.COOKIES.get('game_id')
         ds = EngineFactory("bing", api_key=BING_API_KEY)
         gm = RMIYCMechanic(ds)
-        game = gm.retrieve_game(user, game_id)
+        gm.retrieve_game(user, game_id)
         statistics =[]
         statistics.append({'score': gm.get_current_score(), 'no_queries':gm.get_no_of_queries_issued(),
-                           'no_successful_queries': gm.get_no_of_successful_queries_issued(),
+                           'no_successful_queries': gm.get_no_of_successful_queries_issued(), 'category':gm.get_game_category_name(),
                            'no_round': gm.get_final_round_no(), 'no_successful_round': gm.get_no_rounds_completed()})
         response = render_to_response('rmiyc/game_over.html',{'statistics': statistics}, context)
         response.delete_cookie('game_id')

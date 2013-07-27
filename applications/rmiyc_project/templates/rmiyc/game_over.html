@@ -57,7 +57,8 @@
             {% if statistics %}
                 {% for item in statistics %}
                 <div class="alert alert-success">
-                    <p><h3> You have <strong> scored : {{item.score}} points </strong> in this game. <br />
+                    <p><h3> You have Played in category : {{item.category}} <br />
+                    You have <strong> scored : {{item.score}} points </strong> in this game. <br />
                     You have <strong> issued : {{item.no_queries}} queries </strong>, {{item.no_successful_queries}} were successful in retrieving the pages. <br />
                     You have <strong> played : {{item.no_round}} rounds </strong>, {{item.no_successful_round}} were completed successfully. <br />
                     <strong>Well done! </strong>
