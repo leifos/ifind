@@ -34,8 +34,8 @@ def play(request, category_name):
             avatar.update(request.user)
 
         # Query the database for the provided category name
-
-        c = Category.objects.get(name=decode_url_to_string(category_name))
+        decoded_category_name= decode_url_to_string(category_name)
+        c = Category.objects.get(name= decoded_category_name)
 
         gm = RMIYCMechanic()
         # This view shall be called when a new game is to start
@@ -58,7 +58,7 @@ def play(request, category_name):
             avatar.update(current_game=gm.game)
 
             msg = avatar.get()
-            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'minimal_navbar':True}, context)
+            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'minimal_navbar':True, 'category':decoded_category_name}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
