@@ -17,6 +17,7 @@ $(function()
     {
         if(event.ctrlKey && event.which == 13)
         {
+            $(this).css({'cursor':'wait'});
             event.preventDefault();
             $.ajax
             ({
@@ -46,6 +47,8 @@ $(function()
     $('#search-button').click(function(event)
     {
         event.preventDefault();
+        //$('#search-button').attr("disabled", true);
+        $('body').css({'cursor':'wait'});
         $.ajax
         ({
             type: "GET",
@@ -75,6 +78,8 @@ $(function()
 
 function search_success(data, textStatus, jqXHR)
 {
+    //$('#search-button').removeAttr("disabled");
+    $('body').css({'cursor':'auto'});
     var obj = jQuery.parseJSON(data);
     if (obj.is_game_over == 1)
     {
@@ -105,7 +110,6 @@ function search_success(data, textStatus, jqXHR)
     $('#game_updates-div').html(game_updates_html);
     $('#score-div').html("<Strong>score :" + obj.score + "</strong>");
     $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
-    $('#query').val("");
     if(obj.score != 0)
     {
         $('#skip-button').html("<i class='icon-forward icon-white'></i> take points");
@@ -125,6 +129,7 @@ function search_success(data, textStatus, jqXHR)
 
 function display_next_page_success(data, textStatus, jqXHR)
 {
+    $('#query').val("");
     $('#query').focus();
     $('#content-div').removeClass("alert-success");
     $('#content-div').addClass("alert-error");
@@ -188,11 +193,11 @@ function avatar()
 
 function avatar1()
 {
-        $('#avatar-div').html("<h3> GO! </h3>")
         timeoutID = window.setTimeout(avatar1, 2000);
-        $('#search-div').fadeTo(2000,1);
-        $('#content-div').fadeTo(2000,1);
-        $('#image-div').fadeTo(2000,1);
+        $('#search-div').fadeTo(1500,1);
+        $('#content-div').fadeTo(1500,1);
+        $('#image-div').fadeTo(1500,1);
+        $('#avatar-div').html("<h3> if you retrieve the page, you can have the points!  </h3>")
         window.clearTimeout(timeoutID);
 }
 
