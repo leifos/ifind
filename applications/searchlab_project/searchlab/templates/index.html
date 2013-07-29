@@ -46,12 +46,25 @@
 
     <div class="row-fluid" id="results-container">
         <div class="span3"></div>
-
         <div class="span6">
             <div class="well well-large" id="result-list">
             </div>
         </div>
+        <div class="span3"></div>
+    </div>
 
+    <div class="row-fluid" id="pagination-container">
+        <div class="span3"></div>
+        <div class="span6" style="text-align: center;">
+            <span class="pagination btn-group">
+
+                <a class="btn first" id="first">&laquo;</a>
+                <a class="btn previous" id="previous">&lsaquo;</a>
+                <span class="btn" style="cursor: default;" id="pagination-middle">---</span>
+                <a class="btn next" id="next">&rsaquo;</a>
+                <a class="btn last" id="last">&raquo;</a>
+            </span>
+        </div>
         <div class="span3"></div>
     </div>
 {% endblock %}
