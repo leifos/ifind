@@ -17,7 +17,6 @@ $(function()
     {
         if(event.ctrlKey && event.which == 13)
         {
-            $(this).css({'cursor':'wait'});
             event.preventDefault();
             $.ajax
             ({
@@ -29,7 +28,8 @@ $(function()
         }
         else if(event.which == 13)
         {
-             event.preventDefault();
+             $(this).css({'cursor':'wait'});
+            event.preventDefault();
             $.ajax
             ({
                 type: "GET",
