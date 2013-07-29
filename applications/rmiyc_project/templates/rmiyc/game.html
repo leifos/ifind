@@ -10,6 +10,14 @@
             padding-top: 50px;
             z-index: 1;
         }
+        a.button-index {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 20px;
+        }
         div.step:after {
             position: absolute;
             top: -1px;
@@ -25,7 +33,7 @@
             border-radius: 4px 0 4px 0;
         }
         div.step1:after {
-            content: "This is the page that you have to retrive";
+            content: "This is the page that you have to retrieve";
         }
 
         div.step2:after {
@@ -59,11 +67,9 @@
 <div class="span5">
     <div id="statistics-div" class="alert alert-block">
         <table>
+
                 <div id="game_updates-div" >
-
-                </div>
-                <div id="num-queries-div">
-
+                <tr><td><h4> Category :</h4></td><td><h4> {{category}} </h4></td></tr>
                 </div>
         </table>
     </div>
@@ -72,14 +78,25 @@
         <br />
         <br />
         <!-- style="background: #663300"  -->
-        <a class="btn btn-primary" id="search-button" ><i class="icon-search icon-white align-center"></i> search</a>  &nbsp
-        <a class="btn btn-danger"  id="skip-button"><i class="icon-forward icon-white align-center"></i> skip</a>
+        <div class="row">
+            <div class="span0.5">
+            </div>
+            <div class="span2">
+                <a class="btn btn-primary button-index" id="search-button" ><i class="icon-search icon-white align-center"></i> search</a>
+            </div>
+            <div class="span2">
+                <a class="btn btn-danger button-index"  id="skip-button"><i class="icon-forward icon-white align-center"></i> skip</a>
+            </div>
+            <div class="span0.5">
+            </div>
+        </div>
+
     </div>
-    <div id="content-div"  class="alert alert-success">
+    <div id="content-div"  class="alert alert-error">
         <div id ="score-div" class="well well-large step step4">
         </div>
         <div id="search-results-div"  class="well well-large step step3">
-            <ol id="search-results-ol" style="overflow: auto;">
+            <ol id="search-results-ol" style="overflow: auto; padding-left: 25px;">
             </ol>
         </div>
     </div>

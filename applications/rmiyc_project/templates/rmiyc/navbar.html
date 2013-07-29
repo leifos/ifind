@@ -6,23 +6,26 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/">Retrieve Me If You Can</a>
+            <a class="brand" href="/rmiyc/">Retrieve Me If You Can</a>
             <div class="nav-collapse collapse navbar-responsive-collapse">
-                {% if not minimal_navbar %}
+                {% if not game_running %}
                 <ul class="nav">
-                    <li><a href="/rmiyc/">Play</a></li>
-                    <li><a href="/leaderboard/">Leader board</a></li>
+                    <li><a href="/rmiyc/pick_category/">Play</a></li>
+                    <li><a href="/leaderboard/">Leaderboard</a></li>
                     <li><a href="/rmiyc/about/">About</a></li>
                 </ul>
                 {% endif %}
 
-                {% if minimal_navbar %}
+                {% if game_running %}
                  <ul class="nav pull-right">
-                    <li><a href="/rmiyc/game_over">Leave Game</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="#">({{ user.username }}) </a></li>
+                    {% endif %}
+                    <li class="active"><a href="/rmiyc/game_over">Leave Game</a></li>
                 </ul>
                 {% endif %}
 
-                {% if user.is_authenticated and not minimal_navbar %}
+                {% if user.is_authenticated and not game_running %}
                 <ul class="nav pull-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">({{ user.username }}) <strong class="caret"></strong></a>
@@ -32,9 +35,9 @@
                         </ul>
                     </li>
                 </ul>
-                {% elif not user.is_authenticated and not minimal_navbar %}
-                <ul class="nav pull-right">
 
+                {% elif not user.is_authenticated and not game_running %}
+                <ul class="nav pull-right">
                     <li><a href="/accounts/register/">Register</a></li>
                     <li id="li-login-dropdown" class="dropdown">
                         <a class="dropdown-toggle" href="#" id="login-dropdown" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>

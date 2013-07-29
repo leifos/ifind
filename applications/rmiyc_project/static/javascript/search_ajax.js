@@ -1,14 +1,7 @@
 $(function()
 {
-
-    var game_updates_html =  "<tr><td><h4> score :</h4></td><td><h4> 0 </h4></td></tr>"+
-                             "<tr><td><h4> round no :</h4></td><td><h4> 1 </h4></td></tr>" +
-                             "<tr><td><h4> remaining rounds :</h4></td><td><h4> 3 </h4></td></tr>"+
-                             "<tr><td><h4> queries issued for this page :</h4></td><td><h4> 0 </h4></td></tr>";
-    $('#game_updates-div').html(game_updates_html);
-    adjust_header_divs_height();
-    adjust_body_divs_height();
-    adjust_search_input_width();
+    initiate_game();
+    var timeoutID;
     window.onbeforeunload = confirmExit;
     function confirmExit()
     {
@@ -94,20 +87,22 @@ function search_success(data, textStatus, jqXHR)
     $(obj_list).each(function()
         {
             if (this.link != obj.url_to_find)
-                html_string+= "<Li> <b>" + this.title + "</b> <br /></Li>";
+            {
+                html_string+= "<Li><strong>" + this.title + "</strong></Li>";
+            }
             else
             {
-                html_string+= "<Li class='text-warning'> <b>" + "Page was retrieved in this rank" + "</b> <br /></Li>";
+                html_string+= "<Li class='text-warning'><strong>" + "Page was retrieved in this rank" + "</strong></Li>";
             }
         }
     );
+    $('#search-results-ol').html(html_string);
 
     var game_updates_html =  "<tr><td><h4> current score :</h4></td><td><h4>"+ obj.current_score +"</h4></td></tr>"+
                              "<tr><td><h4> round no :</h4></td><td><h4>"+ obj.no_round +"</h4></td></tr>" +
                              "<tr><td><h4>remaining rounds :</h4></td><td><h4>"+ obj.no_remaining_rounds +"</h4></td></tr>"+
                              "<tr><td><h4>queries issued for this page :</h4></td><td><h4>" +obj.no_of_queries_issued_for_current_page+ "</h4></td></tr>";
     $('#game_updates-div').html(game_updates_html);
-    $('#search-results-ol').html(html_string);
     $('#score-div').html("<Strong>score :" + obj.score + "</strong>");
     $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
     $('#query').val("");
@@ -130,6 +125,8 @@ function search_success(data, textStatus, jqXHR)
 
 function display_next_page_success(data, textStatus, jqXHR)
 {
+    $('#content-div').removeClass("alert-success");
+    $('#content-div').addClass("alert-error");
     $('#skip-button').removeClass("btn-success").addClass("btn-danger");
     var obj = jQuery.parseJSON(data);
     if (obj.is_game_over == 1)
@@ -178,4 +175,35 @@ function adjust_search_input_width()
 {
     var search_div_width =$('#search-div').width();
     $('#query').width(search_div_width -20);
+}
+function avatar()
+{
+        $('#search-div').fadeTo("slow",0.10);
+        $('#content-div').fadeTo("slow",0.10);
+        $('#image-div').fadeTo("slow",0.10);
+        $('#avatar-div').html("<h3> Ready? </h3>")
+        timeoutID = window.setTimeout(avatar1, 2000);
+}
+
+function avatar1()
+{
+        $('#avatar-div').html("<h3> GOOOOOOOOOO? </h3>")
+        timeoutID = window.setTimeout(avatar1, 2000);
+        $('#search-div').fadeTo("slow",1);
+        $('#content-div').fadeTo("slow",1);
+        $('#image-div').fadeTo("slow",1);
+        window.clearTimeout(timeoutID);
+}
+
+function initiate_game()
+{
+         var game_updates_html =  "<tr><td><h4> score :</h4></td><td><h4> 0 </h4></td></tr>"+
+                             "<tr><td><h4> round no :</h4></td><td><h4> 1 </h4></td></tr>" +
+                             "<tr><td><h4> remaining rounds :</h4></td><td><h4> 3 </h4></td></tr>"+
+                             "<tr><td><h4> queries issued for this page :</h4></td><td><h4> 0 </h4></td></tr>";
+         $('#game_updates-div').html(game_updates_html);
+         avatar();
+         adjust_header_divs_height();
+         adjust_body_divs_height();
+         adjust_search_input_width();
 }
