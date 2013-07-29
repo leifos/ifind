@@ -178,9 +178,9 @@ function adjust_search_input_width()
 }
 function avatar()
 {
-        $('#search-div').fadeTo("slow",0.10);
-        $('#content-div').fadeTo("slow",0.10);
-        $('#image-div').fadeTo("slow",0.10);
+        $('#search-div').fadeTo(0,0);
+        $('#content-div').fadeTo(0,0);
+        $('#image-div').fadeTo(0,0);
         $('#avatar-div').html("<h3> Ready? </h3>")
         timeoutID = window.setTimeout(avatar1, 2000);
 }
@@ -189,9 +189,9 @@ function avatar1()
 {
         $('#avatar-div').html("<h3> GOOOOOOOOOO? </h3>")
         timeoutID = window.setTimeout(avatar1, 2000);
-        $('#search-div').fadeTo("slow",1);
-        $('#content-div').fadeTo("slow",1);
-        $('#image-div').fadeTo("slow",1);
+        $('#search-div').fadeTo(2000,1);
+        $('#content-div').fadeTo(2000,1);
+        $('#image-div').fadeTo(2000,1);
         window.clearTimeout(timeoutID);
 }
 
