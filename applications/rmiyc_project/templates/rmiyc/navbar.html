@@ -8,7 +8,7 @@
             </a>
             <a class="brand" href="/rmiyc/">Retrieve Me If You Can</a>
             <div class="nav-collapse collapse navbar-responsive-collapse">
-                {% if not minimal_navbar %}
+                {% if not game_running %}
                 <ul class="nav">
                     <li><a href="/rmiyc/pick_category/">Play</a></li>
                     <li><a href="/leaderboard/">Leaderboard</a></li>
@@ -16,7 +16,7 @@
                 </ul>
                 {% endif %}
 
-                {% if minimal_navbar %}
+                {% if game_running %}
                  <ul class="nav pull-right">
                     {% if user.is_authenticated %}
                         <li><a href="#">({{ user.username }}) </a></li>
@@ -25,7 +25,7 @@
                 </ul>
                 {% endif %}
 
-                {% if user.is_authenticated and not minimal_navbar %}
+                {% if user.is_authenticated and not game_running %}
                 <ul class="nav pull-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">({{ user.username }}) <strong class="caret"></strong></a>
@@ -35,7 +35,8 @@
                         </ul>
                     </li>
                 </ul>
-                {% elif not user.is_authenticated and not minimal_navbar %}
+
+                {% elif not user.is_authenticated and not game_running %}
                 <ul class="nav pull-right">
                     <li><a href="/accounts/register/">Register</a></li>
                     <li id="li-login-dropdown" class="dropdown">

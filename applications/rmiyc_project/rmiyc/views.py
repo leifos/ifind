@@ -17,26 +17,31 @@ import urllib, urllib2
 import json
 # Create your views here.
 
+
 def index(request):
         context = RequestContext(request, {})
+        #create the logger
         create_ifind_logger("Log")
         return render_to_response('rmiyc/index.html', context)
 
+
 def play(request, category_name):
-        # Get the current user
         context = RequestContext(request, {})
+        #Create game avatar
         avatar = GameAvatar('GamePage')
+        #Get the current user
         u = request.user
-        # If the user is anonymous, then a new user will be created
+        # If the user is anonymous, then the user anon (added to db in population scripts) will be retrieved
         if not u.is_authenticated():
             u = User.objects.get(username='anon')
         else:
             avatar.update(request.user)
 
-        # Query the database for the provided category name
+        #decode the category name to  replace '_' with ' '
         decoded_category_name= decode_url_to_string(category_name)
+        #query the database for the provided category name
         c = Category.objects.get(name= decoded_category_name)
-
+        #create game mechanics
         gm = RMIYCMechanic()
         # This view shall be called when a new game is to start
         # Thus, there should be no cookie containing a game_id
@@ -53,23 +58,19 @@ def play(request, category_name):
             game_id = gm.get_game_id()
             # get the current page that is going to be displayed first to the user
             p = gm.get_current_page()
-            # initiate the array which will hold all the result list, the page that is going to be shown and the score
 
             avatar.update(current_game=gm.game)
 
             msg = avatar.get()
-            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'minimal_navbar':True, 'category':decoded_category_name}, context)
+            response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'game_running':True, 'category':decoded_category_name}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
-
             return response
 
 
 def pick_category(request):
         context = RequestContext(request, {})
-        scores=[]
-
         #TODO(leifos): filter this
         cats = Category.objects.filter(is_shown=True)
 
@@ -88,7 +89,6 @@ def pick_category(request):
         avatar = GameAvatar('CategoryPage')
 
         if request.user.is_authenticated():
-            hs = HighScore.objects.filter(user=request.user)
             avatar.update(user=request.user)
 
         msg = avatar.get()
@@ -98,11 +98,11 @@ def pick_category(request):
 
 
 def search(request):
-
+        #get current user
         user = request.user
         result_list = []
-
         logger = get_ifind_logger("Log")
+        #create game avatar
         avatar = GameAvatar('Search')
         if request.user.is_authenticated():
             avatar.update(user=user)
@@ -117,14 +117,11 @@ def search(request):
                 #Augement query
                 query += ' site:gla.ac.uk '
             if query:
-
                 result_list = gm.get_search_results(query,top=10)
 
             gm.handle_query(query)
             gm.update_game()
-
             avatar.update(current_game=gm.game)
-
             # get the last query score
             objects = []
             for item in result_list:
