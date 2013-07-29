@@ -25,7 +25,7 @@ def search(request):
 
     # execute query
     engine = EngineFactory('govuk')
-    query = Query(query_terms)
+    query = Query(query_terms, top=50)
     response = engine.search(query)
 
     return HttpResponse(response.to_json(), content_type='application/json')
