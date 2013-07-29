@@ -25,3 +25,18 @@
     background: 222;
 }
 
+.pagination {
+    margin: 0 auto 0 auto;
+    display: inline-block;
+}
+
+#pagination-container {
+    float: none;
+    margin:0 auto;
+
+}
+
+.btn.disabled, .btn[disabled] {
+    opacity: 1.0;
+    background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
+}
