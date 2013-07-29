@@ -125,6 +125,7 @@ function search_success(data, textStatus, jqXHR)
 
 function display_next_page_success(data, textStatus, jqXHR)
 {
+    $('#query').focus();
     $('#content-div').removeClass("alert-success");
     $('#content-div').addClass("alert-error");
     $('#skip-button').removeClass("btn-success").addClass("btn-danger");
@@ -187,7 +188,7 @@ function avatar()
 
 function avatar1()
 {
-        $('#avatar-div').html("<h3> GOOOOOOOOOO? </h3>")
+        $('#avatar-div').html("<h3> GO! </h3>")
         timeoutID = window.setTimeout(avatar1, 2000);
         $('#search-div').fadeTo(2000,1);
         $('#content-div').fadeTo(2000,1);

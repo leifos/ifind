@@ -313,7 +313,7 @@ class GameMechanic(object):
                 hs[0].save()
             else:
                 HighScore(user=self.game.user,category=self.game.category, highest_score=self.game.current_score).save()
-        pass
+
 
     def get_last_query_score(self):
         return self.game.last_query_score
