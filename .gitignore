@@ -3,6 +3,8 @@
 *.db
 *.png
 
+Log
+
 keys.py
 tester.py
 
