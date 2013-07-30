@@ -1,7 +1,11 @@
+var button_available=true;
+
 $(function()
 {
     initiate_game();
     var timeoutID;
+
+
     window.onbeforeunload = confirmExit;
     function confirmExit()
     {
@@ -17,68 +21,27 @@ $(function()
     {
         if(event.ctrlKey && event.which == 13)
         {
-            event.preventDefault();
-            $.ajax
-            ({
-                type: "GET",
-                url: "/rmiyc/display_next_page/",
-                success: display_next_page_success,
-                dataType: 'html'
-            });
+            skip_button_click(event);
         }
         else if(event.which == 13)
         {
-             $(this).css({'cursor':'wait'});
-            event.preventDefault();
-            $.ajax
-            ({
-                type: "GET",
-                url: "/rmiyc/search/",
-                data:
-                {
-                    'query' : $('#query').val()
-                },
-                success: search_success,
-                dataType: 'html'
-            });
+           search_button_click(event);
         }
     });
 
     $('#search-button').click(function(event)
     {
-        event.preventDefault();
-        //$('#search-button').attr("disabled", true);
-        $('body').css({'cursor':'wait'});
-        $.ajax
-        ({
-            type: "GET",
-            url: "/rmiyc/search/",
-            data:
-            {
-                'query' : $('#query').val()
-            },
-            success: search_success,
-            dataType: 'html'
-        });
-
+        search_button_click(event);
     });
 
     $('#skip-button').click(function(event)
     {
-        event.preventDefault();
-        $.ajax
-        ({
-            type: "GET",
-            url: "/rmiyc/display_next_page/",
-            success: display_next_page_success,
-            dataType: 'html'
-        });
+        skip_button_click(event);
     });
 });
 
 function search_success(data, textStatus, jqXHR)
 {
-    //$('#search-button').removeAttr("disabled");
     $('body').css({'cursor':'auto'});
     var obj = jQuery.parseJSON(data);
     if (obj.is_game_over == 1)
@@ -125,6 +88,8 @@ function search_success(data, textStatus, jqXHR)
         $('#content-div').removeClass("alert-success").addClass("alert-error");
     }
     adjust_body_divs_height();
+    button_available=true;
+    $('#search-button').removeAttr("disabled");
 }
 
 function display_next_page_success(data, textStatus, jqXHR)
@@ -212,4 +177,36 @@ function initiate_game()
          adjust_header_divs_height();
          adjust_body_divs_height();
          adjust_search_input_width();
+}
+function search_button_click(event)
+{
+    if(button_available==true)
+    {
+        event.preventDefault();
+        button_available= false;
+        $('#search-button').attr("disabled","disabled");
+        $(this).css({'cursor':'wait'});
+        $.ajax
+        ({
+            type: "GET",
+            url: "/rmiyc/search/",
+            data:
+            {
+                'query' : $('#query').val()
+            },
+            success: search_success,
+            dataType: 'html'
+        });
+    }
+}
+function skip_button_click(event)
+{
+    event.preventDefault();
+    $.ajax
+    ({
+        type: "GET",
+        url: "/rmiyc/display_next_page/",
+        success: display_next_page_success,
+        dataType: 'html'
+    });
 }
