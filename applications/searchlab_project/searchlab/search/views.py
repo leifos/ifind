@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 
 from .utils import check_input
+from .utils import get_client_ip
 
 from ifind.search import Query
 from ifind.search import EngineFactory
@@ -28,7 +29,21 @@ def search(request):
     query = Query(query_terms, top=50)
     response = engine.search(query)
 
+    ##########
+
+    print '********************* -- ' + get_client_ip(request)
+
+    ##########
+
     return HttpResponse(response.to_json(), content_type='application/json')
 
 
+def session(request):
 
+    if "animal_type" in request.session:
+        return HttpResponse(request.session['animal_type'])
+
+    response = HttpResponse("ducks")
+    request.session["animal_type"] = "goose"
+
+    return response
