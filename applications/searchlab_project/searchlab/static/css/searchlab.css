@@ -32,8 +32,7 @@
 
 #pagination-container {
     float: none;
-    margin:0 auto;
-
+    margin: 0 auto 20px;
 }
 
 .btn.disabled, .btn[disabled] {
@@ -61,10 +60,23 @@
 
 }
 
-#result-list li:last-child, li:first-child {
+#result-list li:last-child {
     margin-bottom: -15px;
 }
 
 #result-list li:first-child {
     margin-top: -5px;
+}
+
+#title-1 {
+    color: #3a81ba;
+}
+
+#title-2 {
+    color: #963334;
+}
+
+#no-results {
+    display: block;
+    margin-bottom: -25px;
 }
