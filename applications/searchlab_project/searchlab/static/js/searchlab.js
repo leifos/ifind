@@ -1,5 +1,5 @@
 /* maximum number of results per page */
-var MAX_PAGE_SIZE = 5
+var MAX_PAGE_SIZE = 4
 
 
 /* global pagination structure */
@@ -81,8 +81,8 @@ function paginateResults(data)
     }
 
     // populate page lookup hash
-    var start = 0;
-    var end = MAX_PAGE_SIZE;
+    var start = 0,
+          end = MAX_PAGE_SIZE;
 
     for (var i=0; i<window.pagination.pages; i++) {
         window.pagination.page[i+1] = results.slice(start, end);
@@ -107,8 +107,13 @@ function displayResults(results)
     var resultDiv = $('#result-list');
 
     if (results.length == 0) {
+
         $('#pagination-container').hide();
-        resultDiv.append('<span id="no-results">No results found.</span>')
+
+        $('<span/>', {
+            id: 'no-results',
+            text: 'No results found.'
+        }).appendTo(resultDiv);
     }
 
     // cache current page
@@ -120,14 +125,37 @@ function displayResults(results)
     // page derived index attribute assignment
     resultDiv.attr('start', index);
 
+    // add results to div
     for (var i=0; i<results.length; i++) {
-
-        var titleString = '<span class="result-title">' + results[i]['title'] + '</span>';
-        var descString = '<span class="result-desc">' + results[i]['summary'] + '</span>';
-        var urlString = '<span class="result-url"><a href="' + results[i]['url'] + '">' + results[i]['url'] + '</a></span>';
-
-        resultDiv.append('<li>' + titleString + descString + urlString + '</li>');
+        resultDiv.append(createSpannedResult(results[i]));
     }
+}
+
+function createSpannedResult(result)
+{
+    var listElement = $('<li/>');
+
+    // result title
+    $('<span/>', {
+        class: 'result-title',
+        text: result['title']
+    }).appendTo(listElement);
+
+    // result description
+    $('<span/>', {
+        class: 'result-desc',
+        text: result['summary']
+    }).appendTo(listElement);
+
+    $('<a />', {
+        href: result['url'],
+        text: result['url']
+    }).appendTo(
+        $('<span/>', {
+            class: 'result-url'
+        }).appendTo(listElement));
+
+    return listElement
 }
 
 
@@ -147,7 +175,6 @@ $('#first').click(function(event)
     displayResults(window.pagination.page[1]);
 });
 
-
 /* handler for '<' pagination button */
 $('#previous').click(function(event)
 {
@@ -159,7 +186,6 @@ $('#previous').click(function(event)
     }
 });
 
-
 /* handler for '<' pagination button */
 $('#next').click(function(event)
 {
@@ -170,7 +196,6 @@ $('#next').click(function(event)
         displayResults(window.pagination.page[currentPage]);
     }
 });
-
 
 /* handler for '<' pagination button */
 $('#last').click(function(event)
