@@ -62,6 +62,9 @@ class Handler(object):
             # get anonymous user messages
             messages += self._get_anonymous_messages()
 
+        if not messages:
+            raise ValueError("***** A list was empty! ****")
+
         # pick one and return
         return random.choice(messages)
 
@@ -267,11 +270,16 @@ class Search(Handler):
         if 0 < query_score < 500:
             messages.append('Good. But not great...')
             messages.append("{} isn't a BAD score... just a bit low.".format(query_score))
-
+        #"Hmm, that's fair."
+        if 500 <= query_score <= 700:
+            messages.append("Hmmm. That's fair")
         ###### If user obtained more than 700 points with their query ######
         if query_score > 700:
             messages.append('{} points? Not bad...'.format(query_score))
             messages.append('{} points is pretty good!'.format(query_score))
+
+        if not messages:
+            print query_score
 
         return messages
 
