@@ -40,3 +40,31 @@
     opacity: 1.0;
     background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
 }
+
+/* RESULT STYLINGS */
+
+.result-title {
+    display: block;
+    font-weight: bold;
+}
+
+.result-desc {
+    display: block;
+}
+
+.result-url {
+    display: block;
+}
+
+#result-list li {
+    margin-bottom: 15px;
+
+}
+
+#result-list li:last-child, li:first-child {
+    margin-bottom: -15px;
+}
+
+#result-list li:first-child {
+    margin-top: -5px;
+}
