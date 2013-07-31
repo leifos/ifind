@@ -1,5 +1,5 @@
 /* maximum number of results per page */
-var MAX_PAGE_SIZE = 10
+var MAX_PAGE_SIZE = 5
 
 
 /* global pagination structure */
@@ -108,16 +108,25 @@ function displayResults(results)
 
     if (results.length == 0) {
         $('#pagination-container').hide();
-        resultDiv.append("No results found.")
+        resultDiv.append('<span id="no-results">No results found.</span>')
     }
 
     // cache current page
     var currentPage = window.pagination.currentPage;
 
     // append results to div, with page derived index
-    var index = (currentPage * MAX_PAGE_SIZE) - (MAX_PAGE_SIZE - 1)
-    for (var i=0; i<results.length; i++, index++) {
-        resultDiv.append(index + " " + results[i]['url'] + '<br />');
+    var index = (currentPage * MAX_PAGE_SIZE) - (MAX_PAGE_SIZE - 1);
+
+    // page derived index attribute assignment
+    resultDiv.attr('start', index);
+
+    for (var i=0; i<results.length; i++) {
+
+        var titleString = '<span class="result-title">' + results[i]['title'] + '</span>';
+        var descString = '<span class="result-desc">' + results[i]['summary'] + '</span>';
+        var urlString = '<span class="result-url"><a href="' + results[i]['url'] + '">' + results[i]['url'] + '</a></span>';
+
+        resultDiv.append('<li>' + titleString + descString + urlString + '</li>');
     }
 }
 
