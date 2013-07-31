@@ -108,7 +108,7 @@ function displayResults(results)
 
     if (results.length == 0) {
         $('#pagination-container').hide();
-        resultDiv.append("No results found.")
+        resultDiv.append('<span id="no-results">No results found.</span>')
     }
 
     // cache current page
