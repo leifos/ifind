@@ -1,11 +1,31 @@
-/* centered header title */
+/* page title container */
 .page-header {
-    text-align: center
+    margin-top: 35px;
+    margin-bottom: 25px;
+    border-bottom: none
 }
+
+/* set font size of page title */
+h1.title {
+    font-size: 600%;
+}
+
+/* set colour of first half of title*/
+#title-1 {
+    color: #3a81ba;
+}
+
+/* set colour of second half of title*/
+#title-2 {
+    color: #963334;
+}
+
+
+
 
 /* margin of search form */
 .form-search {
-    margin: 0;
+    margin: 0 0 0 -22px;
 }
 
 .search-query {
@@ -22,8 +42,12 @@
 
 #results-container {
     margin-top: 20px;
-    background: 222;
+    margin-left: -9px;
 }
+
+
+
+
 
 .pagination {
     margin: 0 auto 0 auto;
@@ -39,6 +63,10 @@
     opacity: 1.0;
     background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
 }
+
+
+
+
 
 /* RESULT STYLINGS */
 
@@ -66,14 +94,6 @@
 
 #result-list li:first-child {
     margin-top: -5px;
-}
-
-#title-1 {
-    color: #3a81ba;
-}
-
-#title-2 {
-    color: #963334;
 }
 
 #no-results {
