@@ -32,7 +32,7 @@ class Response(object):
         self.results = []
         self.result_total = 0
 
-    def add_result(self, title="", url="", summary="", **kwargs):
+    def add_result(self, title, url, summary, **kwargs):
         """
         Adds a result to Response's results list.
 
@@ -144,7 +144,7 @@ class Result(object):
     Models a Result object for use with ifind's Response class.
 
     """
-    def __init__(self, title="", url="", summary="", **kwargs):
+    def __init__(self, title, url, summary, **kwargs):
         """
         Result constructor.
 
@@ -158,9 +158,9 @@ class Result(object):
             result = Result(title="pam's shop", url="www.pam.com", summary="a nice place")
 
         """
-        self.title = title
-        self.url = url
-        self.summary = summary
+        self.title = title if title else ""
+        self.url = url if url else ""
+        self.summary = summary if summary else ""
 
         for key, value in kwargs.items():
             setattr(self, key, value)
