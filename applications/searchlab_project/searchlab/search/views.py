@@ -29,12 +29,6 @@ def search(request):
     query = Query(query_terms, top=50)
     response = engine.search(query)
 
-    ##########
-
-    print '********************* -- ' + get_client_ip(request)
-
-    ##########
-
     return HttpResponse(response.to_json(), content_type='application/json')
 
 
