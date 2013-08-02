@@ -15,19 +15,39 @@ window.pagination =
 /* hide results and pagination containers at page load */
 $('#pagination-container').hide();
 $('#results-container').hide();
+$('#input-search').focus();
 
 
 /* override default behaviour of when 'Enter'
  * key pressed. Makes search request instead. */
 $('.input').keypress(function(event)
 {
-   if (event.which == 13)
-   {
+    if (event.which == 13)
+    {
        event.preventDefault();
        $('#btn-submit').click();
-   }
+    }
 });
 
+$(document).keydown(function(event)
+{
+    if (!$('*:focus').is($('#input-search'))) {
+
+        // right arrow
+        if (event.which == 39)
+        {
+            event.preventDefault();
+            $('#next').click();
+        }
+
+        // left arrow
+        if (event.which == 37)
+        {
+            event.preventDefault();
+            $('#previous').click();
+        }
+    }
+});
 
 /* when search/submit button clicked query terms
  * are stored and a search request is sent */
@@ -127,8 +147,10 @@ function displayResults(results)
 
     // add results to div
     for (var i=0; i<results.length; i++) {
-        resultDiv.append(createSpannedResult(results[i]));
+        resultDiv.append(createSpannedResult(results[i])).fadeIn("slow");
     }
+
+    $('#input-search').blur();
 }
 
 function createSpannedResult(result)
@@ -159,10 +181,10 @@ function createSpannedResult(result)
 }
 
 
-/* clears results from results div. */
+/* clears results from results div and hides it. */
 function clearResults()
 {
-    $('#result-list').empty();
+    $('#result-list').empty().hide();
     $('#pagination-container').show();
     $('#results-container').show();
 }
@@ -186,7 +208,7 @@ $('#previous').click(function(event)
     }
 });
 
-/* handler for '<' pagination button */
+/* handler for '>' pagination button */
 $('#next').click(function(event)
 {
     var currentPage = window.pagination.currentPage;
