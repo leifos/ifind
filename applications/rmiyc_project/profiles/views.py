@@ -30,15 +30,13 @@ def profile_page(request, username):
             if item not in player_badges:
                 av_achievements.append(item)
         #do same with highscores
+        available_cats = Category.objects.all()
         highscores = HighScore.objects.filter(user=user)
-        available_higscores = HighScore.objects.all()
-        av_highscores = []
-        for item in available_higscores:
-            if item not in highscores:
-                av_highscores.append(item)
-        cats = Category.objects.all()
-        #zipped = zip(cats,highscores)
-
+        scores = list(highscores)
+        player_cats = [item.category for item in highscores]
+        for item in available_cats:
+            if item not in player_cats:
+                scores.append(HighScore(category=item, highest_score=0))
         progress = get_progress(user, user_profile)
     if request.user == user:
         view_permission = True
@@ -47,10 +45,8 @@ def profile_page(request, username):
                                                              'murl': MEDIA_URL,
                                                              'achievements': achievements,
                                                              'available_achievements': av_achievements,
-                                                             'acailable_highscores' : av_highscores,
                                                              'view_perm': view_permission,
-                                                             'highscores': highscores,
-                                                             'categories' : cats,
+                                                             'highscores': scores,
                                                              'progress': progress,
                                                              'total_score' : sum(i.highest_score for i in highscores)},
                                                               context)
