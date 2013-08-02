@@ -90,7 +90,7 @@ def get_or_create_experiment(exp_id):
             break
 
     # pick random engine
-    engine = random.choice([e for e in EngineFactory().engines() if e != 'dummy' if e != 'bing'])
+    engine = random.choice([e for e in EngineFactory() if e != 'dummy' if e != 'bing'])
     # pick random top value
     top = random.choice(xrange(5, 50))
 
