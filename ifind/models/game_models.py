@@ -16,9 +16,9 @@ GENDER_CHOICES = (
 )
 
 SCHOOL_CHOICES = (
-    (1, 'gla High'),
-    (2, 'gla low'),
-    (3, 'gla middle'),
+    ('gla high', 'gla High'),
+    ('gla low', 'gla low'),
+    ('gla middle', 'gla middle'),
 )
 
 class UserProfile(models.Model):
