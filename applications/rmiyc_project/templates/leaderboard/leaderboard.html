@@ -53,7 +53,7 @@
         <h3 class="text-success">Age group High Scores</h3>
         {% if age_scores %}
             <table class="table table-hover table-bordered">
-            {% for item in school_hs %}
+            {% for item in age_scores %}
               <tr class="success">
                   <td> <strong>{{item.rank}}</strong></td>
                   <td><a href='/profile/{{item.username}}'>{{item.username}}</a></td>
@@ -63,6 +63,23 @@
             </table>
         {% else %}
             <h5>Log in to view Age Group High scores.</h5>
+        {% endif %}
+
+
+
+        <h3 class="text-success">High Scores by Gender</h3>
+        {% if gender_scores %}
+            <table class="table table-hover table-bordered">
+            {% for item in gender_scores  %}
+              <tr class="success">
+                  <td> <strong>{{item.rank}}</strong></td>
+                  <td><a href='/profile/{{item.username}}'>{{item.username}}</a></td>
+                  <td><strong>{{item.score}}</strong></td>
+              </tr>
+            {%endfor%}
+            </table>
+        {% else %}
+            <h5>Log in to view Gender High scores.</h5>
         {% endif %}
 
 
