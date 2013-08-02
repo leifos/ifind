@@ -15,12 +15,18 @@ GENDER_CHOICES = (
     ('F', 'Female'),
 )
 
+SCHOOL_CHOICES = (
+    (1, 'gla High'),
+    (2, 'gla low'),
+    (3, 'gla middle'),
+)
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     profile_pic = models.ImageField(upload_to=UPLOAD_DIR, blank=True, default='face.svg')
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
-    school = models.CharField(max_length=128, blank=True)
+    school = models.CharField(max_length=128, choices=SCHOOL_CHOICES, blank=True)
     country = CountryField(blank=True)
     city = models.CharField(max_length=128, blank=True)
     xp = models.IntegerField(default=0,blank=True)
