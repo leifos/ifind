@@ -3,10 +3,10 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="well span12" >
-            <h3>Profile: {{user.username}}</h3>
+            <h3>Profile: {{usr.username}}</h3>
 
             <div class="span3">
-                {% if user %}
+                {% if usr %}
                 Total Score: {{total_score|default:0}} <br/>
                 level : {{profile.level}} <br/>
                 experience points : {{profile.xp}} <br/>
@@ -26,13 +26,13 @@
 
     <div class="row-fluid">
         <div class="well span12">
-            <!--<a href="/profile/{{user.username}}/edit_profile.html">Edit Profile</a>-->
+            <!--<a href="/profile/{{usr.username}}/edit_profile.html">Edit Profile</a>-->
 
 
 
             <div class="span3">
                 <ul>
-                    <li>email: {{user.email}}</li>
+                    <li>email: {{usr.email}}</li>
                     <li>gender: {{profile.gender}}</li>
                     <li>age: {{profile.age}}</li>
                 </ul>
@@ -48,7 +48,7 @@
 
             <!--<div class="row-fluid">-->
 		        <div class="span5">
-                            <a href="/profile/{{user.username}}/edit_profile.html">Edit Profile</a>
+                            <a href="/profile/{{usr.username}}/edit_profile.html">Edit Profile</a>
 
                 <h5>Profile {{ progress }}% complete.</h5>
 			        <div class="progress">
@@ -72,7 +72,7 @@
 
     <div class="well">
         <h3>Higscores</h3>
-        <a href="/profile/{{user.username}}/graphs.html">See details</a>
+        <a href="/profile/{{usr.username}}/graphs.html">See details</a>
         <ul class="thumbnails centre text-center">
             {% for item in highscores %}
             <li class="span3.5">

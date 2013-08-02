@@ -41,9 +41,8 @@ def profile_page(request, username):
 
         progress = get_progress(user, user_profile)
     if request.user == user:
-        print request.user
         view_permission = True
-    return render_to_response('profiles/profile_page.html', {'user': user,
+    return render_to_response('profiles/profile_page.html', {'usr': user,
                                                              'profile': user_profile,
                                                              'murl': MEDIA_URL,
                                                              'achievements': achievements,
