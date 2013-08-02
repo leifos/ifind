@@ -5,6 +5,7 @@ from ifind.common.utils import encode_string_to_url
 from django.contrib.auth.models import User
 from django.db.models import Max, Sum, Avg
 
+
 # ranking based on highest total score (top x players)
 # ranking of players based on level/xp
 # top players in each category
@@ -72,4 +73,40 @@ class HighScoresLeaderboard(GameLeaderboard):
 
     def __str__(self):
         return 'Highest Overall Scores'
+
+
+
+
+
+
+
+
+
+
+class SchoolLeaderboard(GameLeaderboard):
+
+    def get_leaderboard(self, user):
+        usr = User.objects.get(username=user.username)
+        if usr.username != '':
+            viewer_profile = UserProfile.objects.get(user=usr)
+            viewer_school = viewer_profile.school
+            #get all viewer's school mates
+            profiles = UserProfile.objects.filter(school=viewer_school)
+
+            hs = []
+            score_list = []
+            for profile in profiles:
+                hs = HighScore.objects.filter(user=viewer_profile.user)
+                Sum=0
+                for item in hs:
+                    Sum += item.highest_score
+                dummy_hs = HighScore(user=profile.user, highest_score=Sum, category=None)
+                score_list.append(dummy_hs)
+
+            #hs.order_by('-highest_score')[:self.top]
+        #hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
+            return self.highscore_to_list(score_list)
+
+    def __str__(self):
+        return 'School High Scores'
 

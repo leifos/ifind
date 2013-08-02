@@ -32,6 +32,27 @@
             </table>
         {% endif %}
 
+
+       <h3 class="text-success">School High Scores</h3>
+        {% if school_hs %}
+            <table class="table table-hover table-bordered">
+            {% for item in school_hs %}
+              <tr class="success">
+                  <td> <strong>{{item.rank}}</strong></td>
+                  <td><a href='/profile/{{item.username}}'>{{item.username}}</a></td>
+                  <td><strong>{{item.score}}</strong></td>
+              </tr>
+            {%endfor%}
+            </table>
+        {% else %}
+            <h5>Log in to view School High scores.</h5>
+        {% endif %}
+
+
+
+
+
+
      </div>
 {% endblock %}
 

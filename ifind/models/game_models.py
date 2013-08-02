@@ -57,7 +57,7 @@ class Category(models.Model):
 
 class HighScore(models.Model):
     user = models.ForeignKey(User)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, null=True)
     highest_score = models.IntegerField(default=0)
     most_no_pages_found = models.IntegerField(default=0)
     most_no_pages_found_in_a_row = models.IntegerField(default=0)
