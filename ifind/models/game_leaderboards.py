@@ -86,6 +86,8 @@ class HighScoresLeaderboard(GameLeaderboard):
 class SchoolLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self, user):
+        if user.username == '':
+            return None
         usr = User.objects.get(username=user.username)
         if usr.username != '':
             viewer_profile = UserProfile.objects.get(user=usr)
@@ -121,6 +123,8 @@ class SchoolLeaderboard(GameLeaderboard):
 class AgeLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self, user):
+        if user.username == '':
+            return None
         usr = User.objects.get(username=user.username)
         if usr.username != '':
             viewer_profile = UserProfile.objects.get(user=usr)
@@ -153,6 +157,8 @@ class AgeLeaderboard(GameLeaderboard):
 class GenderLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self, user):
+        if user.username == '':
+            return None
         usr = User.objects.get(username=user.username)
         if usr.username != '':
             viewer_profile = UserProfile.objects.get(user=usr)
