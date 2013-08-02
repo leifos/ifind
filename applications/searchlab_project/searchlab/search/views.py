@@ -29,15 +29,11 @@ def search(request):
     query = Query(query_terms, top=50)
     response = engine.search(query)
 
+    request.session["latest_query"] = query_terms
+
     return HttpResponse(response.to_json(), content_type='application/json')
 
 
 def session(request):
 
-    if "animal_type" in request.session:
-        return HttpResponse(request.session['animal_type'])
-
-    response = HttpResponse("ducks")
-    request.session["animal_type"] = "goose"
-
-    return response
+    return HttpResponse(request.session.get('latest_query', "You haven't searched yet!"))
