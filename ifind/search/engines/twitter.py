@@ -182,7 +182,12 @@ class Twitter(Engine):
             text = result[u'text']
             result_id = str(result[u'id'])
             user_id = result[u'user'][u'id_str']
-            created_at = result[u'created_at']
+
+            # TODO clean this up
+            created_at = result[u'created_at'].split()
+            created_at.pop(4)
+            created_at = ' '.join(created_at)
+
             url = 'https://www.twitter.com/{0}/status/{1}'.format(user_id, result_id)
 
             response.add_result(title=created_at, url=url, summary=text)

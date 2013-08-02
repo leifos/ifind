@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.conf.urls import patterns
 from django.views.generic import TemplateView
 
-from .views import search
+from .views import search, session
 
 urlpatterns = patterns('search.views',
 
@@ -13,5 +13,10 @@ urlpatterns = patterns('search.views',
      url(regex=r'^search/$',
          view=search,
          name='search',
+     ),
+
+     url(regex=r'^session/$',
+         view=session,
+         name='session'
      )
 )
