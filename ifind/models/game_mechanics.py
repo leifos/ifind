@@ -97,11 +97,14 @@ class GameMechanic(object):
         return self.game.category.name
 
     def double_bonus(self):
-        if(self.game.bonus<3200):
+        if self.game.bonus == 0:
+            self.game.bonus = 100
+
+        elif self.game.bonus < 3200:
             self.game.bonus *= 2
 
     def reset_bonus(self):
-        self.game.bonus = 100
+        self.game.bonus = 0
 
     def get_max_rounds(self):
         return self.max_pages
