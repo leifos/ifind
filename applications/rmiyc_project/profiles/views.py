@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile, Achievement
+from ifind.models.game_models import HighScore, PlayerAchievement, UserProfile, Achievement, Category
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 import os
@@ -29,17 +29,25 @@ def profile_page(request, username):
         for item in available_achievements:
             if item not in player_badges:
                 av_achievements.append(item)
-        print available_achievements
+        #do same with highscores
+        available_cats = Category.objects.all()
         highscores = HighScore.objects.filter(user=user)
+        scores = list(highscores)
+        player_cats = [item.category for item in highscores]
+        for item in available_cats:
+            if item not in player_cats:
+                scores.append(HighScore(category=item, highest_score=0))
+        progress = get_progress(user, user_profile)
     if request.user == user:
         view_permission = True
-    return render_to_response('profiles/profile_page.html', {'user': user,
+    return render_to_response('profiles/profile_page.html', {'usr': user,
                                                              'profile': user_profile,
                                                              'murl': MEDIA_URL,
                                                              'achievements': achievements,
                                                              'available_achievements': av_achievements,
                                                              'view_perm': view_permission,
-                                                             'highscores': highscores,
+                                                             'highscores': scores,
+                                                             'progress': progress,
                                                              'total_score' : sum(i.highest_score for i in highscores)},
                                                               context)
 
@@ -81,5 +89,36 @@ def edit_profile(request, username):
 
 
 
+@login_required
+def graphs(request, username):
+    context = RequestContext(request, {})
+    return render_to_response('profiles/graphs.html', {}, context)
 
 
+
+
+def get_progress(user,profile):
+    progress = 0
+    factor = 16.7 #TODO(mtbvc): don't hardcode this
+    #profile_form = ProfileForm(instance=profile)
+    #for item in profile_form:
+    #    print item
+    #    if item:
+    #        progress += factor
+
+    if user.email:
+        progress += factor
+    if profile.age:
+        progress += factor
+    if profile.gender:
+        progress += factor
+    if profile.school:
+        progress += factor
+    if profile.country:
+        progress += factor
+    if profile.city:
+        progress += factor
+
+    if progress > 100:
+        progress = 100
+    return progress
