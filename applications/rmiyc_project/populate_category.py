@@ -2,6 +2,8 @@ from rmiyc_project import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 from ifind.models.game_model_functions import populate
+from ifind.models.deployment_population_script import populate as populate2
+
 from configuration import  STATIC_PATH
 import argparse
 import os
@@ -29,12 +31,12 @@ def main():
                 populate(args.file_name, args.category_name, args.append, args.halved_screen_shot)
                 print "Category and pages have been populated"
             else:
-                populate(os.getcwd() + '/data/research', 'research', False, True ,os.path.join(STATIC_PATH,'imgs/research.jpg'))
-                populate(os.getcwd() + '/data/about_glasgow', 'about glasgow', False, True , os.path.join(STATIC_PATH,'imgs/about_glasgow.jpg'))
-                populate(os.getcwd() + '/data/undergraduate', 'undergraduate', False, True ,os.path.join(STATIC_PATH,'imgs/undergraduate.jpg'))
-                populate(os.getcwd() + '/data/postgraduate', 'postgraduate', False, True ,os.path.join(STATIC_PATH,'imgs/postgraduate.jpg'))
-                populate(os.getcwd() + '/data/alumni', 'alumni', False, True ,os.path.join(STATIC_PATH,'imgs/alumni.png'))
-                populate(os.getcwd() + '/data/studentlife', 'student life', False, True, os.path.join(STATIC_PATH,'imgs/student_life.jpg'),)
+                populate2(os.getcwd() + '/data/research', 'research', False, True ,os.path.join(STATIC_PATH,'imgs/research.jpg'))
+                populate2(os.getcwd() + '/data/about_glasgow', 'about glasgow', False, True , os.path.join(STATIC_PATH,'imgs/about_glasgow.jpg'))
+                populate2(os.getcwd() + '/data/undergraduate', 'undergraduate', False, True ,os.path.join(STATIC_PATH,'imgs/undergraduate.jpg'))
+                populate2(os.getcwd() + '/data/postgraduate', 'postgraduate', False, True ,os.path.join(STATIC_PATH,'imgs/postgraduate.jpg'))
+                populate2(os.getcwd() + '/data/alumni', 'alumni', False, True ,os.path.join(STATIC_PATH,'imgs/alumni.png'))
+                populate2(os.getcwd() + '/data/studentlife', 'student life', False, True, os.path.join(STATIC_PATH,'imgs/student_life.jpg'),)
         return 0
 
 if __name__ == '__main__':
