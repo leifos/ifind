@@ -117,7 +117,7 @@ class CurrentGame(models.Model):
     end_time = models.DateTimeField(auto_now_add=True)
     game_type = models.IntegerField(default=0, null=True)
     page_list = models.TextField(null=True, blank=True)
-    bonus = models.IntegerField(default=100)
+    bonus = models.IntegerField(default=0)
 
 
     def __unicode__(self):
