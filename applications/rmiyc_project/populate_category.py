@@ -2,7 +2,7 @@ from rmiyc_project import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 from ifind.models.game_model_functions import populate
-from ifind.models.deployment_population_script import populate as d_populate
+from ifind.models.deployment_model_functions import populate as d_populate
 
 
 from configuration import  STATIC_PATH
