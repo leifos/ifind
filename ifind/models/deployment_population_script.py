@@ -89,6 +89,7 @@ def populate_pages(url_list, category, halved_screen_shot=False):
             #p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', MEDIA_ROOT, url_file_name))
             #p.save()
             #print 'Page title= ' + p.title + ' has been saved!'
+
         except ValueError:
             print 'Page  has ((NOT)) been saved!'
             print 'ERROR IS'
