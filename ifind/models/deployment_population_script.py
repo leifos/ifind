@@ -5,9 +5,14 @@ from ifind.common.pagecapture import PageCapture
 from ifind.models.game_models import Page, Category
 from ifind.common.utils import convert_url_to_filename, read_in_urls
 
+
 sys.path.append(os.getcwd())
 from configuration import DATA_DIR
 from configuration import MEDIA_ROOT
+
+#from rmiyc_project import settings
+#from django.core.management import setup_environ
+#setup_environ(settings)
 
 def set_page_list(game, page_list):
     game.page_list = json.dumps(page_list)
@@ -53,7 +58,7 @@ def populate_pages(url_list, category, halved_screen_shot=False):
     """
 
     #For each url in the url_list
-    f = open('page_meta_data.txt','w')
+    f = open('page_meta_data.txt','a')
     for url in url_list:
 
         # create PageCapture object - specify the browser to be 800 x 600.
@@ -76,14 +81,14 @@ def populate_pages(url_list, category, halved_screen_shot=False):
             # Abdullah , using DATA_DIR did not work for me because it uses the current working directory in the url.
 
             #save to file instead of db here to decouple.
-            f.write('%s,%s,%s,%s' % (category.name, url, title,image_file_name))
+            f.write('%s,%s,%s,%s\n' % (category.name, url, title,image_file_name))
 
 
 
 
             #p = Page(category=category, title=title, is_shown=True, url=url, screenshot=os.path.join('/', MEDIA_ROOT, url_file_name))
             #p.save()
-            print 'Page title= ' + p.title + ' has been saved!'
+            #print 'Page title= ' + p.title + ' has been saved!'
         except ValueError:
             print 'Page  has ((NOT)) been saved!'
             print 'ERROR IS'
