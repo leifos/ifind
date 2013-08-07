@@ -11,8 +11,9 @@ Requires:
 """
 from selenium import webdriver
 from PIL import Image
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
+#from django.core.validators import URLValidator
+#from django.core.exceptions import ValidationError
+import requests
 
 
 class PageCapture:
@@ -32,13 +33,18 @@ class PageCapture:
         """ Checks the validity of an url
             Returns True if valid, False otherwise
         """
-        val = URLValidator()
-        try:
-            val(url)
-        except ValidationError, e:
-            print e
+        r = requests.get(url)
+        if r.status_code == 200:
+            return True
+        else:
             return False
-        return True
+        #val = URLValidator()
+        #try:
+        #    val(url)
+        #except ValidationError, e:
+        #    print e
+        #    return False
+        #return True
 
     def _ensure_screen_shot(self,filename):
         if not self.screen_shot:
