@@ -10,7 +10,7 @@ from pagecapture import  PageCapture
 from SingleTermQueryGeneration import SingleTermQueryGeneration
 from BiTermQueryGeneration import BiTermQueryGeneration
 from QueryGeneration import QueryGeneration
-
+from ifind.search.query import Query
 
 class PageRetrievabilityCalculator:
     """
@@ -50,6 +50,8 @@ class PageRetrievabilityCalculator:
         #setup a generic generator object
         generator = QueryGeneration()
 
+        #a placeholder for the number of results returned
+        top = 10
         #instantiate the correct generator type dependent on isSingle
         if(isSingle):
             generator = SingleTermQueryGeneration()
@@ -64,8 +66,14 @@ class PageRetrievabilityCalculator:
         else:
             queries = generator.extractQueriesFromText(text)
 
-        #return the queries list
-        return queries
+        #create list of query objects so queries can be issued
+        #against engines
+        queryObjsList = []
+        for query in queries:
+            currQuery = Query(query,top,"en","")
+            queryObjsList.append(currQuery)
+        #return the queries object list
+        return queryObjsList
 
 
 
