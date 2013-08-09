@@ -1,7 +1,7 @@
 __author__ = 'leif'
 
 
-from game_models import CurrentGame, Page, Category, HighScore
+from game_models import CurrentGame, Page, Category, HighScore, UserProfile
 from random import randint
 from game_model_functions import get_page_list, set_page_list
 from ifind.common.rotation_ordering import RotationOrdering
@@ -9,6 +9,8 @@ from ifind.common.rotation_ordering import RotationOrdering
 from ifind.search.query import Query
 from ifind.search.response import Response
 from ifind.common.setuplogger import get_ifind_logger
+
+from ifind.models import game_achievements
 
 
 
@@ -310,15 +312,16 @@ class GameMechanic(object):
     def handle_game_over(self):
 
         if self.game.user.username != "anon":
-            hs = HighScore.objects.get(user=self.game.user,category=self.game.category)
-            if self.game.current_score > hs.highest_score:
-                hs.highest_score = self.game.current_score
-                hs.save()
+            #HighScore.objects.all().delete()
+            hs = HighScore.objects.get_or_create(user=self.game.user,category=self.game.category)
+            if self.game.current_score > hs[0].highest_score:
+                hs[0].highest_score = self.game.current_score
+                hs[0].save()
 
             else:
                 HighScore(user=self.game.user,category=self.game.category, highest_score=self.game.current_score).save()
             all_hs = HighScore.objects.filter(user=self.game.user)
-            gac = GameAchievementChecker(self.game.user)
+            gac = game_achievements.GameAchievementChecker(self.game.user)
             up = UserProfile.objects.get(user=self.game.user)
             gac.check_and_set_new_achievements(up,all_hs,self.game)
 
