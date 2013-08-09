@@ -132,9 +132,9 @@ function adjust_body_divs_height()
     var search_div_margin =$('#search-div').css("margin-bottom");
     var variable =search_div_height + content_div_height;
     var highestCol = Math.max($('#image-div').height(),variable);
-    if (highestCol < 650)
+    if (highestCol < 770)
     {
-        highestCol=650;
+        highestCol=770;
     }
     $('#image-div').height(highestCol);
     $('#content-div').height(highestCol - search_div_height - 35);

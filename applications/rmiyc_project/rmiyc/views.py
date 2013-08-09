@@ -213,10 +213,6 @@ def game_over(request):
         return render_to_response('rmiyc/game_over.html', context)
 
 
-def contact(request):
-    context = RequestContext(request, {})
-    return render_to_response('rmiyc/contact.html', context)
-
 
 def about(request):
     context = RequestContext(request, {})
