@@ -7,6 +7,9 @@ Version: 0.1
 """
 
 from pagecapture import  PageCapture
+from SingleTermQueryGeneration import SingleTermQueryGeneration
+from BiTermQueryGeneration import BiTermQueryGeneration
+from QueryGeneration import QueryGeneration
 
 class PageRetrievabilityCalculator:
     """
@@ -24,14 +27,36 @@ class PageRetrievabilityCalculator:
         """
         pass
 
-    def _generateQueries(self, html, isSingle):
+    def _generateQueries(self, isHtml, isSingle, text):
         """
-        generates a list of single or bi term queries
+        generates a list of single or bi term queries from plain text or html
         returns said list
-        :param html the html from which queries will be generated
+        :param isHtml boolean to denote if the text is html or not
         :param boolean isSingle to denote whether to generate single or bi-terms
+        :param text the html or text from which queries will be generated
+        :return returns a list of queries as strings
         """
-        pass
+        #setup a generic generator object
+        generator = QueryGeneration()
+
+        #instantiate the correct generator type dependent on isSingle
+        if(isSingle):
+            generator = SingleTermQueryGeneration()
+        else:
+            generator = BiTermQueryGeneration()
+
+        #use the generator to create the queries for the text, store
+        #the result in a list
+        queries = []
+        if(isHtml):
+            queries = generator.extractQueriesFromHtml(text)
+        else:
+            queries = generator.extractQueriesFromText(text)
+
+        #return the queries list
+        return queries
+
+
 
     def _issueQueries(self):
         """
