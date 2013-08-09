@@ -11,6 +11,7 @@ from SingleTermQueryGeneration import SingleTermQueryGeneration
 from BiTermQueryGeneration import BiTermQueryGeneration
 from QueryGeneration import QueryGeneration
 
+
 class PageRetrievabilityCalculator:
     """
     Given a url calculate the retrievability scores for that page.
@@ -20,12 +21,22 @@ class PageRetrievabilityCalculator:
         self.engine = engine
 
 
-    def calculate_retrievability(self, url):
+    def calculate_retrievability(self, content_source, isHtml, isSingle):
         """
         Generates the queries for the page, issues them to the search engine, calculates
         the scores and returns a dictionary of results
+        :param content_source either a url or the text from which queries are to be generated
+        :param isHtml boolean indicating if the source is html or text
+        :param isSingle boolean indicating if single terms are used, if false then biterms
         """
-        pass
+        if(isHtml):#if it's html then use getPage to get the source of the url
+            content_source=self._getPage(content_source)#replace content source with actual source code
+
+        #can now generate the queries
+        queryList = self._generateQueries(isHtml,isSingle,content_source)
+
+        #can now issue the queries to the engine - todo
+
 
     def _generateQueries(self, isHtml, isSingle, text):
         """
@@ -83,7 +94,15 @@ class PageRetrievabilityCalculator:
     def _getPage(self, url):
         """
         Creates a PageCapture object, uses it to get_page_sourcecode
-        :param url:
-        :return:
+        :param url: the url of the page to be accessed
+        :return: the source code of the website for the given url
         """
-        pass
+        #set a default height and width needed by constructor of PageCapture
+        defaultWidth=800
+        defaultHeight=600
+        #create capture object
+        capture= PageCapture(url,defaultWidth,defaultHeight)
+        #get page sourcecode
+        #need to add in some error handling
+        content = capture.get_page_sourcecode()
+        return content
