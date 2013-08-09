@@ -6,53 +6,44 @@ Date:   08/08/2013
 Version: 0.1
 """
 
+from pagecapture import  PageCapture
+
 class PageRetrievabilityCalculator:
     """
     Given a url calculate the retrievability scores for that page.
     """
 
-    def __init__(self, url, engine):
-        self.url = url
+    def __init__(self, engine):
         self.engine = engine
 
 
-    def calculate_retrievability(self):
+    def calculate_retrievability(self, url):
         """
         Generates the queries for the page, issues them to the search engine, calculates
         the scores and returns a dictionary of results
         """
         pass
 
-    def generateQueries(self):
+    def _generateQueries(self, html, isSingle):
         """
-        generates a list of single and bi term queries
+        generates a list of single or bi term queries
         returns said list
+        :param html the html from which queries will be generated
+        :param boolean isSingle to denote whether to generate single or bi-terms
         """
         pass
 
-
-
-    def generateSingleQueries(self):
-        """
-        generates a list of single term queries and returns it
-        """
-        pass
-
-    def generateBiQueries(self):
-        """
-        Generates a list of bi-term queries and returns it.
-        """
-        pass
-
-
-    def issueQueries(self):
+    def _issueQueries(self):
         """
         Issues query list to the search engine
         """
         pass
 
-    def calculateScores(self):
+    def _calculateScores(self, url):
         """
+        calls getPage
+        uses html to generateQueries
+        issues the queries
         calculates the scores for the page and returns them
         may start as dictionary or list, but will probably extract an object
         which will be able to
@@ -61,5 +52,13 @@ class PageRetrievabilityCalculator:
 	    - show the number of queries issued, and the number of queries that were successful, and the page retrievability
 
         :return: dictionary or list of results
+        """
+        pass
+
+    def _getPage(self, url):
+        """
+        Creates a PageCapture object, uses it to get_page_sourcecode
+        :param url:
+        :return:
         """
         pass
