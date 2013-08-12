@@ -13,14 +13,31 @@ TODO
 """
 
 import argparse
+from ifind.common.PageRetrievabilityCalculator import PageRetrievabilityCalculator
+from ifind.search.engine import EngineFactory
 
 def main():
     """
 
     :return:
     """
-    pass
+    parser = argparse.ArgumentParser(
+                                description="Calculate Retrievability of Page")
+    parser.add_argument("-u", "--url", type=str,
+                        help="url address")
 
+    args = parser.parse_args()
+
+    if not args.url:
+        parser.print_help()
+        return 2
+    else:
+
+        engine = EngineFactory('govuk')
+        prc = PageRetrievabilityCalculator(engine)
+        prc.calculateScore(args.url)
+        print "Done!"
+        return 0
 
 if __name__ == '__main__':
     main()
