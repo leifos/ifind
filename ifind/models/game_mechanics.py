@@ -1,6 +1,3 @@
-__author__ = 'arazzouk'
-__author__ = 'leif'
-
 
 from game_models import CurrentGame, Page, Category, HighScore, UserProfile
 from random import randint
@@ -83,8 +80,6 @@ class GameMechanic(object):
         :return: True if the end game criteria have been met, else False
         """
         # example criteria for the game end
-        s = 'round: %d max-pages: %d' % (self.get_round_no(),self.max_pages)
-        self.logger.info(s)
         if (self.get_round_no() > self.max_pages):
             return True
         else:
@@ -219,7 +214,6 @@ class GameMechanic(object):
             self.logger.info(s)
             return True
         except:
-            print 'EXCEPTION'
             self.game.current_page = None
             return False
 
@@ -245,10 +239,6 @@ class GameMechanic(object):
         score = self._score_query(query)
         self.game.last_query = query
         self.game.last_query_score = score
-        s = "event: issue_query %s" % (self.game)
-        temp = "round_no: %d page_url: %s "
-        self.logger.info( 'query: %s got %d points' % (query, score))
-        # increment query here ????
         success = False
         if score > 0:
             success = True
@@ -265,6 +255,12 @@ class GameMechanic(object):
         results = self._run_query( query)
         rank = self._check_result(results)
         score = self._score_rank(rank, self.game.bonus)
+        common_log = 'event: issue_query %s' % (self.game)
+        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.get_round_no())
+        info_log = 'score: %d rank: %d query: %s ' % (score, rank, query)
+        log = '%s %s %s ' % (common_log, round_log, info_log)
+        self.logger.info(log)
+
         return score
 
     def _run_query(self, query ,top=10):
