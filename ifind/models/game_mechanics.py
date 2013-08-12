@@ -1,3 +1,4 @@
+__author__ = 'arazzouk'
 __author__ = 'leif'
 
 
@@ -6,8 +7,7 @@ from random import randint
 from game_model_functions import get_page_list, set_page_list
 from ifind.common.rotation_ordering import RotationOrdering
 #from datetime import datetime
-from ifind.search.query import Query
-from ifind.search.response import Response
+
 from ifind.common.setuplogger import get_ifind_logger
 
 from ifind.models import game_achievements
@@ -28,7 +28,8 @@ class GameMechanic(object):
         self.max_queries_per_page = max_pages
         self.game_length_in_seconds = game_length_in_seconds
         self.logger = get_ifind_logger(__name__)
-
+        self.common_log = None
+        self.round_log = None
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category
@@ -49,7 +50,11 @@ class GameMechanic(object):
         self.set_next_page()
         # save to db
         self.update_game()
-        self.logger.info("Game Created")
+        self.common_log = self.game
+        s = "event: game_created "
+        s = '%s %s' % (s , self.common_log)
+        self.logger.info(s)
+
 
     def retrieve_game(self, user, game_id):
         """ find the game associated with this user, and return the
@@ -58,7 +63,6 @@ class GameMechanic(object):
         :param game_id:
         :return: True, if game is found, else False, if not
         """
-        self.logger.info("Retrieving Game")
         self.game = None
         found = False
         # look up model for game_id
@@ -80,17 +84,17 @@ class GameMechanic(object):
         """
         # example criteria for the game end
         s = 'round: %d max-pages: %d' % (self.get_round_no(),self.max_pages)
-        self.logger.info(s )
+        self.logger.info(s)
         if (self.get_round_no() > self.max_pages):
             return True
         else:
             return False
 
-    def handle_game_over(self):
-        pass
-
     def get_round_no(self):
         return self.game.no_rounds+1
+
+    def get_game_player_name(self):
+        return self.game.user.username
 
     def get_final_round_no(self):
         return self.game.no_rounds
@@ -171,6 +175,7 @@ class GameMechanic(object):
         :return: None
         """
         self.pages = Page.objects.filter(category=self.game.category)
+        #TODO
         self.logger.info( 'number of pages: %d' % (len(self.pages)))
         #todo(leifos): check the number of pages does exceed MAX_PAGES
 
@@ -179,12 +184,12 @@ class GameMechanic(object):
         :param pages:
         :return:
         """
-        # use the RotationOrdering class to gen the ordering
+        # use the RotationOrdering class to gen the orderinga
         ro = RotationOrdering()
         print self.pages
         page_list = ro.get_ordering(self.pages)
         # set the page_list to the the game
-
+        #TODO
         self.logger.debug(page_list)
         set_page_list(self.game, page_list)
 
@@ -209,16 +214,26 @@ class GameMechanic(object):
         # associate the page from the page model to game
         try:
             self.game.current_page = self.pages.get(id=page_id)
+            round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, r)
+            s = 'event:page_shown %s %s' % (self.game , round_log)
+            self.logger.info(s)
             return True
         except:
+            print 'EXCEPTION'
             self.game.current_page = None
             return False
 
     def take_points(self):
         success = False
+        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
         if self.game.last_query_score > 0:
             self._increment_score(self.game.last_query_score)
             success = True
+            s = 'event:points_taken %s %s score: %d' % (self.game , round_log , self.game.last_query_score)
+            self.logger.info(s)
+        else:
+            s = 'event:page_skipped %s %s' % (self.game , round_log)
+            self.logger.info(s)
         self._increment_round(success)
 
         self.game.last_query_score = 0
@@ -230,6 +245,8 @@ class GameMechanic(object):
         score = self._score_query(query)
         self.game.last_query = query
         self.game.last_query_score = score
+        s = "event: issue_query %s" % (self.game)
+        temp = "round_no: %d page_url: %s "
         self.logger.info( 'query: %s got %d points' % (query, score))
         # increment query here ????
         success = False
@@ -251,6 +268,12 @@ class GameMechanic(object):
         return score
 
     def _run_query(self, query ,top=10):
+        import sys
+        path = '/home/arazzouk/ifind'
+        if path not in sys.path:
+            sys.path.append(path)
+        from ifind.search.query import Query
+        from ifind.search.response import Response
         """ constructs ifind.search.query, and issues it to the search_engine
 
         :param query:
@@ -265,6 +288,12 @@ class GameMechanic(object):
         return iresponse
 
     def _run_query2(self, query):
+        import sys
+        path = '/home/arazzouk/ifind'
+        if path not in sys.path:
+            sys.path.append(path)
+        from ifind.search.query import Query
+        from ifind.search.response import Response
         """ constructs ifind.search.query, and issues it to the search_engine
 
         :param query:
@@ -310,14 +339,15 @@ class GameMechanic(object):
 
 
     def handle_game_over(self):
-
+        s = "event: game_over  %s " % (self.game)
+        self.logger.info(s)
         if self.game.user.username != "anon":
             #HighScore.objects.all().delete()
             hs = HighScore.objects.get_or_create(user=self.game.user,category=self.game.category)
-            if self.game.current_score > hs[0].highest_score:
-                hs[0].highest_score = self.game.current_score
-                hs[0].save()
-
+            if hs:
+                if self.game.current_score > hs[0].highest_score:
+                    hs[0].highest_score = self.game.current_score
+                    hs[0].save()
             else:
                 HighScore(user=self.game.user,category=self.game.category, highest_score=self.game.current_score).save()
             all_hs = HighScore.objects.filter(user=self.game.user)
