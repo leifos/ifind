@@ -121,8 +121,7 @@ class CurrentGame(models.Model):
 
 
     def __unicode__(self):
-        return self.user.username + ": " + self.current_page.title + " in " + self.category.name
-
+        return "user_name: " + self.user.username + " category_name: " + self.category.name + " game_id " + str(self.id)
     class Meta:
         app_label = APP_NAME
 
