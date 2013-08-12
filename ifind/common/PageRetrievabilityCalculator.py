@@ -4,6 +4,8 @@ Take a url, generate queries and calculate retreivability scores for the page.
 Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
+
+requires nltk: pip install nltk
 """
 
 from pagecapture import  PageCapture
@@ -11,6 +13,8 @@ from SingleTermQueryGeneration import SingleTermQueryGeneration
 from BiTermQueryGeneration import BiTermQueryGeneration
 from QueryGeneration import QueryGeneration
 from ifind.search.query import Query
+from nltk import clean_html
+from urllib import urlopen
 
 class PageRetrievabilityCalculator:
     """
@@ -21,21 +25,9 @@ class PageRetrievabilityCalculator:
         self.engine = engine
 
 
-    def calculate_retrievability(self, content_source, isHtml, isSingle):
-        """
-        Generates the queries for the page, issues them to the search engine, calculates
-        the scores and returns a dictionary of results
-        :param content_source either a url or the text from which queries are to be generated
-        :param isHtml boolean indicating if the source is html or text
-        :param isSingle boolean indicating if single terms are used, if false then biterms
-        """
-        if(isHtml):#if it's html then use getPage to get the source of the url
-            content_source=self._getPage(content_source)#replace content source with actual source code
+    def calculate_retrievability(self):
+        pass
 
-        #can now generate the queries
-        queryList = self._generateQueries(isHtml,isSingle,content_source)
-
-        #can now issue the queries to the engine - todo
 
 
     def _generateQueries(self, isHtml, isSingle, text):
@@ -60,9 +52,10 @@ class PageRetrievabilityCalculator:
 
         #use the generator to create the queries for the text, store
         #the result in a list
-        queries = []
+        queries = {}
         if(isHtml):
-            queries = generator.extractQueriesFromHtml(text)
+            content_source=self._getPage(text)#replace content source with actual source code
+            queries = generator.extractQueriesFromHtml(content_source)
         else:
             queries = generator.extractQueriesFromText(text)
 
@@ -70,20 +63,23 @@ class PageRetrievabilityCalculator:
         #against engines
         queryObjsList = []
         for query in queries:
-            currQuery = Query(query,top,"en","")
+            currQuery = Query(query,top)
+            #print currQuery.terms
             queryObjsList.append(currQuery)
         #return the queries object list
         return queryObjsList
 
 
 
-    def _issueQueries(self):
+    def _issueQueries(self,queryObjectList):
         """
         Issues query list to the search engine
         """
-        pass
+        for query in queryObjectList:
+            result = self.engine._search(query)
+            print result
 
-    def _calculateScores(self, url):
+    def _calculateScores(self, content_source,isHtml, isSingle):
         """
         calls getPage
         uses html to generateQueries
@@ -96,21 +92,35 @@ class PageRetrievabilityCalculator:
 	    - show the number of queries issued, and the number of queries that were successful, and the page retrievability
 
         :return: dictionary or list of results
+
+        Generates the queries for the page, issues them to the search engine, calculates
+        the scores and returns a dictionary of results
+        :param content_source either a url or the text from which queries are to be generated
+        :param isHtml boolean indicating if the source is html or text
+        :param isSingle boolean indicating if single terms are used, if false then biterms
         """
-        pass
+
+        print "generating queries from content "
+        #can now generate the queries
+        queryList = self._generateQueries(isHtml,isSingle,content_source)
+        #for query in queryList:
+        #    print query.terms
+
+        #can now issue the queries to the engine - todo
+        self._issueQueries(queryList)
+
+
 
     def _getPage(self, url):
         """
         Creates a PageCapture object, uses it to get_page_sourcecode
         :param url: the url of the page to be accessed
-        :return: the source code of the website for the given url
+        :return: the content of the website for the given url less the html
         """
-        #set a default height and width needed by constructor of PageCapture
-        defaultWidth=800
-        defaultHeight=600
-        #create capture object
-        capture= PageCapture(url,defaultWidth,defaultHeight)
-        #get page sourcecode
-        #need to add in some error handling
-        content = capture.get_page_sourcecode()
+
+        #uses nltk.clean_html to extract only text content from the html
+        #use urllib to open and read the html from the given url
+        html = urlopen(url).read()
+        content = clean_html(html)
+
         return content

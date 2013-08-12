@@ -35,7 +35,10 @@ def main():
 
         engine = EngineFactory('govuk')
         prc = PageRetrievabilityCalculator(engine)
-        prc.calculateScore(args.url)
+        #hard coding in that it's a url being passed in, not text
+        #and that I want single queries generated, need to extend
+        #to allow these args to be passed in
+        prc._calculateScores(args.url, True, True)
         print "Done!"
         return 0
 
