@@ -11,8 +11,8 @@ def leaderboards(request):
     high_scores = HighScoresLeaderboard().get_leaderboard()
     cat_high_scores = CatHighScoresLeaderboard().get_leaderboard()
     school_high_scores = SchoolLeaderboard().get_leaderboard()
-    age_high_scores = AgeLeaderboard().get_leaderboard(request.user)
-    gender_high_scores = GenderLeaderboard().get_leaderboard(request.user)
+    age_high_scores = AgeLeaderboard().get_leaderboard()
+    gender_high_scores = GenderLeaderboard().get_leaderboard()
 
 
     return render_to_response('leaderboard/leaderboard.html', {'high_scores':high_scores, 'cat_high_scores':cat_high_scores,
