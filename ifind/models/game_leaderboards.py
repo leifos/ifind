@@ -166,19 +166,19 @@ class GenderLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self):
         users = UserProfile.objects.all()
-        age_groups = {}
+        gender_groups = {}
         score_list=[]
         for user in users:
-            if user.age is not None:
-                if user.age not in age_groups:
+            if user.gender != '':
+                if user.gender not in gender_groups:
                     user_score = self._get_user_score_sum(user)
                     #list is [total_score_of_users,num_of_users]
-                    age_groups[user.age] = [user_score,1]
+                    gender_groups[user.gender] = [user_score,1]
                 else:
-                    age_groups[user.age][0] += self._get_user_score_sum(user)
-                    age_groups[user.age][1] += 1
-        for age_group, values in age_groups.iteritems():
-            dummy_user = User(username=age_group)
+                    gender_groups[user.gender][0] += self._get_user_score_sum(user)
+                    gender_groups[user.gender][1] += 1
+        for gender_group, values in gender_groups.iteritems():
+            dummy_user = User(username=gender_group)
             score_list.append(HighScore(user=dummy_user, highest_score=values[0]/values[1] ,category=None ))
             score_list.sort(key=lambda x: x.highest_score, reverse=True)
         return self.highscore_to_list(score_list)
