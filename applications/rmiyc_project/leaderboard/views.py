@@ -10,7 +10,7 @@ def leaderboards(request):
     context = RequestContext(request, {})
     high_scores = HighScoresLeaderboard().get_leaderboard()
     cat_high_scores = CatHighScoresLeaderboard().get_leaderboard()
-    school_high_scores = SchoolLeaderboard().get_leaderboard(request.user)
+    school_high_scores = SchoolLeaderboard().get_leaderboard()
     age_high_scores = AgeLeaderboard().get_leaderboard(request.user)
     gender_high_scores = GenderLeaderboard().get_leaderboard(request.user)
 

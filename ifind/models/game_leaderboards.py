@@ -85,27 +85,31 @@ class HighScoresLeaderboard(GameLeaderboard):
 
 class SchoolLeaderboard(GameLeaderboard):
 
-    def get_leaderboard(self, user):
-        if user.username == '':
-            return None
-        usr = User.objects.get(username=user.username)
-        if usr.username != '':
-            viewer_profile = UserProfile.objects.get(user=usr)
-            viewer_school = viewer_profile.school
-            #get all viewer's school mates
-            profiles = UserProfile.objects.filter(school=viewer_school)
-            hs = []
-            score_list = []
-            for profile in profiles:
-                hs = HighScore.objects.filter(user=viewer_profile.user)
-                Sum=0
-                for item in hs:
-                    Sum += item.highest_score
-                dummy_hs = HighScore(user=profile.user, highest_score=Sum, category=None)
-                score_list.append(dummy_hs)
-            #hs.order_by('-highest_score')[:self.top]
-        #hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
-            return self.highscore_to_list(score_list)
+    def get_leaderboard(self):
+        users = UserProfile.objects.all()
+        schools = {}
+        score_list=[]
+        for user in users:
+            if user.school != "":
+                if user.school not in schools:
+                    user_score = self._get_user_score_sum(user)
+                    #list is [total_score_of_users,num_of_users]
+                    schools[user.school] = [user_score,1]
+                else:
+                    schools[user.school][0] += self._get_user_score_sum(user)
+                    schools[user.school][1] += 1
+        for school, values in schools.iteritems():
+            dummy_user = User(username=school)
+            score_list.append(HighScore(user=dummy_user, highest_score=values[0]/values[1] ,category=None ))
+            score_list.sort(key=lambda x: x.highest_score, reverse=True)
+        return self.highscore_to_list(score_list)
+
+    def _get_user_score_sum(self, user):
+        hs = HighScore.objects.filter(user=user.user)
+        user_score = 0
+        for sc in hs:
+            user_score += sc.highest_score
+        return user_score
 
     def __str__(self):
         return 'School High Scores'
