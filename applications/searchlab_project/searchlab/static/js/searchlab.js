@@ -129,47 +129,55 @@ function paginateResults(data)
     displayResults(window.pagination.page[1]);
 }
 
+function noResults()
+{
+
+}
 
 // displays single page
 function displayResults(results)
 {
     // clear previous results
     resultsContainer.hide().empty();
+    paginationContainer.hide();
 
     // set pagination status
     $('#page-btn').html(window.pagination.currentPage + " of " + window.pagination.pages);
 
+    // if no results
     if (results.length == 0) {
-
         $('<span/>', {
             id: 'no-results',
             text: 'No results found.'
         }).appendTo(resultsContainer);
     }
 
-    // cache current page
-    var currentPage = window.pagination.currentPage;
-    var maxPageSize = window.pagination.maxPageSize;
+    else {
+        // cache current page
+        var currentPage = window.pagination.currentPage;
+        var maxPageSize = window.pagination.maxPageSize;
 
-    // append results to div, with page derived index
-    var index = (currentPage * maxPageSize) - (maxPageSize - 1);
+        // append results to div, with page derived index
+        var index = (currentPage * maxPageSize) - (maxPageSize - 1);
 
-    // page derived index attribute assignment
-    resultsContainer.attr('start', index);
+        // page derived index attribute assignment
+        resultsContainer.attr('start', index);
 
-    var resultHTML = $('#result-template').html();
+        var resultHTML = $('#result-template').html();
 
-    // add results to div
-    for (var i=0; i<results.length; i++) {
+        // add results to div
+        for (var i=0; i<results.length; i++) {
 
-        var title = results[i]['title'];
-        var summary = results[i]['summary'];
-        var url = results[i]['url'];
+            var title = results[i]['title'];
+            var summary = results[i]['summary'];
+            var url = results[i]['url'];
 
-        resultsContainer.append(resultHTML.format(title, url, summary)).fadeIn("slow");
+            resultsContainer.append(resultHTML.format(url, title, url, summary));
+        }
         paginationContainer.fadeIn("slow");
     }
 
+    resultsContainer.fadeIn("fast");
     searchInput.blur();
 }
 
