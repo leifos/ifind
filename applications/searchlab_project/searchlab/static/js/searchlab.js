@@ -1,66 +1,84 @@
-/* maximum number of results per page */
-var MAX_PAGE_SIZE = 4
+////////////////////////////////
+// String formatting function //
+////////////////////////////////
 
+String.prototype.format = function() {
+  var args = arguments;
+  return this.replace(/{(\d+)}/g, function(match, number) {
+    return typeof args[number] != 'undefined'
+      ? args[number]
+      : match
+    ;
+  });
+};
 
-/* global pagination structure */
+////////////////////////
+// Pagination Globals //
+////////////////////////
+
+// global pagination vars
 window.pagination =
 {
-    results : null,
-    pages : 1,
-    page : {},
-    currentPage : 1
-}
+    maxPageSize: 4,             // max results per page
+    results : null,             // list of results
+    pages : 1,                  // how many pages there are
+    page : {},                  // page lookup map
+    currentPage : 1             // current page
+};
+
+///////////////////
+// Cached JQuery //
+///////////////////
+
+var paginationContainer = $('#pagination-container');
+var resultsContainer = $('#results-container');
+var searchInput = $('#search-input');
 
 
-/* hide results and pagination containers at page load */
-$('#pagination-container').hide();
-$('#results-container').hide();
-$('#input-search').focus();
+// hide pagination, results and focus search input
+paginationContainer.hide();
+resultsContainer.hide();
+searchInput.focus();
 
-
-/* override default behaviour of when 'Enter'
- * key pressed. Makes search request instead. */
-$('.input').keypress(function(event)
+// override LEFT and RIGHT arrow keys and map to pagination buttons
+$(document).keydown(function(event)
 {
+
     if (event.which == 13)
     {
        event.preventDefault();
-       $('#btn-submit').click();
+       $('#search-btn').click();
     }
-});
 
-$(document).keydown(function(event)
-{
-    if (!$('*:focus').is($('#input-search'))) {
+
+    if (!$('*:focus').is(searchInput)) {
 
         // right arrow
         if (event.which == 39)
         {
             event.preventDefault();
-            $('#next').click();
+            $('#next-btn').click();
         }
 
         // left arrow
         if (event.which == 37)
         {
             event.preventDefault();
-            $('#previous').click();
+            $('#previous-btn').click();
         }
     }
 });
 
-/* when search/submit button clicked query terms
- * are stored and a search request is sent */
-$('#btn-submit').click(function(event)
+// query terms stored and a search request is sent
+$('#search-btn').click(function(event)
 {
     event.preventDefault();
-    var query_terms = $('#input-search').val();
+    var query_terms = searchInput.val();
     searchRequest(query_terms);
 });
 
 
-/* sends an AJAX GET request to Django's search
- * view, paginating results on success.*/
+// sends an AJAX GET request to searchlab, paginating results on success
 function searchRequest(query_terms)
 {
     $.ajax
@@ -72,20 +90,17 @@ function searchRequest(query_terms)
     });
 }
 
-/* divides up the result list into pages
- * and returns the first page */
+// calculates and initialises pagination, passing first page to be displayed
 function paginateResults(data)
 {
     // store search results
     var results = data["results"];
-
-    // store results in pagination namespace
     window.pagination.results = results;
 
-    // use integer division to determine minimum number of pages
-    var pages = ~~(results.length / MAX_PAGE_SIZE);
+    var maxPageSize = window.pagination.maxPageSize;
 
     // store minimum number of pages in namespace
+    var pages = ~~(results.length / maxPageSize);
     window.pagination.pages = pages;
 
     // if 0 then need at least one page
@@ -94,7 +109,7 @@ function paginateResults(data)
     }
 
     // add extra page for remainder results
-    if (results.length % MAX_PAGE_SIZE != 0) {
+    if (results.length % maxPageSize != 0) {
         if (results.length > 5) {
             window.pagination.pages += 1;
         }
@@ -102,12 +117,12 @@ function paginateResults(data)
 
     // populate page lookup hash
     var start = 0,
-          end = MAX_PAGE_SIZE;
+          end = maxPageSize;
 
     for (var i=0; i<window.pagination.pages; i++) {
         window.pagination.page[i+1] = results.slice(start, end);
-        start += MAX_PAGE_SIZE;
-        end += MAX_PAGE_SIZE;
+        start += maxPageSize;
+        end += maxPageSize;
     }
 
     // display first page
@@ -115,90 +130,59 @@ function paginateResults(data)
 }
 
 
-/* writes results to the appropriate results
- * div.*/
+// displays single page
 function displayResults(results)
 {
+    // clear previous results
+    resultsContainer.hide().empty();
+
     // set pagination status
-    $('#pagination-middle').html(window.pagination.currentPage + " of " + window.pagination.pages);
-
-    clearResults();
-
-    var resultDiv = $('#result-list');
+    $('#page-btn').html(window.pagination.currentPage + " of " + window.pagination.pages);
 
     if (results.length == 0) {
-
-        $('#pagination-container').hide();
 
         $('<span/>', {
             id: 'no-results',
             text: 'No results found.'
-        }).appendTo(resultDiv);
+        }).appendTo(resultsContainer);
     }
 
     // cache current page
     var currentPage = window.pagination.currentPage;
+    var maxPageSize = window.pagination.maxPageSize;
 
     // append results to div, with page derived index
-    var index = (currentPage * MAX_PAGE_SIZE) - (MAX_PAGE_SIZE - 1);
+    var index = (currentPage * maxPageSize) - (maxPageSize - 1);
 
     // page derived index attribute assignment
-    resultDiv.attr('start', index);
+    resultsContainer.attr('start', index);
+
+    var resultHTML = $('#result-template').html();
 
     // add results to div
     for (var i=0; i<results.length; i++) {
-        resultDiv.append(createSpannedResult(results[i])).fadeIn("slow");
+
+        var title = results[i]['title'];
+        var summary = results[i]['summary'];
+        var url = results[i]['url'];
+
+        resultsContainer.append(resultHTML.format(title, url, summary)).fadeIn("slow");
+        paginationContainer.fadeIn("slow");
     }
 
-    $('#input-search').blur();
-}
-
-function createSpannedResult(result)
-{
-    var listElement = $('<li/>');
-
-    // result title
-    $('<span/>', {
-        class: 'result-title',
-        text: result['title']
-    }).appendTo(listElement);
-
-    // result description
-    $('<span/>', {
-        class: 'result-desc',
-        text: result['summary']
-    }).appendTo(listElement);
-
-    $('<a />', {
-        href: result['url'],
-        text: result['url']
-    }).appendTo(
-        $('<span/>', {
-            class: 'result-url'
-        }).appendTo(listElement));
-
-    return listElement
-}
-
-
-/* clears results from results div and hides it. */
-function clearResults()
-{
-    $('#result-list').empty().hide();
-    $('#pagination-container').show();
-    $('#results-container').show();
+    searchInput.blur();
 }
 
 
 /* handler for '<<' pagination button */
-$('#first').click(function(event)
+$('#first-btn').click(function(event)
 {
     window.pagination.currentPage = 1;
     displayResults(window.pagination.page[1]);
 });
 
 /* handler for '<' pagination button */
-$('#previous').click(function(event)
+$('#previous-btn').click(function(event)
 {
     var currentPage = window.pagination.currentPage;
     if (currentPage > 1) {
@@ -209,7 +193,7 @@ $('#previous').click(function(event)
 });
 
 /* handler for '>' pagination button */
-$('#next').click(function(event)
+$('#next-btn').click(function(event)
 {
     var currentPage = window.pagination.currentPage;
     if (currentPage < window.pagination.pages) {
@@ -220,7 +204,7 @@ $('#next').click(function(event)
 });
 
 /* handler for '<' pagination button */
-$('#last').click(function(event)
+$('#last-btn').click(function(event)
 {
     var final_page = window.pagination.pages;
     window.pagination.currentPage = final_page;
