@@ -30,22 +30,25 @@ def main():
                         help="Name of search engine: " + ENGINE_LIST.__str__())
     parser.add_argument("-s","--single",type=bool,
                         help="Whether the terms to generate are single terms, True for single terms, False for double")
-
+    parser.add_argument("-c","--cutoff", type=int,
+                        help ="The cutoff value for queries")
     args = parser.parse_args()
 
     if not args.url:
+        print "check your URL argument"
         parser.print_help()
         return 2
     if args.engine not in ENGINE_LIST:
+        print "check your engine argument"
         parser.print_help()
         return 2
     if args.single not in {True,False}:
+        print "check your single argument"
         parser.print_help()
         return 2
 
-
     engine = EngineFactory(args.engine)
-    prc = PageRetrievabilityCalculator(engine)
+    prc = PageRetrievabilityCalculator(engine, args.cutoff)
     #hard coding in that it's a url being passed in, not text
     #and that I want single queries generated, need to extend
     #to allow these args to be passed in

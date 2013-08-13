@@ -65,14 +65,32 @@ class SingleTermQueryGeneration(QueryGeneration):
 
     def removePunctuation(self, queryTerms):
         cleaned = []
-        print "cleaning up search terms, removing commas etc. at end of terms "
+        print "cleaning up search terms, removing punctuation from first and last positions etc. at end of terms "
+
         for query in queryTerms:
             #get the last character
+            #is there a possibility multiple punctuation at start and end?
+            length = str(query).__len__()
+            firstChar = query[0:1]
+            if str(firstChar).isalnum():
+                query = query
+            else:
+                #print "cutting first letter " + firstChar + " from " +query
+                query = query[1:length]
+                #print "query now " +query
+            #get length again incase punctuation at start and end
             length = str(query).__len__()
             lastChar = query[length-1:length]
-            if str(lastChar).isalnum() == False:
+            if str(lastChar).isalnum():
+                query = query
+            else:
+                #print "cutting last letter " + lastChar + "from " + query
                 query = query[0:length-1]
-            cleaned.append(query)
+                #print " is now " + query
+
+            #now check if there's nothing left, then don't add, if there is, add it
+            if query:
+                cleaned.append(query)
 
         return cleaned
 

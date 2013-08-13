@@ -8,27 +8,40 @@ Version: 0.1
 requires nltk: pip install nltk
 """
 
-from pagecapture import  PageCapture
 from SingleTermQueryGeneration import SingleTermQueryGeneration
 from BiTermQueryGeneration import BiTermQueryGeneration
 from QueryGeneration import QueryGeneration
 from ifind.search.query import Query
 from nltk import clean_html
 from urllib import urlopen
+import string
+
 
 class PageRetrievabilityCalculator:
     """
     Given a url calculate the retrievability scores for that page.
     """
 
-    def __init__(self, engine):
+    def __init__(self, engine, cutoff):
         self.engine = engine
+        self.cutoffRank= cutoff
 
 
-    def calculate_retrievability(self):
-        pass
-
-
+    def calculate_retrievability(self, allScores):
+        """
+        calculates overall retrievability by summing scores contained
+        in dictionary allScores
+        :param allScores: a dictionary of query term and retrievability score pairs
+        :return:the final retrievability of the document with the current search
+        engine over all generated queries
+        """
+        #get the values, the query terms aren't needed
+        allVals=allScores.values()
+        #iterate through, sum and return
+        finalResult = 0
+        for val in allVals:
+            finalResult += val
+        return finalResult
 
     def _generateQueries(self, isHtml, isSingle, text):
         """
@@ -42,8 +55,10 @@ class PageRetrievabilityCalculator:
         #setup a generic generator object
         generator = QueryGeneration()
 
+
+
         #a placeholder for the number of results returned
-        top = 10
+
         #instantiate the correct generator type dependent on isSingle
         if isSingle:
             generator = SingleTermQueryGeneration()
@@ -55,6 +70,8 @@ class PageRetrievabilityCalculator:
 
         queries = {}
         if isHtml:
+            #copy url for use in calculateIndividualScore
+            self.url = text
             content_source=self._getPage(text)#replace content source with actual source code
             queries = generator.extractQueriesFromHtml(content_source)
         else:
@@ -65,23 +82,39 @@ class PageRetrievabilityCalculator:
         #against engines
         queryObjsList = []
         for query in queries:
-            currQuery = Query(query, top)
-            #print currQuery.terms
+            currQuery = Query(query, self.cutoffRank)
             queryObjsList.append(currQuery)
         #return the queries object list
         return queryObjsList
 
-
-
-    def _issueQueries(self,queryObjectList):
-        """
-        Issues query list to the search engine
-        """
-        for query in queryObjectList:
-            result = self.engine._search(query)
+    def calculateIndividualScoreCumulative(self, query):
+        #issue the query and store the results object
+        results = self._issueQuery(query)
+        #determine if query is in the list of results
+        containsQuery = False
+        for result in results:
             print result
+            if result.url == self.url:
+                containsQuery = True
+                print "results contain " + self.url
+                break
+        if containsQuery:
+            #the query has returned the document represented by url
+            #within cutoff results, so f(k_dq,c) =1
+            return 1
+        else:
+            return 0
 
 
+
+
+    def _issueQuery(self,query):
+        """
+        Issues single query to the search engine and returns results
+        object
+        """
+        print "issuing query : " + query.terms
+        return self.engine._search(query)
 
     def _calculateScores(self, content_source,isHtml, isSingle):
         """
@@ -107,12 +140,21 @@ class PageRetrievabilityCalculator:
         print "generating queries from content "
         #can now generate the queries
         queryList = self._generateQueries(isHtml,isSingle,content_source)
-        #for query in queryList:
-        #    print query.terms
 
-        #can now issue the queries to the engine - todo
-        self._issueQueries(queryList)
-
+        print  " %d queries generated, issuing queries to engine %s " %  (queryList.__len__() , self.engine.name)
+        #can now issue the queries to the engine and get individual retreivability
+        scores = {};
+        queryNum = 0
+        for query in queryList:
+            print " query number : %d" % (queryNum)
+            queryNum += 1
+            currQueryRetreivability=self.calculateIndividualScoreCumulative(query)
+            #add the value to a dictionary with key being query terms
+            scores[query.terms]=currQueryRetreivability
+        #now have a dictionary of individual retrievability scores
+        #sum all results and print
+        result = self.calculate_retrievability(scores)
+        print result
 
 
     def _getPage(self, url):
@@ -126,5 +168,9 @@ class PageRetrievabilityCalculator:
         #use urllib to open and read the html from the given url
         html = urlopen(url).read()
         content = clean_html(html)
+        #make sure only single white spaces remain
+        content = ' '.join(content.split())
+
+        print content
 
         return content
