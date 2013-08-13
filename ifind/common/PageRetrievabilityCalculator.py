@@ -45,25 +45,27 @@ class PageRetrievabilityCalculator:
         #a placeholder for the number of results returned
         top = 10
         #instantiate the correct generator type dependent on isSingle
-        if(isSingle):
+        if isSingle:
             generator = SingleTermQueryGeneration()
         else:
             generator = BiTermQueryGeneration()
 
         #use the generator to create the queries for the text, store
         #the result in a list
+
         queries = {}
-        if(isHtml):
+        if isHtml:
             content_source=self._getPage(text)#replace content source with actual source code
             queries = generator.extractQueriesFromHtml(content_source)
         else:
             queries = generator.extractQueriesFromText(text)
+        print queries
 
         #create list of query objects so queries can be issued
         #against engines
         queryObjsList = []
         for query in queries:
-            currQuery = Query(query,top)
+            currQuery = Query(query, top)
             #print currQuery.terms
             queryObjsList.append(currQuery)
         #return the queries object list
@@ -78,6 +80,8 @@ class PageRetrievabilityCalculator:
         for query in queryObjectList:
             result = self.engine._search(query)
             print result
+
+
 
     def _calculateScores(self, content_source,isHtml, isSingle):
         """

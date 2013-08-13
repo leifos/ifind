@@ -44,8 +44,11 @@ class SingleTermQueryGeneration(QueryGeneration):
         #uses string.rsplit instead of str.split so a unicode object
         #from pagecaputre.getpage can be split as needed
         singleTerms = rsplit(text)
+
         singleTerms = self.cleanTerms(singleTerms)
-        #singleTerms = set(rsplit(text))
+        #remove '' which is generated as space is at position 1 and at end
+        #http://stackoverflow.com/questions/2197451/why-are-empty-strings-returned-in-split-results
+        singleTerms = filter(None, singleTerms)
         return singleTerms
 
     def cleanTerms(self, queryTerms):
