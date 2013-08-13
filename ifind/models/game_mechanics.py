@@ -142,9 +142,16 @@ class GameMechanic(object):
 
     def _increment_queries_issued(self, query_successful=False):
         self.game.no_of_queries_issued += 1
+        self.game.current_page.no_of_queries_issued += 1
         self.game.no_of_queries_issued_for_current_page += 1
+        up = UserProfile.objects.get(user=self.game.user)
+        up.no_queries_issued += 1
         if query_successful:
-            self.game.no_of_successful_queries_issued +=1
+            self.game.current_page.no_times_retrieved += 1
+            self.game.no_of_successful_queries_issued += 1
+            up.no_successful_queries_issued += 1
+        self.game.current_page.save()
+        up.save()
 
     def _increment_round(self, round_successful=False):
         self.game.no_rounds += 1
@@ -209,6 +216,7 @@ class GameMechanic(object):
         # associate the page from the page model to game
         try:
             self.game.current_page = self.pages.get(id=page_id)
+            self.game.current_page.no_times_shown += 1
             round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, r)
             s = 'event:page_shown %s %s' % (self.game , round_log)
             self.logger.info(s)

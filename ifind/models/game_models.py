@@ -35,6 +35,8 @@ class UserProfile(models.Model):
     last_time_played = models.DateTimeField(null=True, blank=True)
     no_games_played = models.IntegerField(default=0,blank=True)
     rank = models.IntegerField(default=0,blank=True)
+    no_queries_issued = models.IntegerField(default=0,blank=True)
+    no_successful_queries_issued = models.IntegerField(default=0,blank=True)
 
     def __unicode__(self):
         return self.user.username
@@ -80,6 +82,7 @@ class Page(models.Model):
     snippet = models.TextField(null=True)
     no_times_shown = models.IntegerField(default=0)
     no_times_retrieved = models.IntegerField(default=0)
+    no_of_queries_issued = models.IntegerField(default=0)
     hints = models.CharField(max_length=256, null=True, blank=True)
 
     def __unicode__(self):
