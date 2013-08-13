@@ -21,7 +21,12 @@ import json
 def index(request):
         context = RequestContext(request, {})
         #create the logger
-        create_ifind_logger("Log")
+        logger = get_ifind_logger("Log")
+        print "LOGGER"
+        print logger
+        if not logger:
+            print '***************** LOG ********************'
+            create_ifind_logger("Log")
         return render_to_response('rmiyc/index.html', context)
 
 
@@ -60,7 +65,6 @@ def play(request, category_name):
             p = gm.get_current_page()
 
             avatar.update(current_game=gm.game)
-
             msg = avatar.get()
             response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'game_running':True, 'category':decoded_category_name}, context)
             response.set_cookie('game_id', game_id)
@@ -101,7 +105,7 @@ def search(request):
         #get current user
         user = request.user
         result_list = []
-        logger = get_ifind_logger("Log")
+
         #create game avatar
         avatar = GameAvatar('Search')
         if request.user.is_authenticated():
@@ -212,10 +216,6 @@ def game_over(request):
     else:
         return render_to_response('rmiyc/game_over.html', context)
 
-
-def contact(request):
-    context = RequestContext(request, {})
-    return render_to_response('rmiyc/contact.html', context)
 
 
 def about(request):

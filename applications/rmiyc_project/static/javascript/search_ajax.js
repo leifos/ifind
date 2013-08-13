@@ -132,9 +132,9 @@ function adjust_body_divs_height()
     var search_div_margin =$('#search-div').css("margin-bottom");
     var variable =search_div_height + content_div_height;
     var highestCol = Math.max($('#image-div').height(),variable);
-    if (highestCol < 650)
+    if (highestCol < 770)
     {
-        highestCol=650;
+        highestCol=770;
     }
     $('#image-div').height(highestCol);
     $('#content-div').height(highestCol - search_div_height - 35);
@@ -206,8 +206,12 @@ function search_button_click(event)
         button_available= false;
         $('#search-button').attr("disabled","disabled");
         $(this).css({'cursor':'wait'});
+            $.ajaxSetup ({
+        // Disable caching of AJAX responses
+        cache: false});
         $.ajax
         ({
+            cache: false,
             type: "GET",
             url: "/rmiyc/search/",
             data:
@@ -215,6 +219,12 @@ function search_button_click(event)
                 'query' : $('#query').val()
             },
             success: search_success,
+            error:function (xhr, ajaxOptions)
+            {
+                $('#score-div').html("<Strong>Error occured</strong>");
+                noty({text: xhr.status + " : " + xhr.responseText, type: 'error'});
+                onComplete(error);
+            },
             dataType: 'html'
         });
     }
@@ -223,8 +233,12 @@ function search_button_click(event)
 function skip_button_click(event)
 {
     event.preventDefault();
+    $.ajaxSetup ({
+        // Disable caching of AJAX responses
+        cache: false});
     $.ajax
     ({
+        cache: false,
         type: "GET",
         url: "/rmiyc/display_next_page/",
         success: display_next_page_success,

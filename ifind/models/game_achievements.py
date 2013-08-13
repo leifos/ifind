@@ -4,6 +4,7 @@ __author__ = 'leif'
 from game_models import PlayerAchievement, Achievement #, UserProfile
 import logging
 
+
 class GameAchievement(object):
 
     def __init__(self, userprofile, highscores, currentgame=None):
@@ -23,7 +24,7 @@ class GameAchievement(object):
 
 class AllCat(GameAchievement):
 
-    def __init__(self, userprofile, highscores, currentgame=None, num_of_cats = 2):
+    def __init__(self, userprofile, highscores, currentgame=None, num_of_cats = 6):
         GameAchievement.__init__(self,userprofile, highscores)
         self.logger.info("AllCats Achievement set to %d cats", num_of_cats)
         self.num_of_cats = num_of_cats
