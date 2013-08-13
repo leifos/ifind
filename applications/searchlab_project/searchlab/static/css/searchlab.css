@@ -1,10 +1,17 @@
+html, body {
+    background-color: #fafafa;
+}
+
+/* HEADER SECTION STYLING  */
+.header-section {
+    display: block;
+    padding-top: 60px;
+    padding-bottom: 50px;
+    background-color: #fafafa;
+}
+
 #head1, #head2 {
     display: inline;
-    margin: 10px 0;
-    color: #963334;
-    font-size: 100px;
-    line-height: 44px;
-    font-weight: 700;
 }
 
 #head1 {
@@ -16,13 +23,84 @@
 }
 
 #head2 {
+    color: #963334;
     font-family: "Great Vibes";
+    font-size: 100px;
+    font-weight: 700;
 }
 
-.header-section {
 
-    display: block;
-    padding-top: 71px;
-    padding-bottom: 71px;
+/* INPUT SECTION STYLING  */
+.input-section {
+    background-color: #fafafa;
+    padding-bottom: 20px;
+}
 
+#search-input {
+    width: 42%;
+    margin-right: 6px;
+}
+
+#search-input:focus {
+    background: white;
+}
+
+#search-btn {
+    margin-left: 6px;
+    background-image: linear-gradient(to bottom, #3a81ba, #3a81ba);
+}
+
+
+ /*RESULTS SECTION STYLING*/
+
+.results-section {
+    background-color: #fafafa;
+
+}
+
+#results-container {
+    padding-left: 320px;
+    padding-right: 407px;
+}
+
+
+.result {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left:10px;
+    background-color: white;
+}
+
+.result-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0000FF;
+  text-decoration: underline;
+}
+
+
+.result-url {
+  margin-top: -2px;
+  color: #093;
+  font-size: 14px;
+}
+
+.result-summary {
+    margin-top: -1px;
+    margin-bottom: 1px;
+    line-height: 16px;
+    font-size: 13px;
+}
+
+
+
+/* PAGINATION SECTION STYLING*/
+
+.pagination-section {
+    padding-top: 20px;
+    background-color: #fafafa;
+}
+
+#pagination-container {
+    padding-right: 110px;
 }
