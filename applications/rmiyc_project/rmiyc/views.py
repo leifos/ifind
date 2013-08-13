@@ -21,12 +21,12 @@ import json
 def index(request):
         context = RequestContext(request, {})
         #create the logger
-        logger = get_ifind_logger("Log.log")
+        logger = get_ifind_logger("Log")
         print "LOGGER"
         print logger
         if not logger:
             print '***************** LOG ********************'
-            create_ifind_logger("Log.log")
+            create_ifind_logger("Log")
         return render_to_response('rmiyc/index.html', context)
 
 
