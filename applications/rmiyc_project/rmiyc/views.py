@@ -162,6 +162,10 @@ def search(request):
 def display_next_page(request):
 
     user = request.user
+    avatar = GameAvatar('Skip')
+    if request.user.is_authenticated():
+        avatar.update(user=user)
+
     if request.COOKIES.has_key('game_id'):
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
@@ -173,6 +177,7 @@ def display_next_page(request):
             p = gm.get_current_page()
             current_score = gm.get_current_score()
             quoted_screenshot = str(p.screenshot)
+            msg = avatar.get()
             if gm.is_game_over():
                 gm.handle_game_over()
                 objects = {
@@ -180,6 +185,7 @@ def display_next_page(request):
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
                     "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
+                    "avatar": msg
                     }
             else:
                 objects = {
@@ -187,6 +193,7 @@ def display_next_page(request):
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
                     "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
+                    "avatar": msg
                 }
             data = json.dumps(objects)
             return HttpResponse(data, mimetype='application/json')
