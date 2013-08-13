@@ -12,165 +12,137 @@ from SingleTermQueryGeneration import SingleTermQueryGeneration
 from BiTermQueryGeneration import BiTermQueryGeneration
 from QueryGeneration import QueryGeneration
 from ifind.search.query import Query
-from nltk import clean_html
 from urllib import urlopen
 import string
-
+import time
 
 class PageRetrievabilityCalculator:
     """
     Given a url calculate the retrievability scores for that page.
     """
 
-    def __init__(self, engine, cutoff):
+    def __init__(self, engine, cutoff=10, generator=None):
         self.engine = engine
-        self.cutoffRank= cutoff
+        self.cutoff= cutoff
+        self.query_ret_scores = {}
+        self.query_rank = {}
+        self.url = None
+        self.query_list = {}
+
+        if generator:
+            self.generator = generator
+        else:
+            # default to a single term generator
+            self.generator = SingleTermQueryGeneration()
 
 
-    def calculate_retrievability(self, allScores):
+    def set_query_generator(self, generator):
+        """ sets generator, not really needed
+        :param generator: Expects a ifind.common.QueryGeneration
+        :return: None
         """
-        calculates overall retrievability by summing scores contained
-        in dictionary allScores
-        :param allScores: a dictionary of query term and retrievability score pairs
-        :return:the final retrievability of the document with the current search
-        engine over all generated queries
-        """
-        #get the values, the query terms aren't needed
-        allVals=allScores.values()
-        #iterate through, sum and return
-        finalResult = 0
-        for val in allVals:
-            finalResult += val
-        return finalResult
+        self.generator = generator
 
-    def _generateQueries(self, isHtml, isSingle, text):
+    def score_page(self, url):
+        """
+        :param url:
+        :return:
+        """
+
+        # check whether url is valid
+
+        #if valid, set url
+        self.url = url
+        # now generate queries that will be used
+        self.query_list = self._generateQueries()
+
+        for query in self.query_list:
+            time.sleep(0.2)
+            rank = self._process_query(query)
+            self.query_rank[query] = rank
+
+        return self.calculate_page_retrievability()
+
+    def calculate_page_retrievability(self):
+        self.query_ret_scores = {}
+        total_retrievability = 0
+        for query in self.query_rank:
+            self.query_ret_scores[query] = self._calculate_retrievability(self.query_rank[query])
+            total_retrievability += self.query_ret_scores[query]
+
+        return total_retrievability
+
+
+    def top_queries(self, n):
+        """
+        :param n: integer
+        :return: returns a list of the top n queries
+        """
+
+        #TODO(leifos):from self.query_ret_scores sort by the highest score
+
+
+        top_query_list =['to be implemented']
+        return top_query_list
+
+    def _generateQueries(self):
         """
         generates a list of single or bi term queries from plain text or html
         returns said list
-        :param isHtml boolean to denote if the text is html or not
-        :param boolean isSingle to denote whether to generate single or bi-terms
-        :param text the html or text from which queries will be generated
         :return returns a list of queries as strings
         """
-        #setup a generic generator object
-        generator = QueryGeneration()
-
-
-
-        #a placeholder for the number of results returned
-
-        #instantiate the correct generator type dependent on isSingle
-        if isSingle:
-            generator = SingleTermQueryGeneration()
-        else:
-            generator = BiTermQueryGeneration()
 
         #use the generator to create the queries for the text, store
         #the result in a list
 
-        queries = {}
-        if isHtml:
-            #copy url for use in calculateIndividualScore
-            self.url = text
-            content_source=self._getPage(text)#replace content source with actual source code
-            queries = generator.extractQueriesFromHtml(content_source)
-        else:
-            queries = generator.extractQueriesFromText(text)
-        print queries
+        html = urlopen(self.url).read()
+
+        queries = self.generator.extract_queries_from_html(html)
+        #print queries
 
         #create list of query objects so queries can be issued
         #against engines
-        queryObjsList = []
+        query_list = []
         for query in queries:
-            currQuery = Query(query, self.cutoffRank)
-            queryObjsList.append(currQuery)
+            currQuery = Query(query, self.cutoff)
+            query_list.append(currQuery)
         #return the queries object list
-        return queryObjsList
-
-    def calculateIndividualScoreCumulative(self, query):
-        #issue the query and store the results object
-        results = self._issueQuery(query)
-        #determine if query is in the list of results
-        containsQuery = False
-        for result in results:
-            print result
-            if result.url == self.url:
-                containsQuery = True
-                print "results contain " + self.url
-                break
-        if containsQuery:
-            #the query has returned the document represented by url
-            #within cutoff results, so f(k_dq,c) =1
-            return 1
-        else:
-            return 0
+        return query_list
 
 
-
-
-    def _issueQuery(self,query):
+    def _process_query(self, query):
         """
-        Issues single query to the search engine and returns results
+        Issues single query to the search engine and return the rank at which the url was returned
         object
+        :param: query expects an ifind.search.Query
+        :return: rank of url in the search results, else 0
+
         """
-        print "issuing query : " + query.terms
-        return self.engine._search(query)
+        rank = 0
 
-    def _calculateScores(self, content_source,isHtml, isSingle):
+        print "issuing query : %s" % (query.terms)
+        result_list = self.engine._search(query)
+        # check if url is in the results.
+        i = 0
+        for result in result_list:
+            i += 1
+            #TODO(leifos): may need a better matching function in case there are small differences between url
+            if result.url == self.url:
+                rank = i
+                print "Found %s" % (self.url)
+                break
+
+        return rank
+
+    def _calculate_retrievability(self, rank, query_opp=1):
         """
-        calls getPage
-        uses html to generateQueries
-        issues the queries
-        calculates the scores for the page and returns them
-        may start as dictionary or list, but will probably extract an object
-        which will be able to
-        - rank queries by query_ret_score, and show top n queries
-	    - rank queries by query_ret_score * query_prob, and show the top n queries
-	    - show the number of queries issued, and the number of queries that were successful, and the page retrievability
-
-        :return: dictionary or list of results
-
-        Generates the queries for the page, issues them to the search engine, calculates
-        the scores and returns a dictionary of results
-        :param content_source either a url or the text from which queries are to be generated
-        :param isHtml boolean indicating if the source is html or text
-        :param isSingle boolean indicating if single terms are used, if false then biterms
+        :param rank: rank of the url
+        :param query_opp: opportunity of the query
+        :return: returns the retrievability value for a given rank
         """
+        #TODO(leifos): use a class to enable different retrievability functions to be used.
 
-        print "generating queries from content "
-        #can now generate the queries
-        queryList = self._generateQueries(isHtml,isSingle,content_source)
-
-        print  " %d queries generated, issuing queries to engine %s " %  (queryList.__len__() , self.engine.name)
-        #can now issue the queries to the engine and get individual retreivability
-        scores = {};
-        queryNum = 0
-        for query in queryList:
-            print " query number : %d" % (queryNum)
-            queryNum += 1
-            currQueryRetreivability=self.calculateIndividualScoreCumulative(query)
-            #add the value to a dictionary with key being query terms
-            scores[query.terms]=currQueryRetreivability
-        #now have a dictionary of individual retrievability scores
-        #sum all results and print
-        result = self.calculate_retrievability(scores)
-        print result
-
-
-    def _getPage(self, url):
-        """
-        Creates a PageCapture object, uses it to get_page_sourcecode
-        :param url: the url of the page to be accessed
-        :return: the content of the website for the given url less the html
-        """
-
-        #uses nltk.clean_html to extract only text content from the html
-        #use urllib to open and read the html from the given url
-        html = urlopen(url).read()
-        content = clean_html(html)
-        #make sure only single white spaces remain
-        content = ' '.join(content.split())
-
-        print content
-
-        return content
+        if rank == 0:
+            return 0.0
+        else:
+            return query_opp * (1.0/rank)
