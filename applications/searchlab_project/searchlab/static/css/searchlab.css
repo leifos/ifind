@@ -65,16 +65,14 @@ html, body {
 
 
 .result {
-    padding-top: 5px;
+    padding-top: 15px;
     padding-bottom: 5px;
-    padding-left:10px;
-    background-color: white;
 }
 
 .result-title {
   font-size: 16px;
   font-weight: 700;
-  color: #0000FF;
+  color: #3a81ba;
   text-decoration: underline;
 }
 
@@ -92,12 +90,20 @@ html, body {
     font-size: 13px;
 }
 
+#no-results {
+    font-family: Charcoal, sans-serif;
+    font-weight: 500;
+    color: #963334;
+
+    padding-left: 1px;
+}
 
 
 /* PAGINATION SECTION STYLING*/
 
 .pagination-section {
-    padding-top: 20px;
+    margin-top: -15px;
+    padding-top: 30px;
     background-color: #fafafa;
 }
 
