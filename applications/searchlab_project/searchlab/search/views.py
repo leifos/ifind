@@ -31,7 +31,7 @@ def search(request):
     experiment = get_or_create_experiment(exp_id)
 
     # execute query
-    engine = EngineFactory(experiment['engine'])
+    engine = EngineFactory('govuk')
     query = Query(query_terms, top=experiment['top'])
     response = engine.search(query)
 
