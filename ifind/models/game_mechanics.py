@@ -217,6 +217,7 @@ class GameMechanic(object):
         try:
             self.game.current_page = self.pages.get(id=page_id)
             self.game.current_page.no_times_shown += 1
+            self.game.current_page.save()
             round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, r)
             s = 'event:page_shown %s %s' % (self.game , round_log)
             self.logger.info(s)
