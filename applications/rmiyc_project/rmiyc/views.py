@@ -20,13 +20,10 @@ import json
 
 def index(request):
         context = RequestContext(request, {})
-        #create the logger
-        create_ifind_logger("Log")
         return render_to_response('rmiyc/index.html', context)
 
 
 def play(request, category_name):
-        create_ifind_logger("Log")
         context = RequestContext(request, {})
         #Create game avatar
         avatar = GameAvatar('GamePage')
@@ -70,6 +67,7 @@ def play(request, category_name):
 
 
 def pick_category(request):
+
         context = RequestContext(request, {})
         #TODO(leifos): filter this
         cats = Category.objects.filter(is_shown=True)
@@ -201,8 +199,8 @@ def display_next_page(request):
 
 
 def game_over(request):
+
     print 'I am a cookie and I am dying because the game is over'
-    create_ifind_logger("Log")
     context = RequestContext(request, {})
     user = request.user
     if request.COOKIES.has_key('game_id'):

@@ -178,7 +178,6 @@ class GameMechanic(object):
         """
         self.pages = Page.objects.filter(category=self.game.category)
         #TODO
-        self.logger.info( 'number of pages: %d' % (len(self.pages)))
         #todo(leifos): check the number of pages does exceed MAX_PAGES
 
     def generate_page_ordering(self):
