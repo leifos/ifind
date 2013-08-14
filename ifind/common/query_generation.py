@@ -19,13 +19,13 @@ class QueryGeneration():
         constructor for QueryGeneration
         """
 
-    def _extractQueriesFromHtml(self, html):
+    def _extract_queries_from_html(self, html):
         """
         :param url: the html from which the queries are to be constructed
         :return: list of queries
         """
 
-    def extractQueriesFromText(self, text):
+    def extract_queries_from_text(self, text):
         """
         :param text: the text from which the queries are to be constructed
         :return: list of queries

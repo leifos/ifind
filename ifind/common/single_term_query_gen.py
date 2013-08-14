@@ -5,11 +5,11 @@ Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
 """
-from query_generation import QueryGeneration
 from string import rsplit
 from collections import Counter
-from re import sub
 from nltk import clean_html
+from query_generation import QueryGeneration
+
 
 class SingleTermQueryGeneration(QueryGeneration):
     """
@@ -18,22 +18,21 @@ class SingleTermQueryGeneration(QueryGeneration):
     def __init__(self):
         pass
 
-    def extract_queries_from_html(self, html):
+    def extract_queries_from_html(self, html, stopfile_name):
         """
-
+        given a block of html this method cleans the html and splits
+        it into queries
         :param htmlContent: the html from which the queries are to be generated
         :return:queries: list of queries as strings
         """
         #first get the text from the html
         #make sure only single white spaces remain
-
         content = clean_html(html)
         content = ' '.join(content.split())
+        return self.extract_queries_from_text(content, stopfile_name)
 
-        return self.extract_queries_from_text(content)
 
-
-    def extract_queries_from_text(self, text):
+    def extract_queries_from_text(self, text, stopfile_name):
         """
         takes a string of text from which to extract single term queries
         :type text: object
@@ -44,18 +43,17 @@ class SingleTermQueryGeneration(QueryGeneration):
         #uses string.rsplit instead of str.split so a unicode object
         #from pagecaputre.getpage can be split as needed
         single_terms = rsplit(text)
-
-        single_terms = self.clean_text(single_terms)
+        single_terms = self.clean_text(single_terms, stopfile_name)
         #remove '' which is generated as space is at position 1 and at end
         #http://stackoverflow.com/questions/2197451/why-are-empty-strings-returned-in-split-results
         single_terms = filter(None, single_terms)
         return single_terms
 
-    def clean_text(self, text):
+    def clean_text(self, text, stopfile_name = None):
         text = self.remove_punctuation(text)
         text =self.lower(text)
         text = self.min_length(text)
-        text=self.remove_stopwords(text)
+        text=self.remove_stopwords(text,stopfile_name)
         #queryTerms = self.calculateDuplicates(queryTerms)
         #cast to a set to remove duplicates then back to a list
         return list(set(text))
@@ -83,9 +81,7 @@ class SingleTermQueryGeneration(QueryGeneration):
             if str(firstChar).isalnum():
                 term = term
             else:
-                #print "cutting first letter " + firstChar + " from " +term
                 term = term[1:length]
-                #print "term now " +term
             #get length again incase punctuation at start and end
             length = str(term).__len__()
             lastChar = term[length-1:length]
@@ -110,12 +106,14 @@ class SingleTermQueryGeneration(QueryGeneration):
         terms = Counter(text)
         return terms
 
-    def remove_stopwords(self, text):
+    def remove_stopwords(self, text, filename):
         #stopwords list from http://www.ranks.nl/resources/stopwords.html
         #can easily be switched
         #todo(rose) doesn't seem to be working
         #TODO(leifos): a setter should take the filename of the stopword list and read it in
-        tmp = open('stopwords.txt').readlines()
+        stopFile = open(filename,'r')
+        tmp = list(stopFile)
+        stopFile.close()
         stoplist = []
 
         for term in tmp:
