@@ -126,10 +126,13 @@ class PageRetrievabilityCalculator:
         print "issuing query : %s" % (query.terms)
         result_list = self.engine._search(query)
         # check if url is in the results.
+        i = 0
+        print "no of results : %d" % (len(result_list))
         for result in result_list:
-            rank += 1
+            i += 1
             #TODO(leifos): may need a better matching function in case there are small differences between url
             if result.url == self.url:
+                rank = i
                 print "Found %s" % (self.url)
                 break
 

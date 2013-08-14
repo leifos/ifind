@@ -28,6 +28,10 @@ def main():
                         help="url address")
     parser.add_argument("-e","--engine",type=str,
                         help="Name of search engine: " + ENGINE_LIST.__str__())
+
+    parser.add_argument("-k","--key",type=str,
+                        help="API Key for search engine (if applicable)")
+
     parser.add_argument("-c","--cutoff", type=int,
                         help ="The cutoff value for queries")
     args = parser.parse_args()
@@ -42,7 +46,11 @@ def main():
         return 2
 
 
-    engine = EngineFactory(args.engine)
+    if args.key:
+        engine = EngineFactory(engine=args.engine, api_key=args.key)
+    else:
+        engine = EngineFactory(engine=args.engine)
+
     prc = PageRetrievabilityCalculator(engine, args.cutoff)
     #hard coding in that it's a url being passed in, not text
     #and that I want single queries generated, need to extend

@@ -166,7 +166,6 @@ def display_next_page(request):
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
             gm.take_points()
-            gm.set_next_page()
             gm.update_game()
             p = gm.get_current_page()
             current_score = gm.get_current_score()
@@ -182,6 +181,11 @@ def display_next_page(request):
                     "avatar": msg
                     }
             else:
+                gm.set_next_page()
+                gm.update_game()
+                p = gm.get_current_page()
+                current_score = gm.get_current_score()
+                quoted_screenshot = str(p.screenshot)
                 objects = {
                     "screenshot": quoted_screenshot, "is_game_over": 0,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
