@@ -96,3 +96,11 @@ class InvalidQueryException(SearchException):
 
     """
     pass
+
+
+class RateLimitException(SearchException):
+    """
+    Thrown when an engine's request rate limit has been exceeded.
+
+    """
+    pass
