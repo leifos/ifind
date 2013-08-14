@@ -23,6 +23,9 @@ class RotationOrdering(object):
         for p in list:
             if p.id:
                 id_list.append(p.id)
+
+        from random import shuffle
+        shuffle(id_list)
         #id_list = id_list[::-1]
 
         return id_list

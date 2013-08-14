@@ -21,14 +21,11 @@ class RMIYCMechanic(GameMechanic):
         :param rank: integer
         :return: integer
         """
-        print 'bonus'
-        print bonus
         if(rank>0):
             top = 10
             x = top+1
-            print 'score with no bonus'
             print 100 * (x-rank)
-
+            #return bonus + 100 * (x-rank)
             return bonus + 100 * (x-rank)
         else:
             return 0

@@ -1,10 +1,12 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 from .utils import check_input
 from .utils import get_or_create_experiment
 
 from ifind.search import Query
 from ifind.search import EngineFactory
+
 
 
 def search(request):
@@ -18,20 +20,18 @@ def search(request):
         return HttpResponse(status=405)
 
     # checks input for validity
-    query_terms = check_input(request.GET.get('q', ""))
+    query_terms = check_input(request.GET.get('q', ''))
 
     # bad request
     if not query_terms:
         return HttpResponse(status=400)
 
-    # get/create experiment and assign to user if need be
+    # get exp ID and load experiment
     exp_id = request.session.get('exp_id', False)
     experiment = get_or_create_experiment(exp_id)
-    if not exp_id:
-        request.session["exp_id"] = experiment['id']
 
     # execute query
-    engine = EngineFactory(experiment['engine'])
+    engine = EngineFactory('govuk')
     query = Query(query_terms, top=experiment['top'])
     response = engine.search(query)
 
@@ -53,3 +53,18 @@ def session(request):
     message = "Using experiment '{0}' with '{1}' as engine and '{2}' as max results value.".format(exp_id, engine, top)
 
     return HttpResponse(message)
+
+
+def IndexView(request):
+
+    # attempt session ID retrieval from user
+    exp_id = request.session.get('exp_id', False)
+    # attempt exp lookup from ID, creating a new exp otherwise
+    experiment = get_or_create_experiment(exp_id)
+    # assign new experiment to user
+    if not exp_id:
+        request.session["exp_id"] = experiment['id']
+
+    template = 'index.html'
+
+    return render(request, template)

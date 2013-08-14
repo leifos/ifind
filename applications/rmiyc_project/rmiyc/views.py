@@ -20,8 +20,6 @@ import json
 
 def index(request):
         context = RequestContext(request, {})
-        #create the logger
-        create_ifind_logger("Log")
         return render_to_response('rmiyc/index.html', context)
 
 
@@ -60,7 +58,6 @@ def play(request, category_name):
             p = gm.get_current_page()
 
             avatar.update(current_game=gm.game)
-
             msg = avatar.get()
             response = render_to_response('rmiyc/game.html', {'page': p.screenshot, 'avatar':msg ,'game_running':True, 'category':decoded_category_name}, context)
             response.set_cookie('game_id', game_id)
@@ -70,6 +67,7 @@ def play(request, category_name):
 
 
 def pick_category(request):
+
         context = RequestContext(request, {})
         #TODO(leifos): filter this
         cats = Category.objects.filter(is_shown=True)
@@ -101,7 +99,7 @@ def search(request):
         #get current user
         user = request.user
         result_list = []
-        logger = get_ifind_logger("Log")
+
         #create game avatar
         avatar = GameAvatar('Search')
         if request.user.is_authenticated():
@@ -158,17 +156,21 @@ def search(request):
 def display_next_page(request):
 
     user = request.user
+    avatar = GameAvatar('Skip')
+    if request.user.is_authenticated():
+        avatar.update(user=user)
+
     if request.COOKIES.has_key('game_id'):
             ds = EngineFactory("bing", api_key=BING_API_KEY)
             gm = RMIYCMechanic(ds)
             game_id = request.COOKIES.get('game_id')
             gm.retrieve_game(user, game_id)
             gm.take_points()
-            gm.set_next_page()
             gm.update_game()
             p = gm.get_current_page()
             current_score = gm.get_current_score()
             quoted_screenshot = str(p.screenshot)
+            msg = avatar.get()
             if gm.is_game_over():
                 gm.handle_game_over()
                 objects = {
@@ -176,13 +178,20 @@ def display_next_page(request):
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
                     "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
+                    "avatar": msg
                     }
             else:
+                gm.set_next_page()
+                gm.update_game()
+                p = gm.get_current_page()
+                current_score = gm.get_current_score()
+                quoted_screenshot = str(p.screenshot)
                 objects = {
                     "screenshot": quoted_screenshot, "is_game_over": 0,
                     "no_round": gm.get_round_no(), "no_successful_round": gm.get_no_rounds_completed(),
                     "no_of_queries_issued_for_current_page": gm.get_no_of_queries_issued_for_current_page(),
                     "no_remaining_rounds": gm.get_remaining_rounds(), "current_score": current_score,
+                    "avatar": msg
                 }
             data = json.dumps(objects)
             return HttpResponse(data, mimetype='application/json')
@@ -194,6 +203,7 @@ def display_next_page(request):
 
 
 def game_over(request):
+
     print 'I am a cookie and I am dying because the game is over'
     context = RequestContext(request, {})
     user = request.user
@@ -212,10 +222,6 @@ def game_over(request):
     else:
         return render_to_response('rmiyc/game_over.html', context)
 
-
-def contact(request):
-    context = RequestContext(request, {})
-    return render_to_response('rmiyc/contact.html', context)
 
 
 def about(request):

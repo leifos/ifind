@@ -85,27 +85,31 @@ class HighScoresLeaderboard(GameLeaderboard):
 
 class SchoolLeaderboard(GameLeaderboard):
 
-    def get_leaderboard(self, user):
-        if user.username == '':
-            return None
-        usr = User.objects.get(username=user.username)
-        if usr.username != '':
-            viewer_profile = UserProfile.objects.get(user=usr)
-            viewer_school = viewer_profile.school
-            #get all viewer's school mates
-            profiles = UserProfile.objects.filter(school=viewer_school)
-            hs = []
-            score_list = []
-            for profile in profiles:
-                hs = HighScore.objects.filter(user=viewer_profile.user)
-                Sum=0
-                for item in hs:
-                    Sum += item.highest_score
-                dummy_hs = HighScore(user=profile.user, highest_score=Sum, category=None)
-                score_list.append(dummy_hs)
-            #hs.order_by('-highest_score')[:self.top]
-        #hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
-            return self.highscore_to_list(score_list)
+    def get_leaderboard(self):
+        users = UserProfile.objects.all()
+        schools = {}
+        score_list=[]
+        for user in users:
+            if user.school != "":
+                if user.school not in schools:
+                    user_score = self._get_user_score_sum(user)
+                    #list is [total_score_of_users,num_of_users]
+                    schools[user.school] = [user_score,1]
+                else:
+                    schools[user.school][0] += self._get_user_score_sum(user)
+                    schools[user.school][1] += 1
+        for school, values in schools.iteritems():
+            dummy_user = User(username=school)
+            score_list.append(HighScore(user=dummy_user, highest_score=values[0]/values[1] ,category=None ))
+            score_list.sort(key=lambda x: x.highest_score, reverse=True)
+        return self.highscore_to_list(score_list)
+
+    def _get_user_score_sum(self, user):
+        hs = HighScore.objects.filter(user=user.user)
+        user_score = 0
+        for sc in hs:
+            user_score += sc.highest_score
+        return user_score
 
     def __str__(self):
         return 'School High Scores'
@@ -122,27 +126,31 @@ class SchoolLeaderboard(GameLeaderboard):
 
 class AgeLeaderboard(GameLeaderboard):
 
-    def get_leaderboard(self, user):
-        if user.username == '':
-            return None
-        usr = User.objects.get(username=user.username)
-        if usr.username != '':
-            viewer_profile = UserProfile.objects.get(user=usr)
-            viewer_age = viewer_profile.age
-            #get all in user's age group
-            profiles = UserProfile.objects.filter(age=viewer_age)
-            hs = []
-            score_list = []
-            for profile in profiles:
-                hs = HighScore.objects.filter(user=viewer_profile.user)
-                Sum=0
-                for item in hs:
-                    Sum += item.highest_score
-                dummy_hs = HighScore(user=profile.user, highest_score=Sum, category=None)
-                score_list.append(dummy_hs)
-            #hs.order_by('-highest_score')[:self.top]
-        #hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
-            return self.highscore_to_list(score_list)
+    def get_leaderboard(self):
+        users = UserProfile.objects.all()
+        age_groups = {}
+        score_list=[]
+        for user in users:
+            if user.age is not None:
+                if user.age not in age_groups:
+                    user_score = self._get_user_score_sum(user)
+                    #list is [total_score_of_users,num_of_users]
+                    age_groups[user.age] = [user_score,1]
+                else:
+                    age_groups[user.age][0] += self._get_user_score_sum(user)
+                    age_groups[user.age][1] += 1
+        for age_group, values in age_groups.iteritems():
+            dummy_user = User(username=age_group)
+            score_list.append(HighScore(user=dummy_user, highest_score=values[0]/values[1] ,category=None ))
+            score_list.sort(key=lambda x: x.highest_score, reverse=True)
+        return self.highscore_to_list(score_list)
+
+    def _get_user_score_sum(self, user):
+        hs = HighScore.objects.filter(user=user.user)
+        user_score = 0
+        for sc in hs:
+            user_score += sc.highest_score
+        return user_score
 
     def __str__(self):
         return 'High Scores by age group'
@@ -156,27 +164,33 @@ class AgeLeaderboard(GameLeaderboard):
 
 class GenderLeaderboard(GameLeaderboard):
 
-    def get_leaderboard(self, user):
-        if user.username == '':
-            return None
-        usr = User.objects.get(username=user.username)
-        if usr.username != '':
-            viewer_profile = UserProfile.objects.get(user=usr)
-            viewer_gender = viewer_profile.gender
-            #get all in user's age group
-            profiles = UserProfile.objects.filter(gender=viewer_gender)
-            hs = []
-            score_list = []
-            for profile in profiles:
-                hs = HighScore.objects.filter(user=viewer_profile.user)
-                Sum=0
-                for item in hs:
-                    Sum += item.highest_score
-                dummy_hs = HighScore(user=profile.user, highest_score=Sum, category=None)
-                score_list.append(dummy_hs)
-            #hs.order_by('-highest_score')[:self.top]
-        #hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
-            return self.highscore_to_list(score_list)
+    def get_leaderboard(self):
+        users = UserProfile.objects.all()
+        gender_groups = {}
+        score_list=[]
+        for user in users:
+            if user.gender != '':
+                if user.gender not in gender_groups:
+                    user_score = self._get_user_score_sum(user)
+                    #list is [total_score_of_users,num_of_users]
+                    gender_groups[user.gender] = [user_score,1]
+                else:
+                    gender_groups[user.gender][0] += self._get_user_score_sum(user)
+                    gender_groups[user.gender][1] += 1
+        for gender_group, values in gender_groups.iteritems():
+            dummy_user = User(username=gender_group)
+            score_list.append(HighScore(user=dummy_user, highest_score=values[0]/values[1] ,category=None ))
+            score_list.sort(key=lambda x: x.highest_score, reverse=True)
+        return self.highscore_to_list(score_list)
+
+    def _get_user_score_sum(self, user):
+        hs = HighScore.objects.filter(user=user.user)
+        user_score = 0
+        for sc in hs:
+            user_score += sc.highest_score
+        return user_score
+
+
 
     def __str__(self):
         return 'High Scores by gender group'
