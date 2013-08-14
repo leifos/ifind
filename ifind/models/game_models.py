@@ -105,7 +105,8 @@ class Achievement(models.Model):
         app_label = APP_NAME
 
 class CurrentGame(models.Model):
-    current_page = models.ForeignKey(Page)
+    #
+    current_page = models.ForeignKey(Page, null=True, blank=True, default=1)
     category = models.ForeignKey(Category)
     user = models.ForeignKey(User)
     no_of_queries_issued = models.IntegerField(default=0, null=True)

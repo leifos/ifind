@@ -97,6 +97,7 @@ function display_next_page_success(data, textStatus, jqXHR)
     $('#content-div').removeClass("alert-success");
     $('#content-div').addClass("alert-error");
     $('#skip-button').removeClass("btn-success").addClass("btn-danger");
+
     var obj = jQuery.parseJSON(data);
     if (obj.is_game_over == 1)
     {
@@ -111,6 +112,7 @@ function display_next_page_success(data, textStatus, jqXHR)
     $('#game_updates-div').html(game_updates_html);
     $('#search-results-ol').html("");
     $('#score-div').html("");
+    $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
     $('#skip-button').html("<i class='icon-forward icon-white'></i> skip");
     $('#search-button').html('<i class="icon-search icon-white"></i> search');
     $('#image-box').hide();
