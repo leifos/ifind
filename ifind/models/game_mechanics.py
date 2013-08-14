@@ -267,7 +267,7 @@ class GameMechanic(object):
         rank = self._check_result(results)
         score = self._score_rank(rank, self.game.bonus)
         common_log = 'event: issue_query %s' % (self.game)
-        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.get_round_no())
+        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
         info_log = 'score: %d rank: %d query: %s ' % (score, rank, query)
         log = '%s %s %s ' % (common_log, round_log, info_log)
         self.logger.info(log)
