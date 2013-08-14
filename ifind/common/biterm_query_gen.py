@@ -12,8 +12,8 @@ Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
 """
-from QueryGeneration import QueryGeneration
-from SingleTermQueryGeneration import SingleTermQueryGeneration
+from query_generation import QueryGeneration
+from single_term_query_gen import SingleTermQueryGeneration
 from itertools import combinations
 
 class BiTermQueryGeneration(QueryGeneration):
