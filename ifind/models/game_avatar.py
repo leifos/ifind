@@ -323,7 +323,7 @@ class Skip(Handler):
         """
         messages = []
         messages.append("You can always click (Enter) to search")
-        messages.append("Go To hell")
+        messages.append("Now look at this page carefully and enter a query")
         return messages
 
     def _get_anonymous_messages(self):
