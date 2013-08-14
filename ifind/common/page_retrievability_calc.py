@@ -8,25 +8,25 @@ Version: 0.1
 requires nltk: pip install nltk
 """
 
-from SingleTermQueryGeneration import SingleTermQueryGeneration
-from BiTermQueryGeneration import BiTermQueryGeneration
-from querygeneration import QueryGeneration
+from single_term_query_gen import SingleTermQueryGeneration
 from ifind.search.query import Query
 from urllib import urlopen
-import string
 import time
 
 class PageRetrievabilityCalculator:
-    """
-    Given a url calculate the retrievability scores for that page.
+    """ Given a url calculate the retrievability scores for that page.
+
     """
 
     def __init__(self, engine, cutoff=10, generator=None):
         self.engine = engine
         self.cutoff= cutoff
+        #query, retrievability score pairs for all queries issued
         self.query_ret_scores = {}
+        #query, rank pairs for all queries issued against self.engine
         self.query_rank = {}
         self.url = None
+        #the list of queries
         self.query_list = {}
 
         if generator:
@@ -40,6 +40,7 @@ class PageRetrievabilityCalculator:
         """ sets generator, not really needed
         :param generator: Expects a ifind.common.QueryGeneration
         :return: None
+
         """
         self.generator = generator
 
@@ -47,6 +48,7 @@ class PageRetrievabilityCalculator:
         """
         :param url:
         :return:
+
         """
 
         # check whether url is valid
@@ -54,7 +56,7 @@ class PageRetrievabilityCalculator:
         #if valid, set url
         self.url = url
         # now generate queries that will be used
-        self.query_list = self._generateQueries()
+        self.query_list = self._generate_queries()
 
         for query in self.query_list:
             time.sleep(0.2)
@@ -77,6 +79,7 @@ class PageRetrievabilityCalculator:
         """
         :param n: integer
         :return: returns a list of the top n queries
+
         """
 
         #TODO(leifos):from self.query_ret_scores sort by the highest score
@@ -85,20 +88,20 @@ class PageRetrievabilityCalculator:
         top_query_list =['to be implemented']
         return top_query_list
 
-    def _generateQueries(self):
+    def _generate_queries(self):
         """
         generates a list of single or bi term queries from plain text or html
         returns said list
         :return returns a list of queries as strings
+
         """
 
         #use the generator to create the queries for the text, store
         #the result in a list
 
         html = urlopen(self.url).read()
-
-        queries = self.generator.extract_queries_from_html(html)
-        #print queries
+        ####TODO (rose) ask user for stopfile name
+        queries = self.generator.extract_queries_from_html(html, stopfile_name='stopwords.txt')
 
         #create list of query objects so queries can be issued
         #against engines
@@ -140,6 +143,7 @@ class PageRetrievabilityCalculator:
         :param rank: rank of the url
         :param query_opp: opportunity of the query
         :return: returns the retrievability value for a given rank
+
         """
         #TODO(leifos): use a class to enable different retrievability functions to be used.
 

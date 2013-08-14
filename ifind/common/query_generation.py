@@ -1,79 +1,74 @@
 """
-A class which inherits from QueryGeneration to generate queries list of single terms
+An abstract class to generate queries list
 =============================
 Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
 """
-from querygeneration import QueryGeneration
+ONLY_ALPHAS = False #bool to distinguish if only considering alphanumeric terms
+AVOID_STOP = False #bool to distinguish if avoiding terms on the stop list
+MIN_LENGTH = 1 # the minimum length of a term, if =1 then no min length
+
 from string import rsplit
 from collections import Counter
 from re import sub
 from nltk import clean_html
 
-class SingleTermQueryGeneration(QueryGeneration):
+class QueryGeneration(object):
     """
-    Implementation of QueryGeneration which generates single term queries
+    Abstract class to represent structure for a query generator
     """
-    def __init__(self):
-        pass
 
-    def extract_queries_from_html(self, html):
+    def __init__(self, stoplist_filename=None):
+        """
+        constructor for QueryGeneration
         """
 
-        :param htmlContent: the html from which the queries are to be generated
-        :return:queries: list of queries as strings
+    def _extract_queries_from_html(self, html):
         """
-        #first get the text from the html
-        #make sure only single white spaces remain
-
-        content = clean_html(html)
-        content = ' '.join(content.split())
-
-        return self.extract_queries_from_text(content)
-
+        :param url: the html from which the queries are to be constructed
+        :return: list of queries
+        """
 
     def extract_queries_from_text(self, text):
         """
-        takes a string of text from which to extract single term queries
-        :type text: object
-        :param text: the text from which the queries are to be generated
-        :return:queries: list of queries as strings
+        :param text: the text from which the queries are to be constructed
+        :return: list of queries
         """
-        #split into single words and store in a set so no duplicates
-        #uses string.rsplit instead of str.split so a unicode object
-        #from pagecaputre.getpage can be split as needed
-        single_terms = rsplit(text)
-
-        single_terms = self.clean_text(single_terms)
-        #remove '' which is generated as space is at position 1 and at end
-        #http://stackoverflow.com/questions/2197451/why-are-empty-strings-returned-in-split-results
-        single_terms = filter(None, single_terms)
-        return single_terms
 
     def clean_text(self, text):
-        text = self.remove_punctuation(text)
-        text =self.lower(text)
-        text = self.min_length(text)
-        text=self.remove_stopwords(text)
+
+        text = text.lower()
+        list(set(nltk.regexp_tokenize(text, pattern, gaps=True)) - set(nltk.corpus.stopwords.words('english')))
+
+
+        cleaned = []
+        for term in text:
+            # lower case
+            term = term.lower()
+            term = self.check_length(term)
+            term = self.remove_punctuation(term)
+
+        text= self.remove_stopwords(text)
         #queryTerms = self.calculateDuplicates(queryTerms)
         #cast to a set to remove duplicates then back to a list
         return list(set(text))
+
+
+
 
     def lower(self, text):
         text = [str.lower(term) for term in text]
         return text
 
-    def min_length(self,text, min_len=3):
-        new_text = []
-        for term in text:
-            if len(term) > min_len:
-                new_text.append(term)
-        return new_text
+    def check_length(self,text, min_len=3):
+        if len(term) > min_len:
+            return term
+        else:
+            return None
 
     def remove_punctuation(self, text):
         cleaned = []
-        print "cleaning up search terms, removing punctuation from first and last positions etc. at end of terms "
 
         for term in text:
             #get the last character
@@ -122,4 +117,3 @@ class SingleTermQueryGeneration(QueryGeneration):
             stoplist.append(term.strip())
 
         return list(set(text) - set(stoplist))
-

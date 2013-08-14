@@ -13,7 +13,7 @@ TODO
 """
 
 import argparse
-from ifind.common.PageRetrievabilityCalculator import PageRetrievabilityCalculator
+from ifind.common.page_retrievability_calc import PageRetrievabilityCalculator
 from ifind.search.engine import EngineFactory
 from ifind.search.engines import ENGINE_LIST
 

@@ -12,20 +12,21 @@ Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
 """
-from querygeneration import QueryGeneration
-from SingleTermQueryGeneration import SingleTermQueryGeneration
+
+from query_generation import QueryGeneration
+from single_term_query_gen import SingleTermQueryGeneration
 from itertools import combinations
 
 class BiTermQueryGeneration(QueryGeneration):
     """
     Implementation of QueryGeneration which generates single term queries
     """
-    _singleGenerator = QueryGeneration
+    _single_generator = QueryGeneration
 
     def __init__(self):
         _singleGenerator = SingleTermQueryGeneration()
 
-    def extractQueriesFromHtml(self, html):
+    def extract_queries_from_html(self, html):
         """
         uses a single generator to generate a list of
         single terms, then uses combine method to generate all
@@ -33,13 +34,14 @@ class BiTermQueryGeneration(QueryGeneration):
         :param html:
         :return:
         """
-        singleTerms = self._singleGenerator._extractQueriesFromHtml(html)
+        singleTerms = self._single_generator._extract_queries_from_html(html)
         return self.combine(singleTerms)
 
-    def extractQueriesFromText(self, text):
-        singleTerms = self._singleGenerator._extractQueriesFromText(text)
+    def extract_queries_from_text(self, text):
+        singleTerms = self._single_generator._extractQueriesFromText(text)
         return self.combine(singleTerms)
 
+    #todo (rose) update method to use nltk
     def combine(self, singleTerms):
         #returns a list of tuples of length two
         #contains all unique combos of single terms length 2
