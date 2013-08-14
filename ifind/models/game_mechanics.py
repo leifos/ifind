@@ -40,17 +40,20 @@ class GameMechanic(object):
         self.game = CurrentGame(user=user, category=cat)
         #set starting values for game
         # get the pages associated with the category (cat)
-        self.set_pages_to_use(game_type)
-        #set starting page order for game
-        self.generate_page_ordering()
-        # now set the first page to find in the game
-        self.set_next_page()
-        # save to db
         self.update_game()
         self.common_log = self.game
         s = "event: game_created "
         s = '%s %s' % (s , self.common_log)
+
         self.logger.info(s)
+        self.set_pages_to_use(game_type)
+        #set starting page order for game
+        self.generate_page_ordering()
+
+        # now set the first page to find in the game
+        self.set_next_page()
+        # save to db
+        self.update_game()
 
 
     def retrieve_game(self, user, game_id):
