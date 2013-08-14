@@ -1,12 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.templatetags.static import static
 
 from .utils import check_input
 from .utils import get_or_create_experiment
 
 from ifind.search import Query
 from ifind.search import EngineFactory
+
 
 
 def search(request):
@@ -20,7 +20,7 @@ def search(request):
         return HttpResponse(status=405)
 
     # checks input for validity
-    query_terms = check_input(request.GET.get('q', ""))
+    query_terms = check_input(request.GET.get('q', ''))
 
     # bad request
     if not query_terms:
