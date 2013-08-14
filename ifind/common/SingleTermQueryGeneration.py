@@ -9,6 +9,7 @@ from QueryGeneration import QueryGeneration
 from string import rsplit
 from collections import Counter
 from re import sub
+from nltk import clean_html
 
 class SingleTermQueryGeneration(QueryGeneration):
     """
@@ -17,23 +18,22 @@ class SingleTermQueryGeneration(QueryGeneration):
     def __init__(self):
         pass
 
-    def extractQueriesFromHtml(self, htmlContent):
+    def extract_queries_from_html(self, html):
         """
 
         :param htmlContent: the html from which the queries are to be generated
         :return:queries: list of queries as strings
         """
         #first get the text from the html
-        #doc = html.document_fromstring(htmlContent)
-        #text = doc.text_content()
+        #make sure only single white spaces remain
 
-        #parser = htmlParser(htmlContent)
-        #text = parser.getText()
-        #now use extractQueries from text and return the list of queries
-        #return self.extractQueriesFromText(text)
-        return self.extractQueriesFromText(htmlContent)
+        content = clean_html(html)
+        content = ' '.join(content.split())
 
-    def extractQueriesFromText(self, text):
+        return self.extract_queries_from_text(content)
+
+
+    def extract_queries_from_text(self, text):
         """
         takes a string of text from which to extract single term queries
         :type text: object
@@ -43,54 +43,62 @@ class SingleTermQueryGeneration(QueryGeneration):
         #split into single words and store in a set so no duplicates
         #uses string.rsplit instead of str.split so a unicode object
         #from pagecaputre.getpage can be split as needed
-        singleTerms = rsplit(text)
+        single_terms = rsplit(text)
 
-        singleTerms = self.cleanTerms(singleTerms)
+        single_terms = self.clean_text(single_terms)
         #remove '' which is generated as space is at position 1 and at end
         #http://stackoverflow.com/questions/2197451/why-are-empty-strings-returned-in-split-results
-        singleTerms = filter(None, singleTerms)
-        return singleTerms
+        single_terms = filter(None, single_terms)
+        return single_terms
 
-    def cleanTerms(self, queryTerms):
-        queryTerms=self.removePunctuation(queryTerms)
-        queryTerms =self.toLower(queryTerms)
-        queryTerms=self.removeStopWords(queryTerms)
+    def clean_text(self, text):
+        text = self.remove_punctuation(text)
+        text =self.lower(text)
+        text = self.min_length(text)
+        text=self.remove_stopwords(text)
         #queryTerms = self.calculateDuplicates(queryTerms)
         #cast to a set to remove duplicates then back to a list
-        return list(set(queryTerms))
+        return list(set(text))
 
-    def toLower(self,queryTerms):
-        queryTerms = [str.lower(query) for query in queryTerms]
-        return queryTerms
+    def lower(self, text):
+        text = [str.lower(term) for term in text]
+        return text
 
-    def removePunctuation(self, queryTerms):
+    def min_length(self,text, min_len=3):
+        new_text = []
+        for term in text:
+            if len(term) > min_len:
+                new_text.append(term)
+        return new_text
+
+    def remove_punctuation(self, text):
         cleaned = []
         print "cleaning up search terms, removing punctuation from first and last positions etc. at end of terms "
 
-        for query in queryTerms:
+        for term in text:
             #get the last character
             #is there a possibility multiple punctuation at start and end?
-            length = str(query).__len__()
-            firstChar = query[0:1]
+            length = str(term).__len__()
+            firstChar = term[0:1]
             if str(firstChar).isalnum():
-                query = query
+                term = term
             else:
-                #print "cutting first letter " + firstChar + " from " +query
-                query = query[1:length]
-                #print "query now " +query
+                #print "cutting first letter " + firstChar + " from " +term
+                term = term[1:length]
+                #print "term now " +term
             #get length again incase punctuation at start and end
-            length = str(query).__len__()
-            lastChar = query[length-1:length]
+            length = str(term).__len__()
+            lastChar = term[length-1:length]
             if str(lastChar).isalnum():
-                query = query
+                term = term
             else:
-                #print "cutting last letter " + lastChar + "from " + query
-                query = query[0:length-1]
-                #print " is now " + query
+                #print "cutting last letter " + lastChar + "from " + term
+                term = term[0:length-1]
+                #print " is now " + term
 
             #now check if there's nothing left, then don't add, if there is, add it
-            if query:
-                cleaned.append(query)
+            if term:
+                cleaned.append(term)
 
         return cleaned
 
@@ -98,14 +106,20 @@ class SingleTermQueryGeneration(QueryGeneration):
     #a dictionary of unique query terms with a count of the number of occurrences
     #print queries
 
-    def calculateDuplicates(self, queryTerms):
-        terms = Counter(queryTerms)
+    def calculate_duplicates(self, text):
+        terms = Counter(text)
         return terms
 
-    def removeStopWords(self, queryTerms):
+    def remove_stopwords(self, text):
         #stopwords list from http://www.ranks.nl/resources/stopwords.html
         #can easily be switched
-        #todo doesn't seem to be working
-        stopList = open('stopwords.txt').readlines()
-        return list(set(queryTerms) - set(stopList))
+        #todo(rose) doesn't seem to be working
+        #TODO(leifos): a setter should take the filename of the stopword list and read it in
+        tmp = open('stopwords.txt').readlines()
+        stoplist = []
+
+        for term in tmp:
+            stoplist.append(term.strip())
+
+        return list(set(text) - set(stoplist))
 
