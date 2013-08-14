@@ -12,7 +12,7 @@ Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
 """
-from QueryGeneration import QueryGeneration
+from querygeneration import QueryGeneration
 from SingleTermQueryGeneration import SingleTermQueryGeneration
 from itertools import combinations
 

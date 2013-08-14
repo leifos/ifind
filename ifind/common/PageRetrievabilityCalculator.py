@@ -10,7 +10,7 @@ requires nltk: pip install nltk
 
 from SingleTermQueryGeneration import SingleTermQueryGeneration
 from BiTermQueryGeneration import BiTermQueryGeneration
-from QueryGeneration import QueryGeneration
+from querygeneration import QueryGeneration
 from ifind.search.query import Query
 from urllib import urlopen
 import string
