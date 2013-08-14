@@ -40,17 +40,20 @@ class GameMechanic(object):
         self.game = CurrentGame(user=user, category=cat)
         #set starting values for game
         # get the pages associated with the category (cat)
-        self.set_pages_to_use(game_type)
-        #set starting page order for game
-        self.generate_page_ordering()
-        # now set the first page to find in the game
-        self.set_next_page()
-        # save to db
         self.update_game()
         self.common_log = self.game
         s = "event: game_created "
         s = '%s %s' % (s , self.common_log)
+
         self.logger.info(s)
+        self.set_pages_to_use(game_type)
+        #set starting page order for game
+        self.generate_page_ordering()
+
+        # now set the first page to find in the game
+        self.set_next_page()
+        # save to db
+        self.update_game()
 
 
     def retrieve_game(self, user, game_id):
@@ -264,7 +267,7 @@ class GameMechanic(object):
         rank = self._check_result(results)
         score = self._score_rank(rank, self.game.bonus)
         common_log = 'event: issue_query %s' % (self.game)
-        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.get_round_no())
+        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
         info_log = 'score: %d rank: %d query: %s ' % (score, rank, query)
         log = '%s %s %s ' % (common_log, round_log, info_log)
         self.logger.info(log)
