@@ -9,6 +9,22 @@ $(function()
     {
         return 'Are you sure you want to quit the game?';
     }
+
+    var skip_options ={
+        trigger : 'hover',
+        content: 'Move on to the next page',
+        placement: 'bottom',
+        delay: { show: 100, hide: 100 }
+    }
+    $('#skip-button').popover(skip_options)
+    var skip_options ={
+        trigger : 'hover',
+        content: 'send the query to the search engine',
+        placement: 'bottom',
+        delay: { show: 100, hide: 100 }
+    }
+    $('#search-button').popover(skip_options)
+
     $(window).resize(function()
      {
         var search_div_width =$('#search-div').width();
@@ -69,7 +85,8 @@ function search_success(data, textStatus, jqXHR)
                              "<tr><td><h4>remaining rounds :</h4></td><td><h4>"+ obj.no_remaining_rounds +"</h4></td></tr>"+
                              "<tr><td><h4>queries issued for this page :</h4></td><td><h4>" +obj.no_of_queries_issued_for_current_page+ "</h4></td></tr>";
     $('#game_updates-div').html(game_updates_html);
-    $('#score-div').html("<Strong>score :" + obj.score + "</strong>");
+    //$('#score-div').html("<h1 class='text-center'>" + obj.score +"</h1>");
+    $('#score-div').html("<p class='lead text-center'><strong>" + obj.score + "<strong></p>");
     $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
     if(obj.score != 0)
     {
@@ -82,7 +99,7 @@ function search_success(data, textStatus, jqXHR)
     {
         $('#skip-button').html("<i class='icon-forward icon-white'></i> skip");
         $('#skip-button').removeClass("btn-success").addClass("btn-danger");
-        $('#search-button').html('<i class="icon-search icon-white"></i> search');
+        $('#search-button').html('<i class="icon-search icon-white"></i> search again');
         $('#content-div').removeClass("alert-success").addClass("alert-error");
     }
     adjust_body_divs_height();
