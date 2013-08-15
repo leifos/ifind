@@ -14,8 +14,10 @@ TODO
 
 import argparse
 from ifind.common.page_retrievability_calc import PageRetrievabilityCalculator
+from ifind.common.query_generation import BiTermQueryGeneration
 from ifind.search.engine import EngineFactory
 from ifind.search.engines import ENGINE_LIST
+
 
 def main():
     """
@@ -34,6 +36,9 @@ def main():
 
     parser.add_argument("-c","--cutoff", type=int,
                         help ="The cutoff value for queries")
+    parser.add_argument("-s","--stopwordfile", type=str,
+                        help ="The filename name containing stopwords")
+
     args = parser.parse_args()
 
     if not args.url:
@@ -51,7 +56,13 @@ def main():
     else:
         engine = EngineFactory(engine=args.engine)
 
-    prc = PageRetrievabilityCalculator(engine, args.cutoff)
+    stopwordfile = None
+    if args.stopwordfile:
+        stopwordfile = args.stopwordfile
+
+    generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile)
+
+    prc = PageRetrievabilityCalculator(engine=engine, cutoff=args.cutoff, generator=generator)
     #hard coding in that it's a url being passed in, not text
     #and that I want single queries generated, need to extend
     #to allow these args to be passed in
