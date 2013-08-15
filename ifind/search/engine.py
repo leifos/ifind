@@ -24,6 +24,7 @@ class Engine(object):
 
         Attributes:
             cache (QueryCache): instance of QueryCache, instantiated by cache_type arg
+            last_search (str): datetime of last search
 
         Raises:
             CacheException
@@ -40,11 +41,14 @@ class Engine(object):
         if cache:
             self._cache = QueryCache(self)
 
-        # instantiate throttle
+        # throttle value
         self.throttle = throttle
 
-        #load proxies
+        # load proxies
         self.proxies = proxies  # TODO engine proxies
+
+        # datetime of last query
+        self.last_search = None
 
     def search(self, query):
         """
@@ -70,6 +74,8 @@ class Engine(object):
         if not isinstance(query, Query):
             raise InvalidQueryException('Engine', 'Expected type {}'
                                         .format("<class 'ifind.search.query.Query'>"))
+
+        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.gmtime())
 
         # check query in cache and return if there
         if self.cache_type:
