@@ -1,6 +1,3 @@
-__author__ = 'arazzouk'
-__author__ = 'leif'
-
 
 from game_models import CurrentGame, Page, Category, HighScore, UserProfile
 from random import randint
@@ -43,17 +40,20 @@ class GameMechanic(object):
         self.game = CurrentGame(user=user, category=cat)
         #set starting values for game
         # get the pages associated with the category (cat)
-        self.set_pages_to_use(game_type)
-        #set starting page order for game
-        self.generate_page_ordering()
-        # now set the first page to find in the game
-        self.set_next_page()
-        # save to db
         self.update_game()
         self.common_log = self.game
         s = "event: game_created "
         s = '%s %s' % (s , self.common_log)
+
         self.logger.info(s)
+        self.set_pages_to_use(game_type)
+        #set starting page order for game
+        self.generate_page_ordering()
+
+        # now set the first page to find in the game
+        self.set_next_page()
+        # save to db
+        self.update_game()
 
 
     def retrieve_game(self, user, game_id):
@@ -83,8 +83,6 @@ class GameMechanic(object):
         :return: True if the end game criteria have been met, else False
         """
         # example criteria for the game end
-        s = 'round: %d max-pages: %d' % (self.get_round_no(),self.max_pages)
-        self.logger.info(s)
         if (self.get_round_no() > self.max_pages):
             return True
         else:
@@ -147,9 +145,16 @@ class GameMechanic(object):
 
     def _increment_queries_issued(self, query_successful=False):
         self.game.no_of_queries_issued += 1
+        self.game.current_page.no_of_queries_issued += 1
         self.game.no_of_queries_issued_for_current_page += 1
+        up = UserProfile.objects.get(user=self.game.user)
+        up.no_queries_issued += 1
         if query_successful:
-            self.game.no_of_successful_queries_issued +=1
+            self.game.current_page.no_times_retrieved += 1
+            self.game.no_of_successful_queries_issued += 1
+            up.no_successful_queries_issued += 1
+        self.game.current_page.save()
+        up.save()
 
     def _increment_round(self, round_successful=False):
         self.game.no_rounds += 1
@@ -176,7 +181,6 @@ class GameMechanic(object):
         """
         self.pages = Page.objects.filter(category=self.game.category)
         #TODO
-        self.logger.info( 'number of pages: %d' % (len(self.pages)))
         #todo(leifos): check the number of pages does exceed MAX_PAGES
 
     def generate_page_ordering(self):
@@ -214,12 +218,13 @@ class GameMechanic(object):
         # associate the page from the page model to game
         try:
             self.game.current_page = self.pages.get(id=page_id)
+            self.game.current_page.no_times_shown += 1
+            self.game.current_page.save()
             round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, r)
             s = 'event:page_shown %s %s' % (self.game , round_log)
             self.logger.info(s)
             return True
         except:
-            print 'EXCEPTION'
             self.game.current_page = None
             return False
 
@@ -245,10 +250,6 @@ class GameMechanic(object):
         score = self._score_query(query)
         self.game.last_query = query
         self.game.last_query_score = score
-        s = "event: issue_query %s" % (self.game)
-        temp = "round_no: %d page_url: %s "
-        self.logger.info( 'query: %s got %d points' % (query, score))
-        # increment query here ????
         success = False
         if score > 0:
             success = True
@@ -265,6 +266,12 @@ class GameMechanic(object):
         results = self._run_query( query)
         rank = self._check_result(results)
         score = self._score_rank(rank, self.game.bonus)
+        common_log = 'event: issue_query %s' % (self.game)
+        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
+        info_log = 'score: %d rank: %d query: %s ' % (score, rank, query)
+        log = '%s %s %s ' % (common_log, round_log, info_log)
+        self.logger.info(log)
+
         return score
 
     def _run_query(self, query ,top=10):

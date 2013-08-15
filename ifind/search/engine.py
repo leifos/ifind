@@ -1,4 +1,6 @@
+import time
 import importlib
+
 from ifind.search.query import Query
 from ifind.search.cache import QueryCache
 from ifind.search.engines import ENGINE_LIST
@@ -11,16 +13,18 @@ class Engine(object):
     Abstract class representing an ifind search engine.
 
     """
-    def __init__(self, cache=None, proxies=None):
+    def __init__(self, cache=None, throttle=0, proxies=None):
         """
         Engine constructor.
 
         Kwargs:
             cache_type (str): type of cache to use i.e.'instance' or 'engine'.
+            throttle(int): limits search method to once per 'throttle' arg in seconds (blocking)
             proxies (dict): mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
 
         Attributes:
             cache (QueryCache): instance of QueryCache, instantiated by cache_type arg
+            last_search (str): datetime of last search
 
         Raises:
             CacheException
@@ -29,13 +33,22 @@ class Engine(object):
             See EngineFactory.
 
         """
+        # name of engine
         self.name = self.__class__.__name__
 
+        # instantiate querycache if necessary
         self.cache_type = cache
         if cache:
             self._cache = QueryCache(self)
 
-        self.proxies = proxies # TODO engine proxies
+        # throttle value
+        self.throttle = throttle
+
+        # load proxies
+        self.proxies = proxies  # TODO engine proxies
+
+        # datetime of last query
+        self.last_search = None
 
     def search(self, query):
         """
@@ -57,21 +70,29 @@ class Engine(object):
             response = engine.search(query)
 
         """
+        # raise exception if search argument isn't an ifind Query object
         if not isinstance(query, Query):
             raise InvalidQueryException('Engine', 'Expected type {}'
                                         .format("<class 'ifind.search.query.Query'>"))
 
+        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.gmtime())
+
+        # check query in cache and return if there
         if self.cache_type:
             if query in self._cache:
-                print "********************** cache"
                 return self._cache.get(query)
-            else:
-                response = self._search(query)
-                self._cache.store(query, response)
-                print "********************** request"
-                return response
-        else:
-            return self._search(query)
+
+        if self.throttle:
+            time.sleep(self.throttle)
+
+        # search and store response
+        response =  self._search(query)
+
+        # cache response if need be
+        if self.cache_type:
+            self._cache.store(query, response)
+
+        return response
 
     def _search(self, query):
         """
@@ -108,6 +129,7 @@ class EngineFactory(object):
         cache (str): Type of cache to associate with engine.
                      'engine' is persistent across engines
                      'instance' is valid only for that instance
+        throttle (int): limits searching to once per 'throttle' in seconds (blocking)
 
     Returns:
         ifind Engine object: Dynamically dispatched instance of Engine subclass.
@@ -120,8 +142,10 @@ class EngineFactory(object):
         engine = EngineFactory('govuk')
         engine = EngineFactory('bing', cache='engine')
         engine_list = EngineFactory().engines()
+        engine = EngineFactory('twitter', throttle=50)
 
         """
+
     def engines(self):
         """
         Returns list of available engines.

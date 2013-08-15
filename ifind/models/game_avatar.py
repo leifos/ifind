@@ -21,12 +21,13 @@ GAME_OVER = 'GameOverPage'
 # Ajax
 
 SEARCH = 'Search'
-
+SKIP = 'Skip'
 HANDLERS = (INDEX,
             CATEGORY,
             GAME,
             GAME_OVER,
-            SEARCH)
+            SEARCH,
+            SKIP)
 
 
 class Handler(object):
@@ -258,18 +259,19 @@ class Search(Handler):
 
         """
         messages = []
-
         query_score = self.current_game.last_query_score
 
         ###### If user obtained 0 points with their query ######
         if query_score == 0:
             messages.append('You scored 0 points... unlucky...')
             messages.append("Let's try for some points this time!")
+            messages.append('You can always click (Enter) to search')
 
         ###### If user obtained less than 500 points with their query ######
         if 0 < query_score < 500:
             messages.append('Good. But not great...')
             messages.append("{} isn't a BAD score... just a bit low.".format(query_score))
+            messages.append('You can always click (Ctrl + Enter) to take the points and move on to the next round')
         #"Hmm, that's fair."
         if 500 <= query_score <= 700:
             messages.append("Hmmm. That's fair")
@@ -277,10 +279,51 @@ class Search(Handler):
         if query_score > 700:
             messages.append('{} points? Not bad...'.format(query_score))
             messages.append('{} points is pretty good!'.format(query_score))
+            messages.append('You can always click (Ctrl + Enter) to take the points and move on to the next round')
 
         if not messages:
             print query_score
 
+        return messages
+
+    def _get_anonymous_messages(self):
+        """
+        Assumptions:
+                user = None
+                current_game = Game
+
+        """
+        messages = []
+
+        return messages
+
+    def _get_authenticated_messages(self):
+        """
+        Assumptions:
+                user = User
+                current_game = Game
+
+        """
+        messages = []
+
+        return messages
+
+
+class Skip(Handler):
+    """
+    Handler implementation of a Search query AJAX request.
+
+    """
+    def _get_shared_messages(self):
+        """
+        Assumptions:
+                user = ?
+                current_game = Game
+
+        """
+        messages = []
+        messages.append("You can always click (Enter) to search")
+        messages.append("Now look at this page carefully and enter a query")
         return messages
 
     def _get_anonymous_messages(self):
