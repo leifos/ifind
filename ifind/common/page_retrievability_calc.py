@@ -8,7 +8,7 @@ Version: 0.1
 requires nltk: pip install nltk
 """
 
-from single_term_query_gen import SingleTermQueryGeneration
+from query_generation import SingleQueryGeneration
 from ifind.search.query import Query
 from urllib import urlopen
 import time
@@ -33,7 +33,7 @@ class PageRetrievabilityCalculator:
             self.generator = generator
         else:
             # default to a single term generator
-            self.generator = SingleTermQueryGeneration()
+            self.generator = SingleQueryGeneration()
 
 
     def set_query_generator(self, generator):
@@ -90,8 +90,7 @@ class PageRetrievabilityCalculator:
 
     def _generate_queries(self):
         """
-        generates a list of single or bi term queries from plain text or html
-        returns said list
+        generates a list of queries from plain text
         :return returns a list of queries as strings
 
         """
@@ -100,8 +99,7 @@ class PageRetrievabilityCalculator:
         #the result in a list
 
         html = urlopen(self.url).read()
-        ####TODO (rose) ask user for stopfile name
-        queries = self.generator.extract_queries_from_html(html, stopfile_name='stopwords.txt')
+        queries = self.generator.extract_queries_from_html(html)
 
         #create list of query objects so queries can be issued
         #against engines
@@ -111,7 +109,6 @@ class PageRetrievabilityCalculator:
             query_list.append(currQuery)
         #return the queries object list
         return query_list
-
 
     def _process_query(self, query):
         """
