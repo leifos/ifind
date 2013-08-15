@@ -173,7 +173,6 @@ class BiTermQueryGeneration(QueryGeneration):
 
         for term in term_list:
             query = prev_term + ' ' + term
-            print query
             if query in self.query_count:
                 self.query_count[query] = self.query_count[query] + 1
             else:
