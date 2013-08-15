@@ -1,13 +1,11 @@
-
+import time
 import importlib
 
 from ifind.search.query import Query
 from ifind.search.cache import QueryCache
-from ifind.search.throttle import Throttle
 from ifind.search.engines import ENGINE_LIST
 from ifind.search.exceptions import EngineLoadException
 from ifind.search.exceptions import InvalidQueryException
-from ifind.search.exceptions import RateLimitException
 
 
 class Engine(object):
@@ -21,7 +19,7 @@ class Engine(object):
 
         Kwargs:
             cache_type (str): type of cache to use i.e.'instance' or 'engine'.
-            throttle(int): limits search method to once per 'throttle' arg in seconds
+            throttle(int): limits search method to once per 'throttle' arg in seconds (blocking)
             proxies (dict): mapping of proxies to use i.e. {"http":"10.10.1.10:3128", "https":"10.10.1.10:1080"}.
 
         Attributes:
@@ -43,39 +41,10 @@ class Engine(object):
             self._cache = QueryCache(self)
 
         # instantiate throttle
-        self._throttle = Throttle(self, throttle)
+        self.throttle = throttle
 
         #load proxies
         self.proxies = proxies  # TODO engine proxies
-
-    @property
-    def throttle(self):
-        """
-        Returns current search rate limit in seconds.
-
-        Returns:
-            int: throttle limit (seconds)
-
-        Usage:
-            print engine.throttle
-
-        """
-        return self._throttle.rate_limit
-
-    @throttle.setter
-    def throttle(self, seconds_per_request):
-        """
-        Resets/sets the throttles current rate limit.
-        This affects the throttle immediately.
-
-        Args:
-            seconds_per_request (int): search rate limit in seconds
-
-        Usage:
-            engine.throttle = 100
-
-        """
-        self._throttle.set_limit(seconds_per_request)
 
     def search(self, query):
         """
@@ -107,11 +76,8 @@ class Engine(object):
             if query in self._cache:
                 return self._cache.get(query)
 
-        # if throttle active raise exception, otherwise start throttle
-        if self._throttle.is_active():
-            raise RateLimitException(self.name,' rate limit exceeded. wait at least {} seconds'.format(self.throttle))
-        else:
-            self._throttle.start()
+        if self.throttle:
+            time.sleep(self.throttle)
 
         # search and store response
         response =  self._search(query)
@@ -157,7 +123,7 @@ class EngineFactory(object):
         cache (str): Type of cache to associate with engine.
                      'engine' is persistent across engines
                      'instance' is valid only for that instance
-        throttle (int): limits searching to once per 'throttle' in seconds
+        throttle (int): limits searching to once per 'throttle' in seconds (blocking)
 
     Returns:
         ifind Engine object: Dynamically dispatched instance of Engine subclass.
