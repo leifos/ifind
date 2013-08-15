@@ -39,6 +39,11 @@ def main():
     parser.add_argument("-s","--stopwordfile", type=str,
                         help ="The filename name containing stopwords")
 
+    parser.add_argument("-ca", "--cache",
+                  action="store_true", default=False,
+                  help="use cache")
+
+
     args = parser.parse_args()
 
     if not args.url:
@@ -51,10 +56,14 @@ def main():
         return 2
 
 
+    cache = None
+    if args.cache:
+        cache = 'instance'
+
     if args.key:
-        engine = EngineFactory(engine=args.engine, api_key=args.key)
+        engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=5, cache=cache)
     else:
-        engine = EngineFactory(engine=args.engine)
+        engine = EngineFactory(engine=args.engine, cache=cache, throttle=5)
 
     stopwordfile = None
     if args.stopwordfile:
