@@ -1,117 +1,111 @@
 {% extends 'rmiyc/base.html' %}
 {% block container%}
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="well span12" >
-            <h3>Profile: {{usr.username}}</h3>
 
-            <div class="span3">
-                {% if usr %}
-                Total Score: {{total_score|default:0}} <br/>
-                level : {{profile.level}} <br/>
-                experience points : {{profile.xp}} <br/>
+<html data-wf-site="5209076f501977a06a0006fe">
+  <head>
+    <meta charset="utf-8">
+    <title>Profile Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/webflow.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/blank3437728.webflow.css">
+    <link rel="icon" type="image/x-icon" href="https://y7v4p6k4.ssl.hwcdn.net/placeholder/favicon.ico">
+    <!-- <script type="text/javascript" src="js/webflow.js" defer></script> -->
+  </head><body>
+  <div class="w-container profile">
+    <div class="w-row">
+      <div class="w-col w-col-6">
+        <h1>{{usr.username}}</h1>
+        <div class="w-container edit_profile_container">
+            {% if view_perm %}
+            <a class="edit_profile" href="/profile/{{usr.username}}/edit_profile.html">Edit Profile</a>
+            {% endif %}
+        </div>
+        <div class="w-container score_overview">
+          <p><strong>Total Score</strong> : {{total_score|default:0}}
+            <br><strong>level:</strong> {{profile.level}}
+            <br><strong>experience points: </strong>{{ profile.xp }}</p>
+        </div>
+
+        <div class="w-container details">
+          <div class="w-row">
+            <div class="w-col w-col-6">
+                {% if view_perm %}
+              <p><strong>Email: </strong>{{usr.email}}
+                <br><strong>Gender:</strong> {{profile.gender}}
+                <br><strong>Age: </strong>{{profile.age}}</p>
                 {% endif %}
             </div>
-            <div class="span3">
-                <img src="{{murl}}{{profile.profile_pic}}" class="img-polaroid" height=100 width=100 style="position: relative;" /> <br/>
+            <div class="w-col w-col-6">
+                {% if view_perm %} <!--TODO(mtbvc): OR if profile already 100% complete - don't display bar -->
+              <p><strong>School:</strong> {{profile.school}}
+                <br><strong>City:</strong> {{profile.city}}
+                <br><strong>Country:</strong> {{profile.country}}
+                <br>
+              </p>
+                {% endif%}
             </div>
+          </div>
         </div>
-    </div>
-    {% if view_perm %}
+      </div>
+      <div class="w-col w-col-6">
+        <img class="profile_pic" src="{{murl}}{{profile.profile_pic}}" alt="image-placeholder.svg" width="150" height="150">
+        {% if view_perm %}
+          <div class="progress_bar">
 
-
-
-
-
-
-    <div class="row-fluid">
-        <div class="well span12">
-            <!--<a href="/profile/{{usr.username}}/edit_profile.html">Edit Profile</a>-->
-
-
-
-            <div class="span3">
-                <ul>
-                    <li>email: {{usr.email}}</li>
-                    <li>gender: {{profile.gender}}</li>
-                    <li>age: {{profile.age}}</li>
-                </ul>
-
-            </div>
-            <div class="span3">
-                <ul>
-                    <li>school: {{profile.school}}</li>
-                    <li>country: {{profile.country}}</li>
-                    <li>city: {{profile.city}}</li>
-                </ul>
-            </div>
-
-            <!--<div class="row-fluid">-->
-		        <div class="span5">
-                            <a href="/profile/{{usr.username}}/edit_profile.html">Edit Profile</a>
-
-                <h5>Profile {{ progress }}% complete.</h5>
+            <h5>Profile {{ progress }}% complete.</h5>
 			        <div class="progress">
 				        <div class="progress progress-striped active">
                         <div class="bar" style="width: {{ progress }}%;"></div>
+                            {% endif %}
                         </div>
-			            </div>
-		            </div>
-	        <!--</div>-->
-
-
-
-
-
+			        </div>
         </div>
-
-
-
+      </div>
     </div>
-    {% endif %}
+  </div>
+  <div class="w-container highscores">
+    <h3>Highscores</h3>
 
-    <div class="well">
-        <h3>Higscores</h3>
-        <a href="/profile/{{usr.username}}/graphs.html">See details</a>
-        <ul class="thumbnails centre text-center">
+    <ul class="thumbnails centre text-center">
             {% for item in highscores %}
-            <li class="span3.5">
-                <div>
-                    <h3>{{item.category.name}}</h3>
-                    <img src="{{item.category.icon}}" class="img-rounded"  alt="{{item.category.name}}" height="100" width="100">
+            <li class="list_item">
+                <div class="hs">
+                    <h5>{{item.category.name}}</h5>
+                    <img src="{{item.category.icon}}" alt="{{item.category.name}}" height="145" width="145">
                     <p>{{item.highest_score}}</p>
                 </div>
             </li>
             {% endfor %}
-        </ul>
-    </div>
+    </ul>
+  </div>
+  <div class="w-container badges">
+    <h3>Badges</h3>
 
-    <div class="well">
-        <h3>Badges</h3>
-        <ul class="thumbnails centre text-center">
+    <ul class="thumbnails centre text-center">
 
                 {% for item in achievements %}
-            <li class="span3.5">
-                    <div>
-                        <h3>{{item.achievement.name}}</h3>
-                        <img src="{{murl}}{{item.achievement.badge_icon}}" class="img-rounded"
-                        alt="{{item.achievement.name}}" height="100" width="100">
+            <li class="list_item_badge">
+                    <div class="hs.badge">
+                        <h5>{{item.achievement.name}}</h5>
+                        <img src="{{murl}}{{item.achievement.badge_icon}}" alt="{{item.achievement.name}}" height="150" width="150">
                         <p>{{item.}}</p>
                     </div>
-                <li/>
+            </li>
                 {% endfor %}
                 {% for item in available_achievements %}
-            <li class="span3.5">
-                    <div  style="opacity:0.2">
-                    <h3>{{item.name}}</h3>
-                    <img src="{{murl}}{{item.badge_icon}}" class="img-rounded"
-                         alt="{{item.name}}" height="100" width="100">
+            <li class="list_item_badge">
+                    <div class="hs.badge" style="opacity:0.2">
+                    <h5>{{item.name}}</h5>
+                    <img src="{{murl}}{{item.badge_icon}}" alt="{{item.name}}" height="150" width="150">
                     <p>{{item.}}</p>
                     </div>
-                {% endfor %}
             </li>
-        </ul>
-    </div>
+                {% endfor %}
 
-</div>
+    </ul>
+  </div>
+</body>
+</html>
 {% endblock %}

@@ -21,7 +21,7 @@ import json
 def index(request):
         context = RequestContext(request, {})
         #create the logger
-        logger = get_ifind_logger("Log.log")
+        logger = create_ifind_logger("Log.log")
         print "LOGGER"
         print logger
         if not logger:
