@@ -59,11 +59,21 @@ class PageRetrievabilityCalculator:
         self.query_list = self._generate_queries()
 
         for query in self.query_list:
-            time.sleep(0.2)
             rank = self._process_query(query)
             self.query_rank[query] = rank
 
-        return self.calculate_page_retrievability()
+        self.ret_score = self.calculate_page_retrievability()
+
+        return self.ret_score
+
+
+
+    def report(self):
+        print "For url: %s" % (self.url)
+        print "A total of %d queries were issued" % (self.engine.num_requests)
+        print "Of those %d were handled by the cache" % (self.engine.num_requests_cached)
+        print "The page scored: %f" % (self.ret_score)
+
 
     def calculate_page_retrievability(self):
         self.query_ret_scores = {}
@@ -120,18 +130,17 @@ class PageRetrievabilityCalculator:
         """
         rank = 0
 
-        print "Issuing query : %s" % (query.terms)
-        result_list = self.engine._search(query)
+        result_list = self.engine.search(query)
         # check if url is in the results.
         i = 0
-        print "No of results : %d" % (len(result_list))
         for result in result_list:
             i += 1
             #TODO(leifos): may need a better matching function in case there are small differences between url
             if result.url == self.url:
                 rank = i
-                print "Found %s" % (self.url)
                 break
+
+        print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
         return rank
 
