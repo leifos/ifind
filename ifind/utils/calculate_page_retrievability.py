@@ -79,7 +79,10 @@ def main():
     prc.score_page (args.url)
     prc.report()
     #print "Top 10 queries"
-    #ql = prc.top_queries(10)
+    ql = prc.top_queries(10)
+
+    for q in ql:
+        print q[1], q[0].terms
 
     print "Done!"
     return 0

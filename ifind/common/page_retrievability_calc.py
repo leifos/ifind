@@ -93,10 +93,16 @@ class PageRetrievabilityCalculator:
         """
 
         #TODO(leifos):from self.query_ret_scores sort by the highest score
+        import operator
 
+        top_query_list = sorted(self.query_ret_scores.iteritems(), key=operator.itemgetter(1))
 
-        top_query_list =['to be implemented']
-        return top_query_list
+        top_query_list.reverse()
+
+        if len(top_query_list) > n:
+            return top_query_list[0:n]
+        else:
+            return top_query_list
 
     def _generate_queries(self):
         """
@@ -140,7 +146,7 @@ class PageRetrievabilityCalculator:
                 rank = i
                 break
 
-        print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
+        #print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
         return rank
 
