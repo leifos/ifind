@@ -80,12 +80,14 @@ class Engine(object):
         # check query in cache and return if there
         if self.cache_type:
             if query in self._cache:
+                print "*********** CACHED"
                 return self._cache.get(query)
 
         if self.throttle:
             time.sleep(self.throttle)
 
         # search and store response
+        print "*********** REQUEST"
         response =  self._search(query)
 
         # cache response if need be
