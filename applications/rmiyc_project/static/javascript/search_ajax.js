@@ -188,7 +188,7 @@ function initiate_game()
 {
          var game_updates_html =  "<tr><td><h4> score :</h4></td><td><h4> 0 </h4></td></tr>"+
                                   "<tr><td><h4> round no :</h4></td><td><h4> 1 </h4></td></tr>" +
-                                  "<tr><td><h4> remaining rounds :</h4></td><td><h4> 3 </h4></td></tr>"+
+                                  "<tr><td><h4> remaining rounds :</h4></td><td><h4> 4 </h4></td></tr>"+
                                   "<tr><td><h4> queries issued for this page :</h4></td><td><h4> 0 </h4></td></tr>";
          $('#game_updates-div').html(game_updates_html);
          avatar();
