@@ -7,7 +7,7 @@ from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, 
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
 
-RESULT_TYPES = ('web', 'image', 'video', 'news')
+RESULT_TYPES = ('web', 'image', 'video')
 DEFAULT_RESULT_TYPE = 'web'
 
 # bing's limits
