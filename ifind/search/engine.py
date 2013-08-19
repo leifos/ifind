@@ -75,7 +75,7 @@ class Engine(object):
             raise InvalidQueryException('Engine', 'Expected type {}'
                                         .format("<class 'ifind.search.query.Query'>"))
 
-        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.gmtime())
+        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.localtime())
 
         # check query in cache and return if there
         if self.cache_type:
