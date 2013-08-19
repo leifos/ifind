@@ -13,7 +13,7 @@ from ifind.models import game_achievements
 
 class GameMechanic(object):
 
-    def __init__(self, search_engine=None, max_score=1000, max_queries=20, max_pages=4, max_queries_per_page=5,game_length_in_seconds=0):
+    def __init__(self, search_engine=None, max_score=1000, max_queries=20, max_pages=5, max_queries_per_page=5,game_length_in_seconds=0):
         """
         :return: GameMechanic object
         """

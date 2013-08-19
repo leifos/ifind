@@ -274,10 +274,10 @@ class Search(Handler):
             messages.append('You can always click (Ctrl + Enter) to take the points and move on to the next round')
         #"Hmm, that's fair."
         if 500 <= query_score <= 700:
-            messages.append("Hmmm. That's fair")
+            messages.append('{} points is good!'.format(query_score))
         ###### If user obtained more than 700 points with their query ######
         if query_score > 700:
-            messages.append('{} points? Not bad...'.format(query_score))
+            messages.append('{} points? Well done...'.format(query_score))
             messages.append('{} points is pretty good!'.format(query_score))
             messages.append('You can always click (Ctrl + Enter) to take the points and move on to the next round')
 

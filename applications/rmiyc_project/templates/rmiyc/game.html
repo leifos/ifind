@@ -53,12 +53,20 @@
  <script type="text/javascript" src="{{ STATIC_URL }}javascript/spin.js"></script>
   <div class="span6">
     <div id="header-div" class="alert alert-block">
-        <div id="icon-div">
-
+        <table>
+            <tr>
+                <td>
+        <div id="icon-div" class="span2">
+            <image src="{{ STATIC_URL }}imgs/cow-paper2.jpg" class ="img-rounded" style="height: 100px ;width: 150px"> </image>
         </div>
+                    </td>
+                <td>
         <div id="avatar-div">
             <h3>{{avatar}}</h3>
         </div>
+                </td>
+            </tr>
+        </table>
     </div>
     <div id="image-div" class="alert alert-info align-center step step1">
         <div id="image-box">
@@ -76,7 +84,7 @@
         </table>
     </div>
     <div id ="search-div" class="alert alert-info step step2">
-        <input  id="query"  name="query" class="input-xlarge search-query" type="text" placeholder="e.g: aerospace systems" />
+        <input  id="query"  name="query" class="input-xlarge search-query" type="text" maxlength="50" placeholder="e.g: aerospace systems" />
         <br />
         <br />
         <!-- style="background: #663300"  -->
