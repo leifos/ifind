@@ -58,12 +58,12 @@ def main():
 
     cache = None
     if args.cache:
-        cache = 'instance'
+        cache = 'engine'
 
     if args.key:
-        engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=5, cache=cache)
+        engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=0.1, cache=cache)
     else:
-        engine = EngineFactory(engine=args.engine, cache=cache, throttle=5)
+        engine = EngineFactory(engine=args.engine, cache=cache, throttle=0.1)
 
     stopwordfile = None
     if args.stopwordfile:
@@ -75,10 +75,14 @@ def main():
     #hard coding in that it's a url being passed in, not text
     #and that I want single queries generated, need to extend
     #to allow these args to be passed in
-    print "Retrievability Score for %s :" % (args.url)
-    print prc.score_page (args.url)
-    print "Top 10 queries"
+    print "Computing the retrievability Score for %s :" % (args.url)
+    prc.score_page (args.url)
+    prc.report()
+    #print "Top 10 queries"
     ql = prc.top_queries(10)
+
+    for q in ql:
+        print q[1], q[0].terms
 
     print "Done!"
     return 0
