@@ -5,14 +5,13 @@ from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
-API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 WEB_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/SearchWeb/v1/'
+API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
 
+RESULT_TYPES = ('web', 'image', 'video')
+DEFAULT_RESULT_TYPE = 'web'
 
-RESULT_TYPES = ('Web', 'Image', 'Video', 'News', 'Spell')
-
-DEFAULT_RESULT_TYPE = 'Web'
-
+# bing's limits
 MAX_PAGE_SIZE = 50
 MAX_RESULTS = 1000
 
@@ -77,6 +76,14 @@ class Bing(Engine):
         if query.top > MAX_RESULTS:
             raise QueryParamException(self.name, 'Requested result amount (query.top) '
                                                  'exceeds max of {0}'.format(MAX_PAGE_SIZE))
+
+        if not query.result_type:
+            query.result_type = DEFAULT_RESULT_TYPE
+
+        if query.result_type not in RESULT_TYPES:
+            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+                                                 .format(query.result_type))
+
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
 
@@ -166,20 +173,13 @@ class Bing(Engine):
             Private method.
 
         """
-        result_type = query.result_type.title()
-
-        if not result_type:
-            result_type = DEFAULT_RESULT_TYPE
-
-        if result_type not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
-                                                 .format(query.result_type))
-
         params = {'$format': 'JSON',
                   '$top': query.top,
                   '$skip': query.skip}
 
-        query_string = '?Query="' + str(query.terms) + '"'
+        result_string = '?Sources="{}"'.format(query.result_type)
+
+        query_string = 'Query="{}"'.format(str(query.terms))
 
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
@@ -187,15 +187,16 @@ class Bing(Engine):
         api_endpoint = API_ENDPOINT
         if result_type == DEFAULT_RESULT_TYPE:
             api_endpoint = WEB_API_ENDPOINT
-
-        return api_endpoint + result_type + Bing._encode_symbols(query_string)
+       	    return api_endpoint + result_type + Bing._encode_symbols(query_string)
+        else:
+	    return API_ENDPOINT + Bing._encode_symbols(result_string + '&' + query_string)
 
     @staticmethod
     def _encode_symbols(query_string):
         """
         Encodes certain symbols of a query string to match Bing's API specification.
 
-        Args:
+    spell    Args:
             query_string (str): query string for Bing API request.
 
         Returns:
@@ -233,7 +234,53 @@ class Bing(Engine):
 
         content = json.loads(results.text)
 
-        for result in content[u'd'][u'results']:
-            response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'])
+        if query.result_type == 'web':
+            for result in content[u'd'][u'results'][0][u'Web']:
+                response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'])
+
+        if query.result_type == 'image':
+            for result in content[u'd'][u'results'][0][u'Image']:
+                file_size = int(result[u'FileSize']) / 1024
+                summary_string = 'Filesize: {0} KB | Dimensions: {1}x{2} | Source: {3}'\
+                                 .format(file_size, result[u'Width'], result[u'Height'], result[u'SourceUrl'])
+
+                response.add_result(title=result[u'Title'], url=result[u'MediaUrl'], summary=summary_string)
+
+        if query.result_type == 'video':
+            for result in content[u'd'][u'results'][0][u'Video']:
+                summary_string = Bing._get_video_length(int(result[u'RunTime']))
+                response.add_result(title=result[u'Title'], url=result[u'MediaUrl'], summary=summary_string)
 
         return response
+
+    @staticmethod
+    def _get_video_length(run_time):
+        """
+        Converts video length (in milliseconds) to human readable string.
+
+        Args:
+            run_time (int): length of video in milliseconds
+
+        Returns:
+            str: human readable representation of video's length
+
+        Usage:
+            Private method.
+
+        """
+        # get minutes
+        minutes = run_time / 1000 / 60
+        min_string = '{} mins'.format(minutes)
+
+        # get seconds
+        seconds = run_time / 1000 % 60
+        sec_string = '{} seconds'.format(seconds)
+
+        if minutes and seconds:
+            return min_string + ' ' + sec_string
+
+        if minutes and not seconds:
+            return min_string
+
+        if not minutes and seconds:
+            return sec_string

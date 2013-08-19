@@ -8,7 +8,6 @@ from ifind.search import Query
 from ifind.search import EngineFactory
 
 
-
 def search(request):
     """
     Accepts GET request containing query terms,
@@ -31,7 +30,7 @@ def search(request):
     experiment = get_or_create_experiment(exp_id)
 
     # execute query
-    engine = EngineFactory('govuk')
+    engine = EngineFactory('wikipedia')
     query = Query(query_terms, top=experiment['top'])
     response = engine.search(query)
 
@@ -66,5 +65,8 @@ def IndexView(request):
         request.session["exp_id"] = experiment['id']
 
     template = 'index.html'
+    test_dict = {'engine_name': 'HogSearch',
+                 'result_template': 'web_result.html',
+                 'engine_css': 'web'}
 
-    return render(request, template)
+    return render(request, template, test_dict)

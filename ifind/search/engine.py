@@ -50,9 +50,6 @@ class Engine(object):
         # datetime of last query
         self.last_search = None
 
-        self.num_requests = 0
-        self.num_requests_cached = 0
-
     def search(self, query):
         """
         Public search method for an Engine instance, returning the results of a query argument.
@@ -73,29 +70,24 @@ class Engine(object):
             response = engine.search(query)
 
         """
-
         # raise exception if search argument isn't an ifind Query object
         if not isinstance(query, Query):
             raise InvalidQueryException('Engine', 'Expected type {}'
                                         .format("<class 'ifind.search.query.Query'>"))
 
+        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.gmtime())
 
-
-        self.num_requests = self.num_requests + 1
         # check query in cache and return if there
         if self.cache_type:
             if query in self._cache:
-                self.num_requests_cached = self.num_requests_cached + 1
                 return self._cache.get(query)
 
-        #TODO(leifos): Throttle should if the last_search, took place more than throttle second ago,
-        # if it took place earlier, wait the difference... not the whole throttle length.
         if self.throttle:
             time.sleep(self.throttle)
 
         # search and store response
         response =  self._search(query)
-        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.gmtime())
+
         # cache response if need be
         if self.cache_type:
             self._cache.store(query, response)
@@ -121,8 +113,6 @@ class Engine(object):
 
         """
         pass
-
-
 
 
 class EngineFactory(object):

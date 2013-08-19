@@ -1,61 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>SearchLab</title>
-    <meta name="description" content="I do like to be beside the seaside">
-    <meta name="author" content="strings">
+{% extends "base.html" %}
 
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/searchlab.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/uikit.gradient.min.css">
+{% block page_title %}{{ engine_name }}{% endblock %}
 
-    <link rel="icon" href="http://www.iconj.com/ico/k/u/ku5v7aqrj1.ico" type="image/x-icon" />
-    <link href='http://fonts.googleapis.com/css?family=Great Vibes:400' rel='stylesheet' type='text/css'>
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/html5shiv.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-    <div class="header-section">
-        <div class="uk-container uk-container-center uk-text-center">
-            <h1 class="uk-h1" id="head1">Search</h1>
-            <h1 class="uk-h1" id="head2">Lab</h1>
-        </div>
+{% block input_section %}
+<div class="input-section">
+    <div class ="uk-container uk-container-center uk-text-center">
+        <form id="search-form" class="uk-form">
+            <input id="search-input" type="text" placeholder="Enter query...">
+            <button id="search-btn" class="uk-button uk-button-primary" type="button">Search</button>
+        </form>
     </div>
-    <div class="input-section">
-        <div class ="uk-container uk-container-center uk-text-center">
-            <form id="search-form" class="uk-form">
-                <input id="search-input" type="text" placeholder="Enter query...">
-                <button id="search-btn" class="uk-button uk-button-primary" type="button">Search</button>
-            </form>
-        </div>
-    </div>
-    <div class="results-section">
-        <ol id="results-container" class="uk-container uk-container-center" start="1">
-        </ol>
-    </div>
-    <div class="pagination-section">
-        <div id="pagination-container" class="uk-container uk-container-center uk-text-center">
-            <div class="uk-button-group">
-                <button id="first-btn" class="uk-button page-btn" type="submit">&laquo;</button>
-                <button id="previous-btn" class="uk-button page-btn" type="submit">&lsaquo;</button>
-                <button id="page-btn" class="uk-button page-btn" type="submit">---</button>
-                <button id="next-btn" class="uk-button page-btn" type="submit">&rsaquo;</button>
-                <button id="last-btn" class="uk-button page-btn" type="submit">&raquo;</button>
-            </div>
+</div>
+{% endblock %}
 
-        </div>
-    </div>
+{% block results_section %}
+<div class="results-section">
+    <ol id="results-container" class="uk-container uk-container-center" start="1">
+    </ol>
+</div>
+{% endblock %}
 
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/uikit.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/searchlab.js"></script>
-
-    {% include "web_result.html" %}
-
-</body>
-
-</html>
+{% block engine_js %}{{ engine_js }}{% endblock %}
