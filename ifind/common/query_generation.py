@@ -7,7 +7,7 @@ Version: 0.1
 """
 ONLY_ALPHAS = False #bool to distinguish if only considering alphanumeric terms
 AVOID_STOP = False #bool to distinguish if avoiding terms on the stop list
-MIN_LENGTH = 1 # the minimum length of a term, if =1 then no min length
+#MIN_LENGTH = 1 # the minimum length of a term, if =1 then no min length
 
 from string import rsplit
 from collections import Counter
@@ -19,11 +19,12 @@ class QueryGeneration(object):
     Abstract class to represent structure for a query generator
     """
 
-    def __init__(self, stopwordfile = None, minlen = 3):
+    def __init__(self, stopwordfile = None, minlen = 3, maxsize = 250):
         """
         constructor for QueryGeneration
         """
         self.min_len = minlen
+        self.max_size = maxsize
         self.stoplist = []
         self.read_stopwordfile(stopwordfile)
 
@@ -64,7 +65,6 @@ class QueryGeneration(object):
         cleaned = []
         for term in text:
             # lower case
-            print term
             term = self.check_length(term)
             if term:
                 term = self.remove_punctuation(term)
@@ -74,8 +74,12 @@ class QueryGeneration(object):
                         term = self.is_alphanumeric(term)
                         if term:
                             cleaned.append(term)
-            print term
-        return cleaned
+
+        l = len(cleaned)
+        if l > self.max_size:
+            return cleaned[0:self.max_size]
+        else:
+            return cleaned
 
 
     def check_length(self, term):

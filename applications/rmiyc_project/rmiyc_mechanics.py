@@ -24,8 +24,7 @@ class RMIYCMechanic(GameMechanic):
         if(rank>0):
             top = 10
             x = top+1
-            print 100 * (x-rank)
             #return bonus + 100 * (x-rank)
-            return bonus + 100 * (x-rank)
+            return 100 * (x-rank)
         else:
             return 0
