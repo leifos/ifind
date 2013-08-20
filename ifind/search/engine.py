@@ -1,4 +1,5 @@
 import time
+import datetime
 import importlib
 
 from ifind.search.query import Query
@@ -75,18 +76,23 @@ class Engine(object):
             raise InvalidQueryException('Engine', 'Expected type {}'
                                         .format("<class 'ifind.search.query.Query'>"))
 
-        self.last_search = time.strftime("%H:%M:%S %Y-%m-%d", time.localtime())
-
         # check query in cache and return if there
         if self.cache_type:
             if query in self._cache:
                 return self._cache.get(query)
 
-        if self.throttle:
-            time.sleep(self.throttle)
+        if self.throttle and self.last_search:
+            then = datetime.datetime.strptime(self.last_search, '%a %b %d %H:%M:%S %Y')
+            now = datetime.datetime.now()
+            diff = (now - then).seconds
+            if diff < self.throttle:
+                print "waiting {} seconds".format(self.throttle - diff)
+                time.sleep(self.throttle - diff)
 
         # search and store response
         response =  self._search(query)
+
+        self.last_search = time.asctime()
 
         # cache response if need be
         if self.cache_type:
