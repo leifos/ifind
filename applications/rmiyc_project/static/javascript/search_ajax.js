@@ -86,7 +86,7 @@ function search_success(data, textStatus, jqXHR)
                              "<tr><td><h4>queries issued for this page :</h4></td><td><h4>" +obj.no_of_queries_issued_for_current_page+ "</h4></td></tr>";
     $('#game_updates-div').html(game_updates_html);
     //$('#score-div').html("<h1 class='text-center'>" + obj.score +"</h1>");
-    $('#score-div').html("<p class='lead text-center'><strong>" + obj.score + "<strong></p>");
+    $('#score-div').html("<p class='lead text-center'><strong>" + obj.score + "/1000<strong></p>");
     $('#avatar-div').html("<h3>" + obj.avatar + "</h3>")
     if(obj.score != 0)
     {
@@ -188,7 +188,7 @@ function initiate_game()
 {
          var game_updates_html =  "<tr><td><h4> score :</h4></td><td><h4> 0 </h4></td></tr>"+
                                   "<tr><td><h4> round no :</h4></td><td><h4> 1 </h4></td></tr>" +
-                                  "<tr><td><h4> remaining rounds :</h4></td><td><h4> 3 </h4></td></tr>"+
+                                  "<tr><td><h4> remaining rounds :</h4></td><td><h4> 4 </h4></td></tr>"+
                                   "<tr><td><h4> queries issued for this page :</h4></td><td><h4> 0 </h4></td></tr>";
          $('#game_updates-div').html(game_updates_html);
          avatar();

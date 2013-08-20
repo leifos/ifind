@@ -5,6 +5,7 @@ import sys
 from ifind.common.pagecapture import PageCapture
 from ifind.models.game_models import Page, Category
 from ifind.common.utils import convert_url_to_filename, read_in_urls
+import random
 
 sys.path.append(os.getcwd())
 from configuration import DATA_DIR
@@ -65,7 +66,10 @@ def populate_pages(url_list, category, halved_screen_shot=False):
             pc.load_url(url)
             # fetch the screen-shot
             if halved_screen_shot:
-                pc.crop_screen_shot(image_file_name,0,0,1000,1000)
+                if random.random() > 0.5:
+                    pc.crop_screen_shot(image_file_name,200,400,700,900)
+                else:
+                    pc.crop_screen_shot(image_file_name,0,0,1000,1000)
                 #pc.halve_screen_shot(image_file_name)
             else:
                 pc.take_screen_shot(image_file_name)
