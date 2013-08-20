@@ -3,7 +3,7 @@
 /* INPUT SECTION STYLING  */
 .input-section {
     background-color: #fafafa;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 #search-input {
@@ -34,11 +34,12 @@
 
 
 .result {
-    padding-top: 15px;
+    padding-top: 10px;
     padding-bottom: 5px;
 }
 
 .result-title {
+  margin-left: -0px;
   font-size: 16px;
   font-weight: 700;
   color: #3a81ba;
