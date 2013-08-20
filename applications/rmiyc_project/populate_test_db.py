@@ -25,11 +25,11 @@ import os
 class Populate(object):
 
     def achievements(self):
-        Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
-        Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
-        Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
-        Achievement.objects.get_or_create(name="TenGamesPlayed", desc='', xp_earned=7, achievement_class='TenGamesPlayed')
-        Achievement.objects.get_or_create(name="UberSearcher", desc='', xp_earned=7, achievement_class='UberSearcher')
+        Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer', badge_icon='blue_badge.jpg')
+        Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat', badge_icon='blue_badge.jpg')
+        Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame', badge_icon='blue_badge.jpg')
+        Achievement.objects.get_or_create(name="TenGamesPlayed", desc='', xp_earned=7, achievement_class='TenGamesPlayed', badge_icon='blue_badge.jpg')
+        Achievement.objects.get_or_create(name="UberSearcher", desc='', xp_earned=7, achievement_class='UberSearcher', badge_icon='blue_badge.jpg'  )
 
 
     def levels(self,levels,increase):
@@ -66,7 +66,7 @@ class Populate(object):
         HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="alumni")[0],highest_score=5000).save()
         HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="alumni")[0],highest_score=500).save()
         HighScore(user=User.objects.filter(username='Jim')[0],category=Category.objects.filter(name="research")[0],highest_score=20).save()
-        HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="research")[0],highest_score=800).save()
+        HighScore(user=User.objects.filter(username='Jane')[0],category=Category.objects.filter(name="undergraduate")[0],highest_score=800).save()
         HighScore(user=User.objects.filter(username='Jake')[0],category=Category.objects.filter(name="undergraduate")[0],highest_score=700).save()
 
 
