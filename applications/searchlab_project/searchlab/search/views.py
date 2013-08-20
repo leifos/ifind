@@ -67,7 +67,12 @@ def IndexView(request):
     template = 'bing.html'
     test_dict = {'engine_name': 'Bing',
                  'result_template': 'web_result.html',
-                 'engine_js' : 'bing',
-                 'engine_css': 'bing'}
+                 'engine_js': 'bing',
+                 'exp_css': 'bing',
+                 'result_types': ['Video', 'Image', "News", "Margin"]}
 
     return render(request, template, test_dict)
+
+
+    # generate or get exp
+    # exp would say only video and image available
