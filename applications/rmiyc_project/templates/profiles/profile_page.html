@@ -68,9 +68,9 @@
   <div class="w-container highscores">
     <h3>Highscores</h3>
 
-    <ul class="thumbnails centre text-center">
+    <ul class="thumbnails centre text-center" style="padding-left: 5px">
             {% for item in highscores %}
-            <li class="list_item">
+            <li class="thumbnail list_item">
                 <div class="hs">
                     <h5>{{item.category.name}}</h5>
                     <img src="{{item.category.icon}}" alt="{{item.category.name}}" height="145" width="145">
