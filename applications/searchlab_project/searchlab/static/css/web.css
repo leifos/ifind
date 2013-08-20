@@ -18,7 +18,8 @@
     background-image: linear-gradient(to bottom, #3a81ba, #3a81ba);
 }
 
- /*RESULTS SECTION STYLING*/
+
+/* RESULTS SECTION STYLING */
 
 .results-section {
     background-color: #fafafa;
@@ -62,6 +63,5 @@
     font-family: Charcoal, sans-serif;
     font-weight: 500;
     color: #963334;
-
     padding-left: 1px;
 }
