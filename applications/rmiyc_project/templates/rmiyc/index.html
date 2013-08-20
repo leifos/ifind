@@ -157,7 +157,11 @@
             <a class="btn btn-large btn-success button-index align-left" href="/rmiyc/pick_category/">Play</a>
         </div>
         <div class="span3">
-            <a class="btn btn-large btn-warning button-index align-right" href="/accounts/register/">Register</a>
+            {% if  user.is_authenticated  %}
+                <a class="btn btn-warning btn-large button-index" href="/leaderboard/">Check leaderboard? »</a>
+            {% else %}
+                <a class="btn btn-large btn-warning button-index align-right" href="/accounts/register/">Register</a>
+            {% endif %}
         </div>
         <div class="span3">
         </div>
