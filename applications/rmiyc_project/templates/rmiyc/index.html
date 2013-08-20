@@ -4,9 +4,10 @@
 {% endblock %}
 {% block container %}
     <h1>How To Play</h1>
-    <p class="lead">You have <strong>four</strong> rounds to complete. <br />
-         In each round, you will be shown a <strong>screenshot</strong> from a webpage and you have to type in a  <strong>query</strong> to retrieve it.<br />
-        The query will be sent to the search engine and if the page shown was retrieved in the <strong>first 10 </strong>search results,you get points.
+    <p class="lead">You have <strong>five</strong> rounds to complete. <br />
+        In each round, you will be shown a <strong>screenshot</strong> from a webpage and you have to type in a  <strong>query</strong> to retrieve it.<br />
+        The query will be sent to the search engine and if the page shown was retrieved in the <strong>first 10 </strong>search results,you get points. <br />
+        The game is focused on searching for information on the university of glasgow's site using its new and latest site search engine!
     </p>
 
     <!-- This should go in a CSS file -->
@@ -156,7 +157,11 @@
             <a class="btn btn-large btn-success button-index align-left" href="/rmiyc/pick_category/">Play</a>
         </div>
         <div class="span3">
-            <a class="btn btn-large btn-warning button-index align-right" href="/accounts/register/">Register</a>
+            {% if  user.is_authenticated  %}
+                <a class="btn btn-warning btn-large button-index" href="/leaderboard/">Check leaderboard? »</a>
+            {% else %}
+                <a class="btn btn-large btn-warning button-index align-right" href="/accounts/register/">Register</a>
+            {% endif %}
         </div>
         <div class="span3">
         </div>

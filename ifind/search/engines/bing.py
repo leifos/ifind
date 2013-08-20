@@ -5,7 +5,6 @@ from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
-WEB_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/SearchWeb/v1/'
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
 
 RESULT_TYPES = ('web', 'image', 'video')
@@ -39,8 +38,6 @@ class Bing(Engine):
         """
         Engine.__init__(self, **kwargs)
         self.api_key = api_key
-        self.api_endpoint = 'https://api.datamarket.azure.com/Bing/Search/v1/'
-
 
         if not self.api_key:
             raise EngineAPIKeyException(self.name, "'api_key=' keyword argument not specified")
@@ -184,12 +181,7 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        api_endpoint = API_ENDPOINT
-        if result_type == DEFAULT_RESULT_TYPE:
-            api_endpoint = WEB_API_ENDPOINT
-       	    return api_endpoint + result_type + Bing._encode_symbols(query_string)
-        else:
-	    return API_ENDPOINT + Bing._encode_symbols(result_string + '&' + query_string)
+        return API_ENDPOINT + Bing._encode_symbols(result_string + '&' + query_string)
 
     @staticmethod
     def _encode_symbols(query_string):
