@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
-{% block page_title %}{{ engine_name }}{% endblock %}
+{% block page_title %} GovUK/Twitter {% endblock %}
+
+{% block engine_css %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/govwiki.css">
+{% endblock %}
 
 {% block input_section %}
 <div class="input-section">
@@ -19,3 +23,12 @@
     </ol>
 </div>
 {% endblock %}
+
+{% block result_templates %}
+{% include "web_result.html" %}
+{% endblock %}
+
+{% block engine_js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/govwiki.js"></script>
+{% endblock %}
+

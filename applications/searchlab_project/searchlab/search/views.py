@@ -65,9 +65,9 @@ def IndexView(request):
         request.session["exp_id"] = experiment['id']
 
     template = 'bing.html'
-    test_dict = {'engine_name': 'Bing',
-                 'result_template': 'web_result.html',
-                 'engine_js' : 'bing',
-                 'engine_css': 'bing'}
 
-    return render(request, template, test_dict)
+    return render(request, template)
+
+
+    # generate or get exp
+    # exp would say only video and image available

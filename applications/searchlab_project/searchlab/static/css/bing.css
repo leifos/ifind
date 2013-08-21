@@ -34,8 +34,11 @@
 
 #dropdown-options > ul {
     text-align: left;
-    padding-left: 10px;
     background-color: #fafafa;
+}
+
+#dropdown-options > ul > li > a:hover {
+    background-color: #3a81ba;
 }
 
 
@@ -47,8 +50,8 @@
 }
 
 #results-container {
-    padding-left: 320px;
-    padding-right: 407px;
+    padding-left: 289px;
+    padding-right: 440px;
 }
 
 
