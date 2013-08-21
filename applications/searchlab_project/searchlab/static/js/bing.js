@@ -47,7 +47,7 @@ $(document).keydown(function(event)
     if (event.which == 13)
     {
        event.preventDefault();
-       $('#search-btn').click();
+       $('#submit-btn').click();
     }
 
 
@@ -70,7 +70,7 @@ $(document).keydown(function(event)
 });
 
 // query terms stored and a search request is sent
-$('#search-btn').click(function(event)
+$('#submit-btn').click(function(event)
 {
     event.preventDefault();
     var query_terms = searchInput.val();
@@ -127,11 +127,6 @@ function paginateResults(data)
 
     // display first page
     displayResults(window.pagination.page[1]);
-}
-
-function noResults()
-{
-
 }
 
 // displays single page
