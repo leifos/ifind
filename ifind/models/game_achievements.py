@@ -69,7 +69,7 @@ class HighScorer(GameAchievement):
 
 class UberSearcher(GameAchievement):
 
-    def __init__(self, userprofile, highscores, currentgame=None, score_required=50000):
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=30000):
         GameAchievement.__init__(self,userprofile, highscores)
         self.score_required = score_required
 
