@@ -1,4 +1,4 @@
-$("#AllCat").popover({ title: 'AllCat', content: "Play all categories to achieve me!", placement: "bottom", trigger: "hover" });
+$("#AllCat").popover({ title: 'AllCat', content: "Play a  game in all categories to achieve me!", placement: "bottom", trigger: "hover" });
 
 $("#UberSearcher").popover({ title: 'UberSearcher', content: "Score max points in all categories!", placement: "bottom", trigger: "hover" });
 

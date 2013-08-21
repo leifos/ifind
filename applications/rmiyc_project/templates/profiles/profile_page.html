@@ -35,11 +35,11 @@
                 {% if view_perm %}
               <p><strong>Email: </strong>{{usr.email}}
                 <br><strong>Gender:</strong> {{profile.gender}}
-                <br><strong>Age: </strong>{{profile.age}}</p>
+                <br><strong>Age: </strong>{{profile.age|default:""}}</p>
                 {% endif %}
             </div>
             <div class="w-col w-col-6">
-                {% if view_perm %} <!--TODO(mtbvc): OR if profile already 100% complete - don't display bar -->
+                {% if view_perm %}
               <p><strong>School:</strong> {{profile.school}}
                 <br><strong>City:</strong> {{profile.city}}
                 <br><strong>Country:</strong> {{profile.country}}
@@ -53,21 +53,23 @@
       <div class="w-col w-col-6">
         <img class="profile_pic" src="{{murl}}{{profile.profile_pic}}" alt="image-placeholder.svg" width="150" height="150">
 
-          {% if view_perm %}
-          {% if progress == 100 %}
+          {% if progress == 100 or not view_perm %}
           {% with vis="hidden" %}
           <div class="progress_bar" style="visibility:{{vis|default:"visible"}}">
           {% endwith %}
           {% else %}
           <div class="progress_bar" style="visibility:visible">
           {% endif %}
+          {% if view_perm %}
             <h5>Profile {{ progress }}% complete.</h5>
 			        <div class="progress">
 				        <div class="progress progress-striped active">
                         <div class="bar" style="width: {{ progress }}%;"></div>
-                            {% endif %}
                         </div>
 			        </div>
+           {% else%}
+               <div id="dummy_div"></div>
+           {% endif %}
         </div>
       </div>
     </div>
