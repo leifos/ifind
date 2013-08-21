@@ -65,13 +65,8 @@ def IndexView(request):
         request.session["exp_id"] = experiment['id']
 
     template = 'bing.html'
-    test_dict = {'engine_name': 'Bing',
-                 'result_template': 'web_result.html',
-                 'engine_js': 'bing',
-                 'exp_css': 'bing',
-                 'result_types': ['Video', 'Image', "News", "Margin"]}
 
-    return render(request, template, test_dict)
+    return render(request, template)
 
 
     # generate or get exp
