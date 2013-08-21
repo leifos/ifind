@@ -97,7 +97,7 @@ class TenGamesPlayed(GameAchievement):
 
 class FivePagesInAGame(GameAchievement):
 
-    def __init__(self, userprofile, highscores, currentgame=None, score_required=5):
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=4):
         GameAchievement.__init__(self,userprofile, highscores)
         self.score_required = score_required
 
