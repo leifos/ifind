@@ -64,9 +64,10 @@ def IndexView(request):
     if not exp_id:
         request.session["exp_id"] = experiment['id']
 
-    template = 'index.html'
-    test_dict = {'engine_name': 'HogSearch',
+    template = 'bing.html'
+    test_dict = {'engine_name': 'Bing',
                  'result_template': 'web_result.html',
-                 'engine_css': 'web'}
+                 'engine_js' : 'bing',
+                 'engine_css': 'bing'}
 
     return render(request, template, test_dict)

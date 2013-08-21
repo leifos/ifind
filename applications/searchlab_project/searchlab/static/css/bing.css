@@ -1,4 +1,7 @@
+/**************************/
 /* INPUT SECTION STYLING  */
+/**************************/
+
 .input-section {
     background-color: #fafafa;
     padding-bottom: 10px;
@@ -13,13 +16,30 @@
     background: white;
 }
 
-#search-btn {
-    margin-left: 6px;
+#search-btns {
+    margin-left: 5px;
+}
+
+.search-btn {
     background-image: linear-gradient(to bottom, #3a81ba, #3a81ba);
 }
 
+.search-btn:hover {
+    background-image: linear-gradient(to bottom, #4093d2, #3e95d2);
+}
 
-/* RESULTS SECTION STYLING */
+#dropdown-options {
+    min-width: 64px;
+}
+
+#dropdown-options > ul {
+    text-align: left;
+    padding-left: 10px;
+    background-color: #fafafa;
+}
+
+
+/*RESULTS SECTION STYLING*/
 
 .results-section {
     background-color: #fafafa;
@@ -63,5 +83,6 @@
     font-family: Charcoal, sans-serif;
     font-weight: 500;
     color: #963334;
+
     padding-left: 1px;
 }

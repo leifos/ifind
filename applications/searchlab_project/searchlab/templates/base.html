@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <title>SearchLab - {% block page_title %}{% endblock %}</title>
 
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/{{ engine_css }}.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/uikit.gradient.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/searchlab.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/{{ engine_css }}.css">
 
     <link rel="icon" href="http://www.iconj.com/ico/k/u/ku5v7aqrj1.ico" type="image/x-icon" />
     <link href='http://fonts.googleapis.com/css?family=Great%20Vibes:400' rel='stylesheet' type='text/css'>
@@ -43,10 +44,9 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/uikit.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/searchlab.js"></script>
-    {% block engine_js %}{% endblock %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/{{ engine_js }}.js"></script>
 
     {% include result_template %}
-
 
 </body>
 
