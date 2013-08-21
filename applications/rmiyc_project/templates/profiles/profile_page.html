@@ -24,8 +24,9 @@
         </div>
         <div class="w-container score_overview">
           <p><strong>Total Score</strong> : {{total_score|default:0}}
-            <br><strong>level:</strong> {{profile.level}}
-            <br><strong>experience points: </strong>{{ profile.xp }}</p>
+            <br><strong>Games played:</strong> {{profile.no_games_played}}
+            <br><strong>Queries issued: </strong>{{ profile.no_queries_issued }}    
+            <br><strong>Successful queries: </strong>{{ profile.no_successful_queries_issued }}</p>
         </div>
 
         <div class="w-container details">
