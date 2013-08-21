@@ -1,0 +1,1398 @@
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3333332100    3 3 3 3 3 3 2 1 0 X       9      
+3332222111    3 3 3 2 2 2 X X X X       6      
+3332222111    3 3 3 3 2 X X X X X       5      
+3333212111    3 2 3 3 3 X X X X X       5      
+3333212111    3 3 3 3 2 X X X X X       5      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+3333212111    3 3 3 3 2 X X X X X       5      
+3232222211    3 2 3 2 2 X X X X X       5      
+3232222211    3 3 3 2 3 X X X X X       5      
+3332312121    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332222111    3 2 3 3 3 X X X X X       5      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3232222211    3 2 3 2 2 X X X X X       5      
+3333212111    3 3 3 3 2 X X X X X       5      
+3333212111    3 3 3 2 2 X X X X X       5      
+3332222111    3 3 3 3 3 3 X X X X       6      
+3332222111    3 3 3 3 2 X X X X X       5      
+3333332100    3 3 3 3 X X X X X X       4      
+Overall game points: 238
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+0101012111    0 1 0 1 0 1 2 1 1 X       9      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 1 X X X X X       5      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+0110111111    0 1 1 0 1 1 1 1 1 1       10      
+0110111111    1 1 1 0 0 1 1 1 1 0       10      
+1110011110    0 0 1 1 X X X X X X       4      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 1 1 X X X X       6      
+0111111111    0 1 1 0 1 1 1 1 1 X       9      
+Overall game points: 79
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2222112111    2 2 2 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 2 1 X X X       7      
+2212121211    1 2 2 1 2 1 2 1 X X       8      
+2212121211    2 2 1 X X X X X X X       3      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1221212111    1 2 2 1 2 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 1 1 X X X X       6      
+2212112110    1 2 2 X X X X X X X       3      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2222112111    2 2 2 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 2 2 2 1 1 1 X X       8      
+2222211111    1 2 1 2 2 2 2 1 X X       8      
+2222211111    2 X X X X X X X X X       1      
+Overall game points: 153
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1221212111    1 2 2 1 2 1 2 1 1 1       10      
+2212112110    2 2 1 2 X X X X X X       4      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 1 X X X X X       5      
+2212112110    2 2 1 2 1 1 X X X X       6      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1221212111    1 2 2 1 2 1 X X X X       6      
+2212112110    2 2 1 2 X X X X X X       4      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    1 2 2 1 2 1 2 X X X       7      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2212112110    X X X X X X X X X X       0      
+2212121211    2 2 1 2 1 2 1 2 X X       8      
+2212121211    2 2 2 2 1 1 X X X X       6      
+2222112111    1 2 1 X X X X X X X       3      
+2222112111    1 2 2 1 2 1 2 1 X X       8      
+1212222111    1 2 2 1 2 X X X X X       5      
+Overall game points: 148
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1011101010    1 0 1 1 1 0 1 0 1 0       10      
+1110011110    1 X X X X X X X X X       1      
+1110011110    0 0 1 1 1 1 X X X X       6      
+0011111111    0 1 0 1 0 1 2 1 1 X       9      
+0011111111    1 1 1 0 1 1 X X X X       6      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+0110111111    0 1 1 0 1 1 1 1 1 1       10      
+0110111111    1 1 1 0 0 1 1 1 1 X       9      
+1110011110    0 0 1 1 1 X X X X X       5      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 1 X X X X X       5      
+Overall game points: 76
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3333332100    3 3 3 3 3 3 X X X X       6      
+3333211211    3 3 3 3 2 X X X X X       5      
+3333211211    3 3 3 2 3 1 X X X X       6      
+3332312121    3 3 3 3 2 X X X X X       5      
+3332312121    3 3 3 X X X X X X X       3      
+3333211111    3 3 3 3 X X X X X X       4      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3232222211    3 2 3 2 2 2 X X X X       6      
+3333212111    3 3 3 3 X X X X X X       4      
+3333212111    3 3 3 2 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+3332222111    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 3 X X X X X X       4      
+3333332100    3 3 3 3 X X X X X X       4      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+3333332100    3 3 3 X X X X X X X       3      
+3332222111    3 3 3 X X X X X X X       3      
+3332222111    3 3 3 3 X X X X X X       4      
+3333212111    3 2 3 3 X X X X X X       4      
+3333212111    3 3 3 3 X X X X X X       4      
+3233312111    3 3 3 3 X X X X X X       4      
+3233312111    3 2 3 2 X X X X X X       4      
+Overall game points: 236
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+2222112111    2 2 2 2 1 1 X X X X       6      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 2 1 X X X X       6      
+2222211111    1 2 1 2 2 2 2 X X X       7      
+2222211111    2 2 1 2 2 2 X X X X       6      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+1221212111    1 2 2 1 2 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 X X X X X X       4      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2212112110    2 2 1 2 1 X X X X X       5      
+2212121211    2 2 1 2 1 2 1 2 1 X       9      
+2212121211    2 2 2 2 1 1 2 X X X       7      
+2222112111    1 2 1 2 2 X X X X X       5      
+2222112111    1 2 2 1 2 1 X X X X       6      
+Overall game points: 158
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1011101010    1 0 1 1 1 0 1 0 1 X       9      
+1110011110    1 1 1 0 0 1 1 1 1 0       10      
+1110011110    0 0 1 1 1 1 1 1 1 1       10      
+0011111111    0 1 0 1 0 X X X X X       5      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1110111110    1 1 1 0 1 1 1 1 1 X       9      
+0110111111    0 1 1 0 1 1 1 1 1 1       10      
+0110111111    1 1 1 0 0 1 1 1 1 X       9      
+1110011110    0 0 1 1 1 1 X X X X       6      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+0101012111    0 1 0 1 0 1 2 1 1 1       10      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    1 1 1 1 0 1 1 0 1 X       9      
+1111011011    0 1 1 1 1 X X X X X       5      
+Overall game points: 77
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+3333332100    3 3 3 3 3 3 X X X X       6      
+3332222111    3 3 3 2 X X X X X X       4      
+3332222111    3 3 3 3 2 X X X X X       5      
+3333212111    3 2 3 3 3 X X X X X       5      
+3333212111    3 3 3 3 2 X X X X X       5      
+3233312111    3 3 3 3 3 X X X X X       5      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3333212111    X X X X X X X X X X       0      
+3232222211    3 2 3 2 X X X X X X       4      
+3232222211    3 3 3 2 3 X X X X X       5      
+3332312121    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332222111    3 2 3 3 X X X X X X       4      
+3332222111    3 3 3 3 X X X X X X       4      
+3333332100    3 X X X X X X X X X       1      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+3333332100    3 3 3 3 X X X X X X       4      
+3333211211    3 3 3 X X X X X X X       3      
+3333211211    3 3 3 X X X X X X X       3      
+3332312121    3 3 3 3 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3333211111    3 3 3 3 X X X X X X       4      
+3333211111    3 2 3 X X X X X X X       3      
+3332222111    3 X X X X X X X X X       1      
+Overall game points: 235
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+1011101010    1 0 1 1 1 0 1 0 1 X       9      
+1110011110    1 1 1 0 0 1 1 1 1 X       9      
+1110011110    0 0 1 1 1 1 1 1 1 1       10      
+0011111111    0 1 0 1 0 1 X X X X       6      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+0101012111    0 1 0 1 0 1 2 1 1 1       10      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 X X X X X X X       3      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+0101012111    0 1 0 1 0 1 X X X X       6      
+1111011011    1 1 1 1 X X X X X X       4      
+1111011011    1 1 1 1 0 1 1 0 X X       8      
+1111011011    0 1 1 1 1 1 1 X X X       7      
+1111011011    0 1 1 0 1 1 1 X X X       7      
+Overall game points: 74
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+1221212111    1 2 2 1 2 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 2 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 X X X X X X       4      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212121211    2 2 1 2 1 2 1 X X X       7      
+2212121211    2 2 2 2 1 1 2 X X X       7      
+2222112111    1 2 1 X X X X X X X       3      
+2222112111    1 2 2 1 2 1 X X X X       6      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2222112111    2 2 2 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 2 1 1 X X X       7      
+2222211111    1 2 1 2 2 2 2 1 X X       8      
+2222211111    2 2 1 X X X X X X X       3      
+Overall game points: 151
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+3232222211    3 2 3 2 2 X X X X X       5      
+3232322221    3 2 3 2 X X X X X X       4      
+3232322221    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 X X X X X X X       3      
+3333211211    3 3 X X X X X X X X       2      
+3333211211    3 3 3 3 X X X X X X       4      
+3332222111    3 3 X X X X X X X X       2      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3333332100    3 3 3 3 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+3332222111    3 3 3 3 X X X X X X       4      
+3333212111    3 2 3 3 X X X X X X       4      
+3333212111    3 3 3 3 X X X X X X       4      
+3233312111    3 3 3 X X X X X X X       3      
+3233312111    3 2 3 X X X X X X X       3      
+3333211111    3 X X X X X X X X X       1      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+3333332100    3 3 3 X X X X X X X       3      
+3333211211    3 3 3 X X X X X X X       3      
+3333211211    3 3 3 X X X X X X X       3      
+3332312121    3 3 3 X X X X X X X       3      
+3332312121    3 3 3 X X X X X X X       3      
+3333211111    3 3 3 3 X X X X X X       4      
+3333211111    3 2 3 3 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+Overall game points: 226
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2222112111    2 2 2 2 1 X X X X X       5      
+2212112110    2 2 1 X X X X X X X       3      
+2212112110    2 2 2 2 X X X X X X       4      
+2222211111    1 2 1 2 2 2 2 1 1 1       10      
+2222211111    2 2 1 2 X X X X X X       4      
+1212222111    2 2 1 2 X X X X X X       4      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1221212111    1 2 2 1 2 1 X X X X       6      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    1 2 2 1 2 1 X X X X       6      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212121211    2 2 1 2 1 2 1 X X X       7      
+2212121211    2 2 2 2 1 1 2 1 X X       8      
+2222112111    1 2 1 2 2 2 2 1 X X       8      
+2222112111    X X X X X X X X X X       0      
+Overall game points: 149
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+1011101010    1 X X X X X X X X X       1      
+1110011110    1 1 X X X X X X X X       2      
+1110011110    0 0 1 1 1 1 X X X X       6      
+0011111111    0 1 0 1 0 1 2 1 1 1       10      
+0011111111    1 1 1 0 1 1 1 X X X       7      
+0101012111    1 0 1 1 X X X X X X       4      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+0101012111    0 1 0 1 0 X X X X X       5      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 1 1 1 1 1 X       9      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended  
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 1 0 1 X       9      
+1111011011    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 1 1 X X X X       6      
+Overall game points: 77
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended 
+3333332100    3 3 3 3 3 3 2 1 0 X       9      
+3332222111    3 3 3 2 X X X X X X       4      
+3332222111    3 3 3 3 X X X X X X       4      
+3333212111    3 2 3 3 3 1 X X X X       6      
+3333212111    3 3 3 3 X X X X X X       4      
+3233312111    3 3 3 X X X X X X X       3      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 X X X X X X X X X       1      
+3333211211    3 3 3 X X X X X X X       3      
+3333211211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3333211111    3 3 3 3 X X X X X X       4      
+3333211111    3 2 3 3 X X X X X X       4      
+3332222111    3 3 X X X X X X X X       2      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 X X X X X X X       3      
+3333212111    3 3 3 X X X X X X X       3      
+3333212111    3 3 3 2 X X X X X X       4      
+3332222111    3 3 3 3 X X X X X X       4      
+3332222111    3 3 3 3 X X X X X X       4      
+3333332100    3 3 3 3 X X X X X X       4      
+3333332100    3 3 3 3 X X X X X X       4      
+Overall game points: 231
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 2 2 2 1 X X X X       6      
+2222211111    1 2 1 2 2 2 2 X X X       7      
+2222211111    2 2 1 2 2 2 X X X X       6      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 X X X X X X X X X       1      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 1 2 1 2 X X X X       6      
+2212121211    1 2 2 1 2 1 2 X X X       7      
+2212121211    2 2 1 2 1 1 X X X X       6      
+1221212111    2 2 1 2 X X X X X X       4      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    1 2 2 X X X X X X X       3      
+Overall game points: 154
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 1 1       10      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 X X       8      
+0111111111    0 1 1 0 1 1 X X X X       6      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1011101010    1 0 1 1 1 0 1 0 1 0       10      
+1110011110    1 1 1 0 0 1 1 1 1 0       10      
+1110011110    0 0 1 1 1 1 1 1 1 X       9      
+0011111111    0 1 0 1 0 X X X X X       5      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 0 1 1 X X X X       6      
+Overall game points: 76
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 X X X X X X       4      
+3333212111    3 3 3 X X X X X X X       3      
+3333212111    3 3 3 X X X X X X X       3      
+3332222111    3 3 3 3 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 X X X X X X X       3      
+3333211211    3 2 3 X X X X X X X       3      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    X X X X X X X X X X       0      
+3232322221    3 2 3 X X X X X X X       3      
+3232322221    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 X X X X X X X       3      
+3333332100    3 3 3 X X X X X X X       3      
+3333211211    3 3 3 X X X X X X X       3      
+3333211211    3 3 3 3 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+3332222111    3 2 X X X X X X X X       2      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 3 3 X X X X X X       4      
+3232222211    3 2 3 2 X X X X X X       4      
+3232222211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 X X X X X X X       3      
+3332222111    3 2 3 X X X X X X X       3      
+3332222111    3 3 3 X X X X X X X       3      
+3333332100    3 X X X X X X X X X       1      
+Overall game points: 218
+End results set
+====================
+
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 X X X X       6      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 1 2 1 2 1 X X X       7      
+2212121211    1 2 2 1 2 1 X X X X       6      
+2212121211    2 2 1 2 1 1 2 X X X       7      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 X X X X X       5      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212121211    2 2 1 2 1 2 X X X X       6      
+2212121211    2 2 2 2 1 1 X X X X       6      
+2222112111    1 2 1 2 2 2 2 1 X X       8      
+2222112111    1 2 2 1 2 1 X X X X       6      
+Overall game points: 152
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1011101010    1 0 1 1 1 0 X X X X       6      
+1110011110    1 1 1 0 0 X X X X X       5      
+1110011110    0 0 1 1 1 1 1 1 1 1       10      
+0011111111    0 1 0 1 0 1 2 1 1 1       10      
+0011111111    1 X X X X X X X X X       1      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 X X X       7      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 1 1 1 X X X       7      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 0       10      
+1111011011    1 1 1 1 0 1 1 0 1 X       9      
+1111011011    0 1 1 1 1 1 1 1 X X       8      
+0111111111    0 1 1 0 1 1 1 X X X       7      
+Overall game points: 77
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 3 3 2 X X X X X       5      
+3232222211    3 2 3 2 2 X X X X X       5      
+3232222211    3 3 3 2 3 X X X X X       5      
+3332312121    3 3 3 2 2 2 X X X X       6      
+3332312121    3 3 3 3 3 3 2 1 X X       8      
+3332222111    3 X X X X X X X X X       1      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 3 X X X X       6      
+3332222111    3 3 3 2 2 2 2 X X X       7      
+3332222111    3 3 3 3 2 1 X X X X       6      
+3333212111    3 2 3 3 3 1 2 X X X       7      
+3333212111    3 3 3 3 2 X X X X X       5      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 X X X X X X       4      
+3232322221    3 2 3 2 X X X X X X       4      
+3232322221    3 3 3 3 3 X X X X X       5      
+3333332100    3 3 3 3 2 X X X X X       5      
+3333332100    3 3 3 2 2 X X X X X       5      
+3333211211    3 3 3 3 X X X X X X       4      
+3333211211    3 X X X X X X X X X       1      
+Overall game points: 237
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 1 1 0       10      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    1 2 X X X X X X X X       2      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 1 1 X       9      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 X X X X       6      
+2212112110    2 2 2 2 1 1 2 1 X X       8      
+2212112110    2 2 X X X X X X X X       2      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212121211    2 2 1 2 1 2 1 X X X       7      
+2212121211    2 2 2 2 1 1 2 X X X       7      
+2222112111    1 2 1 2 2 2 2 X X X       7      
+2222112111    1 2 2 1 X X X X X X       4      
+Overall game points: 150
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1110111110    1 1 1 0 1 1 1 1 1 X       9      
+0110111111    0 1 1 0 1 1 X X X X       6      
+0110111111    1 1 1 0 0 1 1 X X X       7      
+1110011110    0 0 1 1 1 1 1 1 1 1       10      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 1 X       9      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 1 X X X X X       5      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 1 1       10      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 X X X X X X       4      
+Overall game points: 79
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 2 2 2 X X X       7      
+3333212111    3 3 3 3 2 1 X X X X       6      
+3333212111    3 3 3 2 2 2 X X X X       6      
+3332222111    3 3 3 3 3 3 X X X X       6      
+3332222111    3 3 3 3 X X X X X X       4      
+3333332100    3 X X X X X X X X X       1      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 X X X X X       5      
+3333211211    3 3 3 3 2 X X X X X       5      
+3333211211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3333211111    3 3 3 3 X X X X X X       4      
+3333211111    3 2 X X X X X X X X       2      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 X X X X X       5      
+3332222111    3 3 3 2 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+3333212111    3 2 3 3 X X X X X X       4      
+3333212111    3 3 3 3 X X X X X X       4      
+3233312111    3 3 3 3 X X X X X X       4      
+3233312111    3 2 3 2 X X X X X X       4      
+Overall game points: 239
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 X X X X       6      
+1111011011    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 1 1 1 1 X X       8      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1011101010    1 0 1 1 1 0 1 0 1 0       10      
+1110011110    1 1 1 0 0 1 1 1 1 X       9      
+1110011110    0 0 1 1 1 1 1 1 1 1       10      
+0011111111    0 1 0 1 0 X X X X X       5      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+0110111111    0 1 1 0 1 1 1 1 1 1       10      
+0110111111    1 1 1 0 0 1 1 1 1 0       10      
+1110011110    0 0 1 1 X X X X X X       4      
+Overall game points: 75
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212121211    2 2 1 2 1 2 1 2 X X       8      
+2212121211    2 2 2 2 1 1 2 1 X X       8      
+2222112111    1 2 1 2 2 2 2 X X X       7      
+2222112111    1 2 X X X X X X X X       2      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 2 1 2 X X       8      
+2212121211    1 2 2 1 2 1 2 X X X       7      
+2212121211    2 2 X X X X X X X X       2      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 2 2 1 1 2 1 X X       8      
+2212112110    1 X X X X X X X X X       1      
+Overall game points: 153
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 3 2 1 X X       8      
+3332222111    3 3 3 2 2 2 X X X X       6      
+3332222111    3 3 3 3 2 1 X X X X       6      
+3333212111    3 2 3 3 3 1 2 X X X       7      
+3333212111    3 3 3 3 2 X X X X X       5      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 X X X X X X       4      
+3232322221    3 2 3 2 3 X X X X X       5      
+3232322221    3 3 3 3 X X X X X X       4      
+3333332100    3 3 3 3 X X X X X X       4      
+3333332100    3 3 3 2 X X X X X X       4      
+3333211211    3 3 3 3 2 X X X X X       5      
+3333211211    3 3 X X X X X X X X       2      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 3 X X X X X X X       3      
+3232222211    3 2 3 2 X X X X X X       4      
+3232222211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 X X X X X X X       3      
+3332312121    3 3 3 X X X X X X X       3      
+3332222111    3 2 3 3 X X X X X X       4      
+3332222111    3 3 3 3 X X X X X X       4      
+3333332100    3 X X X X X X X X X       1      
+Overall game points: 234
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 2 X X X X X       5      
+3232322221    3 2 3 2 3 2 2 2 2 X       9      
+3232322221    3 3 3 3 3 3 2 X X X       7      
+3333332100    3 3 3 3 2 1 1 X X X       7      
+3333332100    3 3 3 2 X X X X X X       4      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 3 3 2 X X X X X       5      
+3232222211    3 2 3 2 X X X X X X       4      
+3232222211    3 3 3 2 3 X X X X X       5      
+3332312121    3 3 3 2 2 2 X X X X       6      
+3332312121    3 3 3 3 3 3 X X X X       6      
+3332222111    3 2 3 3 X X X X X X       4      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 X X X X X       5      
+3333211211    3 3 3 3 2 X X X X X       5      
+3333211211    3 3 3 2 3 X X X X X       5      
+3332312121    3 3 3 3 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3333211111    3 3 3 X X X X X X X       3      
+3333211111    3 2 X X X X X X X X       2      
+Overall game points: 242
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 X X       8      
+1111011011    1 1 1 1 0 X X X X X       5      
+1111011011    1 1 1 1 0 1 1 0 X X       8      
+1111011011    0 1 1 1 1 1 1 1 1 1       10      
+1111011011    0 X X X X X X X X X       1      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 0       10      
+1111011011    1 1 1 1 0 1 1 0 X X       8      
+1111011011    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 0 1 1 1 X X X       7      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 1 1       10      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 0 1 X X X X X       5      
+Overall game points: 78
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 X X X X       6      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 2 1 1 X X X       7      
+2222211111    1 2 1 2 2 2 2 X X X       7      
+2222211111    2 2 1 2 2 X X X X X       5      
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 1 1 1       10      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+2212112110    1 2 2 X X X X X X X       3      
+Overall game points: 154
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 X X X X       6      
+1110111110    1 1 1 0 X X X X X X       4      
+1110111110    0 1 1 1 1 1 X X X X       6      
+0111111111    0 1 1 0 1 1 1 1 1 X       9      
+0111111111    1 0 1 1 1 0 1 X X X       7      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1011101010    1 0 1 1 1 0 1 0 1 X       9      
+1110011110    1 1 1 0 0 1 1 1 1 0       10      
+1110011110    0 0 1 1 1 1 1 1 1 X       9      
+0011111111    0 1 0 1 0 1 X X X X       6      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 0       10      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 1 1 1 1 1 1       10      
+0111111111    0 1 1 0 X X X X X X       4      
+Overall game points: 72
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 1 1 1       10      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 2 2 2 1 1 1 1 X       9      
+2222211111    1 2 1 2 2 2 2 X X X       7      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 2 2 1 1 2 1 X X       8      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 1 X       9      
+2212112110    2 2 1 2 1 2 1 2 X X       8      
+2212121211    1 2 2 1 2 1 2 1 X X       8      
+Overall game points: 153
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 3 X X X X X X X       3      
+3232222211    3 2 3 2 2 X X X X X       5      
+3232222211    3 3 3 2 3 1 X X X X       6      
+3332312121    3 3 3 2 2 X X X X X       5      
+3332312121    3 3 3 3 3 3 X X X X       6      
+3332222111    3 2 3 3 X X X X X X       4      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 X X X X X X X X X       1      
+3333211211    X X X X X X X X X X       0      
+3333211211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332312121    3 3 3 2 2 X X X X X       5      
+3333211111    3 3 3 3 X X X X X X       4      
+3333211111    3 2 3 X X X X X X X       3      
+3332222111    3 3 3 3 3 X X X X X       5      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    X X X X X X X X X X       0      
+3333212111    3 3 3 3 2 X X X X X       5      
+3333212111    3 3 3 2 2 X X X X X       5      
+3332222111    3 3 3 3 3 X X X X X       5      
+3332222111    3 3 3 3 2 X X X X X       5      
+3333332100    3 3 3 3 2 X X X X X       5      
+3333332100    3 3 3 X X X X X X X       3      
+Overall game points: 231
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 2 X X X X X       5      
+3333212111    3 3 3 3 2 1 X X X X       6      
+3333212111    3 3 3 2 2 2 2 X X X       7      
+3332222111    3 3 3 3 X X X X X X       4      
+3332222111    3 3 3 3 2 X X X X X       5      
+3333332100    3 3 3 X X X X X X X       3      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 X X X X X X       4      
+3333211211    3 3 3 3 X X X X X X       4      
+3333211211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332312121    3 3 3 2 2 X X X X X       5      
+3333211111    3 3 3 3 X X X X X X       4      
+3333211111    3 2 3 X X X X X X X       3      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 3 3 X X X X X X       4      
+3232222211    3 2 3 2 X X X X X X       4      
+3232222211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 3 X X X X X X       4      
+3332222111    3 2 3 X X X X X X X       3      
+3332222111    3 3 3 X X X X X X X       3      
+Overall game points: 232
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 X X X X       6      
+1111011011    1 1 1 1 0 1 1 X X X       7      
+1111011011    1 1 1 1 0 1 1 0 X X       8      
+1111011011    0 1 1 1 1 1 1 1 1 1       10      
+1111011011    0 X X X X X X X X X       1      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 1 1       10      
+1110111110    1 1 1 0 1 1 1 1 1 X       9      
+1110111110    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 0 1 1 X X X X       6      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 1 0 1 1       10      
+1111011011    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 0 1 1 X X X X       6      
+Overall game points: 79
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2212112110    2 2 1 2 1 1 2 X X X       7      
+2212121211    2 2 1 2 1 2 1 X X X       7      
+2212121211    2 2 2 2 1 1 2 X X X       7      
+2222112111    1 2 1 2 2 2 2 X X X       7      
+2222112111    1 2 2 1 X X X X X X       4      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 2 1 2 X X       8      
+2212121211    1 2 2 1 2 1 2 1 X X       8      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 1 X X       8      
+2212112110    2 2 1 2 1 1 2 1 1 X       9      
+2212112110    2 2 2 2 2 1 1 1 X X       8      
+2222211111    1 2 1 2 2 2 2 1 X X       8      
+Overall game points: 154
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 X X X X X X X       3      
+2212112110    2 2 1 X X X X X X X       3      
+2212112110    2 2 1 2 X X X X X X       4      
+2212112110    2 2 2 2 1 X X X X X       5      
+2212112110    1 2 2 1 X X X X X X       4      
+2222112111    1 2 2 1 2 1 1 X X X       7      
+2222112111    2 2 X X X X X X X X       2      
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 4
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3232222211    3 2 3 2 X X X X X X       4      
+3232322221    3 2 3 2 3 2 2 2 2 1       10      
+3232322221    3 3 3 3 3 3 X X X X       6      
+3333332100    3 3 3 3 2 X X X X X       5      
+3333332100    3 3 3 2 2 2 2 X X X       7      
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 3 2 1 X X       8      
+3333211211    3 3 3 3 2 1 X X X X       6      
+3333211211    3 3 3 2 3 1 X X X X       6      
+3332312121    3 3 3 3 2 1 X X X X       6      
+3332312121    3 3 3 2 2 2 X X X X       6      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333332100    3 3 3 3 3 3 2 1 X X       8      
+3332222111    3 3 3 2 X X X X X X       4      
+3332222111    3 3 3 3 2 X X X X X       5      
+3333212111    3 2 3 3 3 1 2 1 X X       8      
+3333212111    3 3 3 3 2 1 1 X X X       7      
+Overall game points: 242
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 3
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    X X X X X X X X X X       0      
+2212112110    2 2 1 2 1 1 2 1 1 0       10      
+2212112110    2 2 2 2 2 1 1 X X X       7      
+2222211111    1 2 1 2 2 2 2 1 X X       8      
+2222211111    2 2 1 2 2 2 1 X X X       7      
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1221212111    1 2 2 1 2 1 2 1 1 X       9      
+2212112110    2 2 1 2 1 1 2 1 1 X       9      
+2212112110    2 2 1 2 1 1 2 1 1 X       9      
+2212112110    2 2 2 2 1 1 2 X X X       7      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+2222112111    2 2 2 2 1 1 2 1 1 X       9      
+2212112110    2 2 1 2 1 1 2 1 1 X       9      
+2212112110    2 2 1 2 1 2 1 2 1 X       9      
+2212121211    1 2 2 1 2 1 2 X X X       7      
+Overall game points: 153
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 5
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0110111110    0 1 1 0 1 1 1 1 1 X       9      
+1111011011    1 1 1 1 0 1 1 0 1 X       9      
+1111011011    0 1 1 1 1 1 1 1 1 X       9      
+0111111111    0 1 1 0 1 1 1 X X X       7      
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+1011101010    1 0 1 1 1 0 1 0 1 X       9      
+1110011110    1 1 1 0 0 1 1 1 1 X       9      
+1110011110    0 0 1 1 1 1 1 1 1 1       10      
+0011111111    0 1 0 1 0 1 X X X X       6      
+Game ID: 2
+Queries looked at: 
+Full Query      Final State        Depth Ended
+0101012111    0 1 0 1 0 1 2 1 1 X       9      
+1110111110    1 1 1 0 1 1 1 1 1 0       10      
+1110111110    0 1 1 1 1 1 1 1 X X       8      
+0111111111    0 1 1 0 1 1 1 X X X       7      
+Overall game points: 78
+End results set
+====================
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
+Game ID: 1
+Queries looked at: 
+Full Query      Final State        Depth Ended
+3333212111    3 3 X X X X X X X X       2      
+3232222211    3 2 3 2 X X X X X X       4      
+3232222211    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 2 X X X X X X       4      
+3332312121    3 3 3 X X X X X X X       3      
+3332222111    3 2 3 3 X X X X X X       4      
+3332222111    3 3 3 X X X X X X X       3      
+3333332100    3 X X X X X X X X X       1      
+
+====================
+Begin results set
+Cost of Result: 1
+Cost of Query: 2
+Games in this set: 3
+--------------------
