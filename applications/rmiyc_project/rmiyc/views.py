@@ -70,8 +70,9 @@ def pick_category(request):
 
         context = RequestContext(request, {})
         #TODO(leifos): filter this
-        cats = Category.objects.filter(is_shown=True)
-
+        #cats = Category.objects.filter(is_shown=True)
+        import random
+        cats = sorted(Category.objects.filter(is_shown=True)[:10], key=lambda x: random.random())
         for c in cats:
             if request.user.is_authenticated():
                 hs = HighScore.objects.filter(user=request.user ,category=c)
@@ -88,6 +89,7 @@ def pick_category(request):
 
         if request.user.is_authenticated():
             avatar.update(user=request.user)
+
 
         msg = avatar.get()
         response = render_to_response('rmiyc/cat_picker.html', {'cats': cats, 'avatar': msg}, context)

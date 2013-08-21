@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
-{% block page_title %}{{ engine_name }}{% endblock %}
+{% block page_title %} Bing {% endblock %}
+
+{% block engine_css %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bing.css">
+{% endblock %}
 
 {% block input_section %}
 <div class="input-section">
@@ -8,16 +12,16 @@
         <form id="search-form" class="uk-form">
             <input id="search-input" type="text" placeholder="Enter query...">
             <div id="search-btns" class="uk-button-group">
-	            <button class="search-btn uk-button uk-button-primary" type="submit">Web Search</button>
+	            <button id="submit-btn" class="search-btn uk-button uk-button-primary" type="submit">Web Search</button>
 	            <div class="" data-uk-dropdown="">
 		            <a class="search-btn uk-button uk-button-primary" href="#">
                         <i class="uk-icon-caret-down"></i>
 		            </a>
                     <div id="dropdown-options" class="uk-dropdown uk-dropdown-small">
                         <ul class="uk-nav uk-nav-dropdown">
-                            <li>Image</li>
-                            <li>Video</li>
-                            <li>News</li>
+                            <li><a href="">Image</a></li>
+                            <li><a href="">Video</a></li>
+                            <li><a href="">News</a></li>
                         </ul>
                     </div>
 	            </div>
@@ -32,4 +36,12 @@
     <ol id="results-container" class="uk-container uk-container-center" start="1">
     </ol>
 </div>
+{% endblock %}
+
+{% block result_templates %}
+{% include "web_result.html" %}
+{% endblock %}
+
+{% block engine_js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/bing.js"></script>
 {% endblock %}
