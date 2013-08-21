@@ -24,8 +24,9 @@
         </div>
         <div class="w-container score_overview">
           <p><strong>Total Score</strong> : {{total_score|default:0}}
-            <br><strong>level:</strong> {{profile.level}}
-            <br><strong>experience points: </strong>{{ profile.xp }}</p>
+            <br><strong>Games played:</strong> {{profile.no_games_played}}
+            <br><strong>Queries issued: </strong>{{ profile.no_queries_issued }}
+            <br><strong>Successful queries: </strong>{{ profile.no_successful_queries_issued }}</p>
         </div>
 
         <div class="w-container details">
@@ -34,11 +35,11 @@
                 {% if view_perm %}
               <p><strong>Email: </strong>{{usr.email}}
                 <br><strong>Gender:</strong> {{profile.gender}}
-                <br><strong>Age: </strong>{{profile.age}}</p>
+                <br><strong>Age: </strong>{{profile.age|default:""}}</p>
                 {% endif %}
             </div>
             <div class="w-col w-col-6">
-                {% if view_perm %} <!--TODO(mtbvc): OR if profile already 100% complete - don't display bar -->
+                {% if view_perm %}
               <p><strong>School:</strong> {{profile.school}}
                 <br><strong>City:</strong> {{profile.city}}
                 <br><strong>Country:</strong> {{profile.country}}
@@ -51,16 +52,24 @@
       </div>
       <div class="w-col w-col-6">
         <img class="profile_pic" src="{{murl}}{{profile.profile_pic}}" alt="image-placeholder.svg" width="150" height="150">
-        {% if view_perm %}
-          <div class="progress_bar">
 
+          {% if progress == 100 or not view_perm %}
+          {% with vis="hidden" %}
+          <div class="progress_bar" style="visibility:{{vis|default:"visible"}}">
+          {% endwith %}
+          {% else %}
+          <div class="progress_bar" style="visibility:visible">
+          {% endif %}
+          {% if view_perm %}
             <h5>Profile {{ progress }}% complete.</h5>
 			        <div class="progress">
 				        <div class="progress progress-striped active">
                         <div class="bar" style="width: {{ progress }}%;"></div>
-                            {% endif %}
                         </div>
 			        </div>
+           {% else%}
+               <div id="dummy_div"></div>
+           {% endif %}
         </div>
       </div>
     </div>
@@ -72,9 +81,10 @@
             {% for item in highscores %}
             <li class="thumbnail list_item">
                 <div class="hs">
+                    <a href="/rmiyc/play/{{item.category.name}}">
                     <h5>{{item.category.name}}</h5>
                     <img src="{{item.category.icon}}" alt="{{item.category.name}}" height="145" width="145">
-                    <p>{{item.highest_score}}</p>
+                    <p>{{item.highest_score}}</p></a>
                 </div>
             </li>
             {% endfor %}
@@ -89,17 +99,17 @@
                 {% for item in achievements %}
             <li class="list_item_badge">
                     <div class="hs.badge">
-                        <h5>{{item.achievement.name}}</h5>
-                        <img src="{{murl}}{{item.achievement.badge_icon}}" alt="{{item.achievement.name}}" height="150" width="150">
+                        <h5 style="opacity:0.2">{{item.achievement.name}}</h5>
+                        <img id="{{item.achievement.name}}" src="{{murl}}{{item.achievement.badge_icon}}" alt="{{item.achievement.name}}" height="150" width="150">
                         <p>{{item.}}</p>
                     </div>
             </li>
                 {% endfor %}
                 {% for item in available_achievements %}
             <li class="list_item_badge">
-                    <div class="hs.badge" style="opacity:0.2">
-                    <h5>{{item.name}}</h5>
-                    <img src="{{murl}}{{item.badge_icon}}" alt="{{item.name}}" height="150" width="150">
+                    <div class="hs.badge">
+                    <h5 style="opacity:0.2">{{item.name}}</h5>
+                    <img id="{{item.name}}" src="{{murl}}{{item.badge_icon}}" alt="{{item.name}}" height="150" width="150" style="opacity:0.2">
                     <p>{{item.}}</p>
                     </div>
             </li>
@@ -109,5 +119,10 @@
     </div>
   </div>
 </body>
+
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap-tooltip.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap-popover.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/profile_page.js"></script>
+
 </html>
 {% endblock %}
