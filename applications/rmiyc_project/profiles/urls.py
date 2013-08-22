@@ -3,8 +3,8 @@ from django.conf.urls import patterns, url
 import views
 
 urlpatterns = patterns('',
-        url(r'^(?P<username>[a-zA-Z_.-]+)/edit_profile', views.edit_profile),
+        url(r'^(?P<username>[a-zA-Z1-9_.-]+)/edit_profile', views.edit_profile),
         #url(r'^(?P<username>[a-zA-Z_.-]+)/graphs.html', views.graphs),
-        url(r'^(?P<username>[a-zA-Z_.-]+)', views.profile_page, name='profile'),
+        url(r'^(?P<username>[a-zA-Z1-9_.-]+)', views.profile_page, name='profile'),
 
       )
