@@ -16,6 +16,10 @@ from datetime import datetime
 import urllib, urllib2
 import json
 # Create your views here.
+from registration.backends.simple.views import RegistrationView
+from profiles import views
+from django.shortcuts import redirect
+
 
 
 def index(request):
@@ -232,3 +236,9 @@ def game_over(request):
 def about(request):
     context = RequestContext(request, {})
     return render_to_response('rmiyc/about.html', context)
+
+
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self, request, user):
+        return '/profile/%s/edit_profile' % user.username

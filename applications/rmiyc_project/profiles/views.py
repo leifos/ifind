@@ -11,6 +11,7 @@ from configuration import MEDIA_URL, UPLOAD_DIR
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
+from ifind.common.utils import encode_string_to_url
 
 
 
@@ -38,6 +39,9 @@ def profile_page(request, username):
             if item not in player_cats:
                 scores.append(HighScore(category=item, highest_score=0))
         progress = get_progress(user, user_profile)
+        for score in scores:
+            score.url = encode_string_to_url(score.category.name)
+            print score.url
     if request.user == user:
         view_permission = True
     return render_to_response('profiles/profile_page.html', {'usr': user,
