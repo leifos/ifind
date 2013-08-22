@@ -1,13 +1,28 @@
-html, body {
-    background-color: #fafafa;
+html {
+  height: 100%;
+}
+
+body {
+    background: #c4e3f3;
+    min-height: 100%;
+}
+
+#container {
+    margin: 10px auto;
+    padding: 2px 5px;
+    width: 1000px;
 }
 
 /* HEADER SECTION STYLING  */
 .header-section {
     display: block;
-    padding-top: 60px;
-    padding-bottom: 50px;
+    padding-top: 56px;
+    padding-bottom: 24px;
     background-color: #fafafa;
+}
+
+.header-container {
+    margin-left: 6px;
 }
 
 #head1, #head2 {
@@ -24,9 +39,10 @@ html, body {
 
 #head2 {
     color: #963334;
-    font-family: "Great Vibes";
+    font-family: Impact, Charcoal, sans-serif;
     font-size: 100px;
-    font-weight: 700;
+    font-weight: 400;
+    letter-spacing: 2px;
 }
 
 /* PAGINATION SECTION STYLING*/
@@ -38,5 +54,7 @@ html, body {
 }
 
 #pagination-container {
-    padding-right: 110px;
+    padding-top: 1px;
+    padding-bottom: 11px;
+    margin-left: 226px;
 }
