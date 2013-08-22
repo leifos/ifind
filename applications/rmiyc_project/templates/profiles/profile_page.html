@@ -81,7 +81,7 @@
             {% for item in highscores %}
             <li class="thumbnail list_item">
                 <div class="hs">
-                    <a href="/rmiyc/play/{{item.category.name}}">
+                    <a href="/rmiyc/play/{{item.url}}">
                     <h5>{{item.category.name}}</h5>
                     <img src="{{item.category.icon}}" alt="{{item.category.name}}" height="145" width="145">
                     <p>{{item.highest_score}}</p></a>
