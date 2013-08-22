@@ -1,3 +1,5 @@
+import string
+
 class Query(object):
     """
     Models a Query object for use with ifind's search interface.
@@ -23,7 +25,7 @@ class Query(object):
             query = Query("hello world", top=20)
 
         """
-        self.terms = terms
+        self.terms = Query.check_input(terms)
         self.result_type = result_type.lower()
         self.lang = lang
         self.top = top
@@ -76,3 +78,25 @@ class Query(object):
 
         """
         return hash(tuple(self.__dict__.items()))
+
+    @staticmethod
+    def check_input(input_string):
+        """
+        Takes a unicode string, encodes it to ascii
+        whilst stripping out the punctuation.
+
+        Returns cleaned string or None if string
+        contains nothing/spaces.
+
+        """
+        # encode to ascii, ignoring non ascii chars
+        s = input_string.encode('ascii', 'ignore')
+
+        # remove all punctuation
+        s = s.translate(string.maketrans("",""), string.punctuation)
+
+        # set to None if just spaces
+        if s.isspace():
+            s = None
+
+        return s
