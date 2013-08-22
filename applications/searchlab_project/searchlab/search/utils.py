@@ -7,7 +7,6 @@ import django.utils.crypto as django
 from ifind.search import EngineFactory
 
 
-
 def check_input(input_string):
     """
     Takes a unicode string, encodes it to ascii
