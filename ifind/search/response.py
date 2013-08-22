@@ -32,7 +32,7 @@ class Response(object):
         self.results = []
         self.result_total = 0
 
-    def add_result(self, title, url, summary, **kwargs):
+    def add_result(self, title="", url="", summary="", **kwargs):
         """
         Adds a result to Response's results list.
 
