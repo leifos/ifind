@@ -226,17 +226,21 @@ class Bing(Engine):
 
         content = json.loads(results.text)
 
+        import pprint
+
+        pprint.pprint(content)
+
         if query.result_type == 'web':
             for result in content[u'd'][u'results'][0][u'Web']:
                 response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'])
 
         if query.result_type == 'image':
             for result in content[u'd'][u'results'][0][u'Image']:
-                file_size = int(result[u'FileSize']) / 1024
-                summary_string = 'Filesize: {0} KB | Dimensions: {1}x{2} | Source: {3}'\
-                                 .format(file_size, result[u'Width'], result[u'Height'], result[u'SourceUrl'])
-
-                response.add_result(title=result[u'Title'], url=result[u'MediaUrl'], summary=summary_string)
+                file_size = str(int(result[u'FileSize']) / 1024)  # in kilobytes
+                width = result[u'Width']
+                height = result[u'Height']
+                media_url = result[u'MediaUrl']
+                response.add_result(file_size=file_size, width=width, height=height, media_url=media_url)
 
         if query.result_type == 'video':
             for result in content[u'd'][u'results'][0][u'Video']:
