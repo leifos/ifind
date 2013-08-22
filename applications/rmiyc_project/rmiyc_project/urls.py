@@ -3,6 +3,7 @@ from django.conf import settings
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+from rmiyc.views import MyRegistrationView
 
 urlpatterns = patterns('',
     # Examples:
@@ -15,8 +16,11 @@ urlpatterns = patterns('',
     url(r'^data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/register/$', MyRegistrationView.as_view(),name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^leaderboard/', include('leaderboard.urls')),
     url(r'^profile/', include('profiles.urls')),
     url(r'', include('rmiyc.urls')),
 )
+
+
