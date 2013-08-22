@@ -30,8 +30,8 @@ def search(request):
     experiment = get_or_create_experiment(exp_id)
 
     # execute query
-    engine = EngineFactory('wikipedia')
-    query = Query(query_terms, top=experiment['top'])
+    engine = EngineFactory('bing', api_key="")
+    query = Query(query_terms, top=experiment['top'], result_type="image")
     response = engine.search(query)
 
     return HttpResponse(response.to_json(), content_type='application/json')
