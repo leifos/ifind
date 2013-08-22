@@ -1,4 +1,6 @@
 /**************************/
+/*   BING SPECIFIC CSS    */
+/**************************/
 /* INPUT SECTION STYLING  */
 /**************************/
 
@@ -7,8 +9,12 @@
     padding-bottom: 10px;
 }
 
+#search-form {
+    margin-left: 8px;
+}
+
 #search-input {
-    width: 42%;
+    width: 65%;
     margin-right: 6px;
 }
 
@@ -30,6 +36,7 @@
 
 #dropdown-options {
     min-width: 64px;
+    margin-top: 23px;
 }
 
 #dropdown-options > ul {
@@ -41,13 +48,17 @@
     background-color: #3a81ba;
 }
 
-
-/*RESULTS SECTION STYLING*/
+/***************************/
+/* RESULTS SECTION STYLING */
+/***************************/
 
 .results-section {
     background-color: #fafafa;
 
 }
+/***********************/
+/*     WEB RESULTS     */
+/***********************/
 
 #results-container {
     padding-left: 289px;
@@ -88,4 +99,14 @@
     color: #963334;
 
     padding-left: 1px;
+}
+
+/*************************/
+/*     IMAGE RESULTS     */
+/*************************/
+
+#image-results-container {
+    width: 625px;
+    margin-left: -17px;
+    margin-top: 12px;
 }
