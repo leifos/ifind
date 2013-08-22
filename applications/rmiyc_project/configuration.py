@@ -12,7 +12,7 @@ MEDIA_ROOT = 'data/'
 UPLOAD_DIR =  '%Y/%m/%d'
 DATA_DIR = os.path.join(PROJ_PATH, 'data')
 
-DEPLOY = False
-DEBUG = True
+DEPLOY = True
+DEBUG = False
 
 APP_NAME = 'rmiyc'
