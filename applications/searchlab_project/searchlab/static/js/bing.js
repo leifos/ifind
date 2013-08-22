@@ -2,9 +2,11 @@
 // String formatting function //
 ////////////////////////////////
 
-String.prototype.format = function() {
+String.prototype.format = function()
+{
   var args = arguments;
-  return this.replace(/{(\d+)}/g, function(match, number) {
+  return this.replace(/{(\d+)}/g, function(match, number)
+  {
     return typeof args[number] != 'undefined'
       ? args[number]
       : match
@@ -16,7 +18,15 @@ String.prototype.format = function() {
 // Pagination Globals //
 ////////////////////////
 
-// global pagination vars
+jQuery.fn.exists = function()
+{
+    return this.length>0;
+}
+
+////////////////////////
+// Pagination Globals //
+////////////////////////
+
 window.pagination =
 {
     maxPageSize: 4,             // max results per page
@@ -26,12 +36,31 @@ window.pagination =
     currentPage : 1             // current page
 };
 
-///////////////////
-// Cached JQuery //
-///////////////////
+////////////////////////
+//   Search Globals   //
+////////////////////////
+
+window.search =
+{
+    result_type :'image'
+};
+
+
+/////////////////////////////
+// Cached JQuery Selectors //
+/////////////////////////////
 
 var paginationContainer = $('#pagination-container');
-var resultsContainer = $('#results-container');
+
+if (window.search.result_type == 'image')
+{
+    var resultsContainer = $('#image-results-container');
+}
+else
+{
+    var resultsContainer = $('#results-container');
+}
+
 var searchInput = $('#search-input');
 
 
@@ -51,8 +80,8 @@ $(document).keydown(function(event)
     }
 
 
-    if (!$('*:focus').is(searchInput)) {
-
+    if (!$('*:focus').is(searchInput))
+    {
         // right arrow
         if (event.which == 39)
         {
@@ -104,13 +133,15 @@ function paginateResults(data)
     window.pagination.pages = pages;
 
     // if 0 then need at least one page
-    if (pages == 0) {
+    if (pages == 0)
+    {
         window.pagination.pages = 1
     }
 
     // add extra page for remainder results
     if (results.length % maxPageSize != 0) {
-        if (results.length > 5) {
+        if (results.length > 5)
+        {
             window.pagination.pages += 1;
         }
     }
@@ -119,7 +150,8 @@ function paginateResults(data)
     var start = 0,
           end = maxPageSize;
 
-    for (var i=0; i<window.pagination.pages; i++) {
+    for (var i=0; i<window.pagination.pages; i++)
+    {
         window.pagination.page[i+1] = results.slice(start, end);
         start += maxPageSize;
         end += maxPageSize;
@@ -147,7 +179,8 @@ function displayResults(results)
         }).appendTo(resultsContainer);
     }
 
-    else {
+    else
+    {
         // cache current page
         var currentPage = window.pagination.currentPage;
         var maxPageSize = window.pagination.maxPageSize;
@@ -158,17 +191,32 @@ function displayResults(results)
         // page derived index attribute assignment
         resultsContainer.attr('start', index);
 
-        var resultHTML = $('#result-template').html();
+        if (window.search.result_type == 'image')
+        {
+            var resultHTML = $('#image-result-template').html();
+            for (var i=0; i<results.length; i++)
+            {
+                var fileSize = results[i]['file_size'];
+                var dimensions = "{0}x{1}".format(results[i]['width'], results[i]['height']);
+                var sourceURL = results[i]['media_url'];
 
-        // add results to div
-        for (var i=0; i<results.length; i++) {
-
-            var title = results[i]['title'];
-            var summary = results[i]['summary'];
-            var url = results[i]['url'];
-
-            resultsContainer.append(resultHTML.format(url, title, url, summary));
+                resultsContainer.append(resultHTML.format(sourceURL, dimensions));
+            }
         }
+        else
+        {
+            var resultHTML = $('#web-result-template').html();
+            for (var i=0; i<results.length; i++)
+            {
+
+                var title = results[i]['title'];
+                var summary = results[i]['summary'];
+                var url = results[i]['url'];
+
+                resultsContainer.append(resultHTML.format(url, title, url, summary));
+            }
+        }
+
         paginationContainer.fadeIn("slow");
     }
 
