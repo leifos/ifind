@@ -19,35 +19,38 @@
 </head>
 
 <body>
-    <div class="header-section">
-        <div class="uk-container uk-container-center uk-text-center">
-            <h1 class="uk-h1" id="head1">Search</h1>
-            <h1 class="uk-h1" id="head2">Lab</h1>
-        </div>
-    </div>
 
-    {% block input_section %}{% endblock %}
-
-    {% block results_section %}{% endblock %}
-
-    <div class="pagination-section">
-        <div id="pagination-container" class="uk-container uk-container-center uk-text-center">
-            <div class="uk-button-group">
-                <button id="first-btn" class="uk-button page-btn" type="submit">&laquo;</button>
-                <button id="previous-btn" class="uk-button page-btn" type="submit">&lsaquo;</button>
-                <button id="page-btn" class="uk-button page-btn" type="submit">---</button>
-                <button id="next-btn" class="uk-button page-btn" type="submit">&rsaquo;</button>
-                <button id="last-btn" class="uk-button page-btn" type="submit">&raquo;</button>
+    <div id="container">
+        <div class="header-section">
+            <div class="header-container uk-container uk-container-center">
+                <h1 class="uk-h1" id="head1">Search</h1>
+                <h1 class=" uk-h1" id="head2">Lab</h1>
             </div>
         </div>
+
+        {% block input_section %}{% endblock %}
+
+        {% block results_section %}{% endblock %}
+
+        <div class="pagination-section">
+            <div id="pagination-container" class="uk-container uk-container-center">
+                <div class="uk-button-group">
+                    <button id="first-btn" class="uk-button page-btn" type="submit">&laquo;</button>
+                    <button id="previous-btn" class="uk-button page-btn" type="submit">&lsaquo;</button>
+                    <button id="page-btn" class="uk-button page-btn" type="submit">---</button>
+                    <button id="next-btn" class="uk-button page-btn" type="submit">&rsaquo;</button>
+                    <button id="last-btn" class="uk-button page-btn" type="submit">&raquo;</button>
+                </div>
+            </div>
+        </div>
+
+        {% block result_templates %}{% endblock %}
+
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/uikit.min.js"></script>
+        {% block engine_js %}{% endblock %}
+
     </div>
-
-    {% block result_templates %}{% endblock %}
-
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/uikit.min.js"></script>
-    {% block engine_js %}{% endblock %}
-
 </body>
 
 </html>
