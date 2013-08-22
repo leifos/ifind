@@ -8,7 +8,7 @@
 
 {% block input_section %}
 <div class="input-section">
-    <div class ="uk-container uk-container-center uk-text-center">
+    <div class ="uk-container uk-container-center">
         <form id="search-form" class="uk-form">
             <input id="search-input" type="text" placeholder="Enter query...">
             <div id="search-btns" class="uk-button-group">
@@ -33,13 +33,16 @@
 
 {% block results_section %}
 <div class="results-section">
-    <ol id="results-container" class="uk-container uk-container-center" start="1">
-    </ol>
+    <div class="uk-container uk-container-center">
+            <ol id="image-results-container" class="uk-grid uk-grid-preserve uk-width-custom" data-uk-grid-margin="" start="1">
+            </ol>
+    </div>
 </div>
 {% endblock %}
 
 {% block result_templates %}
 {% include "web_result.html" %}
+{% include "image_result.html" %}
 {% endblock %}
 
 {% block engine_js %}
