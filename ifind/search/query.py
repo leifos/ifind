@@ -89,11 +89,13 @@ class Query(object):
         contains nothing/spaces.
 
         """
+        PUNCTUATION = '!"#$%&\'()*+,-/;<=>?@[\\]^_`{|}~'
+
         # encode to ascii, ignoring non ascii chars
         s = input_string.encode('ascii', 'ignore')
 
         # remove all punctuation
-        s = s.translate(string.maketrans("",""), string.punctuation)
+        s = s.translate(string.maketrans("",""), PUNCTUATION)
 
         # set to None if just spaces
         if s.isspace():
