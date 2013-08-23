@@ -14,7 +14,7 @@
 }
 
 #search-input {
-    width: 65%;
+    width: 79%;
     margin-right: 6px;
 }
 
@@ -106,7 +106,7 @@
 /*************************/
 
 #image-results-container {
-    width: 625px;
+    width: 638px;
     margin-left: -17px;
-    margin-top: 12px;
+    margin-top: -12px;
 }
