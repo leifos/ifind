@@ -240,7 +240,9 @@ class Bing(Engine):
                 width = result[u'Width']
                 height = result[u'Height']
                 media_url = result[u'MediaUrl']
-                response.add_result(file_size=file_size, width=width, height=height, media_url=media_url)
+                thumb_url = result[u'Thumbnail'][u'MediaUrl']
+                response.add_result(file_size=file_size, width=width, height=height,
+                                    media_url=media_url, thumb_url=thumb_url)
 
         if query.result_type == 'video':
             for result in content[u'd'][u'results'][0][u'Video']:
