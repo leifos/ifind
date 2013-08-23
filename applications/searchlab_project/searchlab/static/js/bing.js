@@ -29,7 +29,7 @@ jQuery.fn.exists = function()
 
 window.pagination =
 {
-    maxPageSize: 4,             // max results per page
+    maxPageSize: 9,             // max results per page
     results : null,             // list of results
     pages : 1,                  // how many pages there are
     page : {},                  // page lookup map
@@ -197,10 +197,13 @@ function displayResults(results)
             for (var i=0; i<results.length; i++)
             {
                 var fileSize = results[i]['file_size'];
-                var dimensions = "{0}x{1}".format(results[i]['width'], results[i]['height']);
+                var dimensions = "{0} x {1}".format(results[i]['width'], results[i]['height']);
                 var sourceURL = results[i]['media_url'];
+                var thumbURL = results[i]['thumb_url'];
 
-                resultsContainer.append(resultHTML.format(sourceURL, dimensions));
+                var overlayString = "{0}Kb<br>{1}".format(fileSize, dimensions);
+
+                resultsContainer.append(resultHTML.format(sourceURL, thumbURL, overlayString));
             }
         }
         else
