@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASG Game</title>
+</head>
+<body>
+<a href="/asg/start/">start</a> | <a href="/asg/query/">query</a> | <a href="/asg/assess/">assess</a>
+<p>
+{% if v %}
+{{v}}
+ <ul>
+<li>Tokens Left: {{data.tokens}}</li>
+<li>Query Cost: {{data.cq}}</li>
+<li>Assessment Cost: {{data.ca}}</li>
+<li>Points: {{data.points}}</li>
+<li>Round No.: {{data.no}}</li>
+</ul>
+
+<ul>
+{% for d in data.round %}
+    <li>{{d.label}} , {% if d.opened%} {{d.gain}} {% else %} Unopened {% endif %}</li>
+{% endfor %}
+    </ul>
+{% endif %}
+</p>
+</body>
+</html>
