@@ -139,6 +139,7 @@ class ABSGame(object):
         data['points'] = self.points
         data['round'] = self.current_round
         data['no'] = self.round_no
+        data['gameover'] = self.is_game_over()
         return data
 
 

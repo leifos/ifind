@@ -19,7 +19,7 @@ def startgame(request):
         context = RequestContext(request, {})
         rc = RedisConn()
         rc.connect()
-        rc.store('test','start was pressed')
+        rc.store('test','game started')
 
         game = ABSGame(ryg,cg)
 
@@ -37,9 +37,9 @@ def query(request):
         if v:
             game = rc.get('game')
             game.issue_query()
-            v = game.tokens
             rc.store('game',game)
             data = game.get_game_state()
+            rc.store('test','query was issued')
         return render_to_response('asg/game.html', {'v': v, 'data': data}, context)
 
 def assess(request):
@@ -50,7 +50,6 @@ def assess(request):
         if v:
             game = rc.get('game')
             game.examine_document()
-            v = game.tokens
             rc.store('game',game)
             data = game.get_game_state()
         rc.store('test','assessed was pressed')
