@@ -16,11 +16,15 @@ class RedisConn(object):
 
     """
 
-    def __init__(self, host="localhost", port=6379, db=0):
+    def __init__(self, host="localhost", port=6379, db=0, limit=1000):
 
         self.host = host
         self.port = port
         self.db = db
+        self.connection = None
+        self.set_name = 'default'
+        self.limit = limit
+        self.expires = 1000
 
     def connect(self):
         """
@@ -42,7 +46,52 @@ class RedisConn(object):
             raise CacheConnectionException(MODULE, "Failed to establish connection to "
                                                    "redis server @ {0}:{1}".format(self.host, self.port))
 
-        return redis.StrictRedis(host=self.host, port=self.port, db=self.db)
+        self.connection = redis.StrictRedis(host=self.host, port=self.port, db=self.db)
+        return self.connection
+
+
+    def store(self, key, v):
+        """
+        Serialises and stores the value at the key location.
+
+        Args:
+            key:
+            value:
+            expires (int): amount of time for key to remain in database (seconds)
+        """
+
+
+        while self.connection.zcard(self.set_name) >= self.limit:
+            key = self.connection.zremrangebyrank(self.set_name, 0, 0)
+            self.connection.delete(key)
+
+        value = base64.b64encode(pickle.dumps(v))
+
+        pipe = self.connection.pipeline()
+        pipe.hmset(key, {'response': value, 'count': 0, 'last': ''})
+        pipe.zadd(self.set_name, 0, key)
+        pipe.expire(key, self.expires)
+        pipe.execute()
+
+    def get(self, key):
+        """
+        Retrieves a value associated with the key, returning None if not found.
+        Args:
+            key
+        Returns:
+            value
+        """
+        value = self.connection.hget(key, 'response')
+
+        if value:
+            pipe = self.connection.pipeline()
+            pipe.hincrby(key, 'count', 1)
+            pipe.hset(key, 'last', strftime("%Y/%m/%d %H:%M:%S", gmtime()))
+            pipe.zincrby(self.set_name, key, 1)
+            pipe.execute()
+            return pickle.loads(base64.b64decode(value))
+        else:
+            return None
 
 
 class QueryCache(object):
