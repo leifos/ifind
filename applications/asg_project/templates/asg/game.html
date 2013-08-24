@@ -6,8 +6,9 @@
 <body>
 <a href="/asg/start/">start</a> | <a href="/asg/query/">query</a> | <a href="/asg/assess/">assess</a>
 <p>
-{% if v %}
-    {{v}}
+    {{sid}}
+
+{% if data %}
     <ul>
         <li>Tokens Left: {{data.tokens}}</li>
         <li>Query Cost: {{data.cq}}</li>

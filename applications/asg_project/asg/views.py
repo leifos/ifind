@@ -17,40 +17,47 @@ def index(request):
 
 def startgame(request):
         context = RequestContext(request, {})
+        request.session.flush()
+        session_id = request.session._get_or_create_session_key()
+        print session_id
         rc = RedisConn()
         rc.connect()
-        rc.store('test','game started')
-
         game = ABSGame(ryg,cg)
-
         game.start_game()
         data = game.get_game_state()
-        rc.store('game',game)
-        return render_to_response('asg/game.html', {'v':'Game Started', 'data': data }, context)
-
+        rc.store(session_id, game)
+        response = render_to_response('asg/game.html', {'sid':session_id, 'data': data }, context)
+        response.set_cookie('gid',session_id)
+        return response
 
 def query(request):
         context = RequestContext(request, {})
+
+        gid = ''
+        if request.COOKIES.has_key('gid'):
+            gid = request.COOKIES['gid']
         rc = RedisConn()
         rc.connect()
-        v = rc.get('test')
-        if v:
-            game = rc.get('game')
+        game = rc.get(gid)
+        if game:
             game.issue_query()
-            rc.store('game',game)
+            rc.store(gid,game)
             data = game.get_game_state()
-            rc.store('test','query was issued')
-        return render_to_response('asg/game.html', {'v': v, 'data': data}, context)
+
+        return render_to_response('asg/game.html', {'sid':gid, 'data': data}, context)
 
 def assess(request):
         context = RequestContext(request, {})
         rc = RedisConn()
         rc.connect()
-        v = rc.get('test')
-        if v:
-            game = rc.get('game')
+        gid = ''
+        if request.COOKIES.has_key('gid'):
+            gid = request.COOKIES['gid']
+
+        data = {}
+        game = rc.get(gid)
+        if game:
             game.examine_document()
-            rc.store('game',game)
+            rc.store(gid,game)
             data = game.get_game_state()
-        rc.store('test','assessed was pressed')
-        return render_to_response('asg/game.html', {'v': v, 'data': data}, context)
+        return render_to_response('asg/game.html', {'sid':gid, 'data': data}, context)
