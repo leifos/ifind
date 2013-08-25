@@ -4,7 +4,7 @@
     <title>ASG Game</title>
 </head>
 <body>
-<a href="/asg/start/">start</a> | <a href="/asg/query/">query</a> | <a href="/asg/assess/">assess</a>
+<a href="/asg/start/">start</a> | <a href="/asg/start2/">start2</a> |  <a href="/asg/query/">query</a> | <a href="/asg/assess/">assess</a>
 <p>
     {{sid}}
 
@@ -20,11 +20,12 @@
     {% if data.gameover %}
         Game Over
     {% else %}
-        <ul>
+        <p>
         {% for d in data.round %}
-            <li>{{d.label}} , {% if d.opened%} {{d.gain}} {% else %} Unopened {% endif %}</li>
+
+            {{d.label}} <br>{% if d.opened%} {{d.gain}} {% else %} Unopened {% endif %}<br>
         {% endfor %}
-        </ul>
+        <p>
     {% endif %}
 
 {% endif %}
