@@ -67,6 +67,28 @@ class TestYieldGenerator(YieldGenerator):
         return yl
 
 
+class TestHighYieldGenerator(YieldGenerator):
+
+    def __init__(self, max_yield=3):
+        YieldGenerator.__init__(self, max_yield)
+        self.count = 0
+
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yls = []
+        yls.append([3,3,3,2,2,2,1,1,1,0])
+        yls.append([3,2,3,2,2,2,1,0,0,0])
+        yls.append([3,3,1,1,1,0,0,0,0,0])
+        yls.append([3,3,2,3,1,2,1,1,1,0])
+        yls.append([3,3,3,3,0,0,0,0,0,0])
+
+        yl = yls[ (self.count % 5) ]
+        self.count += 1
+
+        return yl
 
 
 
