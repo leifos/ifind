@@ -32,7 +32,7 @@ body {
 #head1 {
     font-family: Impact, Charcoal, sans-serif;
     color: #3a81ba;
-    font-size: 100px;
+    font-size: 125px;
     font-weight: 400;
     letter-spacing: 2px;
 }
@@ -40,7 +40,7 @@ body {
 #head2 {
     color: #963334;
     font-family: Impact, Charcoal, sans-serif;
-    font-size: 100px;
+    font-size: 125px;
     font-weight: 400;
     letter-spacing: 2px;
 }
@@ -56,5 +56,5 @@ body {
 #pagination-container {
     padding-top: 1px;
     padding-bottom: 11px;
-    margin-left: 226px;
+    margin-left: 222px;
 }
