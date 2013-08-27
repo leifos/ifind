@@ -228,7 +228,7 @@ class Bing(Engine):
 
         import pprint
 
-        pprint.pprint(content)
+        #pprint.pprint(content)
 
         if query.result_type == 'web':
             for result in content[u'd'][u'results'][0][u'Web']:
@@ -246,8 +246,13 @@ class Bing(Engine):
 
         if query.result_type == 'video':
             for result in content[u'd'][u'results'][0][u'Video']:
-                summary_string = Bing._get_video_length(int(result[u'RunTime']))
-                response.add_result(title=result[u'Title'], url=result[u'MediaUrl'], summary=summary_string)
+                run_time = Bing._get_video_length(int(result[u'RunTime']))
+                title = result[u'Title']
+                media_url = result[u'MediaUrl']
+                thumb_url = result.get(u'Thumbnail', {}).get(u'MediaUrl', None)
+                if thumb_url is None:
+                    continue
+                response.add_result(title=title, media_url=media_url, run_time=run_time, thumb_url=thumb_url)
 
         return response
 
@@ -266,6 +271,9 @@ class Bing(Engine):
             Private method.
 
         """
+        if not run_time:
+            return ''
+
         # get minutes
         minutes = run_time / 1000 / 60
         min_string = '{} mins'.format(minutes)
