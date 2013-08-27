@@ -26,57 +26,100 @@ window.pagination =
     currentPage : 1             // current page
 };
 
-///////////////////
-// Cached JQuery //
-///////////////////
+/////////////////////////////
+// Cached JQuery Selectors //
+/////////////////////////////
 
 var paginationContainer = $('#pagination-container');
 var resultsContainer = $('#results-container');
 var searchInput = $('#search-input');
 
+/////////////////////////////
+//          MAIN?          //
+/////////////////////////////
 
 // hide pagination, results and focus search input
 paginationContainer.hide();
 resultsContainer.hide();
 searchInput.focus();
 
-// override LEFT and RIGHT arrow keys and map to pagination buttons
-$(document).keydown(function(event)
+// when page ready (has loaded?)
+$(document).ready(function()
 {
-
-    if (event.which == 13)
+    // detect key down event
+    $(document).keydown(function(event)
     {
-       event.preventDefault();
-       $('#search-btn').click();
-    }
-
-
-    if (!$('*:focus').is(searchInput)) {
-
-        // right arrow
-        if (event.which == 39)
+        // <ENTER> key submits search
+        if (event.which == 13)
         {
-            event.preventDefault();
-            $('#next-btn').click();
+           event.preventDefault();
+           $('#submit-btn').click();
         }
 
-        // left arrow
-        if (event.which == 37)
+        // if searchInput not in use, use arrow keys for pagination
+        if (!$('*:focus').is(searchInput))
         {
-            event.preventDefault();
-            $('#previous-btn').click();
+            // right arrow
+            if (event.which == 39)
+            {
+                event.preventDefault();
+                $('#next-btn').click();
+            }
+
+            // left arrow
+            if (event.which == 37)
+            {
+                event.preventDefault();
+                $('#previous-btn').click();
+            }
         }
-    }
-});
+    });
 
-// query terms stored and a search request is sent
-$('#search-btn').click(function(event)
-{
-    event.preventDefault();
-    var query_terms = searchInput.val();
-    searchRequest(query_terms);
-});
+    // detects when submit button clicked and fires a request
+    $('#submit-btn').click(function(event)
+    {
+        event.preventDefault();
+        searchRequest(searchInput.val());
+    });
 
+
+    /* handler for '<<' pagination button */
+    $('#first-btn').click(function(event)
+    {
+        window.pagination.currentPage = 1;
+        displayResults(window.pagination.page[1]);
+    });
+
+    /* handler for '<' pagination button */
+    $('#previous-btn').click(function(event)
+    {
+        var currentPage = window.pagination.currentPage;
+        if (currentPage > 1) {
+            currentPage -= 1;
+            window.pagination.currentPage = currentPage;
+            displayResults(window.pagination.page[currentPage]);
+        }
+    });
+
+    /* handler for '>' pagination button */
+    $('#next-btn').click(function(event)
+    {
+        var currentPage = window.pagination.currentPage;
+        if (currentPage < window.pagination.pages) {
+            currentPage += 1;
+            window.pagination.currentPage = currentPage;
+            displayResults(window.pagination.page[currentPage]);
+        }
+    });
+
+    /* handler for '<' pagination button */
+    $('#last-btn').click(function(event)
+    {
+        var final_page = window.pagination.pages;
+        window.pagination.currentPage = final_page;
+        displayResults(window.pagination.page[final_page]);
+    });
+});
 
 // sends an AJAX GET request to searchlab, paginating results on success
 function searchRequest(query_terms)
@@ -163,7 +206,7 @@ function displayResults(results)
         // page derived index attribute assignment
         resultsContainer.attr('start', index);
 
-        var resultHTML = $('#result-template').html();
+        var resultHTML = $('#web-result-template').html();
 
         // add results to div
         for (var i=0; i<results.length; i++) {
@@ -174,47 +217,8 @@ function displayResults(results)
 
             resultsContainer.append(resultHTML.format(url, title, url, summary));
         }
-        paginationContainer.fadeIn("slow");
     }
-
+    paginationContainer.fadeIn("slow");
     resultsContainer.fadeIn("fast");
     searchInput.blur();
 }
-
-
-/* handler for '<<' pagination button */
-$('#first-btn').click(function(event)
-{
-    window.pagination.currentPage = 1;
-    displayResults(window.pagination.page[1]);
-});
-
-/* handler for '<' pagination button */
-$('#previous-btn').click(function(event)
-{
-    var currentPage = window.pagination.currentPage;
-    if (currentPage > 1) {
-        currentPage -= 1;
-        window.pagination.currentPage = currentPage;
-        displayResults(window.pagination.page[currentPage]);
-    }
-});
-
-/* handler for '>' pagination button */
-$('#next-btn').click(function(event)
-{
-    var currentPage = window.pagination.currentPage;
-    if (currentPage < window.pagination.pages) {
-        currentPage += 1;
-        window.pagination.currentPage = currentPage;
-        displayResults(window.pagination.page[currentPage]);
-    }
-});
-
-/* handler for '<' pagination button */
-$('#last-btn').click(function(event)
-{
-    var final_page = window.pagination.pages;
-    window.pagination.currentPage = final_page;
-    displayResults(window.pagination.page[final_page]);
-});
