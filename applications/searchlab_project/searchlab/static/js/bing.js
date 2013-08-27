@@ -14,6 +14,15 @@ String.prototype.format = function()
   });
 };
 
+////////////////////////////////
+// String capitalise function //
+////////////////////////////////
+
+String.prototype.capitalise = function()
+{
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 //////////////////////////////
 // JQuery element existence //
 //////////////////////////////
@@ -42,7 +51,7 @@ window.pagination =
 
 window.search =
 {
-    result_type :'video'
+    result_type :'image'
 };
 
 /////////////////////////////
@@ -51,6 +60,7 @@ window.search =
 
 var paginationContainer = $('#pagination-container');
 var resultsContainer = $('#results-container');
+var dropdownOptions = $('#dropdown-options');
 var searchInput = $('#search-input');
 
 /////////////////////////////
@@ -62,10 +72,25 @@ paginationContainer.hide();
 resultsContainer.hide();
 searchInput.focus();
 
+// hide option that's search default and set the button to it
+$('#dropdown-options > li > a[href="{0}"]'.format(window.search.result_type)).css('display', 'none');
+$('#submit-btn').text('{0} Search'.format(window.search.result_type.capitalise()));
 
 // when page ready (has loaded?)
 $(document).ready(function()
 {
+    // handle submit button dropdown options
+    $('#dropdown-options > li').click(function(e) {
+        e.preventDefault();
+        var selectedType = e.target.getAttribute("href");
+        $('#dropdown-options > li > a').filter(':hidden').show();
+        $('#dropdown-options > li > a[href="{0}"]'.format(selectedType)).css('display', 'none');
+        window.search.result_type = selectedType;
+        $('#submit-btn').text('{0} Search'.format(e.target.textContent));
+        $('#dropdown-container').hide();
+        console.log(window.search.result_type);
+    });
+
     // detect key down event
     $(document).keydown(function(event)
     {
@@ -148,7 +173,8 @@ function searchRequest(query_terms)
     ({
         type: "GET",
         url: "/search/",
-        data: {'q' : query_terms },
+        data: {'q' : query_terms,
+               't' : window.search.result_type},
         success: paginateResults
     });
 }
