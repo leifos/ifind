@@ -1,3 +1,8 @@
+/**************************/
+/*  GLOBAL SEARCHLAB CSS  */
+/**************************/
+/* INPUT SECTION STYLING  */
+/**************************/
 html {
   height: 100%;
 }
@@ -13,7 +18,9 @@ body {
     width: 855px;
 }
 
+/***************************/
 /* HEADER SECTION STYLING  */
+/***************************/
 .header-section {
     display: block;
     padding-top: 56px;
@@ -45,8 +52,9 @@ body {
     letter-spacing: 2px;
 }
 
-/* PAGINATION SECTION STYLING*/
-
+/*******************************/
+/* PAGINATION SECTION STYLING  */
+/*******************************/
 .pagination-section {
     margin-top: -15px;
     padding-top: 30px;
