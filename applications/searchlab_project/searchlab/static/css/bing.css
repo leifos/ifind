@@ -120,3 +120,19 @@
 .uk-overlay-caption {
     padding: 0;
 }
+
+/*************************/
+/*     Video RESULTS     */
+/*************************/
+
+#image-results-container {
+    margin-left: -22px;
+    margin-top: 12px;
+}
+
+.video-result {
+    margin-right: 7px;
+    margin-bottom: 7px;
+    float: left;
+    list-style: none;
+}
