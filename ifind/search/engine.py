@@ -50,6 +50,8 @@ class Engine(object):
 
         # datetime of last query
         self.last_search = None
+        self.num_requests = 0
+        self.num_requests_cached = 0
 
     def search(self, query):
         """
