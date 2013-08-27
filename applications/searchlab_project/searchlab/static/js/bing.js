@@ -191,19 +191,34 @@ function displayResults(results)
         // page derived index attribute assignment
         resultsContainer.attr('start', index);
 
+//        if (window.search.result_type == 'image')
+//        {
+//            var resultHTML = $('#image-result-template').html();
+//            for (var i=0; i<results.length; i++)
+//            {
+//                var fileSize = results[i]['file_size'];
+//                var dimensions = "{0} x {1}".format(results[i]['width'], results[i]['height']);
+//                var sourceURL = results[i]['media_url'];
+//                var thumbURL = results[i]['thumb_url'];
+//
+//                var overlayString = "{0}Kb<br>{1}".format(fileSize, dimensions);
+//
+//                resultsContainer.append(resultHTML.format(sourceURL, thumbURL, overlayString));
+//            }
+//        }
         if (window.search.result_type == 'image')
         {
-            var resultHTML = $('#image-result-template').html();
+            var resultHTML = $('#video-result-template').html();
             for (var i=0; i<results.length; i++)
             {
-                var fileSize = results[i]['file_size'];
-                var dimensions = "{0} x {1}".format(results[i]['width'], results[i]['height']);
-                var sourceURL = results[i]['media_url'];
-                var thumbURL = results[i]['thumb_url'];
+                var mediaUrl = results[i]['media_url'];
+                var runTime = results[i]['run_time'];
+                var title = results[i]['title'];
+                var thumbUrl = results[i]['thumb_url'];
 
-                var overlayString = "{0}Kb<br>{1}".format(fileSize, dimensions);
+                var overlayString = "{0}<br>{1}".format(title, runTime);
 
-                resultsContainer.append(resultHTML.format(sourceURL, thumbURL, overlayString));
+                resultsContainer.append(resultHTML.format(mediaUrl, thumbUrl, overlayString));
             }
         }
         else
