@@ -34,17 +34,17 @@
     background-image: linear-gradient(to bottom, #4093d2, #3e95d2);
 }
 
-#dropdown-options {
+#dropdown-container {
     min-width: 64px;
     margin-top: 23px;
 }
 
-#dropdown-options > ul {
+#dropdown-container > ul {
     text-align: left;
     background-color: #fafafa;
 }
 
-#dropdown-options > ul > li > a:hover {
+#dropdown-container > ul > li > a:hover {
     background-color: #3a81ba;
 }
 
