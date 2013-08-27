@@ -84,6 +84,43 @@ class PageRetrievabilityCalculator:
 
         return total_retrievability
 
+    def stat_based_query_generation(self, crawlFile, k, l=0.5):
+        """
+        takes in name of file with term, occurrences pairs crawled from website
+        and uses this to calculate probabilities for each query which is sorted
+        in descending order and the top k queries returned
+        :param crawlFile: the file with terms and occurrences
+        :param k: integer indicating the number of queries to be returned
+        :param l : lambda, a parameter between 0 and 1 default 0.5
+        :return:a list of k prioritised queries
+        """
+        pass
+
+    def populateCrawlDict(self, crawlFile):
+        """
+        reads in crawlFile and stores in dictionary which is returned
+        :param crawlFile:
+        :return:
+        """
+        pass
+
+    def calculate_term_probability(self):
+        pass
+
+    def calculate_query_probability(self):
+        pass
+
+    def get_times_in_doc(self,term):
+        pass
+
+    def get_length_of_doc(self):
+        pass
+
+    def get_times_in_crawlfile(self,term):
+        pass
+
+    def get_total_crawl_occurrences(self):
+        pass
 
     def top_queries(self, n):
         """
