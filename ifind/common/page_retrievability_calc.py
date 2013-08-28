@@ -126,10 +126,18 @@ class PageRetrievabilityCalculator:
         pass
 
     def get_times_in_crawlfile(self,term):
-        pass
+    #get the number of times a term occurred in the crawl dictionary
+        if self.crawl_dict:
+            return self.crawl_dict[term]
 
     def get_total_crawl_occurrences(self):
-        pass
+        #get the total number of term occurences in the crawl dictionary
+        #i.e. the sum of the values
+        if self.crawl_dict:
+            total = 0
+            for term, value in self.crawl_dict.items():
+                total += value
+        return total
 
     def top_queries(self, n):
         """

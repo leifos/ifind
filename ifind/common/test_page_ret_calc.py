@@ -16,12 +16,8 @@ class TestPageRetCalc(unittest.TestCase):
         self.pg_calc= PageRetrievabilityCalculator(engine=self.engine)
 
     def test_populate_crawl_dict(self):
-        print "hello"
         self.logger.debug("Test Populate Crawl Dict")
-        from os import getcwd
-        cwd="cwd:", getcwd()
-        self.logger.debug(cwd)
-        self.pg_calc.populate_crawl_dict('common/term_occurrences.txt')
+        self.pg_calc.populate_crawl_dict('term_occurrences.txt')
 
         #check it's not null and contains the following
         #hello 10
@@ -30,6 +26,19 @@ class TestPageRetCalc(unittest.TestCase):
         expected = {'hello' : 10, 'world' : 20, 'goodbye':10}
         self.assertDictEqual(self.pg_calc.crawl_dict,expected)
 
+    def test_get_times_in_crawlfile(self):
+        self.logger.debug("Test Get Times in Crawl File")
+        self.pg_calc.populate_crawl_dict('term_occurrences.txt')
+        hello_count=self.pg_calc.get_times_in_crawlfile('hello')
+        hello_expected=10
+        self.assertEquals(hello_count,hello_expected)
+
+    def test_get_total_crawl_occurrences(self):
+        self.logger.debug("Test Get Total Crawl Occurrences")
+        self.pg_calc.populate_crawl_dict('term_occurrences.txt')
+        expected_total=40
+        actual_total=self.pg_calc.get_total_crawl_occurrences()
+        self.assertEquals(expected_total,actual_total)
 
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr)
