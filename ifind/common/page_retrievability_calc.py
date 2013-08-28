@@ -28,6 +28,8 @@ class PageRetrievabilityCalculator:
         self.url = None
         #the list of queries
         self.query_list = {}
+        #a dictionary which will contain occurrences of terms on a website
+        self.crawl_dict = {}
 
         if generator:
             self.generator = generator
@@ -84,25 +86,32 @@ class PageRetrievabilityCalculator:
 
         return total_retrievability
 
-    def stat_based_query_generation(self, crawlFile, k, l=0.5):
+    def stat_based_query_generation(self, crawl_file, k, l=0.5):
         """
         takes in name of file with term, occurrences pairs crawled from website
         and uses this to calculate probabilities for each query which is sorted
         in descending order and the top k queries returned
-        :param crawlFile: the file with terms and occurrences
+        :param crawl_file: the file with terms and occurrences
         :param k: integer indicating the number of queries to be returned
         :param l : lambda, a parameter between 0 and 1 default 0.5
         :return:a list of k prioritised queries
         """
         pass
 
-    def populateCrawlDict(self, crawlFile):
+    def populate_crawl_dict(self, crawl_file):
         """
         reads in crawlFile and stores in dictionary which is returned
-        :param crawlFile:
+        :param crawl_file:
         :return:
         """
-        pass
+        if crawl_file:
+            f = open(crawl_file, 'r')
+            for line in f:
+                split_line=line.split()
+                term = split_line[0]
+                #TODO need to make robust for errors in input file
+                count = int(split_line[1])
+                self.crawl_dict[term]=count
 
     def calculate_term_probability(self):
         pass
