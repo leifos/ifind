@@ -219,6 +219,9 @@ def game_over(request):
         gm = RMIYCMechanic(ds)
         gm.retrieve_game(user, game_id)
         statistics =[]
+        user_profile = user.get_profile()
+        user_profile.no_games_played += 1
+        user_profile.save()
         statistics.append({'score': gm.get_current_score(), 'no_queries':gm.get_no_of_queries_issued(),
                            'no_successful_queries': gm.get_no_of_successful_queries_issued(), 'category':gm.get_game_category_name(),
                            'no_round': gm.get_final_round_no(), 'no_successful_round': gm.get_no_rounds_completed()})

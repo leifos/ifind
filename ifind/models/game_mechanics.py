@@ -355,8 +355,11 @@ class GameMechanic(object):
                 if self.game.current_score > hs[0].highest_score:
                     hs[0].highest_score = self.game.current_score
                     hs[0].save()
+                if self.game.no_rounds_completed > hs[0].most_no_pages_found:
+                    hs[0].most_no_pages_found = self.game.no_rounds_completed
+                    hs[0].save()
             else:
-                HighScore(user=self.game.user,category=self.game.category, highest_score=self.game.current_score).save()
+                HighScore(user=self.game.user,category=self.game.category, highest_score=self.game.current_score, most_no_pages_found=self.game.no_rounds_completed).save()
             all_hs = HighScore.objects.filter(user=self.game.user)
             gac = game_achievements.GameAchievementChecker(self.game.user)
             up = UserProfile.objects.get(user=self.game.user)

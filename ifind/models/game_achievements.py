@@ -77,7 +77,7 @@ class UberSearcher(GameAchievement):
         total = 0
         for hs in self.highscores:
             total += hs.highest_score
-        if total > self.score_required:
+        if total >= self.score_required:
             return True
         else:
             return False
@@ -97,7 +97,7 @@ class TenGamesPlayed(GameAchievement):
 
 class FivePagesInAGame(GameAchievement):
 
-    def __init__(self, userprofile, highscores, currentgame=None, score_required=4):
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=5):
         GameAchievement.__init__(self,userprofile, highscores)
         self.score_required = score_required
 

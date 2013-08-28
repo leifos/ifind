@@ -131,6 +131,16 @@ class ABSGame(object):
 
 
 
+    def get_game_state(self):
+        data = {}
+        data['tokens'] = self.tokens
+        data['cq'] = self.cq
+        data['ca'] = self.ca
+        data['points'] = self.points
+        data['round'] = self.current_round
+        data['no'] = self.round_no
+        data['gameover'] = self.is_game_over()
+        return data
 
 
 

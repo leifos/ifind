@@ -1,18 +1,12 @@
-# Django settings for rmiyc_project project.
+# Django settings for asg_project project.
+
 import os
-import sys
+PROJ_PATH = os.getcwd()
+TEMP_PATH = os.path.join(PROJ_PATH, 'templates')
+print TEMP_PATH
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-sys.path.append(os.getcwd())
-
-from configuration import UPLOAD_DIR
-from configuration import TEMP_PATH
-from configuration import GAME_DB
-from configuration import MEDIA_ROOT
-from configuration import STATIC_PATH
-from configuration import MEDIA_URL
-
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -20,10 +14,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': GAME_DB,                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -31,10 +26,10 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
-AUTH_PROFILE_MODULE = "rmiyc.UserProfile"
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -61,12 +56,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = MEDIA_ROOT
+MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = MEDIA_URL
+MEDIA_URL = ''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -76,14 +71,13 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = STATIC_PATH
+STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    STATIC_PATH,
 )
 
 # List of finder classes that know how to find static files in
@@ -95,7 +89,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'z*d4m79l(07x4s$qkw&$&+j1wz-2d9$-%d6!4*4hz*fpzbl$qj'
+SECRET_KEY = '%u01l5i97#o$yb1#^d54^!kq+d^rgsjtmvri%+5)g##vb!_az='
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -103,6 +97,8 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
+
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -114,10 +110,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'rmiyc_project.urls'
+ROOT_URLCONF = 'asg_project.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'rmiyc_project.wsgi.application'
+WSGI_APPLICATION = 'asg_project.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -134,14 +130,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'rmiyc',
-    'registration',
-    'django.contrib.humanize',
-    'leaderboard',
-    'profiles',
+    'asg',
 )
 
 # A sample logging configuration. The only tangible logging
