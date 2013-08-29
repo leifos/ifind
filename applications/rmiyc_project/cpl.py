@@ -5,7 +5,7 @@ from ifind.search.engine import EngineFactory
 # words to exclude from query
 STOPWORD_FILE = "stopwords.txt"
 # urls to be calculated
-URL_FILE = "findability.txt"
+URL_FILE = "findability1.txt"
 # result output
 RESULT_FILE = "retrievability.txt"
 
@@ -24,17 +24,19 @@ def get_trending_queries(filename):
 def main():
    
     engine = EngineFactory(engine='Sitebing',
-                           api_key="7DsgD878dSX+FXz6V1zUqRivNiJRgBvDZEWgaeU/MfU=",
+                           api_key="gKTm6KOa6nmmQKXDvDronAGsbia950IeHTzkOPLryfU",
                            throttle=0.1,
                            cache='engine')
 
     query_generator = BiTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE)
-    page_calculator = PageRetrievabilityCalculator(engine=engine, cutoff=CUTOFF, generator=query_generator)
+
     tuple_list = get_trending_queries(URL_FILE)
 
     with open(RESULT_FILE, 'a') as f:
 
         for tuple in tuple_list:
+
+            page_calculator = PageRetrievabilityCalculator(engine=engine, cutoff=CUTOFF, generator=query_generator)
 
             url = tuple[1]
             findability = tuple[0]
