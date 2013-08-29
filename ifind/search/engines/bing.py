@@ -80,6 +80,11 @@ class Bing(Engine):
         if query.result_type not in RESULT_TYPES:
             raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
+        if self.cache_type:
+            if query in self._cache:
+                self.num_requests_cached = self.num_requests_cached + 1
+                return self._cache.get(query)
+
 
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
