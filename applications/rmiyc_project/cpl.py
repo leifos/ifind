@@ -24,24 +24,24 @@ def get_trending_queries(filename):
 def main():
    
     engine = EngineFactory(engine='Sitebing',
-                           api_key="7DsgD878dSX+FXz6V1zUqRivNiJRgBvDZEWgaeU/MfU=",
+                           api_key="/aROdM5Ck7fKHR4ge30r8W/K/D84GJkcl42lL8eNMSc=",
                            throttle=0.1,
                            cache='engine')
 
-    query_generator = BiTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE)
+    query_generator = BiTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE, maxsize=150)
     page_calculator = PageRetrievabilityCalculator(engine=engine, cutoff=CUTOFF, generator=query_generator)
     tuple_list = get_trending_queries(URL_FILE)
 
     with open(RESULT_FILE, 'a') as f:
 
         for tuple in tuple_list:
-
             url = tuple[1]
             findability = tuple[0]
             category_name = tuple[2]
             retrievability = page_calculator.score_page(url)
+            s = page_calculator.stats()
 
-            f.write('%s,%s,%s ,%s \n' % (category_name, url, findability, retrievability))
+            f.write('%s, %s, %s, %s, %d, %d\n' % (category_name, url, findability, retrievability, s['retrieved'],s['query_count']))
 
 
 if __name__ == "__main__":

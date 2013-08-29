@@ -36,6 +36,8 @@ def main():
 
     parser.add_argument("-c","--cutoff", type=int,
                         help ="The cutoff value for queries")
+    parser.add_argument("-m","--maxqueries", type=int,
+                        help ="The maximum number of queries per page")
     parser.add_argument("-s","--stopwordfile", type=str,
                         help ="The filename name containing stopwords")
 
@@ -69,7 +71,11 @@ def main():
     if args.stopwordfile:
         stopwordfile = args.stopwordfile
 
-    generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile, maxsize=200)
+    mq = 50
+    if args.maxqueries:
+        mq = args.maxqueries
+
+    generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile, maxsize=mq)
 
     prc = PageRetrievabilityCalculator(engine=engine, cutoff=args.cutoff, generator=generator)
     #hard coding in that it's a url being passed in, not text

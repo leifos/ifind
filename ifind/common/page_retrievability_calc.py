@@ -64,6 +64,8 @@ class PageRetrievabilityCalculator:
         self.ret_score = 0
         self.query_count = len(self.query_list)
         self.page_retrieved = 0
+        self.query_rank = {}
+        self.query_ret_scores = {}
         for query in self.query_list:
             rank = self._process_query(query)
             self.query_rank[query] = rank
