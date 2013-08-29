@@ -74,13 +74,6 @@ class Bing(Engine):
             raise QueryParamException(self.name, 'Requested result amount (query.top) '
                                                  'exceeds max of {0}'.format(MAX_PAGE_SIZE))
 
-        if not query.result_type:
-            query.result_type = DEFAULT_RESULT_TYPE
-
-        if query.result_type not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
-                                                 .format(query.result_type))
-
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
 
@@ -170,6 +163,14 @@ class Bing(Engine):
             Private method.
 
         """
+        result_type = query.result_type
+
+        if not result_type:
+            result_type = DEFAULT_RESULT_TYPE
+
+        if result_type not in RESULT_TYPES:
+            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+                                                 .format(query.result_type))
         params = {'$format': 'JSON',
                   '$top': query.top,
                   '$skip': query.skip}
@@ -225,10 +226,6 @@ class Bing(Engine):
         response = Response(query.terms)
 
         content = json.loads(results.text)
-
-        import pprint
-
-        #pprint.pprint(content)
 
         if query.result_type == 'web':
             for result in content[u'd'][u'results'][0][u'Web']:
@@ -288,5 +285,5 @@ class Bing(Engine):
         if minutes and not seconds:
             return min_string
 
-        if not minutes and seconds:
+        if seconds and not minutes:
             return sec_string
