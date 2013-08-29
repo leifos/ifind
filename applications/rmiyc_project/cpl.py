@@ -35,7 +35,7 @@ def main():
     with open(RESULT_FILE, 'a') as f:
 
         for tuple in tuple_list:
-             url = tuple[1]
+            url = tuple[1]
             findability = tuple[0]
             category_name = tuple[2]
             retrievability = page_calculator.score_page(url)
