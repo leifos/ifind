@@ -175,7 +175,7 @@ class Bing(Engine):
                   '$top': query.top,
                   '$skip': query.skip}
 
-        result_string = '?Sources="{}"'.format(query.result_type)
+        result_string = '?Sources="{}"'.format(result_type)
 
         query_string = 'Query="{}"'.format(str(query.terms))
 
@@ -227,7 +227,7 @@ class Bing(Engine):
 
         content = json.loads(results.text)
 
-        if query.result_type == 'web':
+        if query.result_type == 'web' or not query.result_type:
             for result in content[u'd'][u'results'][0][u'Web']:
                 response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'])
 
