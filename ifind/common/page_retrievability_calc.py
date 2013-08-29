@@ -28,6 +28,9 @@ class PageRetrievabilityCalculator:
         self.url = None
         #the list of queries
         self.query_list = {}
+        # total retrievability for the latest url processed
+        self.ret_score = 0
+
 
         if generator:
             self.generator = generator
@@ -58,11 +61,17 @@ class PageRetrievabilityCalculator:
         # now generate queries that will be used
         self.query_list = self._generate_queries()
 
+        self.ret_score = 0
+        self.query_count = len(self.query_list)
+        self.page_retrieved = 0
         for query in self.query_list:
             rank = self._process_query(query)
             self.query_rank[query] = rank
+            if rank > 0:
+                self.page_retrieved = self.page_retrieved + 1
 
         self.ret_score = self.calculate_page_retrievability()
+
 
         return self.ret_score
 
@@ -73,6 +82,12 @@ class PageRetrievabilityCalculator:
         print "A total of %d queries were issued" % (self.engine.num_requests)
         print "Of those %d were handled by the cache" % (self.engine.num_requests_cached)
         print "The page scored: %f" % (self.ret_score)
+        print "retrieved: %d query count: %d" % (self.page_retrieved, self.query_count)
+        f = float(self.page_retrieved) / float(self.query_count)
+        print "Percentage of query that returned the page %f " % (f)
+
+    def stats(self):
+        return {'url':self.url, 'query_count': self.query_count, 'retrieved': self.page_retrieved, 'retrievability':self.ret_score }
 
 
     def calculate_page_retrievability(self):
@@ -83,6 +98,7 @@ class PageRetrievabilityCalculator:
             total_retrievability += self.query_ret_scores[query]
 
         return total_retrievability
+
 
 
     def top_queries(self, n):
@@ -146,7 +162,7 @@ class PageRetrievabilityCalculator:
                 rank = i
                 break
 
-        #print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
+        print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
         return rank
 

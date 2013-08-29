@@ -50,6 +50,8 @@ class Engine(object):
 
         # datetime of last query
         self.last_search = None
+        self.num_requests = 0
+        self.num_requests_cached = 0
 
     def search(self, query):
         """
@@ -76,9 +78,11 @@ class Engine(object):
             raise InvalidQueryException('Engine', 'Expected type {}'
                                         .format("<class 'ifind.search.query.Query'>"))
 
+        self.num_requests = self.num_requests + 1
         # check query in cache and return if there
         if self.cache_type:
             if query in self._cache:
+                self.num_requests_cached = self.num_requests_cached + 1
                 return self._cache.get(query)
 
         if self.throttle and self.last_search:
@@ -86,10 +90,11 @@ class Engine(object):
             now = datetime.datetime.now()
             diff = (now - then).seconds
             if diff < self.throttle:
-                print "waiting {} seconds".format(self.throttle - diff)
+                #print "waiting {} seconds".format(self.throttle - diff)
                 time.sleep(self.throttle - diff)
 
         # search and store response
+
         response =  self._search(query)
 
         self.last_search = time.asctime()

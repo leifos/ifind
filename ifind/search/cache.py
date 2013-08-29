@@ -24,7 +24,7 @@ class RedisConn(object):
         self.connection = None
         self.set_name = 'default'
         self.limit = limit
-        self.expires = 1000
+        self.expires = 60 * 60 * 24*7
 
     def connect(self):
         """
@@ -102,7 +102,7 @@ class QueryCache(object):
     """
 
     def __init__(self, engine, host='localhost', port=6379, db=0,
-                 limit=1000, expires=60 * 60 * 24):
+                 limit=1000, expires=60 * 60 * 24*7):
         """
         QueryCache contructor.
 
