@@ -90,7 +90,7 @@ class Engine(object):
             now = datetime.datetime.now()
             diff = (now - then).seconds
             if diff < self.throttle:
-                print "waiting {} seconds".format(self.throttle - diff)
+                #print "waiting {} seconds".format(self.throttle - diff)
                 time.sleep(self.throttle - diff)
 
         # search and store response

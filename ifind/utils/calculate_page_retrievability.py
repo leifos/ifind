@@ -69,7 +69,7 @@ def main():
     if args.stopwordfile:
         stopwordfile = args.stopwordfile
 
-    generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile)
+    generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile, maxsize=200)
 
     prc = PageRetrievabilityCalculator(engine=engine, cutoff=args.cutoff, generator=generator)
     #hard coding in that it's a url being passed in, not text
@@ -78,6 +78,7 @@ def main():
     print "Computing the retrievability Score for %s :" % (args.url)
     prc.score_page (args.url)
     prc.report()
+    print prc.stats()
     #print "Top 10 queries"
     ql = prc.top_queries(10)
 

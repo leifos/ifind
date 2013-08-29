@@ -28,8 +28,9 @@ class PageRetrievabilityCalculator:
         self.url = None
         #the list of queries
         self.query_list = {}
-        #a dictionary which will contain occurrences of terms on a website
-        self.crawl_dict = {}
+        # total retrievability for the latest url processed
+        self.ret_score = 0
+
 
         if generator:
             self.generator = generator
@@ -60,11 +61,17 @@ class PageRetrievabilityCalculator:
         # now generate queries that will be used
         self.query_list = self._generate_queries()
 
+        self.ret_score = 0
+        self.query_count = len(self.query_list)
+        self.page_retrieved = 0
         for query in self.query_list:
             rank = self._process_query(query)
             self.query_rank[query] = rank
+            if rank > 0:
+                self.page_retrieved = self.page_retrieved + 1
 
         self.ret_score = self.calculate_page_retrievability()
+
 
         return self.ret_score
 
@@ -75,6 +82,12 @@ class PageRetrievabilityCalculator:
         print "A total of %d queries were issued" % (self.engine.num_requests)
         print "Of those %d were handled by the cache" % (self.engine.num_requests_cached)
         print "The page scored: %f" % (self.ret_score)
+        print "retrieved: %d query count: %d" % (self.page_retrieved, self.query_count)
+        f = float(self.page_retrieved) / float(self.query_count)
+        print "Percentage of query that returned the page %f " % (f)
+
+    def stats(self):
+        return {'url':self.url, 'query_count': self.query_count, 'retrieved': self.page_retrieved, 'retrievability':self.ret_score }
 
 
     def calculate_page_retrievability(self):
@@ -86,58 +99,7 @@ class PageRetrievabilityCalculator:
 
         return total_retrievability
 
-    def stat_based_query_generation(self, crawl_file, k, l=0.5):
-        """
-        takes in name of file with term, occurrences pairs crawled from website
-        and uses this to calculate probabilities for each query which is sorted
-        in descending order and the top k queries returned
-        :param crawl_file: the file with terms and occurrences
-        :param k: integer indicating the number of queries to be returned
-        :param l : lambda, a parameter between 0 and 1 default 0.5
-        :return:a list of k prioritised queries
-        """
-        pass
 
-    def populate_crawl_dict(self, crawl_file):
-        """
-        reads in crawlFile and stores in dictionary which is returned
-        :param crawl_file:
-        :return:
-        """
-        if crawl_file:
-            f = open(crawl_file, 'r')
-            for line in f:
-                split_line=line.split()
-                term = split_line[0]
-                #TODO need to make robust for errors in input file
-                count = int(split_line[1])
-                self.crawl_dict[term]=count
-
-    def calculate_term_probability(self):
-        pass
-
-    def calculate_query_probability(self):
-        pass
-
-    def get_times_in_doc(self,term):
-        pass
-
-    def get_length_of_doc(self):
-        pass
-
-    def get_times_in_crawlfile(self,term):
-    #get the number of times a term occurred in the crawl dictionary
-        if self.crawl_dict:
-            return self.crawl_dict[term]
-
-    def get_total_crawl_occurrences(self):
-        #get the total number of term occurences in the crawl dictionary
-        #i.e. the sum of the values
-        if self.crawl_dict:
-            total = 0
-            for term, value in self.crawl_dict.items():
-                total += value
-        return total
 
     def top_queries(self, n):
         """
@@ -200,7 +162,7 @@ class PageRetrievabilityCalculator:
                 rank = i
                 break
 
-        #print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
+        print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
         return rank
 
