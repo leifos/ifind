@@ -135,14 +135,9 @@ class PageRetrievabilityCalculator:
         html = urlopen(self.url).read()
         queries = self.generator.extract_queries_from_html(html)
 
-        #create list of query objects so queries can be issued
+        #create and return list of query objects so queries can be issued
         #against engines
-        query_list = []
-        for query in queries:
-            currQuery = Query(query, self.cutoff)
-            query_list.append(currQuery)
-        #return the queries object list
-        return query_list
+        return [Query(query, self.cutoff) for query in queries]
 
     def _process_query(self, query):
         """
@@ -152,6 +147,7 @@ class PageRetrievabilityCalculator:
         :return: rank of url in the search results, else 0
 
         """
+
         rank = 0
 
         result_list = self.engine.search(query)
