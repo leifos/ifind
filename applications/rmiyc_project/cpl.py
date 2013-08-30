@@ -28,7 +28,7 @@ def main():
                            throttle=0.1,
                            cache='engine')
 
-    query_generator = BiTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE, maxsize=150)
+    query_generator = BiTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE, maxsize=200)
     tuple_list = get_trending_queries(URL_FILE)
     page_calculator = PageRetrievabilityCalculator(engine=engine, cutoff=CUTOFF, generator=query_generator)
 
