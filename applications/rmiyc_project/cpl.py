@@ -24,7 +24,7 @@ def get_trending_queries(filename):
 def main():
    
     engine = EngineFactory(engine='Sitebing',
-                           api_key="gKTm6KOa6nmmQKXDvDronAGsbia950IeHTzkOPLryfU",
+                           api_key="",
                            throttle=0.1,
                            cache='engine')
 
