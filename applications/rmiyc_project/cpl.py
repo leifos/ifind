@@ -41,8 +41,12 @@ def main():
             retrievability = page_calculator.score_page(url)
             s = page_calculator.stats()
 
-            f.write('%s, %s, %s, %s, %d, %d\n' % (category_name, url, findability, retrievability, s['retrieved'], s['query_count']))
-
+            f.write('{0},{1},{2},{3},{4},{5},{6}\n'.format(category_name,
+                                                           url,
+                                                           findability,
+                                                           retrievability,
+                                                           s['retrieved'],
+                                                           s['query_count']))
 
 if __name__ == "__main__":
     main()
