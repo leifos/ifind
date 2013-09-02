@@ -1,5 +1,5 @@
 from ifind.common.page_retrievability_calc import PageRetrievabilityCalculator
-from ifind.common.query_generation import BiTermQueryGeneration
+from ifind.common.query_generation import BiTermQueryGeneration, TriTermQueryGeneration
 from ifind.search.engine import EngineFactory
 
 # words to exclude from query
@@ -24,11 +24,11 @@ def get_trending_queries(filename):
 def main():
    
     engine = EngineFactory(engine='Sitebing',
-                           api_key="",
+                           api_key="msRh5UoZzyV3qvroEpzXMzbZEVjW3ENfTGMAQO1yuRc",
                            throttle=0.1,
                            cache='engine')
 
-    query_generator = BiTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE, maxsize=200)
+    query_generator = TriTermQueryGeneration(minlen=TERM_LEN, stopwordfile=STOPWORD_FILE, maxsize=100)
     tuple_list = get_trending_queries(URL_FILE)
     page_calculator = PageRetrievabilityCalculator(engine=engine, cutoff=CUTOFF, generator=query_generator)
 
@@ -41,7 +41,7 @@ def main():
             retrievability = page_calculator.score_page(url)
             s = page_calculator.stats()
 
-            f.write('{0},{1},{2},{3},{4},{5},{6}\n'.format(category_name,
+            f.write('{0},{1},{2},{3},{4},{5}\n'.format(category_name,
                                                            url,
                                                            findability,
                                                            retrievability,

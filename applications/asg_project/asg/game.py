@@ -5,6 +5,7 @@ from ifind.search.cache import RedisConn
 from django.contrib.auth.models import User
 from models import UserProfile, MaxHighScore, GameExperiment
 import datetime
+from keys import REDIS_STR, REDIS_PW, REDIS_PORT
 
 
 ryg = RandomYieldGenerator()
@@ -33,15 +34,19 @@ def create_and_start_game(num):
     return game
 
 
-def retrieve_game(id):
-    rc = RedisConn()
+def get_redis_connection():
+    rc = RedisConn(host=REDIS_STR, port=REDIS_PORT, password=REDIS_PW)
     rc.connect()
+    print rc
+    return rc
+
+def retrieve_game(id):
+    rc = get_redis_connection()
     return rc.get(id)
 
 
 def store_game(id, game):
-    rc = RedisConn()
-    rc.connect()
+    rc = get_redis_connection()
     rc.store(id, game)
 
 

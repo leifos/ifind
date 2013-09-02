@@ -16,10 +16,11 @@ class RedisConn(object):
 
     """
 
-    def __init__(self, host="localhost", port=6379, db=0, limit=1000):
+    def __init__(self, host="localhost", port=6379, db=0, limit=1000, password=''):
 
         self.host = host
         self.port = port
+        self.password = password
         self.db = db
         self.connection = None
         self.set_name = 'default'
@@ -41,7 +42,8 @@ class RedisConn(object):
 
         """
         try:
-            redis.StrictRedis(host=self.host, port=self.port).ping()
+            print "tyring to ping"
+            print redis.StrictRedis(host=self.host, port=self.port, password=self.password).ping()
         except redis.ConnectionError:
             raise CacheConnectionException(MODULE, "Failed to establish connection to "
                                                    "redis server @ {0}:{1}".format(self.host, self.port))
