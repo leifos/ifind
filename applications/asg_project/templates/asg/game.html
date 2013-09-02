@@ -1,33 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ASG Game</title>
-</head>
-<body>
-<a href="/asg/start/">start</a> | <a href="/asg/start2/">start2</a> | <a href="/asg/start3/">start3</a>
+
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games: In Game
+{% endblock %}
+
+{% block navbar %}
+
+            {% include "base/navbar.html" %}
+{% endblock %}
 
 
-<p>
+{% block content %}
 
 {% if data %}
+        <h1>In Game</h1>
     <ul>
-        <li>Tokens Left: {{data.tokens}}</li>
-        <li>Query Cost: {{data.cq}}</li>
-        <li>Assessment Cost: {{data.ca}}</li>
+        <li>Time Left: {{data.tokens}}</li>
+        <li>Query Cost in units of time: {{data.cq}}</li>
+        <li>Assessment Cost in units of time: {{data.ca}}</li>
         <li>Points: {{data.points}}</li>
-        <li>Round No.: {{data.no}}</li>
+        <li>No. of Queries Issued: {{data.no}}</li>
     </ul>
 
     {% if data.gameover %}
-        Game Over
+        <p>
+        <h2>Game Over</h2>
+         You scored {{data.points}}!
+        <br/><br/><a href="/asg/pick/">Play Again</a>
+        </p>
     {% else %}
         <p>
+        <h2>Results for Query {{data.no}}</h2>
+        <b><a href="/asg/query/">Issue another query</a> or <a href="/asg/assess/">Assess the first/next document</a></b>
+        <br/><br/>
         {% for d in data.round %}
 
-            {{d.label}} <br>{% if d.opened%} {{d.gain}} {% else %} Unopened {% endif %}<br>
+            {{d.label}} {% if not d.opened %} Unopened {% endif %}<br>
+
+            Points: {% if d.opened%} {{d.gain}} {% else %} ??? {% endif %}<br/>
+
         {% endfor %}
         <p>
-     <a href="/asg/query/">query</a> | <a href="/asg/assess/">assess</a>
+     <b><a href="/asg/query/">Issue another query</a> or <a href="/asg/assess/">Assess the first/next document</a></b>
 
     {% endif %}
 
@@ -35,5 +50,4 @@
 
 {% endif %}
 </p>
-</body>
-</html>
+{% endblock %}

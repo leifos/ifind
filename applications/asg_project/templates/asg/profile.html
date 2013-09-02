@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games: Profile Page
+{% endblock %}
+
+{% block navbar %}
+
+            {% include "base/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+        <h1>Profile</h1>
+{% if player %}
+    <ul>
+    <li>    Player: {{player.username}}</li>
+
+    <li> Combined Game Scores: {{profile.combined_points}}</li>
+    <li>No of Games Played: {{profile.no_games_played}}</li>
+
+    <li>Total Points: {{profile.total_points}}</li>
+    <li>No of Queries Issued: {{profile.no_queries_issued}}</li>
+    <li>No of Docs Assessed: {{profile.no_docs_assessed}}</li>
+    <li>Time Spent: {{profile.total_tokens}}</li>
+    <li>Points/Time : {{profile.ratio}}</li>
+    </ul>
+
+        <ul>
+     {% for gs in game_scores %}
+        <li><a href='/asg/start/{{gs.game_experiment.config}}/'> {{gs.game_experiment.name}}</a> - High Score: {{gs.points}}</li>
+      {% endfor %}
+        </ul>
+
+{% else %}
+    Player not found.
+{% endif %}
+
+{% endblock %}

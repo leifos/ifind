@@ -191,3 +191,35 @@ class BiTermQueryGeneration(QueryGeneration):
         return query_list
 
 
+class TriTermQueryGeneration(QueryGeneration):
+
+    def extract_queries_from_text(self, text):
+        """
+        :param text: the text from which the queries are to be constructed
+        :return: list of queries
+        """
+        term_list = self.clean_text(text)
+
+        self.query_count = {}
+
+        prev_prev_term = term_list[0]
+        prev_term = term_list[1]
+
+        term_list= term_list[2:len(term_list)]
+
+        for term in term_list:
+            query = prev_prev_term + ' ' +prev_term + ' ' + term
+            if query in self.query_count:
+                self.query_count[query] = self.query_count[query] + 1
+            else:
+                self.query_count[query] = 1
+
+            prev_prev_term = prev_term
+            prev_term = term
+
+
+        query_list = []
+        for key in self.query_count:
+            query_list.append(key)
+
+        return query_list

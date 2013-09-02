@@ -1,0 +1,15 @@
+<ul class="nav">
+
+<li><a href="/asg/">How To Play</a></li>
+
+ {% if user.is_authenticated %}
+    <li><a href="/asg/pick/">Play</a></li>
+    <li>Welcome <a href="/users/{{user.username}}/">{{user.username}}</a></li>
+    <li><a href="/accounts/logout/">Logout</a></li>
+{% else %}
+       <li><a href="/accounts/register/">Register</a></li>
+    <li><a href="/accounts/login/">Login</a></li>
+
+ {% endif %}
+
+</ul>

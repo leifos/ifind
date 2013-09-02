@@ -1,0 +1,41 @@
+
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games
+{% endblock %}
+
+{% block navbar %}
+
+            {% include "base/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Abstract Search Games</h1>
+
+
+    <p class="lead">
+    Test how good you are at searching by playing some of our abstract search games.
+
+      <ul>
+        <li>In each game you will have two options: query or assess.
+        <ul>
+        <li> query: will bring back a set of new results
+        <li> assess: will open up the new unopened document, and you recieve the number of points associated with that document.
+        </ul>
+        <li> Because this is an abstracted search game. you dont need to type in queries, nor judge documents for relevance.
+
+        <li> Your goal is to try and find as much information (denoted by total points)
+        <li> However, each time you issue a query or assess a document it will take time
+        <li> At the start of each game you are given a certain amount of time which you can spend on querying or assessing.
+        <li> Different games will put you in different conditions, different amounts of time, different costs, different rewards.
+
+        <li> Put your search skills to the test.
+        <li> Register and login to Play
+    </ul>
+    </p>
+
+
+
+{% endblock %}

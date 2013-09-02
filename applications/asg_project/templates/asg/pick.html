@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games: Choose Game
+{% endblock %}
+
+{% block navbar %}
+            {% include "base/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Choose Game</h1>
+
+<ul>
+{% for g in ge %}
+     <li><a href="/asg/start/{{g.id}}/">{{g.name}}</a> {{g.desc}} - Highest Score: {{g.best_so_far}} - Average Gain/Time Ratio: {{g.ratio}}</li>
+{% endfor %}
+</ul>
+{% endblock %}

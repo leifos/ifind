@@ -6,7 +6,7 @@ from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
-
+WEB_ONLY_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/SearchWeb/v1/'
 RESULT_TYPES = ('web', 'image', 'video')
 DEFAULT_RESULT_TYPE = 'web'
 
