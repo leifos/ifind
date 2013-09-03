@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from models import UserProfile, MaxHighScore, GameExperiment
 import datetime
 from keys import REDIS_STR, REDIS_PW, REDIS_PORT
-
+from django.core.cache import cache
+import pickle
 
 ryg = RandomYieldGenerator()
 tyg = TestYieldGenerator()
@@ -33,21 +34,28 @@ def create_and_start_game(num):
     game.start_game()
     return game
 
+def store_game_incache(id, game):
+    cache.set(id,pickle.dumps(game), 500)
+
+def get_game_incache(id):
+    game = pickle.loads(cache.get(id))
+    return game
 
 def get_redis_connection():
     rc = RedisConn(host=REDIS_STR, port=REDIS_PORT, password=REDIS_PW)
     rc.connect()
-    print rc
     return rc
 
 def retrieve_game(id):
-    rc = get_redis_connection()
-    return rc.get(id)
+    return get_game_incache(id)
+    #rc = get_redis_connection()
+    #return rc.get(id)
 
 
 def store_game(id, game):
-    rc = get_redis_connection()
-    rc.store(id, game)
+    store_game_incache(id, game)
+    #rc = get_redis_connection()
+    #rc.store(id, game)
 
 
 def end_game(user, game):

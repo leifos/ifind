@@ -4,7 +4,8 @@ import os
 PROJ_PATH = os.getcwd()
 GAME_DB = os.path.join(PROJ_PATH, 'asg.db')
 TEMP_PATH = os.path.join(PROJ_PATH, 'templates')
-STATIC_PATH = os.path.join(PROJ_PATH, 'static/')
+STATIC_PATH = os.path.join(PROJ_PATH, 'static')
+CACHE_DIR = os.path.join(PROJ_PATH, 'cache')
 
 MEDIA_PATH = ''
 MEDIA_URL = '/data/'
