@@ -15,6 +15,45 @@ class YieldGenerator(object):
         """
         pass
 
+class HighYieldGenerator(YieldGenerator):
+    
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yl = []
+        for i in range(n):
+            yl.append(3)
+
+        return yl
+
+class MediumYieldGenerator(YieldGenerator):
+    
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yl = []
+        for i in range(n):
+            yl.append(2)
+
+        return yl
+
+class LowYieldGenerator(YieldGenerator):
+    
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yl = []
+        for i in range(1):
+            yl.append(random.randint(0,self.max_yield))
+
+        return yl
+
 
 class RandomYieldGenerator(YieldGenerator):
 
@@ -113,4 +152,16 @@ class CueGenerator(object):
 
         return ll
 
+class MedInfoCueGenerator(CueGenerator):
 
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            ll.append('.'*self.cue_length)
+
+        return ll
