@@ -6,7 +6,7 @@ class QueryRanker(object):
 
 
     def __init__(self):
-        self.crawl_dict() = {}
+        self.crawl_dict = {}
 
     def stat_based_query_generation(self, crawl_file, k, l=0.5):
         """
