@@ -45,9 +45,12 @@ class LanguageModel():
     def get_num_occurrences(self,term):
         """
         :param term: the individual term for which count is desired
-        :return: number of occurrences for term in occurrence dict
+        :return: number of occurrences for term in occurrence dict, 0 if not in
         """
-        return self.occurrence_dict[term]
+        if self.occurrence_dict[term]:
+            return self.occurrence_dict[term]
+        else:
+            return 0
 
 
     def get_term_probability(self, term):
@@ -56,8 +59,11 @@ class LanguageModel():
         :param term:
         :return:
         """
-        result =float(self.get_num_occurrences(term))/float(self.get_total_occurrences())
-        result = round(result,2)
-        return result
+        if self.get_num_occurrences(term) == 0:
+            return 0
+        else:
+            result =float(self.get_num_occurrences(term))/float(self.get_total_occurrences())
+            result = round(result,2)
+            return result
 
 

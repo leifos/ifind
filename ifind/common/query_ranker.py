@@ -1,6 +1,6 @@
 __author__ = 'leif'
 from language_model import LanguageModel
-from collections import OrderedDict
+from smoothed_doc_language_model import SmoothedModel
 
 class QueryRanker(object):
 
@@ -33,9 +33,11 @@ class QueryRanker(object):
         score = 0
         query = query.split(" ")
         for term in query:
-            background_prob=self.background.get_term_probability(term)
-            doc_prob=self.document.get_term_probability(term)
-            score += l*doc_prob + (1-l)*background_prob
+            #background_prob=self.background.get_term_probability(term)
+            #doc_prob=self.document.get_term_probability(term)
+            #score += l*doc_prob + (1-l)*background_prob
+            calculator = SmoothedModel(self.document,self.background)
+            score+=calculator.calculate_likelihood(l,term)
             #todo is rounding needed??
         return score
 
