@@ -1,5 +1,6 @@
 
-from smoothed_doc_language_model import SmoothedModel
+from language_model import LanguageModel
+from smoothed_doc_language_model import SmoothedLanguageModel, LaPlaceLanguageModel, BayesLanguageModel
 import unittest
 import logging
 import sys
@@ -7,13 +8,46 @@ import sys
 class TestSmoothedDocLanguageModel(unittest.TestCase):
 
     def setUp(self):
-        self.model=SmoothedModel
+
+        self.doc = { 'hello': 1,
+                'world': 2,
+                'help': 1
+        }
+
+        self.col = {'hello': 20,
+               'world': 5,
+               'good': 5,
+               'bye': 15,
+               'free': 1,
+               'code': 1,
+               'source': 1,
+               'compile': 1,
+               'error': 1
+        }
+
+        self.colLM = LanguageModel(occurences_dict=self.col)
+        self.docLM = LanguageModel(occurences_dict=self.doc)
 
     def test_calculate_likelihood(self):
+        model=SmoothedLanguageModel(self.docLM, self.colLM)
+
         pass
 
     def test_calculate_laplace_likelihood(self):
-        pass
+        model = LaPlaceLanguageModel(self.docLM, self.colLM, alpha = 1.0)
+        phello = model.get_term_prob('hello')
+        self.assertEquals(phello,2.0/13.0)
+
+        phelp = model.get_term_prob('help')
+        self.assertEquals(phelp,2.0/13.0)
+
+        pworld = model.get_term_prob('world')
+        self.assertEquals(pworld,3.0/13.0)
+
+        perror = model.get_term_prob('error')
+        self.assertEquals(perror,1.0/13.0)
+
+
 
     def test_calculate_JM_likelihood(self):
         pass
