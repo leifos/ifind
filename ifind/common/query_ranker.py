@@ -1,6 +1,6 @@
 __author__ = 'leif'
 from language_model import LanguageModel
-
+from collections import OrderedDict
 
 class QueryRanker(object):
 
@@ -23,7 +23,7 @@ class QueryRanker(object):
 
 
 
-    def calculate_query_probability(self, query, l):
+    def calculate_query_probability(self, query, l=0.5):
         """
         calculates the probability of an individual query
         :param query: the query for which to calculate the probability
@@ -31,13 +31,15 @@ class QueryRanker(object):
         term counts
         """
         score = 0
+        query = query.split(" ")
         for term in query:
             background_prob=self.background.get_term_probability(term)
             doc_prob=self.document.get_term_probability(term)
             score += l*doc_prob + (1-l)*background_prob
+            #todo is rounding needed??
         return score
 
-    def calculate_query_list_probabilities(self, query_list):
+    def calculate_query_list_probabilities(self, query_list, l=0.5):
         """
         takes a query list and calculates the probabilities of each
         query, adds results to ranked_queries dict
@@ -45,20 +47,29 @@ class QueryRanker(object):
         :return:
         """
         for query in query_list:
-            score=self.calculate_query_probability(query)
-            self.ranked_queries[query]=score
+            score = self.calculate_query_probability(query, l)
+            #print "adding query ", query
+            #print "with score ", score
+            self.ranked_queries[query] = score
 
         #order queries by probability scores
-        self.ranked_queries = sorted(self.ranked_queries, key=self.ranked_queries.__getitem__,reverse=True)
-
+        #self.ranked_queries = OrderedDict(sorted(self.ranked_queries, key=self.ranked_queries.__getitem__,reverse=True))
+        return self.ranked_queries
 
     def get_top_queries(self,k):
         """
         Returns top k ranked queries
         :param k: number of queries to return
-        :return: dict of top k queries with probabilities
+        :return: list of top k queries ordered in descending order by probability
         """
-        if len(self.ranked_queries) >k:
-            return self.ranked_queries[0:k]
+        #sort ranked queries by value of probabilities from most to least likely
+        #print "before sorting"
+        #print self.ranked_queries.keys()
+        ordered = sorted(self.ranked_queries.keys(), reverse=True)
+        #print "after sorting"
+        #print ordered
+
+        if len(ordered) > k:
+            return ordered[0:k]
         else:
-            return self.ranked_queries
+            return ordered

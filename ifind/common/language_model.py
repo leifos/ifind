@@ -56,7 +56,8 @@ class LanguageModel():
         :param term:
         :return:
         """
-        #todo add in rounding?
-        return float(self.get_num_occurrences(term))/float(self.get_total_occurrences())
+        result =float(self.get_num_occurrences(term))/float(self.get_total_occurrences())
+        result = round(result,2)
+        return result
 
 
