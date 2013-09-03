@@ -8,17 +8,17 @@ class LanguageModel():
     """
     def __init__(self, file=None , dict=None):
         self.occurrence_dict = {}
-        self.TOTAL_OCCURRENCES =0
+        self.TOTAL_OCCURRENCES = 0
 
         if file:
-            self.populate_occurences(file)
+            self.populate_occurrences(file)
         else:
             self.occurrence_dict = dict
 
         self.__calc_total_occurrences()
 
 
-    def populate_occurences(self, file_name):
+    def populate_occurrences(self, file_name):
         """
         reads in a file and stores in occurrences dictionary
         :param fileName
@@ -30,13 +30,13 @@ class LanguageModel():
                 term = split_line[0]
                 #TODO need to make robust for errors in input file
                 count = int(split_line[1])
-                self.occurrence_dict[term]=count
+                self.occurrence_dict[term] = count
 
     def __calc_total_occurrences(self):
         """
         counts the total number of term occurrences in occurrence_dict
         """
-        for term, count in self.occurrence_dict:
+        for term, count in self.occurrence_dict.items():
             self.TOTAL_OCCURRENCES += count
 
     def get_total_occurrences(self):
@@ -56,6 +56,7 @@ class LanguageModel():
         :param term:
         :return:
         """
-        return self.get_num_occurrences(term)/self.get_total_occurrences()
+        #todo add in rounding?
+        return float(self.get_num_occurrences(term))/float(self.get_total_occurrences())
 
 
