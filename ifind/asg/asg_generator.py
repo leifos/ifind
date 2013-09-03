@@ -152,6 +152,23 @@ class CueGenerator(object):
 
         return ll
 
+class LowInfoCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            if random.randint(0,20) < 7:
+                ll.append('.'*self.cue_length)
+            else:
+                ll.append('x'*self.cue_length)
+
+        return ll
+
 class MedInfoCueGenerator(CueGenerator):
 
     def get_labels(self, n=10, yield_list = None):
@@ -162,6 +179,26 @@ class MedInfoCueGenerator(CueGenerator):
         """
         ll = []
         for i in range(n):
-            ll.append('.'*self.cue_length)
+            if random.randint(0,10) < 7:
+                ll.append('.'*self.cue_length)
+            else:
+                ll.append('x'*self.cue_length)
+
+        return ll
+
+class LowInfoCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            if random.randint(0,7) < 7:
+                ll.append('.'*self.cue_length)
+            else:
+                ll.append('x'*self.cue_length)
 
         return ll
