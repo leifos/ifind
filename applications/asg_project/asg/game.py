@@ -90,6 +90,10 @@ def update_high_scores(user, game):
         mhs = mhsl[0]
 
     if mhs:
+        mhs.total_points = mhs.total_points + game.points
+        mhs.total_tokens = mhs.total_tokens + game.tokens_spent
+        mhs.times_played = mhs.times_played + 1
+        mhs.save()
         #update MaxHighScore if appropriate
         if game.points > mhs.points:
             mhs.points = game.points
