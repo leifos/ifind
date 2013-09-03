@@ -75,6 +75,7 @@ class ABSGame(object):
 
         self.round_no += 1
         yl = self.ygen.get_yields(self.round_len)
+        print 'cu'
         cl = self.cgen.get_labels(self.round_len, yl)
 
         rl = []

@@ -15,12 +15,7 @@ def index(request):
 
 def pick(request):
     ge = GameExperiment.objects.all()
-
-    for g in ge:
-        g.ratio = round(float(g.total_points) / float(g.total_tokens+0.00001),2)
-
     context = RequestContext(request, {})
-
     return render_to_response('asg/pick.html', {'ge':ge}, context)
 
 
@@ -28,14 +23,11 @@ def pick(request):
 def startgame(request, num):
         context = RequestContext(request, {})
         session_id = request.session._get_or_create_session_key()
-
         game = create_and_start_game(int(num))
         data = game.get_game_state()
         store_game(session_id, game)
-
         response = render_to_response('asg/game.html', {'sid':session_id, 'data': data }, context)
         response.set_cookie('gid',session_id)
-
         return response
 
 
@@ -84,14 +76,12 @@ def profile_page(request, username):
     user = User.objects.get(username=username)
     if user:
         user_profile = user.get_profile()
-        user_profile.ratio =  round(float(user_profile.total_points) / float(user_profile.total_tokens+0.00001),2)
         high_scores = MaxHighScore.objects.filter(user=user)
 
         combined_points = 0
         mhs = MaxHighScore.objects.filter(user=user)
         for scores in mhs:
             combined_points = combined_points + scores.points
-            scores.ratio = round(float(scores.total_points) / float(scores.total_tokens+0.00001),2)
 
         user_profile.combined_points = combined_points
 

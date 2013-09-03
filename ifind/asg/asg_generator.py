@@ -148,9 +148,12 @@ class CueGenerator(object):
         """
         ll = []
         for i in range(n):
-            ll.append('.'*self.cue_length)
+            ll.append('o'*self.cue_length)
 
         return ll
+
+    def __str__(self):
+        return 'CueGenerator - Default'
 
 class LowInfoCueGenerator(CueGenerator):
 
@@ -163,7 +166,7 @@ class LowInfoCueGenerator(CueGenerator):
         ll = []
         for i in range(n):
             if random.randint(0,20) < 7:
-                ll.append('.'*self.cue_length)
+                ll.append('o'*self.cue_length)
             else:
                 ll.append('x'*self.cue_length)
 
@@ -180,7 +183,7 @@ class MedInfoCueGenerator(CueGenerator):
         ll = []
         for i in range(n):
             if random.randint(0,10) < 7:
-                ll.append('.'*self.cue_length)
+                ll.append('o'*self.cue_length)
             else:
                 ll.append('x'*self.cue_length)
 
@@ -197,8 +200,31 @@ class LowInfoCueGenerator(CueGenerator):
         ll = []
         for i in range(n):
             if random.randint(0,7) < 7:
-                ll.append('.'*self.cue_length)
+                ll.append('o'*self.cue_length)
             else:
                 ll.append('x'*self.cue_length)
 
         return ll
+
+class GainBasedCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            g = yield_list[i]
+            x = int(g) * 5 + random.randint(3,10)
+            dots = self.cue_length - int(x)
+            if dots < 0:
+                dots = 0
+
+            ll.append('x'*x + 'o'*dots)
+
+        return ll
+
+    def __str__(self):
+        return 'GainBasedCueGenerator'

@@ -20,6 +20,12 @@ class UserProfile(models.Model):
     no_queries_issued = models.IntegerField(default=0,blank=True)
     no_docs_assessed = models.IntegerField(default=0,blank=True)
 
+    def _get_ratio(self):
+        "Returns the person's full name."
+        return float(self.total_points) / (float(self.total_tokens+0.000001))
+
+    ratio = property(_get_ratio)
+
     def __unicode__(self):
         return self.user.username
 
@@ -40,6 +46,12 @@ class GameExperiment(models.Model):
     silver = models.IntegerField(default=20,blank=True)
     gold  = models.IntegerField(default=30,blank=True)
 
+    def _get_ratio(self):
+        "Returns the person's full name."
+        return float(self.total_points) / (float(self.total_tokens+0.000001))
+
+    ratio = property(_get_ratio)
+
     def __unicode__(self):
         return self.name
 
@@ -51,6 +63,12 @@ class MaxHighScore(models.Model):
     total_points = models.IntegerField(default=0,blank=True)
     total_tokens = models.IntegerField(default=0,blank=True)
     times_played = models.IntegerField(default=0, blank=True)
+
+    def _get_ratio(self):
+        "Returns the person's full name."
+        return float(self.total_points) / (float(self.total_tokens+0.000001))
+
+    ratio = property(_get_ratio)
 
     def __unicode__(self):
         return '{0} {1} : {2}'.format(self.user.username, self.game_experiment.name, self.points)
