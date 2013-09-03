@@ -43,8 +43,8 @@ class QueryRanker(object):
         """
         takes a query list and calculates the probabilities of each
         query, adds results to ranked_queries dict
-        :param query_list:
-        :return:
+        :param query_list: a list of query strings
+        :return:a dictionary of queries (key) with their probability scores (value)
         """
         for query in query_list:
             score = self.calculate_query_probability(query, l)
