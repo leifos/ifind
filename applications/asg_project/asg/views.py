@@ -91,6 +91,7 @@ def profile_page(request, username):
         mhs = MaxHighScore.objects.filter(user=user)
         for scores in mhs:
             combined_points = combined_points + scores.points
+            scores.ratio = round(float(scores.total_points) / float(scores.total_tokens+0.00001),2)
 
         user_profile.combined_points = combined_points
 

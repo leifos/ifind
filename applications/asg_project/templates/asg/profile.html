@@ -29,7 +29,7 @@
 
         <ul>
      {% for gs in game_scores %}
-        <li><a href='/asg/start/{{gs.game_experiment.config}}/'> {{gs.game_experiment.name}}</a> - High Score: {{gs.points}}</li>
+        <li><a href='/asg/start/{{gs.game_experiment.config}}/'> {{gs.game_experiment.name}}</a> - High Score: {{gs.points}} - Average Gain/Time Ratio: {{gs.ratio}}</li>
       {% endfor %}
         </ul>
 

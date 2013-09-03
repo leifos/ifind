@@ -48,6 +48,9 @@ class MaxHighScore(models.Model):
     user = models.ForeignKey(User)
     game_experiment = models.ForeignKey(GameExperiment, null=True)
     points = models.IntegerField(default=0)
+    total_points = models.IntegerField(default=0,blank=True)
+    total_tokens = models.IntegerField(default=0,blank=True)
+    times_played = models.IntegerField(default=0, blank=True)
 
     def __unicode__(self):
         return '{0} {1} : {2}'.format(self.user.username, self.game_experiment.name, self.points)
