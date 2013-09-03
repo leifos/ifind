@@ -75,6 +75,6 @@ class BayesLanguageModel(SmoothedLanguageModel):
         :return:
         """
         numerator = float(self.docLM.get_num_occurrences(term) + self.beta * self.colLM.get_term_prob(term))
-        denominator = float(self.docLM.get_num_terms + self.beta)
+        denominator = float(self.docLM.get_num_terms() + self.beta)
         return numerator/denominator
 
