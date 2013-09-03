@@ -1,69 +1,8 @@
 __author__ = 'leif'
 
-
-# ABS
-
-# player
-
-# query yields - high, med, low, rand, ....
-
-# game types - corresponding to different yields and combinations of
-#
-
-# actions: start, query, examine, quit/end.
-
-# game snippet cues - create mock snippet, based on the gain associated with the document
-    # no info
-    # info
-#
-
 import random
 from asg_generator import YieldGenerator, CueGenerator
 
-
-class ABSMatch(object):
-
-    def __init__(self, matchlen=3, gametype="3High"):
-        self.matchlen = matchlen
-        self.gametype = gametype
-        self.game_no = 0
-        self.games = []
-        self.totalpoints = 0
-
-    def start_match(self):
-        if self.gametype = "3High":
-            self._threeHighGame()
-
-    def end_match(self):
-        pass
-
-    def next_game(self):
-        if self.is_match_over():
-            self.end_match()
-        else:
-            if self.gametype = "3High":
-                self._threeHighGame
-
-    def is_match_over(self):
-        if self.game_no > matchlen:
-            return True
-        else:
-            return False
-
-    def _threeHighGame():
-        self.game_no += 1
-        self.yg = ConstantLinearYieldGenerator()
-        self.cg = CueGenerator()
-        self.games.append(ABSGame(self.yg, self.cg))
-
-    def get_match_state(self):
-        matchdata = {}
-        matchdata['totalpoints'] = self.totalpoints
-        matchdata['no'] = self.game_no
-        matchdata['matchover'] = self.is_game_over()
-        return matchdata
-        
-        
 
 class ABSGame(object):
 

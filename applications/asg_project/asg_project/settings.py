@@ -10,6 +10,7 @@ from configuration import GAME_DB
 from configuration import MEDIA_ROOT
 from configuration import STATIC_PATH
 from configuration import MEDIA_URL
+from configuration import CACHE_DIR
 
 print TEMP_PATH
 
@@ -39,9 +40,20 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default' : {
+        'BACKEND' : 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION' : CACHE_DIR,
+        'OPTIONS' :{
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['leifos.pythonanywhere.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -120,6 +132,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 )
 
 ROOT_URLCONF = 'asg_project.urls'
