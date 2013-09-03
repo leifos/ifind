@@ -4,18 +4,18 @@ class LanguageModel():
     """
     manages reading in a file and splitting into a term, occurrence dictionary
     or takes a term, occurrence dictionary
-    calcuates the probability of a term occuring given the occurrence dict
+    calculates the probability of a term occurring given the occurrence dict
     """
     def __init__(self, file=None , dict=None):
         self.occurrence_dict = {}
         self.TOTAL_OCCURRENCES = 0
 
         if file:
-            self.populate_occurrences(file)
+            self._populate_occurrences(file)
         else:
             self.occurrence_dict = dict
 
-        self.__calc_total_occurrences()
+        self._calc_total_occurrences()
 
 
     def _populate_occurrences(self, file_name):

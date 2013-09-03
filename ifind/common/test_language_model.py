@@ -14,7 +14,7 @@ class TestLanguageModel(unittest.TestCase):
 
     def test_populate_occurrences(self):
         self.logger.debug("Test Populate Occurrences")
-        self.bk_model.populate_occurrences('term_occurrences.txt')
+        self.bk_model._populate_occurrences('term_occurrences.txt')
         #check it's not null and contains the following
         #hello 10
         #world 20
