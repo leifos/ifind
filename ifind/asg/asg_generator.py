@@ -222,7 +222,7 @@ class GainBasedCueGenerator(CueGenerator):
             if dots < 0:
                 dots = 0
 
-            ll.append('x'*x + 'o'*dots)
+            ll.append('x'*x + '_'*dots)
 
         return ll
 

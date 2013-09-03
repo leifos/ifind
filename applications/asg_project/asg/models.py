@@ -22,7 +22,7 @@ class UserProfile(models.Model):
 
     def _get_ratio(self):
         "Returns the person's full name."
-        return float(self.total_points) / (float(self.total_tokens+0.000001))
+        return round(float(self.total_points) / (float(self.total_tokens+0.000001)),2)
 
     ratio = property(_get_ratio)
 
@@ -48,7 +48,7 @@ class GameExperiment(models.Model):
 
     def _get_ratio(self):
         "Returns the person's full name."
-        return float(self.total_points) / (float(self.total_tokens+0.000001))
+        return round(float(self.total_points) / (float(self.total_tokens+0.000001)),2)
 
     ratio = property(_get_ratio)
 
@@ -66,7 +66,7 @@ class MaxHighScore(models.Model):
 
     def _get_ratio(self):
         "Returns the person's full name."
-        return float(self.total_points) / (float(self.total_tokens+0.000001))
+        return round(float(self.total_points) / (float(self.total_tokens+0.000001)),2)
 
     ratio = property(_get_ratio)
 
