@@ -81,6 +81,19 @@ class QueryGeneration(object):
         else:
             return cleaned
 
+    def get_doc_term_counts(self, query_list):
+        """
+        for use in query ranker, for each term calculate number of occurrences
+        in the document,
+        :return dict of term, occurrence pairs
+        """
+        count_dict = {}
+        for term in query_list:
+            if term in count_dict:
+                count_dict[term]+=1
+            else:
+                count_dict[term]=1
+        return count_dict
 
     def check_length(self, term):
         """

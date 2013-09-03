@@ -1,62 +1,64 @@
 __author__ = 'leif'
-
+from language_model import LanguageModel
 
 
 class QueryRanker(object):
 
 
-    def __init__(self):
-        self.crawl_dict = {}
-
-    def stat_based_query_generation(self, crawl_file, k, l=0.5):
+    def __init__(self, background_file, doc_term_count, l=0.5):
         """
         takes in name of file with term, occurrences pairs crawled from website
         and uses this to calculate probabilities for each query which is sorted
         in descending order and the top k queries returned
-        :param crawl_file: the file with terms and occurrences
+        :param background_file: the file with terms and occurrences
+        :param doc_term_count: the dictionary of terms with counts from the doc
         :param k: integer indicating the number of queries to be returned
         :param l : lambda, a parameter between 0 and 1 default 0.5
-        :return:a list of k prioritised queries
+        :return:a subset of k queries which have the highest probability
+        of retrieving the document
         """
-        pass
+        self.document = LanguageModel(dict=doc_term_count)
+        self.background = LanguageModel(file=background_file)
+        self.ranked_queries = {}
 
-    def populate_crawl_dict(self, crawl_file):
+
+
+    def calculate_query_probability(self, query, l):
         """
-        reads in crawlFile and stores in dictionary which is returned
-        :param crawl_file:
+        calculates the probability of an individual query
+        :param query: the query for which to calculate the probability
+        :return:score: the probability of a query given document and background
+        term counts
+        """
+        score = 0
+        for term in query:
+            background_prob=self.background.get_term_probability(term)
+            doc_prob=self.document.get_term_probability(term)
+            score += l*doc_prob + (1-l)*background_prob
+        return score
+
+    def calculate_query_list_probabilities(self, query_list):
+        """
+        takes a query list and calculates the probabilities of each
+        query, adds results to ranked_queries dict
+        :param query_list:
         :return:
         """
-        if crawl_file:
-            f = open(crawl_file, 'r')
-            for line in f:
-                split_line=line.split()
-                term = split_line[0]
-                #TODO need to make robust for errors in input file
-                count = int(split_line[1])
-                self.crawl_dict[term]=count
+        for query in query_list:
+            score=self.calculate_query_probability(query)
+            self.ranked_queries[query]=score
 
-    def calculate_term_probability(self):
-        pass
+        #order queries by probability scores
+        self.ranked_queries = sorted(self.ranked_queries, key=self.ranked_queries.__getitem__,reverse=True)
 
-    def calculate_query_probability(self):
-        pass
 
-    def get_times_in_doc(self,term):
-        pass
-
-    def get_length_of_doc(self):
-        pass
-
-    def get_times_in_crawlfile(self,term):
-    #get the number of times a term occurred in the crawl dictionary
-        if self.crawl_dict:
-            return self.crawl_dict[term]
-
-    def get_total_crawl_occurrences(self):
-        #get the total number of term occurences in the crawl dictionary
-        #i.e. the sum of the values
-        if self.crawl_dict:
-            total = 0
-            for term, value in self.crawl_dict.items():
-                total += value
-        return total
+    def get_top_queries(self,k):
+        """
+        Returns top k ranked queries
+        :param k: number of queries to return
+        :return: dict of top k queries with probabilities
+        """
+        if len(self.ranked_queries) >k:
+            return self.ranked_queries[0:k]
+        else:
+            return self.ranked_queries
