@@ -18,7 +18,7 @@ class LanguageModel():
         self.__calc_total_occurrences()
 
 
-    def populate_occurrences(self, file_name):
+    def _populate_occurrences(self, file_name):
         """
         reads in a file and stores in occurrences dictionary
         :param fileName
@@ -32,7 +32,7 @@ class LanguageModel():
                 count = int(split_line[1])
                 self.occurrence_dict[term] = count
 
-    def __calc_total_occurrences(self):
+    def _calc_total_occurrences(self):
         """
         counts the total number of term occurrences in occurrence_dict
         """
@@ -41,6 +41,9 @@ class LanguageModel():
 
     def get_total_occurrences(self):
         return self.TOTAL_OCCURRENCES
+
+    def get_number_terms(self):
+        return len(self.occurrence_dict)
 
     def get_num_occurrences(self,term):
         """

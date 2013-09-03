@@ -24,3 +24,39 @@ class SmoothedModel():
         doc_prob=self.docLM.get_term_probability(term)
         score = variable*doc_prob + (1-variable)*collection_prob
         return score
+
+class LaPlaceLanguageModel(SmoothedModel):
+    def calculate_likelihood(self, variable, term):
+        """
+
+        :param variable: alpha
+        :param term:
+        :return:
+        """
+        numerator = float(self.docLM.get_num_occurrences(term) + variable)
+        denominator = float(self.docLM.get_total_occurrences() + self.docLM.get_num_terms())
+        return numerator/denominator
+
+class JMModel(SmoothedModel):
+    def calculate_likelihood(self, variable, term):
+        """
+
+        :param variable:lambda
+        :param term:
+        :return:
+        """
+        result = float((1-variable)*self.docLM.get_term_probability + variable*self.collectionLM.get_term_probability(term))
+        return result
+
+class BayesModel(SmoothedModel):
+    def calculate_likelihood(self, variable, term):
+        """
+
+        :param variable: beta
+        :param term:
+        :return:
+        """
+        numerator = float(self.docLM.get_num_occurrences(term) + variable * self.collectionLM.get_term_probability(term))
+        denominator = float(self.docLM.get_num_terms + variable)
+        return numerator/denominator
+
