@@ -29,9 +29,18 @@ class TestSmoothedDocLanguageModel(unittest.TestCase):
         self.docLM = LanguageModel(occurences_dict=self.doc)
 
     def test_calculate_likelihood(self):
-        model=SmoothedLanguageModel(self.docLM, self.colLM)
+        model = SmoothedLanguageModel(self.docLM, self.colLM, lam=0.5)
+        phello = model.get_term_prob('hello')
+        self.assertEquals(phello, (1.0/8.0)+(1.0/5.0))
 
-        pass
+        phelp = model.get_term_prob('help')
+        self.assertEquals(phelp, (1.0/8.0))
+
+        pworld = model.get_term_prob('world')
+        self.assertEquals(pworld, (1.0/4.0)+(1.0/20.0))
+
+        perror = model.get_term_prob('error')
+        self.assertEquals(perror, 1.0/100.0)
 
     def test_calculate_laplace_likelihood(self):
         model = LaPlaceLanguageModel(self.docLM, self.colLM, alpha = 1.0)
