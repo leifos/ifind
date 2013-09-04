@@ -21,15 +21,23 @@
         <hr>
          <div class="row-fluid">
             <div class="span7">
-             {% if data.gameover %}
 
-                <h3>Game Over</h3>
-                <p>You scored {{data.points}}!</p>
-               {% endif %}
                 <h3>Results for Query {{data.no}}</h3>
                 {% for d in data.round %}
-                    <h4> {% if d.opened%}Assessed document:  {{d.gain}} {% else %} Un-assessed document:  ???? {% endif %} </h4>
-                    <p>{{d.label}}</p>
+                    <p>{{d.label}}
+                        {% if d.opened%}
+                        {% if d.gain > 2 %} <span class="badge badge-success">{{d.gain}}</span>
+                    {% else %}
+                        {% if d.gain > 0 %}
+                            <span class="badge badge-warning">{{d.gain}}</span>
+                        {% else %}
+                            <span class="badge badge-important">{{d.gain}}</span>
+                        {% endif %}
+                    {% endif %}
+                        {% else %} <span class="badge">?</span> {% endif %} </h4>
+                   </p>
+                <p> {% if d.opened%} Opened {% else %} Unopened {% endif %}</p>
+
 
                 {% endfor %}
 {% if data.gameover %}
@@ -48,6 +56,12 @@
             <p>Points: {{data.points}}</p>
             <p>No. of Queries Issued: {{data.no}}</p>
                 {% if data.gameover %}
+
+                <h3>Game Over</h3>
+                <p>You scored {{data.points}}!</p>
+              
+
+
                 <p><a href="/asg/pick/" class="btn btn-success btn-large">Play Again &raquo;</a> </p>
              {% else %}
            <p><a href="/asg/query/" class="btn btn-primary btn-large">Query &raquo;</a>  <a href="/asg/assess/" class="btn btn-primary btn-large">Assess &raquo;</a></p>
