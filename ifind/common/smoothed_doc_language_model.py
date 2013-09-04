@@ -77,5 +77,5 @@ class BayesLanguageModel(SmoothedLanguageModel):
         numerator = self.docLM.get_num_occurrences(term) + (self.beta * self.colLM.get_term_prob(term))
         #denominator = self.docLM.get_num_terms() + self.beta
         denominator = self.docLM.get_total_occurrences() + self.beta
-        return numerator/denominator
+        return float(numerator)/float(denominator)
 
