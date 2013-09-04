@@ -59,7 +59,10 @@
 
                 <h3>Game Over</h3>
                 <p>You scored {{data.points}}!</p>
-              
+                {% if new_high %}
+                <p>New High Score!</p>
+                {% endif %}
+
 
 
                 <p><a href="/asg/pick/" class="btn btn-success btn-large">Play Again &raquo;</a> </p>

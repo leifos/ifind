@@ -54,12 +54,13 @@ def query(request):
             store_game(gid, game)
             data = game.get_game_state()
 
+        new_high = False
         if game.is_game_over():
             # check if this is a high score
             # update userprofile stats
-            end_game(request.user, game)
+            new_high = end_game(request.user, game)
 
-        return render_to_response('asg/game.html', {'sid':gid, 'data': data}, context)
+        return render_to_response('asg/game.html', {'sid':gid, 'data': data, 'new_high':new_high}, context)
 
 def assess(request):
         context = RequestContext(request, {})
@@ -74,12 +75,13 @@ def assess(request):
             store_game(gid,game)
             data = game.get_game_state()
 
+        new_high = False
         if game.is_game_over():
             # check if this is a high score
             # update userprofile stats
-            end_game(request.user, game)
+            new_high = end_game(request.user, game)
 
-        return render_to_response('asg/game.html', {'sid':gid, 'data': data}, context)
+        return render_to_response('asg/game.html', {'sid':gid, 'data': data, 'new_high':new_high}, context)
 
 def profile_page(request, username):
     context = RequestContext(request, {})
