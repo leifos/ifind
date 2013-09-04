@@ -8,14 +8,14 @@ class LanguageModel():
     """
 
     #TODO(leifos): dict is a reserved word - i.e. defines a dict.. be mindful of using dict, list, etc unless you are creating one.
-    def __init__(self, file=None , occurences_dict=None):
+    def __init__(self, file=None , occurrences_dict=None):
         self.occurrence_dict = {}
         self.TOTAL_OCCURRENCES = 0
 
         if file:
             self._populate_occurrences(file)
         else:
-            self.occurrence_dict = occurences_dict
+            self.occurrence_dict = occurrences_dict
 
         self._calc_total_occurrences()
 

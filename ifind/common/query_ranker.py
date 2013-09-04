@@ -17,7 +17,7 @@ class QueryRanker(object):
         :return:a subset of k queries which have the highest probability
         of retrieving the document
         """
-        self.document = LanguageModel(dict=doc_term_count)
+        self.document = LanguageModel(occurrences_dict=doc_term_count)
         self.background = LanguageModel(file=background_file)
         self.ranked_queries = {}
 
@@ -36,8 +36,8 @@ class QueryRanker(object):
             #background_prob=self.background.get_term_probability(term)
             #doc_prob=self.document.get_term_probability(term)
             #score += l*doc_prob + (1-l)*background_prob
-            calculator = SmoothedLanguageModel(self.document,self.background)
-            score+=calculator.calculate_likelihood(l,term)
+            calculator = SmoothedLanguageModel(self.document,self.background,lam=0.5)
+            score+=calculator.get_term_prob(term)
             #todo is rounding needed??
         return score
 

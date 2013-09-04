@@ -10,7 +10,7 @@ class TestQueryRanker(unittest.TestCase):
     def setUp(self):
         self.logger = logging.getLogger("TestQueryRanker")
         self.doc_dict={'hello':2,'world':4}
-        self.ranker = QueryRanker(background_file = 'term_occurrences.txt', doc_term_count=self.doc_dict)
+        self.ranker = QueryRanker(background_file='term_occurrences.txt', doc_term_count=self.doc_dict)
 
     def test_calculate_query_probability(self):
         self.logger.debug("Test Calculate Query Probability")

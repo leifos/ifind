@@ -25,8 +25,8 @@ class TestSmoothedDocLanguageModel(unittest.TestCase):
                'error': 1
         }
 
-        self.colLM = LanguageModel(occurences_dict=self.col)
-        self.docLM = LanguageModel(occurences_dict=self.doc)
+        self.colLM = LanguageModel(occurrences_dict=self.col)
+        self.docLM = LanguageModel(occurrences_dict=self.doc)
 
     def test_calculate_likelihood(self):
         model = SmoothedLanguageModel(self.docLM, self.colLM, lam=0.5)
