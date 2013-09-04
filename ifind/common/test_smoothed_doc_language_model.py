@@ -66,16 +66,16 @@ class TestSmoothedDocLanguageModel(unittest.TestCase):
 
 
         phello = model.get_term_prob('hello')
-        self.assertEquals(phello, 3.0/9.0)
+        self.assertAlmostEqual(phello, 3.0/9.0)
 
         phelp = model.get_term_prob('help')
-        self.assertEquals(phelp, 1.0/9.0)
+        self.assertAlmostEqual(phelp, 1.0/9.0)
 
         pworld = model.get_term_prob('world')
-        self.assertEquals(pworld, 2.5/9.0)
+        self.assertAlmostEqual(pworld, 2.5/9.0)
 
         perror = model.get_term_prob('error')
-        self.assertEquals(perror, 1.0/90.0)
+        self.assertAlmostEqual(perror, 1.0/90.0)
 
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr)
