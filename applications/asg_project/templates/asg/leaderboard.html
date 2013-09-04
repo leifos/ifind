@@ -5,6 +5,7 @@
        Abstract Search Games: Leaderboard
 {% endblock %}
 
+
 {% block navbar %}
 
             {% include "base/navbar.html" %}
@@ -12,19 +13,21 @@
 
 
 {% block content %}
+        <div class="hero-unit">
      <h1>Leaderboard</h1>
 
+            <p>
          <table class="table table-hover table-bordered">
-             <tr><td>Player</td><td>Total Points</td><td>Gain-Time Ratio</td>
+             <tr><td>Player</td><td>Average Points</td><td>Total Points</td><td>Gain-Time Ratio</td>
                 </tr>
              {% for p in players %}
              <tr class="success">
-        <td><a href='/asg/players/{{p.user.username}}/'> {{ p.user.username }}</a></td>
+        <td><a href='/asg/players/{{p.user.username}}/'> {{ p.user.username }}</a></td><td>{{p.average_points}}</td>
                  <td>{{p.total_points}}</td> <td> {{p.ratio}}</td>
     {% endfor %}
                 </tr>
             </table>
-
+    </p>
 
 
    <div class="pagination">
@@ -34,7 +37,7 @@
         {% endif %}
 
 
-        <br
+        <br/>
         <span class="current">
             Page {{ players.number }} of {{ players.paginator.num_pages }}.
         </span>
@@ -45,5 +48,5 @@
     </span>
 </div>
 
-
+</div>
 {% endblock %}

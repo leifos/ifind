@@ -24,7 +24,11 @@ class UserProfile(models.Model):
         "Returns the person's full name."
         return round(float(self.total_points) / (float(self.total_tokens+0.000001)),2)
 
+    def _get_average_points(self):
+        return round(float(self.total_points)/float(self.no_games_played) ,2)
+
     ratio = property(_get_ratio)
+    average_points = property(_get_average_points)
 
     def __unicode__(self):
         return self.user.username

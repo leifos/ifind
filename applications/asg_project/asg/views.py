@@ -18,10 +18,9 @@ def pick(request):
     context = RequestContext(request, {})
     return render_to_response('asg/pick.html', {'ge':ge}, context)
 
-
 def leaderboard(request):
     context = RequestContext(request, {})
-    up = UserProfile.objects.all().order_by('-total_points')
+    up = UserProfile.objects.all().extra(select={ 'total' : 'total_points / no_games_played' }).order_by('-total')
     paginator = Paginator(up, 20)
     page = request.GET.get('page')
     try:
@@ -33,8 +32,6 @@ def leaderboard(request):
 
     return render_to_response('asg/leaderboard.html', {'players': players}, context)
 
-
-
 def startgame(request, num):
         context = RequestContext(request, {})
         session_id = request.session._get_or_create_session_key()
@@ -44,7 +41,6 @@ def startgame(request, num):
         response = render_to_response('asg/game.html', {'sid':session_id, 'data': data }, context)
         response.set_cookie('gid',session_id)
         return response
-
 
 def query(request):
         context = RequestContext(request, {})
@@ -84,7 +80,6 @@ def assess(request):
             end_game(request.user, game)
 
         return render_to_response('asg/game.html', {'sid':gid, 'data': data}, context)
-
 
 def profile_page(request, username):
     context = RequestContext(request, {})

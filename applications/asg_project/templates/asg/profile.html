@@ -4,6 +4,7 @@
        Abstract Search Games: Profile Page
 {% endblock %}
 
+
 {% block navbar %}
 
             {% include "base/navbar.html" %}
@@ -11,7 +12,7 @@
 
 
 {% block content %}
-
+<div class="hero-unit">
         <h1>Profile</h1>
 {% if player %}
     <ul>
@@ -37,4 +38,5 @@
     Player not found.
 {% endif %}
 
+    </div>
 {% endblock %}

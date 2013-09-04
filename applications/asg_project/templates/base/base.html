@@ -1,24 +1,81 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)http://twitter.github.io/bootstrap/examples/hero.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>
-        {% block title %}
-        {% endblock %}
-    </title>
+<html>
+  <head>
 
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="{{ STATIC_URL }}css/bootstrap-fuild-adj.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
 
-  <body>
-    <b>This Barebones Prototype of the Abstract Search Games is Pre-Beta.</b> <br/>
-    <b>Account information maybe lost from time to time as new features are introduced.</b>
-
-    {% block navbar %}
+    {% block title %}
     {% endblock %}
+  </head>
+  <body>
 
-    <div class="container">
-     {% block content %}
+  <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/asg/">Search Abstraction</a>
+          <div class="nav-collapse collapse">
+              <p class="navbar-text pull-right">
+            {% if user.is_authenticated %}
+    Welcome <a href="/asg/players/{{user.username}}/">{{user.username}}</a>
+     | <a href="/accounts/logout/">Logout</a>
+{% else %}
+       <a href="/accounts/register/">Register</a>| <a href="/accounts/login/">Login</a>
+ {% endif %}
+                </p>
+            <ul class="nav">
+                {% if user.is_authenticated %}
+                <li><a href="/asg/pick/">Play</a></li>
+                {% endif %}
+                <li><a href="/asg/leaderboard">Leaderboard</a></li>
+                <li><a href="#contact">About</a></li>
+                <li><a href="/asg/">How To Play</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+            <li></li><li></li>
+            {% block navbar %}
+            {% endblock %}
+
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+
+                    {% block content %}
      {% endblock %}
-    </div> <!-- /container -->
 
-</body></html>
+
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>iFind GitHub 2013</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+
+  </body>
+</html>

@@ -4,17 +4,54 @@
        Abstract Search Games: Choose Game
 {% endblock %}
 
+
 {% block navbar %}
             {% include "base/navbar.html" %}
 {% endblock %}
 
 
 {% block content %}
-    <h1>Choose Game</h1>
+        <div class="hero-unit">
+    <h1>Choose a Game</h1>
+        </div>
 
-<ul>
-{% for g in ge %}
-     <li><a href="/asg/start/{{g.id}}/">{{g.name}}</a> {{g.desc}} - Highest Score: {{g.best_so_far}} - Average Gain/Time Ratio: {{g.ratio}}</li>
-{% endfor %}
-</ul>
+    {% for g in ge %}
+
+        {% if forloop.first %}
+    <div class="row-fluid">
+        {% endif %}
+         <div class="span4">
+             <h3>{{g.name}}</h3>
+             <p>{{g.desc}}</p><p>Average Gain/Time Ratio: {{g.ratio}}</p>
+             <p><a class="btn btn-primary" href="/asg/start/{{g.id}}/">Play &raquo;</a></p>
+          </div><!--/span-->
+         {% if forloop.counter|divisibleby:"3" %}
+            </div>
+            {% if not forloop.last %}
+                <div class="row-fluid">
+             {% endif %}
+          {% endif %}
+         {% if forloop.last %}
+                </div>
+         {% endif %}
+    {% endfor %}
+
+
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
