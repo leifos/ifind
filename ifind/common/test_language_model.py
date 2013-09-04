@@ -10,7 +10,7 @@ class TestLanguageModel(unittest.TestCase):
         self.expected = {'hello': 10, 'world': 20, 'goodbye': 10}
         self.logger = logging.getLogger("TestLanguageModel")
         self.bk_model = LanguageModel(file='term_occurrences.txt')
-        self.doc_model = LanguageModel(dict=self.expected)
+        self.doc_model = LanguageModel(occurrences_dict=self.expected)
 
     def test_populate_occurrences(self):
         self.logger.debug("Test Populate Occurrences")
@@ -53,7 +53,7 @@ class TestLanguageModel(unittest.TestCase):
         self.logger.debug("Test get term probability")
         #probability of hello is 10/40 = 0.25
         expected=0.25
-        actual=self.bk_model.get_term_probability('hello')
+        actual=self.bk_model.get_term_prob('hello')
         self.assertEquals(expected,actual)
 
 if __name__ == '__main__':
