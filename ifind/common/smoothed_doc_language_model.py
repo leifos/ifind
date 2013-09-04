@@ -5,7 +5,6 @@ class SmoothedLanguageModel():
     """
     class to represent calculating term weighting
     """
-    #TODO(leifos): most language models are going to have 1 parameter, possibly a few more.
     def __init__(self, docLM, colLM, alpha=1.0, beta=1.0, lam=0.5):
         """
         :param docLM: a LanguageModel object representing the document
@@ -40,9 +39,6 @@ class SmoothedLanguageModel():
                 self.lam = value
 
 
-    #TODO(leifos): removed variable, as this can be set when the object is created.
-    #TODO(leifos): default method is JM smoothing
-    #TODO(leifos): change the name from get_term_probability to get-term_prob.. shorter, but also consistent with get_term_prob in Language Model
     def get_term_prob(self, term):
         """
 
@@ -51,7 +47,6 @@ class SmoothedLanguageModel():
         """
         collection_prob = self.colLM.get_term_prob(term)
         doc_prob = self.docLM.get_term_prob(term)
-        #TODO(leifos): adding in parathenses makes sure you are computing what your really want.
         score = (self.lam * doc_prob) + ((1.0 - self.lam) * collection_prob)
         return score
 
