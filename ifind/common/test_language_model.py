@@ -37,6 +37,13 @@ class TestLanguageModel(unittest.TestCase):
         hello_expected=10
         self.assertEquals(hello_count,hello_expected)
 
+    def test_when_no_occurrences_bk(self):
+        self.logger.debug("Test when term does not exist")
+        #same test as _doc but with bk model
+        term_count=self.bk_model.get_num_occurrences('garble')
+        term_expected=0
+        self.assertEquals(term_count, term_expected)
+
     def test_calc_total_occurrences_doc(self):
         self.logger.debug("Test calculate total occurrences with dictionary")
         actual_total=self.doc_model.get_total_occurrences()
