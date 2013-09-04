@@ -53,7 +53,7 @@ class LanguageModel():
         :param term: the individual term for which count is desired
         :return: number of occurrences for term in occurrence dict, 0 if not in
         """
-        if term in self.occurrence_dict[term]:
+        if term in self.occurrence_dict:
             return self.occurrence_dict[term]
         else:
             return 0
@@ -64,10 +64,11 @@ class LanguageModel():
         :param term:
         :return:
         """
-        if self.get_num_occurrences(term) == 0:
+        term_count = self.get_num_occurrences(term)
+        if  term_count == 0:
             return 0
-        else: 
-            result =float(self.get_num_occurrences(term))/float(self.get_total_occurrences())
+        else:
+            result =float(term_count)/float(self.get_total_occurrences())
             result = round(result,2)
             return result
 
