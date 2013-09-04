@@ -7,7 +7,6 @@ class LanguageModel():
     calculates the probability of a term occurring given the occurrence dict
     """
 
-    #TODO(leifos): dict is a reserved word - i.e. defines a dict.. be mindful of using dict, list, etc unless you are creating one.
     def __init__(self, file=None , occurrences_dict=None):
         self.occurrence_dict = {}
         self.TOTAL_OCCURRENCES = 0
@@ -44,7 +43,6 @@ class LanguageModel():
     def get_total_occurrences(self):
         return self.TOTAL_OCCURRENCES
 
-    #TODO(leifos): be consisent, this was get_number_terms.. it was used as get_num_terms
     def get_num_terms(self):
         return len(self.occurrence_dict)
 
