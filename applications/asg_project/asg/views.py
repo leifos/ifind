@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from models import UserProfile, MaxHighScore, GameExperiment
 
@@ -17,6 +17,21 @@ def pick(request):
     ge = GameExperiment.objects.all()
     context = RequestContext(request, {})
     return render_to_response('asg/pick.html', {'ge':ge}, context)
+
+
+def leaderboard(request):
+    context = RequestContext(request, {})
+    up = UserProfile.objects.all().order_by('-total_points')
+    paginator = Paginator(up, 20)
+    page = request.GET.get('page')
+    try:
+        players = paginator.page(page)
+    except PageNotAnInteger:
+        players = paginator.page(1)
+    except EmptyPage:
+        players = paginator.page(paginator.num_pages)
+
+    return render_to_response('asg/leaderboard.html', {'players': players}, context)
 
 
 
