@@ -21,7 +21,7 @@ def pick(request):
 
 def leaderboard(request):
     context = RequestContext(request, {})
-    up = UserProfile.objects.all()
+    up = UserProfile.objects.all().order_by('-total_points')
     paginator = Paginator(up, 20)
     page = request.GET.get('page')
     try:
