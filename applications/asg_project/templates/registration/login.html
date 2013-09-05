@@ -8,25 +8,48 @@
 
 
 {% block content %}
-
+    <div class="hero-unit">
 <h1>Log in</h1>
-
+<br/>
 {% if form.errors %}
-<p class="error">Please correct the errors below:</p>
+    <div class="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Warning!</strong> Please correct the errors below: {{ form.non_field_errors }}
+    </div>
 {% endif %}
 
-<form method="post" action="?next={{ next|default:"/asg/" }}">{% csrf_token %}
-<dl>
-<dt><label for="id_username">Username:</label>{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</dt>
-<dd>{{ form.username }}</dd>
-<dt><label for="id_password">Password:</label>{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</dt>
-<dd>{{ form.password }}</dd>
-<dt><input type="submit" value="Log in" /></dt>
-</dl>
-</form>
+
+ <form method="post" action="?next={{ next|default:'/asg/' }}" class="form-horizontal">
+        {% csrf_token %}
+
+            <div class="control-group">
+                <label class="control-label" for="id_username" >Username</label>
+                <div class="controls">
+                    <small>{{form.username.errors}}</small>
+                    <input type="text" id="id_username" name="username" placeholder="">
+                </div>
+           </div>
+
+            <div class="control-group">
+                <label class="control-label" for="id_password" >Password</label>
+                <div class="controls">
+                    <small>{{form.password.errors}}</small>
+                    <input type="password" id="id_password" name="password" placeholder="Password">
+                </div>
+           </div>
+
+
+<div class="control-group">
+    <div class="controls">
+    <button type="submit" class="btn btn-primary btn-large" value="Login &rarr;">Login &rarr;</button>
+   </div>
+</div>
+      </form>
+
 {% endblock %}
 
 {% block content-related %}
 <p>If you don't have an account, you can <a href="/accounts/register/">sign
 up</a> for one.
 {% endblock %}
+        </div>

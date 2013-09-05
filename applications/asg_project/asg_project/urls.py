@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-
+from django.http import HttpResponseRedirect
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -16,4 +16,7 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     (r'^admin/', include(admin.site.urls)),
     (r'^accounts/', include('registration.backends.simple.urls')),
+
+    (r'^users/', lambda x: HttpResponseRedirect('/asg/')),
+
 )

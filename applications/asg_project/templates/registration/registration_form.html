@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}<title>Sign up</title>{% endblock %}
 
         {% block navbar %}
 
@@ -9,79 +9,64 @@
 
 
 {% block content %}
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
 
-      .form-signin {
-        max-width: 340px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
-
-    </style>
-  {% comment %}
+<div class="hero-unit">
+    <h1>Create an account</h1>
+<br/>
   {% if form.errors %}
-  <p class="errors text-error">Please correct the errors below: {{ form.non_field_errors }}</p>
-  {% endif %}
-  {% endcomment %}
+    <div class="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Warning!</strong> Please correct the errors below: {{ form.non_field_errors }}
 
-  <div class="container">
-      <form method="post" action="" class="form-signin">
-        <h1 class="form-signin-heading">Create an account</h1>
+    </div>
+  {% endif %}
+
+        <form method="post" action="" class="form-horizontal form-signin">
         {% csrf_token %}
-          <label for="id_username" >Username:</label>
-          {% if form.username.errors %}
-            <p class="errors text-error">{{ form.username.errors.as_text }}</p>
-          {% endif %}
-          {{ form.username }}
-          <br />
-          <label for="id_email">Email address:</label>
-          {% if form.email.errors %}
-            <p class="errors text-error">{{ form.email.errors.as_text }}</p>
-          {% endif %}
-          {{ form.email }}
-          <br />
-        <p>
-          <label for="id_password1">Password:</label>
-          {% if form.password1.errors %}
-            <p class="errors text-error">{{ form.password1.errors.as_text }}</p>
-          {% endif %}
-          {{ form.password1 }}
-        </p>
-        <p>
-          <label for="id_password2">Password (type again to catch typos):</label>
-          {% if form.password2.errors %}
-            <p class="errors text-error">{{ form.password2.errors.as_text }}</p>
-          {% endif %}
-          {{ form.password2 }}
-        </p>
-        <p class="submit"><input type="submit" class="btn btn-primary btn-large" value="Register &rarr;"></p>
+
+            <div class="control-group">
+                <label class="control-label" for="id_username" >Username</label>
+                <div class="controls">
+                    <small>{{form.username.errors}}</small>
+                    <input type="text" id="id_username" name="username" placeholder="">
+
+                </div>
+           </div>
+
+            <div class="control-group">
+                <label class="control-label" for="id_email" >Email</label>
+                <div class="controls">
+                   <small>{{form.email.errors}}</small>
+
+                    <input type="text" id="id_email" name="email" placeholder="Email">
+
+                </div>
+           </div>
+
+            <div class="control-group">
+                <label class="control-label" for="id_password1" >Password</label>
+                <div class="controls">
+                    <small>{{form.password1.errors}}</small>
+                    <input type="password" id="id_password1" name="password1" placeholder="Password">
+
+                </div>
+           </div>
+
+                        <div class="control-group">
+                <label class="control-label" for="id_password2" >Re-enter Password</label>
+                <div class="controls">
+                    <small>{{form.password2.errors}}</small>
+                    <input type="password" id="id_password2" name="password2" placeholder="Password">
+
+                </div>
+           </div>
+<div class="control-group">
+    <div class="controls">
+    <button type="submit" class="btn btn-primary btn-large" value="Register &rarr;">Register &rarr;</button>
+   </div> </div>
       </form>
-  </div>
 {% endblock %}
+
 
 {% block content-related %}
 <p>Fill out the form to the left (all fields are required), and your
@@ -90,5 +75,7 @@ to finish your registration.</p>
 
 <p>We'll only use your email to send you signup instructions. We hate spam
 as much as you do.</p>
+
+    </div>
 
 {% endblock %}
