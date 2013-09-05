@@ -133,12 +133,14 @@ class TestHighYieldGenerator(YieldGenerator):
 
 class CueGenerator(object):
 
-    def __init__(self, cue_length = 10):
+    def __init__(self, cue_length = 10, gain = 10, hintfactor = 0.5):
         """
         :param cue_length:
         :return:
         """
         self.cue_length = cue_length
+        self.gain = gain
+        self.hintfactor = hintfactor
 
     def get_labels(self, n=10, yield_list = None):
         """
@@ -154,6 +156,45 @@ class CueGenerator(object):
 
     def __str__(self):
         return 'CueGenerator - Default'
+
+class FixedCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            int hintspace = self.hintfactor*self.gain
+            ll.append('x'*hintspace)
+            ll.append('.'*(self.cue_length-hintspace))
+            ll = random.shuffle(ll)
+        return ll
+
+class VariableCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        int ygain = 0
+        int ytotal = 0
+        for i in range(len(yield_list)):
+            ygain += yield_list[i]
+        ymean = ygain / len(yield_list)
+        for i in range(len(yield_list)):
+            ytotal += ((yield_list[i]-ymean)*(yield_list[i]-ymean))
+        int ysd = ytotal / len(yield_list)
+        int hintspace = random.gauss(ymean, ysd)
+        ll.append('x'*hintspace)
+        ll.append('.'*(self.cue_length-hintspace))
+        ll = random.shuffle(ll)
+        return ll
 
 class LowInfoCueGenerator(CueGenerator):
 
