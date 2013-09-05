@@ -167,7 +167,7 @@ class FixedCueGenerator(CueGenerator):
         """
         ll = []
         for i in range(n):
-            int hintspace = self.hintfactor*self.gain
+            hintspace = self.hintfactor*self.gain
             ll.append('x'*hintspace)
             ll.append('.'*(self.cue_length-hintspace))
             ll = random.shuffle(ll)
@@ -182,15 +182,15 @@ class VariableCueGenerator(CueGenerator):
         :return:
         """
         ll = []
-        int ygain = 0
-        int ytotal = 0
+        ygain = 0
+        ytotal = 0
         for i in range(len(yield_list)):
             ygain += yield_list[i]
         ymean = ygain / len(yield_list)
         for i in range(len(yield_list)):
             ytotal += ((yield_list[i]-ymean)*(yield_list[i]-ymean))
-        int ysd = ytotal / len(yield_list)
-        int hintspace = random.gauss(ymean, ysd)
+        ysd = ytotal / len(yield_list)
+        hintspace = random.gauss(ymean, ysd)
         ll.append('x'*hintspace)
         ll.append('.'*(self.cue_length-hintspace))
         ll = random.shuffle(ll)
