@@ -19,7 +19,7 @@ print cg
 print gbcg
 
 
-random_game = {'yield_generator': ryg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
+random_game = {'yield_generator': ryg, 'cue_generator': cg, 'query_cost': 3, 'assess_cost': 1 }
 high_game = {'yield_generator': hyg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
 test_game = {'yield_generator': tyg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
 low_cost_game = {'yield_generator': hyg, 'cue_generator': cg, 'query_cost': 1, 'assess_cost': 2 }
