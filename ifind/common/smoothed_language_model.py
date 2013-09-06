@@ -1,7 +1,7 @@
 __author__ = 'rose'
 from language_model import LanguageModel
 
-class SmoothedLanguageModel():
+class SmoothedLanguageModel(object):
     """
     class to represent calculating term weighting
     """
@@ -13,6 +13,9 @@ class SmoothedLanguageModel():
         """
         self.docLM=docLM
         self.colLM=colLM
+        self.alpha = 1.0
+        self.beta = 1.0
+        self.lam = 0.5
         self.set_alpha(alpha)
         self.set_beta(beta)
         self.set_lam(lam)

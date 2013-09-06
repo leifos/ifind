@@ -18,65 +18,49 @@ class PageRetrievabilityCalculator:
 
     """
 
-    def __init__(self, engine, cutoff=10, generator=None):
+    def __init__(self, engine, c=50, beta=0.0):
+        """
+        :param engine: expects a ifind.search.engine
+        :param cutoff: number of results to request from the search engine per query
+        :param c: cutoff value when computing retrievability scores and when retrieving documents from search engine
+        :param beta: the discount for computing gravity based retrievability scores
+        :return: an initialized PageRetrievabiliyCalculator
+        """
         self.engine = engine
-        self.cutoff= cutoff
-        #query, retrievability score pairs for all queries issued
-        self.query_ret_scores = {}
-        #query, rank pairs for all queries issued against self.engine
-        self.query_rank = {}
         self.url = None
-        #the list of queries
-        self.query_list = {}
+        #the dictionary of ifind.search.query.Query objects
+        self.query_dict = {}
         # total retrievability for the latest url processed
-        self.ret_score = 0
+        self.ret_score = 0.0
+        self.beta = beta
+        self.c = c
 
 
-        if generator:
-            self.generator = generator
-        else:
-            # default to a single term generator
-            self.generator = SingleQueryGeneration()
-
-
-    def set_query_generator(self, generator):
-        """ sets generator, not really needed
-        :param generator: Expects a ifind.common.QueryGeneration
+    def score_page(self, url, query_list):
+        """
+        Issues each query against the search engine, and tries to match that page.
+        Store each query as a ifind.search.query.Query object in query_dict
+        Updates the rank property of the ifind.search.query.Query object after each search
+        :param url: a url string to match the results against
+        :param query_list: a list of strings, each string is query
         :return: None
-
-        """
-        self.generator = generator
-
-    def score_page(self, url):
-        """
-        :param url:
-        :return:
-
         """
 
         # check whether url is valid
 
         #if valid, set url
         self.url = url
-        # now generate queries that will be used
-        self.query_list = self._generate_queries()
 
         self.ret_score = 0
-        self.query_count = len(self.query_list)
         self.page_retrieved = 0
-        self.query_rank = {}
-        self.query_ret_scores = {}
-        for query in self.query_list:
-            rank = self._process_query(query)
-            self.query_rank[query] = rank
+
+        self._make_query_dict(query_list)
+        for query_key in self.query_dict:
+            iquery = self.query_dict[query_key]
+            rank = self._process_query(iquery)
+            iquery.rank = rank
             if rank > 0:
                 self.page_retrieved = self.page_retrieved + 1
-
-        self.ret_score = self.calculate_page_retrievability()
-
-
-        return self.ret_score
-
 
 
     def report(self):
@@ -92,29 +76,38 @@ class PageRetrievabilityCalculator:
         return {'url':self.url, 'query_count': self.query_count, 'retrieved': self.page_retrieved, 'retrievability':self.ret_score }
 
 
-    def calculate_page_retrievability(self):
-        self.query_ret_scores = {}
-        total_retrievability = 0
-        for query in self.query_rank:
-            self.query_ret_scores[query] = self._calculate_retrievability(self.query_rank[query])
-            total_retrievability += self.query_ret_scores[query]
+    def calculate_page_retrievability(self, c=None, beta=None):
+        """
+        :param c (int): takes a new value of the c param and sets it for use in the calculate retrievability method
+        :param beta (float): take a new value of the beta param and sets it
+        :return: the total retrievability score for the page (float), updates the iquery objects with the ret_score based on the current c and beta
+        """
 
+        if c:
+            self.c = c
+        if beta:
+            self.beta = beta
+
+        total_retrievability = 0
+        for query_key in self.query_dict:
+            iquery = self.query_dict[query_key]
+            iquery.ret_score = self._calculate_retrievability(iquery.rank)
+            total_retrievability += iquery.ret_score
+
+        self.ret_score = total_retrievability
         return total_retrievability
 
-
-
     def top_queries(self, n):
-        """
+        """ returns the top n queries which had the highest retrievabilty scores
         :param n: integer
-        :return: returns a list of the top n queries
+        :return: returns a list of the top n ifind.search.query.Query objects
 
         """
 
         #TODO(leifos):from self.query_ret_scores sort by the highest score
         import operator
 
-        top_query_list = sorted(self.query_ret_scores.iteritems(), key=operator.itemgetter(1))
-
+        top_query_list= sorted(self.query_dict.values(), key=operator.attrgetter('ret_score'))
         top_query_list.reverse()
 
         if len(top_query_list) > n:
@@ -122,22 +115,22 @@ class PageRetrievabilityCalculator:
         else:
             return top_query_list
 
-    def _generate_queries(self):
+    def _make_query_dict(self, query_list):
         """
         generates a list of queries from plain text
         :return returns a list of queries as strings
 
         """
+        self.query_dict = {}
 
-        #use the generator to create the queries for the text, store
-        #the result in a list
+        for q in query_list:
+            aQ = Query(terms=q, top=self.c)
+            aQ.rank = 0
+            aQ.ret_score = 0.0
+            self.query_dict[q] = aQ
 
-        html = urlopen(self.url).read()
-        queries = self.generator.extract_queries_from_html(html)
 
-        #create and return list of query objects so queries can be issued
-        #against engines
-        return [Query(query, self.cutoff) for query in queries]
+        self.query_count = len(self.query_dict)
 
     def _process_query(self, query):
         """
@@ -153,10 +146,13 @@ class PageRetrievabilityCalculator:
         result_list = self.engine.search(query)
         # check if url is in the results.
         i = 0
+        match_url = self.url.rstrip("/")
         for result in result_list:
             i += 1
+            result_url = result.url.rstrip("/")
+
             #TODO(leifos): may need a better matching function in case there are small differences between url
-            if result.url == self.url:
+            if result_url == match_url:
                 rank = i
                 break
 
@@ -164,16 +160,22 @@ class PageRetrievabilityCalculator:
 
         return rank
 
-    def _calculate_retrievability(self, rank, query_opp=1):
+    def _calculate_retrievability(self, rank, query_opp=1.0):
         """
-        :param rank: rank of the url
-        :param query_opp: opportunity of the query
-        :return: returns the retrievability value for a given rank
+        computes either gravity based score or cumulative
+        :param rank (int): rank of the url
+        :param query_opp (float): opportunity of the query
+        :return: returns the retrievability value as a float,
 
         """
-        #TODO(leifos): use a class to enable different retrievability functions to be used.
 
         if rank == 0:
             return 0.0
         else:
-            return query_opp * (1.0/rank)
+            if rank <= self.c:
+                if self.beta > 0.0:
+                    return query_opp * (1.0/(rank**self.beta))
+                else:
+                    return query_opp
+            else:
+                return 0.0

@@ -10,7 +10,7 @@ class TestLanguageModel(unittest.TestCase):
         self.expected = {'hello': 10, 'world': 20, 'goodbye': 10}
         self.logger = logging.getLogger("TestLanguageModel")
         self.bk_model = LanguageModel(file='term_occurrences.txt')
-        self.doc_model = LanguageModel(occurrences_dict=self.expected)
+        self.doc_model = LanguageModel(term_dict=self.expected)
 
     def test_populate_occurrences(self):
         self.logger.debug("Test Populate Occurrences")

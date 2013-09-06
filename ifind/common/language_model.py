@@ -1,20 +1,20 @@
 __author__ = 'rose'
 
-class LanguageModel():
+class LanguageModel(object):
     """
     manages reading in a file and splitting into a term, occurrence dictionary
     or takes a term, occurrence dictionary
     calculates the probability of a term occurring given the occurrence dict
     """
 
-    def __init__(self, file=None , occurrences_dict=None):
+    def __init__(self, file=None , term_dict=None):
         self.occurrence_dict = {}
-        self.TOTAL_OCCURRENCES = 0
+        self.total_occurances = 0
 
         if file:
             self._populate_occurrences(file)
         else:
-            self.occurrence_dict = occurrences_dict
+            self.occurrence_dict = term_dict
 
         self._calc_total_occurrences()
 
@@ -38,10 +38,10 @@ class LanguageModel():
         counts the total number of term occurrences in occurrence_dict
         """
         for term, count in self.occurrence_dict.items():
-            self.TOTAL_OCCURRENCES += count
+            self.total_occurances += count
 
     def get_total_occurrences(self):
-        return self.TOTAL_OCCURRENCES
+        return self.total_occurances
 
     def get_num_terms(self):
         return len(self.occurrence_dict)
@@ -66,8 +66,7 @@ class LanguageModel():
         if  term_count == 0:
             return 0
         else:
-            result =float(term_count)/float(self.get_total_occurrences())
-            result = round(result,2)
+            result = float(term_count)/float(self.get_total_occurrences())
             return result
 
 

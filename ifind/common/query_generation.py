@@ -63,17 +63,21 @@ class QueryGeneration(object):
         text = text.lower()
         text = text.split()
         cleaned = []
-        for term in text:
-            # lower case
-            term = self.check_length(term)
-            if term:
-                term = self.remove_punctuation(term)
+        try:
+            for term in text:
+                # lower case
+                term = self.check_length(term)
                 if term:
-                    term = self.remove_stopwords(term)
+                    term = self.remove_punctuation(term)
                     if term:
-                        term = self.is_alphanumeric(term)
+                        term = self.remove_stopwords(term)
                         if term:
-                            cleaned.append(term)
+                            term = self.is_alphanumeric(term)
+                            if term:
+                                cleaned.append(term)
+        except:
+            #TODO(leifos): this is not good.. the methods need to be robust to character encoding issues
+            term = ''
 
         l = len(cleaned)
         if l > self.max_size:
