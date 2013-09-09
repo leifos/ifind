@@ -70,7 +70,7 @@ class PageRetrievabilityCalculator:
         print "The page scored: %f" % (self.ret_score)
         print "retrieved: %d query count: %d" % (self.page_retrieved, self.query_count)
         f = float(self.page_retrieved) / float(self.query_count)
-        print "Percentage of query that returned the page %f " % (f)
+        print "Percentage of queries that returned the page %f " % (f)
 
     def stats(self):
         return {'url':self.url, 'query_count': self.query_count, 'retrieved': self.page_retrieved, 'retrievability':self.ret_score }

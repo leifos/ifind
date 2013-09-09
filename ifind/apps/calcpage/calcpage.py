@@ -80,7 +80,7 @@ def main():
     doc_term_counts = doc_extractor.query_count
     print "Number of terms in document: %d" % (len(doc_term_counts))
     docLM = LanguageModel(term_dict=doc_term_counts)
-    slm = BayesLanguageModel(docLM=docLM, colLM=colLM, beta=100)
+    slm = BayesLanguageModel(docLM=docLM, colLM=colLM, beta=500)
     query_list = query_generator.extract_queries_from_html(page_html)
 
     print "Queries generated: ", len(query_list)
@@ -91,15 +91,15 @@ def main():
     for query in queries:
         query_list.append(query[0])
 
-    
+
     prc = PageRetrievabilityCalculator(engine=engine)
     prc.score_page(args.url, query_list)
-    prc.calculate_page_retrievability(c=5)
-    prc.report()
-    prc.calculate_page_retrievability(c=10)
-    prc.report()
+
+    print "\nRetrievability Scores for cumulative c=20"
     prc.calculate_page_retrievability(c=20)
     prc.report()
+    print "\nRetrievability Scores for gravity beta=1.0"
+
     prc.calculate_page_retrievability(c=20, beta=1.0)
     prc.report()
 
