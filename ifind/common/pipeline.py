@@ -22,7 +22,8 @@ class TermPipeline():
         self.term = term
         self.min_length = minlength
         self.stoplist = []
-        self.read_stopwordfile(stopfile)
+        if stopfile:
+            self.read_stopwordfile(stopfile)
         #create the term processors and add to the processor list
         self.set_processors()
 

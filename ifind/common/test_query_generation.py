@@ -12,42 +12,6 @@ class TestQueryGeneration(unittest.TestCase):
         self.logger = logging.getLogger("TestQueryGeneration")
         self.qg = QueryGeneration(minlen = 4)
 
-    def test_check_length(self):
-        self.logger.debug("Test Check Length")
-        term1 = 'the'
-        term = self.qg.check_length(term1)
-        self.assertEquals(term,None)
-
-        term2 = 'good'
-        term = self.qg.check_length(term2)
-        self.assertEquals(term, term2)
-
-        term3 = 'hello'
-        term = self.qg.check_length(term3)
-        self.assertEquals(term,term3)
-
-
-    def test_remove_punctuation(self):
-        self.logger.debug("Test Remove Punctuation")
-        term = self.qg.remove_punctuation(' the ')
-        self.assertEquals(term, 'the')
-
-        term = self.qg.remove_punctuation('hello.')
-        self.assertEquals(term, 'hello')
-
-        term = self.qg.remove_punctuation('!hello%')
-        self.assertEquals(term, 'hello')
-
-    def test_remove_stopwords(self):
-        self.logger.debug("Test Remove Stopwords")
-        term = self.qg.remove_stopwords('hello')
-        self.assertEquals(term, 'hello')
-
-        self.qg.stoplist = ['hello']
-        term = self.qg.remove_stopwords('hello')
-        self.assertEquals(term, None)
-
-
     def test_extract_queries_from_text(self):
         self.logger.debug("Test Extract Queries")
         text = 'the good hello!'
