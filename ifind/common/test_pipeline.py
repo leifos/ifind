@@ -102,6 +102,11 @@ class TestStopwordTermProcessor(unittest.TestCase):
         self.stop_processor.set_term(in_list)
         result = self.stop_processor.check()
         self.assertEquals(result, None)
+        #test return None for term in list
+        in_list= 'against'
+        self.stop_processor.set_term(in_list)
+        result = self.stop_processor.check()
+        self.assertEquals(result, None)
         #test return term for term not in list
         non_list='sport'
         self.stop_processor.set_term(non_list)
