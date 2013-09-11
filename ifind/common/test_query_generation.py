@@ -10,7 +10,7 @@ class TestQueryGeneration(unittest.TestCase):
 
     def setUp(self):
         self.logger = logging.getLogger("TestQueryGeneration")
-        self.qg = QueryGeneration(minlen = 4)
+        self.qg = QueryGeneration(minlen = 4, stopwordfile='stopwords_test.txt')
 
     def test_extract_queries_from_text(self):
         self.logger.debug("Test Extract Queries")
@@ -25,6 +25,33 @@ class TestQueryGeneration(unittest.TestCase):
         expected = ['test','extract', 'queries']
         actual = self.qg.extract_queries_from_html(html)
         self.assertItemsEqual(expected, actual)
+
+    def test_clean_text(self):
+        #todo should implement this as a loop with a dictionary of test
+        #data and expected results
+        self.logger.debug("Test Clean Text")
+        #test one term with multiple punctuation
+        test_text="?hello_"
+        expected_result=["hello"]
+        result = self.qg.clean_text(test_text)
+        self.assertItemsEqual(expected_result,result)
+        #test multiple terms with stop words in
+        test_text="after again I am themselves true swashbuckling"
+        expected_result=["true", "swashbuckling"]
+        result = self.qg.clean_text(test_text)
+        msg = "expected is " , expected_result , "result was " , result
+        self.assertItemsEqual(expected_result,result, msg )
+        #test line with single characters in
+        test_text="b c d e sunshine"
+        expected_result=["sunshine"]
+        result = self.qg.clean_text(test_text)
+        self.assertItemsEqual(expected_result,result)
+        #test line with numbers and non-alpha chars
+        test_text="| hello 56"
+        expected_result=["hello"]
+        result = self.qg.clean_text(test_text)
+        msg = "expected is " , expected_result , "result was " , result
+        self.assertItemsEqual(expected_result,result, msg )
 
 
 class TestSingleQueryGeneration(unittest.TestCase):
