@@ -13,6 +13,7 @@ from string import rsplit
 from collections import Counter
 from re import sub
 from nltk import clean_html, regexp_tokenize
+from pipeline import TermPipeline
 
 class QueryGeneration(object):
     """
@@ -25,16 +26,7 @@ class QueryGeneration(object):
         """
         self.min_len = minlen
         self.max_size = maxsize
-        self.stoplist = []
-        self.read_stopwordfile(stopwordfile)
-
-
-    def read_stopwordfile(self, stopwordfile):
-        if stopwordfile:
-            stopwords = open('stopwords.txt').readlines()
-            self.stoplist = []
-            for term in stopwords:
-                self.stoplist.append(term.strip())
+        self.stop_filename = stopwordfile
 
     def extract_queries_from_html(self, html):
         """
@@ -63,22 +55,13 @@ class QueryGeneration(object):
         text = text.lower()
         text = text.split()
         cleaned = []
-        try:
-            for term in text:
-                # lower case
-                term = self.check_length(term)
-                if term:
-                    term = self.remove_punctuation(term)
-                    if term:
-                        term = self.remove_stopwords(term)
-                        if term:
-                            term = self.is_alphanumeric(term)
-                            if term:
-                                cleaned.append(term)
-        except:
-            #TODO(leifos): this is not good.. the methods need to be robust to character encoding issues
-            term = ''
 
+        for term in text:
+            cleaner_pipeline = TermPipeline(term, minlength=self.min_len, stopfile=self.stop_filename)
+            clean_result = cleaner_pipeline.perform_checks()
+            if clean_result:
+                cleaned.append(clean_result)
+        #still need to deal with character encoding issues
         l = len(cleaned)
         if l > self.max_size:
             return cleaned[0:self.max_size]
@@ -98,61 +81,6 @@ class QueryGeneration(object):
             else:
                 count_dict[term]=1
         return count_dict
-
-    def check_length(self, term):
-        """
-        :param term: takes a term
-        :return: returns the term, if it meets the minimum length criteria
-        """
-        if len(term) >= self.min_len:
-            return term
-        else:
-            return None
-
-    def is_alphanumeric(self, term):
-        if term.isalpha():
-            return term
-        else:
-            return None
-
-    def remove_punctuation(self, term):
-        """remove punctation surrounding a term
-        :param term:
-        :return: term without punctation
-        """
-        #get the last character
-        #is there a possibility multiple punctuation at start and end?
-        length = len(term)
-        firstChar = term[0:1]
-        if str(firstChar).isalnum():
-            term = term
-        else:
-            #print "cutting first letter " + firstChar + " from " +term
-            term = term[1:length]
-            #print "term now " +term
-        #get length again incase punctuation at start and end
-        length = len(term)
-        lastChar = term[length-1:length]
-        if str(lastChar).isalnum():
-            term = term
-        else:
-            #print "cutting last letter " + lastChar + "from " + term
-            term = term[0:length-1]
-            #print " is now " + term
-
-        #now check if there's nothing left, then don't add, if there is, add it
-        if term:
-            return term
-        else:
-            return None
-
-    def remove_stopwords(self, term):
-        #stopwords list from http://www.ranks.nl/resources/stopwords.html
-        #can easily be switched
-        if term in self.stoplist:
-            return None
-        else:
-            return term
 
 
 class SingleQueryGeneration(QueryGeneration):
