@@ -9,7 +9,24 @@
 {% block navbar %}
 
             {% include "base/gamenavbar.html" %}
+
+
 {% endblock %}
+
+         {% block belownavbar %}
+        <div class="well sidebar-nav">
+
+        <ul class="nav nav-list">
+             <li class="nav-header">Instructions</li>
+
+            <li>Click Assess to open a document to gain points</li>
+            <br/>
+            <li>Click Query to bring back a new set of documents</li>
+            <br/>
+            <li>Querying and Assessing take time!</li>
+        </ul>
+             </div><!--/.well -->
+                {% endblock %}
 
 
 {% block content %}
@@ -24,7 +41,8 @@
 
                 <h3>Results for Query {{data.no}}</h3>
                 {% for d in data.round %}
-                    <p>{{d.label}}
+                    <p>{% if d.opened%} <span class="label">Opened</span> {% else %} <span class="label label-inverse">Unopened</span> {% endif %} <br/>
+                        {{d.label}}
                         {% if d.opened%}
                         {% if d.gain > 2 %} <span class="badge badge-success">{{d.gain}}</span>
                     {% else %}
@@ -36,7 +54,7 @@
                     {% endif %}
                         {% else %} <span class="badge">?</span> {% endif %} </h4>
                    </p>
-                <p> {% if d.opened%} Opened {% else %} Unopened {% endif %}</p>
+
 
 
                 {% endfor %}
@@ -51,8 +69,11 @@
 
              <h3>Game Stats</h3>
             <p>Time Left: {{data.tokens}}</p>
-            <p>Query Cost in units of time: {{data.cq}}</p>
-            <p>Assessment Cost in units of time: {{data.ca}}</p>
+            <div class="progress">
+            <div class="bar" style="width: {{data.ptokens}}%;"></div>
+            </div>
+            <p>Query Cost in units of time: <span class="badge badge-info">{{data.cq}}</span> </p>
+            <p>Assessment Cost in units of time:  <span class="badge badge-info">{{data.ca}}</span> </p>
             <p>Points: {{data.points}}</p>
             <p>No. of Queries Issued: {{data.no}}</p>
                 {% if data.gameover %}

@@ -131,6 +131,7 @@ class ABSGame(object):
         data['round'] = self.current_round
         data['no'] = self.round_no
         data['gameover'] = self.is_game_over()
+        data['ptokens'] = (self.tokens*100) / (self.tokens + self.tokens_spent)
         return data
 
 
