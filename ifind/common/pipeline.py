@@ -167,3 +167,15 @@ class AlphaTermProcessor(TermProcessor):
             return term
         else:
             return None
+
+class SpecialCharProcessor(TermProcessor):
+
+    def process(self, term):
+        cleaned = ''
+        for letter in term:
+            if letter.isalnum() or letter == ' ':
+                cleaned += letter
+        if cleaned.__len__() > 0:
+            return cleaned
+        else:
+            return None

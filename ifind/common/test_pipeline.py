@@ -1,6 +1,8 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
 __author__ = 'rose'
 from pipeline import PunctuationTermProcessor, AlphaTermProcessor, StopwordTermProcessor
-from pipeline import LengthTermProcessor, TermPipeline, TermProcessor
+from pipeline import LengthTermProcessor, TermPipeline, TermProcessor, SpecialCharProcessor
 import unittest
 import logging
 import sys
@@ -15,14 +17,18 @@ class TestTermPipeline(unittest.TestCase):
         self.stp = StopwordTermProcessor(stopwordfile='stopwords_test.txt')
         self.ptp = PunctuationTermProcessor()
         self.atp = AlphaTermProcessor()
+        self.sctp = SpecialCharProcessor()
+
 
 
         self.pipeline = TermPipeline()
+        self.pipeline.add_processor(self.sctp)
         self.pipeline.add_processor(self.tp)
         self.pipeline.add_processor(self.ltp)
         self.pipeline.add_processor(self.ptp)
         self.pipeline.add_processor(self.stp)
         self.pipeline.add_processor(self.atp)
+
 
 
     def test_read_stopfile(self):
@@ -64,63 +70,63 @@ class TestLengthTermProcessor(unittest.TestCase):
         self.logger = logging.getLogger("TestLengthTermProcessor")
         self.term = 'hi'
         self.minlen=3
-        self.length_proc= LengthTermProcessor()
+        self.ltp= LengthTermProcessor()
 
     def test_set_minlen(self):
         #check -ve num returns current min len
-        min_len = self.length_proc.min_len
-        self.length_proc.set_min_length(-1)
-        result = self.length_proc.min_len
+        min_len = self.ltp.min_len
+        self.ltp.set_min_length(-1)
+        result = self.ltp.min_len
         self.assertEquals(result,min_len)
         #check 0 returns current min_len
 
-        self.length_proc.set_min_length(0)
-        result = self.length_proc.min_len
+        self.ltp.set_min_length(0)
+        result = self.ltp.min_len
         self.assertEquals(result,min_len)
 
         #now check >0
-        self.length_proc.set_min_length(4)
-        result = self.length_proc.min_len
+        self.ltp.set_min_length(4)
+        result = self.ltp.min_len
         self.assertEquals(result,4)
 
 class TestPunctTermProcessor(unittest.TestCase):
 
     def setUp(self):
         self.logger = logging.getLogger("TestPunctuationTermProcessor")
-        self.punct_proc = PunctuationTermProcessor()
+        self.ptp = PunctuationTermProcessor()
 
     def test_check(self):
         #check removing ' ' ' the '
-        result = self.punct_proc.process(' the ')
+        result = self.ptp.process(' the ')
         self.assertEquals(result, 'the')
         #check removing . at end 'hello.'
 
-        result = self.punct_proc.process('hello.')
+        result = self.ptp.process('hello.')
         self.assertEquals(result, 'hello')
         #check removing ! and %
-        result = self.punct_proc.process('!good%')
+        result = self.ptp.process('!good%')
         self.assertEquals(result, 'good')
 
 class TestStopwordTermProcessor(unittest.TestCase):
 
     def setUp(self):
         self.logger = logging.getLogger("TestStopwordTermProcessor")
-        self.stop_processor = StopwordTermProcessor(stopwordfile='stopwords_test.txt')
+        self.stp = StopwordTermProcessor(stopwordfile='stopwords_test.txt')
 
     def test_check(self):
         #test return None for term in list
         in_list= 'myself'
-        result = self.stop_processor.process(in_list)
+        result = self.stp.process(in_list)
         self.assertEquals(result, None)
 
         #test return None for term in list
         in_list= 'against'
-        result = self.stop_processor.process(in_list)
+        result = self.stp.process(in_list)
         self.assertEquals(result, None)
         #test return term for term not in list
 
         non_list='sport'
-        result = self.stop_processor.process(non_list)
+        result = self.stp.process(non_list)
         self.assertEquals(result, non_list)
 
 
@@ -128,23 +134,46 @@ class TestAlphaTermProcessor(unittest.TestCase):
 
     def setUp(self):
         self.logger = logging.getLogger("TestAlphaTermProcessor")
-        self.alpha_processor = AlphaTermProcessor()
+        self.atp = AlphaTermProcessor()
 
     def test_check(self):
 
-        result = self.alpha_processor.process('<h>')
+        result = self.atp.process('<h>')
         self.assertEquals(result, None)
         #check neg numbers
 
-        result = self.alpha_processor.process('-5')
+        result = self.atp.process('-5')
         self.assertEquals(result, None)
 
         #check pos numbers
-        result = self.alpha_processor.process('5')
+        result = self.atp.process('5')
         self.assertEquals(result, None)
         #check punct
-        result = self.alpha_processor.process('hello.')
+        result = self.atp.process('hello.')
         self.assertEquals(result, None)
+
+class TestSpecialCharTermProcessor(unittest.TestCase):
+
+    def setUp(self):
+        self.logger = logging.getLogger("TestSpecialCharTermProcessor")
+        self.sctm = SpecialCharProcessor()
+
+    def test_check(self):
+        #check inclusion of special character is removed
+        expected='hi'
+        result = self.sctm.process('±hi')
+        self.assertEquals(expected,result)
+        #check spaces aren't removed
+        expected='hi hello'
+        result = self.sctm.process(expected)
+        self.assertEquals(expected,result)
+        #check special char and spaces
+        testline = 'ähello my friend'
+        expected = 'hello my friend'
+        result = self.sctm.process(testline)
+        self.assertEquals(expected, result)
+
+
 
 
 
