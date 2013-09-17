@@ -64,6 +64,20 @@ class TestTermPipeline(unittest.TestCase):
                     'yours', 'yourself', 'yourselves']
         self.assertEquals(expected,self.stp.stoplist)
 
+        def test_process():
+            #test removal of punctuation, numbers, special characters
+            #other cases are tested in test_query_gen where the clean
+            #method which uses the pipeline process method is tested
+            term = 'hello WORlD. my name  is Python111!!! ü'
+            expected = 'hello world my name is python '
+            result = self.pipeline.process(term)
+            self.assertEquals(expected,result)
+
+        def test_processors_config_order():
+            #todo this is to see the impact of adding processors in
+            #different orders
+            pass
+
 class TestLengthTermProcessor(unittest.TestCase):
 
     def setUp(self):

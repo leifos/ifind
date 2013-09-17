@@ -50,8 +50,6 @@ class QueryGeneration(object):
         :param text: a string of text, to be cleaned.
         :return: a list of terms (i.e. tokenized)
         """
-
-        #TODO(leifos): This could be implemented better as a configurable pipeline
         text = text.lower()
         text = text.split()
         cleaned = []
