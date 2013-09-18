@@ -2,7 +2,7 @@
 import os
 import sys
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 sys.path.append(os.getcwd())
 
@@ -76,7 +76,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = STATIC_PATH
+STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
