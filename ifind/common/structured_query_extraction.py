@@ -6,35 +6,63 @@ it will include parsing for specific divs
 ignoring div id/classes
 weighting based on importance of tags
 """
-from xml.dom import minidom
+from xml.etree import ElementTree
+from copy import deepcopy
 
 class StructuredExtractor():
     """
     constructor takes a string of html and a
     """
-    def __init__(self, html, ignore_divs=[]):
+    def __init__(self, html):
         self.html=html
-        self.xml_tree = minidom.parseString(self.html)
-        self.ignore_divs=ignore_divs
+        self.xml_tree = ElementTree.fromstring(self.html)
 
-    def remove_ignored_content(self):
+    def remove_div_content(self, div_ids):
         """
-        removes content from the list of ignored divs
-        and returns the result
-        :return: a string with the content contained in the ignored divs removed
+        returns a string with the content the html with the content of
+        divs in div_ids removed
+        :param div_ids: a list of the ids of the div to be removed
+        :return: a string with the divs content removed
         """
-        pass
+        result = ''
+        tree_copy = deepcopy(self.xml_tree)
+        for div_id in div_ids:
+            #need to check the children of the root and then their children
+            for element in tree_copy:
+                #if the child is a div with the target div id then use the parent to
+                #remove the child
+                if element.tag == 'div' and element.attrib['id'] == div_id:
+                    tree_copy.remove(element)
+                for child in element:
+                    if child.tag == 'div' and child.attrib['id'] == div_id:
+                        element.remove(child)
+            #now traverse the copy with the div removed and store the results
+        for node in tree_copy:
+            if node.text:
+                result += node.text
+                #print "text of node is ", node.text
+            for child in node:
+                if child.text:
+                    #print "text of node is ", child.text
+                    result += child.text
 
-    def remove_div(self, div_id):
+        return result
+
+    def get_node_content(self, node_tag):
         """
-        returns a string with the content of a div with div_id removed
-        :param div_id: the id of the div to be removed
-        :return: a string with the div removed
+        pass the tag of text you want in, the text is returned
+        None is returned if that node has no text, it
+        doesn't look to children till it gets to text
+        :param node_tag:
+        :return:
         """
-        reduced_dom=self.xml_tree
-        for div in self.xml_tree:
-            if div.attributes["id"] == div_id:
-                reduced_dom.removeChild()
+        content =''
+        #for node in self.xml_tree.iter():
+        #    print node.tag, node.attrib, node.text
+        for node in self.xml_tree.iter(node_tag):
+            if node.text:
+                content = content + node.text
+            return content
 
     def get_div_content(self, div_id):
         """
@@ -42,16 +70,23 @@ class StructuredExtractor():
         :param div_id:
         :return:
         """
-        #get a string with all divs content
-        div_contents = self.get_content("div")
+        #get a list of all div Elements
+        all_divs= self.xml_tree.iter("div")
         #create a dom object from the string
-        div_dom= minidom.parseString(div_contents)
-        for div in div_dom:
-            if div.attributes["id"] == div_id:
-                return div.toxml()
+
+        for div in all_divs:
+            if div.attrib["id"] == div_id:
+                #then we have the right div, go through all it's
+                #children and gather their content
+                content = ''
+                for child in div:
+                    if child.text:
+                        content += child.text
+                return content
         #if you get this far then the id doesn't exist, return none
         return None
 
+    #todo STILL TO FINISH - NOT WORKING CURRENTLY
     def get_all_related_text(self):
         """
         goes through the html and returns a dictionary of strings
@@ -60,7 +95,18 @@ class StructuredExtractor():
         could remove ignored divs content before creating the list
         :return:
         """
-        pass
+        #iterate through the elements, when you find text get the
+        #tag of the element and store it in a dictionary with the
+        #key=tag value=text content
+        #todo there will be duplicate tags which
+        # will result in overriding content
+        #  what do you want to do about this? append and group?
+        related_text = {}
+        for element in self.xml_tree:
+            if element.text:
+                related_text[element.tag] = element.text
+        print related_text.items()
+        return related_text
 
     def assign_tag_weightings(self):
         """
@@ -82,21 +128,7 @@ class StructuredExtractor():
         """
 
 
-    def get_content(self, tag):
-        """
-        returns the content for a given tag
-        :param tag: the tag for which the content is required
-        :return: the content of a tag
-        """
-        content = self.xml_tree.getElementsByTagName(tag)
-        result = ''
-        if content:
-            for part in content:
-                result += part.toxml()
-                print result
-            return result
-        else:
-            return None
+
 
 
 
