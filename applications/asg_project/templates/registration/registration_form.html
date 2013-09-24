@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+
+{% block title %}<title>Sign up</title>{% endblock %}
+
+        {% block navbar %}
+
+            {% include "base/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="hero-unit">
+    <h1>Create an account</h1>
+<br/>
+  {% if form.errors %}
+    <div class="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Warning!</strong> Please correct the errors below: {{ form.non_field_errors }}
+
+    </div>
+  {% endif %}
+
+        <form method="post" action="" class="form-horizontal form-signin">
+        {% csrf_token %}
+
+            <div class="control-group">
+                <label class="control-label" for="id_username" >Username</label>
+                <div class="controls">
+                    <small>{{form.username.errors}}</small>
+                    <input type="text" id="id_username" name="username" placeholder="">
+
+                </div>
+           </div>
+
+            <div class="control-group">
+                <label class="control-label" for="id_email" >Email</label>
+                <div class="controls">
+                   <small>{{form.email.errors}}</small>
+
+                    <input type="text" id="id_email" name="email" placeholder="Email">
+
+                </div>
+           </div>
+
+            <div class="control-group">
+                <label class="control-label" for="id_password1" >Password</label>
+                <div class="controls">
+                    <small>{{form.password1.errors}}</small>
+                    <input type="password" id="id_password1" name="password1" placeholder="Password">
+
+                </div>
+           </div>
+
+                        <div class="control-group">
+                <label class="control-label" for="id_password2" >Re-enter Password</label>
+                <div class="controls">
+                    <small>{{form.password2.errors}}</small>
+                    <input type="password" id="id_password2" name="password2" placeholder="Password">
+
+                </div>
+           </div>
+<div class="control-group">
+    <div class="controls">
+    <button type="submit" class="btn btn-primary btn-large" value="Register &rarr;">Register &rarr;</button>
+   </div> </div>
+      </form>
+{% endblock %}
+
+
+{% block content-related %}
+<p>Fill out the form to the left (all fields are required), and your
+account will be created; you'll be sent an email with instructions on how
+to finish your registration.</p>
+
+<p>We'll only use your email to send you signup instructions. We hate spam
+as much as you do.</p>
+
+    </div>
+
+{% endblock %}

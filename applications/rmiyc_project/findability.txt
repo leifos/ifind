@@ -1,0 +1,59 @@
+0.738095,http://www.gla.ac.uk/research/fellowships/,research
+0.612245,http://www.gla.ac.uk/colleges/arts/graduateschool/prospectivestudents/researchstudy/howtoapply/,research
+0.666667,http://www.gla.ac.uk/research/infocus/interdisciplinary/space/researchthemes/exploring/,research
+0.509091,http://www.gla.ac.uk/research/infocus/interdisciplinary/space/researchthemes/risk/,research
+0.758621,http://www.gla.ac.uk/research/aims/,research
+0.645833,http://www.gla.ac.uk/students/researcherdevelopment/threeminutethesiscompetition/,research
+0.306667,http://www.gla.ac.uk/students/researcherdevelopment/newinitiativesfunding/,research
+0.473684,http://www.gla.ac.uk/students/researcherdevelopment/gilchristimagescompetition/,research
+0.000000,http://www.gla.ac.uk/research/researchnews/headline_282669_en.html,research
+0.000000,http://www.gla.ac.uk/research/researchnews/headline_282637_en.html,research
+0.823529,http://www.gla.ac.uk/about/maps/transport/,about glasgow
+0.468085,http://www.gla.ac.uk/about/history/,about glasgow
+0.896552,http://www.gla.ac.uk/about/facts/,about glasgow
+0.162500,http://www.gla.ac.uk/about/values/integrity/,about glasgow
+0.384615,http://www.gla.ac.uk/about/facts/studentnumbers/,about glasgow
+0.543478,http://www.gla.ac.uk/about/facts/employability/,about glasgow
+0.830508,http://www.gla.ac.uk/about/facts/rae/,about glasgow
+0.857143,http://www.gla.ac.uk/about/facts/whoswho/headsofcolleges/,about glasgow
+0.709677,http://www.gla.ac.uk/about/history/fame/,about glasgow
+0.343750,http://www.gla.ac.uk/undergraduate/degrees/accountancy/,undergraduate
+0.214286,http://www.gla.ac.uk/undergraduate/degrees/accountingmathematics/,undergraduate
+0.894737,http://www.gla.ac.uk/undergraduate/degrees/accountingstatistics/,undergraduate
+0.714286,http://www.gla.ac.uk/undergraduate/degrees/aeronauticalengineering/,undergraduate
+0.777778,http://www.gla.ac.uk/undergraduate/degrees/aeronauticalengineeringsit/,undergraduate
+0.880000,http://www.gla.ac.uk/undergraduate/degrees/aerospacesystems/,undergraduate
+0.807692,http://www.gla.ac.uk/undergraduate/degrees/aerospacesystemssit/,undergraduate
+0.500000,http://www.gla.ac.uk/undergraduate/degrees/anatomy/,undergraduate
+0.625000,http://www.gla.ac.uk/undergraduate/degrees/archaeology/,undergraduate
+0.700000,http://www.gla.ac.uk/undergraduate/degrees/astronomy/,undergraduate
+0.535714,http://www.gla.ac.uk/postgraduate/taught/academicpracticepgcert/,postgraduate
+0.517241,http://www.gla.ac.uk/postgraduate/taught/drugsandalcoholstudies/,postgraduate
+0.842105,http://www.gla.ac.uk/postgraduate/taught/adultcontinuingeducation/,postgraduate
+0.677419,http://www.gla.ac.uk/postgraduate/taught/advancedcommunitydevelopment/,postgraduate
+0.190476,http://www.gla.ac.uk/postgraduate/taught/advancedpracticeinhealthcare/,postgraduate
+0.320755,http://www.gla.ac.uk/postgraduate/taught/advancedstatistics/,postgraduate
+0.392857,http://www.gla.ac.uk/postgraduate/taught/aeronauticalengineering/,postgraduate
+0.518519,http://www.gla.ac.uk/postgraduate/taught/aerospaceengineeringmanagement/,postgraduate
+0.428571,http://www.gla.ac.uk/postgraduate/taught/aerospacesystems/,postgraduate
+0.694444,http://www.gla.ac.uk/postgraduate/taught/americanstudies/,postgraduate
+0.677419,http://www.gla.ac.uk/postgraduate/taught/biomedicalsciences/,postgraduate
+1.000000,http://www.gla.ac.uk/alumni/reconnect/reunions/,alumni
+0.909091,http://www.gla.ac.uk/alumni/reconnect/updateyourdetails/,alumni
+0.666667,http://www.gla.ac.uk/alumni/reconnect/contactingfriends/,alumni
+0.160000,http://www.gla.ac.uk/alumni/reconnect/visitingcampus/,alumni
+0.750000,http://www.gla.ac.uk/alumni/reconnect/,alumni
+0.736842,http://www.gla.ac.uk/alumni/ouralumni/,alumni
+0.413793,http://www.gla.ac.uk/alumni/ouralumni/lifeafterglasgow/,alumni
+0.625000,http://www.gla.ac.uk/alumni/ouralumni/alumnibookshelf/,alumni
+0.823529,http://www.gla.ac.uk/alumni/ouralumni/featuredprofiles/,alumni
+0.588235,http://www.gla.ac.uk/alumni/getinvolved/,alumni
+0.916667,http://www.gla.ac.uk/studentlife/accommodation/,student life
+0.702703,http://www.gla.ac.uk/undergraduate/accommodation/fees/,student life
+0.454545,http://www.gla.ac.uk/undergraduate/accommodation/sociallife/,student life
+0.354167,http://www.gla.ac.uk/studentlife/glasgow/westend/,student life
+0.488372,http://www.gla.ac.uk/studentlife/glasgow/culture/,student life
+0.672727,http://www.gla.ac.uk/studentlife/glasgow/sport/,student life
+0.560976,http://www.gla.ac.uk/studentlife/glasgow/eatingout/,student life
+0.615385,http://www.gla.ac.uk/studentlife/glasgow/greatoutdoors/,student life
+0.396825,http://www.gla.ac.uk/studentlife/studentnetwork/,student life

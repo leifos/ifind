@@ -5,10 +5,10 @@ import views
 
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),
-        url(r'^start/', views.startgame, name='startgame'),
-        url(r'^start2/', views.startgame2, name='startgame2'),
-        url(r'^start3/', views.startgame3, name='startgame3'),
+        url(r'^start/(?P<num>[0-9]+)/$', views.startgame, name='startgame'),
+        url(r'^pick/', views.pick, name='pick'),
         url(r'^query/$', views.query, name='query'),
         url(r'^assess/$', views.assess, name='assess'),
-
+        url(r'^players/(?P<username>[a-zA-Z0-9_.+@-]+)', views.profile_page, name='profile'),
+        url(r'^leaderboard/$', views.leaderboard, name='leaderboard'),
 )

@@ -1,0 +1,10 @@
+Abdullah\n
+research,http://www.gla.ac.uk/research/fellowships/,0.738095 ,0.0 
+research,http://www.gla.ac.uk/colleges/arts/graduateschool/prospectivestudents/researchstudy/howtoapply/,0.612245 ,0.0 
+research,http://www.gla.ac.uk/research/infocus/interdisciplinary/space/researchthemes/exploring/,0.666667 ,0.0 
+research,http://www.gla.ac.uk/research/infocus/interdisciplinary/space/researchthemes/risk/,0.509091 ,0.0 
+research,http://www.gla.ac.uk/research/aims/,0.758621 ,0.0 
+research,http://www.gla.ac.uk/students/researcherdevelopment/threeminutethesiscompetition/,0.645833 ,70.6547619048 
+research,http://www.gla.ac.uk/students/researcherdevelopment/newinitiativesfunding/,0.306667 ,41.2488095238 
+research,http://www.gla.ac.uk/students/researcherdevelopment/gilchristimagescompetition/,0.473684 ,79.7952380952 
+research,http://www.gla.ac.uk/research/researchnews/headline_282669_en.html,0.000000 ,0.0 

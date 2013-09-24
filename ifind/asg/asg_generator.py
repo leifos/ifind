@@ -15,6 +15,45 @@ class YieldGenerator(object):
         """
         pass
 
+class HighYieldGenerator(YieldGenerator):
+    
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yl = []
+        for i in range(n):
+            yl.append(3)
+
+        return yl
+
+class MediumYieldGenerator(YieldGenerator):
+    
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yl = []
+        for i in range(n):
+            yl.append(2)
+
+        return yl
+
+class LowYieldGenerator(YieldGenerator):
+    
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yl = []
+        for i in range(1):
+            yl.append(random.randint(0,self.max_yield))
+
+        return yl
+
 
 class RandomYieldGenerator(YieldGenerator):
 
@@ -94,12 +133,14 @@ class TestHighYieldGenerator(YieldGenerator):
 
 class CueGenerator(object):
 
-    def __init__(self, cue_length = 10):
+    def __init__(self, cue_length = 10, gain = 10, hintfactor = 0.5):
         """
         :param cue_length:
         :return:
         """
         self.cue_length = cue_length
+        self.gain = gain
+        self.hintfactor = hintfactor
 
     def get_labels(self, n=10, yield_list = None):
         """
@@ -109,8 +150,122 @@ class CueGenerator(object):
         """
         ll = []
         for i in range(n):
-            ll.append('.'*self.cue_length)
+            ll.append('o'*self.cue_length)
 
         return ll
 
+    def __str__(self):
+        return 'CueGenerator - Default'
 
+class FixedCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            hintspace = self.hintfactor*self.gain
+            ll.append('x'*hintspace)
+            ll.append('.'*(self.cue_length-hintspace))
+            ll = random.shuffle(ll)
+        return ll
+
+class VariableCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        ygain = 0
+        ytotal = 0
+        for i in range(len(yield_list)):
+            ygain += yield_list[i]
+        ymean = ygain / len(yield_list)
+        for i in range(len(yield_list)):
+            ytotal += ((yield_list[i]-ymean)*(yield_list[i]-ymean))
+        ysd = ytotal / len(yield_list)
+        hintspace = random.gauss(ymean, ysd)
+        ll.append('x'*hintspace)
+        ll.append('.'*(self.cue_length-hintspace))
+        ll = random.shuffle(ll)
+        return ll
+
+class LowInfoCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            if random.randint(0,20) < 7:
+                ll.append('o'*self.cue_length)
+            else:
+                ll.append('x'*self.cue_length)
+
+        return ll
+
+class MedInfoCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            if random.randint(0,10) < 7:
+                ll.append('o'*self.cue_length)
+            else:
+                ll.append('x'*self.cue_length)
+
+        return ll
+
+class LowInfoCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            if random.randint(0,7) < 7:
+                ll.append('o'*self.cue_length)
+            else:
+                ll.append('x'*self.cue_length)
+
+        return ll
+
+class GainBasedCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            g = yield_list[i]
+            x = int(g) * 5 + random.randint(3,10)
+            dots = self.cue_length - int(x)
+            if dots < 0:
+                dots = 0
+
+            ll.append('x'*x + '_'*dots)
+
+        return ll
+
+    def __str__(self):
+        return 'GainBasedCueGenerator'

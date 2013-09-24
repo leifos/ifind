@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games: Profile Page
+{% endblock %}
+
+
+{% block navbar %}
+    {% include "base/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+{% if player %}
+        <div class="hero-unit">
+        <h1>Profile: {{player.username}}</h1>
+            <br/>
+    <ul>
+    <li> Combined Game Scores: {{profile.combined_points}}<br/>
+    <li>No of Games Played: {{profile.no_games_played}}</li>
+   <li>Total Points: {{profile.total_points}}</li>
+    <li>Time Spent: {{profile.total_tokens}}</li>
+     <li>No of Queries Issued: {{profile.no_queries_issued}}</li>
+    <li>No of Docs Assessed: {{profile.no_docs_assessed}}</li>
+    <li>Points/Time : {{profile.ratio}}</li>
+</ul>
+</div>
+
+        {% for gs in game_scores %}
+
+        {% if forloop.first %}
+    <div class="row-fluid">
+        {% endif %}
+         <div class="span4">
+             <h3>{{gs.game_experiment.name}}</h3>
+             <p>{{gs.game_experiment.desc}}</p>
+             <p> High Score: {{gs.points}}</p>
+             <p>Average Gain/Time Ratio: {{gs.ratio}}</p>
+             <p><a class="btn btn-primary" href="/asg/start/{{gs.game_experiment.config}}/">Play &raquo;</a></p>
+          </div><!--/span-->
+         {% if forloop.counter|divisibleby:"3" %}
+            </div>
+            {% if not forloop.last %}
+                <div class="row-fluid">
+             {% endif %}
+          {% endif %}
+         {% if forloop.last %}
+                </div>
+         {% endif %}
+    {% endfor %}
+
+
+{% else %}
+    Player not found.
+{% endif %}
+
+    </div>
+{% endblock %}

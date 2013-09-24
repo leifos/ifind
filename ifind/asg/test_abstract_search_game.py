@@ -7,6 +7,15 @@ import unittest
 import logging
 import sys
 
+class TestABSMatch(unittest.TestCase):
+
+    def setUp(self):
+        self.logger = logging.getLogger("TestABSMatch")
+        self.yg = ConstantLinearYieldGenerator()
+        self.cg = CueGenerator()
+        self.game = ABSGame(self.yg, self.cg)
+
+
 class TestABSGame(unittest.TestCase):
 
     def setUp(self):

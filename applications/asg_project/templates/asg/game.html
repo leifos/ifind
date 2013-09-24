@@ -1,39 +1,98 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ASG Game</title>
-</head>
-<body>
-<a href="/asg/start/">start</a> | <a href="/asg/start2/">start2</a> | <a href="/asg/start3/">start3</a>
+
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games: In Game
+{% endblock %}
 
 
-<p>
+{% block navbar %}
+
+            {% include "base/gamenavbar.html" %}
+
+
+{% endblock %}
+
+         {% block belownavbar %}
+        <div class="well sidebar-nav">
+
+        <ul class="nav nav-list">
+             <li class="nav-header">Instructions</li>
+
+            <li>Click Assess to open a document to gain points</li>
+            <br/>
+            <li>Click Query to bring back a new set of documents</li>
+            <br/>
+            <li>Querying and Assessing take time!</li>
+        </ul>
+             </div><!--/.well -->
+                {% endblock %}
+
+
+{% block content %}
 
 {% if data %}
-    <ul>
-        <li>Tokens Left: {{data.tokens}}</li>
-        <li>Query Cost: {{data.cq}}</li>
-        <li>Assessment Cost: {{data.ca}}</li>
-        <li>Points: {{data.points}}</li>
-        <li>Round No.: {{data.no}}</li>
-    </ul>
 
-    {% if data.gameover %}
-        Game Over
-    {% else %}
-        <p>
-        {% for d in data.round %}
+        <div class="jumbotron">
+        </div>
+        <hr>
+         <div class="row-fluid">
+            <div class="span7">
 
-            {{d.label}} <br>{% if d.opened%} {{d.gain}} {% else %} Unopened {% endif %}<br>
-        {% endfor %}
-        <p>
-     <a href="/asg/query/">query</a> | <a href="/asg/assess/">assess</a>
+                <h3>Results for Query {{data.no}}</h3>
+                {% for d in data.round %}
+                    <p>{% if d.opened%} <span class="label">Opened</span> {% else %} <span class="label label-inverse">Unopened</span> {% endif %} <br/>
+                        {{d.label}}
+                        {% if d.opened%}
+                        {% if d.gain > 2 %} <span class="badge badge-success">{{d.gain}}</span>
+                    {% else %}
+                        {% if d.gain > 0 %}
+                            <span class="badge badge-warning">{{d.gain}}</span>
+                        {% else %}
+                            <span class="badge badge-important">{{d.gain}}</span>
+                        {% endif %}
+                    {% endif %}
+                        {% else %} <span class="badge">?</span> {% endif %} </h4>
+                   </p>
 
-    {% endif %}
 
+
+                {% endfor %}
+{% if data.gameover %}
+                <p><a href="/asg/pick/" class="btn btn-success btn-large">Play Again &raquo;</a> </p>
+             {% else %}
+                <p><a href="/asg/query/" class="btn btn-primary btn-large">Query &raquo;</a>  <a href="/asg/assess/" class="btn btn-primary btn-large">Assess &raquo;</a></p>
+ {% endif %}
+
+            </div>
+            <div class="span5 well">
+
+             <h3>Game Stats</h3>
+            <p>Time Left: {{data.tokens}}</p>
+            <div class="progress">
+            <div class="bar" style="width: {{data.ptokens}}%;"></div>
+            </div>
+            <p>Query Cost in units of time: <span class="badge badge-info">{{data.cq}}</span> </p>
+            <p>Assessment Cost in units of time:  <span class="badge badge-info">{{data.ca}}</span> </p>
+            <p>Points: {{data.points}}</p>
+            <p>No. of Queries Issued: {{data.no}}</p>
+                {% if data.gameover %}
+
+                <h3>Game Over</h3>
+                <p>You scored {{data.points}}!</p>
+                {% if new_high %}
+                <p>New High Score!</p>
+                {% endif %}
+
+
+
+                <p><a href="/asg/pick/" class="btn btn-success btn-large">Play Again &raquo;</a> </p>
+             {% else %}
+           <p><a href="/asg/query/" class="btn btn-primary btn-large">Query &raquo;</a>  <a href="/asg/assess/" class="btn btn-primary btn-large">Assess &raquo;</a></p>
+{% endif %}
+            </div>
 
 
 {% endif %}
-</p>
-</body>
-</html>
+
+{% endblock %}

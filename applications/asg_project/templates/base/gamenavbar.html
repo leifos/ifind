@@ -1,0 +1,4 @@
+ {% if user.is_authenticated %}
+         <li class="nav-header">Welcome {{user.username}}</li>
+    <li class="active">Playing Game {{data.id}}</li>
+ {% endif %}

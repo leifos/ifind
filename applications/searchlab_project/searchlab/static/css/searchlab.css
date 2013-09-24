@@ -1,13 +1,35 @@
-html, body {
+/**************************/
+/*  GLOBAL SEARCHLAB CSS  */
+/**************************/
+/* INPUT SECTION STYLING  */
+/**************************/
+html {
+  height: 100%;
+}
+
+body {
+    background: #c4e3f3;
+    min-height: 100%;
+}
+
+#container {
+    margin: 10px auto;
+    padding: 2px 5px;
+    width: 855px;
+}
+
+/***************************/
+/* HEADER SECTION STYLING  */
+/***************************/
+.header-section {
+    display: block;
+    padding-top: 56px;
+    padding-bottom: 24px;
     background-color: #fafafa;
 }
 
-/* HEADER SECTION STYLING  */
-.header-section {
-    display: block;
-    padding-top: 60px;
-    padding-bottom: 50px;
-    background-color: #fafafa;
+.header-container {
+    margin-left: 6px;
 }
 
 #head1, #head2 {
@@ -17,20 +39,22 @@ html, body {
 #head1 {
     font-family: Impact, Charcoal, sans-serif;
     color: #3a81ba;
-    font-size: 100px;
+    font-size: 125px;
     font-weight: 400;
     letter-spacing: 2px;
 }
 
 #head2 {
     color: #963334;
-    font-family: "Great Vibes";
-    font-size: 100px;
-    font-weight: 700;
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 125px;
+    font-weight: 400;
+    letter-spacing: 2px;
 }
 
-/* PAGINATION SECTION STYLING*/
-
+/*******************************/
+/* PAGINATION SECTION STYLING  */
+/*******************************/
 .pagination-section {
     margin-top: -15px;
     padding-top: 30px;
@@ -38,5 +62,7 @@ html, body {
 }
 
 #pagination-container {
-    padding-right: 110px;
+    padding-top: 1px;
+    padding-bottom: 11px;
+    margin-left: 222px;
 }

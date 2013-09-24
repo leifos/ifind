@@ -1,0 +1,52 @@
+
+{% extends 'base/base.html' %}
+
+{% block title %}
+       Abstract Search Games: Leaderboard
+{% endblock %}
+
+
+{% block navbar %}
+
+            {% include "base/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+        <div class="hero-unit">
+     <h1>Leaderboard</h1>
+
+            <p>
+         <table class="table table-hover table-bordered">
+             <tr><td>Player</td><td>Average Points</td><td>Total Points</td><td>Gain-Time Ratio</td>
+                </tr>
+             {% for p in players %}
+             <tr class="success">
+        <td><a href='/asg/players/{{p.user.username}}/'> {{ p.user.username }}</a></td><td>{{p.average_points}}</td>
+                 <td>{{p.total_points}}</td> <td> {{p.ratio}}</td>
+    {% endfor %}
+                </tr>
+            </table>
+    </p>
+
+
+   <div class="pagination">
+    <span class="step-links">
+        {% if players.has_previous %}
+            <a href="?page={{ players.previous_page_number }}">previous</a>
+        {% endif %}
+
+
+        <br/>
+        <span class="current">
+            Page {{ players.number }} of {{ players.paginator.num_pages }}.
+        </span>
+
+        {% if players.has_next %}
+            <a href="?page={{ players.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+</div>
+{% endblock %}

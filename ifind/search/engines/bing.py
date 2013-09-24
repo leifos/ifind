@@ -6,7 +6,7 @@ from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
-
+WEB_ONLY_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/SearchWeb/v1/'
 RESULT_TYPES = ('web', 'image', 'video')
 DEFAULT_RESULT_TYPE = 'web'
 
@@ -73,18 +73,6 @@ class Bing(Engine):
         if query.top > MAX_RESULTS:
             raise QueryParamException(self.name, 'Requested result amount (query.top) '
                                                  'exceeds max of {0}'.format(MAX_PAGE_SIZE))
-
-        if not query.result_type:
-            query.result_type = DEFAULT_RESULT_TYPE
-
-        if query.result_type not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
-                                                 .format(query.result_type))
-        if self.cache_type:
-            if query in self._cache:
-                self.num_requests_cached = self.num_requests_cached + 1
-                return self._cache.get(query)
-
 
         if query.top <= MAX_PAGE_SIZE:
             return self._request(query)
@@ -175,11 +163,19 @@ class Bing(Engine):
             Private method.
 
         """
+        result_type = query.result_type
+
+        if not result_type:
+            result_type = DEFAULT_RESULT_TYPE
+
+        if result_type not in RESULT_TYPES:
+            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+                                                 .format(query.result_type))
         params = {'$format': 'JSON',
                   '$top': query.top,
                   '$skip': query.skip}
 
-        result_string = '?Sources="{}"'.format(query.result_type)
+        result_string = '?Sources="{}"'.format(result_type)
 
         query_string = 'Query="{}"'.format(str(query.terms))
 
@@ -231,22 +227,29 @@ class Bing(Engine):
 
         content = json.loads(results.text)
 
-        if query.result_type == 'web':
+        if query.result_type == 'web' or not query.result_type:
             for result in content[u'd'][u'results'][0][u'Web']:
                 response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'])
 
         if query.result_type == 'image':
             for result in content[u'd'][u'results'][0][u'Image']:
-                file_size = int(result[u'FileSize']) / 1024
-                summary_string = 'Filesize: {0} KB | Dimensions: {1}x{2} | Source: {3}'\
-                                 .format(file_size, result[u'Width'], result[u'Height'], result[u'SourceUrl'])
-
-                response.add_result(title=result[u'Title'], url=result[u'MediaUrl'], summary=summary_string)
+                file_size = str(int(result[u'FileSize']) / 1024)  # in kilobytes
+                width = result[u'Width']
+                height = result[u'Height']
+                media_url = result[u'MediaUrl']
+                thumb_url = result[u'Thumbnail'][u'MediaUrl']
+                response.add_result(file_size=file_size, width=width, height=height,
+                                    media_url=media_url, thumb_url=thumb_url)
 
         if query.result_type == 'video':
             for result in content[u'd'][u'results'][0][u'Video']:
-                summary_string = Bing._get_video_length(int(result[u'RunTime']))
-                response.add_result(title=result[u'Title'], url=result[u'MediaUrl'], summary=summary_string)
+                run_time = Bing._get_video_length(int(result[u'RunTime']))
+                title = result[u'Title']
+                media_url = result[u'MediaUrl']
+                thumb_url = result.get(u'Thumbnail', {}).get(u'MediaUrl', None)
+                if thumb_url is None:
+                    continue
+                response.add_result(title=title, media_url=media_url, run_time=run_time, thumb_url=thumb_url)
 
         return response
 
@@ -265,6 +268,9 @@ class Bing(Engine):
             Private method.
 
         """
+        if not run_time:
+            return ''
+
         # get minutes
         minutes = run_time / 1000 / 60
         min_string = '{} mins'.format(minutes)
@@ -279,5 +285,5 @@ class Bing(Engine):
         if minutes and not seconds:
             return min_string
 
-        if not minutes and seconds:
+        if seconds and not minutes:
             return sec_string

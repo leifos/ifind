@@ -1,14 +1,19 @@
 /**************************/
+/*   BING SPECIFIC CSS    */
+/**************************/
 /* INPUT SECTION STYLING  */
 /**************************/
-
 .input-section {
     background-color: #fafafa;
     padding-bottom: 10px;
 }
 
+#search-form {
+    margin-left: 8px;
+}
+
 #search-input {
-    width: 42%;
+    width: 79%;
     margin-right: 6px;
 }
 
@@ -28,32 +33,31 @@
     background-image: linear-gradient(to bottom, #4093d2, #3e95d2);
 }
 
-#dropdown-options {
+#dropdown-container {
     min-width: 64px;
+    margin-top: 23px;
 }
 
-#dropdown-options > ul {
+#dropdown-container > ul {
     text-align: left;
     background-color: #fafafa;
 }
 
-#dropdown-options > ul > li > a:hover {
+#dropdown-container > ul > li > a:hover {
     background-color: #3a81ba;
 }
 
-
-/*RESULTS SECTION STYLING*/
+/***************************/
+/* RESULTS SECTION STYLING */
+/***************************/
 
 .results-section {
     background-color: #fafafa;
 
 }
-
-#results-container {
-    padding-left: 289px;
-    padding-right: 440px;
-}
-
+/***********************/
+/*     WEB RESULTS     */
+/***********************/
 
 .result {
     padding-top: 10px;
@@ -88,4 +92,35 @@
     color: #963334;
 
     padding-left: 1px;
+}
+
+/*************************/
+/*     IMAGE RESULTS     */
+/*************************/
+
+#results-container {
+    margin-left: -22px;
+    margin-top: 12px;
+}
+
+.image-result {
+    margin-right: 7px;
+    margin-bottom: 7px;
+    float: left;
+    list-style: none;
+}
+
+.uk-overlay-caption {
+    padding: 0;
+}
+
+/*************************/
+/*     Video RESULTS     */
+/*************************/
+
+.video-result {
+    margin-right: 7px;
+    margin-bottom: 7px;
+    float: left;
+    list-style: none;
 }
