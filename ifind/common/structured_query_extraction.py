@@ -86,7 +86,6 @@ class StructuredExtractor():
         #if you get this far then the id doesn't exist, return none
         return None
 
-    #todo STILL TO FINISH - NOT WORKING CURRENTLY
     def get_all_related_text(self):
         """
         goes through the html and returns a dictionary of strings
@@ -102,8 +101,10 @@ class StructuredExtractor():
         # will result in overriding content
         #  what do you want to do about this? append and group?
         related_text = {}
-        for element in self.xml_tree:
-            if element.text:
+        #iterate through the elements in the tree adding to
+        #dict when tag with content found which is not empty string
+        for element in self.xml_tree.iter():
+            if element.text != ' ':
                 related_text[element.tag] = element.text
         print related_text.items()
         return related_text
