@@ -263,9 +263,10 @@ class GameMechanic(object):
         :return: integer
         """
 
-        results = self._run_query( query)
+        results = self._run_query(query)
         rank = self._check_result(results)
-        score = self._score_rank(rank, self.game.bonus)
+        query_len = self.get_no_terms(query)
+        score = self._score_rank(rank, self.game.bonus, query_len)
         common_log = 'event: issue_query %s' % (self.game)
         round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
         info_log = 'score: %d rank: %d query: %s ' % (score, rank, query)
@@ -273,6 +274,12 @@ class GameMechanic(object):
         self.logger.info(log)
 
         return score
+
+
+    def get_no_terms(self, query):
+        terms = query.split(' ')
+        return len(terms)
+
 
     def _run_query(self, query ,top=10):
         import sys
@@ -314,6 +321,8 @@ class GameMechanic(object):
 
         return iresponse.to_json
 
+
+
     def _check_result(self, response):
         """ iterates through the response looking for what rank the url is at
 
@@ -332,7 +341,9 @@ class GameMechanic(object):
                 return i
         return 0
 
-    def _score_rank(self, rank, bonus=0):
+
+
+    def _score_rank(self, rank, bonus=0, query_len=0):
         """
         calculates the score based on the rank of the page
         :param rank: integer
@@ -343,6 +354,7 @@ class GameMechanic(object):
             score = self.max_score / rank
 
         return score
+
 
 
     def handle_game_over(self):
