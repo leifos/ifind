@@ -8,14 +8,17 @@ weighting based on importance of tags
 """
 from xml.etree import ElementTree
 from copy import deepcopy
+from selenium import webdriver
+import requests
 
 class StructuredExtractor():
     """
     constructor takes a string of html and a
     """
-    def __init__(self, html):
+    def __init__(self, html, url):
         self.html=html
         self.xml_tree = ElementTree.fromstring(self.html)
+        self.url = url
 
     def remove_div_content(self, div_ids):
         """
@@ -106,7 +109,6 @@ class StructuredExtractor():
         for element in self.xml_tree.iter():
             if element.text != ' ':
                 related_text[element.tag] = element.text
-        print related_text.items()
         return related_text
 
     def assign_tag_weightings(self):
@@ -119,6 +121,7 @@ class StructuredExtractor():
         weightings assigned?
         :return:
         """
+        pass
 
     def get_query_position(self, query):
         """
@@ -127,8 +130,66 @@ class StructuredExtractor():
         :param query:
         :return:
         """
+        driver = webdriver.PhantomJS()
 
 
+        #selenium doesn't seem to have anything to find text
+        #so going to find the tag the query text first occurs in
+        #then find the location by the tag
+        target_tag = ''
+        for element in self.xml_tree.iter():
+            if query in element.text.lower() :
+                target_tag = element.tag
+
+        el = driver.find_element_by_tag_name(target_tag)
+
+
+
+    def create_biterm_queries(self):
+        """
+        goes through the related_text dictionary and creates a
+        query list using bitermquerygen object for each tag
+        combines into one query list and returns said list
+        :return:
+        """
+        pass
+
+#todo copies from pagecapture, possible refactoring needed?
+    def load_url(self):
+        """ url format: 'http://www.example.com'
+        args: take a url string
+        returns: True if the page is loaded in the driver, else False
+
+        """
+        # check the url string. does it have http:// or not?
+        if not self._check_url(self.url):
+            return False
+        try:
+            self.driver.get(self.url)
+        except ValueError:
+            return False
+
+        #set page_url to what the driver returns, a redirect might occur
+        #upon request and url and driver.current_url might not be the same
+        page_url = self.driver.current_url
+        # if driver is loaded
+        #if no url is loaded, driver.current_url = string "about:blank"
+        if page_url != "about:blank":
+            self.url = page_url
+            return True
+        else:
+            self.url = None
+            return False
+
+    def _check_url(self):
+        """ Checks the validity of an url
+            Returns True if valid, False otherwise
+        """
+        r = requests.get(self.url)
+        if r.status_code == 200:
+            return True
+        else:
+            return False
 
 
 
