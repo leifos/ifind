@@ -23,6 +23,8 @@ class RMIYCMechanic(GameMechanic):
         :param rank: integer
         :return: integer
         """
+
+
         if(rank>0):
             top = 10
             x = top+1

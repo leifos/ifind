@@ -277,8 +277,15 @@ class GameMechanic(object):
 
 
     def get_no_terms(self, query):
-        terms = query.split(' ')
-        return len(terms)
+
+        terms = query.strip().split(' ')
+        '''
+         Since the site:gla.ac.uk is added to the end of the query,
+         this would count as a one term in the query
+         So, this will be removed by subtracting by 1
+        '''
+        query_len = len(terms) -1
+        return query_len
 
 
     def _run_query(self, query ,top=10):
