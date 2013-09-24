@@ -1,9 +1,7 @@
 from django.template import RequestContext, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-#from ifind.search.engine.bing import
 from ifind.search.query import Query
-from keys import BING_API_KEY
 from ifind.models.game_mechanics import GameMechanic
 from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
 from ifind.models.game_avatar import GameAvatar
@@ -19,7 +17,7 @@ import json
 from registration.backends.simple.views import RegistrationView
 from profiles import views
 from django.shortcuts import redirect
-
+from keys import BING_API_KEY
 
 
 def index(request):
@@ -219,9 +217,11 @@ def game_over(request):
         gm = RMIYCMechanic(ds)
         gm.retrieve_game(user, game_id)
         statistics =[]
-        user_profile = user.get_profile()
-        user_profile.no_games_played += 1
-        user_profile.save()
+
+        if user.is_authenticated():
+            user_profile = user.get_profile()
+            user_profile.no_games_played += 1
+            user_profile.save()
         statistics.append({'score': gm.get_current_score(), 'no_queries':gm.get_no_of_queries_issued(),
                            'no_successful_queries': gm.get_no_of_successful_queries_issued(), 'category':gm.get_game_category_name(),
                            'no_round': gm.get_final_round_no(), 'no_successful_round': gm.get_no_rounds_completed()})
