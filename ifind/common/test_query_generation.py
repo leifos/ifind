@@ -10,7 +10,7 @@ class TestQueryGeneration(unittest.TestCase):
 
     def setUp(self):
         self.logger = logging.getLogger("TestQueryGeneration")
-        self.qg = QueryGeneration(minlen = 4, stopwordfile='stopwords_test.txt')
+        self.qg = QueryGeneration(minlen=4, stopwordfile='stopwords_test.txt')
 
     def test_extract_queries_from_text(self):
         self.logger.debug("Test Extract Queries")
@@ -41,17 +41,17 @@ class TestQueryGeneration(unittest.TestCase):
         result = self.qg.clean_text(test_text)
         msg = "expected is " , expected_result , "result was " , result
         self.assertItemsEqual(expected_result,result, msg )
+        #test line with numbers and non-alpha chars
+        test_text="| hello 56"
+        expected_result=["hello"]
+        result = self.qg.clean_text(test_text)
+        msg = "expected is " , expected_result , "result was ", result
+        self.assertItemsEqual(expected_result,result, msg)
         #test line with single characters in
         test_text="b c d e sunshine"
         expected_result=["sunshine"]
         result = self.qg.clean_text(test_text)
         self.assertItemsEqual(expected_result,result)
-        #test line with numbers and non-alpha chars
-        test_text="| hello 56"
-        expected_result=["hello"]
-        result = self.qg.clean_text(test_text)
-        msg = "expected is " , expected_result , "result was " , result
-        self.assertItemsEqual(expected_result,result, msg )
 
 
 class TestSingleQueryGeneration(unittest.TestCase):

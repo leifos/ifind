@@ -103,6 +103,10 @@ class TestLengthTermProcessor(unittest.TestCase):
         result = self.ltp.min_len
         self.assertEquals(result,4)
 
+    def test_check(self):
+        result = self.ltp.process('a')
+        self.assertEquals(result,None)
+
 class TestPunctTermProcessor(unittest.TestCase):
 
     def setUp(self):

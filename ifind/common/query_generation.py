@@ -5,15 +5,14 @@ Author: rose : <Rosanne.English@glasgow.ac.uk>
 Date:   08/08/2013
 Version: 0.1
 """
-ONLY_ALPHAS = False #bool to distinguish if only considering alphanumeric terms
-AVOID_STOP = False #bool to distinguish if avoiding terms on the stop list
-#MIN_LENGTH = 1 # the minimum length of a term, if =1 then no min length
 
 from string import rsplit
 from collections import Counter
 from re import sub
 from nltk import clean_html, regexp_tokenize
 from pipeline import TermPipeline
+from pipeline import TermProcessor,AlphaTermProcessor,StopwordTermProcessor,SpecialCharProcessor,\
+    LengthTermProcessor,PunctuationTermProcessor
 
 class QueryGeneration(object):
     """
@@ -53,18 +52,36 @@ class QueryGeneration(object):
         text = text.lower()
         text = text.split()
         cleaned = []
+        cleaner_pipeline = TermPipeline()
+        cleaner_pipeline = self.construct_pipeline(cleaner_pipeline)
 
         for term in text:
-            cleaner_pipeline = TermPipeline(term, minlength=self.min_len, stopfile=self.stop_filename)
-            clean_result = cleaner_pipeline.perform_checks()
+            clean_result = cleaner_pipeline.process(term)
             if clean_result:
                 cleaned.append(clean_result)
-        #still need to deal with character encoding issues
+
         l = len(cleaned)
         if l > self.max_size:
             return cleaned[0:self.max_size]
         else:
             return cleaned
+
+    #todo do we want the user to determine what processors they want?
+    def construct_pipeline(self, pipeline):
+        ltp = LengthTermProcessor()
+        ltp.set_min_length(self.min_len)
+        stp = StopwordTermProcessor(stopwordfile=self.stop_filename)
+        ptp = PunctuationTermProcessor()
+        atp = AlphaTermProcessor()
+        sctp = SpecialCharProcessor()
+
+        pipeline.add_processor(ltp)
+        pipeline.add_processor(sctp)
+        pipeline.add_processor(ptp)
+        pipeline.add_processor(stp)
+        pipeline.add_processor(atp)
+
+        return pipeline
 
     def get_doc_term_counts(self, query_list):
         """

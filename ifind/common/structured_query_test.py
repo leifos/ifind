@@ -56,6 +56,11 @@ class TestStructuredExtractor(unittest.TestCase):
         msg = 'expected  but got ', expected,result
         self.assertItemsEqual(expected, result, msg)
 
+    def test_create_biterm_queries(self):
+        result = self.extractor.create_biterm_queries()
+        expected = ['hello world', 'this is', 'is important']
+        self.process_test_equals(expected,result)
+
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr)
     logging.getLogger("TestStructuredExtractor").setLevel(logging.DEBUG)

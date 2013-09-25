@@ -61,9 +61,9 @@ class TermPipeline():
             if term is None:
                 return None
             #else set the term to be the result
-
         #if the pipeline has gone through all checks, return term
         return term
+
 
 class TermProcessor():
 
@@ -74,17 +74,17 @@ class TermProcessor():
         """
         return term.lower()
 
+
 class LengthTermProcessor(TermProcessor):
 
     def __init__(self):
         self.min_len = 3
 
     def set_min_length(self, min_len):
-
         if min_len > 0:
             self.min_len = min_len
 
-    def check(self, term):
+    def process(self, term):
         """
         :param term: takes a term
         :return: returns the term, if it meets the minimum length criteria
@@ -93,6 +93,7 @@ class LengthTermProcessor(TermProcessor):
             return term
         else:
             return None
+
 
 class PunctuationTermProcessor(TermProcessor):
 
