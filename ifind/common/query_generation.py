@@ -105,6 +105,7 @@ class SingleQueryGeneration(QueryGeneration):
         :param text: the text from which the queries are to be constructed
         :return: list of queries
         """
+
         term_list = self.clean_text(text)
         self.query_count = {}
 
@@ -127,10 +128,12 @@ class BiTermQueryGeneration(QueryGeneration):
         :param text: the text from which the queries are to be constructed
         :return: list of queries
         """
+
         term_list = self.clean_text(text)
-
+        #query count holds the queries with their text as the key, count as value
         self.query_count = {}
-
+        #take first term and pair with the rest of the terms in the text
+        #then move to second and repeat
         prev_term = term_list[0]
 
         term_list= term_list[1:len(term_list)]

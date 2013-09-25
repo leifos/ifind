@@ -58,7 +58,7 @@ class TestStructuredExtractor(unittest.TestCase):
 
     def test_create_biterm_queries(self):
         result = self.extractor.create_biterm_queries()
-        expected = ['hello world', 'this is', 'is important']
+        expected = ['hello world', 'this important']
         self.process_test_equals(expected,result)
 
 if __name__ == '__main__':

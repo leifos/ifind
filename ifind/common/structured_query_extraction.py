@@ -157,7 +157,8 @@ class StructuredExtractor():
         for tag, content in related_text_dic.iteritems():
             generator = BiTermQueryGeneration()
             queries = generator.extract_queries_from_text(content)
-            all_queries.append(queries)
+            all_queries.extend(queries)
+        return all_queries
 
 
 
