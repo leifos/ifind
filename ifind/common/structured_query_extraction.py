@@ -101,15 +101,17 @@ class StructuredExtractor():
         #iterate through the elements, when you find text get the
         #tag of the element and store it in a dictionary with the
         #key=tag value=text content
-        #todo there will be duplicate tags which
-        # will result in overriding content
-        #  what do you want to do about this? append and group?
         related_text = {}
         #iterate through the elements in the tree adding to
         #dict when tag with content found which is not empty string
         for element in self.xml_tree.iter():
             if element.text != ' ':
-                related_text[element.tag] = element.text
+                #append content if tag is in the dictionary and content is non-null
+                if element.tag in related_text and related_text[element.tag]:
+                    related_text[element.tag] = related_text[element.tag] + element.text
+                else:
+                    related_text[element.tag] = element.text
+
         return related_text
 
     def assign_tag_weightings(self):
