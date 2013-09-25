@@ -22,11 +22,13 @@ def main():
     print '************************************************'
 
     from ifind.models.game_models import Category, Page
-    from configuration import MEDIA_ROOT,STATIC_PATH
+    from configuration import MEDIA_ROOT, STATIC_PATH
     from ifind.common.utils import convert_url_to_filename
 
     tuples_list = read_in_file('page_meta_data.txt')
-    c = Category(name="research", icon=os.path.join(STATIC_PATH,'imgs/research.jpg'), desc=None, is_shown=True)
+    c = Category(name="research",
+
+                 icon=os.path.join(STATIC_PATH,'imgs/research.jpg'), desc=None, is_shown=True)
     c.save()
     c = Category(name="about glasgow", icon=os.path.join(STATIC_PATH,'imgs/about_glasgow.jpg'), desc=None, is_shown=True)
     c.save()
