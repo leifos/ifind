@@ -9,7 +9,7 @@ class LanguageModel(object):
 
     def __init__(self, file=None , term_dict=None):
         self.occurrence_dict = {}
-        self.total_occurances = 0
+        self.total_occurrences = 0
 
         if file:
             self._populate_occurrences(file)
@@ -38,10 +38,10 @@ class LanguageModel(object):
         counts the total number of term occurrences in occurrence_dict
         """
         for term, count in self.occurrence_dict.items():
-            self.total_occurances += count
+            self.total_occurences += count
 
     def get_total_occurrences(self):
-        return self.total_occurances
+        return self.total_occurences
 
     def get_num_terms(self):
         return len(self.occurrence_dict)
