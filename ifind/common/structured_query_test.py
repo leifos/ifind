@@ -46,20 +46,23 @@ class TestStructuredExtractor(unittest.TestCase):
         expected = 'this is important'
         self.process_test_equals(expected, result)
 
-    def test_get_related_text(self):
-        result = self.extractor.get_all_related_text()
-        expected = {'h1':'hello world','div':'this is important','h2':'byes'}
-        self.assertDictEqual(result,expected)
+    # def test_get_related_text(self):
+    #     result = self.extractor.get_all_related_text()
+    #     expected = {'h1':'hello world','div':'this is important','h2':'byes'}
+    #     self.assertDictEqual(result,expected)
 
 
     def process_test_equals(self, expected, result):
         msg = 'expected  but got ', expected,result
         self.assertItemsEqual(expected, result, msg)
 
-    def test_create_biterm_queries(self):
-        result = self.extractor.create_biterm_queries()
-        expected = ['hello world', 'this important']
-        self.process_test_equals(expected,result)
+    # def test_create_biterm_queries(self):
+    #     result = self.extractor.create_biterm_queries()
+    #     expected = ['hello world', 'this important']
+    #     self.process_test_equals(expected,result)
+
+    def test_read_html(self):
+        self.extractor.read_html()
 
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr)

@@ -17,7 +17,54 @@ class StructuredExtractor():
     def __init__(self, html):
         self.html=html
         self.xml_tree = ElementTree.fromstring(self.html)
+        self.html_doc = HtmlDocument()
+        self.unique_id = 0
 
+    def read_html(self):
+        """
+        reads the html by a depth first search storing all
+        details into HtmlElement objects and adding to HtmlDoc
+        :return:
+        """
+        root = self.xml_tree
+        print root.tag
+        print root.text
+        print root.attrib
+        #add root
+        #add self to document
+        elem = HtmlElement(tag = root.tag, id="-1",content=root.text)
+        elem.set_position(x=0 ,y=0)
+        self.html_doc.add_element(elem)
+        self.process_element(elem=root,depth=0)
+        self.print_html()
+
+    def process_element(self, elem, depth):
+        breadth = -1
+        children = elem.getchildren()
+        if children:
+            depth += 1
+        for child in children:
+            breadth += 1
+            curr_tag = child.tag
+            curr_id = self.get_id(child)
+            print "id for tag is ", curr_tag , curr_id
+            curr_text = child.text
+            curr_elem = HtmlElement(tag=curr_tag, id=curr_id, content=curr_text)
+            curr_elem.set_position(x=breadth,y=depth)
+            self.html_doc.add_element(curr_elem)
+            self.process_element(child, depth)
+
+
+    def print_html(self):
+        self.html_doc.print_document()
+
+    def get_id(self, node):
+        if "id" in node.attrib:
+            id = node.attrib["id"]
+            return id
+        else:
+            self.unique_id += 1
+            return self.unique_id
 
     def remove_div_content(self, div_ids):
         """
@@ -116,6 +163,7 @@ class StructuredExtractor():
         """
         pass
 
+
     def get_query_position(self, query, url):
         """
         takes a query and returns the first
@@ -144,6 +192,68 @@ class StructuredExtractor():
             all_queries.extend(queries)
         #todo remove duplicate queries? add to weight because of increased occurrence?
         return all_queries
+
+
+class HtmlElement():
+    """
+    Html element contains tag, id, text content, and position in the document
+    """
+    def __init__(self, tag, id, content=""):
+        self.tag = tag
+        if id:
+            self.id = id
+        else:
+            self.id="-1"
+        if content:
+            self.content = content
+        else:
+            self.content = ""
+
+    def set_position(self, x, y):
+        self.x_pos = x
+        self.y_pos = y
+
+    def get_id(self):
+        return self.id
+
+    def get_location(self):
+        return {self.x_pos, self.y_pos}
+
+    def get_content(self):
+        return self.content
+
+    def get_tag(self):
+        return self.tag
+
+class HtmlDocument():
+    """
+    A class which contains a collection of HtmlElement objects
+    """
+    def __init__(self):
+        """
+        Use a dictionary for the elements, key is id, value is the
+        html object
+        :return:
+        """
+        self.html_doc = {}
+
+    def add_element(self, element):
+        if not element.get_id in self.html_doc:
+            self.html_doc[element.get_id()] = element
+
+    def get_element_by_id(self, target_id):
+        if target_id in self.html_doc:
+            return self.html_doc[target_id]
+        else:
+            return None
+
+    def print_document(self):
+        for id, elem in self.html_doc.items():
+            print "id:content:tag:pos", elem.get_id(), elem.get_content(), elem.get_tag(), elem.get_location()
+
+
+    #get elements by tag may be useful?
+
 
 
 
