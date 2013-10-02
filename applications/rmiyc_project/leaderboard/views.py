@@ -18,6 +18,6 @@ def leaderboards(request):
     #                                                           'school_hs' : school_high_scores,
     #                                                           'age_scores': age_high_scores,
     #                                                           'gender_scores': gender_high_scores}, context)
-    return render_to_response('leaderboard/leaderboard.html', {'high_scores':high_scores})
+    return render_to_response('leaderboard/leaderboard.html', {'high_scores':high_scores}, context)
 
 

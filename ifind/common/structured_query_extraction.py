@@ -8,8 +8,6 @@ weighting based on importance of tags
 """
 from xml.etree import ElementTree
 from copy import deepcopy
-from selenium import webdriver
-import requests
 from query_generation import BiTermQueryGeneration
 
 class StructuredExtractor():
@@ -68,6 +66,7 @@ class StructuredExtractor():
                 content = content + node.text
             return content
 
+
     def get_div_content(self, div_id):
         """
         returns the content of a div with a particular id
@@ -101,27 +100,18 @@ class StructuredExtractor():
         #iterate through the elements, when you find text get the
         #tag of the element and store it in a dictionary with the
         #key=tag value=text content
+
         related_text = {}
         #iterate through the elements in the tree adding to
-        #dict when tag with content found which is not empty string
+        #dict when tag with content found which is not empty string and id
         for element in self.xml_tree.iter():
             if element.text != ' ':
-                #append content if tag is in the dictionary and content is non-null
-                if element.tag in related_text and related_text[element.tag]:
-                    related_text[element.tag] = related_text[element.tag] + element.text
-                else:
-                    related_text[element.tag] = element.text
-
+                related_text[element.attrib["id"]] = [element.text, element.tag]
         return related_text
 
     def assign_tag_weightings(self):
         """
-        not sure about this ---- present the tags in the page
-        to the user using the console, ask each in turn
-        what weighting, then return a list of weighted_text objects
-        which have the element, the content, and the weighting
-        maybe get_all_related text could return similar but without
-        weightings assigned?
+        each query will have a weighting based on the position of the query
         :return:
         """
         pass
@@ -133,33 +123,26 @@ class StructuredExtractor():
         :param query:
         :return:
         """
-        #driver = webdriver.PhantomJS()
-
-
-        #selenium doesn't seem to have anything to find text
-        #so could find the tag the query text first occurs in
-        #then find the location by the tag
-        target_tag = ''
-        # for element in self.xml_tree.iter():
-        #     if query in element.text.lower() :
-        #         target_tag = element.tag
-        #
-        # el = driver.find_element_by_tag_name(target_tag)
+        #x location is level in tree
+        #y location is number of children along from left in that level of tree
         pass
 
     def create_biterm_queries(self):
         """
         goes through the related_text dictionary and creates a
-        query list using bitermquerygen object for each tag
+        query list using bitermquerygen object for each element
         combines into one query list and returns said list
         :return:
         """
         related_text_dic=self.get_all_related_text()
         all_queries = []
-        for tag, content in related_text_dic.iteritems():
+        tag_pos=1
+        text_pos=0
+        for id, content in related_text_dic.iteritems():
             generator = BiTermQueryGeneration()
-            queries = generator.extract_queries_from_text(content)
+            queries = generator.extract_queries_from_text(content[text_pos])
             all_queries.extend(queries)
+        #todo remove duplicate queries? add to weight because of increased occurrence?
         return all_queries
 
 

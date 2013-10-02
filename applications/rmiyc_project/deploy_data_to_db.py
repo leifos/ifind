@@ -1,13 +1,11 @@
 import os
 import sys
-'''
-HEAD
-import sys
+
 from rmiyc_project import settings
 from django.core.management import setup_environ
 setup_environ(settings)
-'''
-def get_trending_queries(filename):
+
+def read_in_file(filename):
     """Extract population data from a file.
        Returns a list of tuples created from comma separated values in file
     """
@@ -20,16 +18,17 @@ def get_trending_queries(filename):
 
 
 def main():
-    print 'I have been executed'
-    path = '/home/arazzouk/ifind'
-    if path not in sys.path:
-        sys.path.append(path)
-        print '************************************************'
+    print 'Populating the Database from page_meta_data.txt'
+    print '************************************************'
+
     from ifind.models.game_models import Category, Page
-    from configuration import MEDIA_ROOT,STATIC_PATH
+    from configuration import MEDIA_ROOT, STATIC_PATH
     from ifind.common.utils import convert_url_to_filename
-    tuples_list = get_trending_queries('page_meta_data.txt')
-    c = Category(name="research", icon=os.path.join(STATIC_PATH,'imgs/research.jpg'), desc=None, is_shown=True)
+
+    tuples_list = read_in_file('page_meta_data.txt')
+    c = Category(name="research",
+
+                 icon=os.path.join(STATIC_PATH,'imgs/research.jpg'), desc=None, is_shown=True)
     c.save()
     c = Category(name="about glasgow", icon=os.path.join(STATIC_PATH,'imgs/about_glasgow.jpg'), desc=None, is_shown=True)
     c.save()
@@ -48,6 +47,7 @@ def main():
             p.save()
             print("page with"+ item[2] +"has been saved")
 
-main()
+if __name__ == "__main__":
+    main()
 
 
