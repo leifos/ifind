@@ -11,7 +11,8 @@ class PositionQueryExtractor(object):
     def __init__(self, html, div_ids):
         self.html = html
         self.xml_tree = ElementTree.fromstring(self.html)
-        self.div_ids=div_ids
+        self.div_ids = div_ids
+
 
     def set_div_ids(self, ids):
         self.div_ids = ids
@@ -58,6 +59,8 @@ class PositionQueryExtractor(object):
         if(percentage):
             num_words = round(self.calc_percentage(percentage,len(words)))
         if(num_words):
+            if num_words == 0:#return all text if 0 assumes 0 means wants all
+                return text
             if len(words) > num_words:
                 return subtext.join(words[0:num_words])
                 # for term in :
