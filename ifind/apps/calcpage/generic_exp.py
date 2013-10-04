@@ -1,3 +1,6 @@
+
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
 __author__ = 'rose'
 import argparse
 from ifind.common.page_retrievability_calc import PageRetrievabilityCalculator
@@ -9,6 +12,7 @@ from ifind.search.engines import ENGINE_LIST
 from ifind.common.pagecapture import PageCapture
 from ifind.common.query_ranker import QueryRanker, OddsRatioQueryRanker
 from ifind.common.position_query_extractor import PositionQueryExtractor
+import sys
 
 class ExperimentRunner(object):
 
@@ -86,28 +90,26 @@ class ExperimentRunner(object):
 
     def run_experiment(self):
     #a function to extract queries from page
-        parser = argparse.ArgumentParser(
-                                    description="Experiment specifics parser")
+
         if self.experiment_num == 1:
-            parser.add_argument("-d", "--divs", type=str,
-                            help="IDs of the divs to exclude separated by spaces")
-            parser.add_argument("-w", "--words", type=int, help="the number of words to use"
-                                "in generating queries")
-            parser.add_argument("-p", "--percentage", type=int, help="the percentage of words"
-                                                        "to use in generating queries")
-            args = parser.parse_args()
+            #todo check words and percentage are ints before convert
+            divs = raw_input("enter IDs of the divs to exclude separated by spaces")
+            words = int(raw_input("enter the number of words to use"
+                                "in generating queries"))
+            percentage = int(raw_input("the percentage of words to use in generating queries"))
+
             ids = []
-            if args.divs:
+            if divs:
                 #split string into list of IDs
-                ids = args.divs.split()
+                ids = divs.split()
 
             pqe = PositionQueryExtractor(html=self.page_html, div_ids=ids)
             content = pqe.remove_div_content()
             text = ""
-            if args.words:
-                text = pqe.get_subtext(text=content, num_words=args.words)
-            elif args.percentage:
-                text = pqe.get_subtext(text=content,percentage=args.percentage)
+            if words:
+                text = pqe.get_subtext(text=content, num_words=words)
+            elif percentage:
+                text = pqe.get_subtext(text=content,percentage=percentage)
             else:
                 text = pqe.get_subtext(text=content)
 
@@ -115,7 +117,7 @@ class ExperimentRunner(object):
             print "Queries generated: ", len(query_list)
 
             prc = PageRetrievabilityCalculator(engine=self.engine)
-            prc.score_page(args.url, query_list)
+            prc.score_page(self.url, query_list)
 
             print "\nRetrievability Scores for cumulative c=20"
             prc.calculate_page_retrievability(c=20)
@@ -126,7 +128,8 @@ class ExperimentRunner(object):
             prc.report()
 
 
+def main(args):
+    runner = ExperimentRunner()
 
-
-# if __name__ == '__main__':
-#     runner = ExperimentRunner()
+if __name__ == '__main__':
+    main(sys.argv)

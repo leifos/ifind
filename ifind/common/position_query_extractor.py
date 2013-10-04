@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
+
 __author__ = 'rose'
 
 from xml.etree import ElementTree
