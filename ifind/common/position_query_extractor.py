@@ -6,13 +6,17 @@ from query_generation import BiTermQueryGeneration
 from language_model import LanguageModel
 
 
-class PositionQueryExtractor():
+class PositionQueryExtractor(object):
 
-    def __init__(self, html):
+    def __init__(self, html, div_ids):
         self.html = html
         self.xml_tree = ElementTree.fromstring(self.html)
+        self.div_ids=div_ids
 
-    def remove_div_content(self, div_ids):
+    def set_div_ids(self, ids):
+        self.div_ids = ids
+
+    def remove_div_content(self):
         """
             returns a string with the content the html with the content of
             divs in div_ids removed
@@ -21,7 +25,7 @@ class PositionQueryExtractor():
             """
         result = ''
         tree_copy = deepcopy(self.xml_tree)
-        for div_id in div_ids:
+        for div_id in self.div_ids:
             #need to check the children of the root and then their children
             for element in tree_copy:
                 #if the child is a div with the target div id then use the parent to
@@ -43,7 +47,7 @@ class PositionQueryExtractor():
         return result
 
 
-    def get_subtext(self, text, num_words):
+    def get_subtext(self, text, num_words=0, percentage=None):
         """
             takes first num_words from text and return them as a string
             :param text:
@@ -51,13 +55,23 @@ class PositionQueryExtractor():
             """
         words = text.split()
         subtext = ' '
-        if len(words) > num_words:
-            return subtext.join(words[0:num_words])
-            # for term in :
-            #     print term
-            #     subtext += ' '.join(term)
+        if(percentage):
+            num_words = round(self.calc_percentage(percentage,len(words)))
+        if(num_words):
+            if len(words) > num_words:
+                return subtext.join(words[0:num_words])
+                # for term in :
+                #     print term
+                #     subtext += ' '.join(term)
+            else:
+                return text
+
+
+    def calc_percentage(self, percentage, total_words):
+        if total_words == 0:
+            return 0
         else:
-            return text
+            return 100 * float(percentage)/float(total_words)
 
 
     def generate_queries(self, text):
@@ -65,7 +79,7 @@ class PositionQueryExtractor():
             cleans and generates queries from the text passed in
             :return: list of text queries
             """
-        print "text is ", text
+        #print "text is ", text
         bi_gen = BiTermQueryGeneration()
         query_list = bi_gen.extract_queries_from_text(text)
 
