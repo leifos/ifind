@@ -47,7 +47,7 @@ class TestPositionExtractor(unittest.TestCase):
         #test removing div content, and then using only first 4 words
         #todo this looks at words before cleaned, should we be cleaning
         #them first, cleaning happens in query gen
-        expected = ["this important",'important study','study computing']
+        expected = ["this important",'important study']
         reduced_text = self.extractor.get_subtext(main_text,4)
         result = self.extractor.generate_queries(reduced_text)
         self.process_test_equals(expected,result)
