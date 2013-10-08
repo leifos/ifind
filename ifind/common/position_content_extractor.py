@@ -3,17 +3,15 @@
 
 __author__ = 'rose'
 
-from xml.etree import ElementTree
+from BeautifulSoup import BeautifulSoup
 from copy import deepcopy
-
-
 
 class PositionContentExtractor(object):
 
     def __init__(self, div_ids=None):
         self.div_ids = div_ids
         self.html = ''
-        self.xml_tree = None
+        self.html_soup = None
         self.text = ''
 
     def set_div_ids(self, ids):
@@ -27,7 +25,7 @@ class PositionContentExtractor(object):
         :return: None
         """
         self.html = html
-        self.xml_tree = ElementTree.fromstring(self.html)
+        self.html_soup = BeautifulSoup(html)
         self.text = self._remove_div_content()
 
     def get_subtext(self, num_words=0, percentage=None):
@@ -60,26 +58,8 @@ class PositionContentExtractor(object):
             :return: a string with the divs content removed
             """
         result = ''
-        tree_copy = deepcopy(self.xml_tree)
         for div_id in self.div_ids:
-            #need to check the children of the root and then their children
-            for element in tree_copy:
-                #if the child is a div with the target div id then use the parent to
-                #remove the child
-                if element.tag == 'div' and element.attrib['id'] == div_id:
-                    tree_copy.remove(element)
-                for child in element:
-                    if child.tag == 'div' and child.attrib['id'] == div_id:
-                        element.remove(child)
-                        #now traverse the copy with the div removed and store the results
-        for node in tree_copy:
-            if node.text:
-                result += node.text
-                #print "text of node is ", node.text
-            for child in node:
-                if child.text:
-                    #print "text of node is ", child.text
-                    result += child.text
+            self.html_soup.find("div", {"id": div_id})
         return result
 
 
