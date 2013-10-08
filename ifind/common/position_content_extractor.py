@@ -43,9 +43,6 @@ class PositionContentExtractor(object):
                 return self.text
             if len(words) > num_words:
                 return subtext.join(words[0:num_words])
-                # for term in :
-                #     print term
-                #     subtext += ' '.join(term)
             else:
                 return self.text
 
@@ -55,13 +52,19 @@ class PositionContentExtractor(object):
             returns a string with the content the html with the content of
             divs in div_ids removed
             :param div_ids: a list of the ids of the div to be removed
-            :return: a string with the divs content removed
+            :return:None
             """
         result = ''
+        #for all div ids find the elements in the beautiful soup tree and extract
+        #the corresponding div
+        #this would update self.html_soup which we want to keep whole html in
+        #so perform on a deep copy
+        soup_copy = deepcopy(self.html_soup)
         for div_id in self.div_ids:
-            self.html_soup.find("div", {"id": div_id})
-        return result
-
+            elem = soup_copy.find("div", {"id": div_id})
+            elem.extract()
+        #set the text of the class to be the result of removing the text from the divs
+        self.text = soup_copy.get_text()
 
 
     def _calc_percentage(self, percentage, total_words):
