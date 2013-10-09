@@ -63,11 +63,17 @@ class PositionContentExtractor(object):
         for div_id in self.div_ids:
             #print "removing id ", div_id
             elem = self.html_soup.find("div", {"id": div_id})
-            elem.extract()
+            if elem:
+                elem.extract()
         #set the text of the class to be the result of removing the text from the divs
         #use find all text, returns list, join list elements
-        text = self.html_soup.findAll(text=True)
-        cleaned = self._clean_result(text)
+        texts = self.html_soup.findAll(text=True)
+
+        visible_elements = [self._visible_text(elem) for elem in texts]
+        #visible_text = ''.join(visible_elements)
+        visible_text = visible_elements
+
+        cleaned = self._clean_result(visible_text)
         #print cleaned
         return cleaned
 
@@ -87,3 +93,9 @@ class PositionContentExtractor(object):
 
 
 
+    def _visible_text(self, element):
+        if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+            return ''
+        result = re.sub('<!--.*-->|\r|\n', '', str(element), flags=re.DOTALL)
+        result = re.sub('\s{2,}|&nbsp;', ' ', result)
+        return result
