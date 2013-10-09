@@ -4,7 +4,7 @@
 __author__ = 'rose'
 
 from BeautifulSoup import BeautifulSoup
-from copy import deepcopy
+import re
 
 class PositionContentExtractor(object):
 
@@ -15,7 +15,9 @@ class PositionContentExtractor(object):
         self.text = ''
 
     def set_div_ids(self, ids):
+        #print "here!"
         self.div_ids = ids
+        #print ids
         self.process_html_page(self.html)
 
 
@@ -46,7 +48,6 @@ class PositionContentExtractor(object):
             else:
                 return self.text
 
-
     def _remove_div_content(self):
         """
             returns a string with the content the html with the content of
@@ -57,15 +58,26 @@ class PositionContentExtractor(object):
         result = ''
         #for all div ids find the elements in the beautiful soup tree and extract
         #the corresponding div
-        #this would update self.html_soup which we want to keep whole html in
-        #so perform on a deep copy
-        soup_copy = deepcopy(self.html_soup)
+        #this updates self.html_soup, if divs are reset then soup is regenerated
+
         for div_id in self.div_ids:
-            elem = soup_copy.find("div", {"id": div_id})
+            #print "removing id ", div_id
+            elem = self.html_soup.find("div", {"id": div_id})
             elem.extract()
         #set the text of the class to be the result of removing the text from the divs
-        self.text = soup_copy.get_text()
+        #use find all text, returns list, join list elements
+        text = self.html_soup.findAll(text=True)
+        cleaned = self._clean_result(text)
+        #print cleaned
+        return cleaned
 
+
+    def _clean_result(self, text):
+        text = ' '.join(text)
+        text = re.sub(r'\s+', ' ', text)
+        #returns unicode, strip trailing and leading whitespace
+        return text.strip()
+        #return text
 
     def _calc_percentage(self, percentage, total_words):
         if total_words == 0:

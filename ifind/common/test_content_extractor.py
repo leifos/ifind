@@ -18,14 +18,13 @@ class TestPositionExtractor(unittest.TestCase):
         self.extractor.process_html_page(html)
 
     def test_remove_div_content(self):
-
         div_id=["header"]
         self.extractor.set_div_ids(div_id)
         expected = "this is important study computing it is fun byes"
 
         self.process_test_equals(expected, self.extractor.text)
 
-        div_id=["content"]
+        div_id = ["content"]
         expected = "hello world byes"
         self.extractor.set_div_ids(div_id)
 
@@ -46,11 +45,9 @@ class TestPositionExtractor(unittest.TestCase):
         result = self.extractor.get_subtext(num_words=12)
         self.process_test_equals(self.extractor.text, result)
 
-
     def process_test_equals(self, expected, result):
         msg = 'Expected but got: ', expected, result
-        self.assertItemsEqual(expected, result, msg)
-
+        self.assertEqual(expected, result, msg)
 
 
 class WebTestPositionExtractor(unittest.TestCase):
@@ -61,7 +58,9 @@ class WebTestPositionExtractor(unittest.TestCase):
         """
         self.logger = logging.getLogger("TestStructuredExtractor")
         pc = PageCapture('https://www.gov.uk/vehicles-you-can-drive')
-        html = pc.get_page_sourcecode()
+        self.html = pc.get_page_sourcecode()
+        self.div_ids=[]
+
 
         #from BeautifulSoup import BeautifulSoup
         #soup = BeautifulSoup(html)
@@ -70,10 +69,12 @@ class WebTestPositionExtractor(unittest.TestCase):
 
 
     def test_extract_from_bad_page(self):
-        #text = self.extractor.get_subtext()
+        self.extractor = PositionContentExtractor(div_ids=self.div_ids)
+        self.extractor.process_html_page(self.html)
+        #todo pass if no errors?
 
-        #self.assertGreater(len(text),0)
-        pass
+
+
 
 
 if __name__ == '__main__':

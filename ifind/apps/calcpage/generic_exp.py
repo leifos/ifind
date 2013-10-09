@@ -11,7 +11,7 @@ from ifind.search.engine import EngineFactory
 from ifind.search.engines import ENGINE_LIST
 from ifind.common.pagecapture import PageCapture
 from ifind.common.query_ranker import QueryRanker, OddsRatioQueryRanker
-from ifind.common.position_query_extractor import PositionQueryExtractor
+from ifind.common.position_content_extractor import PositionContentExtractor
 import sys
 
 class ExperimentRunner(object):
@@ -51,6 +51,8 @@ class ExperimentRunner(object):
             print "Check your URL argument"
             parser.print_help()
             return 2
+        else:
+            self.url = args.url
 
         if not args.experiment:
             print "check your experiment number"
@@ -103,23 +105,26 @@ class ExperimentRunner(object):
                 #split string into list of IDs
                 ids = divs.split()
 
-            pqe = PositionQueryExtractor(html=self.page_html, div_ids=ids)
-            content = pqe.remove_div_content()
-            text = ""
-            if words:
-                text = pqe.get_subtext(text=content, num_words=words)
-            elif percentage:
-                text = pqe.get_subtext(text=content,percentage=percentage)
-            else:
-                text = pqe.get_subtext(text=content)
+            pce = PositionContentExtractor(div_ids=ids)
+            pce.process_html_page(self.page_html)
+            text =''
 
-            query_list = pqe.generate_queries(text)
+            if words:
+                text = pce.get_subtext(num_words=words)
+            elif percentage:
+                text = pce.get_subtext(percentage=percentage)
+            else:
+                text = pce.get_subtext()
+
+            #todo at this stage this could be single, bi or tri terms
+            query_gen = BiTermQueryGeneration()
+            query_list = query_gen.extract_queries_from_text(text)
             print "Queries generated: ", len(query_list)
 
             prc = PageRetrievabilityCalculator(engine=self.engine)
             prc.score_page(self.url, query_list)
 
-            print "\nRetrievability Scores for cumulative c=20"
+            print "\nRetrievability Scores for cumulative pce=20"
             prc.calculate_page_retrievability(c=20)
             prc.report()
             print "\nRetrievability Scores for gravity beta=1.0"
