@@ -83,7 +83,7 @@ def main():
     if args.filename:
         data_list = get_trending_queries(args.filename)
         for data_tuple in data_list:
-            cat=game_model_functions.get_category(data_tuple[0],append=args.append)
+            cat=game_model_functions.get_category(data_tuple[0],'icon','',append=args.append)
             #data_tuple[1] is url
             game_model_functions.populate_pages([data_tuple[1]],cat)
         return 0

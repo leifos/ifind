@@ -1,0 +1,128 @@
+{% extends 'pagefetch/base.html' %}
+{% block container%}
+
+<html data-wf-site="5209076f501977a06a0006fe">
+  <head>
+    <meta charset="utf-8">
+    <title>Profile Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/webflow.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/blank3437728.webflow.css">
+    <link rel="icon" type="image/x-icon" href="https://y7v4p6k4.ssl.hwcdn.net/placeholder/favicon.ico">
+    <!-- <script type="text/javascript" src="js/webflow.js" defer></script> -->
+  </head><body>
+  <div class="w-container profile">
+    <div class="w-row">
+      <div class="w-col w-col-6">
+        <h1>{{usr.username}}</h1>
+        <div class="w-container edit_profile_container">
+            {% if view_perm %}
+            <a class="edit_profile" href="/profile/{{usr.username}}/edit_profile.html">Edit Profile</a>
+            {% endif %}
+        </div>
+        <div class="w-container score_overview">
+          <p><strong>Total Score</strong> : {{total_score|default:0}}
+            <br><strong>Games played:</strong> {{profile.no_games_played}}
+            <br><strong>Queries issued: </strong>{{ profile.no_queries_issued }}
+            <br><strong>Successful queries: </strong>{{ profile.no_successful_queries_issued }}</p>
+        </div>
+
+        <div class="w-container details">
+          <div class="w-row">
+            <div class="w-col w-col-6">
+                {% if view_perm %}
+              <p><strong>Email: </strong>{{usr.email}}
+                <br><strong>Gender:</strong> {{profile.gender}}
+                <br><strong>Age: </strong>{{profile.age|default:""}}</p>
+                {% endif %}
+            </div>
+            <div class="w-col w-col-6">
+                {% if view_perm %}
+              <p><strong>School:</strong> {{profile.school}}
+                <br><strong>City:</strong> {{profile.city}}
+                <br><strong>Country:</strong> {{profile.country}}
+                <br>
+              </p>
+                {% endif%}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-col w-col-6">
+        <img class="profile_pic" src="{{murl}}{{profile.profile_pic}}" alt="image-placeholder.svg" width="150" height="150">
+
+          {% if progress == 100 or not view_perm %}
+          {% with vis="hidden" %}
+          <div class="progress_bar" style="visibility:{{vis|default:"visible"}}">
+          {% endwith %}
+          {% else %}
+          <div class="progress_bar" style="visibility:visible">
+          {% endif %}
+          {% if view_perm %}
+            <h5>Profile {{ progress }}% complete.</h5>
+			        <div class="progress">
+				        <div class="progress progress-striped active">
+                        <div class="bar" style="width: {{ progress }}%;"></div>
+                        </div>
+			        </div>
+           {% else%}
+               <div id="dummy_div"></div>
+           {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-container highscores">
+    <h3>Highscores</h3>
+
+    <ul class="thumbnails centre text-center" style="padding-left: 5px">
+            {% for item in highscores %}
+            <li class="thumbnail list_item">
+                <div class="hs">
+                    <a href="/pagefetch/play/{{item.url}}">
+                    <h5>{{item.category.name}}</h5>
+                    <img src="{{item.category.icon}}" alt="{{item.category.name}}" height="145" width="145">
+                    <p>{{item.highest_score}}</p></a>
+                </div>
+            </li>
+            {% endfor %}
+    </ul>
+  </div>
+  <div class="w-container badges">
+    <h3>Badges</h3>
+
+    <div id="badge-div">
+    <ul id="badge-list" class="thumbnails centre text-center">
+
+                {% for item in achievements %}
+            <li class="list_item_badge">
+                    <div class="hs.badge">
+                        <h5 style="opacity:0.2">{{item.achievement.name}}</h5>
+                        <img id="{{item.achievement.name}}" src="{{murl}}{{item.achievement.badge_icon}}" alt="{{item.achievement.name}}" height="150" width="150">
+                        <p>{{item.}}</p>
+                    </div>
+            </li>
+                {% endfor %}
+                {% for item in available_achievements %}
+            <li class="list_item_badge">
+                    <div class="hs.badge">
+                    <h5 style="opacity:0.2">{{item.name}}</h5>
+                    <img id="{{item.name}}" src="{{murl}}{{item.badge_icon}}" alt="{{item.name}}" height="150" width="150" style="opacity:0.2">
+                    <p>{{item.}}</p>
+                    </div>
+            </li>
+                {% endfor %}
+
+    </ul>
+    </div>
+  </div>
+</body>
+
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap-tooltip.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap-popover.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}javascript/profile_page.js"></script>
+
+</html>
+{% endblock %}

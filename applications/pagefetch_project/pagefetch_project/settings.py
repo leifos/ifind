@@ -131,11 +131,13 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'pagefetch',
     'registration',
+    'profiles',
+    'leaderboard',
 
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window for django-registration
-AUTH_PROFILE_MODULE = "accounts.UserProfile" #changed from pagefetch. 17/07
+AUTH_PROFILE_MODULE = "pagefetch.UserProfile"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -85,9 +85,7 @@ class GameModelTest(TestCase):
     def test_add_pages(self):
         self.logger.info("Testing whether four pages are added to the Numbers Cat.")
         #print "Testing whether four pages are added to the Numbers Cat."
-        Category.objects.get_or_create(name='Numbers',
-                                       desc='Looking for sites that around\
-                                       about numbers')[0]
+        Category.objects.get_or_create(name='Numbers', desc='Looking for sites that around about numbers')[0]
         c = Category.objects.get(name='Numbers')
 
         for pn in ['one','two','three','four']:

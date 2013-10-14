@@ -1,0 +1,16 @@
+{% extends 'pagefetch/base.html' %}
+
+{% block container %}
+    {% if form.errors %}
+        <p class="errors">Please correct the errors below: {{ form.non_field_errors }}</p>
+    {% endif %}
+
+    <div class="hero-unit">
+        <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
+
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+{% endblock %}
