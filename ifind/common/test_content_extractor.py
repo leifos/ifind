@@ -59,10 +59,11 @@ class TestPositionExtractor(unittest.TestCase):
         result = self.extractor._get_content("footer",tag_class="myfoot")
         self.process_test_equals(expected,result)
 
-    def test_get_all_content(self):
+    def test_set_all_content(self):
         included_ids = ['content']
         expected = "this is important study computing it is fun"
-        result = self.extractor.get_all_content(included_ids,"div")
+        self.extractor.set_all_content(included_ids,"div")
+        result = self.extractor.text
         self.process_test_equals(expected,result)
 
     def process_test_equals(self, expected, result):

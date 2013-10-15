@@ -67,11 +67,11 @@ class PositionContentExtractor(object):
         #for all div ids find the elements in the beautiful soup tree and extract
         #the corresponding div
         #this updates self.html_soup, if divs are reset then soup is regenerated
-
-        for div_id in self.div_ids:
-            elem = self.html_soup.find("div", {"id": div_id})
-            if elem:
-                elem.extract()
+        if self.div_ids:
+            for div_id in self.div_ids:
+                elem = self.html_soup.find("div", {"id": div_id})
+                if elem:
+                    elem.extract()
         #set the text of the class to be the result of removing the text from the divs
         #use find all text, returns list, join list elements
         texts = self.html_soup.findAll(text=True)
@@ -140,7 +140,7 @@ class PositionContentExtractor(object):
         #print cleaned
         return cleaned
 
-    def get_all_content(self, attr_values, tag):
+    def set_all_content(self, attr_values, tag):
         """
         returns a string with the visible text the html with the content of
         tags with value tag (e.g. div, footer) and attr_values (e.g. id, class)
@@ -152,7 +152,7 @@ class PositionContentExtractor(object):
         content = ""
         for value in attr_values:
             content += self._get_content(tag, id=value)
-        return content
+        self.text = content
 
 
 
