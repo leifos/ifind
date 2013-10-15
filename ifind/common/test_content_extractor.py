@@ -5,6 +5,7 @@ import sys
 from position_content_extractor import PositionContentExtractor
 from pagecapture import PageCapture
 
+
 class TestPositionExtractor(unittest.TestCase):
 
     def setUp(self):
@@ -12,20 +13,22 @@ class TestPositionExtractor(unittest.TestCase):
         html = ' <html> <div id="header"><h1>hello world</h1>' \
                '</div><div id="content"><p>this is important</p>' \
                '<p> study computing it is fun</p></div>' \
-               '<div id="footer"> <h2>byes</h2></div> </html> '
-        div_ids=[]
+               '<div id="footer"> <h2>byes</h2></div> ' \
+               '<div id="post"> stay <div id="sub-post">should be gone</div>' \
+               '</div><footer class="myfoot">at the bottom</footer></html> '
+        div_ids = []
         self.extractor = PositionContentExtractor(div_ids=div_ids)
         self.extractor.process_html_page(html)
 
     def test_remove_div_content(self):
         div_id=["header"]
         self.extractor.set_div_ids(div_id)
-        expected = "this is important study computing it is fun byes"
+        expected = "this is important study computing it is fun byes stay should be gone at the bottom"
 
         self.process_test_equals(expected, self.extractor.text)
 
         div_id = ["content"]
-        expected = "hello world byes"
+        expected = "hello world byes stay should be gone at the bottom"
         self.extractor.set_div_ids(div_id)
 
         self.process_test_equals(expected, self.extractor.text)
@@ -33,7 +36,13 @@ class TestPositionExtractor(unittest.TestCase):
         ignore_divs = ['header','footer']
         self.extractor.set_div_ids(ignore_divs)
 
-        expected = 'this is important study computing it is fun'
+        expected = 'this is important study computing it is fun stay should be gone at the bottom'
+        self.process_test_equals(expected, self.extractor.text)
+
+        #test remove div within a div
+        expected = "at the bottom"
+        ignore_divs = ['header','footer','content','post']
+        self.extractor.set_div_ids(ignore_divs)
         self.process_test_equals(expected, self.extractor.text)
 
     def test_get_subtext(self):
@@ -45,9 +54,22 @@ class TestPositionExtractor(unittest.TestCase):
         result = self.extractor.get_subtext(num_words=12)
         self.process_test_equals(self.extractor.text, result)
 
+    def test_get_content(self):
+        expected = "at the bottom"
+        result = self.extractor._get_content("footer",tag_class="myfoot")
+        self.process_test_equals(expected,result)
+
+    def test_get_all_content(self):
+        included_ids = ['content']
+        expected = "this is important study computing it is fun"
+        result = self.extractor.get_all_content(included_ids,"div")
+        self.process_test_equals(expected,result)
+
     def process_test_equals(self, expected, result):
         msg = 'Expected but got: ', expected, result
         self.assertEqual(expected, result, msg)
+
+
 
 
 class WebTestPositionExtractor(unittest.TestCase):
@@ -67,11 +89,13 @@ class WebTestPositionExtractor(unittest.TestCase):
         #texts = soup.findAll(text=True)
         #print texts
 
-
     def test_extract_from_bad_page(self):
         self.extractor = PositionContentExtractor(div_ids=self.div_ids)
         self.extractor.process_html_page(self.html)
         #todo pass if no errors?
+        div_ids = ['related','skiplink-container']
+        self.extractor.set_div_ids(div_ids)
+
 
 
 

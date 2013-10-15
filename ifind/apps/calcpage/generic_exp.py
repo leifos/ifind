@@ -104,6 +104,7 @@ class ExperimentRunner(object):
             if divs:
                 #split string into list of IDs
                 ids = divs.split()
+                print ids
 
             pce = PositionContentExtractor(div_ids=ids)
             pce.process_html_page(self.page_html)
@@ -115,6 +116,7 @@ class ExperimentRunner(object):
                 text = pce.get_subtext(percentage=percentage)
             else:
                 text = pce.get_subtext()
+
 
             #todo at this stage this could be single, bi or tri terms
             query_gen = BiTermQueryGeneration()

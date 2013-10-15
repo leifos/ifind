@@ -14,12 +14,18 @@ class PositionContentExtractor(object):
         self.html_soup = None
         self.text = ''
 
+    #if you set the div ids, then the html is processed again
     def set_div_ids(self, ids):
+        """
+        this method takes a list of div ids and sets the class ids variable
+        it also re-processes the html
+        :param ids: ids of divs to be ignored when generating queries
+        :return: None
+        """
         #print "here!"
         self.div_ids = ids
-        #print ids
+        #print "ids to remove are" ,ids
         self.process_html_page(self.html)
-
 
     def process_html_page(self, html):
         """ reads in the html, parses it, and removes the set of specified div ids, assigning the text to self.text
@@ -33,15 +39,15 @@ class PositionContentExtractor(object):
     def get_subtext(self, num_words=0, percentage=None):
         """
             takes first num_words from text and return them as a string
-            :param text:
-            :return:
+            :return: a string of length num words if self.text has >= num words
+             else return self.text
             """
         words = self.text.split()
         subtext = ' '
-        if(percentage):
+        if percentage:
             num_words = round(self._calc_percentage(percentage,len(words)))
-        if(num_words):
-            if num_words == 0:#return all text if 0 assumes 0 means wants all
+        if num_words:
+            if num_words == 0:  # return all text if 0 assumes 0 means wants all
                 return self.text
             if len(words) > num_words:
                 return subtext.join(words[0:num_words])
@@ -61,7 +67,6 @@ class PositionContentExtractor(object):
         #this updates self.html_soup, if divs are reset then soup is regenerated
 
         for div_id in self.div_ids:
-            #print "removing id ", div_id
             elem = self.html_soup.find("div", {"id": div_id})
             if elem:
                 elem.extract()
@@ -69,6 +74,8 @@ class PositionContentExtractor(object):
         #use find all text, returns list, join list elements
         texts = self.html_soup.findAll(text=True)
 
+        #for each of the visible elements check it's not in style, script etc.
+        #add it to visible elements
         visible_elements = [self._visible_text(elem) for elem in texts]
         #visible_text = ''.join(visible_elements)
         visible_text = visible_elements
@@ -76,7 +83,6 @@ class PositionContentExtractor(object):
         cleaned = self._clean_result(visible_text)
         #print cleaned
         return cleaned
-
 
     def _clean_result(self, text):
         text = ' '.join(text)
@@ -91,11 +97,61 @@ class PositionContentExtractor(object):
         else:
             return 100 * float(percentage)/float(total_words)
 
-
-
     def _visible_text(self, element):
         if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
             return ''
         result = re.sub('<!--.*-->|\r|\n', '', str(element), flags=re.DOTALL)
         result = re.sub('\s{2,}|&nbsp;', ' ', result)
         return result
+
+    def print_text(self):
+        print self.text
+
+    def _get_content(self, tag, id="", tag_class=""):
+        """
+        finds elements in the soup with a given tag and id or class
+        returns the text of this element
+        :param tag: target tag
+        :param id: target id
+        :param tag_class: target class
+        :return: text of element with given id or class and tag
+        """
+        elem = None
+        #todo assumes only one element with given id or class for given tag
+        #otherwise returns text of first tag if not given an id or class
+        if id:
+            elem =self.html_soup.find(tag,id=id)
+        elif tag_class:
+            elem = self.html_soup.find(tag, {"class" : tag_class})
+        else:
+            elem = self.html_soup.find(tag)
+
+        texts = elem.findAll(text=True)
+
+        #for each of the visible elements check it's not in style, script etc.
+        #add it to visible elements
+        visible_elements = [self._visible_text(elem) for elem in texts]
+        #visible_text = ''.join(visible_elements)
+        visible_text = visible_elements
+
+        cleaned = self._clean_result(visible_text)
+        #print cleaned
+        return cleaned
+
+    def get_all_content(self, attr_values, tag):
+        """
+        returns a string with the visible text the html with the content of
+        tags with value tag (e.g. div, footer) and attr_values (e.g. id, class)
+        :param tag:
+        :param attr_values:
+        :return:
+        """
+        #todo currently assumes dealing only with IDs
+        content = ""
+        for value in attr_values:
+            content += self._get_content(tag, id=value)
+        return content
+
+
+
+
