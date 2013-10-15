@@ -45,7 +45,9 @@ class PositionContentExtractor(object):
         words = self.text.split()
         subtext = ' '
         if percentage:
-            num_words = round(self._calc_percentage(percentage,len(words)))
+            print "percent is ", percentage
+            num_words = int(round(self._calc_percentage(percentage, len(words))))
+            print "num words is ",num_words
         if num_words:
             if num_words == 0:  # return all text if 0 assumes 0 means wants all
                 return self.text
@@ -95,7 +97,7 @@ class PositionContentExtractor(object):
         if total_words == 0:
             return 0
         else:
-            return 100 * float(percentage)/float(total_words)
+            return 100 * (float(percentage)/float(total_words))
 
     def _visible_text(self, element):
         if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:

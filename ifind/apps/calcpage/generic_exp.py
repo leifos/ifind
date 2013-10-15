@@ -94,28 +94,39 @@ class ExperimentRunner(object):
     #a function to extract queries from page
 
         if self.experiment_num == 1:
+            text = ''
             #todo check words and percentage are ints before convert
-            divs = raw_input("enter IDs of the divs to exclude separated by spaces")
-            words = int(raw_input("enter the number of words to use"
-                                "in generating queries"))
-            percentage = int(raw_input("the percentage of words to use in generating queries"))
+            divs = raw_input("enter IDs of the divs to exclude separated by spaces \n")
 
             ids = []
             if divs:
                 #split string into list of IDs
                 ids = divs.split()
-                print ids
 
             pce = PositionContentExtractor(div_ids=ids)
             pce.process_html_page(self.page_html)
-            text =''
 
-            if words:
-                text = pce.get_subtext(num_words=words)
-            elif percentage:
-                text = pce.get_subtext(percentage=percentage)
+            limit_by_words = raw_input("enter y if you want to limit by a number of words \n")
+
+            if limit_by_words in ["y",'Y',"Yes",'yes']:
+                while True:
+                    words = raw_input("enter the number of words to use"
+                                "in generating queries \n")
+                    if self.is_integer(words):
+                        words = int(words)
+                        text = pce.get_subtext(num_words=words)
+                        break
             else:
-                text = pce.get_subtext()
+                limit_by_percent = raw_input("enter y if you want to limit by a percentage of words \n")
+                if limit_by_percent in ["y",'Y',"Yes",'yes']:
+                    while True:
+                        percentage = raw_input("the percentage of words to use in generating queries \n")
+                        if self.is_integer(percentage):
+                            percentage = int(percentage)
+                            text = pce.get_subtext(percentage=percentage)
+                            break
+                else:
+                    text = pce.get_subtext()
 
 
             #todo at this stage this could be single, bi or tri terms
@@ -133,6 +144,19 @@ class ExperimentRunner(object):
 
             prc.calculate_page_retrievability(c=20, beta=1.0)
             prc.report()
+
+    def is_integer(self, value):
+        """
+        checks a given value is an integer, returns true or false
+        :param value:
+        :return:
+        """
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False
+
 
 
 def main(args):
