@@ -33,14 +33,11 @@ class TermPipeline():
         term is removed at any point
         :return:
         """
-        i=0
         for processor in self.pipeline:
             #for each processor in the pipeline perform the check
             #if returns None at any point, exit the pipeline
             #first set the processor term to be the current term
             term = processor.process(term)
-            print "after processor ", i, "term is ", term
-            i+=1
             #now perform the check
             #return None if no term left
             if term is None:
