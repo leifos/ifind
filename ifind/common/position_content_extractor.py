@@ -5,6 +5,7 @@ __author__ = 'rose'
 
 from BeautifulSoup import BeautifulSoup
 import re
+import sys
 
 class PositionContentExtractor(object):
 
@@ -128,11 +129,15 @@ class PositionContentExtractor(object):
         else:
             elem = self.html_soup.find(tag)
 
-        texts = elem.findAll(text=True)
+        texts=''
+        if elem:
+            texts = elem.findAll(text=True)
+        else:
+            print "No divs with this id ",id, " exist"
 
         #for each of the visible elements check it's not in style, script etc.
         #add it to visible elements
-        visible_elements = [self._visible_text(elem) for elem in texts]
+        visible_elements = [self._visible_text(part) for part in texts]
         #visible_text = ''.join(visible_elements)
         visible_text = visible_elements
 
@@ -153,6 +158,9 @@ class PositionContentExtractor(object):
         for value in attr_values:
             content += self._get_content(tag, id=value)
         self.text = content
+        if not self.text:
+            print "no text remains for generating queries, program will exit "
+            sys.exit(2)
 
 
 
