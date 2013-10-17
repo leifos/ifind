@@ -74,6 +74,8 @@ class ExperimentRunner(object):
         stopwordfile = None
         if args.stopwordfile:
             self.stopwordfile = args.stopwordfile
+        else:
+            self.stopwordfile = None
 
         self.mq = 50
         if args.maxqueries:
@@ -100,7 +102,6 @@ class ExperimentRunner(object):
 
     def exp_1(self):
         text = ''
-        #todo check words and percentage are ints before convert
         divs = raw_input("enter IDs of the divs to exclude separated by spaces \n")
         ids = []
         if divs:
@@ -134,7 +135,12 @@ class ExperimentRunner(object):
 
 
         #todo at this stage this could be single, bi or tri terms
-        query_gen = BiTermQueryGeneration()
+        query_gen = None
+        if self.stopwordfile:
+            query_gen = BiTermQueryGeneration(stopwordfile=self.stopwordfile)
+        else:
+            query_gen = BiTermQueryGeneration()
+
         query_list = query_gen.extract_queries_from_text(text)
         print "Queries generated: ", len(query_list)
 
@@ -192,7 +198,11 @@ class ExperimentRunner(object):
 
 
         #todo at this stage this could be single, bi or tri terms
-        query_gen = BiTermQueryGeneration()
+        query_gen = None
+        if self.stopwordfile:
+            query_gen = BiTermQueryGeneration(stopwordfile=self.stopwordfile)
+        else:
+            query_gen = BiTermQueryGeneration()
         query_list = query_gen.extract_queries_from_text(text)
         print "Queries generated: ", len(query_list)
 

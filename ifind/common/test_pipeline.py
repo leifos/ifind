@@ -29,8 +29,6 @@ class TestTermPipeline(unittest.TestCase):
         self.pipeline.add_processor(self.stp)
         self.pipeline.add_processor(self.atp)
 
-
-
     def test_read_stopfile(self):
         expected = ['accessibility', 'information', 'site', 'skip',
                     'main', 'content', 'a', 'about', 'above', 'after',
@@ -62,92 +60,97 @@ class TestTermPipeline(unittest.TestCase):
                     'why', "why's", 'with', "won't", 'would', "wouldn't",
                     'you', "you'd", "you'll", "you're", "you've", 'your',
                     'yours', 'yourself', 'yourselves']
-        self.assertEquals(expected,self.stp.stoplist)
+        self.assertEquals(expected, self.stp.stoplist)
 
-        def test_process():
-            #test removal of punctuation, numbers, special characters
-            #other cases are tested in test_query_gen where the clean
-            #method which uses the pipeline process method is tested
-            term = 'hello WORlD. my name  is Python111!!! ü'
-            expected = 'hello world my name is python '
-            result = self.pipeline.process(term)
-            self.assertEquals(expected,result)
+    def test_process(self):
+        #test removal of punctuation, numbers, special characters, can't from stopfile
+        #other cases are tested in test_query_gen where the clean
+        #method which uses the pipeline process method is tested
+        term = 'hello WORlD. my name  is Python111!!! ü can\'t'
+        expected = 'hello world my name is python'
+        result = self.pipeline.process(term)
+        self.assertEquals(expected,result)
+        #as above but tests cant is removed as well as can't
+        # term = 'hello WORlD. my name  is Python111!!! ü cant'
+        # expected = 'hello world my name is python '
+        # result = self.pipeline.process(term)
+        self.assertEquals(expected,result)
 
-        def test_processors_config_order():
-            #todo this is to see the impact of adding processors in
-            #different orders
-            pass
-
-class TestLengthTermProcessor(unittest.TestCase):
-
-    def setUp(self):
-        self.logger = logging.getLogger("TestLengthTermProcessor")
-        self.term = 'hi'
-        self.minlen=3
-        self.ltp= LengthTermProcessor()
-
-    def test_set_minlen(self):
-        #check -ve num returns current min len
-        min_len = self.ltp.min_len
-        self.ltp.set_min_length(-1)
-        result = self.ltp.min_len
-        self.assertEquals(result,min_len)
-        #check 0 returns current min_len
-
-        self.ltp.set_min_length(0)
-        result = self.ltp.min_len
-        self.assertEquals(result,min_len)
-
-        #now check >0
-        self.ltp.set_min_length(4)
-        result = self.ltp.min_len
-        self.assertEquals(result,4)
-
-    def test_check(self):
-        result = self.ltp.process('a')
-        self.assertEquals(result,None)
-
-class TestPunctTermProcessor(unittest.TestCase):
-
-    def setUp(self):
-        self.logger = logging.getLogger("TestPunctuationTermProcessor")
-        self.ptp = PunctuationTermProcessor()
-
-    def test_check(self):
-        #check removing ' ' ' the '
-        result = self.ptp.process(' the ')
-        self.assertEquals(result, 'the')
-        #check removing . at end 'hello.'
-
-        result = self.ptp.process('hello.')
-        self.assertEquals(result, 'hello')
-        #check removing ! and %
-        result = self.ptp.process('!good%')
-        self.assertEquals(result, 'good')
-
-class TestStopwordTermProcessor(unittest.TestCase):
-
-    def setUp(self):
-        self.logger = logging.getLogger("TestStopwordTermProcessor")
-        self.stp = StopwordTermProcessor(stopwordfile='stopwords_test.txt')
-
-    def test_check(self):
-        #test return None for term in list
-        in_list= 'myself'
-        result = self.stp.process(in_list)
-        self.assertEquals(result, None)
-
-        #test return None for term in list
-        in_list= 'against'
-        result = self.stp.process(in_list)
-        self.assertEquals(result, None)
-        #test return term for term not in list
-
-        non_list='sport'
-        result = self.stp.process(non_list)
-        self.assertEquals(result, non_list)
-
-
+    def test_processors_config_order(self):
+        #todo this is to see the impact of adding processors in
+        #different orders
+        pass
+#
+# class TestLengthTermProcessor(unittest.TestCase):
+#
+#     def setUp(self):
+#         self.logger = logging.getLogger("TestLengthTermProcessor")
+#         self.term = 'hi'
+#         self.minlen=3
+#         self.ltp= LengthTermProcessor()
+#
+#     def test_set_minlen(self):
+#         #check -ve num returns current min len
+#         min_len = self.ltp.min_len
+#         self.ltp.set_min_length(-1)
+#         result = self.ltp.min_len
+#         self.assertEquals(result,min_len)
+#         #check 0 returns current min_len
+#
+#         self.ltp.set_min_length(0)
+#         result = self.ltp.min_len
+#         self.assertEquals(result,min_len)
+#
+#         #now check >0
+#         self.ltp.set_min_length(4)
+#         result = self.ltp.min_len
+#         self.assertEquals(result,4)
+#
+#     def test_check(self):
+#         result = self.ltp.process('a')
+#         self.assertEquals(result,None)
+#
+# class TestPunctTermProcessor(unittest.TestCase):
+#
+#     def setUp(self):
+#         self.logger = logging.getLogger("TestPunctuationTermProcessor")
+#         self.ptp = PunctuationTermProcessor()
+#
+#     def test_check(self):
+#         #check removing ' ' ' the '
+#         result = self.ptp.process(' the ')
+#         self.assertEquals(result, 'the')
+#         #check removing . at end 'hello.'
+#
+#         result = self.ptp.process('hello.')
+#         self.assertEquals(result, 'hello')
+#         #check removing ! and %
+#         result = self.ptp.process('!good%')
+#         self.assertEquals(result, 'good')
+#
+# class TestStopwordTermProcessor(unittest.TestCase):
+#
+#     def setUp(self):
+#         self.logger = logging.getLogger("TestStopwordTermProcessor")
+#         self.stp = StopwordTermProcessor(stopwordfile='stopwords_test.txt')
+#
+#     def test_check(self):
+#         #test return None for term in list
+#         in_list= 'myself'
+#         result = self.stp.process(in_list)
+#         self.assertEquals(result, None)
+#
+#         #test return None for term in list
+#         in_list= 'against'
+#         result = self.stp.process(in_list)
+#         self.assertEquals(result, None)
+#         #test return term for term not in list
+#
+#         non_list='sport'
+#         result = self.stp.process(non_list)
+#         self.assertEquals(result, non_list)
+#
+#
 class TestAlphaTermProcessor(unittest.TestCase):
 
     def setUp(self):
@@ -157,39 +160,42 @@ class TestAlphaTermProcessor(unittest.TestCase):
     def test_check(self):
 
         result = self.atp.process('<h>')
-        self.assertEquals(result, None)
+        self.assertEquals(result, 'h')
         #check neg numbers
 
         result = self.atp.process('-5')
-        self.assertEquals(result, None)
+        self.assertEquals(result, '')
 
         #check pos numbers
         result = self.atp.process('5')
-        self.assertEquals(result, None)
+        self.assertEquals(result, '')
         #check punct
         result = self.atp.process('hello.')
-        self.assertEquals(result, None)
+        self.assertEquals(result, 'hello')
+        term = "hello world my name is python111 cant"
+        result = self.atp.process(term)
+        self.assertEquals(result,'hello world my name is python cant')
 
-class TestSpecialCharTermProcessor(unittest.TestCase):
-
-    def setUp(self):
-        self.logger = logging.getLogger("TestSpecialCharTermProcessor")
-        self.sctm = SpecialCharProcessor()
-
-    def test_check(self):
-        #check inclusion of special character is removed
-        expected='hi'
-        result = self.sctm.process('±hi')
-        self.assertEquals(expected,result)
-        #check spaces aren't removed
-        expected='hi hello'
-        result = self.sctm.process(expected)
-        self.assertEquals(expected,result)
-        #check special char and spaces
-        testline = 'ähello my friend'
-        expected = 'hello my friend'
-        result = self.sctm.process(testline)
-        self.assertEquals(expected, result)
+# class TestSpecialCharTermProcessor(unittest.TestCase):
+#
+#     def setUp(self):
+#         self.logger = logging.getLogger("TestSpecialCharTermProcessor")
+#         self.sctm = SpecialCharProcessor()
+#
+#     def test_check(self):
+#         #check inclusion of special character is removed
+#         expected='hi'
+#         result = self.sctm.process('±hi')
+#         self.assertEquals(expected,result)
+#         #check spaces aren't removed
+#         expected='hi hello'
+#         result = self.sctm.process(expected)
+#         self.assertEquals(expected,result)
+#         #check special char and spaces
+#         testline = 'ähello my friend'
+#         expected = 'hello my friend'
+#         result = self.sctm.process(testline)
+#         self.assertEquals(expected, result)
 
 
 

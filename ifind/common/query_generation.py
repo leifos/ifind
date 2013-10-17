@@ -74,6 +74,7 @@ class QueryGeneration(object):
 
     #todo do we want the user to determine what processors they want?
     def construct_pipeline(self, pipeline):
+        #create all processors and add to pipeline
         ltp = LengthTermProcessor()
         ltp.set_min_length(self.min_len)
         stp = StopwordTermProcessor(stopwordfile=self.stop_filename)
