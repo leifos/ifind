@@ -73,6 +73,8 @@ class PositionContentExtractor(object):
                 elem = self.html_soup.find("div", {"id": div_id})
                 if elem:
                     elem.extract()
+                else:
+                    print "div with id ", div_id, " not found"
         #set the text of the class to be the result of removing the text from the divs
         #use find all text, returns list, join list elements
         texts = self.html_soup.findAll(text=True)
@@ -84,6 +86,9 @@ class PositionContentExtractor(object):
         visible_text = visible_elements
 
         cleaned = self._clean_result(visible_text)
+        if not cleaned:
+            print "no text remains for generating queries, program will exit "
+            sys.exit(2)
         #print cleaned
         return cleaned
 
