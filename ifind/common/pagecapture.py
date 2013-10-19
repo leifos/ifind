@@ -9,6 +9,7 @@ Requires:
 ---------
       selenium, PIL, PhantomJS
 """
+import selenium
 from selenium import webdriver
 from PIL import Image
 #from django.core.validators import URLValidator
@@ -62,7 +63,8 @@ class PageCapture:
             return False
         try:
             self.driver.get(url)
-        except ValueError:
+        except selenium.common.exceptions.WebDriverException:
+            print("Url: {0:s} failed to load, skipping...".format(url))
             return False
 
         #set page_url to what the driver returns, a redirect might occur
