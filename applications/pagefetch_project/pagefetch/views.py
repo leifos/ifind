@@ -7,7 +7,7 @@ from ifind.models.game_models import Category, Page, HighScore ,CurrentGame
 from ifind.models.game_avatar import GameAvatar
 from django.contrib.auth.models import User
 from ifind.search import EngineFactory
-#from rmiyc_mechanics import RMIYCMechanic
+from rmiyc_mechanics import RMIYCMechanic
 from ifind.common.utils import encode_string_to_url, decode_url_to_string
 from ifind.common.setuplogger import create_ifind_logger,get_ifind_logger
 from datetime import datetime
@@ -117,7 +117,8 @@ def search(request):
             if request.method == 'GET':
                 query = request.GET['query'].strip()
                 #Augement query
-                query += ' site:gla.ac.uk '
+                #this limits querying to www.gla.ac.uk
+                #query += ' site:gla.ac.uk '
             if query:
                 result_list = gm.get_search_results(query,top=10)
 
