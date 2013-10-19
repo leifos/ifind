@@ -69,7 +69,9 @@ class PageRetrievabilityCalculator:
         print "Of those %d were handled by the cache" % (self.engine.num_requests_cached)
         print "The page scored: %f" % (self.ret_score)
         print "retrieved: %d query count: %d" % (self.page_retrieved, self.query_count)
-        f = float(self.page_retrieved) / float(self.query_count)
+        f = 0
+        if self.query_count >0:
+            f = float(self.page_retrieved) / float(self.query_count)
         print "Percentage of queries that returned the page %f " % (f)
 
     def stats(self):

@@ -41,33 +41,40 @@ class QueryGeneration(object):
         :param text: the text from which the queries are to be constructed
         :return: list of queries
         """
-        query_list = self.clean_text(text)
-        return query_list
+        if text:
+            query_list = self.clean_text(text)
+            return query_list
+        else:
+            return []
 
     def clean_text(self, text):
         """ normalizes the text
         :param text: a string of text, to be cleaned.
         :return: a list of terms (i.e. tokenized)
         """
-        text = text.lower()
-        text = text.split()
-        cleaned = []
-        cleaner_pipeline = TermPipeline()
-        cleaner_pipeline = self.construct_pipeline(cleaner_pipeline)
+        if text:
+            text = text.lower()
+            text = text.split()
+            cleaned = []
+            cleaner_pipeline = TermPipeline()
+            cleaner_pipeline = self.construct_pipeline(cleaner_pipeline)
 
-        for term in text:
-            clean_result = cleaner_pipeline.process(term)
-            if clean_result:
-                cleaned.append(clean_result)
+            for term in text:
+                clean_result = cleaner_pipeline.process(term)
+                if clean_result:
+                    cleaned.append(clean_result)
 
-        l = len(cleaned)
-        if l > self.max_size:
-            return cleaned[0:self.max_size]
+            l = len(cleaned)
+            if l > self.max_size:
+                return cleaned[0:self.max_size]
+            else:
+                return cleaned
         else:
-            return cleaned
+            return ''
 
     #todo do we want the user to determine what processors they want?
     def construct_pipeline(self, pipeline):
+        #create all processors and add to pipeline
         ltp = LengthTermProcessor()
         ltp.set_min_length(self.min_len)
         stp = StopwordTermProcessor(stopwordfile=self.stop_filename)
@@ -128,30 +135,32 @@ class BiTermQueryGeneration(QueryGeneration):
         :param text: the text from which the queries are to be constructed
         :return: list of queries
         """
+        if text:
+            term_list = self.clean_text(text)
+            #query count holds the queries with their text as the key, count as value
+            self.query_count = {}
+            #take first term and pair with the rest of the terms in the text
+            #then move to second and repeat
+            prev_term = term_list[0]
 
-        term_list = self.clean_text(text)
-        #query count holds the queries with their text as the key, count as value
-        self.query_count = {}
-        #take first term and pair with the rest of the terms in the text
-        #then move to second and repeat
-        prev_term = term_list[0]
+            term_list= term_list[1:len(term_list)]
 
-        term_list= term_list[1:len(term_list)]
+            for term in term_list:
+                query = prev_term + ' ' + term
+                if query in self.query_count:
+                    self.query_count[query] = self.query_count[query] + 1
+                else:
+                    self.query_count[query] = 1
 
-        for term in term_list:
-            query = prev_term + ' ' + term
-            if query in self.query_count:
-                self.query_count[query] = self.query_count[query] + 1
-            else:
-                self.query_count[query] = 1
+                prev_term = term
 
-            prev_term = term
+            query_list = []
+            for key in self.query_count:
+                query_list.append(key)
 
-        query_list = []
-        for key in self.query_count:
-            query_list.append(key)
-
-        return query_list
+            return query_list
+        else:
+            return []
 
 
 class TriTermQueryGeneration(QueryGeneration):

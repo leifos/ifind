@@ -5,6 +5,7 @@ To deal with cleaning the terms, this file contains a TermPipeline class
  runs a term provided through each of the processors in the list to see
  if a cleaned term is returned at the end
 """
+import re
 
 class TermPipeline():
     """
@@ -18,31 +19,12 @@ class TermPipeline():
         """
         #lower case
         self.pipeline = []
-        #self.term = term
-        #self.min_length = minlength
-        #self.stoplist = []
-        #if stopfile:
-        #    self.read_stopwordfile(stopfile)
-        #create the term processors and add to the processor list
-        #self.set_processors()
 
     def add_processor(self, termprocessor):
         """ Adds a term processor to the pipeline
         :param termprocessor: ifind.common.TermProcessor
         :return: None
         """
-        #length_proc =LengthTermProcessor(self.term)
-        #length_proc.set_min_length(self.min_length)
-        #punct_proc = PunctuationTermProcessor(self.term)
-        #stop_proc= StopwordTermProcessor(self.term)
-        #stop_proc.set_stoplist(self.stoplist)
-        #alpha_proc = AlphaTermProcessor(self.term)
-
-        #self.pipeline.append(length_proc)
-        #self.pipeline.append(punct_proc)#punct processor needs to be before alpha proc otherwise returns None
-        #self.pipeline.append(stop_proc)
-        #self.pipeline.append(alpha_proc)
-
         self.pipeline.append(termprocessor)
 
     def process(self, term):
@@ -143,9 +125,7 @@ class StopwordTermProcessor(TermProcessor):
         if stopwordfile:
             self.read_stopwordfile(stopwordfile)
 
-
     def process(self, term):
-
         if term in self.stoplist:
             return None
         else:
@@ -164,10 +144,14 @@ class StopwordTermProcessor(TermProcessor):
 class AlphaTermProcessor(TermProcessor):
 
     def process(self, term):
-        if term.isalpha():
-            return term
-        else:
-            return None
+        clean =''
+        for c in term:
+            if c.isalpha() or c==' ':
+                clean +=c
+
+        clean = re.sub(r'\s+', ' ', clean)
+        #returns unicode, strip trailing and leading whitespace
+        return clean.strip()
 
 class SpecialCharProcessor(TermProcessor):
 
