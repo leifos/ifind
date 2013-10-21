@@ -8,12 +8,17 @@ Version: 0.1
 Requires:
 ---------
 """
+from django.core.management import setup_environ
+from pagefetch_project import settings
+setup_environ(settings)
+
 from ifind.models import game_model_functions
 from django.contrib.auth.models import User
 from ifind.models.game_models import UserProfile, Achievement, Level
 #from ifind.models import game_models
 import argparse
 import os
+
 
 #fetch data for population from file
 def get_trending_queries(filename):
