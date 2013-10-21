@@ -41,15 +41,21 @@ def select_ranks(num_of_ranks, step):
 def fetch_results(queries_list):
     """Builds a list of tuples (category,url,rank) and returns it """
     myengine = EngineFactory('bing',api_key=API_KEY)
+    result_list =[]
     for term in queries_list:
         query = Query(term[1], top=30)
         response = myengine.search(query)
         #TODO implement select_ranks properly maybe (num_to_select,step)
         rank_list = select_ranks(6,10) #TODO make this arguments
-        result_list =[]
         for rank in rank_list:
             #term[0] is trend categoty, term[1] is search term
-            result_list.append((term[0], response.results[rank].url, rank))
+            try:
+                result_list.append((term[0], response.results[rank].url, rank))
+                #print "appended" + term[0] + response.results[rank].url
+            except IndexError:
+                print "index error.."
+
+    print result_list[:]
     return result_list
 
 
@@ -69,10 +75,10 @@ def main():
     else:
         trends_list = get_trending_queries(args.source)
         results_list =  fetch_results(trends_list)
-        destination_file = open(args.destination, 'w')
+        destination_file = open(args.destination, 'a')
         for result in results_list:
             #TODO(mtbvc): use string.format()
-            destination_file.write(result[0] + "," + result[1] + "," + result[2])
+            destination_file.write(str(result[0]) + "," + str(result[1]) + "," + str(result[2]) + "\n")
 
 
 if __name__ == '__main__':
