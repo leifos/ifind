@@ -189,8 +189,10 @@ class ExperimentRunner(object):
         :return: the queries in a list
         """
         backgroundfile = 'background.txt'
-        if self.backgroundfile:
-            backgroundfile = self.backgroundfile
+        filename = raw_input("enter the filename of the background file, background.txt is default")
+        if filename:
+            backgroundfile = filename
+        print "background file is ", backgroundfile
 
         doc_extractor = SingleQueryGeneration(minlen=3,stopwordfile=self.stopwordfile)
         query_generator = BiTermQueryGeneration(minlen=3, stopwordfile=self.stopwordfile, maxsize=self.mq)
