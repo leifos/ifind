@@ -56,6 +56,8 @@ class PositionContentExtractor(object):
                 return subtext.join(words[0:num_words])
             else:
                 return self.text
+        else:
+            return self.text
 
     def _remove_div_content(self):
         """

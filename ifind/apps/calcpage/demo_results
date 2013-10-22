@@ -1,0 +1,586 @@
+RUN 1
+Queries generated:  49
+2	0	1	0	will open
+50	21	2	0	driving licences
+48	1	3	0	enough right
+14	0	4	0	looking tool
+50	0	5	0	now anything
+50	0	6	0	home driving
+5	0	7	0	simpler find
+23	1	8	0	old enough
+0	0	9	0	thanks take
+0	0	10	0	govuk uses
+4	0	11	0	wrong page
+50	13	12	0	licence drive
+0	0	13	0	improve govuk
+50	0	14	0	start now
+17	0	15	0	anything wrong
+50	43	16	0	find tell
+3	0	17	0	minute survey
+19	3	18	0	tool tells
+50	3	19	0	transport driving
+50	0	20	0	another website
+11	0	21	0	answer vehicles
+50	3	22	0	driving transport
+50	0	23	0	drive looking
+45	1	24	0	kind driving
+50	0	25	0	uses make
+4	0	26	0	short survey
+50	23	27	0	driving licence
+46	2	28	0	kinds vehicle
+40	2	29	0	different kinds
+0	0	30	0	search govuk
+50	2	31	0	vehicle start
+34	0	32	0	licences quick
+50	1	33	0	tells old
+2	0	34	0	survey another
+50	0	35	0	tell think
+50	0	36	0	page help
+0	0	37	0	quick answer
+0	0	38	0	govuk thanks
+0	0	39	0	survey will
+50	0	40	0	website home
+50	0	41	0	help improve
+38	2	42	0	right kind
+41	0	43	0	open short
+50	0	44	0	search search
+5	0	45	0	make simpler
+0	0	46	0	think govuk
+41	0	47	0	take minute
+50	1	48	0	drive different
+50	1	49	0	vehicles drive
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 14.000000
+retrieved: 17 query count: 49
+Percentage of queries that returned the page 0.346939
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 9.076923
+retrieved: 17 query count: 49
+Percentage of queries that returned the page 0.346939
+Done!
+
+RUN 2
+Queries generated:  49
+50	0	1	0	will open
+50	0	2	0	driving licences
+50	0	3	0	enough right
+50	0	4	0	looking tool
+50	0	5	0	now anything
+50	0	6	0	home driving
+50	0	7	0	simpler find
+50	0	8	0	old enough
+50	0	9	0	thanks take
+50	0	10	0	govuk uses
+50	0	11	0	wrong page
+50	18	12	0	licence drive
+50	0	13	0	improve govuk
+50	0	14	0	start now
+50	0	15	0	anything wrong
+50	0	16	0	find tell
+50	0	17	0	minute survey
+50	0	18	0	tool tells
+50	0	19	0	transport driving
+50	0	20	0	another website
+50	0	21	0	answer vehicles
+50	0	22	0	driving transport
+50	0	23	0	drive looking
+50	24	24	0	kind driving
+50	0	25	0	uses make
+50	0	26	0	short survey
+50	0	27	0	driving licence
+50	0	28	0	kinds vehicle
+50	0	29	0	different kinds
+50	0	30	0	search govuk
+50	0	31	0	vehicle start
+50	0	32	0	licences quick
+50	0	33	0	tells old
+50	0	34	0	survey another
+50	0	35	0	tell think
+50	0	36	0	page help
+50	0	37	0	quick answer
+50	0	38	0	govuk thanks
+50	0	39	0	survey will
+50	0	40	0	website home
+50	0	41	0	help improve
+50	0	42	0	right kind
+50	0	43	0	open short
+50	0	44	0	search search
+50	0	45	0	make simpler
+50	0	46	0	think govuk
+50	0	47	0	take minute
+50	0	48	0	drive different
+50	28	49	0	vehicles drive
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 1.000000
+retrieved: 3 query count: 49
+Percentage of queries that returned the page 0.061224
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 0.055556
+retrieved: 3 query count: 49
+Percentage of queries that returned the page 0.061224
+Done!
+
+RUN 3
+Queries generated:  49
+50	0	1	0	govuk thanks
+50	0	2	0	bank building
+50	0	3	0	paid using
+50	0	4	0	home benefits
+50	0	5	0	benefits paid
+50	0	6	0	search govuk
+50	0	7	0	simpler find
+50	0	8	0	survey will
+50	0	9	0	straight bank
+50	0	10	0	thanks take
+50	0	11	0	account one
+50	0	12	0	credit union
+50	0	13	0	find tell
+50	0	14	0	society credit
+50	0	15	0	account often
+50	0	16	0	benefits benefits
+50	0	17	0	answer benefits
+50	0	18	0	another website
+50	0	19	0	govuk uses
+50	0	20	0	office card
+50	0	21	0	uses make
+50	0	22	0	tell think
+50	0	23	0	short survey
+50	0	24	0	will open
+50	0	25	0	post office
+40	0	26	0	paid straight
+50	0	27	0	looking benefits
+50	0	28	0	entitlement quick
+50	0	29	0	usually paid
+50	0	30	0	survey another
+50	0	31	0	one get
+50	0	32	0	often paid
+50	0	33	0	card account
+50	0	34	0	using post
+50	0	35	0	quick answer
+50	0	36	0	minute survey
+50	0	37	0	benefits entitlement
+50	0	38	0	paid benefit
+50	0	39	0	website home
+50	0	40	0	paid looking
+50	0	41	0	open short
+50	0	42	0	search search
+50	0	43	0	get paid
+50	0	44	0	union account
+50	0	45	0	think govuk
+50	0	46	0	make simpler
+50	0	47	0	benefits usually
+50	0	48	0	take minute
+50	0	49	0	building society
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/how-to-have-your-benefits-paid
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 0.000000
+retrieved: 0 query count: 49
+Percentage of queries that returned the page 0.000000
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/how-to-have-your-benefits-paid
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 0.000000
+retrieved: 0 query count: 49
+Percentage of queries that returned the page 0.000000
+Done!
+
+RUN4
+Queries generated:  49
+0	0	1	0	govuk thanks
+50	2	2	0	bank building
+50	1	3	0	paid using
+50	0	4	0	home benefits
+50	1	5	0	benefits paid
+0	0	6	0	search govuk
+5	0	7	0	simpler find
+0	0	8	0	survey will
+16	1	9	0	straight bank
+0	0	10	0	thanks take
+50	33	11	0	account one
+38	2	12	0	credit union
+50	0	13	0	find tell
+48	4	14	0	society credit
+42	1	15	0	account often
+50	50	16	0	benefits benefits
+12	0	17	0	answer benefits
+50	0	18	0	another website
+0	0	19	0	govuk uses
+50	1	20	0	office card
+50	0	21	0	uses make
+50	0	22	0	tell think
+4	0	23	0	short survey
+2	0	24	0	will open
+50	2	25	0	post office
+20	1	26	0	paid straight
+50	0	27	0	looking benefits
+11	0	28	0	entitlement quick
+50	1	29	0	usually paid
+2	0	30	0	survey another
+50	0	31	0	one get
+50	1	32	0	often paid
+50	1	33	0	card account
+50	13	34	0	using post
+0	0	35	0	quick answer
+3	0	36	0	minute survey
+50	0	37	0	benefits entitlement
+50	1	38	0	paid benefit
+50	0	39	0	website home
+50	0	40	0	paid looking
+41	0	41	0	open short
+50	0	42	0	search search
+50	7	43	0	get paid
+22	1	44	0	union account
+0	0	45	0	think govuk
+5	0	46	0	make simpler
+50	6	47	0	benefits usually
+41	0	48	0	take minute
+50	5	49	0	building society
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/how-to-have-your-benefits-paid
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 19.000000
+retrieved: 21 query count: 49
+Percentage of queries that returned the page 0.428571
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/how-to-have-your-benefits-paid
+A total of 49 queries were issued
+Of those 0 were handled by the cache
+The page scored: 13.336447
+retrieved: 21 query count: 49
+Percentage of queries that returned the page 0.428571
+Done!
+
+RUN 5
+Queries generated:  48
+50	0	1	0	include personal
+48	2	2	0	enough right
+14	0	3	0	looking tool
+38	0	4	0	licences adding
+50	0	5	0	now anything
+50	13	6	0	licence driving
+23	1	7	0	old enough
+4	0	8	0	wrong page
+50	0	9	0	wrong send
+50	13	10	0	licence drive
+0	0	11	0	improve govuk
+50	0	12	0	start now
+17	0	13	0	anything wrong
+19	3	14	0	tool tells
+50	0	15	0	drive looking
+11	0	16	0	answer vehicles
+38	2	17	0	right kind
+45	1	18	0	kind driving
+50	0	19	0	example national
+50	3	20	0	vehicle start
+4	0	21	0	numbers went
+50	0	22	0	financial example
+50	23	23	0	driving licence
+46	2	24	0	kinds vehicle
+50	1	25	0	vehicles drive
+24	0	26	0	updated october
+38	0	27	0	last updated
+50	0	28	0	october driving
+50	0	29	0	insurance credit
+11	0	30	0	adding higher
+50	0	31	0	send last
+50	1	32	0	tells old
+50	0	33	0	card numbers
+14	2	34	0	higher categories
+50	0	35	0	personal financial
+50	0	36	0	national insurance
+49	5	37	0	categories driving
+0	0	38	0	quick answer
+4	0	39	0	went wrong
+35	0	40	0	please include
+50	0	41	0	help improve
+50	21	42	0	driving licences
+50	0	43	0	credit card
+0	0	44	0	govuk please
+50	0	45	0	page help
+50	1	46	0	drive different
+40	2	47	0	different kinds
+35	5	48	0	driving minibus
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 48 queries were issued
+Of those 0 were handled by the cache
+The page scored: 16.000000
+retrieved: 18 query count: 48
+Percentage of queries that returned the page 0.375000
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 48 queries were issued
+Of those 0 were handled by the cache
+The page scored: 8.720513
+retrieved: 18 query count: 48
+Percentage of queries that returned the page 0.375000
+Done!
+
+RUN 6
+Queries generated:  48
+50	0	1	0	include personal
+50	0	2	0	enough right
+50	0	3	0	looking tool
+50	0	4	0	licences adding
+50	0	5	0	now anything
+50	0	6	0	licence driving
+50	0	7	0	old enough
+50	0	8	0	wrong page
+50	0	9	0	wrong send
+50	17	10	0	licence drive
+50	0	11	0	improve govuk
+50	0	12	0	start now
+50	0	13	0	anything wrong
+50	0	14	0	tool tells
+50	0	15	0	drive looking
+50	0	16	0	answer vehicles
+50	0	17	0	right kind
+50	24	18	0	kind driving
+50	0	19	0	example national
+50	0	20	0	vehicle start
+50	0	21	0	numbers went
+50	0	22	0	financial example
+50	0	23	0	driving licence
+50	0	24	0	kinds vehicle
+50	28	25	0	vehicles drive
+50	0	26	0	updated october
+50	0	27	0	last updated
+50	0	28	0	october driving
+50	0	29	0	insurance credit
+50	0	30	0	adding higher
+50	0	31	0	send last
+50	0	32	0	tells old
+50	0	33	0	card numbers
+50	0	34	0	higher categories
+50	0	35	0	personal financial
+50	0	36	0	national insurance
+50	1	37	0	categories driving
+50	0	38	0	quick answer
+50	0	39	0	went wrong
+50	0	40	0	please include
+50	0	41	0	help improve
+50	0	42	0	driving licences
+50	0	43	0	credit card
+50	0	44	0	govuk please
+50	0	45	0	page help
+50	0	46	0	drive different
+50	0	47	0	different kinds
+50	0	48	0	driving minibus
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 48 queries were issued
+Of those 0 were handled by the cache
+The page scored: 2.000000
+retrieved: 4 query count: 48
+Percentage of queries that returned the page 0.083333
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 48 queries were issued
+Of those 0 were handled by the cache
+The page scored: 1.058824
+retrieved: 4 query count: 48
+Percentage of queries that returned the page 0.083333
+Done!
+
+RUN 7
+
+Queries generated:  40
+Queries generated:  40
+50	0	1	0	services az site:gla.ac.uk
+50	0	2	0	student life site:gla.ac.uk
+50	0	3	0	academic units site:gla.ac.uk
+50	32	4	0	recreational sport site:gla.ac.uk
+50	0	5	0	health fitness site:gla.ac.uk
+50	1	6	0	membership sport site:gla.ac.uk
+50	0	7	0	units az site:gla.ac.uk
+50	0	8	0	search breadcrumbs site:gla.ac.uk
+50	0	9	0	az search site:gla.ac.uk
+50	0	10	0	university glasgow site:gla.ac.uk
+50	0	11	0	subjects az site:gla.ac.uk
+50	0	12	0	support contact site:gla.ac.uk
+50	36	13	0	talented athletes site:gla.ac.uk
+50	0	14	0	staff az site:gla.ac.uk
+50	0	15	0	contact university site:gla.ac.uk
+50	4	16	0	membership health site:gla.ac.uk
+50	0	17	0	navigation courses site:gla.ac.uk
+50	0	18	0	breadcrumbs home site:gla.ac.uk
+50	0	19	0	club sport site:gla.ac.uk
+50	0	20	0	glasgow services site:gla.ac.uk
+50	0	21	0	sport talented site:gla.ac.uk
+50	0	22	0	glasgow tools site:gla.ac.uk
+50	0	23	0	az academic site:gla.ac.uk
+48	0	24	0	az sport site:gla.ac.uk
+50	0	25	0	sport club site:gla.ac.uk
+50	0	26	0	tools subjects site:gla.ac.uk
+50	0	27	0	home services site:gla.ac.uk
+5	0	28	0	amp recreation site:gla.ac.uk
+50	0	29	0	alumni support site:gla.ac.uk
+50	0	30	0	research student site:gla.ac.uk
+50	28	31	0	fitness recreational site:gla.ac.uk
+50	49	32	0	community programmes site:gla.ac.uk
+50	1	33	0	recreation membership site:gla.ac.uk
+50	0	34	0	courses research site:gla.ac.uk
+50	8	35	0	athletes community site:gla.ac.uk
+50	0	36	0	life alumni site:gla.ac.uk
+50	0	37	0	search search site:gla.ac.uk
+50	0	38	0	az staff site:gla.ac.uk
+50	0	39	0	sport amp site:gla.ac.uk
+50	2	40	0	membership navigation site:gla.ac.uk
+
+Retrievability Scores for cumulative pce=20
+For url: http://www.gla.ac.uk/services/sport/membership
+A total of 40 queries were issued
+Of those 0 were handled by the cache
+The page scored: 5.000000
+retrieved: 9 query count: 40
+Percentage of queries that returned the page 0.225000
+
+Retrievability Scores for gravity beta=1.0
+For url: http://www.gla.ac.uk/services/sport/membership
+A total of 40 queries were issued
+Of those 0 were handled by the cache
+The page scored: 2.875000
+retrieved: 9 query count: 40
+Percentage of queries that returned the page 0.225000
+Done!
+
+RUN 8
+Queries generated:  93
+50	0	1	0	services driving
+50	13	2	0	licence driving
+10	0	3	0	top page
+0	0	4	0	improve govuk
+50	0	5	0	licence age
+3	0	6	0	minute survey
+12	0	7	0	transport benefits
+38	2	8	0	right kind
+4	0	9	0	short survey
+40	2	10	0	different kinds
+38	0	11	0	last updated
+5	0	12	0	simpler find
+40	0	13	0	business link
+50	0	14	0	benefits businesses
+49	5	15	0	categories driving
+4	0	16	0	went wrong
+0	0	17	0	survey will
+35	0	18	0	please include
+50	21	19	0	driving licences
+41	0	20	0	take minute
+48	2	21	0	enough right
+50	0	22	0	age requirements
+50	0	23	0	now anything
+22	0	24	0	page replaces
+0	0	25	0	thanks take
+50	0	26	0	start now
+50	0	27	0	another website
+0	0	28	0	govuk uses
+45	1	29	0	kind driving
+4	0	30	0	numbers went
+3	0	31	0	driving motorhome
+50	23	32	0	driving licence
+50	9	33	0	licence categories
+46	2	34	0	kinds vehicle
+3	0	35	0	motorhome driving
+50	3	36	0	vehicle start
+50	0	37	0	october driving
+50	0	38	0	insurance credit
+50	1	39	0	tells old
+50	0	40	0	card numbers
+2	0	41	0	survey another
+24	0	42	0	updated october
+50	0	43	0	personal financial
+0	0	44	0	govuk towing
+0	0	45	0	quick answer
+0	0	46	0	elsewhere govuk
+50	7	47	0	towing licence
+2	0	48	0	will open
+50	0	49	0	credit card
+35	5	50	0	driving minibus
+38	0	51	0	licences adding
+18	0	52	0	return top
+1	0	53	0	directgov business
+50	0	54	0	wrong send
+50	42	55	0	find tell
+50	0	56	0	drive looking
+11	0	57	0	answer vehicles
+50	0	58	0	requirements return
+50	0	59	0	tell think
+50	0	60	0	financial example
+50	13	61	0	licence drive
+50	0	62	0	home driving
+50	0	63	0	send last
+1	0	64	0	replaces directgov
+35	8	65	0	minibus driving
+14	2	66	0	higher categories
+50	1	67	0	vehicles drive
+50	0	68	0	link services
+50	0	69	0	help improve
+50	0	70	0	search search
+5	0	71	0	make simpler
+50	0	72	0	include personal
+0	0	73	0	search govuk
+23	1	74	0	old enough
+4	0	75	0	wrong page
+17	0	76	0	anything wrong
+19	3	77	0	tool tells
+50	3	78	0	transport driving
+50	0	79	0	example national
+50	0	80	0	uses make
+22	0	81	0	licences elsewhere
+0	0	82	0	think govuk
+11	0	83	0	adding higher
+34	0	84	0	licences quick
+50	0	85		0	national insurance
+50	0	86	0	page help
+0	0	87	0	govuk thanks
+50	0	88	0	website home
+41	0	89	0	open short
+0	0	90	0	govuk please
+50	3	91	0	driving transport
+50	1	92	0	drive different
+14	0	93	0	looking tool
+
+Retrievability Scores for cumulative pce=20
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 93 queries were issued
+Of those 0 were handled by the cache
+The page scored: 21.000000
+retrieved: 24 query count: 93
+Percentage of queries that returned the page 0.258065
+
+Retrievability Scores for gravity beta=1.0
+For url: https://www.gov.uk/vehicles-you-can-drive
+A total of 93 queries were issued
+Of those 0 were handled by the cache
+The page scored: 9.766148
+retrieved: 24 query count: 93
+Percentage of queries that returned the page 0.258065
+Done!
