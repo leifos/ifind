@@ -32,6 +32,8 @@ class ExperimentRunner(object):
                             help="Name of search engine: " + ENGINE_LIST.__str__())
         parser.add_argument("-k","--key",type=str,
                             help="API Key for search engine (if applicable)")
+        parser.add_argument("-d","--domain",type=str,
+                            help="domain for search engine (if applicable, i.e. engine is sitebing, default is gla.ac.uk)")
         parser.add_argument("-c","--cutoff", type=int,
                             help ="The cutoff value for queries")
         parser.add_argument("-m","--maxqueries", type=int,
@@ -67,13 +69,16 @@ class ExperimentRunner(object):
         else:
             self.engine = EngineFactory(engine=args.engine, cache=cache, throttle=0.1)
 
+        if args.domain:
+            self.engine.site = args.domain
+
         stopwordfile = None
         if args.stopwordfile:
             self.stopwordfile = args.stopwordfile
         else:
             self.stopwordfile = None
 
-        self.mq = 50
+        self.mq = 250
         if args.maxqueries:
             self.mq = args.maxqueries
 
@@ -96,17 +101,35 @@ class ExperimentRunner(object):
             self.page_text = self.page_html
 
         query_list = []
-        answer = raw_input("Do you want to use a position based extractor? Enter y or n \n")
+        answer = raw_input("Do you want to use only a position based extractor? Enter y or n \n")
         if answer == 'y':
-            query_list = self.get_position_queries()
-
-        answer = raw_input("Do you want to use a rank based extractor? Enter y or n \n")
-        if answer == 'y':
-            query_list = self.get_ranked_queries()
+            text = self.get_position_text()
+            #todo at this stage this could be single, bi or tri terms
+            query_gen = None
+            if self.stopwordfile:
+                query_gen = BiTermQueryGeneration(minlen=3, stopwordfile=self.stopwordfile)
+            else:
+                query_gen = BiTermQueryGeneration(minlen=3)
+            query_list = query_gen.extract_queries_from_text(text)
+        else:
+            answer = raw_input("Do you want to use only a rank based extractor? Enter y or n \n")
+            if answer == 'y':
+                query_list = self.get_ranked_queries()
+            else:
+                answer = raw_input("Do you want to use a rank based extractor combined with a position extractor? Enter y or n \n")
+                if answer == 'y':
+                    text = self.get_position_text()
+                    query_list = self.get_ranked_queries(text)
+                else:
+                    print "sorry, that's all the options, system will exit"
+                    sys.exit(0)
 
         print "Queries generated: ", len(query_list)
-
-        prc = PageRetrievabilityCalculator(engine=self.engine)
+        prc = None
+        if args.cutoff:
+            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.mq)
+        else:
+            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.mq)
         prc.score_page(self.url, query_list)
 
         print "\nRetrievability Scores for cumulative pce=20"
@@ -130,7 +153,7 @@ class ExperimentRunner(object):
         pce.process_html_page(self.page_html)
         return pce.get_subtext(percentage=percentage)
 
-    def get_position_queries(self):
+    def get_position_text(self):
         """
         This method asks the user for the div ids to include, gets the content of said divs, and then
         asks the user for a percentage of said div to use
@@ -180,23 +203,17 @@ class ExperimentRunner(object):
                         break
             else:
                 text = pce.get_subtext()
+        return text
 
 
-        #todo at this stage this could be single, bi or tri terms
-        query_gen = None
-        if self.stopwordfile:
-            query_gen = BiTermQueryGeneration(minlen=3, stopwordfile=self.stopwordfile, maxsize=self.mq)
-        else:
-            query_gen = BiTermQueryGeneration(minlen=3, maxsize=self.mq)
-        query_list = query_gen.extract_queries_from_text(text)
-        return query_list
 
-
-    def get_ranked_queries(self):
+    def get_ranked_queries(self, text=''):
         """
         loads the background document model and generates the ranked queries
         :return: the queries in a list
         """
+        if not text:
+            text = self.page_html
         backgroundfile = 'background.txt'
         filename = raw_input("enter the filename of the background file, background.txt is default")
         if filename:
@@ -204,16 +221,18 @@ class ExperimentRunner(object):
         print "background file is ", backgroundfile
 
         doc_extractor = SingleQueryGeneration(minlen=3,stopwordfile=self.stopwordfile)
-        query_generator = BiTermQueryGeneration(minlen=3, stopwordfile=self.stopwordfile, maxsize=self.mq)
+        query_generator = BiTermQueryGeneration(minlen=3, stopwordfile=self.stopwordfile)
         print "Loading background distribution"
         colLM = LanguageModel(file=backgroundfile)
         print "Background loaded, number of terms: ", colLM.get_num_terms()
-        doc_extractor.extract_queries_from_html(self.page_html)
+        #doc_extractor.extract_queries_from_html(self.page_html)
+        doc_extractor.extract_queries_from_html(text)
         doc_term_counts = doc_extractor.query_count
         print "Number of terms in document: %d" % (len(doc_term_counts))
         docLM = LanguageModel(term_dict=doc_term_counts)
         slm = BayesLanguageModel(docLM=docLM, colLM=colLM, beta=500)
-        query_list = query_generator.extract_queries_from_html(self.page_html)
+        #query_list = query_generator.extract_queries_from_html(self.page_html)
+        query_list = query_generator.extract_queries_from_html(text)
 
         print "Queries generated: ", len(query_list)
         qr = OddsRatioQueryRanker(smoothed_language_model=slm)

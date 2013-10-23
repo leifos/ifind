@@ -18,12 +18,12 @@ class PageRetrievabilityCalculator:
 
     """
 
-    def __init__(self, engine, c=50, beta=0.0):
+    def __init__(self, engine, c=50, beta=0.0, max_queries=250):
         """
         :param engine: expects a ifind.search.engine
         :param cutoff: number of results to request from the search engine per query
-        :param c: cutoff value when computing retrievability scores and when retrieving documents from search engine
         :param beta: the discount for computing gravity based retrievability scores
+        :param max_queries: the max number of queries to be issued
         :return: an initialized PageRetrievabiliyCalculator
         """
         self.engine = engine
@@ -34,6 +34,7 @@ class PageRetrievabilityCalculator:
         self.ret_score = 0.0
         self.beta = beta
         self.c = c
+        self.max_queries = max_queries
 
 
     def score_page(self, url, query_list):
@@ -45,22 +46,24 @@ class PageRetrievabilityCalculator:
         :param query_list: a list of strings, each string is query
         :return: None
         """
-
-        # check whether url is valid
-
-        #if valid, set url
+        #set url
         self.url = url
-
         self.ret_score = 0
         self.page_retrieved = 0
 
         self._make_query_dict(query_list)
+        #print "result list length \t rank \t num requests to engine \t requests cached \t query terms \n"
+        count = 0
         for query_key in self.query_dict:
-            iquery = self.query_dict[query_key]
-            rank = self._process_query(iquery)
-            iquery.rank = rank
-            if rank > 0:
-                self.page_retrieved = self.page_retrieved + 1
+            if count <self.max_queries:
+                iquery = self.query_dict[query_key]
+                rank = self._process_query(iquery)
+                iquery.rank = rank
+                if rank > 0:
+                    self.page_retrieved = self.page_retrieved + 1
+                count += 1
+            else:
+                break
 
 
     def report(self):
@@ -73,6 +76,11 @@ class PageRetrievabilityCalculator:
         if self.query_count >0:
             f = float(self.page_retrieved) / float(self.query_count)
         print "Percentage of queries that returned the page %f " % (f)
+        print "top 10 queries to retrieve page: \n"
+        top_ten=self.top_queries(10)
+        for query in top_ten:
+            print query, " \n"
+
 
     def stats(self):
         return {'url':self.url, 'query_count': self.query_count, 'retrieved': self.page_retrieved, 'retrievability':self.ret_score }
@@ -120,7 +128,7 @@ class PageRetrievabilityCalculator:
     def _make_query_dict(self, query_list):
         """
         generates a list of queries from plain text
-        :return returns a list of queries as strings
+        :return returns a dictionary of query objects with the key being query terms, value as query object
 
         """
         self.query_dict = {}
@@ -130,8 +138,6 @@ class PageRetrievabilityCalculator:
             aQ.rank = 0
             aQ.ret_score = 0.0
             self.query_dict[q] = aQ
-
-
         self.query_count = len(self.query_dict)
 
     def _process_query(self, query):
@@ -158,7 +164,7 @@ class PageRetrievabilityCalculator:
                 rank = i
                 break
 
-        print "%d\t%d\t%d\t%d\t%s" % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
+        #print "%d  \t%d \t%d  \t%d  \t%s " % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
         return rank
 

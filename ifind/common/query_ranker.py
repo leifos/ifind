@@ -7,9 +7,8 @@ class QueryRanker(object):
 
     def __init__(self, smoothed_language_model):
         """
-        takes in name of file with term, occurrences pairs crawled from website
-        and uses this to calculate probabilities for each query which is sorted
-        in descending order and the top k queries returned
+        takes in a smoothed language model object which contains
+
         :param docLM: ifind.common.SmoothedLanguagemodel
 
         :param k: integer indicating the number of queries to be returned
@@ -72,7 +71,7 @@ class OddsRatioQueryRanker(QueryRanker):
     def _calculate_term_score(self, term):
 
         ptd = self.lm.get_term_prob(term)
-        pt =  self.lm.colLM.get_term_prob(term)
+        pt = self.lm.colLM.get_term_prob(term)
         if pt == 0.0:
             pt = 0.0000001
         return math.log( ptd/pt, 2)
