@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+{% block exp_block %}
+
+
+<p> Your performance with respect to the original TREC assessors of these topic is as follows:</p>
+
+<p>Search task 1: <b>{{ t1_title}}</b> </p>
+<p>
+<ul>
+<li>Items marked that were judged relevant by TREC assessors: {{t1_rels}}</li>
+<li>Items marked that were not relevant: {{t1_nons}}</li>
+<li>Total score: {{t1_score}}</li>
+</ul>
+</p>
+
+<p>Search task 2: <b>{{ t2_title}}</b> </p>
+<p>
+<ul>
+<li>Items marked that were judged relevant by TREC assessors: {{t2_rels}}</li>
+<li>Items marked that were not relevant: {{t2_nons}}</li>
+<li>Total score: {{t2_score}}</li>
+</ul>
+</p>
+
+<p>Search task 3: <b>{{ t3_title}}</b> </p>
+<p>
+<ul>
+<li>Items marked that were judged relevant by TREC assessors: {{t3_rels}}</li>
+<li>Items marked that were not relevant: {{t3_nons}}</li>
+<li>Total score: {{t3_score}}</li>
+</ul>
+</p>
+ 
+<div class="surveySubmitButton">
+
+  <a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
+</div>
+
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}}
+{% endblock %}
