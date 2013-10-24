@@ -84,7 +84,6 @@ local_settings.py
 *.ps
 *.snm
 *.synctex.gz
-*.toc
 *.vrb
 *.xdy
 *.tdo
