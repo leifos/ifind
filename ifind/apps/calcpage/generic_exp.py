@@ -53,13 +53,6 @@ class ExperimentRunner(object):
         else:
             self.url = args.url
 
-        # if not args.experiment:
-        #     print "check your experiment number"
-        #     parser.print_help()
-        #     return 2
-        # else:
-        #     self.experiment_num = args.experiment
-
         cache = None
         if args.cache:
             self.cache = 'engine'
@@ -88,17 +81,17 @@ class ExperimentRunner(object):
         print "Page loaded"
         self.page_text = ''
 
-        answer = raw_input("Do you want to use a percentage of this page? Enter y or n \n")
-        if answer == 'y':
-            percent = raw_input("What percentage do you want to use? \n")
-            if self.is_integer(percent):
-                self.page_text = self.reduce_page(percentage=percent)
-            else:
-                print "input error, will exit"
-                sys.exit(2)
-                #todo update so asks again, not exit
-        else:
-            self.page_text = self.page_html
+        # answer = raw_input("Do you want to use a percentage of this page? Enter y or n \n")
+        # if answer == 'y':
+        #     percent = raw_input("What percentage do you want to use? \n")
+        #     if self.is_integer(percent):
+        #         self.page_text = self.reduce_page(percentage=percent)
+        #     else:
+        #         print "input error, will exit"
+        #         sys.exit(2)
+        #         #todo update so asks again, not exit
+        # else:
+        self.page_text = self.page_html
 
         query_list = []
         answer = raw_input("Do you want to use only a position based extractor? Enter y or n \n")
@@ -243,130 +236,6 @@ class ExperimentRunner(object):
             query_list.append(query[0])
         return query_list
 
-    # def run_experiment(self):
-    # #a function to extract queries from page
-    #
-    #     if self.experiment_num == 1:
-    #         self.exp_1()
-    #     if self.experiment_num == 2:
-    #         self.exp_2()
-    #
-    # def exp_1(self):
-    #     text = ''
-    #     divs = raw_input("enter IDs of the divs to exclude separated by spaces \n")
-    #     ids = []
-    #     if divs:
-    #         #split string into list of IDs
-    #         ids = divs.split()
-    #
-    #     pce = PositionContentExtractor(div_ids=ids)
-    #     pce.process_html_page(self.page_html)
-    #
-    #     limit_by_words = raw_input("enter y if you want to limit by a number of words \n")
-    #     yes_vals = ["y",'Y',"Yes",'yes']
-    #     if limit_by_words in yes_vals:
-    #         while True:
-    #             words = raw_input("enter the number of words to use"
-    #                               "in generating queries \n")
-    #             if self.is_integer(words):
-    #                 words = int(words)
-    #                 text = pce.get_subtext(num_words=words)
-    #                 break
-    #     else:
-    #         limit_by_percent = raw_input("enter y if you want to limit by a percentage of words \n")
-    #         if limit_by_percent in yes_vals:
-    #             while True:
-    #                 percentage = raw_input("the percentage of words to use in generating queries \n")
-    #                 if self.is_integer(percentage):
-    #                     percentage = int(percentage)
-    #                     text = pce.get_subtext(percentage=percentage)
-    #                     break
-    #         else:
-    #             text = pce.get_subtext()
-    #
-    #
-    #     #todo at this stage this could be single, bi or tri terms
-    #     query_gen = None
-    #     if self.stopwordfile:
-    #         query_gen = BiTermQueryGeneration(stopwordfile=self.stopwordfile)
-    #     else:
-    #         query_gen = BiTermQueryGeneration()
-    #
-    #     query_list = query_gen.extract_queries_from_text(text)
-    #     print "Queries generated: ", len(query_list)
-    #
-    #     prc = PageRetrievabilityCalculator(engine=self.engine)
-    #     prc.score_page(self.url, query_list)
-    #
-    #     print "\nRetrievability Scores for cumulative pce=20"
-    #     prc.calculate_page_retrievability(c=20)
-    #     prc.report()
-    #     print "\nRetrievability Scores for gravity beta=1.0"
-    #
-    #     prc.calculate_page_retrievability(c=20, beta=1.0)
-    #     prc.report()
-    #
-    # def exp_2(self):
-    #     """
-    #     performs experiment 2 where divs are not excluded, but included
-    #     :return: None
-    #     """
-    #     text = ''
-    #     #todo check words and percentage are ints before convert
-    #     divs = raw_input("enter IDs of the divs to INCLUDE separated by spaces \n")
-    #     ids = []
-    #     if divs:
-    #         #split string into list of IDs
-    #         ids = divs.split()
-    #
-    #     #set the extractor with no divs to ignore and process the page
-    #     pce = PositionContentExtractor()
-    #     pce.process_html_page(self.page_html)
-    #     #now set the text of the pce to be the text from the divs with given ids
-    #     pce.set_all_content(ids,"div")
-    #
-    #     limit_by_words = raw_input("enter y if you want to limit by a number of words \n")
-    #     yes_vals = ["y",'Y',"Yes",'yes']
-    #     if limit_by_words in yes_vals:
-    #         while True:
-    #             words = raw_input("enter the number of words to use"
-    #                               "in generating queries \n")
-    #             if self.is_integer(words):
-    #                 words = int(words)
-    #                 text = pce.get_subtext(num_words=words)
-    #                 break
-    #     else:
-    #         limit_by_percent = raw_input("enter y if you want to limit by a percentage of words \n")
-    #         if limit_by_percent in yes_vals:
-    #             while True:
-    #                 percentage = raw_input("the percentage of words to use in generating queries \n")
-    #                 if self.is_integer(percentage):
-    #                     percentage = int(percentage)
-    #                     text = pce.get_subtext(percentage=percentage)
-    #                     break
-    #         else:
-    #             text = pce.get_subtext()
-    #
-    #
-    #     #todo at this stage this could be single, bi or tri terms
-    #     query_gen = None
-    #     if self.stopwordfile:
-    #         query_gen = BiTermQueryGeneration(stopwordfile=self.stopwordfile)
-    #     else:
-    #         query_gen = BiTermQueryGeneration()
-    #     query_list = query_gen.extract_queries_from_text(text)
-    #     print "Queries generated: ", len(query_list)
-    #
-    #     prc = PageRetrievabilityCalculator(engine=self.engine)
-    #     prc.score_page(self.url, query_list)
-    #
-    #     print "\nRetrievability Scores for cumulative pce=20"
-    #     prc.calculate_page_retrievability(c=20)
-    #     prc.report()
-    #     print "\nRetrievability Scores for gravity beta=1.0"
-    #
-    #     prc.calculate_page_retrievability(c=20, beta=1.0)
-    #     prc.report()
 
     def is_integer(self, value):
         """
