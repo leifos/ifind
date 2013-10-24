@@ -39,3 +39,24 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)
 event_logger.addHandler(event_logger_handler)
 
+
+
+
+class ExperimentSetup(object):
+
+    def __init__(self, timeout = 660, topics=['347','344','435'], rpp=10, engine=1, interface=1):
+        self.timeout = timeout
+        self.topics = topics
+        self.rpp = rpp
+        self.engine = engine
+
+exp0 = ExperimentSetup(interface=0)
+exp1 = ExperimentSetup(interface=0)
+exp2 = ExperimentSetup()
+exp3 = ExperimentSetup(interface=2)
+exp4 = ExperimentSetup(rpp=3)
+exp5 = ExperimentSetup(rpp=6)
+
+
+experiment_setups = [exp0,exp1,exp2,exp3,exp4,exp5]
+

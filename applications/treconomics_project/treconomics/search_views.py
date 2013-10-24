@@ -14,24 +14,31 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
 
+from ifind.search.engines.whooshtrecnews import WhooshTrecNews
+from ifind.search import Query, Response
+
 # Whoosh
 from whoosh.index import open_dir
 
 # PuppyIR
-from puppy.model import Query, Response
+#from puppy.model import Query, Response
 
 # Service
-from service import service
+#from service import service
 
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
 from experiment_functions import time_search_experiment_out, getPerformance, ReadQrelsFile
 from experiment_configuration import my_whoosh_doc_index_dir, qrels_file
-
+from experiment_configuration import experiment_setups
 
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
+
+print "creating search engine"
+search_engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
+
 
 @login_required
 def show_document(request, whoosh_docid):
@@ -185,7 +192,37 @@ def constructStructuredQuery(request):
     return user_query
 
 
+def run_query(condition=0, result_dict={}, query_terms='', page=1):
 
+    page_len = experiment_setups[condition].rpp
+
+    query = Query(query_terms)
+    query.skip = page
+    query.top = page_len
+
+    result_dict['query'] = query_terms
+    response = search_engine.search(query)
+
+    num_pages = response.result_total
+
+    if num_pages > 0:
+        result_dict['trec_search'] = True
+        result_dict['trec_results'] = response.results
+
+        result_dict['curr_page'] = page
+        if page > 1:
+            result_dict['prev_page'] = page - 1
+            result_dict['prev_page_show'] = True
+            result_dict['prev_page_link'] = "?query=" + query_terms.replace(' ','+') + '&page=' + str(page - 1)
+        if page < num_pages:
+            result_dict['next_page'] = page + 1
+            result_dict['next_page_show'] = True
+            result_dict['next_page_link'] = "?query=" + query_terms.replace(' ','+') + '&page=' + str(page + 1)
+            result_dict['num_pages'] = num_pages
+    else:
+        result_dict['trec_no_results_found'] = True
+
+    return result_dict
 
 @login_required
 def search(request, taskid=0):
@@ -240,6 +277,7 @@ def search(request, taskid=0):
 
 
         if query_flag:
+            """
             query = Query(user_query)
             query.start_page = page
             query.page_len = 10
@@ -274,6 +312,9 @@ def search(request, taskid=0):
                     result_dict['num_pages'] = num_pages
                 else:
                     result_dict['trec_no_results_found'] = True
+            """
+            result_dict = run_query(condition,result_dict,user_query,page)
+
 
             # check the condition
             # check if query_suggest_search exists, if so include query_results
@@ -291,7 +332,7 @@ def search(request, taskid=0):
                     # addSuggestions to results dictionary
 
 
-            queryurl = '/treconomics/search/?query=' + user_query.replace(' ','+') + '&page=' + str(curr_page)
+            queryurl = '/treconomics/search/?query=' + user_query.replace(' ','+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
             log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page )

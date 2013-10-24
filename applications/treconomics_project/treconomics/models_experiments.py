@@ -47,7 +47,6 @@ class DemographicsSurveyForm(ModelForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        print "in clean"
         if not cleaned_data.get("age"):
             cleaned_data["age"] = 0
             print "clean age"
