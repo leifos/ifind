@@ -163,6 +163,7 @@ class PageRetrievabilityCalculator:
             if result_url == match_url:
                 rank = i
                 break
+        print "issuing query with terms: ", query.terms
 
         #print "%d  \t%d \t%d  \t%d  \t%s " % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
