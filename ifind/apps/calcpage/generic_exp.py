@@ -88,17 +88,17 @@ class ExperimentRunner(object):
         print "Page loaded"
         self.page_text = ''
 
-        answer = raw_input("Do you want to use a percentage of this page? Enter y or n \n")
-        if answer == 'y':
-            percent = raw_input("What percentage do you want to use? \n")
-            if self.is_integer(percent):
-                self.page_text = self.reduce_page(percentage=percent)
-            else:
-                print "input error, will exit"
-                sys.exit(2)
-                #todo update so asks again, not exit
-        else:
-            self.page_text = self.page_html
+        # answer = raw_input("Do you want to use a percentage of this page? Enter y or n \n")
+        # if answer == 'y':
+        #     percent = raw_input("What percentage do you want to use? \n")
+        #     if self.is_integer(percent):
+        #         self.page_text = self.reduce_page(percentage=percent)
+        #     else:
+        #         print "input error, will exit"
+        #         sys.exit(2)
+        #         #todo update so asks again, not exit
+        # else:
+        self.page_text = self.page_html
 
         query_list = []
         answer = raw_input("Do you want to use only a position based extractor? Enter y or n \n")
