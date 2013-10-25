@@ -22,6 +22,9 @@ urlpatterns = patterns('',
     (r'^postexperiment/$', views.view_post_experiment),
     (r'^endexperiment/$', views.view_end_experiment),
     (r'^performance/$', search_views.view_performance),
+
+    (r'^query_focus/$', search_views.view_log_query_focus),
+
     (r'^reset/$', views.view_reset_test_users),
 
     (r'^demographicssurvey/$', survey_views.view_demographics_survey),

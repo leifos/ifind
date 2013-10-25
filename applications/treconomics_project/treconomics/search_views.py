@@ -20,16 +20,10 @@ from ifind.search import Query, Response
 # Whoosh
 from whoosh.index import open_dir
 
-# PuppyIR
-#from puppy.model import Query, Response
-
-# Service
-#from service import service
-
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
-from experiment_functions import time_search_experiment_out, getPerformance, ReadQrelsFile
+from experiment_functions import time_search_experiment_out, getPerformance
 from experiment_configuration import my_whoosh_doc_index_dir, qrels_file
 from experiment_configuration import experiment_setups
 
@@ -176,13 +170,13 @@ def constructStructuredQuery(request):
 
     if query_or:
      if user_query:
-         user_query = user_query + " AND " + query_or
+         user_query = user_query + " AND ( " + query_or + " ) "
      else:
          user_query = query_or
 
     if user_not:
      if user_query:
-         user_query = user_query + " AND " + query_not
+         user_query = user_query + " AND ( " + query_not + " ) "
      else:
          user_query = query_not
 
@@ -275,46 +269,8 @@ def search(request, taskid=0):
             else:
                 page = 1
 
-
         if query_flag:
-            """
-            query = Query(user_query)
-            query.start_page = page
-            query.page_len = 10
-            if condition == 4:
-                query.page_len = 3
-            if condition == 5:
-                query.page_len = 6
-            #check if trec_search exists, if so, include web results
-            result_dict['query'] = user_query
-
-            if 'trec_search' in service.search_services:
-                print "trec_search service included"
-                trec_results = service.search_services['trec_search'].search(query)
-                if trec_results.get_totalresults > 0:
-                    result_dict['trec_search'] = True
-                    result_dict['trec_results'] = trec_results.entries
-                    #curr_page = page
-                    #num_pages = 100
-                    # THIS NEEDS TO BE FIXED - problem with calls to get_startindex() and get_totalresults()
-                    curr_page = trec_results.get_startindex()
-                    num_pages = trec_results.get_totalresults()
-                    #print "THIS IS: " + str(curr_page)
-                    result_dict['curr_page'] = curr_page
-                    if curr_page > 1:
-                        result_dict['prev_page'] = curr_page - 1
-                        result_dict['prev_page_show'] = True
-                        result_dict['prev_page_link'] = "?query=" + user_query.replace(' ','+') + '&page=' + str(curr_page - 1)
-                    if curr_page < num_pages:
-                        result_dict['next_page'] = curr_page + 1
-                        result_dict['next_page_show'] = True
-                        result_dict['next_page_link'] = "?query=" + user_query.replace(' ','+') + '&page=' + str(curr_page + 1)
-                    result_dict['num_pages'] = num_pages
-                else:
-                    result_dict['trec_no_results_found'] = True
-            """
             result_dict = run_query(condition,result_dict,user_query,page)
-
 
             # check the condition
             # check if query_suggest_search exists, if so include query_results
@@ -343,6 +299,12 @@ def search(request, taskid=0):
 
 
 @login_required
+def view_log_query_focus(request):
+    context = RequestContext(request)
+    log_event(event='QUERY_FOCUS', request=request )
+    return HttpResponse(1)
+
+@login_required
 def view_performance(request):
     context = RequestContext(request)
     ec = get_experiment_context(request)
@@ -350,36 +312,29 @@ def view_performance(request):
     condition = ec["condition"]
     rotation = ec["rotation"]
 
-    qrels = ReadQrelsFile( qrels_file )
+    def ratio(rels, nonrels):
+        """ expect two floats
+        """
+        dem = rels + nonrels
+        if dem > 0.0:
+            return round((rels * rels) / dem ,2)
+        else:
+            return 0.0
 
-    task1 = getPerformance(qrels, uname, 1, rotation)
+    task1 = getPerformance(uname, 1, rotation)
     t = TaskDescription.objects.get( topic_num = task1['topicnum'] )
     task1["title"] = t.title
+    task1["score"] = ratio(float(task1["rels"]), float(task1["nons"]))
 
-    dem = float(task1["rels"] + task1["nons"])
-    if dem > 0.0:
-        task1["score"] = round(float(task1["rels"] * task1["rels"] ) / dem ,2)
-    else:
-        task1["score"] = 0.0
-
-    task2 = getPerformance(qrels, uname, 2, rotation)
+    task2 = getPerformance(uname, 2, rotation)
     t = TaskDescription.objects.get( topic_num = task2['topicnum'] )
     task2["title"] = t.title
+    task2["score"] = ratio(float(task2["rels"]), float(task2["nons"]))
 
-    dem = float(task2["rels"] + task2["nons"])
-    if dem > 0.0:
-        task2["score"] = round(float(task2["rels"] * task2["rels"] ) / dem ,2)
-    else:
-        task2["score"] = 0.0
-
-    task3 = getPerformance(qrels, uname, 3, rotation)
+    task3 = getPerformance(uname, 3, rotation)
     t = TaskDescription.objects.get( topic_num = task3['topicnum'] )
     task3["title"] = t.title
-    dem = float(task3["rels"] + task3["nons"])
-    if dem > 0.0:
-        task3["score"] = round(float(task3["rels"] * task3["rels"] ) / dem,2)
-    else:
-        task3["score"] = 0
+    task3["score"] = ratio(float(task3["rels"]), float(task3["nons"]))
 
     print task1["rels"]
     print task2["rels"]

@@ -21,7 +21,9 @@ exp_work_flows = [
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/searchefficacysurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/pretaskquestions/3/','/treconomics/search/3/','/treconomics/posttaskquestions/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/searchefficacysurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/pretaskquestions/3/','/treconomics/search/3/','/treconomics/posttaskquestions/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
-['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/performance/','/treconomics/logout/']
+['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
+['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/performance/','/treconomics/logout/']
+
 ]
 
 # these are the rotations of topics
@@ -44,18 +46,30 @@ event_logger.addHandler(event_logger_handler)
 
 class ExperimentSetup(object):
 
-    def __init__(self, timeout = 660, topics=['347','344','435'], rpp=10, engine=1, interface=1):
+    def __init__(self, workflow, timeout = 660, topics=['347','344','435'], rpp=10, engine=1, interface=1, description=''):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
         self.engine = engine
+        self.description = description
+        self.workflow = workflow
 
-exp0 = ExperimentSetup(interface=0)
-exp1 = ExperimentSetup(interface=0)
-exp2 = ExperimentSetup()
-exp3 = ExperimentSetup(interface=2)
-exp4 = ExperimentSetup(rpp=3)
-exp5 = ExperimentSetup(rpp=6)
+    def get_rotation(self, i):
+        """ get the ith rotation from the topics
+        :param i:
+        :return:
+        """
+        pass
+
+    def __str__(self):
+        return self.description
+
+exp0 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='structured condition')
+exp1 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='structured condition')
+exp2 = ExperimentSetup(workflow= exp_work_flows[4], description='standard condition')
+exp3 = ExperimentSetup(workflow= exp_work_flows[4], interface=2, description='suggestion condition')
+exp4 = ExperimentSetup(workflow= exp_work_flows[4], rpp=3)
+exp5 = ExperimentSetup(workflow= exp_work_flows[4], rpp=6)
 
 
 experiment_setups = [exp0,exp1,exp2,exp3,exp4,exp5]

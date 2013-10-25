@@ -27,7 +27,7 @@ from experiment_functions import log_event
 
 def view_reset_test_users(request):
 
-    usernames = [ 'tester1', 'tester2', 'tester3', 'tester4', 'tester5','UK1','UK2','UK3','UK4','UK5' ]
+    usernames = [ 't1', 't2', 't3', 't4', 't5' ]
 
     for un in usernames:
         temp_user = User.objects.get(username=un)
