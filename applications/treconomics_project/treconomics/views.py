@@ -20,7 +20,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.forms.models import inlineformset_factory, modelformset_factory
 
-from experiment_configuration import rotations
 
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event

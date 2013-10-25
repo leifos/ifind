@@ -30,10 +30,10 @@ exp_work_flows = [
 # these are the rotations of topics
 # We could put a method here that reads the topics from the database table, and then automatically constructs the rotations here
 
-rotations = [ [347, 344, 435 ], [347, 435, 344], [344, 347, 435], [344, 435, 347], [435, 347, 344], [435, 344, 347]  ]
+#rotations = [ [347, 344, 435 ], [347, 435, 344], [344, 347, 435], [344, 435, 347], [435, 347, 344], [435, 344, 347]  ]
 
 # timeout is in seconds
-timeout = 660
+#timeout = 660
 
 event_logger = logging.getLogger('event_log')
 event_logger.setLevel(logging.INFO)
@@ -41,8 +41,6 @@ event_logger_handler = logging.FileHandler(os.path.join(my_experiment_log_dir, '
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)
 event_logger.addHandler(event_logger_handler)
-
-
 
 
 class ExperimentSetup(object):
