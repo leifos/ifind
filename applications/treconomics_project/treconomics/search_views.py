@@ -321,17 +321,20 @@ def view_performance(request):
         else:
             return 0.0
 
-    task1 = getPerformance(uname, 1, rotation)
+    topic_num = experiment_setups[condition].get_rotation_topic(rotation,0)
+    task1 = getPerformance(uname, topic_num)
     t = TaskDescription.objects.get( topic_num = task1['topicnum'] )
     task1["title"] = t.title
     task1["score"] = ratio(float(task1["rels"]), float(task1["nons"]))
 
-    task2 = getPerformance(uname, 2, rotation)
+    topic_num = experiment_setups[condition].get_rotation_topic(rotation,1)
+    task2 = getPerformance(uname, topic_num)
     t = TaskDescription.objects.get( topic_num = task2['topicnum'] )
     task2["title"] = t.title
     task2["score"] = ratio(float(task2["rels"]), float(task2["nons"]))
 
-    task3 = getPerformance(uname, 3, rotation)
+    topic_num = experiment_setups[condition].get_rotation_topic(rotation,2)
+    task3 = getPerformance(uname, topic_num)
     t = TaskDescription.objects.get( topic_num = task3['topicnum'] )
     task3["title"] = t.title
     task3["score"] = ratio(float(task3["rels"]), float(task3["nons"]))

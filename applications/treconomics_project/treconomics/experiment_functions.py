@@ -4,11 +4,15 @@ import datetime
 import logging
 import logging.config
 import logging.handlers
+from ifind.seeker.trec_qrel_handler import TrecQrelHandler
+
 
 from django.contrib.auth.models import User
 from models import DocumentsExamined
-from experiment_configuration import timeout, rotations, event_logger, qrels_file
-from experiment_configuration import exp_work_flows
+from experiment_configuration import event_logger, qrels_file
+from experiment_configuration import experiment_setups
+
+qrels = TrecQrelHandler( qrels_file )
 
 
 def get_experiment_context(request):
@@ -19,7 +23,7 @@ def get_experiment_context(request):
     ec["rotation"] = profile.rotation
     ec["condition"] = profile.condition
     ec["completed_steps"] = profile.steps_completed
-    ec["workflow"] = exp_work_flows[profile.experiment]
+    ec["workflow"] = experiment_setups[ec['condition']].workflow
 
     print ec["workflow"]
     if profile.data == "test":
@@ -37,14 +41,13 @@ def get_experiment_context(request):
         steps_completed = ec["completed_steps"]
         ec["current_step"] = steps_completed
         request.session['current_step'] = steps_completed
-        #request.session['current_url'] = ec["workflow"][steps_completed]
 
     if "taskid" in request.session:
         ec["taskid"] = int(request.session['taskid'])
         t = ec["taskid"] - 1
         r = ec["rotation"] - 1
         if t >= 0:
-            ec["topicnum"] = rotations[r][t]
+            ec["topicnum"] = experiment_setups[ec['condition']].get_rotation_topic(r,t)
         else:
             ec["topicnum"] = 0
     else:
@@ -66,6 +69,8 @@ def print_experiment_context(ec):
 def time_search_experiment_out(request):
     start_time = request.session['start_time']
     ec = get_experiment_context(request)
+    timeout = experiment_setups[ec['condition']].timeout
+
     if ec["test_user"]:
         return False
     else:
@@ -135,42 +140,15 @@ def mark_document(request, docid, judgement, title="", docnum="", rank=0):
     return judgement
 
 
-class AutoVivification(dict):
-    def __getitem__(self, item):
-        try:
-            return dict.__getitem__(self, item)
-        except KeyError:
-            value = self[item] = type(self)()
-            return value
-
-def ReadQrelsFile(qrel_file):
-    qrels = AutoVivification()
-
-    infile = open( qrel_file, "r" )
-    while infile:
-        line = infile.readline()
-        parts = line.partition(' ')
-        query_num = parts[0]
-        parts = parts[2].partition(' ')
-        parts = parts[2].partition(' ')
-        doc_num = parts[0]
-        judgement = parts[2].strip()
-
-        qrels[query_num][doc_num] =  judgement
-
-        if not line:
-            break
-
-    return qrels
-
-def assessPerformance(qrels, topic_num, doc_list ):
+def assessPerformance(topic_num, doc_list ):
     rels_found = 0
     non_rels_found = 0
 
     total = len(doc_list)
     for doc in doc_list:
-        if qrels[topic_num][doc]:
-            if int(qrels[topic_num][doc]) >= 1:
+        val = qrels.get_value(topic_num,doc)
+        if val:
+            if int(val) >= 1:
                 rels_found = rels_found + 1
             else:
                 non_rels_found = non_rels_found + 1
@@ -184,8 +162,7 @@ def assessPerformance(qrels, topic_num, doc_list ):
     return performance
 
 
-def getPerformance(qrels, username, taskid, rotation):
-    topic_num = rotations[rotation-1][taskid-1]
+def getPerformance(username, topic_num):
     u = User.objects.get(username=username)
     docs = DocumentsExamined.objects.filter(user=u).filter(topic_num=topic_num)
     print docs
@@ -195,6 +172,6 @@ def getPerformance(qrels, username, taskid, rotation):
             doc_list.append(d.doc_num)
             print str(d.topic_num) + " " + d.doc_num
 
-    return assessPerformance(qrels, str(topic_num), doc_list)
+    return assessPerformance(str(topic_num), doc_list)
 
 
