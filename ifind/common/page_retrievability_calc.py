@@ -35,6 +35,7 @@ class PageRetrievabilityCalculator:
         self.beta = beta
         self.c = c
         self.max_queries = max_queries
+        self.successful_queries = [] #a list of the queries which returned the result
 
 
     def score_page(self, url, query_list):
@@ -80,6 +81,9 @@ class PageRetrievabilityCalculator:
         top_ten=self.top_queries(10)
         for query in top_ten:
             print query, " \n"
+        print "Queries which returned the page were:"
+        for query in self.successful_queries:
+            print query.terms + " ; "
 
 
     def stats(self):
@@ -162,6 +166,8 @@ class PageRetrievabilityCalculator:
             #TODO(leifos): may need a better matching function in case there are small differences between url
             if result_url == match_url:
                 rank = i
+                #copy the query into the list of queries which returned the result
+                self.successful_queries.append(query)
                 break
         print "issuing query with terms: ", query.terms
 
