@@ -4,6 +4,7 @@ import sys
 import logging
 import logging.config
 import logging.handlers
+from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, "data/smallindex")
@@ -53,13 +54,31 @@ class ExperimentSetup(object):
         self.engine = engine
         self.description = description
         self.workflow = workflow
+        self.pro = PermutatedRotationOrdering()
+        self.n =self.pro.number_of_orderings(self.topics)
 
-    def get_rotation(self, i):
+    def _get_check_i(self, i):
+        return i % self.n
+
+    def get_rotations(self, i):
         """ get the ith rotation from the topics
         :param i:
-        :return:
+        :return: returns the list of topic numbers
         """
-        pass
+        ith = self._get_check_i(i)
+
+        return self.pro.get_ordering(self.topics,ith)
+
+    def get_rotation_topic(self,i,t):
+        """ get the ith rotation and the tth topic
+        :param i: integer
+        :param t: integer
+        :return: returns the topic number
+        """
+        ith = self._get_check_i(i)
+        rotations = self.pro.get_ordering(self.topics,ith)
+        return rotations[t]
+
 
     def __str__(self):
         return self.description
