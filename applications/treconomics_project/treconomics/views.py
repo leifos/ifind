@@ -20,7 +20,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.forms.models import inlineformset_factory, modelformset_factory
 
-from experiment_configuration import rotations
 
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
@@ -116,11 +115,10 @@ def view_next(request):
     else:
         next_step = step
 
-    print "step : "+ str(next_step)
+
 
     url_to_visit_next = workflow[next_step]
-
-    print  url_to_visit_next
+    print "view_next - step : "+ str(next_step) + " url to vist next: " + url_to_visit_next
     #request.session['current_url'] = url_to_visit_next
     return HttpResponseRedirect( url_to_visit_next )
 

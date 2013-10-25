@@ -9,7 +9,7 @@
 		 Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span></div>
 		{% for result in trec_results %}
 		    <div class="entry" id="{{result.docid}}">
-		        <p class="result_title"><a href="{{ result.link }}"><strong>{{ result.title }}</strong></a></p>
+		        <p class="result_title"><a href="{{ result.url }}"><strong>{{ result.title }}</strong></a></p>
   		        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>		
   		    </div>
   		    <div class="byline">{{ result.source }}</div>
