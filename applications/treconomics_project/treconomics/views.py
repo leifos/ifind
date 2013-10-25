@@ -115,11 +115,10 @@ def view_next(request):
     else:
         next_step = step
 
-    print "step : "+ str(next_step)
+
 
     url_to_visit_next = workflow[next_step]
-
-    print  url_to_visit_next
+    print "view_next - step : "+ str(next_step) + " url to vist next: " + url_to_visit_next
     #request.session['current_url'] = url_to_visit_next
     return HttpResponseRedirect( url_to_visit_next )
 

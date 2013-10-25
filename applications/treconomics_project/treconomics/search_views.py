@@ -23,7 +23,7 @@ from whoosh.index import open_dir
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
-from experiment_functions import time_search_experiment_out, getPerformance
+from experiment_functions import time_search_experiment_out, getPerformance, getQueryResultPerformance
 from experiment_configuration import my_whoosh_doc_index_dir, qrels_file
 from experiment_configuration import experiment_setups
 
@@ -186,9 +186,7 @@ def constructStructuredQuery(request):
     return user_query
 
 
-def run_query(condition=0, result_dict={}, query_terms='', page=1):
-
-    page_len = experiment_setups[condition].rpp
+def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
 
     query = Query(query_terms)
     query.skip = page
@@ -237,6 +235,7 @@ def search(request, taskid=0):
         uname = ec["username"]
         condition = ec["condition"]
         taskid = ec["taskid"]
+        topic_num = ec["topicnum"]
 
         result_dict = {}
         result_dict['participant'] = uname
@@ -270,12 +269,13 @@ def search(request, taskid=0):
                 page = 1
 
         if query_flag:
-            result_dict = run_query(condition,result_dict,user_query,page)
+            page_len = experiment_setups[condition].rpp
+            result_dict = run_query(condition,result_dict,user_query,page,page_len)
 
             # check the condition
             # check if query_suggest_search exists, if so include query_results
             if condition == 3:
-                    topic_num = ec["topicnum"]
+
                     # getQuerySuggestions(topic_num)
                     suggestions = TopicQuerySuggestion.objects.filter(topic_num = topic_num)
                     if suggestions:
@@ -287,6 +287,10 @@ def search(request, taskid=0):
                         result_dict['query_suggest_results'] = entries
                     # addSuggestions to results dictionary
 
+
+            if result_dict['trec_results']:
+                qrp = getQueryResultPerformance(result_dict['trec_results'],topic_num)
+                print qrp
 
             queryurl = '/treconomics/search/?query=' + user_query.replace(' ','+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
@@ -339,12 +343,6 @@ def view_performance(request):
     task3["title"] = t.title
     task3["score"] = ratio(float(task3["rels"]), float(task3["nons"]))
 
-    print task1["rels"]
-    print task2["rels"]
-    print task3["rels"]
-
-    print task1["nons"]
-    print task2["nons"]
-    print task3["nons"]
+    print "view_performance -  task 1: %d %d task 2: %d %d task 3: %d %d " % ( task1["rels"],task1["nons"], task2["rels"],task2["nons"], task3["rels"],  task3["nons"])
 
     return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 't1_rels': task1["rels"] , 't1_nons': task1["nons"], 't1_title': task1["title"], 't1_score': task1["score"], 't2_rels': task2["rels"] , 't2_nons': task2["nons"], 't2_title': task2["title"], 't2_score': task2["score"],'t3_rels': task3["rels"] , 't3_nons': task3["nons"], 't3_title': task3["title"], 't3_score': task3["score"]  }, context)

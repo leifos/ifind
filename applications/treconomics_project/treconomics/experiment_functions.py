@@ -25,7 +25,7 @@ def get_experiment_context(request):
     ec["completed_steps"] = profile.steps_completed
     ec["workflow"] = experiment_setups[ec['condition']].workflow
 
-    print ec["workflow"]
+    #print ec["workflow"]
     if profile.data == "test":
         ec["test_user"] = True
     else:
@@ -165,7 +165,7 @@ def assessPerformance(topic_num, doc_list ):
 def getPerformance(username, topic_num):
     u = User.objects.get(username=username)
     docs = DocumentsExamined.objects.filter(user=u).filter(topic_num=topic_num)
-    print docs
+    print "Documents to Judge for topic %s " % (topic_num)
     doc_list = []
     for d in docs:
         if d.judgement > 0:
@@ -175,3 +175,15 @@ def getPerformance(username, topic_num):
     return assessPerformance(str(topic_num), doc_list)
 
 
+def getQueryResultPerformance(results, topic_num):
+
+    i = 0
+    rels_found = 0
+    for r in results:
+        i = i + 1
+        val = qrels.get_value(topic_num, r.docid)
+        if val > 0:
+            rels_found = rels_found + 1
+
+
+    return [rels_found, i]

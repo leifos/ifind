@@ -35,7 +35,7 @@ exp_work_flows = [
 
 class ExperimentSetup(object):
 
-    def __init__(self, workflow, timeout = 660, topics=['347','344','435'], rpp=10, engine=1, interface=1, description=''):
+    def __init__(self, workflow, timeout = 660, topics=['999','347','344'], rpp=10, engine=1, interface=1, description=''):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
