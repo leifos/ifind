@@ -290,7 +290,7 @@ def search(request, taskid=0):
 
             if result_dict['trec_results']:
                 qrp = getQueryResultPerformance(result_dict['trec_results'],topic_num)
-                print qrp
+                log_event(event='SEARCH_RESULTS_PAGE_QUALITY',request=request,docid=page,rank=qrp[0],judgement=qrp[1])
 
             queryurl = '/treconomics/search/?query=' + user_query.replace(' ','+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
