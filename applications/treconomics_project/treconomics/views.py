@@ -65,10 +65,12 @@ def view_start_experiment(request):
                 ec = get_experiment_context(request)
                 print_experiment_context(ec)
 
-                return HttpResponseRedirect("/treconomics/next/")
+                # return HttpResponseRedirect("/treconomics/next/")
+                # Instead of redirecting to next/, give back a popup launching script instead!
+                return render_to_response('base/popup_launcher.html', {}, context)
             else:
                 # Return a 'disabled account' error message
-                return HttpResponse("You're account is disabled.")
+                return HttpResponse("Your account is disabled.")
         else:
             # Return an 'invalid login' error message.
             print  "invalid login details " + username + " " + password
