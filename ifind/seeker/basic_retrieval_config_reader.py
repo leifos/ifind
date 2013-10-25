@@ -9,7 +9,7 @@
 __author__ = 'leifos'
 __date__ = '2012-10-28'
 
-from common.abstract_config_reader import AbstractConfigReader
+from ifind.seeker.abstract_config_reader import AbstractConfigReader
 
 class BasicRetrievalConfigReader(AbstractConfigReader):
     '''

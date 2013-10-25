@@ -1,9 +1,9 @@
 __author__ = 'leifos'
 
 
-from common.common_helpers import file_exists
-from common.common_helpers import AutoVivification
-from common.topic_document_file_handler import TopicDocumentFileHandler
+from ifind.seeker.common_helpers import file_exists
+from ifind.seeker.common_helpers import AutoVivification
+from ifind.seeker.topic_document_file_handler import TopicDocumentFileHandler
 
 
 def process_trec_line(line):

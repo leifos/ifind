@@ -9,7 +9,7 @@
 __author__ = 'David Maxwell <maxwelld90@gmail.com>'
 __date__ = '2012-11-18'
 
-from common.abstract_config_reader import AbstractConfigReader
+from ifind.seeker.abstract_config_reader import AbstractConfigReader
 
 class AutomatedRetrievalConfigReader(AbstractConfigReader):
     '''

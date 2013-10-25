@@ -10,7 +10,7 @@ __author__ = 'David Maxwell <maxwelld90@gmail.com>'
 __date__ = '2012-10-31'
 
 from ConfigParser import ConfigParser
-from common.common_helpers import file_exists
+from ifind.seeker.common_helpers import file_exists
 from base_exception import Error as BaseError
 
 class AbstractConfigReader(object):

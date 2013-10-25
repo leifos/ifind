@@ -8,7 +8,7 @@
 
 import string
 from os import linesep
-from common.common_helpers import file_exists
+from ifind.seeker.common_helpers import file_exists
 
 class ListReader(list):
     '''

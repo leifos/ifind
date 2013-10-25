@@ -8,8 +8,8 @@
 
 
 import string
-from common.abstract_config_reader import AbstractConfigReader
-from common.abstract_config_reader import BadConfigError
+from ifind.seeker.abstract_config_reader import AbstractConfigReader
+from ifind.seeker.abstract_config_reader import BadConfigError
 
 class BasicCrawlingConfigReader(AbstractConfigReader):
 	'''
