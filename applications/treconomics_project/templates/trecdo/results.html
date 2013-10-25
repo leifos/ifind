@@ -15,7 +15,11 @@
   		    <div class="byline">{{ result.source }}</div>
   		    
         {% endfor %}
-	    
+
+    {% else %}
+         <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
+            No results found.
+             </div>
     {% endif %}
 
 

@@ -196,7 +196,9 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
     response = search_engine.search(query)
 
     num_pages = response.result_total
-
+    result_dict['trec_results'] = None
+    result_dict['trec_no_results_found'] = True
+    result_dict['trec_search'] = False
     if num_pages > 0:
         result_dict['trec_search'] = True
         result_dict['trec_results'] = response.results
@@ -211,8 +213,6 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
             result_dict['next_page_show'] = True
             result_dict['next_page_link'] = "?query=" + query_terms.replace(' ','+') + '&page=' + str(page + 1)
             result_dict['num_pages'] = num_pages
-    else:
-        result_dict['trec_no_results_found'] = True
 
     return result_dict
 
