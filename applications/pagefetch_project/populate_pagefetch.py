@@ -3,7 +3,7 @@
 =============================
 Author: mtbvc <1006404b@student.gla.ac.uk>
 Date:   04/07/2013
-Version: 0.1
+Last revision: 26/10/2013
 
 Requires:
 ---------
@@ -32,38 +32,6 @@ def get_trending_queries(filename):
     f.close()
     return trend_tuples_list
 
-def add_achievements():
-    Achievement(name='Tenderfoot', level_of_achievement=0, desc='',
-                badge_icon=None, xp_earned =0).save()
-    Achievement(name='Vaquero', level_of_achievement=5000, desc='',
-                badge_icon=None, xp_earned =0).save()
-    Achievement(name='Wrangler', level_of_achievement=25000, desc='',
-                badge_icon=None, xp_earned =0).save()
-    Achievement(name='Caballero', level_of_achievement=100000, desc='',
-                badge_icon=None, xp_earned =0).save()
-
-def add_levels(levels,increase):
-    points = 0
-    lvl = 0
-    while lvl <= levels:
-        Level(xp=points, level=lvl).save()
-        lvl +=1
-        points+=increase
-
-
-
-#add people...
-def add_players():
-    jim = User(username="Jim", password='Jim')
-    jane = User(username="Jane", password='Jane')
-    jake = User(username="Jake", password='Jake')
-    jim.save()
-    jane.save()
-    jake.save()
-    UserProfile(user=jim, xp=760, no_games_played=8).save()
-    UserProfile(user=jane, xp=2300, no_games_played=10).save()
-    UserProfile(user=jake, xp=4300, no_games_played=12).save()
-
 def main():
 
     parser = argparse.ArgumentParser(
@@ -81,9 +49,6 @@ def main():
 
     args = parser.parse_args()
     if args.lvls:
-        add_achievements()
-        add_levels(50,1000)
-        add_players()
         return 0
     if args.filename:
         data_list = get_trending_queries(args.filename)
