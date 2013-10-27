@@ -1,0 +1,860 @@
+Games,http://www.ebay.com/bhp/pathfinder-roleplaying,6
+Games,http://paizo.com/pathfinder,4
+Games,http://www.miniaturemarket.com/role-playing-games/pathfinder.html,16
+Games,http://www.goodreads.com/book/show/15894440-pathfinder-roleplaying-game,18
+Games,http://www.walmart.com/ip/Pathfinder-Roleplaying-Game-Core-Rulebook-Pathfinder-Roleplaying-Game-Core-Rulebook/10832226,20
+Games,http://paizo.com/pathfinderRPG,0
+Games,http://www.amazon.com/Pathfinder-Roleplaying-Game-Core-Rulebook/dp/1601251505,3
+Games,http://rpggeek.com/rpg/1627/pathfinder-roleplaying-game,19
+Games,https://secure.paizo.com/pathfinderRPG,10
+Games,http://www.torrentdownloads.me/torrent/1652056502/Pathfinder+Roleplaying+Game,21
+Business People,http://www.achievement.org/autodoc/page/win0bio-1,6
+Business People,http://www.imdb.com/name/nm0001856/,3
+Business People,http://www.aoltv.com/show/oprah-winfrey-show/184201,18
+Business People,http://www.huffingtonpost.com/news/oprah,17
+Business People,http://www.tv.com/people/oprah-winfrey/,22
+Business People,http://www.forbes.com/profile/bill-gates/,4
+Business People,http://www.huffingtonpost.com/news/bill-gates,7
+Business People,http://topics.bloomberg.com/bill-gates/,19
+Business People,http://topics.wsj.com/person/g/bill-gates/685,12
+Business People,http://www.imdb.com/name/nm0309540/bio,21
+Business People,http://allaboutstevejobs.com/bio/bio.php,5
+Business People,http://allaboutstevejobs.com/,2
+Business People,http://abcnews.go.com/Technology/steve-jobs-dies-apple-chief-innovated-personal-computer/story?id=14383813,13
+Business People,http://www.forbes.com/steve-jobs/,12
+Business People,http://www.youtube.com/watch?v=UF8uR6Z6KLc,23
+Business People,http://www.huffingtonpost.com/news/donald-trump,6
+Business People,http://roc.democratandchronicle.com/article/20131020/NEWS0217/310200026/nestor-ramos-donald-trump,8
+Business People,http://now.msn.com/donald-trump-calls-for-revolution-against-obama,15
+Business People,http://www.tvguide.com/celebrities/donald-trump/194141,18
+Business People,http://movies.msn.com/celebrities/celebrity/donald-trump/,22
+Business People,http://www.mittromney.com/,0
+Business People,http://www.foxnews.com/topics/us/mitt-romney.htm,3
+Business People,http://content.usatoday.com/topics/topic/People/Politicians,+Government+Officials,+Strategists/Governors,+Mayors/Mitt+Romney,10
+Business People,https://www.facebook.com/mittromney,11
+Business People,http://www.opensecrets.org/pres12/candidate.php?id=N00000286,24
+Business People,http://en.wikipedia.org/wiki/Warren_Buffett,1
+Business People,http://www.answers.com/topic/warren-buffett,9
+Business People,http://topics.wsj.com/person/b/warren-buffett/641,10
+Business People,http://www.gatesfoundation.org/Who-We-Are/General-Information/Leadership/Management-Committee/Warren-Buffett,16
+Business People,http://www.salon.com/1999/08/31/buffett/,29
+Business People,http://www.history.com/topics/henry-ford,6
+Business People,http://www.encyclopedia.com/topic/Henry_Ford.aspx,8
+Business People,http://www.hfcc.edu/,17
+Business People,http://www.goodreads.com/author/show/203714.Henry_Ford,16
+Business People,http://www.notablebiographies.com/Fi-Gi/Ford-Henry.html,29
+Business People,http://www.barnesandnoble.com/s/s-truett-cathy,9
+Business People,http://www.truettcathy.com/,0
+Business People,http://www.nndb.com/people/209/000055044/,18
+Business People,https://www.facebook.com/truett.cathy,10
+Business People,http://www.walmart.com/ip/S.-Truett-Cathy-Principles-for-Success-in-Business-and-Life/14104118,26
+Business People,http://www.independent.co.uk/arts-entertainment/tv/news/harry-gordon-selfridge-west-end-lothario-or-mothers-boy-8439817.html,2
+Business People,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3AHarry%20Gordon%20Selfridge,6
+Business People,http://ldnfashion.com/news-features/ten-facts-about-harry-gordon-selfridge-that-you-probably-didnt-know/,17
+Business People,http://www.barnesandnoble.com/c/harry-gordon-selfridge,16
+Business People,http://www.imdb.com/name/nm0330243/news?year=2012,25
+Business People,http://en.wikipedia.org/wiki/Zuckerberg,7
+Business People,http://en.wikipedia.org/wiki/Zuckerberg,7
+Business People,http://www.theguardian.com/technology/mark-zuckerberg,13
+Business People,https://www.facebook.com/zuck/posts/10100828955847631,16
+Business People,http://www.zucklaw.com/,27
+Business People,http://abcnews.go.com/Business/elon-musks-craziest-ideas-science-fiction/story?id=20610695&pt=BureoF2GVB,3
+Business People,http://money.cnn.com/2013/09/05/autos/elon-musk-car-trip/index.html,8
+Business People,http://www.askmen.com/celebs/men/business_politics/elon-musk/,19
+Business People,http://www.businessweek.com/articles/2012-09-13/elon-musk-the-21st-century-industrialist,16
+Business People,http://www.britannica.com/EBchecked/topic/1676437/Elon-Musk,24
+Business People,http://www.pbs.org/wgbh/americanexperience/features/biography/rockefellers-john/,3
+Business People,http://history1900s.about.com/od/people/a/John-D-Rockefeller.htm,8
+Business People,http://www.theforbiddenknowledge.com/hardtruth/the_rockefeller_bloodline.htm,19
+Business People,http://www.amazon.com/Titan-The-Life-John-Rockefeller/dp/1400077303,12
+Business People,http://www.huffingtonpost.com/news/john-d-rockefeller,28
+Business People,http://www.pbs.org/wgbh/amex/carnegie/peopleevents/pande01.html,8
+Business People,http://www.answers.com/topic/andrew-carnegie,5
+Business People,http://www.carnegielibrary.org/research/pittsburgh/Carnegie/,17
+Business People,http://en.wikipedia.org/wiki/Carnegie_library,16
+Business People,http://www.carnegiecouncil.org/people/data/andrew_carnegie.html,26
+Business People,http://articles.sun-sentinel.com/2013-10-19/sports/sfl-miami-heat-mark-cuban-s101913_1_nba-finals-oakland-raiders-mark-cuban,8
+Business People,http://www.imdb.com/name/nm1171860/,5
+Business People,http://www.tvguide.com/celebrities/mark-cuban/196805,15
+Business People,http://www.huffingtonpost.com/news/mark-cuban,13
+Business People,http://movies.yahoo.com/person/mark-cuban/,28
+Business People,http://www.rickhendrickchevy.com/,8
+Business People,http://www.rickhendricktoyota.com/,7
+Business People,http://www.caryautomall.com/,19
+Business People,http://sports.yahoo.com/news/rick-hendrick-184400680--nascar.html,11
+Business People,http://www.jeephendrick.com/new-inventory/index.htm,26
+Business People,http://www.atu2.com/band/bono/,2
+Business People,http://www.imdb.com/name/nm0095104/,6
+Business People,http://topics.nytimes.com/top/reference/timestopics/people/b/bono/index.html,12
+Business People,http://www.tvguide.com/celebrities/bono/192595,17
+Business People,http://www.rottentomatoes.com/celebrity/1089763-bono/,27
+Business People,http://www.biography.com/people/howard-hughes-9346282,1
+Business People,http://www.apa.org/monitor/julaug05/hughes.aspx,4
+Business People,http://www.ebay.com/sch/Transportation-/417/i.html?_nkw=howard+hughes,19
+Business People,http://www.hhmi.org/,10
+Business People,http://www.barnesandnoble.com/s/howard-hughes?dref=1,22
+Business People,http://www.virgin.com/author/richard-branson,6
+Business People,http://www.richard-branson.com/index.htm,9
+Business People,http://www.askmen.com/celebs/men/december99/6_richard_branson.html,17
+Business People,http://www.amazon.com/Richard-Branson/e/B000APPS34,19
+Business People,https://plus.google.com/+RichardBranson/about,28
+Business People,http://www.newsday.com/columnists/dan-janison/nyc-mayor-michael-bloomberg-leaves-undeniable-impact-despite-stumbles-1.6289737,2
+Business People,http://www.nyc.gov/portal/site/nycgov/menuitem.beb0d8fdaa9e1607a62fa24601c789a0/,7
+Business People,http://topics.wsj.com/person/b/michael-bloomberg/4365,10
+Business People,http://twitter.com/MikeBloomberg,15
+Business People,http://www.linkedin.com/pub/dir/Mike/Bloomberg/+/,21
+Business People,http://www.lhmchryslerjeepdodgeabq.com/index.htm,3
+Business People,http://www.lhmauto.com/index.htm,1
+Business People,http://www.lhmdodgeboise.com/index.htm,11
+Business People,http://www.lhmdodgeboise.com/index.htm,11
+Business People,http://www.deseretnews.com/article/865584997/Funeral-planned-for-Larry-H-Millers-son-Roger-Miller.html?pg=all,21
+Actors,http://www.hollywoodtuna.com/?cat=131,8
+Actors,http://en.wikipedia.org/wiki/Amanda_Bynes,0
+Actors,http://abcnews.go.com/topics/entertainment/actresses/amanda-bynes.htm,18
+Actors,http://www.rottentomatoes.com/celebrity/amanda_bynes/,11
+Actors,http://www.last.fm/music/Amanda+Bynes,29
+Actors,http://www.last.fm/music/Selena+Gomez,7
+Actors,http://www.imdb.com/name/nm1411125/,2
+Actors,http://www.huffingtonpost.com/news/selena-gomez,12
+Actors,http://hollywoodlife.com/celeb/selena-gomez/,11
+Actors,http://music.yahoo.com/artist/selena-gomez/,26
+Actors,http://movies.yahoo.com/person/angelina-jolie/,9
+Actors,http://movies.yahoo.com/person/angelina-jolie/,9
+Actors,http://www.imdb.com/name/nm0001401/bio,15
+Actors,http://www.starpulse.com/Actresses/Jolie,_Angelina/,17
+Actors,http://www.askmen.com/celebs/women/actress/8_angelina_jolie.html,24
+Actors,http://www.eonline.com/news/miley_cyrus,6
+Actors,http://www.mileycyrus.com/,0
+Actors,http://www.imdb.com/name/nm1415323/,10
+Actors,http://www.thehollywoodgossip.com/stars/miley-cyrus.html,19
+Actors,https://myspace.com/mileycyrus,20
+Actors,http://www.justintimberlake.com/,0
+Actors,https://www.facebook.com/justintimberlake,7
+Actors,http://www.people.com/people/justin_timberlake/,15
+Actors,http://www.rottentomatoes.com/celebrity/justin_timberlake/,11
+Actors,http://www.popsugar.com/Justin-Timberlake,29
+Actors,https://www.facebook.com/arianagrande,7
+Actors,http://twitter.com/ArianaGrande,3
+Actors,http://www.nick.com/celebrity/ariana-grande/,16
+Actors,http://www.huffingtonpost.com/news/ariana-grande/,19
+Actors,http://www.wikifeet.com/Ariana_Grande,26
+Actors,http://jenniferlawrencedaily.com/,4
+Actors,http://movies.yahoo.com/person/jennifer-lawrence/,9
+Actors,https://www.facebook.com/JenniferLawrence,15
+Actors,http://www.thewrap.com/jennifer-lawrence-will-kill-lionsgate-studio-nears-deal-burial-rites/,10
+Actors,http://www.justjared.com/tags/jennifer-lawrence/,27
+Actors,http://www.people.com/people/jennifer_lopez/,6
+Actors,http://perezhilton.com/category/jennifer-lopez/,4
+Actors,http://www.rottentomatoes.com/celebrity/jennifer_lopez/,15
+Actors,http://www.kohls.com/kohlsStore/ourbrands/jenniferlopez.jsp,17
+Actors,http://movies.msn.com/celebrities/celebrity/jennifer-lopez/,21
+Actors,http://www.imdb.com/name/nm0000226/,2
+Actors,http://movies.yahoo.com/person/will-smith-1968/,9
+Actors,http://www.rottentomatoes.com/celebrity/will_smith/,12
+Actors,http://www.nfl.com/player/willsmith/2506098/profile,10
+Actors,http://omg.yahoo.com/will-smith/,24
+Actors,http://www.imdb.com/name/nm0000138/bio,6
+Actors,http://www.biography.com/people/leonardo-dicaprio-9273992,5
+Actors,http://www.zimbio.com/Leonardo+DiCaprio,17
+Actors,http://movies.msn.com/celebrities/celebrity/leonardo-dicaprio/,18
+Actors,http://simplyleonardodicaprio.com/,26
+Actors,http://www.imdb.com/name/nm0001122/,3
+Actors,http://www.ellentv.com/,0
+Actors,http://www.usmagazine.com/celebrities/ellen-degeneres,11
+Actors,http://movies.msn.com/celebrities/celebrity/ellen-degeneres/,18
+Actors,http://ellen.4thdimension.info/,28
+Actors,http://movies.yahoo.com/person/dwayne-johnson/,6
+Actors,http://www.imdb.com/name/nm0425005/,1
+Actors,http://www.dwaynejohnson.info/,12
+Actors,http://www.linkedin.com/pub/dir/dwayne/johnson,19
+Actors,http://www.justjared.com/tags/dwayne-johnson/,26
+Actors,http://www.howaboutwe.com/date-report/date-ideas/1863-date-like-a-celebrity-jennifer-aniston-justin-theroux-lifetime-movie/,9
+Actors,http://en.wikipedia.org/wiki/Jennifer_Aniston,0
+Actors,http://www.eonline.com/news/jennifer_aniston,11
+Actors,http://www.eonline.com/news/jennifer_aniston,11
+Actors,http://www.celebrity-gossip.net/jennifer-aniston/story,25
+Actors,http://www.rottentomatoes.com/celebrity/kristen_stewart/,8
+Actors,http://www.imdb.com/name/nm0829576/,1
+Actors,http://www.movies.com/actors/kristen-stewart/p283097,19
+Actors,http://www.movies.com/actors/kristen-stewart/p283097,19
+Actors,http://www.usmagazine.com/celebrities/kristen-stewart,27
+Actors,http://www.imdb.com/name/nm0000054/,4
+Actors,http://www.rottentomatoes.com/celebrity/marilyn_monroe/,8
+Actors,http://www.brainyquote.com/quotes/authors/m/marilyn_monroe.html,19
+Actors,http://www.brainyquote.com/quotes/authors/m/marilyn_monroe.html,19
+Actors,http://www1.macys.com/shop/juniors-clothing/marilyn-monroe?id=63017,28
+Actors,http://www.imdb.com/name/nm0519456/bio,7
+Actors,https://www.facebook.com/EvaLongoria,6
+Actors,http://www.celebrity-gossip.net/eva-longoria/story,16
+Actors,http://movies.yahoo.com/person/eva-longoria-parker/,18
+Actors,http://www.starpulse.com/Actresses/Longoria,_Eva/,24
+Actors,http://movies.yahoo.com/person/robert-downey-jr/,4
+Actors,http://robert-downey-jr.org/,7
+Actors,http://www.moviefone.com/celebrity/robert-downey-jr/1789971/main,18
+Actors,https://www.facebook.com/robertdowneyjr,13
+Actors,http://www.huffingtonpost.com/news/robert-downey-jr/,29
+Actors,http://www.tomcruise.com/,0
+Actors,http://www.tomcruise.com/,0
+Actors,http://twitter.com/tomcruise,18
+Actors,http://movies.msn.com/celebrities/celebrity/tom-cruise/,16
+Actors,http://www.hollywood.com/celebrities/196689/tom-cruise,24
+Actors,http://www.imdb.com/name/nm1083271/,1
+Actors,http://en.wikipedia.org/wiki/Megan_Fox,0
+Actors,http://www.people.com/people/megan_fox,10
+Actors,http://www.eonline.com/news/megan_fox,12
+Actors,http://www.celebrity-gossip.net/megan-fox/story,28
+Actors,http://www.examiner.com/list/from-corrupt-cop-to-executioner-vithaya-pinsrangarm-talks-ryan-gosling-and-god/ryan-gosling-played-julian-only-god-forgives,9
+Actors,http://www.imdb.com/name/nm0331516/,1
+Actors,http://www.moviefone.com/celebrity/ryan-gosling/2016883/main,18
+Actors,http://www.eonline.com/news/ryan_gosling,11
+Actors,http://www.tumblr.com/tagged/ryan+gosling,22
+Actors,http://emma-watson.net/,4
+Actors,http://www.people.com/people/emma_watson,6
+Actors,http://perezhilton.com/category/emma-watson/,18
+Actors,http://www.justjared.com/tags/emma-watson/,11
+Actors,http://twitter.com/EmWatson,24
+Actors,http://www.vindiesel.com/,5
+Actors,http://movies.yahoo.com/person/vin-diesel/,6
+Actors,http://movies.msn.com/celebrities/celebrity/vin-diesel/,15
+Actors,http://www.hollywood.com/celebrities/186925/vin-diesel,18
+Actors,http://perezhilton.com/category/vin-diesel/,28
+Actors,http://movies.yahoo.com/person/brad-pitt/,2
+Actors,http://www.imdb.com/name/nm0000093/bio,7
+Actors,http://www.biography.com/people/brad-pitt-9441989,12
+Actors,http://hollywoodlife.com/celeb/brad-pitt/,16
+Actors,http://www.fandango.com/bradpitt/overview/p56988,24
+Actors,http://www.popsugar.com/Robert-Pattinson,6
+Actors,http://www.justjared.com/tags/robert-pattinson/,8
+Actors,http://gallery.robertpattinson.org/,19
+Actors,http://www.movies.com/actors/robert-pattinson/p226160,18
+Actors,http://www.celebuzz.com/celebrities/robert-pattinson/,29
+Actors,http://en.wikipedia.org/wiki/Jeanne_Cooper,0
+Actors,http://losangeles.cbslocal.com/2013/04/13/soap-legend-jeanne-cooper-84-hospitalized-in-critical-condition/,3
+Actors,http://www.tvguide.com/celebrities/jeanne-cooper/156370,12
+Actors,http://www.tv.com/people/jeanne-cooper/,15
+Actors,https://www.facebook.com/public/Jeanne-Cooper,21
+Actors,http://channingtatumunwrapped.com/,0
+Actors,http://channingtatum.org/,8
+Actors,http://www.mtv.com/movies/person/380573/personmain.jhtml,14
+Actors,https://www.facebook.com/ChanningTatumUnwrapped,19
+Actors,http://www.starpulse.com/Actors/Tatum,_Channing/,24
+Universities,http://www.utexas.edu/student/admissions/,1
+Universities,http://www.utexas.edu/student/admissions/,1
+Universities,http://www.tripadvisor.com/Attraction_Review-g30196-d144288-Reviews-University_of_Texas_at_Austin-Austin_Texas.html,14
+Universities,http://www.tripadvisor.com/Attraction_Review-g30196-d144288-Reviews-University_of_Texas_at_Austin-Austin_Texas.html,14
+Universities,http://catalog.utexas.edu/undergraduate/the-university/,27
+Universities,http://www.hup.harvard.edu/,1
+Universities,http://www.fas.harvard.edu/,4
+Universities,http://www.gsas.harvard.edu/,19
+Universities,http://topics.bloomberg.com/harvard-university/,16
+Universities,http://www.extension.harvard.edu/distance-education,29
+Universities,http://en.wikipedia.org/wiki/University_of_California,_Los_Angeles,1
+Universities,https://bigfuture.collegeboard.org/college-university-search/university-of-california-los-angeles#!,6
+Universities,http://www.forbes.com/colleges/university-of-california-los-angeles/,14
+Universities,http://www.yellowpages.com/los-angeles-ca/university-of-california-los-angeles,13
+Universities,http://www.hotels.com/de844/hotels-near-university-of-california-los-angeles-los-angeles-united-states-of-america/,29
+Universities,http://online.stanford.edu/courses/,7
+Universities,http://www.gostanford.com/,3
+Universities,https://www.facebook.com/stanford,11
+Universities,http://www.law.stanford.edu/,12
+Universities,http://math.stanford.edu/,27
+Universities,http://www.ucla.edu/,4
+Universities,http://www.ucsc.edu/,3
+Universities,http://extension.universityofcalifornia.edu/,17
+Universities,http://uci.edu/,15
+Universities,http://nursing.ucsf.edu/,22
+Universities,http://en.wikipedia.org/wiki/University_of_Southern_California,1
+Universities,http://www.universityofcalifornia.edu/,5
+Universities,http://www.universities.com/edu/University_of_Southern_California.html,19
+Universities,http://www.universities.com/edu/University_of_Southern_California.html,19
+Universities,http://www.collegeview.com/schools/university-of-southern-california/,24
+Universities,http://med.umich.edu/,5
+Universities,http://www.mgoblue.com/,1
+Universities,http://www.law.umich.edu/,10
+Universities,http://www.topuniversities.com/universities/university-michigan/undergrad,16
+Universities,http://www.uofmhealth.org/,29
+Universities,http://penn.stateuniversity.com/,3
+Universities,http://www.upenn.edu/,5
+Universities,http://search.psu.edu/?q=%22university+of+pennsylvania%22+PhD+department,19
+Universities,http://www.topuniversities.com/universities/pennsylvania-state-university/undergrad,16
+Universities,http://www.nursing.psu.edu/,26
+Universities,http://www.education.purdue.edu/,8
+Universities,https://engineering.purdue.edu/Engr,3
+Universities,http://www.tech.purdue.edu/,19
+Universities,http://www.krannert.purdue.edu/,15
+Universities,https://ag.purdue.edu/Pages/default.aspx,27
+Universities,http://www.ohio.edu/,4
+Universities,http://majors.osu.edu/,3
+Universities,https://www.facebook.com/osu,13
+Universities,http://colleges.usnews.rankingsandreviews.com/best-colleges/ohio-state-university-columbus-6883,14
+Universities,http://www.cfm.ohio-state.edu/,20
+Universities,http://www.gohuskies.com/,1
+Universities,http://www.tacoma.uw.edu/,3
+Universities,http://education.washington.edu/index.html,19
+Universities,http://www.nursing.uw.edu/,16
+Universities,http://www.com.washington.edu/,22
+Universities,http://en.wikipedia.org/wiki/Cornell_University,1
+Universities,http://www.arts.cornell.edu/,5
+Universities,http://topics.nytimes.com/top/reference/timestopics/organizations/c/cornell_university/index.html,12
+Universities,http://admissions.cornell.edu/,13
+Universities,http://www.lawschool.cornell.edu/,26
+Universities,http://www.aggieathletics.com/,2
+Universities,http://www.tamucc.edu/,8
+Universities,http://colleges.usnews.rankingsandreviews.com/best-colleges/texas-am-university-college-station-10366,11
+Universities,http://library.tamu.edu/,16
+Universities,http://m.tamu.edu/,20
+Universities,http://web.mit.edu/admissions/,2
+Universities,http://mitadmissions.org/index.php,9
+Universities,http://www.infoplease.com/encyclopedia/society/massachusetts-institute-technology.html,18
+Universities,http://dictionary.reference.com/browse/Massachusetts%20institute%20of%20technology,13
+Universities,http://www.universities.com/edu/Massachusetts_Institute_of_Technology.html,20
+Universities,https://registrar.rutgers.edu/,8
+Universities,http://www.newark.rutgers.edu/,4
+Universities,http://www.alumni.rutgers.edu/,14
+Universities,https://my.rutgers.edu/portal/,18
+Universities,http://www.soe.rutgers.edu/,26
+Universities,http://web.library.yale.edu/,6
+Universities,http://web.library.yale.edu/,6
+Universities,http://map.yale.edu/map/,15
+Universities,http://oyc.yale.edu/,16
+Universities,http://nursing.yale.edu/,20
+Universities,http://unc.edu/,0
+Universities,http://www.goheels.com/,2
+Universities,http://soe.unc.edu/,10
+Universities,http://www.law.unc.edu/,13
+Universities,http://hr.unc.edu/careers-at-carolina/,24
+Universities,http://www.arizona.edu/,8
+Universities,http://www.asu.edu/programs/,4
+Universities,http://www.education.asu.edu/,18
+Universities,http://www.stateuniversity.com/universities/AZ/Arizona_State_University.html,17
+Universities,https://transfer.asu.edu/,28
+Universities,http://www.yorku.ca/,8
+Universities,http://steinhardt.nyu.edu/,9
+Universities,http://www.law.nyu.edu/,14
+Universities,http://www.law.nyu.edu/,14
+Universities,http://gonyuathletics.com/,21
+Universities,http://aptm.phoenix.edu/?v8=online&creative_desc=Broad&provider=google&keyword=online+university+information&user3=1&unit=dir&channel=srch&initiative=gen&mktg_prog=gen&placement=srch&version=Text&classification=t1srch&destination=online&distribution=na&user1=cpc&user2=non_brnd&pvp_campaign=14210_0917_9_95&pvp_campaign_int=24310_0917_9_95&cm_mmc=dir-_-srch-_-google-_-gen&cm_mmca1=gen&cm_mmca2=srch&cm_mmca4=Broad&cm_mmca5=Text&cm_mmca6=t1srch&cm_mmca7=online+university+information&cm_mmca8=online&cm_mmca9=na&cm_mmca11=cpc&cm_mmca12=non_brnd&cm_mmca13=1&vrefid=s158962950_7003744235_4561iuf9g3q501317&ABS=eM,7
+Universities,http://www.phoenix.edu/,0
+Universities,https://faw.phoenix.edu/,14
+Universities,https://faw.phoenix.edu/,14
+Universities,http://educationdegrees.phoenix.edu/?v8=cte&user3=2&user2=non_brnd&user1=cpc&cm_mmca13=2&cm_mmca12=non_brnd&cm_mmca11=cpc&destination=contedu&placement=srch&mktg_prog=contedu&version=text&distribution=na&keyword=professional+development+for+teachers&initiative=contedu&provider=google&channel=srch&cm_mmc=dir-_-srch-_-google-_-contedu&cm_mmca9=na&cm_mmca8=contedu&cm_mmca7=professional+development+for+teachers&cm_mmca6=t1srch&cm_mmca5=text&cm_mmca4=Exact&cm_mmca2=srch&cm_mmca1=contedu&vrefid=sG7wAdoz4_9033890034_RefDomain_&creative_desc=Exact&pvp_campaign_int=24310_0917_9_95&pvp_campaign=14227_1107_9_95&clphone=866.439.3864&classification=t1srch&unit=dir,21
+Universities,http://topics.nytimes.com/top/reference/timestopics/organizations/c/city_university_of_new_york/index.html,7
+Universities,http://www.ccny.cuny.edu/,2
+Universities,http://www.citytech.cuny.edu/,11
+Universities,http://www.mapquest.com/maps?cat=City%20University%20of%20New%20York&state=NY,17
+Universities,http://libraries.cuny.edu/,28
+Universities,http://www.virginia.edu/,0
+Universities,https://bigfuture.collegeboard.org/college-university-search/university-of-virginia#!,9
+Universities,http://www.nursing.virginia.edu/,14
+Universities,http://www.forbes.com/colleges/university-of-virginia-main-campus/,15
+Universities,http://grad-schools.usnews.rankingsandreviews.com/best-graduate-schools/top-law-schools/university-of-virginia-03162,25
+Universities,http://www.ucsd.edu/,5
+Universities,http://berkeley.edu/,2
+Universities,http://www.ucdavis.edu/,11
+Universities,http://jobs.universityofcalifornia.edu/,13
+Universities,http://admission.universityofcalifornia.edu/undergraduate.html,28
+Universities,http://www.gradschool.umd.edu/,7
+Universities,http://www.umuc.edu/,2
+Universities,https://medschool.umaryland.edu/,14
+Universities,http://www.law.umaryland.edu/index.html,16
+Universities,https://coursera.org/umd,28
+Universities,http://www.bumc.bu.edu/,7
+Universities,http://www.bumc.bu.edu/,7
+Universities,http://www.umb.edu/,11
+Universities,https://www.facebook.com/BostonUniversity,12
+Universities,http://yourcampus.boston.com/bostonuniversity,29
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3ASpongeBob%20SquarePants,5
+Kids' TV,http://spongebob.nick.com/,0
+Kids' TV,http://www.ebay.com/sch/i.html?_nkw=spongebob+squarepants,10
+Kids' TV,http://www.ebay.com/sch/i.html?_nkw=spongebob+squarepants,10
+Kids' TV,http://spongebob.lego.com/en-US/default.aspx,22
+Kids' TV,http://www.tv.com/shows/adventure-time/,6
+Kids' TV,http://www.cartoonnetwork.com/tv_shows/adventuretime/video/index.html,3
+Kids' TV,http://www.last.fm/music/Adventure+Time,11
+Kids' TV,http://www.cartoonnetwork.co.uk/show/adventure-time,19
+Kids' TV,http://frederator.com/series/adventure-time/,28
+Kids' TV,http://www.youtube.com/watch?v=q0YkXmebAGM,5
+Kids' TV,http://www.nick.com/shows/power-rangers-samurai/,1
+Kids' TV,http://www.ebay.com/sch/i.html?_nkw=power+rangers,12
+Kids' TV,http://www.ebay.com/sch/i.html?_nkw=power+rangers,12
+Kids' TV,http://colouredgames.com/Play.Game.aspx?GameName=Power.Rangers.Game&GameNumber=399,24
+Kids' TV,http://serebii.net/anime/characters/jessie.shtml,6
+Kids' TV,http://serebii.net/anime/characters/jessie.shtml,6
+Kids' TV,http://bulbapedia.bulbagarden.net/wiki/Jessie,12
+Kids' TV,http://jessie.wikia.com/wiki/Jessie_(TV_series),15
+Kids' TV,http://tvlistings.zap2it.com/tv/jessie/EP01448290?aid=zap2it,25
+Kids' TV,http://en.wikipedia.org/wiki/Sesame_Street,3
+Kids' TV,http://www.sesamestreet.org/games,2
+Kids' TV,http://m.sesamestreet.org/,19
+Kids' TV,http://sesamestreetlive.com/,15
+Kids' TV,http://www.randomhousekids.com/brand/sesame-street/,28
+Kids' TV,http://www.imdb.com/title/tt1695360/,4
+Kids' TV,http://www.tv.com/shows/avatar-the-legend-of-korra/,8
+Kids' TV,http://screenrant.com/legend-of-korra-season-2-premiere-date-trailer/,17
+Kids' TV,http://www.imdb.com/title/tt1695360/combined,15
+Kids' TV,http://screenrant.com/legend-korra-season-2-premiere-review/,25
+Kids' TV,http://www.youtube.com/artist/big-time-rush,4
+Kids' TV,http://www.btrband.com/us/home,1
+Kids' TV,http://www.last.fm/music/Big+Time+Rush,11
+Kids' TV,http://www.allmusic.com/artist/big-time-rush-mn0002534053,17
+Kids' TV,http://www.barnesandnoble.com/w/big-time-rush-big-time-rush/20102745?ean=886974291824,26
+Kids' TV,http://ben10.wikia.com/wiki/Ben_10,5
+Kids' TV,http://www.ben10.ws/,6
+Kids' TV,https://www.facebook.com/ben10,15
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=n%3A165793011%2Ck%3ABen%2010,12
+Kids' TV,http://www.arcaderush.net/ben-10-games,21
+Kids' TV,http://www.youtube.com/user/thomasandfriends,4
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3AThomas%20%26amp%3B%20Friends,5
+Kids' TV,http://www.hulu.com/thomas-and-friends,10
+Kids' TV,http://www.ebay.com/sch/i.html?_nkw=thomas+friends,13
+Kids' TV,http://stores.ebay.com/MY-TOYS-2012/THOMAS-FRIENDS-/_i.html?_fsub=2039670013,28
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Agood%20luck%20charlie,8
+Kids' TV,http://www.imdb.com/title/tt1828976/combined,9
+Kids' TV,http://en.wikipedia.org/wiki/Good_Luck_Charlie_(film),13
+Kids' TV,http://en.wikipedia.org/wiki/Good_Luck_Charlie_(film),13
+Kids' TV,http://www.ebay.com/bhp/good-luck-charlie,24
+Kids' TV,http://www.tv.com/shows/victorious/,6
+Kids' TV,http://www.tv.com/shows/victorious/,6
+Kids' TV,http://www.toysrus.com/family/index.jsp?categoryId=11739494,14
+Kids' TV,http://www.fanfiction.net/tv/Victorious/,16
+Kids' TV,http://thesaurus.com/browse/victorious,28
+Kids' TV,http://disneychannel.disney.com/phineas-and-ferb/games,4
+Kids' TV,http://disneychannel.disney.com/phineas-and-ferb/games,4
+Kids' TV,http://www.tv.com/shows/phineas-and-ferb/episodes/,14
+Kids' TV,http://www.amazon.com/Phineas-And-Ferb-Various/dp/B002P2FHZE,10
+Kids' TV,http://www.family.ca/phineas-and-ferb/,27
+Kids' TV,https://www.facebook.com/iCarly,8
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3AiCarly,7
+Kids' TV,http://www.toysrus.com/family/index.jsp?categoryId=3243815,13
+Kids' TV,http://www.icarly.com.au/index.html,19
+Kids' TV,http://www.zazzle.com/icarly,23
+Kids' TV,http://www.youtube.com/watch?v=W9OIzeokSuA,0
+Kids' TV,http://www.youtube.com/watch?v=Ktv_0xBaYCA,3
+Kids' TV,http://www.shopwiki.com/l/Barney-%3A-Barney-and-Friends,15
+Kids' TV,http://barney.wikia.com/wiki/Category:Barney_%26_Friends,13
+Kids' TV,http://barneyfriends.wikia.com/wiki/Barney%26Friends_Wiki,25
+Kids' TV,http://nicktoons.nick.com/shows/avatar/episode-guide,6
+Kids' TV,http://www.tv.com/shows/avatar-the-last-airbender/,4
+Kids' TV,http://www.ebay.com/sch/i.html?_nkw=Avatar%3A+The+Last+Airbender,19
+Kids' TV,http://www.nick.com/avatarondvd/index.jhtml,17
+Kids' TV,http://www.animehere.com/anime/avatar-the-last-airbender.html,27
+Kids' TV,http://www.roblox.com/My-Little-Pony-Friendship-Is-Magic-Party-Image-item?id=132569335,9
+Kids' TV,http://www.hasbro.com/mylittlepony/en_US/,0
+Kids' TV,http://www.watchcartoononline.com/anime/my-little-pony-friendship-is-magic,18
+Kids' TV,http://www.mmo-champion.com/threads/1310056-My-Little-Pony-Friendship-is-Magic-14-This-Isn-t-Even-Our-Final-Thread?p=22967674,11
+Kids' TV,https://itunes.apple.com/us/app/my-little-pony-friendship/id533173905?mt=8,24
+Kids' TV,http://www.tvguide.com/tvshows/shake-it-up/307879,9
+Kids' TV,http://www.youtube.com/watch?v=PPNMGYOm1aM,4
+Kids' TV,http://www.imdb.com/title/tt1661326/combined,16
+Kids' TV,http://www.imdb.com/title/tt1661326/combined,16
+Kids' TV,http://www.yidio.com/show/shake-it-up,22
+Kids' TV,http://www.didigames.com/winx-club.htm,3
+Kids' TV,http://www.didigames.com/winx-club.htm,3
+Kids' TV,http://www.tv.com/shows/winx-club/episodes/,17
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Awinx%20club,11
+Kids' TV,http://www.winxclubthemovie.com/,24
+Kids' TV,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3AThe%20Powerpuff%20Girls,4
+Kids' TV,http://www.tv.com/shows/the-powerpuff-girls/,2
+Kids' TV,http://www.imdb.com/title/tt0175058/,13
+Kids' TV,http://www.youtube.com/show/thepowerpuffgirls,12
+Kids' TV,http://theppgs.wikia.com/wiki/The_Powerpuff_Girls,24
+Kids' TV,http://www.youtube.com/watch?v=MSsZPHL22RU,3
+Kids' TV,http://www.imdb.com/title/tt0784896/,8
+Kids' TV,http://www.nextag.com/mickey-mouse-clubhouse/stores-html#!,17
+Kids' TV,http://www.nextag.com/mickey-mouse-clubhouse/stores-html#!,17
+Kids' TV,http://mickeyclub.wikia.com/wiki/Mickey_Mouse_Clubhouse,24
+Films,http://www.fandango.com/ironman3_147742/movieoverview,6
+Films,http://www.imdb.com/title/tt1300854/combined,8
+Films,http://www.boxofficemojo.com/movies/?id=ironman3.htm,13
+Films,http://www.movieinsider.com/m5277/iron-man-3/,14
+Films,http://www.movieweb.com/movie/iron-man-3,20
+Films,https://www.moviefone.com/movie/fast--and--furious-6/54333/main,7
+Films,http://www.comingsoon.net/films.php?id=78993,6
+Films,http://movies.msn.com/movies/movie/fast-and-furious-6/,15
+Films,http://www.movies.com/fast-furious-6/m68760,11
+Films,http://www.ebay.com/sch/i.html?_nkw=fast+furious+6,28
+Films,http://www.hangoverpart3.com/,2
+Films,http://www.hangoverpart3.com/,2
+Films,http://megashare.info/watch-the-hangover-online-TXpjPQ,17
+Films,http://www.fandango.com/thehangover_118895/movieoverview,10
+Films,http://www.redbox.com/movies/the-hangover,23
+Films,http://www.imdb.com/title/tt1408101/,2
+Films,http://www.imdb.com/title/tt1408101/combined,4
+Films,http://www.fandango.com/startrekintodarkness_131560/movieoverview,11
+Films,http://www.hollywood.com/movies/6381250/star-trek-into-darkness,19
+Films,http://www.startrek.com/article/first-look-star-trek-into-darkness-trailer,27
+Films,http://www.amazon.com/Scott-Fitzgeralds-Great-Gatsby-adapted/dp/0822227274,4
+Films,http://www.imdb.com/title/tt0071577/,6
+Films,http://ebooks.adelaide.edu.au/f/fitzgerald/f_scott/gatsby/,11
+Films,http://www.sparknotes.com/lit/gatsby/summary.html,13
+Films,http://www.fandango.com/thegreatgatsby2013_149090/movieoverview,20
+Films,http://en.wikipedia.org/wiki/The_Hangover_Part_II,3
+Films,http://hangoverpart2.warnerbros.com/dvd/,2
+Films,http://www.moviefone.com/movie/the-hangover-2/38948/main,10
+Films,http://www.movieweb.com/movie/the-hangover-part-ii,13
+Films,http://boxofficemojo.com/movies/?id=hangover2.htm,26
+Films,http://www.imdb.com/title/tt0770828/fullcredits,4
+Films,http://en.wikipedia.org/wiki/Man_of_Steel_(film),1
+Films,http://www.movieweb.com/movie/man-of-steel,12
+Films,http://movies.msn.com/movies/movie/man-of-steel.2/,15
+Films,http://www.amazon.com/Superman-The-Man-Steel-Vol/dp/0930289285,26
+Films,http://en.wikipedia.org/wiki/Iron_Man,0
+Films,http://en.wikipedia.org/wiki/Iron_Man_(film),3
+Films,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Airon%20man,11
+Films,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Airon%20man,11
+Films,http://shop.lego.com/en-US/Iron-Man-4529,26
+Films,http://www.rottentomatoes.com/m/marvels_the_avengers/,5
+Films,http://www.rottentomatoes.com/m/marvels_the_avengers/,5
+Films,http://www.youtube.com/watch?v=eOrNdBpGMv8,18
+Films,http://www.movieinsider.com/m4240/the-avengers/,11
+Films,http://movies.msn.com/movies/movie/marvel's-the-avengers/,26
+Films,http://www.imdb.com/title/tt0060028/,5
+Films,http://en.wikipedia.org/wiki/Star_Trek_(film),2
+Films,http://www.hulu.com/browse/picks/star-trek,13
+Films,http://www.hulu.com/browse/picks/star-trek,13
+Films,http://www.moviefone.com/movie/star-trek/29301/main,21
+Films,http://movies.yahoo.com/movie/pitch-perfect/,5
+Films,http://www.youtube.com/user/PitchPerfectMovie,3
+Films,http://boxofficemojo.com/movies/?id=pitchperfect.htm,14
+Films,http://www.fandango.com/pitchperfect_156075/moviereviews,17
+Films,http://www.stlyrics.com/p/pitchperfect.htm,29
+Films,http://franzpatrick.com/2013/10/20/after-earth/,3
+Films,http://movies.yahoo.com/movie/after-earth/,7
+Films,http://trailers.apple.com/trailers/sony_pictures/afterearth/,13
+Films,http://www.fandango.com/afterearth_149561/movietimes,11
+Films,https://plus.google.com/+AfterEarth,25
+Films,http://www.tedisreal.com/,5
+Films,http://www.youtube.com/user/TEDtalksDirector,8
+Films,http://www.moviefone.com/movie/ted/10057405/main,15
+Films,http://www.thefreedictionary.com/ted,17
+Films,http://trailers.apple.com/trailers/universal/ted/,29
+Films,http://www.rottentomatoes.com/m/taken/,6
+Films,http://movies.yahoo.com/movie/taken-2009/,5
+Films,http://thesaurus.com/browse/taken,12
+Films,http://www.fandango.com/taken_113407/movieoverview,16
+Films,http://www.synonym.com/synonyms/taken/,20
+Films,http://www.fandango.com/worldwarz_136726/movieoverview,9
+Films,http://movies.yahoo.com/movie/world-war-z/,6
+Films,http://boxofficemojo.com/movies/?id=worldwarz.htm,15
+Films,http://zombie.wikia.com/wiki/World_War_Z,16
+Films,http://www.rogerebert.com/reviews/world-war-z-2013,22
+Films,http://www.ticketmaster.com/The-Lion-King-New-York-NY-tickets/artist/1039581,9
+Films,http://en.wikipedia.org/wiki/The_Lion_King,0
+Films,http://lionking.org/,10
+Films,http://ppc.broadway.com/shows/the-lion-king/,19
+Films,http://www.cheaptickets.com/events/the-lion-king-tickets.p30059,27
+Films,http://www.merriam-webster.com/dictionary/brave,9
+Films,http://movies.disney.com/brave,2
+Films,http://www.fandango.com/brave_136016/movietimes,11
+Films,http://www.amazon.com/Brave-Various/dp/B00899D0HO,13
+Films,http://www.lyrics.com/brave-lyrics-sara-bareilles.html,26
+Films,http://en.wikipedia.org/wiki/Silver_Linings_Playbook,0
+Films,http://www.amazon.com/Silver-Linings-Playbook-Bradley-Cooper/dp/B00A81MV3U,9
+Films,http://boxofficemojo.com/movies/?id=silverliningsplaybook.htm,18
+Films,http://www.theguardian.com/film/movie/148764/silver-linings-playbook,16
+Films,http://movies.msn.com/movies/movie/silver-linings-playbook/,29
+Films,http://en.wikipedia.org/wiki/Thor,0
+Films,http://marvel.wikia.com/Thor,8
+Films,http://www.youtube.com/watch?v=JOddp-nlNvQ,18
+Films,https://www.facebook.com/Thor,16
+Films,http://www.thefreedictionary.com/Thor,22
+Films,http://en.wikipedia.org/wiki/Jack_Reacher_(film),3
+Films,http://www.rottentomatoes.com/m/jack_reacher/,5
+Films,http://www.movies.com/jack-reacher/m68618,13
+Films,http://www.moviefone.com/movie/jack-reacher-one-shot/54563/main,15
+Films,http://www.ebay.com/sch/DVDs-Blu-ray-Discs-/617/i.html?_nkw=jack+reacher,28
+Musical Artists,http://www.imdb.com/name/nm3595501/,7
+Musical Artists,https://myspace.com/justinbieber,9
+Musical Artists,http://www.people.com/people/justin_bieber,14
+Musical Artists,http://www.people.com/people/justin_bieber,14
+Musical Artists,http://music.yahoo.com/artist/justin-bieber/,22
+Musical Artists,http://www.beyonce.com/,0
+Musical Artists,http://www.huffingtonpost.com/news/beyonce-knowles,6
+Musical Artists,http://www.metrolyrics.com/beyonce-knowles-lyrics.html,14
+Musical Artists,http://www.forbes.com/profile/beyonce-knowles/,16
+Musical Artists,http://beyonceknowles.org/,23
+Musical Artists,http://www.imdb.com/name/nm1982597/,6
+Musical Artists,http://twitter.com/Rihanna,4
+Musical Artists,http://www.eonline.com/news/rihanna,13
+Musical Artists,http://www.youtube.com/user/RihannaVEVO,15
+Musical Artists,http://www.tmz.com/person/rihanna/,25
+Musical Artists,http://www.last.fm/music/Lil%27+Wayne,6
+Musical Artists,http://www.youngmoney.com/,5
+Musical Artists,http://www.hotnewhiphop.com/LilWayne/profile/,10
+Musical Artists,http://mp3.com/artist/Lil%2527%2BWayne,19
+Musical Artists,http://client.winamp.com/nowplaying/artist/lil-wayne,21
+Musical Artists,http://www.eonline.com/news/selena_gomez,8
+Musical Artists,http://www.people.com/people/selena_gomez,9
+Musical Artists,https://myspace.com/selenagomez,10
+Musical Artists,http://www.youtube.com/watch?v=BzE1mX4Px0I,18
+Musical Artists,http://www.billboard.com/artist/278617/selena-gomez,25
+Musical Artists,http://www.mtv.com/artists/drake/,4
+Musical Artists,http://www.drizzydrake.org/,1
+Musical Artists,http://en.wikipedia.org/wiki/Drake,17
+Musical Artists,https://www.facebook.com/Drake,11
+Musical Artists,http://www.mtv.com/artists/drake/news/,27
+Musical Artists,http://store.taylorswift.com/,6
+Musical Artists,http://taylorswift.com/about,2
+Musical Artists,http://www.youtube.com/artist/taylor-swift,12
+Musical Artists,http://www.youtube.com/artist/taylor-swift,12
+Musical Artists,http://perezhilton.com/category/taylor-swift,24
+Musical Artists,http://www.mtv.com/artists/nicki-minaj/,2
+Musical Artists,http://nicki-minaj.org/,8
+Musical Artists,http://www.eonline.com/news/nicki_minaj,12
+Musical Artists,https://www.facebook.com/nickiminaj,14
+Musical Artists,http://www.allmusic.com/artist/nicki-minaj-mn0001013175,24
+Musical Artists,http://en.wikipedia.org/wiki/One_Direction,1
+Musical Artists,http://en.wikipedia.org/wiki/One_Direction,1
+Musical Artists,http://popcrush.com/tags/one-direction/,15
+Musical Artists,http://www.last.fm/music/One+Direction,12
+Musical Artists,http://www.celebuzz.com/celebrities/one-direction/,26
+Musical Artists,http://twitter.com/kanyewest,2
+Musical Artists,http://www.last.fm/music/Kanye+West,4
+Musical Artists,http://www.youtube.com/watch?v=L53gjP-TtGE,18
+Musical Artists,http://www.amazon.com/Kanye-West/e/B000APR990,10
+Musical Artists,http://www.people.com/people/kanye_west,27
+Musical Artists,http://www.huffingtonpost.com/news/miley-cyrus,8
+Musical Artists,http://www.tmz.com/person/miley-cyrus/,5
+Musical Artists,http://www.thehollywoodgossip.com/stars/miley-cyrus.html,19
+Musical Artists,http://www.last.fm/music/Miley+Cyrus,14
+Musical Artists,https://myspace.com/mileycyrus,20
+Musical Artists,http://www.daftalive.com/,5
+Musical Artists,http://www.last.fm/music/Daft+Punk,6
+Musical Artists,http://www.youtube.com/user/daftpunkalive,18
+Musical Artists,https://www.facebook.com/daftpunk,16
+Musical Artists,http://www.daftpunk.org/,23
+Musical Artists,http://perezhilton.com/category/chris-brown/,3
+Musical Artists,http://twitter.com/chrisbrown,2
+Musical Artists,http://www.amazon.com/Chris-Brown/e/B000AQ4T9M,10
+Musical Artists,http://www.people.com/people/chris_brown,17
+Musical Artists,http://www.biography.com/people/chris-brown-265946,24
+Musical Artists,http://www.last.fm/music/Eminem,8
+Musical Artists,http://www.youtube.com/watch?v=j5-yKhDd64s,3
+Musical Artists,http://www.eminem.net/,11
+Musical Artists,http://www.answers.com/topic/eminem,16
+Musical Artists,http://www.askmen.com/celebs/men/entertainment/50_eminem.html,25
+Musical Artists,http://countdown.justintimberlake.com/,6
+Musical Artists,http://twentytwenty.justintimberlake.com/,9
+Musical Artists,http://movies.yahoo.com/person/justin-timberlake/,12
+Musical Artists,https://myspace.com/justintimberlake,13
+Musical Artists,http://www.lyrics.com/justintimberlake,25
+Musical Artists,http://en.wikipedia.org/wiki/Ariana_Grande,0
+Musical Artists,http://arianagrande.org/,5
+Musical Artists,http://ariana-grande.com/,12
+Musical Artists,http://www.nick.com/celebrity/ariana-grande/,16
+Musical Artists,http://www.arianagrande.info/about.php,24
+Musical Artists,http://mariahcarey.com/,0
+Musical Artists,http://www.biography.com/people/mariah-carey-9542177,2
+Musical Artists,http://www.imdb.com/name/nm0001014/bio,15
+Musical Artists,http://www.amazon.com/Mariah-Carey/e/B000AP80A2,14
+Musical Artists,http://www.pandora.com/mariah-carey,24
+Musical Artists,http://en.wikipedia.org/wiki/Jay-Z,0
+Musical Artists,http://www.jayzonline.com/,1
+Musical Artists,http://www.amazon.com/Jay-Z/e/B000APXF5M,17
+Musical Artists,https://myspace.com/jayz,16
+Musical Artists,http://www.defjam.com/artists/?label=roc-a-fella,24
+Musical Artists,http://www.youtube.com/watch?v=LjhCEhWiKXk,4
+Musical Artists,http://en.wikipedia.org/wiki/Bruno_Mars,1
+Musical Artists,http://www.metrolyrics.com/bruno-mars-lyrics.html,19
+Musical Artists,http://www.amazon.com/Bruno-Mars/e/B003N2XWJS,11
+Musical Artists,http://www.eonline.com/news/bruno_mars,20
+Musical Artists,http://perezhilton.com/category/demi-lovato/,4
+Musical Artists,http://www.mtv.com/artists/demi-lovato/,5
+Musical Artists,http://www.demilovatodaily.com/,13
+Musical Artists,http://www.amazon.com/Demi-Lovato/dp/B00BLSJI80,19
+Musical Artists,http://www.usmagazine.com/celebrities/demi-lovato,29
+Space objects,http://www.solarviews.com/eng/moon.htm,4
+Space objects,http://en.wikipedia.org/wiki/Moon,0
+Space objects,http://simple.wikipedia.org/wiki/Moon,11
+Space objects,http://callofduty.wikia.com/wiki/Moon,18
+Space objects,http://en.wiktionary.org/wiki/moon,21
+Space objects,http://nssdc.gsfc.nasa.gov/planetary/planets/earthpage.html,8
+Space objects,http://www.flashearth.com/,4
+Space objects,http://simple.wikipedia.org/wiki/Earth,11
+Space objects,http://www.last.fm/music/Earth,18
+Space objects,http://www.zappos.com/earth,24
+Space objects,http://www.solarviews.com/eng/sun.htm,6
+Space objects,http://solarsystem.nasa.gov/planets/profile.cfm?Object=Sun,4
+Space objects,http://www.enchantedlearning.com/subjects/astronomy/sun/,11
+Space objects,http://www.java.com/,12
+Space objects,http://finance.yahoo.com/lookup?s=SUN,28
+Space objects,http://www.universetoday.com/14701/mars/,5
+Space objects,http://nineplanets.org/mars.html,1
+Space objects,http://nssdc.gsfc.nasa.gov/planetary/planets/marspage.html,17
+Space objects,http://www.mars.com/global/brands/chocolate.aspx,14
+Space objects,http://www.marsdd.com/,22
+Space objects,http://en.wikipedia.org/wiki/Venus,1
+Space objects,http://en.wikipedia.org/wiki/Venus_(goddess),8
+Space objects,http://nssdc.gsfc.nasa.gov/photo_gallery/photogallery-venus.html,19
+Space objects,http://nssdc.gsfc.nasa.gov/photo_gallery/photogallery-venus.html,19
+Space objects,http://encyclopedia2.thefreedictionary.com/Venus,20
+Space objects,http://www.solarviews.com/eng/jupiter.htm,5
+Space objects,http://www.jupiter.fl.us/,8
+Space objects,http://encyclopedia2.thefreedictionary.com/Jupiter,17
+Space objects,http://www.city-data.com/city/Jupiter-Florida.html,11
+Space objects,http://en.wiktionary.org/wiki/Jupiter,24
+Space objects,http://en.wikipedia.org/wiki/Saturn,1
+Space objects,http://en.wikipedia.org/wiki/Saturn,1
+Space objects,http://www.autotrader.com/Saturn-cars.jsp,15
+Space objects,http://autos.yahoo.com/saturn/,17
+Space objects,http://en.wiktionary.org/wiki/Saturn,29
+Space objects,http://en.wikipedia.org/wiki/NEPTUNE,1
+Space objects,http://en.wikipedia.org/wiki/NEPTUNE,1
+Space objects,http://www.enchantedlearning.com/subjects/astronomy/planets/neptune/,12
+Space objects,http://www.merriam-webster.com/dictionary/neptune,16
+Space objects,http://nineplanets.org/?q=nineplanets/nineplanets/neptune.html,25
+Space objects,http://www.astrology.com/pluto-planet-power/2-d-d-67287,6
+Space objects,http://veggieonpluto.wordpress.com/2013/10/20/veggie-on-pluto-part-two/,3
+Space objects,http://simple.wikipedia.org/wiki/Pluto,15
+Space objects,http://nssdc.gsfc.nasa.gov/planetary/planets/plutopage.html,17
+Space objects,http://www.windows2universe.org/pluto/pluto.html,23
+Space objects,http://en.wikipedia.org/wiki/Milky_Way_(candy),9
+Space objects,http://en.wikipedia.org/wiki/Milky_Way,0
+Space objects,http://simple.wikipedia.org/wiki/Milky_Way,12
+Space objects,http://www.space.com/16204-milky-way-galaxy-guide-infographic.html,18
+Space objects,http://www.windows2universe.org/the_universe/Milkyway.html,21
+Space objects,http://science.nationalgeographic.com/science/space/solar-system/uranus-article/,2
+Space objects,http://www.kidsastronomy.com/uranus.htm,5
+Space objects,http://www.newworldencyclopedia.org/entry/Uranus,16
+Space objects,http://www.enchantedlearning.com/subjects/astronomy/planets/uranus/,10
+Space objects,http://en.wiktionary.org/wiki/Uranus,26
+Space objects,http://en.wikipedia.org/wiki/Mercury_(planet),0
+Space objects,http://solarsystem.nasa.gov/planets/profile.cfm?Object=Mercury,7
+Space objects,http://www.thefreedictionary.com/mercury,17
+Space objects,http://www.merriam-webster.com/dictionary/mercury,11
+Space objects,http://www.mercurymarine.com/engines/outboards/,26
+Space objects,http://www.nissanusa.com/trucks/titan,6
+Space objects,http://www.titanmachinery.com/,2
+Space objects,http://runescape.wikia.com/wiki/Titan,17
+Space objects,http://titan360.com/,11
+Space objects,http://www.olcf.ornl.gov/titan/,25
+Space objects,http://en.wikipedia.org/wiki/Sirius,2
+Space objects,http://finance.yahoo.com/q?s=SIRI,8
+Space objects,http://dictionary.reference.com/browse/Sirius,16
+Space objects,http://www.thefreedictionary.com/Sirius,14
+Space objects,http://www.youtube.com/user/sirius,22
+Space objects,http://www.universetoday.com/32856/asteroid-belt/,3
+Space objects,http://www.kidsastronomy.com/asteroid.htm,2
+Space objects,http://www.space.com/15948-asteroid-belt-space-rocks-infographic.html,12
+Space objects,http://www.howstuffworks.com/asteroid-belt.htm,18
+Space objects,http://www.princeton.edu/~achaney/tmve/wiki100k/docs/Asteroid_belt.html,25
+Space objects,http://dictionary.reference.com/browse/Pleiades,5
+Space objects,http://www.lightconnection.org/planetaryorigin/pleiades.html,3
+Space objects,http://www.kitezh.com/sevensisters/pleiades.htm,16
+Space objects,http://www.amazon.com/Pleiades/dp/B00006KSYO,12
+Space objects,http://pleiades.org/,21
+Space objects,http://hyperphysics.phy-astr.gsu.edu/HBase/Astro/andromeda.html,3
+Space objects,http://article.wn.com/view/2013/10/20/LA_Galaxy_vs_San_Jose_Earthquakes_MLS_Match_Preview_MLS_Majo/,8
+Space objects,http://en.wikipedia.org/wiki/Andromeda%E2%80%93Milky_Way_collision,10
+Space objects,http://en.wikipedia.org/wiki/Andromeda%E2%80%93Milky_Way_collision,10
+Space objects,http://en.memory-alpha.org/wiki/Andromeda_Galaxy,23
+Space objects,http://neo.jpl.nasa.gov/apophis/,1
+Space objects,http://asteroidapophis.com/,9
+Space objects,https://de.wikipedia.org/wiki/%2899942%29_Apophis,17
+Space objects,http://apophis.99942-apophis.com/blog/2036/,19
+Space objects,http://sciencythoughts.blogspot.com/2013/01/99942-apophis-to-fly-by-earth.html,28
+Space objects,http://simple.wikipedia.org/wiki/Proxima_Centauri,6
+Space objects,http://en.wikipedia.org/wiki/Proxima_Centauri,0
+Space objects,http://proximacentaurigames.com/?p=280,16
+Space objects,http://it.wikipedia.org/wiki/Proxima_Centauri?veaction=edit&vesection=12,18
+Space objects,http://id.wikipedia.org/wiki/Proxima_Centauri,28
+Space objects,http://www.glyphweb.com/esky/stars/alphacentauri.html,7
+Space objects,http://apod.nasa.gov/apod/ap960526.html,6
+Space objects,http://www.gamespot.com/sid-meiers-alpha-centauri/,16
+Space objects,http://alphacentauriband.com/Home.html,19
+Space objects,http://sidmeiersalphacentauri.wikia.com/wiki/Sid_Meier%27s_Alpha_Centauri_Wiki,21
+Games,http://www.amazon.com/s?ie=UTF8&page=1&rh=n%3A165793011%2Ck%3Alego,6
+Games,http://www.lego.com/en-us/games,1
+Games,http://creator.lego.com/default.aspx,15
+Games,http://starwars.lego.com/,11
+Games,http://videogames.lego.com/en-us/lego-marvel-super-heroes/demo-download,20
+Games,http://www.pogo.com/games/scrabble,0
+Games,http://www.hasbro.com/scrabble/en_US/scrabbleGame.cfm,7
+Games,http://www.thefreedictionary.com/Scrabble,16
+Games,https://www.facebook.com/Scrabble,17
+Games,http://www.games.com/game/electronic-arts/scrabble,20
+Games,http://www.pogo.com/games/free-online-poker,7
+Games,http://www.miniclip.com/games/governor-of-poker/en/,6
+Games,http://dictionary.reference.com/browse/Poker,18
+Games,http://www.pacificpoker.com/,16
+Games,http://pureplay.com/,21
+Games,http://www.cardgamesolitaire.com/,0
+Games,http://solitairetime.com/,4
+Games,http://www.amazon.com/MobilityWare-Solitaire/dp/B0063IH60K,19
+Games,http://www.pogo.com/solitaire-games,12
+Games,http://www.freeplaysolitaire.com/,24
+Games,http://www.ebay.com/sch/i.html?_nkw=magic%3A+the+gathering,9
+Games,http://en.wikipedia.org/wiki/Magic:_The_Gathering,1
+Games,http://mtg.wikia.com/wiki/Magic:_The_Gathering,16
+Games,http://dailymtg.com/,12
+Games,http://www.starcitygames.com/,23
+Games,http://www.y8.com/tags/Dress_Up,8
+Games,http://www.dressup.com/,3
+Games,http://www.dressupgal.com/,10
+Games,http://www.dressuparcade.com/,11
+Games,http://www.dressupone.com/,26
+Games,http://www.sparkchess.com/,2
+Games,http://www.uschess.org/,9
+Games,http://www.chess.net/,11
+Games,http://www.chessgames.com/index.html,14
+Games,http://www.thefreedictionary.com/chess,23
+Games,http://www.gamesgames.com/games/mahjong/mahjong.html,5
+Games,http://www.by-art.com/mjong/mjong.php,7
+Games,http://www.mahjong.com/,12
+Games,http://www.agame.com/games/mahjong/mahjong.html,16
+Games,http://mahjonggmahjongg.com/,25
+Games,http://www.wizards.com/dnd/Feature.aspx?x=new/whatisdnd,5
+Games,http://en.wikipedia.org/wiki/Dragon_(Dungeons_&_Dragons),9
+Games,http://www.audible.com/mt/Dungeons_and_Dragons,17
+Games,http://www.audible.com/mt/Dungeons_and_Dragons,17
+Games,http://dndmerch.com/,20
+Games,http://www.domino-games.com/,6
+Games,http://en.wikipedia.org/wiki/Dominoes,3
+Games,http://boardgamegeek.com/boardgame/2394/dominoes,19
+Games,http://www.nextag.com/Dominoes_-_/stores-html,16
+Games,https://play.google.com/store/apps/details?id=com.cdroid.dominoes,20
+Games,http://go.com/,1
+Games,http://dictionary.reference.com/browse/go,4
+Games,http://www.azlyrics.com/lyrics/common/go.html,12
+Games,http://go.to/,15
+Games,http://www.azlyrics.com/lyrics/blink182/go.html,24
+Games,http://en.wikipedia.org/wiki/Blackjack,2
+Games,http://www.addictinggames.com/puzzle-games/blackjack.jsp,6
+Games,http://www.blackjack.org/,10
+Games,http://www.casinoroom.com/blackjack/,11
+Games,http://www.ace-ten.com/,29
+Games,http://www.pogo.com/games/monopoly,0
+Games,http://www.ea.com/monopoly,8
+Games,http://www.thefreedictionary.com/monopoly,17
+Games,http://www.thefreedictionary.com/monopoly,17
+Games,http://www.bigfishgames.com/download-games/19281/monopoly/index.html,28
+Games,http://graphicpolicy.com/2013/10/20/hasbro-reveals-amazing-spider-man-2-toys/,8
+Games,http://www.merriam-webster.com/dictionary/spider,9
+Games,http://www.onemotion.com/flash/spider/,10
+Games,http://runescape.wikia.com/wiki/Spider,11
+Games,http://www.amazon.com/MobilityWare-Spider/dp/B0063GORYU,24
+Games,http://www.agame.com/games/roulette/roulette.html,6
+Games,http://www.funny-games.biz/roulette.html,9
+Games,http://www.roulette4fun.com/roulette-games/roulette,11
+Games,http://www.ehow.com/hobbies-games/games-cards/roulette/,15
+Games,http://www.onlinecasinoreports.com/school/gamesoverview/roulette.php,25
+Games,http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Trading_Card_Game_(game),3
+Games,http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Trading_Card_Game_(game),3
+Games,http://www.gamespot.com/pokemon-trading-card-game/,10
+Games,http://www.amazon.com/s?ie=UTF8&page=1&rh=n%3A165793011%2Ck%3Atrading%20card%20game%20pokemon,19
+Games,http://assets23.pokemon.com/assets/cms/pdf/tcg/rulebooks/bw_next_destinies_rulebook.pdf,25
+Games,http://en.wikipedia.org/?search=MADONNA:%20TRUTH%20OR%20DARE,8
+Games,http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Atruth%20or%20dare,7
+Games,http://www.rottentomatoes.com/m/madonna_truth_or_dare/,14
+Games,http://daretruth.wordpress.com/,17
+Games,http://movies.yahoo.com/movie/madonna-truth-or-dare/,25
+Games,http://www.darkfish.com/checkers/Checkers.html,7
+Games,http://www.games.com/play/masque-publishing/checkers/single,9
+Games,http://download.cnet.com/Checkers/3000-2102_4-10029349.html,13
+Games,http://dictionary.reference.com/browse/checkers,19
+Games,http://www.ebay.com/sch/Checkers-/2553/i.html,29
+Games,http://www.barnesandnoble.com/w/pathfinder-roleplaying-game-bulmahn/1111331377?ean=9781601254672,7
+Games,http://www.amazon.com/Pathfinder-Roleplaying-Game-Core-Rulebook/dp/1601251505,3
+Games,http://www.goodreads.com/book/show/15894440-pathfinder-roleplaying-game,18
+Games,http://www.shopwiki.com/l/Pathfinder-Roleplaying-Game-Bulmahn%2C-Jason,17
+Games,http://www.fantasyroleplay.com/roleplaying-games/pathfinder-roleplaying-game,24

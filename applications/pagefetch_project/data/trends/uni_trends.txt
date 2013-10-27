@@ -1,0 +1,26 @@
+Universities, University of Texas at Austin
+Universities, Harvard University
+Universities, University of California Los Angeles
+Universities, Stanford University
+Universities, University of California, Berkeley
+Universities, University of Southern California
+Universities, University of Michigan
+Universities, Pennsylvania State University
+Universities, Purdue University
+Universities, Ohio State University
+Universities, University of Washington
+Universities, Cornell University
+Universities, Texas A&M University
+Universities, Massachusetts Institute of Technology
+Universities, Rutgers University
+Universities, Yale University
+Universities, University of North Carolina at Chapel Hill
+Universities, Arizona State University
+Universities, New York University
+Universities, University of Phoenix
+Universities, City University of New York
+Universities, University of Virginia
+Universities, University of California, San Diego
+Universities, University of Maryland, College Park
+Universities, Boston University
+
