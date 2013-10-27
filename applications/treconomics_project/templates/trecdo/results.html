@@ -1,0 +1,45 @@
+{% extends 'trecdo/search.html' %}
+
+
+{% block search_results %}
+
+    {% if trec_search %}
+  
+	    <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
+		 Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span></div>
+		{% for result in trec_results %}
+		    <div class="entry" id="{{result.docid}}">
+		        <p class="result_title"><a href="{{ result.url }}"><strong>{{ result.title }}</strong></a></p>
+  		        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>		
+  		    </div>
+  		    <div class="byline">{{ result.source }}</div>
+  		    
+        {% endfor %}
+
+    {% else %}
+         <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
+            No results found.
+             </div>
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% block result_nav %}
+<div class="result_nav">
+	<center><form>
+	{% if prev_page_show %}
+	<input  class="largebutton" type="button" onClick="parent.location='{{prev_page_link}}'" value="Prev. Page" />
+	    <!-- a href="{{prev_page_link}}">Prev Page</a--> &nbsp;&nbsp;
+	{% endif %}
+	{% if next_page_show %}
+    <input  class="largebutton" type="button" onClick="parent.location='{{next_page_link}}'" value="Next Page" />
+	    <!-- a href="{{next_page_link}}">Next Page</a -->
+	{% endif %}
+	</form></center>
+</div>
+{% endblock %}
+
+
+

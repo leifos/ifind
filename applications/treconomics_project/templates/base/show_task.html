@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+{% block exp_block %}
+Below is a description of the search task that we would like you to undertake. The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.
+
+<p> Search Task: {{task}} Search Topic: {{topic}}</p>
+
+<p><b> {{tasktitle}} </b><p>
+
+<p> {% autoescape off %} {{taskdescription}} {% endautoescape %}</p>
+
+
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}}
+{% endblock %}

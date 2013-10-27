@@ -19,12 +19,11 @@ class QueryGeneration(object):
     Abstract class to represent structure for a query generator
     """
 
-    def __init__(self, stopwordfile = None, minlen = 3, maxsize = 250):
+    def __init__(self, stopwordfile = None, minlen = 3):
         """
         constructor for QueryGeneration
         """
         self.min_len = minlen
-        self.max_size = maxsize
         self.stop_filename = stopwordfile
 
     def extract_queries_from_html(self, html):
@@ -63,12 +62,7 @@ class QueryGeneration(object):
                 clean_result = cleaner_pipeline.process(term)
                 if clean_result:
                     cleaned.append(clean_result)
-
-            l = len(cleaned)
-            if l > self.max_size:
-                return cleaned[0:self.max_size]
-            else:
-                return cleaned
+            return cleaned
         else:
             return ''
 

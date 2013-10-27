@@ -46,9 +46,9 @@ class PositionContentExtractor(object):
         words = self.text.split()
         subtext = ' '
         if percentage:
-            print "percent is ", percentage
+            #print "percent is ", percentage
             num_words = int(round(self._calc_percentage(percentage, len(words))))
-            print "num words is ",num_words
+            #print "num words is ",num_words
         if num_words:
             if num_words == 0:  # return all text if 0 assumes 0 means wants all
                 return self.text
@@ -56,6 +56,8 @@ class PositionContentExtractor(object):
                 return subtext.join(words[0:num_words])
             else:
                 return self.text
+        else:
+            return self.text
 
     def _remove_div_content(self):
         """

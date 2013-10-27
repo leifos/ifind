@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <a href="{{current_search}}">Back to Results</a> |
+     <a href="/treconomics/saved/">View Saved</a> |
+     <a href="/treconomics/showtask/" target="_blank">Show Task</a> |
+     <a href="/treconomics/next/"> End Task</a> </p>
+{% endblock %}
+
+
+{% block document_content %}
+<h1 class="document_title">{{ title }}  </h1>
+<p class="document_source_date"><b>{{doc_source}}</b> <span> <b>{{doc_date}}</b></span></p>
+<div class="article"> {% autoescape off %} {{ content }} {% endautoescape %}  </div>
+<p/>
+
+<div id="marked">
+{% if user_judgement  == 1 %}
+    <b>Document Marked as Relevant</b>
+{% else %}
+	<br />
+    <!--a href="/treconomics/{{docid}}?judge=1">Mark Document as Relevant</a -->
+    <button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markRelevant()" > Mark as Relevant </button>
+{%  endif %}
+</div>
+
+
+<script>
+function markRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=1&rank="+{{rank}}, complete: function(data){ 
+    $('#marked').replaceWith('<div id="marked"> <b> Document Marked as Relevant</b> </div>');
+     } }); }
+function markNonRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=0&rank="+{{rank}}, complete: function(data){ 
+     $('#marked').replaceWith('<div id="marked">  <button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markRelevant()" >Mark as Relevant </button></div>');
+     } }); }
+</script>
+
+{% endblock %}
+
+
+<!-- ><button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markNonRelevant()" >Mark as Not Relevant </button> -->
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}} - TREC DocID: {{ docnum }} - Whoosh DocNum: {{ docid }}
+{% endblock %}

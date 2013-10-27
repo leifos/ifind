@@ -1,0 +1,108 @@
+Experiment 1: all page vs wrapper
+url: vehicles-you-can-drive
+search engine: govuk
+no max queries
+All Page:
+150 queries generated
+all issued
+cumulative score = 23.00
+gravity = 10.15
+25 queries retrieved the page
+div id = wrapper:
+65 queries generated and issued
+c=20
+g=9.32
+
+Experiment 2: all page vs wrapper with only 20 queries issued
+url: vehicles-you-can-drive
+search engine: govuk
+max queries = 20
+5 retrieved the page
+All Page:
+150 generated, 20 issued
+c=3
+g=0.91
+div id= wrapper
+65 gen, 20 issued
+c=5
+g=1.99
+
+Experiment 3: govuk vs bing all page no limit
+url: vehicles-you-can-drive
+search engine: govuk
+no max queries
+All Page:
+150 queries generated
+all issued
+cumulative score = 23.00
+gravity = 10.15
+25 queries retrieved the page
+search engine: bing
+150 generated, all issued
+6 returned the page
+c=3
+g=2.05
+
+Experiment 4: sitebing all page vs sitebing ranker
+url: gla.ac.uk/services/sport/membership
+631 queries generated, 250 issued
+sitebing:
+c=168
+187 retrieved
+g=91.76
+sitebing ranker:
+227 retrieved
+c=214
+g=156.11
+
+Experiment 5: sitebing max 20 vs sitebing ranker top 20
+16 retrieved, 20 issued, 631 generated
+c=15
+g=8.44
+sitebing ranker top 20:
+19 retrieved the page
+c=15
+g=10.89
+
+Experiment 6: sitebing ranker vs sitebing with ranker and div id=mainpage
+631 generated, 250 issued
+sitebing ranker:
+227 retrieved
+c=214
+g=156.11
+sitebing ranker and id=mainpage
+559 generated
+250 issued
+230 retrieved
+c=219
+g=158.39
+
+Experiment 7: govuk all page 30% of content vs wrapper 30%
+all page 30%:
+generated 4 queries
+returned 0
+c=g=0
+wrapper 30%:
+generated 9 queries
+returned 5
+c=5
+g=3.83
+
+Experiment 8: govuk all page 60% of content vs wrapper 60%
+allpage 60%:
+7 generated
+1 retrieved
+c=0
+g=0
+wrapper 60%:
+26 generated
+13 retrieved
+c=12
+g=7.91
+
+
+Experiment 9: sitebing ranker with 30% vs sitebing ranker with mainpage 30% content
+sitebing ranker with mainpage 30% content
+1 query generated, 1 retrieved
+c=g=1
+sitebing ranker with 30% - not working taking % of page first as discussed

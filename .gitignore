@@ -2,16 +2,17 @@
 *.keys
 *.db
 *.png
-
-Log
+*.log
 
 keys.py
 tester.py
+.svn
 
 # Pycharm / Python
 .idea
 *.pyc
 
+*.DS_Store
 .DS_Store
 
 *~
@@ -83,7 +84,6 @@ local_settings.py
 *.ps
 *.snm
 *.synctex.gz
-*.toc
 *.vrb
 *.xdy
 *.tdo
