@@ -3,7 +3,7 @@
 =============================
 Author: mtbvc <1006404b@student.gla.ac.uk>
 Date:   04/07/2013
-Last revision: 26/10/2013
+Last revision: 27/10/2013
 
 Requires:
 ---------
@@ -13,11 +13,9 @@ from pagefetch_project import settings
 setup_environ(settings)
 
 from ifind.models import game_model_functions
-from django.contrib.auth.models import User
-from ifind.models.game_models import UserProfile, Achievement, Level
-#from ifind.models import game_models
 import argparse
 import os
+from ifind.models import deployment_model_functions
 
 
 #fetch data for population from file
@@ -43,19 +41,19 @@ def main():
     parser.add_argument("-cn", "--category_name", type=str,
                         help="Name of category.")
     parser.add_argument("-f", "--filename",
-                        default= os.getcwd() + '/data/game_data.txt', type=str,
+                        default= os.getcwd() + '/data/trends/game_data.txt', type=str,
                         help="relative path to population data file")
-    parser.add_argument("-l", "--lvls", default=False)
+    parser.add_argument("-l", "-local", type=str, default=False,
+                        help="If populating images from disk use this flag")
 
     args = parser.parse_args()
-    if args.lvls:
-        return 0
     if args.filename:
         data_list = get_trending_queries(args.filename)
         for data_tuple in data_list:
-            cat=game_model_functions.get_category(data_tuple[0],'icon','',append=args.append)
+            cat = game_model_functions.get_category(data_tuple[0],'icon','',append=args.append)
             #data_tuple[1] is url
-            game_model_functions.populate_pages([data_tuple[1]],cat)
+            #game_model_functions.populate_pages([data_tuple[1]],cat)
+            deployment_model_functions.populate_pages([data_tuple[1]],cat,halved_screen_shot=True)
         return 0
     else:
         print parser.print_help()
