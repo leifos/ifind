@@ -93,8 +93,7 @@ def populate_pages(url_list, category, halved_screen_shot=False):
 
         except ValueError:
             print 'Page  has ((NOT)) been saved!'
-            print 'ERROR IS'
-            print ValueError
+            print 'ERROR IS {0}'.format("ValueError")
             continue
     f.close()
 
