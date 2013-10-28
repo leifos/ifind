@@ -1,7 +1,7 @@
 # Django settings for pagefetch_project project.
 import os
 from configuration import DEBUG, DEPLOY, PROJ_PATH, GAME_DB, TEMP_PATH
-from configuration import STATIC_PATH, MEDIA_PATH, MEDIA_URL, UPLOAD_DIR
+from configuration import STATIC_PATH, MEDIA_PATH, MEDIA_URL, UPLOAD_DIR, MEDIA_ROOT
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -52,7 +52,8 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = MEDIA_PATH
+MEDIA_ROOT = MEDIA_ROOT
+MEDIA_URL = MEDIA_URL
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
