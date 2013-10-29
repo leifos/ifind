@@ -38,7 +38,7 @@ def get_experiment_context(request):
     print "com_step: " + str(profile.steps_completed)
 
     if "current_step" in request.session:
-        ec["current_step"] = request.session['current_step']
+        ec["current_step"] = int(request.session['current_step'])
     else:
         # in the profile steps_completed is zero.
         #if the user logs in again, then if the session variable is not set, we take the one from the datbase
