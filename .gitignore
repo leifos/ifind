@@ -8,6 +8,9 @@ keys.py
 tester.py
 .svn
 
+# Ignoring the large AQUAINT index
+/applications/treconomics_project/data/stemmednoduplicatesindex
+
 # Pycharm / Python
 .idea
 *.pyc

@@ -1,0 +1,21 @@
+Space objects, Moon
+Space objects, Earth
+Space objects, Sun
+Space objects, Mars
+Space objects, Venus
+Space objects, Jupiter
+Space objects, Saturn
+Space objects, Neptune
+Space objects, Pluto
+Space objects, Milky Way
+Space objects, Uranus
+Space objects, Mercury
+Space objects, Titan
+Space objects, Sirius
+Space objects, Asteroid belt
+Space objects, Pleiades
+Space objects, Andromeda Galaxy
+Space objects, 99942 Apophis
+Space objects, Proxima Centauri
+Space objects, Alpha Centauri
+

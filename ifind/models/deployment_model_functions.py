@@ -8,7 +8,7 @@ from ifind.common.utils import convert_url_to_filename, read_in_urls
 
 sys.path.append(os.getcwd())
 from configuration import DATA_DIR
-from configuration import MEDIA_ROOT
+#from configuration import MEDIA_ROOT
 
 #from rmiyc_project import settings
 #from django.core.management import setup_environ
@@ -81,7 +81,8 @@ def populate_pages(url_list, category, halved_screen_shot=False):
             # Abdullah , using DATA_DIR did not work for me because it uses the current working directory in the url.
 
             #save to file instead of db here to decouple.
-            f.write('%s,%s,%s,%s\n' % (category.name, url, title,image_file_name))
+            f.write('%s,%s,%s,%s\n' % (category.name, url, title,image_file_name,))
+            print("written {0} to file.".format(title))
 
 
 
@@ -92,8 +93,7 @@ def populate_pages(url_list, category, halved_screen_shot=False):
 
         except ValueError:
             print 'Page  has ((NOT)) been saved!'
-            print 'ERROR IS'
-            print ValueError
+            print 'ERROR IS {0}'.format("ValueError")
             continue
     f.close()
 

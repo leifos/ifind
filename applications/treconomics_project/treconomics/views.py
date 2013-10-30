@@ -64,9 +64,14 @@ def view_start_experiment(request):
                 ec = get_experiment_context(request)
                 print_experiment_context(ec)
 
+                context_dict = {
+                    'popup_width': ec['popup_width'],
+                    'popup_height': ec['popup_height'],
+                }
+
                 # return HttpResponseRedirect("/treconomics/next/")
                 # Instead of redirecting to next/, give back a popup launching script instead!
-                return render_to_response('base/popup_launcher.html', {}, context)
+                return render_to_response('base/popup_launcher.html', context_dict, context)
             else:
                 # Return a 'disabled account' error message
                 return HttpResponse("Your account is disabled.")

@@ -35,7 +35,7 @@ exp_work_flows = [
 
 class ExperimentSetup(object):
 
-    def __init__(self, workflow, timeout = 660, topics=['999','347','344'], rpp=10, engine=1, interface=1, description=''):
+    def __init__(self, workflow, timeout = 660, topics=['999','347','344'], rpp=10, engine=1, interface=1, description='', popup_width=None, popup_height=None):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
@@ -44,6 +44,10 @@ class ExperimentSetup(object):
         self.workflow = workflow
         self.pro = PermutatedRotationOrdering()
         self.n =self.pro.number_of_orderings(self.topics)
+
+        # Two additional instance variables to control the width and height of the experiment popup box.
+        self.popup_width = popup_width
+        self.popup_height = popup_height
 
     def _get_check_i(self, i):
         return i % self.n

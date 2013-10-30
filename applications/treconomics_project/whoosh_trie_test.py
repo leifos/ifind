@@ -1,97 +1,95 @@
 from whoosh.index import open_dir
+import marisa_trie
+import operator
+import os
 
 #
-# Whoosh Trie experiment
+# Whoosh Trie Test
 #
 
-class Node(object):
-    '''
-    Represents the node of a ternary search tree.
-    '''
+index_path = 'data/smallindex'
+vocab_path = 'data/vocab.txt'
+stopwords_path = 'data/stopwords.txt'
+trie_path = 'data/vocabulary_trie.dat'
+min_occurrences = 3
 
-    def __init__(self, char, is_end):
-        self.char = char
-        self.is_end = is_end
-        self.node_left = None
-        self.node_centre = None
-        self.node_right = None
 
-class TernaryTree(object):
-    '''
-    Representation of a ternary tree.
-    '''
-    def __init__(self):
-        self.node_root = None;
+def create_vocab_file():
+    """
+    Reads the index, creating the vocabulary/frequency text file.
+    Returns a handle to the vocabulary file.
+    """
+    if os.path.exists(vocab_path):
+        return open(vocab_path, 'r')
+    else:
+        vocab_handle = open(vocab_path, 'w+')
+        vocab_dict = {}
+        stopwords_list = []
 
-    def add(self, word, position=0, param_node=None):
-        '''
-        Adds a word to the ternary tree.
-        '''
-        if param_node is None:
-            node = Node(word[position], False)
+        index = open_dir(index_path)
+        stopwords_handle = open(stopwords_path, 'r')
+        reader = index.reader()
 
-            if self.node_root is None:
-                self.node_root = node
-        else:
-            node = param_node
+        for word in stopwords_handle:
+            stopwords_list.append(word.strip())
 
-        if ord(word[position]) < ord(node.char):
-            self.add(word, position, node.node_left)
-        elif ord(word[position]) > ord(node.char):
-            self.add(word, position, node.node_right)
-        else:
-            if position + 1 == len(word):
-                node.is_end = True
-            else:
-                self.add(word, position + 1, node.node_centre)
+        for term in reader.all_terms():
+            if term[0] == 'content' or term[0] == 'title':
+                term_string = term[1]
+                title_frequency = reader.frequency('title', term_string)
+                content_frequency = reader.frequency('content', term_string)
+                summed_frequency = title_frequency + content_frequency
 
-    def contains(self, word):
-        position = 0
-        node = self.node_root
+                if (summed_frequency >= min_occurrences) and (term_string not in stopwords_list):
+                    vocab_dict[term_string] = summed_frequency
 
-        while node is not None:
-            if ord(word[position]) < ord(node.char):
-                node = node.node_left
-            elif ord(word[position]) > ord(node.char):
-                node = node.node_right
-            else:
-                position += 1
+        index.close()
+        vocab_dict = sorted(vocab_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
 
-                if position == len(word):
-                    return node.is_end
+        for term in vocab_dict:
+            vocab_handle.write('{0},{1}{2}'.format(term[0], term[1], os.linesep))
 
-                node = node.node_centre
+        vocab_handle.seek(0)
+        return vocab_handle
 
-        return False
 
-def get_vocab_dictionary():
-    '''
-    Read the vocabulary
-    '''
-    idx = open_dir('data/smallindex/')
-    reader = idx.reader()
+def create_trie(vocab_handle):
+    """
+    Creates and returns a trie from the contents of the file pointed to by the handle vocab_handle
+    """
+    keys = []
+    values = []
+    format = '<H'
 
-    ret_dict = {}
+    for input_line in vocab_handle:
+        input_line = input_line.strip()
+        input_line = input_line.split(',')
 
-    for obj in reader.all_terms():
-        if obj[0] == 'title' or obj[0] == 'content':
-            title_freq = reader.frequency('title', obj[1])
-            content_freq = reader.frequency('content', obj[1])
-            ret_dict[obj[1]] = title_freq + content_freq
+        term = unicode(input_line[0])
+        frequency = (float(input_line[1]),)
 
-    idx.close()
-    return ret_dict
+        keys.append(term)
+        values.append(frequency)
 
-def run_script():
-    '''
-    The main function - run the script.
-    '''
-    vocab_dict = get_vocab_dictionary()
+    trie = marisa_trie.RecordTrie(format, zip(keys, values))
+    return trie
 
-    tree = TernaryTree()
-    print tree.node_root
-    tree.add('abc')
 
+def test_trie(trie, query):
+    results = trie.items(u'davi')
+    sorted_results =  sorted(results, key=operator.itemgetter(1), reverse=True)
+    end_result = [i[0] for i in sorted_results]
+
+    print end_result
+
+
+def save_trie(trie):
+    trie.save(trie_path)
 
 if __name__ == '__main__':
-    run_script()
+    vocab = create_vocab_file()
+    trie = create_trie(vocab)
+
+    test_trie(trie, u"Davi")
+
+    save_trie(trie)

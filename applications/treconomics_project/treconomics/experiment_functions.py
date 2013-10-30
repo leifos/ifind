@@ -25,6 +25,10 @@ def get_experiment_context(request):
     ec["completed_steps"] = profile.steps_completed
     ec["workflow"] = experiment_setups[ec['condition']].workflow
 
+    # Variables determining the width/height of the epxeriment assigned to the user.
+    ec["popup_width"] = experiment_setups[ec['condition']].popup_width
+    ec["popup_height"] = experiment_setups[ec['condition']].popup_height
+
     #print ec["workflow"]
     if profile.data == "test":
         ec["test_user"] = True
@@ -34,7 +38,7 @@ def get_experiment_context(request):
     print "com_step: " + str(profile.steps_completed)
 
     if "current_step" in request.session:
-        ec["current_step"] = request.session['current_step']
+        ec["current_step"] = int(request.session['current_step'])
     else:
         # in the profile steps_completed is zero.
         #if the user logs in again, then if the session variable is not set, we take the one from the datbase
@@ -65,6 +69,8 @@ def print_experiment_context(ec):
     print "current step: " + str(ec["current_step"])
     print "taskid: " + str(ec["taskid"])
     print "topicnum: " + str(ec["topicnum"])
+    print "popup width: " + str(ec["popup_width"])
+    print "popup height: " + str(ec["popup_height"])
 
 def time_search_experiment_out(request):
     start_time = request.session['start_time']

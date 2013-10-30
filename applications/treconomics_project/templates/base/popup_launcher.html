@@ -1,21 +1,26 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block exp_block %}
 <div class="topmargin">
 
+<script type="text/javascript" src="{% static 'javascripts/popup_launcher.js' %}"></script>
 <script type="text/javascript">
+popupURL = "{% url 'treconomics.views.view_next' %}";
+popupWidth = {% if popup_width %}{{ popup_width }}{% else %}undefined{% endif %};
+popupHeight = {% if popup_height %}{{ popup_height }}{% else %}undefined{% endif %};
 
-popupLeftPos = 0;
-popupTopPos = (screen.height) ? (screen.height - 700) / 2 : 0;
-
-popupWidth = 1024;
-popupHeight = (screen.height) * 0.90;
-
-window.open('/treconomics/next/','experiment','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=' + popupWidth + ',height=' + popupHeight + ',top=' + popupTopPos + ',left=' + popupLeftPos);
+launchPopup(popupURL, popupWidth, popupHeight);
 </script>
 
-You should see the experiment launch in a separate window.
-If you don't, please check your browser's configuration settings and attempt to login again.
+<p>
+The experiment should now automatically launch in a new popup window.<br />
+If the popup window doesn't appear, your web browser has most likely blocked the popup. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> if the popup doesn't appear.
+
+<noscript>
+    <span style="color: #F00;"><strong>Please ensure JavaScript is enabled on your browser. The experiment will not function without JavaScript.</strong></span>
+</noscript>
+</p>
 
 </div>
 {% endblock %}

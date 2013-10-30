@@ -94,6 +94,20 @@ def decode_url_to_string(urlstr):
     """
     return urlstr.replace('_', ' ')
 
+
+#fetch data for population from file
+def get_trending_queries(filename):
+    """Extract population data from a file.
+       Returns a list of tuples created from comma separated values in file
+    """
+    f = open(filename, 'r')
+    trend_tuples_list = []
+    for line in f:
+        trend_tuples_list.append(tuple((line.strip()).split(',')))
+    f.close()
+    return trend_tuples_list
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
