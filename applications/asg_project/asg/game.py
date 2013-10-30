@@ -1,6 +1,7 @@
 __author__ = 'leif'
 from ifind.asg.abstract_search_game import ABSGame
 from ifind.asg.asg_generator import RandomYieldGenerator, TestHighYieldGenerator, ConstantLinearYieldGenerator, TestYieldGenerator, CueGenerator, GainBasedCueGenerator
+from ifind.asg.asg_generator import TestLowYieldGenerator, RandGainBasedCueGenerator
 from ifind.search.cache import RedisConn
 from django.contrib.auth.models import User
 from models import UserProfile, MaxHighScore, GameExperiment
@@ -14,19 +15,23 @@ tyg = TestYieldGenerator()
 cyg = ConstantLinearYieldGenerator()
 hyg = TestHighYieldGenerator()
 cg = CueGenerator(cue_length=30)
+lyg = TestLowYieldGenerator()
 gbcg = GainBasedCueGenerator(cue_length=30)
-print cg
-print gbcg
-
+rgbcg =RandGainBasedCueGenerator(cue_length=30)
+#print cg
+#print gbcg
 
 random_game = {'yield_generator': ryg, 'cue_generator': cg, 'query_cost': 3, 'assess_cost': 1 }
 high_game = {'yield_generator': hyg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
 test_game = {'yield_generator': tyg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
 low_cost_game = {'yield_generator': hyg, 'cue_generator': cg, 'query_cost': 1, 'assess_cost': 2 }
-cue_based_game = {'yield_generator': tyg, 'cue_generator': gbcg, 'query_cost': 2, 'assess_cost': 1 }
+cue_based_game = {'yield_generator': tyg, 'cue_generator': rgbcg, 'query_cost': 2, 'assess_cost': 1 }
+low_game = {'yield_generator': lyg, 'cue_generator': rgbcg, 'query_cost': 2, 'assess_cost': 1 }
+
+#    {'yield_generator': lyg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
 
 
-game_types = [random_game, random_game, high_game, test_game, low_cost_game, cue_based_game]
+game_types = [random_game, random_game, high_game, test_game, low_cost_game, cue_based_game, low_game]
 
 
 
