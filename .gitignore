@@ -8,8 +8,10 @@ keys.py
 tester.py
 .svn
 
-# Ignoring the large AQUAINT index
+# Ignoring the large AQUAINT index and treconomics vocabulary files
 /applications/treconomics_project/data/stemmednoduplicatesindex
+/applications/treconomics_project/data/vocab.txt
+/applications/treconomics_project/data/vocab_trie.dat
 
 # Pycharm / Python
 .idea
