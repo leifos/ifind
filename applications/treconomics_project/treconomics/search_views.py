@@ -236,24 +236,27 @@ def search(request, taskid=0):
         condition = ec["condition"]
         taskid = ec["taskid"]
         topic_num = ec["topicnum"]
+        interface = experiment_setups[condition].get_interface()
+        page_len = experiment_setups[condition].rpp
+        page = 1
+
 
         result_dict = {}
         result_dict['participant'] = uname
         result_dict['task'] = taskid
         result_dict['condition'] = condition
+        result_dict['interface'] = interface
 
         suggestions = False
         query_flag = False
         if request.method =='POST':
             # handle the searches from the different interfaces
-            if condition == 1:
+            if interface == 1:
                 user_query = constructStructuredQuery(request)
             else:
                 user_query = request.POST['query'].strip()
             log_event(event="QUERY_ISSUED", request=request, query=user_query)
-
             query_flag = True
-            page = 1
         elif request.method == 'GET':
             getdict = request.GET
             if 'query' in getdict:
@@ -265,17 +268,11 @@ def search(request, taskid=0):
                 log_event(event="QUERY_SUGGESTION_ISSUED", request=request, query=user_query)
             if 'page' in getdict:
                 page = int(getdict['page'])
-            else:
-                page = 1
+
 
         if query_flag:
-            page_len = experiment_setups[condition].rpp
             result_dict = run_query(condition,result_dict,user_query,page,page_len)
-
-            # check the condition
-            # check if query_suggest_search exists, if so include query_results
-            if condition == 3:
-
+            if interface == 3:
                     # getQuerySuggestions(topic_num)
                     suggestions = TopicQuerySuggestion.objects.filter(topic_num = topic_num)
                     if suggestions:

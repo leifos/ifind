@@ -15,7 +15,7 @@
 		<form action="/treconomics/search/" onsubmit="return validate_form(this)" method="post">
 	        {% csrf_token %} 								
 	        <!-- cross-site request forgery protection -->
-	        {% if condition == 1%}
+	        {% if interface == 1%}
 	        <script>
 	        $(document).ready(function()
             {

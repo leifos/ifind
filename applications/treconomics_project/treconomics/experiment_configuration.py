@@ -39,6 +39,7 @@ class ExperimentSetup(object):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
+        self.interface = interface
         self.engine = engine
         self.description = description
         self.workflow = workflow
@@ -72,6 +73,11 @@ class ExperimentSetup(object):
         return rotations[t]
 
 
+    def get_interface(self,i=0):
+        return self.interface
+
+
+
     def __str__(self):
         return self.description
 
@@ -79,8 +85,8 @@ exp0 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='st
 exp1 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='structured condition')
 exp2 = ExperimentSetup(workflow= exp_work_flows[4], description='standard condition')
 exp3 = ExperimentSetup(workflow= exp_work_flows[4], interface=2, description='suggestion condition')
-exp4 = ExperimentSetup(workflow= exp_work_flows[4], rpp=3)
-exp5 = ExperimentSetup(workflow= exp_work_flows[4], topics=['999','347',], rpp=10)
+exp4 = ExperimentSetup(workflow= exp_work_flows[4], topics=['344','347',], rpp=10, interface=1, description='structured condition')
+exp5 = ExperimentSetup(workflow= exp_work_flows[4], topics=['344','347',], rpp=10, interface=0,description='standard condition')
 
 # these correspond to conditions
 experiment_setups = [exp0,exp1,exp2,exp3,exp4,exp5]
