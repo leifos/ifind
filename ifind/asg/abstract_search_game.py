@@ -75,11 +75,11 @@ class ABSGame(object):
 
         self.round_no += 1
         yl = self.ygen.get_yields(self.round_len)
-        print 'cu'
+        print 'cu', yl, self.round_len
         cl = self.cgen.get_labels(self.round_len, yl)
-
         rl = []
         for i in range(self.round_len):
+            print i
             rl.append(self._make_snippet(cl[i],yl[i],False))
 
         self.current_round = rl

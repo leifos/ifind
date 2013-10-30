@@ -130,6 +130,32 @@ class TestHighYieldGenerator(YieldGenerator):
         return yl
 
 
+class TestLowYieldGenerator(YieldGenerator):
+
+    def __init__(self, max_yield=3):
+        YieldGenerator.__init__(self, max_yield)
+        self.count = 0
+
+    def get_yields(self, n=10):
+        """
+        :param n: number of yields to be generated i.e. length of document result list
+        :return: list of n integers (i.e. the yeilds)
+        """
+        yls = []
+        yls.append([1,0,1,0,0,0,0,1,1,0])
+        yls.append([0,0,1,0,0,0,1,0,0,1])
+        yls.append([2,0,1,1,0,0,1,0,0,0])
+        yls.append([0,1,0,0,1,0,0,1,1,0])
+        yls.append([0,2,0,0,0,1,0,1,0,1])
+
+        yl = yls[ (self.count % 5) ]
+        self.count += 1
+
+        print yl
+        return yl
+
+
+
 
 class CueGenerator(object):
 
@@ -269,3 +295,28 @@ class GainBasedCueGenerator(CueGenerator):
 
     def __str__(self):
         return 'GainBasedCueGenerator'
+
+
+class RandGainBasedCueGenerator(CueGenerator):
+
+    def get_labels(self, n=10, yield_list = None):
+        """
+        :param n: number of labels to be generated
+        :param yield_list: list of n strings (i.e. snippet labels)
+        :return:
+        """
+        ll = []
+        for i in range(n):
+            g = yield_list[i]
+            x = int(g) * 5 + random.randint(3,10)
+            dots = self.cue_length - int(x)
+            if dots < 0:
+                dots = 0
+            s = 'x'*x + '_'*dots
+            sr = ''.join(random.sample(s,len(s)))
+            ll.append(sr)
+
+        return ll
+
+    def __str__(self):
+        return 'RandGainBasedCueGenerator'
