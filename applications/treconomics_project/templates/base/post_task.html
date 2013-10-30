@@ -5,26 +5,14 @@
 {% endblock %}
 
 {% block exp_block %}
-<script>
-$(document).ready(function(){
-    $('div.post-survey').hide();
-})
-</script>
+
 
 <p> The time to complete this search task has finished. </p>
 
 
-
-<p> Now that you have finished this search tasks, could you please answer the <a href="http://surveydirector.qualtrics.com/SD/?Q_SDID=SD_8ktWJYLa51N8ZBa" target="_blank" onclick="$('div.post-survey').show()"> Post-Task Questions</a></p>
-
-
-<div class="post-survey">
-<p>Once you have completed this survey, please proceed to the next stage of the experiment. If you need to take a short break please feel free to do so now.</p>
-
 <p> Click the next button to proceed to the next stage of the experiment: </p>
 <a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
 
-</div>
 
 {% endblock %}
 

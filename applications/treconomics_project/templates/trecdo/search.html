@@ -1,10 +1,13 @@
 {% extends 'base/base.html' %}
 
 {% block exp_info_block %}
+
+
+
      <p>
          <a href="/treconomics/saved/">View Saved</a> |
-         <a href="/treconomics/showtask/" target="_blank">Show Task</a> |
-         <a href="/treconomics/next/"> End Task</a></p>
+         <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
+          <a href="/treconomics/next/"> End Task</a></p>
 {% endblock %}
 
 {% block query_box %}

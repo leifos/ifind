@@ -49,3 +49,11 @@ Solution adapted from http://davidwalsh.name/popup-block-javascript.
 function wasPopupBlocked(popupReference) {
     return (popupReference == null | typeof(popupReference) == 'undefined');
 }
+
+
+
+
+function taskPopup(url) {
+	popupWindow = window.open(
+		url,'taskWindow','height=600,width=400,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
+}

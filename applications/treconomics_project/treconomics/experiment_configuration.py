@@ -30,7 +30,7 @@ exp_work_flows = [
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/searchefficacysurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/pretaskquestions/3/','/treconomics/search/3/','/treconomics/posttaskquestions/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
-['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/pretask/1/','/treconomics/search/1/','/treconomics/pretask/2/','/treconomics/search/2/','/treconomics/pretask/3/','/treconomics/search/3/','/treconomics/performance/','/treconomics/logout/']
+['/treconomics/startexperiment/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttask/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttask/2/','/treconomics/logout/']
 ]
 
 class ExperimentSetup(object):
@@ -80,7 +80,7 @@ exp1 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='st
 exp2 = ExperimentSetup(workflow= exp_work_flows[4], description='standard condition')
 exp3 = ExperimentSetup(workflow= exp_work_flows[4], interface=2, description='suggestion condition')
 exp4 = ExperimentSetup(workflow= exp_work_flows[4], rpp=3)
-exp5 = ExperimentSetup(workflow= exp_work_flows[4], rpp=6)
+exp5 = ExperimentSetup(workflow= exp_work_flows[4], topics=['999','347',], rpp=10)
 
 # these correspond to conditions
 experiment_setups = [exp0,exp1,exp2,exp3,exp4,exp5]

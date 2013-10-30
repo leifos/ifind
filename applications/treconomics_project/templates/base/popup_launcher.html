@@ -4,7 +4,6 @@
 {% block exp_block %}
 <div class="topmargin">
 
-<script type="text/javascript" src="{% static 'javascripts/popup_launcher.js' %}"></script>
 <script type="text/javascript">
 popupURL = "{% url 'treconomics.views.view_next' %}";
 popupWidth = {% if popup_width %}{{ popup_width }}{% else %}undefined{% endif %};

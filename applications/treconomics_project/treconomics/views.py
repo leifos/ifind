@@ -204,6 +204,7 @@ def view_show_task(request):
 
     return render_to_response('base/show_task.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description }, context)
 
+
 @login_required
 def view_post_task(request, taskid):
     context = RequestContext(request)
