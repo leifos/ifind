@@ -111,7 +111,7 @@ class SuggestionTrie(object):
         Opens and returns the ternary trie located on backing storage, if it exists.
         If a trie file does not exist, it is created and the trie object is returned.
         """
-        format = '<H'  # Check out http://docs.python.org/2/library/struct.html#format-strings for more information.
+        format = '@L'  # Check out http://docs.python.org/2/library/struct.html#format-strings for more information.
 
         if os.path.exists(self.__vocab_trie_path):
             print "Loading trie..."
