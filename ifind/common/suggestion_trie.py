@@ -136,6 +136,7 @@ class SuggestionTrie(object):
             trie.save(self.__vocab_trie_path)
             return trie
 
+
     def suggest(self, characters):
         """
         Returns a list of unicode suggestions to assist in completing a query. The more frequently occurring the term in
@@ -160,21 +161,15 @@ class SuggestionTrie(object):
         return [i[0] for i in results]
 
 
-if __name__ == '__main__':
-    vocab_trie_path = 'data/vocab_trie.dat'
-    index_path = 'data/smallindex'
-    stopwords_path = 'data/stopwords.txt'
-    vocab_path = 'data/vocab.txt'
-    min_occurrences = 3
-    suggestion_count = -1
-    include_stopwords = True
-
-    trie_class = SuggestionTrie(index_path=index_path,
-                                stopwords_path=stopwords_path,
-                                vocab_path=vocab_path,
-                                vocab_trie_path=vocab_trie_path,
-                                min_occurrences=min_occurrences,
-                                suggestion_count=suggestion_count,
-                                include_stopwords=include_stopwords)
-
-    print trie_class.suggest('some')
+    @staticmethod
+    def initialise_files(index_path,
+             stopwords_path,
+             vocab_path,
+             vocab_trie_path):
+        """
+        Initialises a SuggestionTrie with the aim of creating the necessary vocabulary files.
+        """
+        SuggestionTrie(index_path=index_path,
+                       stopwords_path=stopwords_path,
+                       vocab_path=vocab_path,
+                       vocab_trie_path=vocab_trie_path)
