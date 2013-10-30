@@ -5,6 +5,7 @@ import logging
 import logging.config
 import logging.handlers
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
+from ifind.common.suggestion_trie import SuggestionTrie
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, "data/smallindex")
@@ -15,6 +16,14 @@ qrels_file =  os.path.join(work_dir, "data/TREC2005.qrels.txt")
 print "Work DIR: " + work_dir
 print "QRELS File: " + qrels_file
 print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
+
+# Setup an instance of the suggestion trie to ensure everything required is present.
+SuggestionTrie.initialise_files(
+    index_path=my_whoosh_doc_index_dir,
+    stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
+    vocab_path=os.path.join(work_dir, "data/vocab.txt"),
+    vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat")
+)
 
 event_logger = logging.getLogger('event_log')
 event_logger.setLevel(logging.INFO)
