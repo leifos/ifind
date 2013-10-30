@@ -3,93 +3,178 @@ import marisa_trie
 import operator
 import os
 
-#
-# Whoosh Trie Test
-#
 
-index_path = 'data/smallindex'
-vocab_path = 'data/vocab.txt'
-stopwords_path = 'data/stopwords.txt'
-trie_path = 'data/vocabulary_trie.dat'
-min_occurrences = 3
-
-
-def create_vocab_file():
+class SuggestionTrie(object):
     """
-    Reads the index, creating the vocabulary/frequency text file.
-    Returns a handle to the vocabulary file.
+    A class implementing a ternary trie data structure to provide suggestions to aid participants to complete queries.
+
+    Author: dmax
+    Date: 2013-10-30
+    Revision: 2
     """
-    if os.path.exists(vocab_path):
-        return open(vocab_path, 'r')
-    else:
-        vocab_handle = open(vocab_path, 'w+')
-        vocab_dict = {}
-        stopwords_list = []
+    def __init__(self,
+                 index_path,
+                 stopwords_path,
+                 vocab_path,
+                 vocab_trie_path,
+                 min_occurrences=3,
+                 suggestion_count=-1,
+                 include_stopwords=False):
+        """
+        SuggestionTrie constructor. Creates an instance of the SuggestionTrie class.
 
-        index = open_dir(index_path)
-        stopwords_handle = open(stopwords_path, 'r')
-        reader = index.reader()
+        Args:
+            index_path (str): path to the document index to use.
+            stopwords_path (str): path to the stopwords file to use.
+            vocab_path (str): path to the vocabulary file to use.
+            vocab_trie_path (str): path to the trie file to use.
+            min_occurrences (int): number of times a term should appear before being included in the trie.
+            suggestion_count (int): number of suggestions to provide to end users (-1 = no limit, 0 = none).
+            include_stopwords (bool): include stopwords in the suggestions.
+        """
+        self.__index_path = index_path
+        self.__vocab_path = vocab_path
+        self.__stopwords_path = stopwords_path
+        self.__vocab_trie_path = vocab_trie_path
 
-        for word in stopwords_handle:
-            stopwords_list.append(word.strip())
+        self.__min_occurrences = min_occurrences
+        self.__suggestion_count = suggestion_count
+        self.__include_stopwords = include_stopwords
+        self.__include_fields = ['content', 'title']
 
-        for term in reader.all_terms():
-            if term[0] == 'content' or term[0] == 'title':
-                term_string = term[1]
-                title_frequency = reader.frequency('title', term_string)
-                content_frequency = reader.frequency('content', term_string)
-                summed_frequency = title_frequency + content_frequency
+        self.__vocab_handle = self.__get_vocab_file_handle()
+        self.__stopwords = self.__get_stopwords_list()
+        self.__trie = self.__get_trie()
 
-                if (summed_frequency >= min_occurrences) and (term_string not in stopwords_list):
-                    vocab_dict[term_string] = summed_frequency
+    def __get_vocab_file_handle(self):
+        """
+        Returns a handle for the vocabulary file.
+        If the file does not exist, the file is created and a handle is then returned to the new file.
+        """
+        def sum_occurrences(reader_param, term_unicode_param):
+            """
+            A small helper function that returns the total number of occurrences of a term across the fields
+            mentioned in the instance variable __include_fields.
+            """
+            summed_occurrences = 0
 
-        index.close()
-        vocab_dict = sorted(vocab_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
+            for field in self.__include_fields:
+                summed_occurrences += int(reader_param.frequency(field, term_unicode_param))
 
-        for term in vocab_dict:
-            vocab_handle.write('{0},{1}{2}'.format(term[0], term[1], os.linesep))
+            return summed_occurrences
 
-        vocab_handle.seek(0)
-        return vocab_handle
+        if os.path.exists(self.__vocab_path):
+            return open(self.__vocab_path, 'r')
+        else:
+            print "Vocabulary file not found. Building vocabulary file..."
+            index = open_dir(self.__index_path)
+            vocab_handle = open(self.__vocab_path, 'w+')
+            vocab_dict = {}
 
+            with index.reader() as reader:
+                for term in reader.all_terms():
+                    term_unicode = term[1]
 
-def create_trie(vocab_handle):
-    """
-    Creates and returns a trie from the contents of the file pointed to by the handle vocab_handle
-    """
-    keys = []
-    values = []
-    format = '<H'
+                    if term[0] in self.__include_fields:
+                        occurrences = sum_occurrences(reader, term_unicode)
+                        vocab_dict[term_unicode] = occurrences
 
-    for input_line in vocab_handle:
-        input_line = input_line.strip()
-        input_line = input_line.split(',')
+            vocab_dict = sorted(vocab_dict.iteritems(), key=operator.itemgetter(1), reverse=True)
 
-        term = unicode(input_line[0])
-        frequency = (float(input_line[1]),)
+            for term in vocab_dict:
+                vocab_handle.write('{0},{1}{2}'.format(term[0], term[1], os.linesep))
 
-        keys.append(term)
-        values.append(frequency)
-
-    trie = marisa_trie.RecordTrie(format, zip(keys, values))
-    return trie
-
-
-def test_trie(trie, query):
-    results = trie.items(u'davi')
-    sorted_results =  sorted(results, key=operator.itemgetter(1), reverse=True)
-    end_result = [i[0] for i in sorted_results]
-
-    print end_result
+            vocab_handle.seek(0)
+            return vocab_handle
 
 
-def save_trie(trie):
-    trie.save(trie_path)
+    def __get_stopwords_list(self):
+        """
+        Returns a list of stopwords, read in from the file pointed to by instance variable __stopword_path.
+        """
+        try:
+            stopwords = open(self.__stopwords_path, 'r')
+        except IOError:
+            print ("Stopwords file could not be found for constructing a suggestion trie!")
+            return []
+
+        return_list = []
+
+        for word in stopwords:
+            return_list.append(unicode(word.strip()))
+
+        return return_list
+
+
+    def __get_trie(self):
+        """
+        Opens and returns the ternary trie located on backing storage, if it exists.
+        If a trie file does not exist, it is created and the trie object is returned.
+        """
+        format = '<H'  # Check out http://docs.python.org/2/library/struct.html#format-strings for more information.
+
+        if os.path.exists(self.__vocab_trie_path):
+            print "Loading trie..."
+            trie = marisa_trie.RecordTrie(format)
+
+            with open(self.__vocab_trie_path, 'r') as file_handle:
+                trie.read(file_handle)
+
+            return trie
+        else:
+            print "Trie file not found. Creating trie..."
+            trie_list = []
+
+            # Populate trie_list in preparation for passing to the RecordTrie constructor.
+            # trie_list = [ (u'term1', (freq1,)), (u'term2', (freq2,)) ]
+            for input_line in self.__vocab_handle:
+                input_line = input_line.strip().split(',')
+                trie_list.append((unicode(input_line[0]), (int(input_line[1]),)))
+
+            # Create the trie structure and save it to backing storage before returning the reference.
+            trie = marisa_trie.RecordTrie(format, trie_list)
+            trie.save(self.__vocab_trie_path)
+            return trie
+
+    def suggest(self, characters):
+        """
+        Returns a list of unicode suggestions to assist in completing a query. The more frequently occurring the term in
+        the collection used, the higher up the suggestion list the term will be.
+        The list returned is dependant on two main factors.
+            - Instance variable __min_occurrences determines how many times a term should appear before being eligible.
+            - Instance variable __suggestion_count determines the maximum number of suggestions to be returned. If set
+              to -1, all suggestions available are returned. When set to 0, an empty list is always returned.
+        """
+        results = self.__trie.items(unicode(characters))
+        results = sorted(results, key=operator.itemgetter(1), reverse=True)  # Order results by descending occurrence
+
+        # Remove stopwords from the result list if the option to include stopwords isn't enabled.
+        if not self.__include_stopwords:
+            results[:] = [x for x in results if x[0] not in self.__stopwords]
+
+        # Trim the results list to size if a size has been specified!
+        if self.__suggestion_count > -1:
+            results = results[0:self.__suggestion_count]
+
+        # Return the unicode strings only of our resulting list.
+        return [i[0] for i in results]
+
 
 if __name__ == '__main__':
-    vocab = create_vocab_file()
-    trie = create_trie(vocab)
+    vocab_trie_path = 'data/vocab_trie.dat'
+    index_path = 'data/smallindex'
+    stopwords_path = 'data/stopwords.txt'
+    vocab_path = 'data/vocab.txt'
+    min_occurrences = 3
+    suggestion_count = -1
+    include_stopwords = True
 
-    test_trie(trie, u"Davi")
+    trie_class = SuggestionTrie(index_path=index_path,
+                                stopwords_path=stopwords_path,
+                                vocab_path=vocab_path,
+                                vocab_trie_path=vocab_trie_path,
+                                min_occurrences=min_occurrences,
+                                suggestion_count=suggestion_count,
+                                include_stopwords=include_stopwords)
 
-    save_trie(trie)
+    print trie_class.suggest('some')
