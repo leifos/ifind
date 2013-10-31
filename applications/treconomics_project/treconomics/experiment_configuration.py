@@ -71,9 +71,6 @@ class ExperimentSetup(object):
         :return: returns the list of topic numbers
         """
         ith = self._get_check_i(i)
-
-        print "GET ROTATIONS"
-
         return self.pro.get_ordering(self.topics, ith)
 
     def get_rotation_topic(self, i, t):
@@ -101,4 +98,3 @@ exp5 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=
 
 # these correspond to conditions
 experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5]
-

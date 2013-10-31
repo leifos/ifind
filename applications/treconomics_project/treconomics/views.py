@@ -20,13 +20,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.forms.models import inlineformset_factory, modelformset_factory
 
-
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
 
-def view_reset_test_users(request):
 
-    usernames = [ 't1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4' ]
+def view_reset_test_users(request):
+    usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4']
 
     for un in usernames:
         print un
