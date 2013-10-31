@@ -47,7 +47,7 @@ exp_work_flows = [
 
 class ExperimentSetup(object):
 
-    def __init__(self, workflow, timeout = 660, topics=['999','347','344'], rpp=10, engine=1, interface=1, description='', popup_width=None, popup_height=None):
+    def __init__(self, workflow, timeout=660, topics=['999', '347', '344'], rpp=10, engine=1, interface=1, description='', popup_width=None, popup_height=None):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
@@ -56,7 +56,7 @@ class ExperimentSetup(object):
         self.description = description
         self.workflow = workflow
         self.pro = PermutatedRotationOrdering()
-        self.n =self.pro.number_of_orderings(self.topics)
+        self.n = self.pro.number_of_orderings(self.topics)
 
         # Two additional instance variables to control the width and height of the experiment popup box.
         self.popup_width = popup_width
@@ -72,34 +72,33 @@ class ExperimentSetup(object):
         """
         ith = self._get_check_i(i)
 
-        return self.pro.get_ordering(self.topics,ith)
+        print "GET ROTATIONS"
 
-    def get_rotation_topic(self,i,t):
+        return self.pro.get_ordering(self.topics, ith)
+
+    def get_rotation_topic(self, i, t):
         """ get the ith rotation and the tth topic
         :param i: integer
         :param t: integer
         :return: returns the topic number
         """
         ith = self._get_check_i(i)
-        rotations = self.pro.get_ordering(self.topics,ith)
+        rotations = self.pro.get_ordering(self.topics, ith)
         return rotations[t]
 
-
-    def get_interface(self,i=0):
+    def get_interface(self, i=0):
         return self.interface
-
-
 
     def __str__(self):
         return self.description
 
-exp0 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='structured condition')
-exp1 = ExperimentSetup(workflow= exp_work_flows[4], interface=0, description='structured condition')
-exp2 = ExperimentSetup(workflow= exp_work_flows[4], description='standard condition')
-exp3 = ExperimentSetup(workflow= exp_work_flows[4], interface=2, description='suggestion condition')
-exp4 = ExperimentSetup(workflow= exp_work_flows[4], topics=['344','347',], rpp=10, interface=1, description='structured condition')
-exp5 = ExperimentSetup(workflow= exp_work_flows[4], topics=['344','347',], rpp=10, interface=0,description='standard condition')
+exp0 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition')
+exp1 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition')
+exp2 = ExperimentSetup(workflow=exp_work_flows[4], description='standard condition')
+exp3 = ExperimentSetup(workflow=exp_work_flows[4], interface=2, description='suggestion condition')
+exp4 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
+exp5 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
 
 # these correspond to conditions
-experiment_setups = [exp0,exp1,exp2,exp3,exp4,exp5]
+experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5]
 

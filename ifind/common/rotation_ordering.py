@@ -31,7 +31,6 @@ class RotationOrdering(object):
         return id_list
 
 
-
 class PermutatedRotationOrdering(RotationOrdering):
 
     def number_of_orderings(self, slist=None):
