@@ -29,7 +29,7 @@ class SuggestionTrie(object):
             vocab_path (str): path to the vocabulary file to use.
             vocab_trie_path (str): path to the trie file to use.
             min_occurrences (int): number of times a term should appear before being included in the trie.
-            suggestion_count (int): number of suggestions to provide to end users (-1 = no limit, 0 = none).
+            suggestion_count (int): number of suggestions to provide to end users (-1 = max of 10, 0 = none).
             include_stopwords (bool): include stopwords in the suggestions.
         """
         self.__index_path = index_path
@@ -144,7 +144,7 @@ class SuggestionTrie(object):
         The list returned is dependant on two main factors.
             - Instance variable __min_occurrences determines how many times a term should appear before being eligible.
             - Instance variable __suggestion_count determines the maximum number of suggestions to be returned. If set
-              to -1, all suggestions available are returned. When set to 0, an empty list is always returned.
+              to -1, the top 10 suggestions are returned. When set to 0, an empty list is always returned.
         """
         results = self.__trie.items(unicode(characters))
         results = sorted(results, key=operator.itemgetter(1), reverse=True)  # Order results by descending occurrence
@@ -154,7 +154,9 @@ class SuggestionTrie(object):
             results[:] = [x for x in results if x[0] not in self.__stopwords]
 
         # Trim the results list to size if a size has been specified!
-        if self.__suggestion_count > -1:
+        if self.__suggestion_count == -1:
+            results = results[0:10]
+        else:
             results = results[0:self.__suggestion_count]
 
         # Return the unicode strings only of our resulting list.

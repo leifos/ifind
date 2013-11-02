@@ -1,7 +1,12 @@
 {% extends 'base/base.html' %}
 
+{% load static %}
+
 {% block exp_info_block %}
 
+    {% if ajax_suggest %}
+    <script type="text/javascript" src="{% static 'javascripts/ajax_search.js' %}"></script>
+    {% endif %}
 
 
      <p>
