@@ -1,5 +1,6 @@
 import json
 import jsonpickle
+import ifind.common.make_json_serializable
 
 
 class Response(object):
@@ -191,3 +192,9 @@ class Result(object):
 
         """
         return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+
+    def to_json(self):
+        """
+        Returns object instance as a JSON string.
+        """
+        return vars(self)

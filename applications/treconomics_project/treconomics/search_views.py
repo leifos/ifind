@@ -311,7 +311,7 @@ def ajax_search(request, taskid=0):
     context = RequestContext(request)
     context_dict = {}
 
-    context_dict['ajax_suggest'] = True
+    context_dict['ajax_enabled'] = True
 
     # Gather the usual suspects...
     ec = get_experiment_context(request)
@@ -323,10 +323,27 @@ def ajax_search(request, taskid=0):
     page_len = experiment_setups[condition].rpp
     page = 1
 
+    context_dict['participant'] = uname
+    context_dict['task'] = taskid
+    context_dict['condition'] = condition
+    context_dict['interface'] = interface
+
     if request.method == 'POST':
         # AJAX POST request for a given query.
         # Returns a AJAX response with the document list to populate the container <DIV>.
-        print "POST"
+        result_dict = {}
+
+        if interface == 1:
+            user_query = constructStructuredQuery(request)
+        else:
+            user_query = request.POST.get('query').strip()
+
+        result_dict['query'] = user_query
+        log_event(event="QUERY_ISSUED", request=request, query=user_query)
+        result_dict = run_query(condition, result_dict, user_query, page, page_len)
+
+        # Serialise the data structure and send it back
+        return HttpResponse(json.dumps(result_dict), content_type='application/json')
     else:
 
         if request.GET.get('suggest'):

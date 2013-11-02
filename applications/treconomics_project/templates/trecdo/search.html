@@ -4,7 +4,7 @@
 
 {% block exp_info_block %}
 
-    {% if ajax_suggest %}
+    {% if ajax_enabled %}
     <script type="text/javascript" src="{% static 'javascripts/ajax_search.js' %}"></script>
     {% endif %}
 
@@ -17,7 +17,7 @@
 
 {% block query_box %}
 	<div class="entry" id="search_box_area">
-		<form action="/treconomics/search/" onsubmit="return validate_form(this)" method="post">
+		<form id="search_form" action="/treconomics/search/" onsubmit="return validate_form(this)" method="post">
 	        {% csrf_token %} 								
 	        <!-- cross-site request forgery protection -->
 	        {% if interface == 1%}
