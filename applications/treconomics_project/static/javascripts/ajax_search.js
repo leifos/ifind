@@ -8,9 +8,7 @@ Revision: 1
 
 */
 
-function switchToPage(url) {
-    alert(url);
-}
+var stopHashChange = false;
 
 $(function() {
 
@@ -35,24 +33,23 @@ $(function() {
     Bind all input fields to have autocomplete functionality.
     Check out http://api.jquery.com/text-selector/ for more information on the selector used.
      */
-    $(":text").autocomplete({
-      minLength: 2,
-      source: function( request, response ) {
+    $(':text').autocomplete({
+        minLength: 2,
+        source: function( request, response ) {
 
         $.ajax({
-          url: "",
-          dataType: "json",
-          data: {
-            suggest: getSuggestion(request.term)
-          },
-          success: function( data ) {
+            url: "",
+            dataType: "json",
+            data: {
+                suggest: getSuggestion(request.term)
+            },
+            success: function( data ) {
             response( $.map( data.results, function( item ) {
-              return {
-                label: item,
-                value: item
-              }
-            }));
-          }
+                return {
+                    label: item,
+                    value: item}
+                }));
+            }
         });
       },
       select: function(event, ui) {
@@ -75,14 +72,99 @@ $(function() {
 
     });
 
+    // When the search form is submitted...
     $("#search_form").submit(function(event) {
         event.preventDefault();
-        var posting = $.post("", $("form").serialize());
+        processRequest($("form").serialize());
+    });
 
-        posting.done(function(data) {
-            var results = $('div.results');
-            results.empty(); // Remove all children for the new results set
+    // When the URL hash changes, check the data and see if a search can be performed.
+    $(window).hashchange(function () {
+        if (!stopHashChange)
+            doHashSearch();
 
+        stopHashChange = false;
+    });
+
+    $(window).hashchange();
+});
+
+/*
+Switches the current search results to the page specified by the URL supplied.
+*/
+function switchToPage(url) {
+    var pageNumber = getPageNumber(url);
+    var formData = $("form").serialize();
+    formData = formData + '&page=' + pageNumber;
+
+    processRequest(formData);
+}
+
+/*
+Returns the page number that has been requested from the given URL.
+*/
+function getPageNumber(url) {
+    if (url.substring(0, 1) == '?') {
+        url = url.substring(1, url.length);
+    }
+
+    var vars = url.split('&');
+
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+
+        if (pair[0] == 'page') {
+            return parseInt(pair[1]);
+        }
+    }
+
+    return false;
+}
+
+/*
+The URL hash (everything after the #, including the #) is being used in a querystring-style format.
+Specify a key as the parameter for this function and you'll get the corresponding value.
+With a hash of #query=bbc&page=2, getHashValue('query') returns 'bbc'.
+
+Solution adapted from http://stackoverflow.com/a/3788235.
+*/
+function getHashValue(key) {
+    var re = new RegExp('(?:\\#|&)'+key+'=(.*?)(?=&|$)','gi');
+    var r = [];
+    var m;
+
+    while ((m = re.exec(document.location.hash)) != null) {
+        r.push(m[1]);
+    }
+
+    if(typeof(r[0]) === 'undefined') {
+        return false;
+    }
+
+    return r[0];
+}
+
+/*
+Function which processes the AJAX request. Sends the request and displays the results on the page.
+*/
+function processRequest(serializedFormData) {
+    $('body').css('cursor', 'progress');
+    var posting = $.post("", serializedFormData);
+
+    posting.fail(function(data) {
+        $('body').css('cursor', 'default');
+        alert("Something went wrong when processing your request!");
+        console.log("Server error on AJAX request: " + data.responseText);
+    });
+
+    posting.done(function(data) {
+        var results = $('div.results');
+        results.empty(); // Remove all children for the new results set
+
+        var results_nav = $('div.results_nav');
+        results_nav.empty(); // Remove all children from the navigation button container
+
+        if (data['trec_search']) {
             // Add the top part
             results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> pages.</span></div>');
 
@@ -93,12 +175,7 @@ $(function() {
                 results.append('<div class="byline">' + result['source'] + '</div>');
             }
 
-            console.log(data);
-
             // Add navigation buttons at bottom of page (if applicable)
-            var results_nav = $('div.results_nav');
-            results_nav.empty();
-
             var nextButton = "";
             var prevButton = "";
 
@@ -111,18 +188,39 @@ $(function() {
             }
 
             results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
+        }
+        else {
+            results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>No results found.</span></div>');
+        }
 
-
-
-            /*<center>
-              <form>
-                <input class="largebutton" type="button" onclick=
-                "parent.location='?query=test&amp;page=2'" value="Next Page" />
-                <!-- a href="?query=test&amp;page=2">Next Page</a -->
-              </form>
-            </center>*/
-        });
-
+        stopHashChange = true;
+        window.location.hash = 'query=' + data['query'] + '&page=' + data['curr_page'];
+        $('body').css('cursor', 'default');
     });
+}
 
-  });
+/*
+Checks data supplied as part of the URL hash and performs a search if it is acceptable.
+*/
+function doHashSearch() {
+    var query = getHashValue('query');
+    var page = getHashValue('page');
+
+    if (query) {
+        if (!page || isNaN(page)) {
+            page = 1;
+        }
+
+        if (/\S/.test(query)) {  // Check if string contains at least one non-whitespace character
+            var queryField = $('#query');
+
+            if (queryField && queryField.attr('name')) { // Is this interface 1?
+                queryField.val(query);
+                var formSerialized = $('form').serialize();
+                formSerialized += '&page=' + page;
+
+                processRequest(formSerialized);
+            }
+        }
+    }
+}

@@ -92,7 +92,19 @@ class WhooshTrecNews(Engine):
             pagelen = query.top
 
             with self.docIndex.searcher() as searcher:
-                results = searcher.search_page( query_terms, page, pagelen=pagelen )
+                invalid_page_no = True
+
+                # If the user specifies a page number that's higher than the number of pages available,
+                # this loop looks until a page number is found that contains results and uses that instead.
+                # Prevents a horrible AttributeError exception later on!
+                while (invalid_page_no):
+                    try:
+                        results = searcher.search_page(query_terms, page, pagelen)
+                        invalid_page_no = False
+                        setattr(results, 'actual_page', page)
+                    except ValueError:
+                        page = page - 1
+                
                 results.fragmenter = highlight.ContextFragmenter(maxchars=300, surround=300)
                 results.formatter = highlight.HtmlFormatter()
                 results.fragmenter.charlimit = 100000
@@ -122,7 +134,9 @@ class WhooshTrecNews(Engine):
         """
         print "about to parse"
         response = Response(query.terms)
-        response.result_total = results.pagecount
+        # Dmax thinks this line is incorrect.
+        # I've substituted it with a line just before returning response...
+        #response.result_total = results.pagecount
         print "created response"
         r = 0
         for result in results:
@@ -147,4 +161,12 @@ class WhooshTrecNews(Engine):
             if len(response) == query.top:
                 break
 
+        # Dmax has added this line as a replacement for the one commented out above.
+        response.result_total = len(results)
+
+        # Add the total number of pages from the results object as an attribute of our response object.
+        # We also add the total number of results shown on the page.
+        setattr(response, 'total_pages', results.pagecount)
+        setattr(response, 'results_on_page', results.pagelen)
+        setattr(response, 'actual_page', results.actual_page)
         return response

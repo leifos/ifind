@@ -30,6 +30,7 @@ from experiment_configuration import experiment_setups
 # AJAX Stuff - Including suggestion trie
 from ifind.common.suggestion_trie import SuggestionTrie
 from experiment_configuration import my_whoosh_doc_index_dir, work_dir
+from time import sleep
 import json
 
 ix = open_dir(my_whoosh_doc_index_dir)
@@ -193,6 +194,10 @@ def constructStructuredQuery(request):
 
 def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
 
+    # Stops an AWFUL lot of problems when people get up to mischief
+    if page < 1:
+        page = 1
+
     query = Query(query_terms)
     query.skip = page
     query.top = page_len
@@ -200,24 +205,26 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
     result_dict['query'] = query_terms
     response = search_engine.search(query)
 
-    num_pages = response.result_total
+    num_pages = response.total_pages
+
     result_dict['trec_results'] = None
     result_dict['trec_no_results_found'] = True
     result_dict['trec_search'] = False
+    result_dict['num_pages'] = num_pages
+
     if num_pages > 0:
         result_dict['trec_search'] = True
         result_dict['trec_results'] = response.results
 
-        result_dict['curr_page'] = page
+        result_dict['curr_page'] = response.actual_page
         if page > 1:
             result_dict['prev_page'] = page - 1
             result_dict['prev_page_show'] = True
-            result_dict['prev_page_link'] = "?query=" + query_terms.replace(' ','+') + '&page=' + str(page - 1)
+            result_dict['prev_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page - 1)
         if page < num_pages:
             result_dict['next_page'] = page + 1
             result_dict['next_page_show'] = True
-            result_dict['next_page_link'] = "?query=" + query_terms.replace(' ','+') + '&page=' + str(page + 1)
-            result_dict['num_pages'] = num_pages
+            result_dict['next_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page + 1)
 
     return result_dict
 
@@ -303,7 +310,7 @@ def search(request, taskid=0):
             log_event(event='VIEW_SEARCH_BOX', request=request, page=page )
             return render_to_response('trecdo/search.html', result_dict, context)
 
-
+@login_required
 def ajax_search(request, taskid=0):
     """
     David's crummy AJAX search implementation.
@@ -338,11 +345,16 @@ def ajax_search(request, taskid=0):
         else:
             user_query = request.POST.get('query').strip()
 
-        result_dict['query'] = user_query
+        page_request = request.POST.get('page')
+
+        if page_request:
+            page = int(page_request)
+
         log_event(event="QUERY_ISSUED", request=request, query=user_query)
         result_dict = run_query(condition, result_dict, user_query, page, page_len)
 
         # Serialise the data structure and send it back
+        #sleep(5) # Delay the response being sent back
         return HttpResponse(json.dumps(result_dict), content_type='application/json')
     else:
 

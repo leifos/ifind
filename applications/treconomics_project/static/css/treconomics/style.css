@@ -285,6 +285,7 @@ p.summary {
 	width: 150px;
 	margin: 0px 5px;
 	border-radius: 4;
+    cursor: pointer;
 	}
 
 .largebutton:hover {
