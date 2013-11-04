@@ -115,7 +115,6 @@ def show_saved_documents(request):
     # Get documents that are for this task, and for this user
     u = User.objects.get(username=uname)
     docs = DocumentsExamined.objects.filter(user=u).filter(task=taskid)
-
     return render_to_response('trecdo/saved_documents.html', {'participant': uname, 'task': taskid, 'condition': condition, 'current_search': current_search, 'docs': docs}, context)
 
 @login_required
@@ -314,75 +313,94 @@ def search(request, taskid=0):
 def ajax_search(request, taskid=0):
     """
     David's crummy AJAX search implementation.
+    Actually, it's not that crummy at all.
     """
-    context = RequestContext(request)
-    context_dict = {}
+    # If taskid is set, then it marks the start of a new search task
+    # Update the session variable to reflect this
+    if taskid >= 1:
+        request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        request.session['taskid'] = taskid
+        log_event(event="SEARCH_TASK_COMMENCED", request=request)
 
-    context_dict['ajax_enabled'] = True
-
-    # Gather the usual suspects...
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    taskid = ec["taskid"]
-    topic_num = ec["topicnum"]
-    interface = experiment_setups[condition].get_interface()
-    page_len = experiment_setups[condition].rpp
-    page = 1
-
-    context_dict['participant'] = uname
-    context_dict['task'] = taskid
-    context_dict['condition'] = condition
-    context_dict['interface'] = interface
-
-    if request.method == 'POST':
-        # AJAX POST request for a given query.
-        # Returns a AJAX response with the document list to populate the container <DIV>.
-        result_dict = {}
-
-        if interface == 1:
-            user_query = constructStructuredQuery(request)
-        else:
-            user_query = request.POST.get('query').strip()
-
-        page_request = request.POST.get('page')
-
-        if page_request:
-            page = int(page_request)
-
-        log_event(event="QUERY_ISSUED", request=request, query=user_query)
-        result_dict = run_query(condition, result_dict, user_query, page, page_len)
-
-        # Serialise the data structure and send it back
-        #sleep(5) # Delay the response being sent back
-        return HttpResponse(json.dumps(result_dict), content_type='application/json')
+    # Has the experiment timed out? If so, indicate to the user.
+    # Send a JSON object back which will be interpreted by the JavaScript.
+    if time_search_experiment_out(request):
+        return HttpResponse(json.dumps({'timeout': True}), content_type='application/json')
     else:
+        context = RequestContext(request)
+        context_dict = {}
 
-        if request.GET.get('suggest'):
-            # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
-            suggestion_trie = SuggestionTrie(
-                index_path=my_whoosh_doc_index_dir,
-                stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
-                vocab_path=os.path.join(work_dir, "data/vocab.txt"),
-                vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
+        context_dict['ajax_enabled'] = True
 
-            chars = unicode(request.GET.get('suggest'))
+        # Gather the usual suspects...
+        ec = get_experiment_context(request)
+        uname = ec["username"]
+        condition = ec["condition"]
+        taskid = ec["taskid"]
+        topic_num = ec["topicnum"]
+        interface = experiment_setups[condition].get_interface()
+        page_len = experiment_setups[condition].rpp
+        page = 1
 
-            results = suggestion_trie.suggest(chars)
-            response_data = {
-                'count': len(results),
-                'results': results,
-            }
+        context_dict['participant'] = uname
+        context_dict['task'] = taskid
+        context_dict['condition'] = condition
+        context_dict['interface'] = interface
 
-            # Log the event - included is the number of suggestions returned. Can easily remove this
-            log_event(
-                event='QUERY_SUGGESTIONS_REQUESTED ({0})'.format(response_data['count']),
-                request=request,
-                query=chars)
-            return HttpResponse(json.dumps(response_data), content_type='application/json')
+        if request.method == 'POST':
+            # AJAX POST request for a given query.
+            # Returns a AJAX response with the document list to populate the container <DIV>.
+            result_dict = {}
+
+            if interface == 1:
+                user_query = constructStructuredQuery(request)
+            else:
+                user_query = request.POST.get('query').strip()
+
+            log_event(event="QUERY_ISSUED", request=request, query=user_query)
+            page_request = request.POST.get('page')
+
+            if page_request:
+                page = int(page_request)
+
+            result_dict = run_query(condition, result_dict, user_query, page, page_len)
+
+            queryurl = '/treconomics/ajax_search/#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+            print "Set queryurl to : " + queryurl
+            request.session['queryurl'] = queryurl
+
+            # Serialise the data structure and send it back
+            #sleep(5) # Delay the response being sent back
+            log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+            return HttpResponse(json.dumps(result_dict), content_type='application/json')
         else:
-            # Render the search template as usual...
-            return render_to_response('trecdo/search.html', context_dict, context)
+
+            if request.GET.get('suggest'):
+                # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
+                suggestion_trie = SuggestionTrie(
+                    index_path=my_whoosh_doc_index_dir,
+                    stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
+                    vocab_path=os.path.join(work_dir, "data/vocab.txt"),
+                    vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
+
+                chars = unicode(request.GET.get('suggest'))
+
+                results = suggestion_trie.suggest(chars)
+                response_data = {
+                    'count': len(results),
+                    'results': results,
+                }
+
+                # Log the event - included is the number of suggestions returned. Can easily remove this
+                log_event(
+                    event='QUERY_SUGGESTIONS_REQUESTED ({0})'.format(response_data['count']),
+                    request=request,
+                    query=chars)
+                return HttpResponse(json.dumps(response_data), content_type='application/json')
+            else:
+                # Render the search template as usual...
+                log_event(event="VIEW_SEARCH_BOX", request=request, page=page)
+                return render_to_response('trecdo/search.html', context_dict, context)
 
 
 @login_required

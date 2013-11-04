@@ -3,8 +3,8 @@
 JQuery AJAX Search Functionality
 
 Author: David Maxwell
-Date: 2013-10-31
-Revision: 1
+Date: 2013-11-03
+Revision: 2
 
 */
 
@@ -16,8 +16,16 @@ $(function() {
     Returns the last word (or partial word) in the input box string.
     This word-in-progress is then sent to the server to provide suggestions as the user types their query.
      */
-    function getSuggestion(term) {
-        return (""+term).replace(/[\s-]+$/,'').split(/[\s-]/).pop();
+    function getSuggestion(object, term) {
+        var element = $(object[0].element[0]);
+        var current = element.val().split(' ');
+        var old = element.data('oldVal').split(' ');
+
+        // Update the oldVal data AFTER, not BEFORE.
+
+
+        //return (""+term).replace(/[\s-]+$/,'').split(/[\s-]/).pop();
+        return getDifferentTerm(old, current);
     }
 
     /*
@@ -41,35 +49,54 @@ $(function() {
             url: "",
             dataType: "json",
             data: {
-                suggest: getSuggestion(request.term)
+                suggest: getSuggestion($(this), request.term)[0]
             },
-            success: function( data ) {
-            response( $.map( data.results, function( item ) {
+            success: function(data) {
+            response( $.map( data.results, function(item) {
                 return {
                     label: item,
                     value: item}
                 }));
+            }});
+        },
+        focus: function(event) {
+            event.preventDefault();
+
+        },
+        select: function(event, ui) {
+            event.preventDefault();
+            var currFieldValue = event.target.value;
+            var previousValue = $(this).data('oldVal');
+
+            var selectedItem = ui.item.value;
+            var newFieldValue = "";
+
+            oldArray = previousValue.split(' ');
+            newArray = currFieldValue.split(' ');
+
+            var difference = getDifferentTerm(oldArray, newArray);
+
+
+
+            if (previousValue === undefined) {
+                newFieldValue = selectedItem
             }
-        });
-      },
-      select: function(event, ui) {
-          event.preventDefault();
-          var previousValue = $(this).attr('previousSuggestion');
-          var currFieldValue = event.target.value;
-          var selectedItem = ui.item.value;
-          var newFieldValue;
+            else {
+                for (termIndex in newArray) {
+                    if (termIndex == difference[1]) {
+                        if (termIndex == 0) newFieldValue += selectedItem;
+                        else newFieldValue += " " + selectedItem;
+                    }
+                    else {
+                        if (termIndex == 0) newFieldValue += newArray[termIndex];
+                        else newFieldValue += " " + newArray[termIndex];
+                    }
+                }
+            }
 
-          if (previousValue === undefined) {
-              newFieldValue = selectedItem
-          }
-          else {
-              newFieldValue =  removeSuggestionText(currFieldValue) + " " + selectedItem;
-          }
-
-          event.target.value = newFieldValue;
-          $(this).attr('previousSuggestion', newFieldValue);
+            event.target.value = newFieldValue;
+            $(this).data('oldVal', $(this).val());
       }
-
     });
 
     // When the search form is submitted...
@@ -78,8 +105,15 @@ $(function() {
         processRequest($("form").serialize());
     });
 
+    $(document).ready(function() {
+        $(':text').each(function(i, obj) {
+            var element = $(obj);
+            element.data('oldVal', element.val());
+        });
+    });
+
     // When the URL hash changes, check the data and see if a search can be performed.
-    $(window).hashchange(function () {
+    $(window).hashchange(function() {
         if (!stopHashChange)
             doHashSearch();
 
@@ -88,6 +122,26 @@ $(function() {
 
     $(window).hashchange();
 });
+
+/*
+A function which returns the term that appears within two arrays differently.
+This is used to determine which word to focus on in the suggestion box.
+An array is returned, containing the differing term at [0] and the position of the word (zero-based) at [1].
+*/
+function getDifferentTerm(oldArray, newArray) {
+    var returnArray = [];
+    var i = 0;
+
+    jQuery.grep(newArray, function(element) {
+        if (jQuery.inArray(element, oldArray) == -1) {
+            returnArray = [element, i];
+        }
+
+        i++;
+    });
+
+    return returnArray;
+}
 
 /*
 Switches the current search results to the page specified by the URL supplied.
@@ -164,37 +218,49 @@ function processRequest(serializedFormData) {
         var results_nav = $('div.results_nav');
         results_nav.empty(); // Remove all children from the navigation button container
 
-        if (data['trec_search']) {
-            // Add the top part
-            results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> pages.</span></div>');
-
-            // Add each of the results
-            for (var result_no in data['trec_results']) {
-                var result = data['trec_results'][result_no];
-                results.append('<div class="entry" id="' + result['docid'] + '"><p class="result_title"><a href="' + result['url'] + '"><strong>' + result['title'] + '</strong></a></p><p class="summary">' + result['summary'] + '</p></div>');
-                results.append('<div class="byline">' + result['source'] + '</div>');
-            }
-
-            // Add navigation buttons at bottom of page (if applicable)
-            var nextButton = "";
-            var prevButton = "";
-
-            if (data['curr_page'] < data['num_pages']) {
-                nextButton = '<input class="largebutton" type="button" onclick="switchToPage(\'' + data['next_page_link'] + '\');" value="Next Page" />';
-            }
-
-            if (data['curr_page'] > 1) {
-                prevButton = '<input class="largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\');" value="Prev Page" />';
-            }
-
-            results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
+        if ('timeout' in data) {
+            results.append('<div class="query" style="text-align: center;"><strong>Task Timed Out.</strong><br />Your search task has timed out. Please click <a href="/treconomics/next/">here</a> to continue.</div>');
         }
         else {
-            results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>No results found.</span></div>');
+            if (data['trec_search']) {
+                // Add the top part
+                results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> page(s).</span></div>');
+
+                // Add each of the results
+                for (var result_no in data['trec_results']) {
+                    var result = data['trec_results'][result_no];
+                    results.append('<div class="entry" id="' + result['docid'] + '"><p class="result_title"><a href="' + result['url'] + '"><strong>' + result['title'] + '</strong></a></p><p class="summary">' + result['summary'] + '</p></div>');
+                    results.append('<div class="byline">' + result['source'] + '</div>');
+                }
+
+                // Add navigation buttons at bottom of page (if applicable)
+                var nextButton = "";
+                var prevButton = "";
+
+                if (data['curr_page'] < data['num_pages']) {
+                    nextButton = '<input class="largebutton" type="button" onclick="switchToPage(\'' + data['next_page_link'] + '\');" value="Next Page" />';
+                }
+
+                if (data['curr_page'] > 1) {
+                    prevButton = '<input class="largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\');" value="Prev Page" />';
+                }
+
+                results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
+            }
+            else {
+                results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>No results found.</span></div>');
+            }
+
+            stopHashChange = true;
+
+            if ('curr_page' in data) {
+                window.location.hash = 'query=' + data['query'] + '&page=' + data['curr_page'];
+            }
+            else {
+                window.location.hash = 'query=' + data['query'];
+            }
         }
 
-        stopHashChange = true;
-        window.location.hash = 'query=' + data['query'] + '&page=' + data['curr_page'];
         $('body').css('cursor', 'default');
     });
 }

@@ -104,7 +104,7 @@ class WhooshTrecNews(Engine):
                         setattr(results, 'actual_page', page)
                     except ValueError:
                         page = page - 1
-                
+
                 results.fragmenter = highlight.ContextFragmenter(maxchars=300, surround=300)
                 results.formatter = highlight.HtmlFormatter()
                 results.fragmenter.charlimit = 100000
