@@ -353,6 +353,10 @@ def ajax_search(request, taskid=0):
             result_dict = {}
 
             if interface == 1:
+                querystring = request.POST.copy()
+                del querystring['csrfmiddlewaretoken']
+                request.session['last_ajax_interface1_querystring'] = querystring
+
                 user_query = constructStructuredQuery(request)
             else:
                 user_query = request.POST.get('query').strip()
@@ -404,6 +408,19 @@ def ajax_search(request, taskid=0):
                 # Render the search template as usual...
                 log_event(event="VIEW_SEARCH_BOX", request=request, page=page)
                 return render_to_response('trecdo/search.html', context_dict, context)
+
+@login_required
+def ajax_interface1_querystring(request):
+
+    querydict = request.session['last_ajax_interface1_querystring']
+    querystring = ""
+
+    for query in querydict:
+        querystring += query + '=' + querydict[query] + '&'
+
+    querystring = querystring[0:len(querystring) - 1]
+
+    return HttpResponse(json.dumps({'querystring': querystring}), content_type='application/json')
 
 
 @login_required

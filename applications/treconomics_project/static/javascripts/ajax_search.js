@@ -9,6 +9,7 @@ Revision: 2
 */
 
 var stopHashChange = false;
+var interface1Querystring = "";
 
 $(function() {
 
@@ -100,8 +101,10 @@ $(function() {
     $("#search_form").submit(function(event) {
         event.preventDefault();
         processRequest($("form").serialize());
+        interface1Querystring = "";
     });
 
+    // When the page loads, set each input text field to have an oldVal property.
     $(document).ready(function() {
         $(':text').each(function(i, obj) {
             var element = $(obj);
@@ -144,11 +147,30 @@ function getDifferentTerm(oldArray, newArray) {
 Switches the current search results to the page specified by the URL supplied.
 */
 function switchToPage(url) {
-    var pageNumber = getPageNumber(url);
-    var formData = $("form").serialize();
-    formData = formData + '&page=' + pageNumber;
+    var page_interface = $('#interface_type');
 
-    processRequest(formData, true);
+    if (parseInt(page_interface.val()) == 1) {
+        var pageNumber = getPageNumber(url);
+
+        if (interface1Querystring != "") {
+            interface1Querystring += '&page=' + pageNumber;
+            processRequest(interface1Querystring, true);
+        }
+        else {
+            var pageNumber = getPageNumber(url);
+            var formData = $("form").serialize();
+            formData = formData + '&page=' + pageNumber;
+
+            processRequest(formData, true);
+        }
+    }
+    else {
+        var pageNumber = getPageNumber(url);
+        var formData = $("form").serialize();
+        formData = formData + '&page=' + pageNumber;
+
+        processRequest(formData, true);
+    }
 }
 
 /*
@@ -205,7 +227,6 @@ function processRequest(serializedFormData, noDelay) {
         serializedFormData += '&noDelay=true';
     }
 
-    console.log(serializedFormData);
     var posting = $.post("", serializedFormData);
 
     posting.fail(function(data) {
@@ -272,6 +293,7 @@ function processRequest(serializedFormData, noDelay) {
 Checks data supplied as part of the URL hash and performs a search if it is acceptable.
 */
 function doHashSearch() {
+    var page_interface = $('#interface_type');
     var query = getHashValue('query');
     var page = getHashValue('page');
 
@@ -283,12 +305,25 @@ function doHashSearch() {
         if (/\S/.test(query)) {  // Check if string contains at least one non-whitespace character
             var queryField = $('#query');
 
-            if (queryField && queryField.attr('name')) { // Is this interface 1?
+            if (parseInt(page_interface.val()) != 1) {
+                query = query.replace(/\+/g, ' ');
                 queryField.val(query);
                 var formSerialized = $('form').serialize();
                 formSerialized += '&page=' + page;
-
                 processRequest(formSerialized, true);
+            }
+            else {
+                // With an interface of 1, we have to pull the previous querystring from the server!
+                $.ajax({
+                    url: '../ajax_search_querystring/',
+                    success: function(data) {
+                        interface1Querystring = data['querystring'];
+                        interface1Querystring += '&page=' + page;
+                        interface1Querystring += '&noDelay=true';
+                        interface1Querystring += '&csrfmiddlewaretoken=' + $('input[name=csrfmiddlewaretoken]').val();
+                        processRequest(interface1Querystring, true);
+                    }
+                });
             }
         }
     }

@@ -95,7 +95,7 @@ class ExperimentSetup(object):
         return self.description
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition')
-exp1 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition', delay_results=0.5)
+exp1 = ExperimentSetup(workflow=exp_work_flows[4], interface=1, description='structured condition', delay_results=3)
 exp2 = ExperimentSetup(workflow=exp_work_flows[4], description='standard condition')
 exp3 = ExperimentSetup(workflow=exp_work_flows[4], interface=2, description='suggestion condition')
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=10, interface=1, description='structured condition')

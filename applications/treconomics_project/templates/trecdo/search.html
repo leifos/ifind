@@ -6,8 +6,8 @@
 
     {% if ajax_enabled %}
     <script type="text/javascript" src="{% static 'javascripts/ajax_search.js' %}"></script>
+    <input type="hidden" id="interface_type" value="{{ interface }}" />
     {% endif %}
-
 
      <p>
          <a href="/treconomics/saved/">View Saved</a> |
