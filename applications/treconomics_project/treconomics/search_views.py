@@ -369,8 +369,11 @@ def ajax_search(request, taskid=0):
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
 
-            # Serialise the data structure and send it back
-            #sleep(5) # Delay the response being sent back
+            if experiment_setups[condition].delay_results > 0 and not bool(request.POST.get('noDelay')):
+                log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
+                sleep(experiment_setups[condition].delay_results)  # Delay search results.
+
+            # Serialis(z?)e the data structure and send it back
             log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
             return HttpResponse(json.dumps(result_dict), content_type='application/json')
         else:

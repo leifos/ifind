@@ -21,9 +21,6 @@ $(function() {
         var current = element.val().split(' ');
         var old = element.data('oldVal').split(' ');
 
-        // Update the oldVal data AFTER, not BEFORE.
-
-
         //return (""+term).replace(/[\s-]+$/,'').split(/[\s-]/).pop();
         return getDifferentTerm(old, current);
     }
@@ -76,8 +73,6 @@ $(function() {
 
             var difference = getDifferentTerm(oldArray, newArray);
 
-
-
             if (previousValue === undefined) {
                 newFieldValue = selectedItem
             }
@@ -95,6 +90,8 @@ $(function() {
             }
 
             event.target.value = newFieldValue;
+            // Update the oldVal data AFTER, not BEFORE.
+            // This is why we update the oldVal data item here.
             $(this).data('oldVal', $(this).val());
       }
     });
@@ -151,7 +148,7 @@ function switchToPage(url) {
     var formData = $("form").serialize();
     formData = formData + '&page=' + pageNumber;
 
-    processRequest(formData);
+    processRequest(formData, true);
 }
 
 /*
@@ -201,8 +198,14 @@ function getHashValue(key) {
 /*
 Function which processes the AJAX request. Sends the request and displays the results on the page.
 */
-function processRequest(serializedFormData) {
+function processRequest(serializedFormData, noDelay) {
     $('body').css('cursor', 'progress');
+
+    if (noDelay) {
+        serializedFormData += '&noDelay=true';
+    }
+
+    console.log(serializedFormData);
     var posting = $.post("", serializedFormData);
 
     posting.fail(function(data) {
@@ -285,7 +288,7 @@ function doHashSearch() {
                 var formSerialized = $('form').serialize();
                 formSerialized += '&page=' + page;
 
-                processRequest(formSerialized);
+                processRequest(formSerialized, true);
             }
         }
     }
