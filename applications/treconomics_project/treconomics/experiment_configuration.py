@@ -47,7 +47,7 @@ exp_work_flows = [
 
 class ExperimentSetup(object):
 
-    def __init__(self, workflow, timeout=660, topics=['999', '347', '344'], rpp=10, engine=1, interface=1, description='', popup_width=None, popup_height=None, delay_results=0):
+    def __init__(self, workflow, timeout=660, topics=['999', '347', '344'], rpp=10, engine=1, interface=1, description='', popup_width=None, popup_height=None, delay_results=0, enable_ajax_suggestions=False):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
@@ -66,6 +66,9 @@ class ExperimentSetup(object):
         # Specify an integer or float value. The value specifies the number of seconds the delay should last for.
         # If 0, there is no delay.
         self.delay_results = delay_results
+
+        # Do you want to use AJAX suggestions if the AJAX search interface is used?
+        self.enable_ajax_suggestions = enable_ajax_suggestions
 
     def _get_check_i(self, i):
         return i % self.n
@@ -95,7 +98,7 @@ class ExperimentSetup(object):
         return self.description
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition')
-exp1 = ExperimentSetup(workflow=exp_work_flows[4], interface=1, description='structured condition', delay_results=3)
+exp1 = ExperimentSetup(workflow=exp_work_flows[4], interface=1, description='structured condition', delay_results=3, enable_ajax_suggestions=True)
 exp2 = ExperimentSetup(workflow=exp_work_flows[4], description='standard condition')
 exp3 = ExperimentSetup(workflow=exp_work_flows[4], interface=2, description='suggestion condition')
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=10, interface=1, description='structured condition')

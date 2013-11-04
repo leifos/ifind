@@ -346,6 +346,7 @@ def ajax_search(request, taskid=0):
         context_dict['task'] = taskid
         context_dict['condition'] = condition
         context_dict['interface'] = interface
+        context_dict['enable_ajax_suggestions'] = experiment_setups[condition].enable_ajax_suggestions
 
         if request.method == 'POST':
             # AJAX POST request for a given query.

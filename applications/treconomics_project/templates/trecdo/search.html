@@ -6,6 +6,9 @@
 
     {% if ajax_enabled %}
     <script type="text/javascript" src="{% static 'javascripts/ajax_search.js' %}"></script>
+    <script type="text/javascript">
+        var enable_ajax_suggestions = {% if enable_ajax_suggestions %}true{% else %}false{% endif %};
+    </script>
     <input type="hidden" id="interface_type" value="{{ interface }}" />
     {% endif %}
 

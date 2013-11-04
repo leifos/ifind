@@ -39,88 +39,90 @@ $(function() {
     Bind all input fields to have autocomplete functionality.
     Check out http://api.jquery.com/text-selector/ for more information on the selector used.
      */
-    $(':text').autocomplete({
-        minLength: 2,
-        source: function( request, response ) {
+    if (enable_ajax_suggestions) {
+        $(':text').autocomplete({
+            minLength: 2,
+            source: function( request, response ) {
 
-        $.ajax({
-            url: "",
-            dataType: "json",
-            data: {
-                suggest: getSuggestion($(this), request.term)[0]
+            $.ajax({
+                url: "",
+                dataType: "json",
+                data: {
+                    suggest: getSuggestion($(this), request.term)[0]
+                },
+                success: function(data) {
+                response( $.map( data.results, function(item) {
+                    return {
+                        label: item,
+                        value: item}
+                    }));
+                }});
             },
-            success: function(data) {
-            response( $.map( data.results, function(item) {
-                return {
-                    label: item,
-                    value: item}
-                }));
-            }});
-        },
-        focus: function(event) {
-            event.preventDefault();
+            focus: function(event) {
+                event.preventDefault();
 
-        },
-        select: function(event, ui) {
-            event.preventDefault();
-            var currFieldValue = event.target.value;
-            var previousValue = $(this).data('oldVal');
+            },
+            select: function(event, ui) {
+                event.preventDefault();
+                var currFieldValue = event.target.value;
+                var previousValue = $(this).data('oldVal');
 
-            var selectedItem = ui.item.value;
-            var newFieldValue = "";
+                var selectedItem = ui.item.value;
+                var newFieldValue = "";
 
-            oldArray = previousValue.split(' ');
-            newArray = currFieldValue.split(' ');
+                oldArray = previousValue.split(' ');
+                newArray = currFieldValue.split(' ');
 
-            var difference = getDifferentTerm(oldArray, newArray);
+                var difference = getDifferentTerm(oldArray, newArray);
 
-            if (previousValue === undefined) {
-                newFieldValue = selectedItem
-            }
-            else {
-                for (termIndex in newArray) {
-                    if (termIndex == difference[1]) {
-                        if (termIndex == 0) newFieldValue += selectedItem;
-                        else newFieldValue += " " + selectedItem;
-                    }
-                    else {
-                        if (termIndex == 0) newFieldValue += newArray[termIndex];
-                        else newFieldValue += " " + newArray[termIndex];
+                if (previousValue === undefined) {
+                    newFieldValue = selectedItem
+                }
+                else {
+                    for (termIndex in newArray) {
+                        if (termIndex == difference[1]) {
+                            if (termIndex == 0) newFieldValue += selectedItem;
+                            else newFieldValue += " " + selectedItem;
+                        }
+                        else {
+                            if (termIndex == 0) newFieldValue += newArray[termIndex];
+                            else newFieldValue += " " + newArray[termIndex];
+                        }
                     }
                 }
-            }
 
-            event.target.value = newFieldValue;
-            // Update the oldVal data AFTER, not BEFORE.
-            // This is why we update the oldVal data item here.
-            $(this).data('oldVal', $(this).val());
-      }
-    });
-
-    // When the search form is submitted...
-    $("#search_form").submit(function(event) {
-        event.preventDefault();
-        processRequest($("form").serialize());
-        interface1Querystring = "";
-    });
-
-    // When the page loads, set each input text field to have an oldVal property.
-    $(document).ready(function() {
-        $(':text').each(function(i, obj) {
-            var element = $(obj);
-            element.data('oldVal', element.val());
+                event.target.value = newFieldValue;
+                // Update the oldVal data AFTER, not BEFORE.
+                // This is why we update the oldVal data item here.
+                $(this).data('oldVal', $(this).val());
+          }
         });
-    });
 
-    // When the URL hash changes, check the data and see if a search can be performed.
-    $(window).hashchange(function() {
-        if (!stopHashChange)
-            doHashSearch();
+        // When the search form is submitted...
+        $("#search_form").submit(function(event) {
+            event.preventDefault();
+            processRequest($("form").serialize());
+            interface1Querystring = "";
+        });
 
-        stopHashChange = false;
-    });
+        // When the page loads, set each input text field to have an oldVal property.
+        $(document).ready(function() {
+            $(':text').each(function(i, obj) {
+                var element = $(obj);
+                element.data('oldVal', element.val());
+            });
+        });
 
-    $(window).hashchange();
+        // When the URL hash changes, check the data and see if a search can be performed.
+        $(window).hashchange(function() {
+            if (!stopHashChange)
+                doHashSearch();
+
+            stopHashChange = false;
+        });
+
+        $(window).hashchange();
+    }
 });
 
 /*
