@@ -45,7 +45,7 @@ $(function() {
             source: function( request, response ) {
 
             $.ajax({
-                url: "",
+                url: APP_ROOT,
                 dataType: "json",
                 data: {
                     suggest: getSuggestion($(this), request.term)[0]
@@ -107,6 +107,8 @@ $(function() {
 
         // When the page loads, set each input text field to have an oldVal property.
         $(document).ready(function() {
+            $('#query').focus();
+
             $(':text').each(function(i, obj) {
                 var element = $(obj);
                 element.data('oldVal', element.val());
@@ -255,8 +257,7 @@ function processRequest(serializedFormData, noDelay) {
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
                     var result = data['trec_results'][result_no];
-                    results.append('<div class="entry" id="' + result['docid'] + '"><p class="result_title"><a href="' + result['url'] + '"><strong>' + result['title'] + '</strong></a></p><p class="summary">' + result['summary'] + '</p></div>');
-                    results.append('<div class="byline">' + result['source'] + '</div>');
+                    results.append('<div class="search_result" id="' + result['docid'] + '"><div class="entry"><p class="result_title"><a href="' + result['url'] + '"><strong>' + result['title'] + '</strong></a></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
                 }
 
                 // Add navigation buttons at bottom of page (if applicable)
@@ -285,6 +286,28 @@ function processRequest(serializedFormData, noDelay) {
             else {
                 window.location.hash = 'query=' + data['query'];
             }
+
+            // Bind the newly created search_result DIVs with hovering events
+            // Fires off an AJAX call to log these eventd
+            $('.search_result').hover(
+                function(event) {
+                    var parent = $(event.target).closest('div[class="search_result"]');
+                    var docID = $(parent[0]).attr('id');
+
+                    $.ajax({
+                        url: '/treconomics/hover/',
+                        data: {'status': 'in', 'docid': docID}
+                    });
+                },
+                function(event) {
+                    var parent = $(event.target).closest('div[class="search_result"]');
+                    var docID = $(parent[0]).attr('id');
+
+                    $.ajax({
+                        url: APP_ROOT + 'hover/',
+                        data: {'status': 'out', 'docid': docID}
+                    });
+                });
         }
 
         $('body').css('cursor', 'default');
@@ -317,7 +340,7 @@ function doHashSearch() {
             else {
                 // With an interface of 1, we have to pull the previous querystring from the server!
                 $.ajax({
-                    url: '../ajax_search_querystring/',
+                    url: APP_ROOT + 'ajax_search_querystring/',
                     success: function(data) {
                         interface1Querystring = data['querystring'];
                         interface1Querystring += '&page=' + page;

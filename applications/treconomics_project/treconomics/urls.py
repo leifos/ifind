@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     (r'^performance/$', search_views.view_performance),
 
     (r'^query_focus/$', search_views.view_log_query_focus),
+    (r'^hover/$', search_views.view_log_hover),
 
     (r'^reset/$', views.view_reset_test_users),
 

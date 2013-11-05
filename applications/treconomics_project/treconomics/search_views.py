@@ -30,6 +30,7 @@ from experiment_configuration import experiment_setups
 # AJAX Stuff - Including suggestion trie
 from ifind.common.suggestion_trie import SuggestionTrie
 from experiment_configuration import my_whoosh_doc_index_dir, work_dir
+from django.conf import settings
 from time import sleep
 import json
 
@@ -330,7 +331,16 @@ def ajax_search(request, taskid=0):
         context = RequestContext(request)
         context_dict = {}
 
+        # Ensure that we set a queryurl.
+        # This means that if a user clicks "View Saved" before posing a query, there will be something
+        # to go back to!
+        if not request.session.get('queryurl'):
+            queryurl = '/treconomics/ajax_search/'
+            print "Set queryurl to : " + queryurl
+            request.session['queryurl'] = queryurl
+
         context_dict['ajax_enabled'] = True
+        context_dict['application_root'] = '/treconomics/'
 
         # Gather the usual suspects...
         ec = get_experiment_context(request)
@@ -386,6 +396,9 @@ def ajax_search(request, taskid=0):
             if request.GET.get('suggest'):
                 # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
                 suggestion_trie = SuggestionTrie(
+                    min_occurrences=experiment_setups[condition].suggest_min_occurrences,
+                    suggestion_count=experiment_setups[condition].suggest_count,
+                    include_stopwords=experiment_setups[condition].suggest_include_stopwords,
                     index_path=my_whoosh_doc_index_dir,
                     stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
                     vocab_path=os.path.join(work_dir, "data/vocab.txt"),
@@ -468,3 +481,19 @@ def view_performance(request):
     print "view_performance -  task 1: %d %d task 2: %d %d task 3: %d %d " % ( task1["rels"],task1["nons"], task2["rels"],task2["nons"], task3["rels"],  task3["nons"])
 
     return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 't1_rels': task1["rels"] , 't1_nons': task1["nons"], 't1_title': task1["title"], 't1_score': task1["score"], 't2_rels': task2["rels"] , 't2_nons': task2["nons"], 't2_title': task2["title"], 't2_score': task2["score"],'t3_rels': task3["rels"] , 't3_nons': task3["nons"], 't3_title': task3["title"], 't3_score': task3["score"]  }, context)
+
+@login_required
+def view_log_hover(request):
+    """
+    View which logs a user hovering over a search result.
+    """
+    context = RequestContext(request)
+    status = request.GET.get('status')
+    docid = request.GET.get('docid')
+
+    if status == 'in':
+        log_event(event='DOCUMENT_HOVER_IN ({0})'.format(docid), request=request)
+    elif status == 'out':
+        log_event(event='DOCUMENT_HOVER_OUT ({0})'.format(docid), request=request)
+
+    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
