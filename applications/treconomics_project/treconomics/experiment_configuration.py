@@ -6,7 +6,9 @@ import logging.config
 import logging.handlers
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
 from django.conf import settings
-#from ifind.common.suggestion_trie import SuggestionTrie
+
+from ifind.search.engines.whooshtrecnews import WhooshTrecNews
+from ifind.common.suggestion_trie import SuggestionTrie
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = settings.INDEX_PATH
@@ -17,16 +19,6 @@ qrels_file =  os.path.join(work_dir, "data/TREC2005.qrels.txt")
 print "Work DIR: " + work_dir
 print "QRELS File: " + qrels_file
 print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
-
-# Setup an instance of the suggestion trie to ensure everything required is present.
-'''
-SuggestionTrie.initialise_files(
-    index_path=my_whoosh_doc_index_dir,
-    stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
-    vocab_path=os.path.join(work_dir, "data/vocab.txt"),
-    vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat")
-)
-'''
 
 event_logger = logging.getLogger('event_log')
 event_logger.setLevel(logging.INFO)
@@ -49,19 +41,17 @@ class ExperimentSetup(object):
 
     def __init__(self,
                  workflow,
+                 engine,
                  timeout=660,
                  topics=['999', '347', '344'],
                  rpp=10,
-                 engine=1,
                  interface=1,
                  description='',
                  popup_width=None,
                  popup_height=None,
                  delay_results=0,
-                 enable_ajax_suggestions=False,
-                 suggest_min_occurrences=3,
-                 suggest_count=6,
-                 suggest_include_stopwords=False):
+                 autocomplete=False,
+                 trie=None):
         self.timeout = timeout
         self.topics = topics
         self.rpp = rpp
@@ -84,10 +74,8 @@ class ExperimentSetup(object):
         # Do you want to use AJAX suggestions if the AJAX search interface is used?
         # To ensure that suggestions do not show with the structured interface, wrap the following assignments
         # in an if - if interface == 1:
-        self.enable_ajax_suggestions = enable_ajax_suggestions
-        self.suggest_min_occurrences = suggest_min_occurrences
-        self.suggest_count = suggest_count
-        self.suggest_include_stopwords = False
+        self.autocomplete = autocomplete
+        self.trie = trie
 
     def _get_check_i(self, i):
         return i % self.n
@@ -113,15 +101,36 @@ class ExperimentSetup(object):
     def get_interface(self, i=0):
         return self.interface
 
+    def get_engine(self, i=0):
+        return self.engine
+
+    def get_trie(self):
+        return self.trie
+
+
     def __str__(self):
         return self.description
 
-exp0 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition')
-exp1 = ExperimentSetup(workflow=exp_work_flows[4], interface=0, description='structured condition', delay_results=3, enable_ajax_suggestions=True)
-exp2 = ExperimentSetup(workflow=exp_work_flows[4], description='standard condition')
-exp3 = ExperimentSetup(workflow=exp_work_flows[4], interface=2, description='suggestion condition')
-exp4 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
-exp5 = ExperimentSetup(workflow=exp_work_flows[4], topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
+
+suggestion_trie = SuggestionTrie(
+                    min_occurrences=3,
+                    suggestion_count=8,
+                    include_stopwords=False,
+                    index_path=my_whoosh_doc_index_dir,
+                    stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
+                    vocab_path=os.path.join(work_dir, "data/vocab.txt"),
+                    vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
+
+print "creating search engine"
+engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
+
+
+exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=0, description='structured condition')
+exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=0, description='structured condition', delay_results=3, autocomplete=True, trie=suggestion_trie)
+exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, description='standard condition')
+exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=2, description='suggestion condition')
+exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
+exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
 
 # these correspond to conditions
 experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5]

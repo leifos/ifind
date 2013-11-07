@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
 
-from ifind.search.engines.whooshtrecnews import WhooshTrecNews
+
 from ifind.search import Query, Response
 
 # Whoosh
@@ -28,7 +28,7 @@ from experiment_configuration import my_whoosh_doc_index_dir, qrels_file
 from experiment_configuration import experiment_setups
 
 # AJAX Stuff - Including suggestion trie
-from ifind.common.suggestion_trie import SuggestionTrie
+
 from experiment_configuration import my_whoosh_doc_index_dir, work_dir
 from django.conf import settings
 from time import sleep
@@ -36,10 +36,6 @@ import json
 
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
-
-print "creating search engine"
-search_engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-
 
 @login_required
 def show_document(request, whoosh_docid):
@@ -203,6 +199,7 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
     query.top = page_len
 
     result_dict['query'] = query_terms
+    search_engine = experiment_setups[condition].get_engine()
     response = search_engine.search(query)
 
     num_pages = response.total_pages
@@ -357,7 +354,7 @@ def ajax_search(request, taskid=0):
         context_dict['task'] = taskid
         context_dict['condition'] = condition
         context_dict['interface'] = interface
-        context_dict['enable_ajax_suggestions'] = experiment_setups[condition].enable_ajax_suggestions
+        context_dict['autocomplete'] = experiment_setups[condition].autocomplete
 
         if request.method == 'POST':
             # AJAX POST request for a given query.
@@ -395,29 +392,20 @@ def ajax_search(request, taskid=0):
         else:
 
             if request.GET.get('suggest'):
-                # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
-                suggestion_trie = SuggestionTrie(
-                    min_occurrences=experiment_setups[condition].suggest_min_occurrences,
-                    suggestion_count=experiment_setups[condition].suggest_count,
-                    include_stopwords=experiment_setups[condition].suggest_include_stopwords,
-                    index_path=my_whoosh_doc_index_dir,
-                    stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
-                    vocab_path=os.path.join(work_dir, "data/vocab.txt"),
-                    vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
+                results = []
+                if experiment_setups[condition].autocomplete:
+                    suggestion_trie = experiment_setups[condition].get_trie()
+                    # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
+                    chars = unicode(request.GET.get('suggest'))
+                    results = suggestion_trie.suggest(chars)
 
-                chars = unicode(request.GET.get('suggest'))
-
-                results = suggestion_trie.suggest(chars)
                 response_data = {
                     'count': len(results),
                     'results': results,
                 }
 
                 # Log the event - included is the number of suggestions returned. Can easily remove this
-                log_event(
-                    event='QUERY_SUGGESTIONS_REQUESTED ({0})'.format(response_data['count']),
-                    request=request,
-                    query=chars)
+
                 return HttpResponse(json.dumps(response_data), content_type='application/json')
             else:
                 # Render the search template as usual...

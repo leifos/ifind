@@ -35,7 +35,7 @@ def get_experiment_context(request):
     else:
         ec["test_user"] = False
 
-    print "com_step: " + str(profile.steps_completed)
+    #print "com_step: " + str(profile.steps_completed)
 
     if "current_step" in request.session:
         ec["current_step"] = int(request.session['current_step'])
