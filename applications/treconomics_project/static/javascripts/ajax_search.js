@@ -196,6 +196,7 @@ function processRequest(serializedFormData, noDelay) {
         $('*').css('cursor', 'default');
         $('a').css('cursor', 'pointer');
         $('.navButton').css('cursor', 'pointer');
+        $('body').scrollTop();
     });
 }
 
