@@ -11,7 +11,7 @@ from ifind.search.engines.whooshtrecnews import WhooshTrecNews
 from ifind.common.suggestion_trie import SuggestionTrie
 
 work_dir = os.getcwd()
-my_whoosh_doc_index_dir = settings.INDEX_PATH
+my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/smallindex')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
 qrels_file =  os.path.join(work_dir, "data/TREC2005.qrels.txt")
