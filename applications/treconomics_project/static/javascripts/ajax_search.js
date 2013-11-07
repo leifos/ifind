@@ -42,22 +42,53 @@ $(function() {
     if (enable_ajax_suggestions) {
         $(':text').autocomplete({
             minLength: 2,
-            source: function( request, response ) {
+            source: function(request, response) {
+                var selectedElement = $(this.element);
+                var currFieldValue = selectedElement[0].value;
+                var previousValue = selectedElement.data('oldVal');
 
-            $.ajax({
-                url: APP_ROOT + AJAX_SEARCH_URL,
-                dataType: "json",
-                data: {
-                    suggest: getSuggestion($(this), request.term)[0]
-                },
-                success: function(data) {
-                response( $.map( data.results, function(item) {
-                    return {
-                        label: item,
-                        value: item}
-                    }));
-                }});
+                oldArray = previousValue.split(' ');
+                newArray = currFieldValue.split(' ');
+
+                var difference = getDifferentTerm(oldArray, newArray);
+
+                function getSuggestionString(difference, selectedItem) {
+                    var suggestionValue = "";
+
+                    if (previousValue === undefined) {
+                        suggestionValue = selectedItem
+                    }
+                    else {
+                        for (termIndex in newArray) {
+                            if (termIndex == difference[1]) {
+                                if (termIndex == 0) suggestionValue += selectedItem;
+                                else suggestionValue += " <strong>" + selectedItem + "</strong>";
+                            }
+                            else {
+                                if (termIndex == 0) suggestionValue += newArray[termIndex];
+                                else suggestionValue += " <strong>" + newArray[termIndex] + "</strong>";
+                            }
+                        }
+                    }
+
+                    return suggestionValue;
+                }
+                
+                $.ajax({
+                    url: APP_ROOT + AJAX_SEARCH_URL,
+                    dataType: "json",
+                    data: {
+                        suggest: getSuggestion($(this), request.term)[0]
+                    },
+                    success: function(data) {
+                    response( $.map( data.results, function(item) {
+                        return {
+                            label: getSuggestionString(difference, item),
+                            value: item}
+                        }));
+                    }});
             },
+            autoFocus: true,
             focus: function(event) {
                 event.preventDefault();
             },
@@ -101,7 +132,12 @@ $(function() {
                     data: {'added_term': selectedItem, 'new_query': newFieldValue}
                 });
           }
-        });
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+         return $("<li></li>")
+             .data("item.autocomplete", item)
+             .append("<a>" + item.label + "</a>")
+             .appendTo(ul);
+     };;
 
         // When the search form is submitted...
         $("#search_form").submit(function(event) {
