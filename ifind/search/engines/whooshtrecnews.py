@@ -13,7 +13,7 @@ class WhooshTrecNews(Engine):
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', model=-1, **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -28,16 +28,13 @@ class WhooshTrecNews(Engine):
         self.whoosh_index_dir = whoosh_index_dir
         if not self.whoosh_index_dir:
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
-
-        if model != -1:
-            if model == 1:
-                print "Using bm25f"
-                self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module
-            else:
-                print "Using tfidf"
-                self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
+        
+        if model == 1:
+            print "Using bm25f"
+            self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module
         else:
-            raise EngineConnectionException(self.name, "'model=' argument not specified - use 0 for TFIDF, 1 for BM25F")
+            print "Using tfidf"
+            self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
 
         try:
             self.docIndex = open_dir( whoosh_index_dir )
