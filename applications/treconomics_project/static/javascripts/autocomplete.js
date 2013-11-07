@@ -87,7 +87,7 @@ $(function() {
                 }});
         },
         autoFocus: true,
-        focus: function(event) {
+        focus: function(event, ui) {
             event.preventDefault();
         },
         select: function(event, ui) {
