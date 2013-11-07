@@ -138,12 +138,12 @@ class WhooshTrecNews(Engine):
             Private method.
 
         """
-        print "about to parse"
+        #print "about to parse"
         response = Response(query.terms)
         # Dmax thinks this line is incorrect.
         # I've substituted it with a line just before returning response...
         #response.result_total = results.pagecount
-        print "created response"
+        #print "created response"
         r = 0
         for result in results:
             r = r + 1
@@ -160,6 +160,8 @@ class WhooshTrecNews(Engine):
             summary = result.highlights("content")
             docid = result["docid"]
             docid = docid.strip()
+
+            #score = result["score"]
             source = result["source"]
 
             response.add_result(title=title, url=url, summary=summary, docid=docid, source=source)
