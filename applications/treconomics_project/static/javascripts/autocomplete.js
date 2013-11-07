@@ -10,6 +10,8 @@ Revision: 2
 
 $(function() {
 
+    var difference = [];
+
     /*
     Returns the last word (or partial word) in the input box string.
     This word-in-progress is then sent to the server to provide suggestions as the user types their query.
@@ -46,9 +48,9 @@ $(function() {
             oldArray = previousValue.split(' ');
             newArray = currFieldValue.split(' ');
 
-            var difference = getDifferentTerm(oldArray, newArray);
+            difference = getDifferentTerm(oldArray, newArray);
 
-            function getSuggestionString(difference, selectedItem) {
+            function getSuggestionString(difference, selectedItem, element, fieldValue) {
                 var suggestionValue = "";
 
                 if (previousValue === undefined || previousValue == "") {
@@ -66,7 +68,7 @@ $(function() {
                         }
                     }
                 }
-
+                element.data('oldVal', fieldValue);
                 return suggestionValue;
             }
 
@@ -79,7 +81,7 @@ $(function() {
                 success: function(data) {
                 response( $.map( data.results, function(item) {
                     return {
-                        label: getSuggestionString(difference, item),
+                        label: getSuggestionString(difference, item, selectedElement, currFieldValue),
                         value: item}
                     }));
                 }});
@@ -99,7 +101,7 @@ $(function() {
             oldArray = previousValue.split(' ');
             newArray = currFieldValue.split(' ');
 
-            var difference = getDifferentTerm(oldArray, newArray);
+            console.log(difference);
 
             if (previousValue === undefined || previousValue == "") {
                 newFieldValue = selectedItem
@@ -120,7 +122,7 @@ $(function() {
             event.target.value = newFieldValue;
             // Update the oldVal data AFTER, not BEFORE.
             // This is why we update the oldVal data item here.
-            $(this).data('oldVal', $(this).val());
+            //$(this).data('oldVal', $(this).val());
 
             // Log the event - the user has selected a new word, query is now...
             $.ajax({
