@@ -28,12 +28,10 @@ class WhooshTrecNews(Engine):
         self.whoosh_index_dir = whoosh_index_dir
         if not self.whoosh_index_dir:
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
-        
+
         if model == 1:
-            print "Using bm25f"
             self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module
         else:
-            print "Using tfidf"
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
 
         try:
