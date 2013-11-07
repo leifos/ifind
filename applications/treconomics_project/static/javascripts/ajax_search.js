@@ -128,7 +128,7 @@ $(function() {
 
                 // Log the event - the user has selected a new word, query is now...
                 $.ajax({
-                    url: '/treconomics/suggestion_selected/',
+                    url: APP_ROOT + 'suggestion_selected/',
                     data: {'added_term': selectedItem, 'new_query': newFieldValue}
                 });
           }
@@ -336,7 +336,7 @@ function processRequest(serializedFormData, noDelay) {
                     var docID = $(parent[0]).attr('id');
 
                     $.ajax({
-                        url: '/treconomics/hover/',
+                        url: APP_ROOT + 'hover/',
                         data: {'status': 'in', 'docid': docID}
                     });
                 },

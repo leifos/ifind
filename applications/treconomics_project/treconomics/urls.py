@@ -27,9 +27,9 @@ urlpatterns = patterns('',
     (r'^query_focus/$', search_views.view_log_query_focus),
     (r'^hover/$', search_views.view_log_hover),
 
-    (r'^ajax_search/$', search_views.ajax_search),
-    (r'^ajax_search/(?P<taskid>\d+)/$', search_views.ajax_search),
-    (r'^ajax_search_querystring/$', search_views.ajax_interface1_querystring),
+    (r'^searcha/$', search_views.ajax_search),
+    (r'^searcha/(?P<taskid>\d+)/$', search_views.ajax_search),
+    (r'^searcha_querystring/$', search_views.ajax_interface1_querystring),
 
     (r'^reset/$', views.view_reset_test_users),
 
