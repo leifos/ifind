@@ -123,10 +123,10 @@ suggestion_trie = SuggestionTrie(
 
 print "creating search engine"
 engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-
+engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=0, description='structured condition')
-exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=0, description='structured condition', delay_results=3, autocomplete=True, trie=suggestion_trie)
+exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine2, interface=0, description='structured condition', delay_results=3, autocomplete=True, trie=suggestion_trie)
 exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, description='standard condition')
 exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=2, description='suggestion condition')
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
