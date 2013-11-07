@@ -328,17 +328,17 @@ def ajax_search(request, taskid=0):
         context = RequestContext(request)
         context_dict = {}
 
+        context_dict['ajax_enabled'] = True
+        context_dict['application_root'] = '/treconomics/'
+        context_dict['ajax_search_url'] = 'searcha/'
+
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
         # to go back to!
         if not request.session.get('queryurl'):
-            queryurl = '/treconomics/ajax_search/'
+            queryurl = context_dict['application_root'] + 'ajax_search/'
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
-
-        context_dict['ajax_enabled'] = True
-        context_dict['application_root'] = '/treconomics/'
-        context_dict['ajax_search_url'] = 'ajax_search/'
 
         # Gather the usual suspects...
         ec = get_experiment_context(request)
@@ -378,7 +378,7 @@ def ajax_search(request, taskid=0):
 
             result_dict = run_query(condition, result_dict, user_query, page, page_len)
 
-            queryurl = '/treconomics/ajax_search/#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+            queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
 
