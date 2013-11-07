@@ -256,6 +256,9 @@ def search(request, taskid=0):
         result_dict['condition'] = condition
         result_dict['interface'] = interface
 
+        result_dict['application_root'] = '/treconomics/'
+        result_dict['ajax_search_url'] = 'searcha/'
+
         suggestions = False
         query_flag = False
         if request.method =='POST':
