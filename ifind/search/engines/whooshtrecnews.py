@@ -6,13 +6,14 @@ from whoosh.query import *
 from whoosh.qparser import QueryParser
 from whoosh.qparser import MultifieldParser
 from whoosh import highlight
+from whoosh import scoring
 
 class WhooshTrecNews(Engine):
     """
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -28,13 +29,18 @@ class WhooshTrecNews(Engine):
         if not self.whoosh_index_dir:
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
 
+        if model == 1:
+            self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module
+        else:
+            self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
+
         try:
             self.docIndex = open_dir( whoosh_index_dir )
             print "Whoosh Document index open: ", whoosh_index_dir
             print "Documents in index: ", self.docIndex.doc_count()
             self.parser = QueryParser("content", self.docIndex.schema)
         except:
-            msg= "Could not open Whoosh index at: " + whoosh_index_dir
+            msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
 
 
@@ -87,23 +93,23 @@ class WhooshTrecNews(Engine):
 
         response = None
         try:
-            query_terms = self.parser.parse( unicode(query.terms) )
+            query_terms = self.parser.parse(unicode(query.terms))
             page = query.skip
             pagelen = query.top
 
-            with self.docIndex.searcher() as searcher:
+            with self.docIndex.searcher(weighting=self.scoring_model) as searcher:
                 invalid_page_no = True
 
                 # If the user specifies a page number that's higher than the number of pages available,
                 # this loop looks until a page number is found that contains results and uses that instead.
                 # Prevents a horrible AttributeError exception later on!
-                while (invalid_page_no):
+                while invalid_page_no:
                     try:
                         results = searcher.search_page(query_terms, page, pagelen)
                         invalid_page_no = False
                         setattr(results, 'actual_page', page)
                     except ValueError:
-                        page = page - 1
+                        page -= page
 
                 results.fragmenter = highlight.ContextFragmenter(maxchars=300, surround=300)
                 results.formatter = highlight.HtmlFormatter()
