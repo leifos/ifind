@@ -55,8 +55,8 @@ $(function() {
                 function getSuggestionString(difference, selectedItem) {
                     var suggestionValue = "";
 
-                    if (previousValue === undefined) {
-                        suggestionValue = selectedItem
+                    if (previousValue === undefined || previousValue == "") {
+                        suggestionValue = "<strong>" + selectedItem + "</strong>";
                     }
                     else {
                         for (termIndex in newArray) {
@@ -73,7 +73,7 @@ $(function() {
 
                     return suggestionValue;
                 }
-                
+
                 $.ajax({
                     url: APP_ROOT + AJAX_SEARCH_URL,
                     dataType: "json",
@@ -105,7 +105,7 @@ $(function() {
 
                 var difference = getDifferentTerm(oldArray, newArray);
 
-                if (previousValue === undefined) {
+                if (previousValue === undefined || previousValue == "") {
                     newFieldValue = selectedItem
                 }
                 else {
