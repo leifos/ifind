@@ -101,8 +101,6 @@ $(function() {
             oldArray = previousValue.split(' ');
             newArray = currFieldValue.split(' ');
 
-            console.log(difference);
-
             if (previousValue === undefined || previousValue == "") {
                 newFieldValue = selectedItem
             }
