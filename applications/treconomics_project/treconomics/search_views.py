@@ -341,6 +341,7 @@ def ajax_search(request, taskid=0):
 
         context_dict['ajax_enabled'] = True
         context_dict['application_root'] = '/treconomics/'
+        context_dict['ajax_search_url'] = 'ajax_search/'
 
         # Gather the usual suspects...
         ec = get_experiment_context(request)
@@ -487,7 +488,6 @@ def view_log_hover(request):
     """
     View which logs a user hovering over a search result.
     """
-    context = RequestContext(request)
     status = request.GET.get('status')
     docid = request.GET.get('docid')
 
@@ -496,4 +496,16 @@ def view_log_hover(request):
     elif status == 'out':
         log_event(event='DOCUMENT_HOVER_OUT ({0})'.format(docid), request=request)
 
+    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+
+@login_required
+def suggestion_selected(request):
+    """
+    Called when a suggestion is selected from the suggestion interface.
+    Logs the suggestion being selected.
+    """
+    added_term = request.GET.get('added_term')
+    new_query = request.GET.get('new_query')
+
+    log_event(event='SUGGESTION_SELECTED (term:"{0}", query:"{1}")'.format(added_term, new_query), request=request)
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')

@@ -8,7 +8,8 @@
     <script type="text/javascript" src="{% static 'javascripts/ajax_search.js' %}"></script>
     <script type="text/javascript">
         var enable_ajax_suggestions = {% if enable_ajax_suggestions %}true{% else %}false{% endif %};
-        var APP_ROOT = {{ application_root }};
+        var APP_ROOT = '{{ application_root }}';
+        var AJAX_SEARCH_URL = '{{ ajax_search_url }}';
     </script>
     <input type="hidden" id="interface_type" value="{{ interface }}" />
     {% endif %}

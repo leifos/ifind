@@ -45,7 +45,7 @@ $(function() {
             source: function( request, response ) {
 
             $.ajax({
-                url: APP_ROOT,
+                url: APP_ROOT + AJAX_SEARCH_URL,
                 dataType: "json",
                 data: {
                     suggest: getSuggestion($(this), request.term)[0]
@@ -60,7 +60,6 @@ $(function() {
             },
             focus: function(event) {
                 event.preventDefault();
-
             },
             select: function(event, ui) {
                 event.preventDefault();
@@ -95,6 +94,12 @@ $(function() {
                 // Update the oldVal data AFTER, not BEFORE.
                 // This is why we update the oldVal data item here.
                 $(this).data('oldVal', $(this).val());
+
+                // Log the event - the user has selected a new word, query is now...
+                $.ajax({
+                    url: '/treconomics/suggestion_selected/',
+                    data: {'added_term': selectedItem, 'new_query': newFieldValue}
+                });
           }
         });
 
@@ -225,7 +230,7 @@ function getHashValue(key) {
 Function which processes the AJAX request. Sends the request and displays the results on the page.
 */
 function processRequest(serializedFormData, noDelay) {
-    $('body').css('cursor', 'progress');
+    $('*').css('cursor', 'progress');
 
     if (noDelay) {
         serializedFormData += '&noDelay=true';
@@ -257,7 +262,7 @@ function processRequest(serializedFormData, noDelay) {
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
                     var result = data['trec_results'][result_no];
-                    results.append('<div class="search_result" id="' + result['docid'] + '"><div class="entry"><p class="result_title"><a href="' + result['url'] + '"><strong>' + result['title'] + '</strong></a></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
+                    results.append('<div class="search_result" id="' + result['docid'] + '"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
                 }
 
                 // Add navigation buttons at bottom of page (if applicable)
@@ -265,11 +270,11 @@ function processRequest(serializedFormData, noDelay) {
                 var prevButton = "";
 
                 if (data['curr_page'] < data['num_pages']) {
-                    nextButton = '<input class="largebutton" type="button" onclick="switchToPage(\'' + data['next_page_link'] + '\');" value="Next Page" />';
+                    nextButton = '<input class="navButton largebutton" type="button" onclick="switchToPage(\'' + data['next_page_link'] + '\');" value="Next Page" />';
                 }
 
                 if (data['curr_page'] > 1) {
-                    prevButton = '<input class="largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\');" value="Prev Page" />';
+                    prevButton = '<input class="navButton largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\');" value="Prev Page" />';
                 }
 
                 results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
@@ -310,7 +315,9 @@ function processRequest(serializedFormData, noDelay) {
                 });
         }
 
-        $('body').css('cursor', 'default');
+        $('*').css('cursor', 'default');
+        $('a').css('cursor', 'pointer');
+        $('.navButton').css('cursor', 'pointer');
     });
 }
 

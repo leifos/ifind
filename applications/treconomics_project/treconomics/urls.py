@@ -16,9 +16,6 @@ urlpatterns = patterns('',
     (r'^saved/$', search_views.show_saved_documents),
     (r'^search/$', search_views.search),
     (r'^search/(?P<taskid>\d+)/$', search_views.search),
-    (r'^ajax_search/$', search_views.ajax_search),
-    (r'^ajax_search/(?P<taskid>\d+)/$', search_views.ajax_search),
-    (r'^ajax_search_querystring/$', search_views.ajax_interface1_querystring),
     (r'^posttask/(?P<taskid>\d+)/$', views.view_post_task),
     (r'^posttaskquestions/(?P<taskid>\d+)/$', views.view_post_task_with_questions),
     (r'^showtask/$', views.view_show_task),
@@ -26,8 +23,13 @@ urlpatterns = patterns('',
     (r'^endexperiment/$', views.view_end_experiment),
     (r'^performance/$', search_views.view_performance),
 
+    (r'^suggestion_selected/$', search_views.suggestion_selected),
     (r'^query_focus/$', search_views.view_log_query_focus),
     (r'^hover/$', search_views.view_log_hover),
+
+    (r'^ajax_search/$', search_views.ajax_search),
+    (r'^ajax_search/(?P<taskid>\d+)/$', search_views.ajax_search),
+    (r'^ajax_search_querystring/$', search_views.ajax_interface1_querystring),
 
     (r'^reset/$', views.view_reset_test_users),
 
