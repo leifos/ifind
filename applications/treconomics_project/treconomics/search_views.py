@@ -255,9 +255,9 @@ def search(request, taskid=0):
         result_dict['task'] = taskid
         result_dict['condition'] = condition
         result_dict['interface'] = interface
-
         result_dict['application_root'] = '/treconomics/'
         result_dict['ajax_search_url'] = 'searcha/'
+        result_dict['autocomplete'] = experiment_setups[condition].autocomplete
 
         suggestions = False
         query_flag = False

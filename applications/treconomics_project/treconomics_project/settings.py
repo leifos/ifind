@@ -5,6 +5,7 @@ TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH,'static')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'treconomics.db')
 
+LOGIN_URL = '/treconomics/?notloggedin=true'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
