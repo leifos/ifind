@@ -24,13 +24,8 @@ from whoosh.index import open_dir
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
 from experiment_functions import time_search_experiment_out, getPerformance, getQueryResultPerformance
-from experiment_configuration import my_whoosh_doc_index_dir, qrels_file
+from experiment_configuration import my_whoosh_doc_index_dir
 from experiment_configuration import experiment_setups
-
-# AJAX Stuff - Including suggestion trie
-
-from experiment_configuration import my_whoosh_doc_index_dir, work_dir
-from django.conf import settings
 from time import sleep
 import json
 
@@ -322,6 +317,10 @@ def ajax_search(request, taskid=0):
         request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         request.session['taskid'] = taskid
         log_event(event="SEARCH_TASK_COMMENCED", request=request)
+    if taskid == 0:
+        request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        request.session['taskid'] = 0
+        log_event(event="PRACTICE_SEARCH_TASK_COMMENCED", request=request)
 
     # Has the experiment timed out? If so, indicate to the user.
     # Send a JSON object back which will be interpreted by the JavaScript.

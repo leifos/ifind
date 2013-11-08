@@ -33,7 +33,7 @@ exp_work_flows = [
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttaskquestions/2/',
  '/treconomics/nasaloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
-['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
+['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/search/0/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/shortstresssurvey/',
  '/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/conceptlistingsurvey/1/','/treconomics/conceptlistingsurvey/2/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
@@ -47,12 +47,11 @@ class ExperimentSetup(object):
                  workflow,
                  engine,
                  timeout=660,
-                 topics=['999', '347', '344'],
+                 topics=[ '347', '344'],
+                 practice_topic = '999',
                  rpp=10,
                  interface=1,
                  description='',
-                 popup_width=None,
-                 popup_height=None,
                  delay_results=0,
                  autocomplete=False,
                  trie=None):
@@ -65,16 +64,11 @@ class ExperimentSetup(object):
         self.workflow = workflow
         self.pro = PermutatedRotationOrdering()
         self.n = self.pro.number_of_orderings(self.topics)
-
-        # Two additional instance variables to control the width and height of the experiment popup box.
-        self.popup_width = popup_width
-        self.popup_height = popup_height
-
         # Instance variable to allow you to delay results from appearing.
         # Specify an integer or float value. The value specifies the number of seconds the delay should last for.
         # If 0, there is no delay.
         self.delay_results = delay_results
-
+        self.practice_topic = practice_topic
         # Do you want to use AJAX suggestions if the AJAX search interface is used?
         # To ensure that suggestions do not show with the structured interface, wrap the following assignments
         # in an if - if interface == 1:
@@ -135,6 +129,7 @@ exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, description='sta
 exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=2, description='suggestion condition')
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
 exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
+
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', autocomplete=True, trie=suggestion_trie)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, autocomplete=True, trie=suggestion_trie)
 exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=1, description='structured condition bm25')
@@ -142,4 +137,4 @@ exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, top
 
 
 # these correspond to conditions
-experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5, exp_fast_high, exp_slow_high, exp_struct_concept, exp_stand_concept]
+experiment_setups = [exp0, exp1, exp2, exp3, exp_struct_concept, exp_stand_concept, exp_fast_high, exp_slow_high]

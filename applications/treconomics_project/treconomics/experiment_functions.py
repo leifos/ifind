@@ -46,11 +46,11 @@ def get_experiment_context(request):
         if t >= 0:
             ec["topicnum"] = experiment_setups[ec['condition']].get_rotation_topic(r,t)
         else:
-            ec["topicnum"] = 0
+            ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
     else:
         ec["taskid"] = 0
         request.session["taskid"] = 0
-        ec["topicnum"] = 0
+        ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
 
     return ec
 
