@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
 
-from ifind.search.engines.whooshtrecnews import WhooshTrecNews
+
 from ifind.search import Query, Response
 
 # Whoosh
@@ -28,7 +28,7 @@ from experiment_configuration import my_whoosh_doc_index_dir, qrels_file
 from experiment_configuration import experiment_setups
 
 # AJAX Stuff - Including suggestion trie
-from ifind.common.suggestion_trie import SuggestionTrie
+
 from experiment_configuration import my_whoosh_doc_index_dir, work_dir
 from django.conf import settings
 from time import sleep
@@ -36,10 +36,6 @@ import json
 
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
-
-print "creating search engine"
-search_engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-
 
 @login_required
 def show_document(request, whoosh_docid):
@@ -203,6 +199,7 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
     query.top = page_len
 
     result_dict['query'] = query_terms
+    search_engine = experiment_setups[condition].get_engine()
     response = search_engine.search(query)
 
     num_pages = response.total_pages
@@ -258,6 +255,9 @@ def search(request, taskid=0):
         result_dict['task'] = taskid
         result_dict['condition'] = condition
         result_dict['interface'] = interface
+        result_dict['application_root'] = '/treconomics/'
+        result_dict['ajax_search_url'] = 'searcha/'
+        result_dict['autocomplete'] = experiment_setups[condition].autocomplete
 
         suggestions = False
         query_flag = False
@@ -331,17 +331,17 @@ def ajax_search(request, taskid=0):
         context = RequestContext(request)
         context_dict = {}
 
+        context_dict['ajax_enabled'] = True
+        context_dict['application_root'] = '/treconomics/'
+        context_dict['ajax_search_url'] = 'searcha/'
+
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
         # to go back to!
         if not request.session.get('queryurl'):
-            queryurl = '/treconomics/ajax_search/'
+            queryurl = context_dict['application_root'] + 'ajax_search/'
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
-
-        context_dict['ajax_enabled'] = True
-        context_dict['application_root'] = '/treconomics/'
-        context_dict['ajax_search_url'] = 'ajax_search/'
 
         # Gather the usual suspects...
         ec = get_experiment_context(request)
@@ -357,7 +357,7 @@ def ajax_search(request, taskid=0):
         context_dict['task'] = taskid
         context_dict['condition'] = condition
         context_dict['interface'] = interface
-        context_dict['enable_ajax_suggestions'] = experiment_setups[condition].enable_ajax_suggestions
+        context_dict['autocomplete'] = experiment_setups[condition].autocomplete
 
         if request.method == 'POST':
             # AJAX POST request for a given query.
@@ -381,7 +381,7 @@ def ajax_search(request, taskid=0):
 
             result_dict = run_query(condition, result_dict, user_query, page, page_len)
 
-            queryurl = '/treconomics/ajax_search/#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+            queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
 
@@ -395,29 +395,20 @@ def ajax_search(request, taskid=0):
         else:
 
             if request.GET.get('suggest'):
-                # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
-                suggestion_trie = SuggestionTrie(
-                    min_occurrences=experiment_setups[condition].suggest_min_occurrences,
-                    suggestion_count=experiment_setups[condition].suggest_count,
-                    include_stopwords=experiment_setups[condition].suggest_include_stopwords,
-                    index_path=my_whoosh_doc_index_dir,
-                    stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
-                    vocab_path=os.path.join(work_dir, "data/vocab.txt"),
-                    vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
+                results = []
+                if experiment_setups[condition].autocomplete:
+                    suggestion_trie = experiment_setups[condition].get_trie()
+                    # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
+                    chars = unicode(request.GET.get('suggest'))
+                    results = suggestion_trie.suggest(chars)
 
-                chars = unicode(request.GET.get('suggest'))
-
-                results = suggestion_trie.suggest(chars)
                 response_data = {
                     'count': len(results),
                     'results': results,
                 }
 
                 # Log the event - included is the number of suggestions returned. Can easily remove this
-                log_event(
-                    event='QUERY_SUGGESTIONS_REQUESTED ({0})'.format(response_data['count']),
-                    request=request,
-                    query=chars)
+
                 return HttpResponse(json.dumps(response_data), content_type='application/json')
             else:
                 # Render the search template as usual...

@@ -4,7 +4,8 @@ PROJECT_PATH = os.getcwd()
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH,'static')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'treconomics.db')
-INDEX_PATH = os.path.join(PROJECT_PATH, 'data/smallindex')
+
+LOGIN_URL = '/treconomics/?notloggedin=true'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
