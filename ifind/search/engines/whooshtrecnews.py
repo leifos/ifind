@@ -53,7 +53,7 @@ class WhooshTrecNews(Engine):
         for term in term_list:
             if term:
                 if return_query:
-                    return_query += " {1} {2}".format(operator, term)
+                    return_query += " {0} {1}".format(operator, term)
                 else:
                     return_query = term
 
