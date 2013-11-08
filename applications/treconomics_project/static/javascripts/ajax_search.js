@@ -27,6 +27,10 @@ $(function() {
         stopHashChange = false;
     });
 
+    $('div.search_result').select(function(event) {
+       console.log("text select");
+    });
+
     $(window).hashchange();
 });
 

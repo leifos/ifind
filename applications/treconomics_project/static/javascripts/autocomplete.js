@@ -59,15 +59,16 @@ $(function() {
                 else {
                     for (termIndex in newArray) {
                         if (termIndex == difference[1]) {
-                            if (termIndex == 0) suggestionValue += selectedItem;
+                            if (termIndex == 0) suggestionValue += "<strong>" + selectedItem + "</strong>";
                             else suggestionValue += " <strong>" + selectedItem + "</strong>";
                         }
                         else {
                             if (termIndex == 0) suggestionValue += newArray[termIndex];
-                            else suggestionValue += " <strong>" + newArray[termIndex] + "</strong>";
+                            else suggestionValue += " " + newArray[termIndex];
                         }
                     }
                 }
+
                 element.data('oldVal', fieldValue);
                 return suggestionValue;
             }
