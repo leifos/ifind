@@ -452,27 +452,21 @@ def view_performance(request):
         else:
             return 0.0
 
-    topic_num = experiment_setups[condition].get_rotation_topic(rotation,0)
-    task1 = getPerformance(uname, topic_num)
-    t = TaskDescription.objects.get( topic_num = task1['topicnum'] )
-    task1["title"] = t.title
-    task1["score"] = ratio(float(task1["rels"]), float(task1["nons"]))
+    topics = experiment_setups[condition].topics
 
-    topic_num = experiment_setups[condition].get_rotation_topic(rotation,1)
-    task2 = getPerformance(uname, topic_num)
-    t = TaskDescription.objects.get( topic_num = task2['topicnum'] )
-    task2["title"] = t.title
-    task2["score"] = ratio(float(task2["rels"]), float(task2["nons"]))
+    performances = []
+    for t in topics:
+        perf = getPerformance(uname, t)
+        topic_desc =  TaskDescription.objects.get( topic_num = t ).title
+        perf["title"] = topic_desc
+        perf["score"] =  ratio(float(perf["rels"]), float(perf["nons"]))
 
-    topic_num = experiment_setups[condition].get_rotation_topic(rotation,2)
-    task3 = getPerformance(uname, topic_num)
-    t = TaskDescription.objects.get( topic_num = task3['topicnum'] )
-    task3["title"] = t.title
-    task3["score"] = ratio(float(task3["rels"]), float(task3["nons"]))
+        performances.append(perf)
 
-    print "view_performance -  task 1: %d %d task 2: %d %d task 3: %d %d " % ( task1["rels"],task1["nons"], task2["rels"],task2["nons"], task3["rels"],  task3["nons"])
+    for p in performances:
+        print p
 
-    return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 't1_rels': task1["rels"] , 't1_nons': task1["nons"], 't1_title': task1["title"], 't1_score': task1["score"], 't2_rels': task2["rels"] , 't2_nons': task2["nons"], 't2_title': task2["title"], 't2_score': task2["score"],'t3_rels': task3["rels"] , 't3_nons': task3["nons"], 't3_title': task3["title"], 't3_score': task3["score"]  }, context)
+    return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 'performances': performances }, context)
 
 @login_required
 def view_log_hover(request):

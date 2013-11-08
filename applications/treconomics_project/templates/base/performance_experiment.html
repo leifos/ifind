@@ -6,35 +6,18 @@
 
 {% block exp_block %}
 
-
 <p> Your performance with respect to the original TREC assessors of these topic is as follows:</p>
 
-<p>Search task 1: <b>{{ t1_title}}</b> </p>
-<p>
-<ul>
-<li>Items marked that were judged relevant by TREC assessors: {{t1_rels}}</li>
-<li>Items marked that were not relevant: {{t1_nons}}</li>
-<li>Total score: {{t1_score}}</li>
-</ul>
-</p>
+{% for  topic in performances %}
+    <p>Search task: <b>{{ topic.title }}</b> </p>
+    <p><ul>
+        <li>Items marked that were judged relevant by TREC assessors: {{topic.rels}}</li>
+        <li>Items marked that were not relevant: {{topic.nons}}</li>
+        <li>Total score: {{topic.score}}</li>
+    </ul></p>
+{% endfor%}
 
-<p>Search task 2: <b>{{ t2_title}}</b> </p>
-<p>
-<ul>
-<li>Items marked that were judged relevant by TREC assessors: {{t2_rels}}</li>
-<li>Items marked that were not relevant: {{t2_nons}}</li>
-<li>Total score: {{t2_score}}</li>
-</ul>
-</p>
 
-<p>Search task 3: <b>{{ t3_title}}</b> </p>
-<p>
-<ul>
-<li>Items marked that were judged relevant by TREC assessors: {{t3_rels}}</li>
-<li>Items marked that were not relevant: {{t3_nons}}</li>
-<li>Total score: {{t3_score}}</li>
-</ul>
-</p>
  
 <div class="surveySubmitButton">
 

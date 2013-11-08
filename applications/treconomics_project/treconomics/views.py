@@ -25,7 +25,7 @@ from experiment_functions import log_event
 
 
 def view_reset_test_users(request):
-    usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4']
+    usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4', 'd1', 'd2', 'd3', 'd4']
 
     for un in usernames:
         print un
