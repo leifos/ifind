@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 #import models_experiments
-from django.forms.widgets import RadioSelect, CheckboxSelectMultiple, CheckboxInput
+from django.forms.widgets import RadioSelect, CheckboxSelectMultiple, CheckboxInput, Textarea
 
 SEX_CHOICES = ( ('N','Not Indicated'),
     ('M','Male'), ('F','Female')
@@ -374,3 +374,78 @@ class PostTaskTopicRatingSurveyForm(ModelForm):
         exclude = ('user','task_id','topic_num')
 
 
+class ShortStressSurvey(models.Model):
+    user = models.ForeignKey(User)
+    stress_confident  = models.IntegerField(default=0)
+    stress_alert  = models.IntegerField(default=0)
+    stress_others  = models.IntegerField(default=0)
+    stress_figure  = models.IntegerField(default=0)
+    stress_angry  = models.IntegerField(default=0)
+    stress_proficient  = models.IntegerField(default=0)
+    stress_irritated  = models.IntegerField(default=0)
+    stress_grouchy  = models.IntegerField(default=0)
+    stress_reflecting  = models.IntegerField(default=0)
+    stress_concerned  = models.IntegerField(default=0)
+    stress_committed  = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+STRESS_CHOICES = ( (1,'Not at all'), (2,''), (3,''), (4,''), (5,'Extremely')  )
+
+
+class ShortStressSurveyForm(ModelForm):
+    stress_confident = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt confident in my abilities.", required=False)
+    stress_alert = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt alert while I was completing these tasks.", required=False)
+    stress_others = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I thought about how others have done on these tasks.", required=False)
+    stress_figure = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm trying to figure myself out.", required=False)
+    stress_angry = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt angry while I was completing these tasks.", required=False)
+    stress_proficient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I expected to perform proficiently on these tasks.", required=False)
+    stress_irritated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt irritated while I was completing these tasks.", required=False)
+    stress_grouchy = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt grouchy while I was completing these tasks.", required=False)
+    stress_reflecting = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm reflecting about myself.", required=False)
+    stress_concerned = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt concerned about the impression I was making.", required=False)
+    stress_committed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt committed to succeed to these tasks.", required=False)
+
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = ShortStressSurvey
+        exclude = ('user')
+
+
+class ConceptListingSurvey(models.Model):
+    user = models.ForeignKey(User)
+    task_id = models.IntegerField(default=0)
+    topic_num = models.IntegerField(default=0)
+    concepts  = models.TextField(default=0)
+    paragraph  = models.TextField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+
+class ConceptListingSurveyForm(ModelForm):
+    concepts = forms.CharField(widget=Textarea, label="Please list any concepts that come to mind for this topic. You can list any concepts that you feel are relevant or important.", required=False)
+    paragraph = forms.CharField(widget=Textarea, label="Imagine you would like to tell someone you know about what you have learned about this topic. Please compose a paragraph describing the topic and what you learnt about the topic. ", required=False)
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = ConceptListingSurvey
+        exclude = ('user','task_id','topic_num')
+
+
+class PostConceptListingSurvey(ConceptListingSurvey):
+
+    def __unicode__(self):
+        return self.user.username
+
+class PostConceptListingSurveyForm(ConceptListingSurveyForm):
+
+    class Meta:
+        model = PostConceptListingSurvey
+        exclude = ('user','task_id','topic_num')

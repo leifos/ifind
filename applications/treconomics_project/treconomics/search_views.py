@@ -480,12 +480,18 @@ def view_log_hover(request):
     View which logs a user hovering over a search result.
     """
     status = request.GET.get('status')
-    docid = request.GET.get('docid')
+    docid = request.GET.get('docid') # should be the whoosh id
+
+    # request needs to include page, rank, docid and docnum
+    docnum = '' # should something like APW
+    rank = 0
+
 
     if status == 'in':
-        log_event(event='DOCUMENT_HOVER_IN ({0})'.format(docid), request=request)
+        log_event(event="DOCUMENT_HOVER_IN",docid=docid, request=request, docnum=docnum, rank=rank)
     elif status == 'out':
-        log_event(event='DOCUMENT_HOVER_OUT ({0})'.format(docid), request=request)
+        log_event(event="DOCUMENT_HOVER_OUT",docid=docid, request=request, docnum=docnum, rank=rank)
+
 
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
@@ -495,8 +501,8 @@ def suggestion_selected(request):
     Called when a suggestion is selected from the suggestion interface.
     Logs the suggestion being selected.
     """
-    added_term = request.GET.get('added_term')
+
     new_query = request.GET.get('new_query')
 
-    log_event(event='SUGGESTION_SELECTED (term:"{0}", query:"{1}")'.format(added_term, new_query), request=request)
+    log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
