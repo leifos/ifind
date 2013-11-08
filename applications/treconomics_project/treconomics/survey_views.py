@@ -56,30 +56,7 @@ def handle_survey(request, SurveyForm, survey_name, action, template):
 
 @login_required
 def view_search_efficacy_survey( request ):
-    context = RequestContext(request)
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    u = User.objects.get(username = uname)
-    #handle post within this element. save data to survey table,
-    if request.method == 'POST':
-        form = SearchEfficacyForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = u
-            obj.save()
-            log_event(event="SELF_SEARCH_EFFICACY_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
-        else:
-            print form.errors
-            survey = SearchEfficacyForm(request.POST)
-    else:
-        log_event(event="SELF_SEARCH_EFFICACY_SURVEY_STARTED", request=request)
-        survey = SearchEfficacyForm()
-
-    action = '/treconomics/searchefficacysurvey/'
-    return render_to_response("survey/search_efficacy_survey.html", {'participant': uname, 'condition': condition, 'formset': survey, 'action': action   }, context)
-
+    return handle_survey(request, SearchEfficacyForm, 'SELF_SEARCH_EFFICACY', '/treconomics/searchefficacysurvey/', 'survey/search_efficacy_survey.html')
 
 @login_required
 def view_demographics_survey( request ):
@@ -95,136 +72,21 @@ def view_nasa_query_load_survey( request ):
 
 @login_required
 def view_nasa_navigation_load_survey( request ):
-    context = RequestContext(request)
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    u = User.objects.get(username = uname)
-    #handle post within this element. save data to survey table,
-    if request.method == 'POST':
-        form = NasaNavigationLoadForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = u
-            obj.save()
-            log_event(event="NASA_NAVIGATION_LOAD_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
-        else:
-            print form.errors
-            survey = NasaNavigationLoadForm(request.POST)
-    else:
-        log_event(event="NASA_NAVIGATION_LOAD_SURVEY_STARTED", request=request)
-        survey = NasaNavigationLoadForm()
-
-    action = '/treconomics/nasanavigationloadsurvey/'
-    return render_to_response("survey/nasa_navigation_load_survey.html", {'participant': uname, 'condition': condition, 'formset': survey, 'action': action   }, context)
-
-
+    return handle_survey(request, NasaNavigationLoadForm, 'NASA_NAVIGATION_LOAD', '/treconomics/nasanavigationloadsurvey/', 'survey/nasa_navigation_load_survey.html')
 
 @login_required
 def view_nasa_assessment_load_survey( request ):
-    context = RequestContext(request)
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    u = User.objects.get(username = uname)
-    #handle post within this element. save data to survey table,
-    if request.method == 'POST':
-        form = NasaAssessmentLoadForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = u
-            obj.save()
-            log_event(event="NASA_ASSESSMENT_LOAD_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
-        else:
-            print form.errors
-            survey = NasaAssessmentLoadForm(request.POST)
-    else:
-        log_event(event="NASA_ASSESSMENT_LOAD_SURVEY_STARTED", request=request)
-        survey = NasaAssessmentLoadForm()
-
-    action = '/treconomics/nasaassessmentloadsurvey/'
-    return render_to_response("survey/nasa_assessment_load_survey.html", {'participant': uname, 'condition': condition, 'formset': survey, 'action': action   }, context)
-
+    return handle_survey(request, NasaAssessmentLoadForm, 'NASA_ASSESSMENT_LOAD', '/treconomics/nasaassessmentloadsurvey/', 'survey/nasa_assessment_load_survey.html')
 
 @login_required
 def view_nasa_factor_compare_survey( request ):
-    context = RequestContext(request)
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    u = User.objects.get(username = uname)
-    #handle post within this element. save data to survey table,
-    if request.method == 'POST':
-        form = NasaFactorCompareForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = u
-            obj.save()
-            log_event(event="NASA_COMPARE_FACTORS_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
-        else:
-            print form.errors
-            survey = NasaFactorCompareForm(request.POST)
-    else:
-        log_event(event="NASA_COMPARE_FACTORS_SURVEY_STARTED", request=request)
-        survey = NasaFactorCompareForm()
-
-    action = '/treconomics/nasafactorcomparesurvey/'
-    return render_to_response("survey/nasa_factor_compare_survey.html", {'participant': uname, 'condition': condition, 'formset': survey, 'action': action   }, context)
+    return handle_survey(request, NasaFactorCompareForm, 'NASA_COMPARE_FACTORS', '/treconomics/nasafactorcomparesurvey/', 'survey/nasa_factor_compare_survey.html')
 
 @login_required
 def view_short_stress_survey( request ):
-    context = RequestContext(request)
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    u = User.objects.get(username = uname)
-    #handle post within this element. save data to survey table,
-    if request.method == 'POST':
-        form = ShortStressSurveyForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = u
-            obj.save()
-            log_event(event="SHORT_STRESS_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
-        else:
-            print form.errors
-            survey = ShortStressSurveyForm(request.POST)
-    else:
-        log_event(event="SHORT_STRESS_SURVEY_STARTED", request=request)
-        survey = ShortStressSurveyForm()
-
-    action = '/treconomics/shortstresssurvey/'
-    return render_to_response("survey/short_stress_survey.html", {'participant': uname, 'condition': condition, 'formset': survey, 'action': action}, context)
+    return handle_survey(request, ShortStressSurveyForm, 'SHORT_STRESS', '/treconomics/shortstresssurvey/', 'survey/short_stress_survey.html')
 
 
 @login_required
 def view_concept_listing_survey( request ):
-    context = RequestContext(request)
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    u = User.objects.get(username = uname)
-    #handle post within this element. save data to survey table,
-    if request.method == 'POST':
-        form = ConceptListingSurveyForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = u
-            obj.save()
-            log_event(event="CONCEPT_LISTING_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
-        else:
-            print form.errors
-            survey = ShortStressSurveyForm(request.POST)
-    else:
-        log_event(event="CONCEPT_LISTING_SURVEY_STARTED", request=request)
-        survey = ShortStressSurveyForm()
-
-    action = '/treconomics/conceptssurvey/'
-    return render_to_response("survey/concept_listing_survey.html", {'participant': uname, 'condition': condition, 'formset': survey, 'action': action}, context)
-
-
+    return handle_survey(request, ShortStressSurveyForm, 'CONCEPT_LISTING', '/treconomics/conceptssurvey/', 'survey/concept_listing_survey.html')

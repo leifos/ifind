@@ -120,14 +120,7 @@ class NasaSystemLoadForm(ModelForm):
         model = NasaSystemLoad
         exclude = ('user',)
 
-class NasaQueryLoad(models.Model):
-    user = models.ForeignKey(User)
-    nasa_mental_demand = models.IntegerField(default=0)
-    nasa_physical_demand = models.IntegerField(default=0)
-    nasa_temporal = models.IntegerField(default=0)
-    nasa_performance = models.IntegerField(default=0)
-    nasa_effort = models.IntegerField(default=0)
-    nasa_frustration = models.IntegerField(default=0)
+class NasaQueryLoad(NasaSystemLoad):
 
     def __unicode__(self):
         return self.user.username
@@ -149,14 +142,7 @@ class NasaQueryLoadForm(ModelForm):
 
 
 
-class NasaNavigationLoad(models.Model):
-    user = models.ForeignKey(User)
-    nasa_mental_demand = models.IntegerField(default=0)
-    nasa_physical_demand = models.IntegerField(default=0)
-    nasa_temporal = models.IntegerField(default=0)
-    nasa_performance = models.IntegerField(default=0)
-    nasa_effort = models.IntegerField(default=0)
-    nasa_frustration = models.IntegerField(default=0)
+class NasaNavigationLoad(NasaSystemLoad):
 
     def __unicode__(self):
         return self.user.username
@@ -177,15 +163,8 @@ class NasaNavigationLoadForm(ModelForm):
         exclude = ('user',)
 
 
-class NasaAssessmentLoad(models.Model):
-    user = models.ForeignKey(User)
-    nasa_mental_demand = models.IntegerField(default=0)
-    nasa_physical_demand = models.IntegerField(default=0)
-    nasa_temporal = models.IntegerField(default=0)
-    nasa_performance = models.IntegerField(default=0)
-    nasa_effort = models.IntegerField(default=0)
-    nasa_frustration = models.IntegerField(default=0)
-
+class NasaAssessmentLoad(NasaSystemLoad):
+ 
     def __unicode__(self):
         return self.user.username
 
