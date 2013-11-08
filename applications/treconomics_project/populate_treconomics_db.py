@@ -29,6 +29,10 @@ def populate():
     add_user('d2','2',6,0,0,'test')
     add_user('d3','3',7,0,1,'test')
     add_user('d4','4',7,0,0,'test')
+    add_user('d5','5',8,0,1,'test')
+    add_user('d6','6',8,0,0,'test')
+    add_user('d7','7',9,0,1,'test')
+    add_user('d8','8',9,0,0,'test')
 
 
 def add_user(username,password, condition, experiment, rotation, data=None):

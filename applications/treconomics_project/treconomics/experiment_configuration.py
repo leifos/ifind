@@ -30,8 +30,8 @@ event_logger.addHandler(event_logger_handler)
 # workflow must always start with /treconomics/startexperiment/
 
 exp_work_flows = [
-['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttaskquestions/1/',
- '/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttaskquestions/2/',
+['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
+ '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/',
  '/treconomics/nasaloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/search/0/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/shortstresssurvey/',
@@ -123,6 +123,9 @@ print "creating search engine"
 bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 tfidf = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
 
+bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
+tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
+
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=3, autocomplete=True, trie=suggestion_trie)
 exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, description='standard condition')
@@ -130,11 +133,13 @@ exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=2, des
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
 exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
 
-exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', autocomplete=True, trie=suggestion_trie)
-exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, autocomplete=True, trie=suggestion_trie)
 exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=1, description='structured condition bm25')
 exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=0, description='standard condition bm25')
+exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', autocomplete=True, trie=suggestion_trie)
+exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, autocomplete=True, trie=suggestion_trie)
+exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf no delay', autocomplete=True, trie=suggestion_trie)
+exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf delay', delay_results=7, autocomplete=True, trie=suggestion_trie)
 
 
 # these correspond to conditions
-experiment_setups = [exp0, exp1, exp2, exp3, exp_struct_concept, exp_stand_concept, exp_fast_high, exp_slow_high]
+experiment_setups = [exp0, exp1, exp2, exp3, exp_struct_concept, exp_stand_concept, exp_fast_high, exp_slow_high, exp_fast_low, exp_slow_low]

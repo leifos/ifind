@@ -89,7 +89,8 @@ class WhooshTrecNews(Engine):
         if self.implicit_or:
             query_terms = query.terms.split(' ')
             print query_terms
-            query = WhooshTrecNews.build_query_parts(query_terms, 'OR')
+            query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
+
 
         return self._request(query)
 
