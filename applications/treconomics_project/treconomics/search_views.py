@@ -473,12 +473,11 @@ def view_log_hover(request):
     View which logs a user hovering over a search result.
     """
     status = request.GET.get('status')
-    docid = request.GET.get('docid') # should be the whoosh id
+    docid = request.GET.get('docid')  # should be the whoosh id
 
     # request needs to include page, rank, docid and docnum
-    docnum = '' # should something like APW
+    docnum = ''  # should something like APW
     rank = 0
-
 
     if status == 'in':
         log_event(event="DOCUMENT_HOVER_IN",docid=docid, request=request, docnum=docnum, rank=rank)

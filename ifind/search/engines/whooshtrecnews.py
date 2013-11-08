@@ -87,7 +87,7 @@ class WhooshTrecNews(Engine):
             raise QueryParamException(self.name, "Total result amount (query.top) not specified")
 
         if self.implicit_or:
-            query_terms = query.split(' ')
+            query_terms = query.terms.split(' ')
             query = WhooshTrecNews.build_query_parts(query_terms, 'OR')
 
         return self._request(query)

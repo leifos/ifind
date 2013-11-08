@@ -143,6 +143,7 @@ function processRequest(serializedFormData, noDelay) {
 
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
+                    console.log(data['trec_results']);
                     var result = data['trec_results'][result_no];
                     results.append('<div class="search_result" id="' + result['docid'] + '"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
                 }
