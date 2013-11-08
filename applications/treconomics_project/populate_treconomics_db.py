@@ -25,6 +25,11 @@ def populate():
     add_user('a2','2',4,0,0,'test')
     add_user('a3','3',5,2,1,'test')
     add_user('a4','4',5,2,0,'test')
+    add_user('d1','1',6,0,1,'test')
+    add_user('d2','2',6,0,0,'test')
+    add_user('d3','3',7,0,1,'test')
+    add_user('d4','4',7,0,0,'test')
+
 
 def add_user(username,password, condition, experiment, rotation, data=None):
     u = User.objects.get_or_create(username=username)[0]

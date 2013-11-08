@@ -69,6 +69,8 @@ class WhooshTrecNews(Engine):
 
         """
 
+
+
         if not query.top:
             raise QueryParamException(self.name, "Total result amount (query.top) not specified")
 

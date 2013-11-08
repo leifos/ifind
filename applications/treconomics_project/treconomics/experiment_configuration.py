@@ -30,7 +30,9 @@ event_logger.addHandler(event_logger_handler)
 # workflow must always start with /treconomics/startexperiment/
 
 exp_work_flows = [
-['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/searchefficacysurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/pretaskquestions/3/','/treconomics/search/3/','/treconomics/posttaskquestions/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
+['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttaskquestions/1/',
+ '/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttaskquestions/2/',
+ '/treconomics/nasaloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/searchefficacysurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/pretaskquestions/3/','/treconomics/search/3/','/treconomics/posttaskquestions/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
@@ -122,15 +124,18 @@ suggestion_trie = SuggestionTrie(
                     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
 
 print "creating search engine"
-engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
+bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
+tfidf = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
 
-exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=0, description='structured condition')
-exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine2, interface=0, description='structured condition', delay_results=3, autocomplete=True, trie=suggestion_trie)
-exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, description='standard condition')
-exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, interface=2, description='suggestion condition')
-exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
-exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=engine, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
+exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
+exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=3, autocomplete=True, trie=suggestion_trie)
+exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, description='standard condition')
+exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=2, description='suggestion condition')
+exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
+exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
+exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', autocomplete=True, trie=suggestion_trie)
+exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, autocomplete=True, trie=suggestion_trie)
+
 
 # these correspond to conditions
-experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5]
+experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5, exp_fast_high, exp_slow_high]

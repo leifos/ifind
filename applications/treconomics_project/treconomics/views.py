@@ -65,8 +65,8 @@ def view_start_experiment(request):
                 print_experiment_context(ec)
 
                 context_dict = {
-                    'popup_width': ec['popup_width'],
-                    'popup_height': ec['popup_height'],
+                    'popup_width': 1024,
+                    'popup_height': 1024,
                 }
 
                 # return HttpResponseRedirect("/treconomics/next/")
