@@ -164,7 +164,7 @@ class NasaNavigationLoadForm(ModelForm):
 
 
 class NasaAssessmentLoad(NasaSystemLoad):
- 
+
     def __unicode__(self):
         return self.user.username
 

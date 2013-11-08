@@ -33,10 +33,12 @@ exp_work_flows = [
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttaskquestions/2/',
  '/treconomics/nasaloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
-['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/searchefficacysurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/','/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/pretaskquestions/3/','/treconomics/search/3/','/treconomics/posttaskquestions/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
+['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
+ '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/shortstresssurvey/',
+ '/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/conceptlistingsurvey/1/','/treconomics/conceptlistingsurvey/2/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
-['/treconomics/startexperiment/','/treconomics/demographicssurvey/','/treconomics/shortstresssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttask/1/','/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttask/2/','/treconomics/logout/']
+['/treconomics/startexperiment/','/treconomics/demographicssurvey/','/treconomics/conceptlistingsurvey/1/','/treconomics/shortstresssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttask/1/','/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttask/2/','/treconomics/logout/']
 ]
 
 class ExperimentSetup(object):
@@ -135,7 +137,9 @@ exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '
 exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', autocomplete=True, trie=suggestion_trie)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, autocomplete=True, trie=suggestion_trie)
+exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=1, description='structured condition bm25')
+exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=0, description='standard condition bm25')
 
 
 # these correspond to conditions
-experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5, exp_fast_high, exp_slow_high]
+experiment_setups = [exp0, exp1, exp2, exp3, exp4, exp5, exp_fast_high, exp_slow_high, exp_struct_concept, exp_stand_concept]

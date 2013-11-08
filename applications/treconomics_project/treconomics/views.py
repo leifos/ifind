@@ -164,7 +164,6 @@ def view_pre_task_with_questions(request, taskid):
 
     #handle post within this element. save data to survey table,
     if request.method == 'POST':
-        print "IN POST"
         form = PreTaskTopicKnowledgeSurveyForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
@@ -312,4 +311,5 @@ def view_end_experiment(request):
 
     # Provide debreifing
     return render_to_response('base/end_experiment.html', {'participant': uname, 'condition': condition }, context)
+
 
