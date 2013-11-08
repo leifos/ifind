@@ -13,7 +13,7 @@ class WhooshTrecNews(Engine):
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', model=1, **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -29,7 +29,8 @@ class WhooshTrecNews(Engine):
         if not self.whoosh_index_dir:
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
 
-        self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module
+        self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
+        self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module by default
 
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
@@ -45,7 +46,18 @@ class WhooshTrecNews(Engine):
             msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
 
+    @staticmethod
+    def build_query_parts(term_list, operator):
+        return_query = ''
 
+        for term in term_list:
+            if term:
+                if return_query:
+                    return_query += " {1} {2}".format(operator, term)
+                else:
+                    return_query = term
+
+        return return_query
 
     def _search(self, query):
         """
@@ -73,6 +85,10 @@ class WhooshTrecNews(Engine):
 
         if not query.top:
             raise QueryParamException(self.name, "Total result amount (query.top) not specified")
+
+        if self.implicit_or:
+            query_terms = query.split(' ')
+            query = WhooshTrecNews.build_query_parts(query_terms, 'OR')
 
         return self._request(query)
 
