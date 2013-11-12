@@ -196,7 +196,7 @@ function processRequest(serializedFormData, noDelay) {
                         url: APP_ROOT + 'hover/',
                         data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
                     });
-                });
+            });
         }
 
         $('*').css('cursor', 'default');

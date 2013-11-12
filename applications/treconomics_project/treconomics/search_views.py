@@ -410,7 +410,7 @@ def ajax_search(request, taskid=0):
                     'count': len(results),
                     'results': results,
                 }
-                
+
                 return HttpResponse(json.dumps(response_data), content_type='application/json')
             else:
                 # Render the search template as usual...
