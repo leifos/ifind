@@ -108,10 +108,10 @@ def clean_to_zero(self):
 class NasaSystemLoadForm(ModelForm):
     nasa_mental_demand = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="MENTAL DEMAND: How mentally demanding was it to use this system to complete the search tasks?", required=False )
     nasa_physical_demand = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="PHYSICAL DEMAND: How physically demanding was it to use this system to complete the search tasks?", required=False)
-    nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TEMPORRAL DEMAND: How hurried or rushed did you feel when using this system to complete the search tasks?", required=False)
+    nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TEMPORAL DEMAND: How hurried or rushed did you feel when using this system to complete the search tasks?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful were you using this system to complete the search tasks?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to accomplish your level of performance with this system?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while using this system?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while using this system?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -131,7 +131,7 @@ class NasaQueryLoadForm(ModelForm):
     nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TERMPORAL DEMAND: How hurried or rushed did you feel when querying?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful were your queries?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to query?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while issuing queries?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while issuing queries?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -153,7 +153,7 @@ class NasaNavigationLoadForm(ModelForm):
     nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TERMPORAL DEMAND: How hurried or rushed did you feel when navigating through the search resutls?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful was your navigation through the search results?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to navigate through the search results?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while navigating through the search results?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while navigating through the search results?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -174,7 +174,7 @@ class NasaAssessmentLoadForm(ModelForm):
     nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TERMPORAL DEMAND: How hurried or rushed did you feel when assessing and judging documents for relevance?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful were you at assessing and judging documents for relevance?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to assess and judge documents for relevance?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while assessing and judgin documents for relevance?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while assessing and judgin documents for relevance?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
