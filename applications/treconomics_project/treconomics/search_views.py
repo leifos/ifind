@@ -86,7 +86,6 @@ def show_document(request, whoosh_docid):
 
 @login_required
 def show_saved_documents(request):
-
     #write_to_log("VIEW_SAVED_DOCS" )
     context = RequestContext(request)
     ec = get_experiment_context(request)
@@ -95,19 +94,25 @@ def show_saved_documents(request):
     uname = ec['username']
     current_search = request.session['queryurl']
 
-    print "LOG_VIEW_SAVED_DOCS"
-    log_event(event="VIEW_SAVED_DOCS", request=request)
-
     user_judgement = -2
     if request.method == 'GET':
         getdict = request.GET
+
+        if 'judge' not in getdict and 'docid' not in getdict:
+            # Log only if user is entering the page, not after clicking a relevant button
+            print "LOG_VIEW_SAVED_DOCS"
+            log_event(event="VIEW_SAVED_DOCS", request=request)
+
         if 'judge' in getdict:
             user_judgement = int(getdict['judge'])
-        if 'doc' in getdict:
-            docid = int(getdict['doc'])
+        if 'docid' in getdict:
+            docid = int(getdict['docid'])
         if (user_judgement > -2) and (docid > -1):
             #updates the judgement for this document
-            user_judgement = mark_document(request=request, whooshid=docid, judgement=user_judgement)
+            doc_length = ixr.doc_field_length(docid, 'content')
+            trecid = ixr.stored_fields(docid)['docid']
+            
+            user_judgement = mark_document(request=request, whooshid=docid, trecid=trecid, judgement=user_judgement, doc_length=doc_length)
 
     # Get documents that are for this task, and for this user
     u = User.objects.get(username=uname)
