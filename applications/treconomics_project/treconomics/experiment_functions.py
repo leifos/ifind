@@ -11,8 +11,11 @@ from django.contrib.auth.models import User
 from models import DocumentsExamined
 from experiment_configuration import event_logger, qrels_file
 from experiment_configuration import experiment_setups
+from pytz import timezone
+from django.conf import settings
 
-qrels = TrecQrelHandler( qrels_file )
+settings_timezone = timezone(settings.TIME_ZONE)
+qrels = TrecQrelHandler(qrels_file)
 
 
 def get_experiment_context(request):
@@ -134,7 +137,7 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
 #        print "no doc found in db"
         if judgement > -1:
             print "doc judge set to: " + str(judgement)
-            doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/'+whooshid+'/', task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement, judgement_date=datetime.datetime.now())
+            doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/'+whooshid+'/', task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement, judgement_date=datetime.datetime.now(tz=settings_timezone))
             doc.save()
 
     return judgement

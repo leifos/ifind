@@ -13,8 +13,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
-
-
 from ifind.search import Query, Response
 
 # Whoosh
@@ -44,7 +42,7 @@ def show_document(request, whoosh_docid):
     current_search = request.session['queryurl']
 
     # get document from index
-    fields = ixr.stored_fields( int(whoosh_docid) )
+    fields = ixr.stored_fields(int(whoosh_docid))
     title = fields["title"]
     content = fields["content"]
     docnum = fields["docid"]
@@ -111,7 +109,7 @@ def show_saved_documents(request):
             #updates the judgement for this document
             doc_length = ixr.doc_field_length(docid, 'content')
             trecid = ixr.stored_fields(docid)['docid']
-            
+
             user_judgement = mark_document(request=request, whooshid=docid, trecid=trecid, judgement=user_judgement, doc_length=doc_length)
 
     # Get documents that are for this task, and for this user
