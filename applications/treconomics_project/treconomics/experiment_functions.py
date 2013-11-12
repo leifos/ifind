@@ -84,36 +84,37 @@ def time_search_experiment_out(request):
         else:
             return False
 
-def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2):
+def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0):
     ec = get_experiment_context(request)
 
     msg = ec["username"] + " " + str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(ec["topicnum"]) + " " + event
 
     if whooshid > -1:
-        event_logger.info(msg + " " + str(whooshid) + " " + trecid + " " + str(judgement) + " " + str(rank))
+        event_logger.info(msg + " " + str(whooshid) + " " + trecid + " " + str(doc_length) + " " + str(judgement) + " " + str(rank))
     else:
         if page > 0:
             event_logger.info(msg + " " + str(page))
         else:
             event_logger.info(msg + " " + query)
 
-def mark_document(request, whooshid, judgement, title="", trecid="", rank=0):
+def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc_length=-1):
     ec = get_experiment_context(request)
     username = ec["username"]
     task = ec["taskid"]
     topicnum = ec["topicnum"]
+
     if judgement == 1:
         #write_to_log("DOC_MARKED_RELEVANT", whooshid )
-        log_event(event="DOC_MARKED_RELEVANT", request=request, whooshid=whooshid, judgement=1, trecid=trecid, rank=rank)
-        print "DOC_MARKED_RELEVANT " + str(whooshid) + " " + trecid +  " " +  str(rank)
+        log_event(event="DOC_MARKED_RELEVANT", request=request, whooshid=whooshid, judgement=1, trecid=trecid, rank=rank, doc_length=doc_length)
+        print "DOC_MARKED_RELEVANT " + str(whooshid) + " " + trecid + " " + str(rank)
     if judgement == 0:
         #write_to_log("DOC_MARKED_NONRELEVANT", whooshid )
-        print "DOC_MARKED_NONRELEVANT " + str(whooshid) + " " + trecid +  " " +  str(rank)
-        log_event(event="DOC_MARKED_NONRELEVANT", request=request, whooshid=whooshid, judgement=0, trecid=trecid, rank=rank)
+        print "DOC_MARKED_NONRELEVANT " + str(whooshid) + " " + trecid + " " + str(rank)
+        log_event(event="DOC_MARKED_NONRELEVANT", request=request, whooshid=whooshid, judgement=0, trecid=trecid, rank=rank, doc_length=doc_length)
     if judgement < 0:
         # write_to_log("DOC_VIEWED"), whooshid )
-        log_event(event="DOC_MARKED_VIEWED", whooshid=whooshid, request=request, trecid=trecid, rank=rank)
-        print "DOC_VIEWED " + str(whooshid) + " " + trecid +  " " + str(rank)
+        log_event(event="DOC_MARKED_VIEWED", whooshid=whooshid, request=request, trecid=trecid, rank=rank, doc_length=doc_length)
+        print "DOC_VIEWED " + str(whooshid) + " " + trecid + " " + str(rank)
 
     # check if user has marked the document or not
     u = User.objects.get(username=username)

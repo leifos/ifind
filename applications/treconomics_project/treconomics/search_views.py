@@ -35,7 +35,6 @@ ixr = ix.reader()
 @login_required
 def show_document(request, whoosh_docid):
     #check for timeout
-
     context = RequestContext(request)
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -53,18 +52,22 @@ def show_document(request, whoosh_docid):
     doc_source = fields["source"]
     docid = whoosh_docid
     topicnum = ec["topicnum"]
-    print docid
+
     # check if there are any get parameters.
     user_judgement = -2
     rank = 0
     if request.is_ajax():
         getdict = request.GET
+
         if 'judge' in getdict:
             user_judgement = int(getdict['judge'])
+
             if 'rank' in getdict:
                 rank = int(getdict['rank'])
+
             #marks that the document has been marked rel or nonrel
-            user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank)
+            doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
+            user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
             #mark_document handles logging of this event
         return HttpResponse(simplejson.dumps(user_judgement), mimetype='application/javascript')
     else:
@@ -76,7 +79,9 @@ def show_document(request, whoosh_docid):
                 getdict = request.GET
                 if 'rank' in getdict:
                     rank = int(getdict['rank'])
-            user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank)
+
+            doc_length = ixr.doc_field_length(long(docid), 'content')
+            user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
             return render_to_response('trecdo/document.html', {'participant': uname, 'task': taskid, 'condition': condition, 'current_search': current_search, 'docid': docid, 'docnum': docnum, 'title': title, 'doc_date': doc_date,   'doc_source': doc_source, 'content': content, 'user_judgement': user_judgement, 'rank': rank}, context)
 
 @login_required
@@ -480,6 +485,7 @@ def view_log_hover(request):
     page = request.GET.get('page')
     trec_id = request.GET.get('trecID')
     whoosh_id = request.GET.get('whooshID')
+    doc_length = ixr.doc_field_length(long(whoosh_id), 'content')
 
     if status == 'in':
         log_event(event="DOCUMENT_HOVER_IN",
@@ -487,14 +493,16 @@ def view_log_hover(request):
                   whooshid=whoosh_id,
                   trecid=trec_id,
                   rank=rank,
-                  page=page)
+                  page=page,
+                  doc_length=doc_length)
     elif status == 'out':
         log_event(event="DOCUMENT_HOVER_OUT",
                   request=request,
                   whooshid=whoosh_id,
                   trecid=trec_id,
                   rank=rank,
-                  page=page,)
+                  page=page,
+                  doc_length=doc_length)
 
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
