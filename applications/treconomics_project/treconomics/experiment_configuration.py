@@ -8,7 +8,7 @@ from ifind.common.rotation_ordering import PermutatedRotationOrdering
 from django.conf import settings
 
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
-#from ifind.common.suggestion_trie import SuggestionTrie
+from ifind.common.suggestion_trie import SuggestionTrie
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
@@ -75,6 +75,9 @@ class ExperimentSetup(object):
         self.autocomplete = autocomplete
         self.trie = trie
 
+        if self.autocomplete and not self.trie:
+            print "NO NO NO"
+
     def _get_check_i(self, i):
         return i % self.n
 
@@ -105,11 +108,9 @@ class ExperimentSetup(object):
     def get_trie(self):
         return self.trie
 
-
     def __str__(self):
         return self.description
 
-'''
 suggestion_trie = SuggestionTrie(
                     min_occurrences=3,
                     suggestion_count=8,
@@ -118,7 +119,6 @@ suggestion_trie = SuggestionTrie(
                     stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
                     vocab_path=os.path.join(work_dir, "data/vocab.txt"),
                     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
-'''
 
 print "creating search engine"
 bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
@@ -136,7 +136,7 @@ exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '
 
 exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=1, description='structured condition bm25')
 exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=0, description='standard condition bm25')
-exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay')
+exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', autocomplete=True, trie=suggestion_trie)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7)
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf no delay')
 exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf delay', delay_results=7)
