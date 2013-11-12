@@ -44,7 +44,7 @@ def get_experiment_context(request):
         t = ec["taskid"] - 1
         r = ec["rotation"] - 1
         if t >= 0:
-            ec["topicnum"] = experiment_setups[ec['condition']].get_rotation_topic(r,t)
+            ec["topicnum"] = experiment_setups[ec['condition']].get_rotation_topic(r, t)
         else:
             ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
     else:
@@ -84,40 +84,41 @@ def time_search_experiment_out(request):
         else:
             return False
 
-def log_event(event, request, query="", docid=-2, judgement=-2, docnum="", rank=-2, page=-2):
+def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2):
     ec = get_experiment_context(request)
 
-    msg = ec["username"] + " " +  str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(ec["topicnum"]) + " "+  event;
-    if docid > -1:
-         event_logger.info( msg + " " + str(docid) + " " + docnum + " " + str(judgement) + " " + str(rank) )
+    msg = ec["username"] + " " + str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(ec["topicnum"]) + " " + event
+
+    if whooshid > -1:
+        event_logger.info(msg + " " + str(whooshid) + " " + trecid + " " + str(judgement) + " " + str(rank))
     else:
         if page > 0:
-            event_logger.info( msg + " " + str(page) )
+            event_logger.info(msg + " " + str(page))
         else:
-            event_logger.info( msg + " " + query )
+            event_logger.info(msg + " " + query)
 
-def mark_document(request, docid, judgement, title="", docnum="", rank=0):
+def mark_document(request, whooshid, judgement, title="", trecid="", rank=0):
     ec = get_experiment_context(request)
     username = ec["username"]
     task = ec["taskid"]
     topicnum = ec["topicnum"]
     if judgement == 1:
-        #write_to_log("DOC_MARKED_RELEVANT", docid )
-        log_event(event="DOC_MARKED_RELEVANT", request=request, docid=docid, judgement=1, docnum=docnum, rank=rank)
-        print "DOC_MARKED_RELEVANT " + str(docid) + " " + docnum +  " " +  str(rank)
+        #write_to_log("DOC_MARKED_RELEVANT", whooshid )
+        log_event(event="DOC_MARKED_RELEVANT", request=request, whooshid=whooshid, judgement=1, trecid=trecid, rank=rank)
+        print "DOC_MARKED_RELEVANT " + str(whooshid) + " " + trecid +  " " +  str(rank)
     if judgement == 0:
-        #write_to_log("DOC_MARKED_NONRELEVANT", docid )
-        print "DOC_MARKED_NONRELEVANT " + str(docid) + " " + docnum +  " " +  str(rank)
-        log_event(event="DOC_MARKED_NONRELEVANT", request=request, docid=docid, judgement=0, docnum=docnum, rank=rank)
+        #write_to_log("DOC_MARKED_NONRELEVANT", whooshid )
+        print "DOC_MARKED_NONRELEVANT " + str(whooshid) + " " + trecid +  " " +  str(rank)
+        log_event(event="DOC_MARKED_NONRELEVANT", request=request, whooshid=whooshid, judgement=0, trecid=trecid, rank=rank)
     if judgement < 0:
-        # write_to_log("DOC_VIEWED"), docid )
-        log_event(event="DOC_MARKED_VIEWED",docid=docid, request=request, docnum=docnum, rank=rank)
-        print "DOC_VIEWED " + str(docid) + " " + docnum +  " " + str(rank)
+        # write_to_log("DOC_VIEWED"), whooshid )
+        log_event(event="DOC_MARKED_VIEWED", whooshid=whooshid, request=request, trecid=trecid, rank=rank)
+        print "DOC_VIEWED " + str(whooshid) + " " + trecid +  " " + str(rank)
 
     # check if user has marked the document or not
     u = User.objects.get(username=username)
     try:
-        doc = DocumentsExamined.objects.filter(user=u).filter(task=task).get(docid=docid)
+        doc = DocumentsExamined.objects.filter(user=u).filter(task=task).get(docid=whooshid)
         if doc:
             # update judgement that is already there
             if judgement > -1:
@@ -132,19 +133,19 @@ def mark_document(request, docid, judgement, title="", docnum="", rank=0):
 #        print "no doc found in db"
         if judgement > -1:
             print "doc judge set to: " + str(judgement)
-            doc = DocumentsExamined(user=u, title=title, docid=docid, url='/treconomics/'+docid+'/', task=task, topic_num=topicnum, doc_num=docnum, judgement=judgement, judgement_date=datetime.datetime.now())
+            doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/'+whooshid+'/', task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement, judgement_date=datetime.datetime.now())
             doc.save()
 
     return judgement
 
 
-def assessPerformance(topic_num, doc_list ):
+def assessPerformance(topic_num, doc_list):
     rels_found = 0
     non_rels_found = 0
 
     total = len(doc_list)
     for doc in doc_list:
-        val = qrels.get_value(topic_num,doc)
+        val = qrels.get_value(topic_num, doc)
         if val:
             if int(val) >= 1:
                 rels_found = rels_found + 1

@@ -102,7 +102,7 @@ def show_saved_documents(request):
             docid = int(getdict['doc'])
         if (user_judgement > -2) and (docid > -1):
             #updates the judgement for this document
-            user_judgement = mark_document(request=request, docid=docid, judgement=user_judgement)
+            user_judgement = mark_document(request=request, whooshid=docid, judgement=user_judgement)
 
     # Get documents that are for this task, and for this user
     u = User.objects.get(username=uname)
@@ -294,7 +294,7 @@ def search(request, taskid=0):
 
             if result_dict['trec_results']:
                 qrp = getQueryResultPerformance(result_dict['trec_results'],topic_num)
-                log_event(event='SEARCH_RESULTS_PAGE_QUALITY',request=request,docid=page,rank=qrp[0],judgement=qrp[1])
+                log_event(event='SEARCH_RESULTS_PAGE_QUALITY',request=request, whooshid=page,rank=qrp[0],judgement=qrp[1])
 
             queryurl = '/treconomics/search/?query=' + user_query.replace(' ','+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
@@ -363,6 +363,9 @@ def ajax_search(request, taskid=0):
             # Returns a AJAX response with the document list to populate the container <DIV>.
             result_dict = {}
 
+            # Should we do a delay? This is true when a user navigates back to the results page from elsewhere.
+            do_delay = bool(request.POST.get('noDelay'))
+
             if interface == 1:
                 querystring = request.POST.copy()
                 del querystring['csrfmiddlewaretoken']
@@ -372,7 +375,9 @@ def ajax_search(request, taskid=0):
             else:
                 user_query = request.POST.get('query').strip()
 
-            log_event(event="QUERY_ISSUED", request=request, query=user_query)
+            if not do_delay:  # Do not log the query issued event if the user is returning to the results page.
+                log_event(event="QUERY_ISSUED", request=request, query=user_query)
+
             page_request = request.POST.get('page')
 
             if page_request:
@@ -384,15 +389,15 @@ def ajax_search(request, taskid=0):
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
 
-            if experiment_setups[condition].delay_results > 0 and not bool(request.POST.get('noDelay')):
+            if experiment_setups[condition].delay_results > 0 and not do_delay:
                 log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
                 sleep(experiment_setups[condition].delay_results)  # Delay search results.
 
             # Serialis(z?)e the data structure and send it back
-            log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+            if not do_delay:  # Only log the following if the user is not returning back to the results page.
+                log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
             return HttpResponse(json.dumps(result_dict), content_type='application/json')
         else:
-
             if request.GET.get('suggest'):
                 results = []
                 if experiment_setups[condition].autocomplete:
@@ -405,9 +410,7 @@ def ajax_search(request, taskid=0):
                     'count': len(results),
                     'results': results,
                 }
-
-                # Log the event - included is the number of suggestions returned. Can easily remove this
-
+                
                 return HttpResponse(json.dumps(response_data), content_type='application/json')
             else:
                 # Render the search template as usual...
@@ -473,17 +476,25 @@ def view_log_hover(request):
     View which logs a user hovering over a search result.
     """
     status = request.GET.get('status')
-    docid = request.GET.get('docid')  # should be the whoosh id
-
-    # request needs to include page, rank, docid and docnum
-    docnum = ''  # should something like APW
-    rank = 0
+    rank = request.GET.get('rank')
+    page = request.GET.get('page')
+    trec_id = request.GET.get('trecID')
+    whoosh_id = request.GET.get('whooshID')
 
     if status == 'in':
-        log_event(event="DOCUMENT_HOVER_IN",docid=docid, request=request, docnum=docnum, rank=rank)
+        log_event(event="DOCUMENT_HOVER_IN",
+                  request=request,
+                  whooshid=whoosh_id,
+                  trecid=trec_id,
+                  rank=rank,
+                  page=page)
     elif status == 'out':
-        log_event(event="DOCUMENT_HOVER_OUT",docid=docid, request=request, docnum=docnum, rank=rank)
-
+        log_event(event="DOCUMENT_HOVER_OUT",
+                  request=request,
+                  whooshid=whoosh_id,
+                  trecid=trec_id,
+                  rank=rank,
+                  page=page,)
 
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 

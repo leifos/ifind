@@ -27,10 +27,6 @@ $(function() {
         stopHashChange = false;
     });
 
-    $('div.search_result').select(function(event) {
-       console.log("text select");
-    });
-
     $(window).hashchange();
 });
 
@@ -143,9 +139,8 @@ function processRequest(serializedFormData, noDelay) {
 
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
-                    console.log(data['trec_results']);
                     var result = data['trec_results'][result_no];
-                    results.append('<div class="search_result" id="' + result['docid'] + '"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
+                    results.append('<div class="search_result" id="' + result['docid'] + '" rank="' + result['rank'] + '" page="' + data['curr_page'] + '" whooshid="' + result['whooshid'] + '"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
                 }
 
                 // Add navigation buttons at bottom of page (if applicable)
@@ -180,20 +175,26 @@ function processRequest(serializedFormData, noDelay) {
             $('.search_result').hover(
                 function(event) {
                     var parent = $(event.target).closest('div[class="search_result"]');
-                    var docID = $(parent[0]).attr('id');
+                    var trecID = $(parent[0]).attr('id');
+                    var whooshID = $(parent[0]).attr('whooshid');
+                    var rank = $(parent[0]).attr('rank');
+                    var page = $(parent[0]).attr('page');
 
                     $.ajax({
                         url: APP_ROOT + 'hover/',
-                        data: {'status': 'in', 'docid': docID}
+                        data: {'status': 'in', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
                     });
                 },
                 function(event) {
                     var parent = $(event.target).closest('div[class="search_result"]');
-                    var docID = $(parent[0]).attr('id');
+                    var trecID = $(parent[0]).attr('id');
+                    var whooshID = $(parent[0]).attr('whooshid');
+                    var rank = $(parent[0]).attr('rank');
+                    var page = $(parent[0]).attr('page');
 
                     $.ajax({
                         url: APP_ROOT + 'hover/',
-                        data: {'status': 'out', 'docid': docID}
+                        data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
                     });
                 });
         }

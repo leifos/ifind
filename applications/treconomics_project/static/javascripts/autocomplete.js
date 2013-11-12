@@ -10,7 +10,7 @@ Revision: 2
 
 $(function() {
 
-    var difference = [];
+    var difference = []; // Stores the difference between an input field before and after a user's change
 
     /*
     Returns the last word (or partial word) in the input box string.
@@ -23,15 +23,6 @@ $(function() {
 
         //return (""+term).replace(/[\s-]+$/,'').split(/[\s-]/).pop();
         return getDifferentTerm(old, current);
-    }
-
-    /*
-    Removes the last (presumably incomplete) word from the given string and returns the spliced string.
-    From this shortened string, we can then add our complete suggestion to the query string.
-     */
-    function removeSuggestionText(inputString) {
-        var lastSpaceIndex = inputString.lastIndexOf(" ");
-        return inputString.substring(0, lastSpaceIndex);
     }
 
     /*
