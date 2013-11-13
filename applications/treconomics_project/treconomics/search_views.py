@@ -279,7 +279,7 @@ def search(request, taskid=0):
                 suggestions = True
             if suggestions:
                 log_event(event="QUERY_SUGGESTION_ISSUED", request=request, query=user_query)
-            
+
             if 'page' in getdict:
                 page = int(getdict['page'])
             else:
