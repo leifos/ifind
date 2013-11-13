@@ -406,24 +406,9 @@ def ajax_search(request, taskid=0):
                 log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
             return HttpResponse(json.dumps(result_dict), content_type='application/json')
         else:
-            if request.GET.get('suggest'):
-                results = []
-                if experiment_setups[condition].autocomplete:
-                    suggestion_trie = experiment_setups[condition].get_trie()
-                    # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
-                    chars = unicode(request.GET.get('suggest'))
-                    results = suggestion_trie.suggest(chars)
-
-                response_data = {
-                    'count': len(results),
-                    'results': results,
-                }
-
-                return HttpResponse(json.dumps(response_data), content_type='application/json')
-            else:
-                # Render the search template as usual...
-                log_event(event="VIEW_SEARCH_BOX", request=request, page=page)
-                return render_to_response('trecdo/search.html', context_dict, context)
+            # Render the search template as usual...
+            log_event(event="VIEW_SEARCH_BOX", request=request, page=page)
+            return render_to_response('trecdo/search.html', context_dict, context)
 
 @login_required
 def ajax_interface1_querystring(request):
@@ -520,3 +505,27 @@ def suggestion_selected(request):
 
     log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+
+@login_required
+def autocomplete_suggestion(request):
+    # Get the condition from the user's experiment context.
+    # This will yield us access to the autocomplete trie!
+    ec = get_experiment_context(request)
+    condition = ec["condition"]
+
+    if request.GET.get('suggest'):
+        results = []
+        if experiment_setups[condition].autocomplete:
+            suggestion_trie = experiment_setups[condition].get_trie()
+            # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
+            chars = unicode(request.GET.get('suggest'))
+            results = suggestion_trie.suggest(chars)
+
+        response_data = {
+            'count': len(results),
+            'results': results,
+        }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'error': True}), content_type='application/json')

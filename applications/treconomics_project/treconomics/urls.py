@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     (r'^suggestion_selected/$', search_views.suggestion_selected),
     (r'^query_focus/$', search_views.view_log_query_focus),
     (r'^hover/$', search_views.view_log_hover),
+    (r'^autocomplete/$', search_views.autocomplete_suggestion),
 
     (r'^searcha/$', search_views.ajax_search),
     (r'^searcha/(?P<taskid>\d+)/$', search_views.ajax_search),

@@ -65,7 +65,7 @@ $(function() {
             }
 
             $.ajax({
-                url: APP_ROOT + AJAX_SEARCH_URL,
+                url: APP_ROOT + 'autocomplete/',
                 dataType: "json",
                 data: {
                     suggest: getSuggestion($(this), request.term)[0]
