@@ -10,7 +10,7 @@
 		{% for result in trec_results %}
             <div class="search_result" id="{{ result.docid }}" rank="{{ result.rank }}" page="{{ page }}" whooshid="{{ result.whooshid }}">
                 <div class="entry">
-                    <p class="result_title"><strong><a href="URL">{{ result.title }}</a></strong></p>
+                    <p class="result_title"><strong><a href="{{ result.url }}">{{ result.title }}</a></strong></p>
                     <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>
                 </div>
 

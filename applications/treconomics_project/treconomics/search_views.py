@@ -230,6 +230,25 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
 @login_required
 def search(request, taskid=0):
 
+    def is_from_search_request(new_page_no):
+        """
+        Returns True iif the URL of the referer is a standard search request.
+        This is used to determine if we should delay results appearing.
+
+        The new page number of required to check against the page number from the referer.
+        If they match, we don't delay - if they don't, we do.
+        """
+        http_referer = request.META['HTTP_REFERER']
+        http_referer = http_referer.strip().split('&')
+        page = 1
+
+        for item in http_referer:
+            if 'page=' in item:
+                item = item.split('=')
+                page = int(item[1])
+
+        return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
+
     # If taskid is set, then it marks the start of a new search task
     # Update the session variable to reflect this
     if taskid >= 1:
@@ -312,6 +331,11 @@ def search(request, taskid=0):
             queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
+
+            if experiment_setups[condition].delay_results > 0 and is_from_search_request(page):
+                log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
+                sleep(experiment_setups[condition].delay_results)  # Delay search results.
+
             log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
             return render_to_response('trecdo/results.html', result_dict, context)
         else:

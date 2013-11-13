@@ -8,14 +8,16 @@ Revision: 1
 
 */
 
+$(function() {
+    $('*').css('cursor', 'auto');
+    bindResultHovering();
+    changePointer();
+});
+
 /*
 Bind hovers over search result elements.
 Logs the event with an AJAX call for hovering in and a call for hovering out.
 */
-$(function() {
-    bindResultHovering();
-});
-
 function bindResultHovering() {
     $('.search_result').hover(
         function(event) {
@@ -41,5 +43,11 @@ function bindResultHovering() {
                 url: APP_ROOT + 'hover/',
                 data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
         });
+    });
+}
+
+function changePointer() {
+    $("#search_form").submit(function(event) {
+        $('*').css('cursor', 'progress');
     });
 }
