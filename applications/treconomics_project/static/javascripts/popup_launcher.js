@@ -50,6 +50,10 @@ function wasPopupBlocked(popupReference) {
     return (popupReference == null | typeof(popupReference) == 'undefined');
 }
 
+/*
+Called when the user completes the experiment. Attempts to update text within the parent window, and close
+the opened popup. Haha!
+*/
 function completeExperiment() {
     if (window.opener) {
         window.opener.$('#instructions_text').empty();

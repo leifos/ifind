@@ -6,12 +6,12 @@
 <form action="/treconomics/startexperiment/"  method="post">
 	{% csrf_token %} 								<!-- cross-site request forgery protection -->
 	<table class="searchtable">	
-		<tr><td class="searchlabel">Participant ID:</td><td><input class="searchbox" type="text" name="username" value="" id="username" size="50" tabindex="1" /></td>
+		<tr><td class="searchlabel">Participant ID:</td><td><input class="loginbox" type="text" name="username" value="" id="username" size="50" tabindex="1" /></td>
 		    <td> <input  class="button" type="submit" name="submit" value="Login" tabindex="3" /> </td>
 		    </tr>
 		
 		<tr>
-		    <td class="searchlabel">Login Code:</td><td><input  class="searchbox"type="text" name="password" value="" id="password" size="50" tabindex="2" /></td></tr>
+		    <td class="searchlabel">Login Code:</td><td><input  class="loginbox" type="text" name="password" value="" id="password" size="50" tabindex="2" /></td></tr>
 	</table>
 </form>
 

@@ -8,7 +8,7 @@ from ifind.common.rotation_ordering import PermutatedRotationOrdering
 from django.conf import settings
 
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
-from ifind.common.suggestion_trie import SuggestionTrie
+from ifind.common.autocomplete_trie import AutocompleteTrie
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
@@ -111,7 +111,7 @@ class ExperimentSetup(object):
     def __str__(self):
         return self.description
 
-suggestion_trie = SuggestionTrie(
+suggestion_trie = AutocompleteTrie(
                     min_occurrences=3,
                     suggestion_count=8,
                     include_stopwords=False,

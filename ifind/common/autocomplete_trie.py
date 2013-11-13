@@ -5,7 +5,7 @@ import string
 import os
 
 
-class SuggestionTrie(object):
+class AutocompleteTrie(object):
     """
     A class implementing a ternary trie data structure to provide suggestions to aid participants to complete queries.
 
@@ -165,7 +165,7 @@ class SuggestionTrie(object):
         """
         Initialises a SuggestionTrie with the aim of creating the necessary vocabulary files.
         """
-        SuggestionTrie(index_path=index_path,
+        AutocompleteTrie(index_path=index_path,
                        stopwords_path=stopwords_path,
                        vocab_path=vocab_path,
                        vocab_trie_path=vocab_trie_path)
