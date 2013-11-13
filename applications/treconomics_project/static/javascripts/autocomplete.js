@@ -64,33 +64,37 @@ $(function() {
                 return suggestionValue;
             }
 
-            $.ajax({
-                url: APP_ROOT + 'autocomplete/',
-                dataType: "json",
-                data: {
-                    suggest: getSuggestion($(this), request.term)[0]
-                },
-                success: function(data) {
-                    response( $.map( data.results, function(item) {
-                        return {
-                            label: getSuggestionString(difference, item, selectedElement, currFieldValue),
-                            value: item}
-                        }));
-                },
-                error: function(data) {
-                    // If there was an error, we tell the user.
-                    if ('error' in data) {
-                        alert("Something went wrong with your request!");
-                    }
+            var affectedWord = getSuggestion($(this), request.term)[0];
 
-                    // If the experiment's time has been reached, we alert the user and redirect.
-                    if ('timeout' in data) {
-                        alert("Your time for this exercise has expired.");
-                        window.location = APP_ROOT + 'next/';
-                    }
-                }});
+            if (typeof(affectedWord) !== 'undefined' && affectedWord != "") {
+                $.ajax({
+                    url: APP_ROOT + 'autocomplete/',
+                    dataType: "json",
+                    data: {
+                        suggest: affectedWord
+                    },
+                    success: function(data) {
+                        response( $.map( data.results, function(item) {
+                            return {
+                                label: getSuggestionString(difference, item, selectedElement, currFieldValue),
+                                value: item}
+                            }));
+                    },
+                    error: function(data) {
+                        // If there was an error, we tell the user.
+                        if ('error' in data) {
+                            alert("Something went wrong with your request!");
+                        }
+
+                        // If the experiment's time has been reached, we alert the user and redirect.
+                        if ('timeout' in data) {
+                            alert("Your time for this exercise has expired.");
+                            window.location = APP_ROOT + 'next/';
+                        }
+                    }});
+            }
         },
-        autoFocus: true,
+        //autoFocus: true, // Focus on the first element by default
         focus: function(event) {
             event.preventDefault();
         },

@@ -49,5 +49,9 @@ function bindResultHovering() {
 function changePointer() {
     $("#search_form").submit(function(event) {
         $('*').css('cursor', 'progress');
+
+        // If they are present, close all autocomplete boxes upon form submission.
+        $('.searchbox').autocomplete('close');
+        $('.smallsearchbox').autocomplete('close');
     });
 }
