@@ -289,6 +289,7 @@ def search(request, taskid=0):
                 user_query = request.POST['query'].strip()
             log_event(event="QUERY_ISSUED", request=request, query=user_query)
             query_flag = True
+            result_dict['page'] = page
         elif request.method == 'GET':
             getdict = request.GET
             if 'query' in getdict:

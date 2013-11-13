@@ -1,6 +1,6 @@
 /*
 
-Search Helpers for Treconomics
+Search Helpers for Treconomics - used for all types of search.
 
 Author: David Maxwell
 Date: 2013-11-13
@@ -51,7 +51,13 @@ function changePointer() {
         $('*').css('cursor', 'progress');
 
         // If they are present, close all autocomplete boxes upon form submission.
-        $('.searchbox').autocomplete('close');
-        $('.smallsearchbox').autocomplete('close');
+
+        if ($('.searchbox').hasClass('ui-autocomplete-input')) {
+            $('.searchbox').autocomplete('close');
+        }
+
+        if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
+            $('.smallsearchbox').autocomplete('close');
+        }
     });
 }

@@ -7,11 +7,12 @@ import os
 
 class AutocompleteTrie(object):
     """
-    A class implementing a ternary trie data structure to provide suggestions to aid participants to complete queries.
+    A class implementing a trie data structure to provide suggestions to aid participants to complete queries.
+    Employs the use of the datrie package.
 
     Author: dmax
-    Date: 2013-10-30
-    Revision: 2
+    Date: 2013-11-12
+    Revision: 3
     """
     def __init__(self,
                  index_path,
@@ -22,7 +23,7 @@ class AutocompleteTrie(object):
                  suggestion_count=-1,
                  include_stopwords=False):
         """
-        SuggestionTrie constructor. Creates an instance of the SuggestionTrie class.
+        AutocompleteTrie constructor. Creates an instance of the AutocompleteTrie class.
 
         Args:
             index_path (str): path to the document index to use.
@@ -163,7 +164,7 @@ class AutocompleteTrie(object):
              vocab_path,
              vocab_trie_path):
         """
-        Initialises a SuggestionTrie with the aim of creating the necessary vocabulary files.
+        Initialises a AutocompleteTrie with the aim of creating the necessary vocabulary files.
         """
         AutocompleteTrie(index_path=index_path,
                        stopwords_path=stopwords_path,

@@ -38,7 +38,14 @@ class WhooshTrecNews(Engine):
             self.scoring_model = scoring.PL2()  # Use PL2 with default values
 
         try:
-            self.docIndex = open_dir(whoosh_index_dir)
+            #self.docIndex = open_dir(whoosh_index_dir)
+
+            # This creates a static docIndex for ALL instance of WhooshTrecNews.
+            # This will not work if you want indexes from multiple sources.
+            # As this currently is not the case, this is a suitable fix.
+            if not hasattr(WhooshTrecNews, 'docIndex'):
+                WhooshTrecNews.docIndex = open_dir(whoosh_index_dir)
+
             print "Whoosh Document index open: ", whoosh_index_dir
             print "Documents in index: ", self.docIndex.doc_count()
             self.parser = QueryParser("content", self.docIndex.schema)
