@@ -68,8 +68,7 @@ $(function() {
                 url: APP_ROOT + 'autocomplete/',
                 dataType: "json",
                 data: {
-                    //suggest: getSuggestion($(this), request.term)[0]
-                    suggest: ''
+                    suggest: getSuggestion($(this), request.term)[0]
                 },
                 success: function(data) {
                     response( $.map( data.results, function(item) {
@@ -92,7 +91,7 @@ $(function() {
                 }});
         },
         autoFocus: true,
-        focus: function(event, ui) {
+        focus: function(event) {
             event.preventDefault();
         },
         select: function(event, ui) {

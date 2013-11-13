@@ -8,18 +8,22 @@
 	    <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
 		 Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span></div>
 		{% for result in trec_results %}
-		    <div class="entry" id="{{result.docid}}">
-		        <p class="result_title"><a href="{{ result.url }}"><strong>{{ result.title }}</strong></a></p>
-  		        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>		
-  		    </div>
-  		    <div class="byline">{{ result.source }}</div>
-  		    
+            <div class="search_entry" id="{{ result.docid }}" rank="{{ result.rank }}" page="{{ page }}" whooshid="{{ result.whooshid }}">
+                <div class="entry">
+                    <p class="result_title"><strong><a href="URL">{{ result.title }}</a></strong></p>
+                    <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>
+                </div>
+
+                <div class="byline">
+                    {{ result.source }}
+                </div>
+            </div>
         {% endfor %}
 
     {% else %}
-         <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
+         <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong>
             No results found.
-             </div>
+         </div>
     {% endif %}
 
 

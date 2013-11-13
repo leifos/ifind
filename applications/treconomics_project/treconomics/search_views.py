@@ -251,7 +251,6 @@ def search(request, taskid=0):
         page_len = experiment_setups[condition].rpp
         page = 1
 
-
         result_dict = {}
         result_dict['participant'] = uname
         result_dict['task'] = taskid
@@ -280,15 +279,19 @@ def search(request, taskid=0):
                 suggestions = True
             if suggestions:
                 log_event(event="QUERY_SUGGESTION_ISSUED", request=request, query=user_query)
+            
             if 'page' in getdict:
                 page = int(getdict['page'])
+            else:
+                page = 1
 
+            result_dict['page'] = page
 
         if query_flag:
-            result_dict = run_query(condition,result_dict,user_query,page,page_len)
+            result_dict = run_query(condition, result_dict, user_query, page, page_len)
             if interface == 3:
                     # getQuerySuggestions(topic_num)
-                    suggestions = TopicQuerySuggestion.objects.filter(topic_num = topic_num)
+                    suggestions = TopicQuerySuggestion.objects.filter(topic_num=topic_num)
                     if suggestions:
                         result_dict['query_suggest_search'] = True
                         entries = []
@@ -298,18 +301,21 @@ def search(request, taskid=0):
                         result_dict['query_suggest_results'] = entries
                     # addSuggestions to results dictionary
 
-
             if result_dict['trec_results']:
-                qrp = getQueryResultPerformance(result_dict['trec_results'],topic_num)
-                log_event(event='SEARCH_RESULTS_PAGE_QUALITY',request=request, whooshid=page,rank=qrp[0],judgement=qrp[1])
+                qrp = getQueryResultPerformance(result_dict['trec_results'], topic_num)
+                log_event(event='SEARCH_RESULTS_PAGE_QUALITY',
+                          request=request,
+                          whooshid=page,
+                          rank=qrp[0],
+                          judgement=qrp[1])
 
-            queryurl = '/treconomics/search/?query=' + user_query.replace(' ','+') + '&page=' + str(page)
+            queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
-            log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page )
+            log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
             return render_to_response('trecdo/results.html', result_dict, context)
         else:
-            log_event(event='VIEW_SEARCH_BOX', request=request, page=page )
+            log_event(event='VIEW_SEARCH_BOX', request=request, page=page)
             return render_to_response('trecdo/search.html', result_dict, context)
 
 @login_required
