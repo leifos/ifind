@@ -5,8 +5,7 @@ import datetime
 # Django
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from models import DocumentsExamined
 from models import TaskDescription, TopicQuerySuggestion
 from django.contrib.auth.models import User
@@ -508,10 +507,16 @@ def suggestion_selected(request):
 
 @login_required
 def autocomplete_suggestion(request):
+    """
+    Handles the autocomplete suggestion service.
+    """
     # Get the condition from the user's experiment context.
     # This will yield us access to the autocomplete trie!
     ec = get_experiment_context(request)
     condition = ec["condition"]
+
+    if time_search_experiment_out(request):
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
 
     if request.GET.get('suggest'):
         results = []
@@ -528,4 +533,4 @@ def autocomplete_suggestion(request):
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        return HttpResponse(json.dumps({'error': True}), content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')

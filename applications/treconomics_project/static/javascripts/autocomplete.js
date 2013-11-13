@@ -68,14 +68,27 @@ $(function() {
                 url: APP_ROOT + 'autocomplete/',
                 dataType: "json",
                 data: {
-                    suggest: getSuggestion($(this), request.term)[0]
+                    //suggest: getSuggestion($(this), request.term)[0]
+                    suggest: ''
                 },
                 success: function(data) {
-                response( $.map( data.results, function(item) {
-                    return {
-                        label: getSuggestionString(difference, item, selectedElement, currFieldValue),
-                        value: item}
-                    }));
+                    response( $.map( data.results, function(item) {
+                        return {
+                            label: getSuggestionString(difference, item, selectedElement, currFieldValue),
+                            value: item}
+                        }));
+                },
+                error: function(data) {
+                    // If there was an error, we tell the user.
+                    if ('error' in data) {
+                        alert("Something went wrong with your request!");
+                    }
+
+                    // If the experiment's time has been reached, we alert the user and redirect.
+                    if ('timeout' in data) {
+                        alert("Your time for this exercise has expired.");
+                        window.location = APP_ROOT + 'next/';
+                    }
                 }});
         },
         autoFocus: true,
