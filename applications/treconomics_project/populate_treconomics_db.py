@@ -17,22 +17,22 @@ def populate():
     add_task(topic_num='999',title='Test Topic',description='<p>Test topic - find documents about tests.</p>')
 
     print 'Adding Test Users'
-    add_user('t1','1',1,0,1,'test')
-    add_user('t2','2',2,0,1,'test')
-    add_user('t3','3',3,2,1,'test')
-    add_user('t4','4',4,2,1,'test')
-    add_user('a1','1',4,0,1,'test')
-    add_user('a2','2',4,0,0,'test')
-    add_user('a3','3',5,2,1,'test')
-    add_user('a4','4',5,2,0,'test')
-    add_user('d1','1',6,0,1)
-    add_user('d2','2',6,0,0,'test')
-    add_user('d3','3',7,0,1,'test')
-    add_user('d4','4',7,0,0,'test')
-    add_user('d5','5',8,0,1,'test')
-    add_user('d6','6',8,0,0,'test')
-    add_user('d7','7',9,0,1,'test')
-    add_user('d8','8',9,0,0,'test')
+    add_user('t1','1',1,0,1,'')
+    add_user('t2','2',2,0,1,'')
+    add_user('t3','3',3,2,1,'')
+    add_user('t4','4',4,2,1,'')
+    add_user('a1','1',4,0,1,'')
+    add_user('a2','2',4,0,0,'')
+    add_user('a3','3',5,2,1,'')
+    add_user('a4','4',5,2,0,'')
+    add_user('d1','1',6,0,1,'')
+    add_user('d2','2',6,0,0,'')
+    add_user('d3','3',7,0,1,'')
+    add_user('d4','4',7,0,0,'')
+    add_user('d5','5',8,0,1,'')
+    add_user('d6','6',8,0,0,'')
+    add_user('d7','7',9,0,1,'')
+    add_user('d8','8',9,0,0,'')
 
 
 def add_user(username,password, condition, experiment, rotation, data=None):
@@ -49,7 +49,7 @@ def add_task(topic_num, title, description):
 
 
 if __name__ == '__main__':
-    print "Starting Trecocomics population script..."
+    print "Starting Treconomics population script..."
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'treconomics_project.settings')
     from treconomics.models import TaskDescription
     from treconomics.models import UserProfile
