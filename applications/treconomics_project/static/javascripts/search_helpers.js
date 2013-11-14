@@ -9,9 +9,12 @@ Revision: 1
 */
 
 $(function() {
-    $('*').css('cursor', 'auto');
     bindResultHovering();
     changePointer();
+
+    if ($('#query')) {
+        $('#query').focus();
+    }
 });
 
 /*
