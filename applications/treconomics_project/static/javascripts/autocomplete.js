@@ -30,7 +30,7 @@ $(function() {
     Check out http://api.jquery.com/text-selector/ for more information on the selector used.
      */
     $(':text').autocomplete({
-        minLength: 2,
+        minLength: 1,
         source: function(request, response) {
             var selectedElement = $(this.element);
             var currFieldValue = selectedElement[0].value;
