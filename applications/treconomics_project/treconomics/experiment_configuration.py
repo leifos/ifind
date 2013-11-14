@@ -1,20 +1,17 @@
 __author__ = 'leif'
 import os
-import sys
 import logging
 import logging.config
 import logging.handlers
-from ifind.common.rotation_ordering import PermutatedRotationOrdering
-from django.conf import settings
-
+from ifind.common.autocomplete_trie import AutocompleteTrie
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
-#from ifind.common.suggestion_trie import SuggestionTrie
+from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
-qrels_file =  os.path.join(work_dir, "data/TREC2005.qrels.txt")
+qrels_file = os.path.join(work_dir, "data/TREC2005.qrels.txt")
 
 print "Work DIR: " + work_dir
 print "QRELS File: " + qrels_file
@@ -22,7 +19,7 @@ print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
 
 event_logger = logging.getLogger('event_log')
 event_logger.setLevel(logging.INFO)
-event_logger_handler = logging.FileHandler(os.path.join(my_experiment_log_dir, 'experiment.log' ) )
+event_logger_handler = logging.FileHandler(os.path.join(my_experiment_log_dir, 'experiment.log'))
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)
 event_logger.addHandler(event_logger_handler)
@@ -46,9 +43,10 @@ class ExperimentSetup(object):
     def __init__(self,
                  workflow,
                  engine,
-                 timeout=660,
-                 topics=[ '347', '344'],
-                 practice_topic = '999',
+                 #timeout=660,
+                 timeout=5,
+                 topics=['347', '344'],
+                 practice_topic='999',
                  rpp=10,
                  interface=1,
                  description='',
@@ -74,6 +72,9 @@ class ExperimentSetup(object):
         # in an if - if interface == 1:
         self.autocomplete = autocomplete
         self.trie = trie
+
+        if self.autocomplete and not self.trie:
+            raise ValueError("If you want to use autocomplete, you must also specify the 'trie' parameter.")
 
     def _get_check_i(self, i):
         return i % self.n
@@ -105,12 +106,10 @@ class ExperimentSetup(object):
     def get_trie(self):
         return self.trie
 
-
     def __str__(self):
         return self.description
 
-'''
-suggestion_trie = SuggestionTrie(
+suggestion_trie = AutocompleteTrie(
                     min_occurrences=3,
                     suggestion_count=8,
                     include_stopwords=False,
@@ -118,7 +117,6 @@ suggestion_trie = SuggestionTrie(
                     stopwords_path=os.path.join(work_dir, "data/stopwords.txt"),
                     vocab_path=os.path.join(work_dir, "data/vocab.txt"),
                     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
-'''
 
 print "creating search engine"
 bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)

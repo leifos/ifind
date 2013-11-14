@@ -1,16 +1,18 @@
 from whoosh.index import open_dir
-import marisa_trie
 import operator
+import datrie
+import string
 import os
 
 
-class SuggestionTrie(object):
+class AutocompleteTrie(object):
     """
-    A class implementing a ternary trie data structure to provide suggestions to aid participants to complete queries.
+    A class implementing a trie data structure to provide suggestions to aid participants to complete queries.
+    Employs the use of the datrie package.
 
     Author: dmax
-    Date: 2013-10-30
-    Revision: 2
+    Date: 2013-11-12
+    Revision: 3
     """
     def __init__(self,
                  index_path,
@@ -21,7 +23,7 @@ class SuggestionTrie(object):
                  suggestion_count=-1,
                  include_stopwords=False):
         """
-        SuggestionTrie constructor. Creates an instance of the SuggestionTrie class.
+        AutocompleteTrie constructor. Creates an instance of the AutocompleteTrie class.
 
         Args:
             index_path (str): path to the document index to use.
@@ -108,31 +110,24 @@ class SuggestionTrie(object):
 
     def __get_trie(self):
         """
-        Opens and returns the ternary trie located on backing storage, if it exists.
-        If a trie file does not exist, it is created and the trie object is returned.
+        Opens and returns the trie if located on backing storage.
+        If the trie does not exist, a new one is created and saved!
         """
-        format = '@L'  # Check out http://docs.python.org/2/library/struct.html#format-strings for more information.
 
         if os.path.exists(self.__vocab_trie_path):
             print "Loading trie..."
-            trie = marisa_trie.RecordTrie(format)
-
-            with open(self.__vocab_trie_path, 'r') as file_handle:
-                trie.read(file_handle)
-
-            return trie
+            return datrie.BaseTrie.load(self.__vocab_trie_path)
         else:
-            print "Trie file not found. Creating trie..."
-            trie_list = []
+            print "Trie not found - creating..."
+            trie = datrie.BaseTrie(string.printable)  # Our acceptable characters - everything in string.printable
 
-            # Populate trie_list in preparation for passing to the RecordTrie constructor.
-            # trie_list = [ (u'term1', (freq1,)), (u'term2', (freq2,)) ]
             for input_line in self.__vocab_handle:
                 input_line = input_line.strip().split(',')
-                trie_list.append((unicode(input_line[0]), (int(input_line[1]),)))
+                term = unicode(input_line[0])
+                frequency = long(input_line[1])
 
-            # Create the trie structure and save it to backing storage before returning the reference.
-            trie = marisa_trie.RecordTrie(format, trie_list)
+                trie[term] = frequency
+
             trie.save(self.__vocab_trie_path)
             return trie
 
@@ -169,9 +164,9 @@ class SuggestionTrie(object):
              vocab_path,
              vocab_trie_path):
         """
-        Initialises a SuggestionTrie with the aim of creating the necessary vocabulary files.
+        Initialises a AutocompleteTrie with the aim of creating the necessary vocabulary files.
         """
-        SuggestionTrie(index_path=index_path,
+        AutocompleteTrie(index_path=index_path,
                        stopwords_path=stopwords_path,
                        vocab_path=vocab_path,
                        vocab_trie_path=vocab_trie_path)

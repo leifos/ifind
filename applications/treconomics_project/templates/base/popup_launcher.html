@@ -12,7 +12,7 @@ popupHeight = {% if popup_height %}{{ popup_height }}{% else %}undefined{% endif
 launchPopup(popupURL, popupWidth, popupHeight);
 </script>
 
-<p>
+<p id="instructions_text">
 The experiment should now automatically launch in a new popup window.<br />
 If the popup window doesn't appear, your web browser has most likely blocked the popup. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> if the popup doesn't appear.
 

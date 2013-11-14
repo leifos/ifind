@@ -95,7 +95,7 @@ class Engine(object):
 
         # search and store response
 
-        response =  self._search(query)
+        response = self._search(query)
 
         self.last_search = time.asctime()
 

@@ -33,9 +33,9 @@ Here is the list of the documents that you have assessed as relevant for this to
 </td><td>
     {% if doc.judgement  == 1 %}
     <a id="link12" class="next_links" href="#" row="row13" nextlink="link13"></a>
-        <a href="/treconomics/saved/?doc={{doc.docid}}&judge=0"><button class="largebutton" type="next" > Change to NOT Relevant </button> </a>
+        <a href="/treconomics/saved/?docid={{doc.docid}}&judge=0"><button class="largebutton" type="next" > Change to NOT Relevant </button> </a>
     {% else %}
-        <a href="/treconomics/saved/?doc={{doc.docid}}&judge=1"><button class="largebutton" type="next" > Change to Relevant </button></a>
+        <a href="/treconomics/saved/?docid={{doc.docid}}&judge=1"><button class="largebutton" type="next" > Change to Relevant </button></a>
     {%  endif %}
 </td>    
 

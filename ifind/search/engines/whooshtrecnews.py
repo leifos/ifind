@@ -30,15 +30,22 @@ class WhooshTrecNews(Engine):
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
 
         self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
-        self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module by default
+        self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module by default (with default values)
 
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
         if model == 2:
-            self.scoring_model = scoring.PL2()
+            self.scoring_model = scoring.PL2()  # Use PL2 with default values
 
         try:
-            self.docIndex = open_dir( whoosh_index_dir )
+            #self.docIndex = open_dir(whoosh_index_dir)
+
+            # This creates a static docIndex for ALL instance of WhooshTrecNews.
+            # This will not work if you want indexes from multiple sources.
+            # As this currently is not the case, this is a suitable fix.
+            if not hasattr(WhooshTrecNews, 'docIndex'):
+                WhooshTrecNews.docIndex = open_dir(whoosh_index_dir)
+
             print "Whoosh Document index open: ", whoosh_index_dir
             print "Documents in index: ", self.docIndex.doc_count()
             self.parser = QueryParser("content", self.docIndex.schema)
@@ -88,7 +95,6 @@ class WhooshTrecNews(Engine):
 
         if self.implicit_or:
             query_terms = query.terms.split(' ')
-            print query_terms
             query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
 
 
@@ -137,7 +143,7 @@ class WhooshTrecNews(Engine):
                 results.formatter = highlight.HtmlFormatter()
                 results.fragmenter.charlimit = 100000
                 print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
-                print  "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
+                print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
                 response = self._parse_whoosh_response(query, results)
         except:
             print "Error in Search Service: Whoosh TREC News search failed"
@@ -160,12 +166,12 @@ class WhooshTrecNews(Engine):
             Private method.
 
         """
-        #print "about to parse"
+
         response = Response(query.terms)
         # Dmax thinks this line is incorrect.
-        # I've substituted it with a line just before returning response...
+        # I've substituted it with a line just before returning the response...
         #response.result_total = results.pagecount
-        #print "created response"
+
         r = 0
         for result in results:
             r = r + 1
@@ -180,13 +186,20 @@ class WhooshTrecNews(Engine):
             url = "/treconomics/" + str(result.docnum) + "?rank="+str(rank)
 
             summary = result.highlights("content")
-            docid = result["docid"]
-            docid = docid.strip()
+            trecid = result["docid"]
+            trecid = trecid.strip()
 
             #score = result["score"]
             source = result["source"]
 
-            response.add_result(title=title, url=url, summary=summary, docid=docid, source=source)
+            response.add_result(title=title,
+                                url=url,
+                                summary=summary,
+                                docid=trecid,
+                                source=source,
+                                rank=rank,
+                                whooshid=result.docnum,
+                                score=result.score)
 
             if len(response) == query.top:
                 break

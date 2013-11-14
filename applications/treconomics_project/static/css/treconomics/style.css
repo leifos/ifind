@@ -268,7 +268,8 @@ p.summary {
 	color: #666;
 	height: 34px;
 	width: 70px;
-	border-radius: 4;
+	border-radius: 4px;
+    cursor: pointer;
 	}
 
 .button:hover {
@@ -284,7 +285,7 @@ p.summary {
 	height: 34px;
 	width: 150px;
 	margin: 0px 5px;
-	border-radius: 4;
+	border-radius: 4px;
     cursor: pointer;
 	}
 
@@ -301,7 +302,7 @@ p.summary {
     	height: 34px;
     	width: 150px;
     	margin: 0px 5px;
-    	border-radius: 4;
+    	border-radius: 4px;
     	float: right;
 }
 
@@ -320,6 +321,18 @@ p.summary {
 	font-family: Helvetica, Arial, sans-serif;
 	padding-left: 5px;
 	color: #666;	
+	z-index: 2000;
+	}
+
+.loginbox {
+	border: 1px solid #999;
+	height: 30px;
+	width: 420px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	color: #666;
 	z-index: 2000;
 	}
 

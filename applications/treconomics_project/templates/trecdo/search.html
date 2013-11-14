@@ -6,6 +6,7 @@
 
     {% if ajax_enabled %}<script type="text/javascript" src="{% static 'javascripts/ajax_search.js' %}"></script>{% endif %}
     {% if autocomplete %}<script type="text/javascript" src="{% static 'javascripts/autocomplete.js' %}"></script>{% endif %}
+    <script type="text/javascript" src="{% static 'javascripts/search_helpers.js' %}"></script>
     <script type="text/javascript">
     var APP_ROOT = '{{ application_root }}';
     var AJAX_SEARCH_URL = '{{ ajax_search_url }}';

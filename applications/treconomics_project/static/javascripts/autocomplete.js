@@ -10,7 +10,7 @@ Revision: 2
 
 $(function() {
 
-    var difference = [];
+    var difference = []; // Stores the difference between an input field before and after a user's change
 
     /*
     Returns the last word (or partial word) in the input box string.
@@ -23,15 +23,6 @@ $(function() {
 
         //return (""+term).replace(/[\s-]+$/,'').split(/[\s-]/).pop();
         return getDifferentTerm(old, current);
-    }
-
-    /*
-    Removes the last (presumably incomplete) word from the given string and returns the spliced string.
-    From this shortened string, we can then add our complete suggestion to the query string.
-     */
-    function removeSuggestionText(inputString) {
-        var lastSpaceIndex = inputString.lastIndexOf(" ");
-        return inputString.substring(0, lastSpaceIndex);
     }
 
     /*
@@ -73,22 +64,38 @@ $(function() {
                 return suggestionValue;
             }
 
-            $.ajax({
-                url: APP_ROOT + AJAX_SEARCH_URL,
-                dataType: "json",
-                data: {
-                    suggest: getSuggestion($(this), request.term)[0]
-                },
-                success: function(data) {
-                response( $.map( data.results, function(item) {
-                    return {
-                        label: getSuggestionString(difference, item, selectedElement, currFieldValue),
-                        value: item}
-                    }));
-                }});
+            var affectedWord = getSuggestion($(this), request.term)[0];
+
+            if (typeof(affectedWord) !== 'undefined' && affectedWord != "") {
+                $.ajax({
+                    url: APP_ROOT + 'autocomplete/',
+                    dataType: "json",
+                    data: {
+                        suggest: affectedWord
+                    },
+                    success: function(data) {
+                        response( $.map( data.results, function(item) {
+                            return {
+                                label: getSuggestionString(difference, item, selectedElement, currFieldValue),
+                                value: item}
+                            }));
+                    },
+                    error: function(data) {
+                        // If there was an error, we tell the user.
+                        if ('error' in data) {
+                            alert("Something went wrong with your request!");
+                        }
+
+                        // If the experiment's time has been reached, we alert the user and redirect.
+                        if ('timeout' in data) {
+                            alert("Your time for this exercise has expired.");
+                            window.location = APP_ROOT + 'next/';
+                        }
+                    }});
+            }
         },
-        autoFocus: true,
-        focus: function(event, ui) {
+        //autoFocus: true, // Focus on the first element by default
+        focus: function(event) {
             event.preventDefault();
         },
         select: function(event, ui) {

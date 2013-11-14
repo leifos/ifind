@@ -50,10 +50,17 @@ function wasPopupBlocked(popupReference) {
     return (popupReference == null | typeof(popupReference) == 'undefined');
 }
 
+/*
+Called when the user completes the experiment. Attempts to update text within the parent window, and close
+the opened popup. Haha!
+*/
+function completeExperiment() {
+    if (window.opener) {
+        window.opener.$('#instructions_text').empty();
+        window.opener.$('#instructions_text').append(
+            $('<div>Thank you very much for participating in this Treconomics experiment!</div>')
+                .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
+    }
 
-
-
-function taskPopup(url) {
-	popupWindow = window.open(
-		url,'taskWindow','height=600,width=400,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
+    window.close();
 }
