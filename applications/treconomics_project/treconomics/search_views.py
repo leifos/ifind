@@ -32,6 +32,9 @@ ixr = ix.reader()
 @login_required
 def show_document(request, whoosh_docid):
     #check for timeout
+    if time_search_experiment_out(request):
+        return HttpResponseRedirect('/treconomics/timeout/')
+
     context = RequestContext(request)
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -83,8 +86,12 @@ def show_document(request, whoosh_docid):
 
 @login_required
 def show_saved_documents(request):
-    #write_to_log("VIEW_SAVED_DOCS" )
     context = RequestContext(request)
+
+    # Timed out?
+    if time_search_experiment_out(request):
+        return HttpResponseRedirect('/treconomics/timeout/')
+
     ec = get_experiment_context(request)
     taskid = ec['taskid']
     condition = ec['condition']
@@ -254,10 +261,10 @@ def search(request, taskid=0):
     if taskid >= 1:
         request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         request.session['taskid'] = taskid
-        log_event(event="SEARCH_TASK_COMMENCED",request=request)
+        log_event(event="SEARCH_TASK_COMMENCED", request=request)
      #check for timeout
-    if time_search_experiment_out( request ) :
-        return HttpResponseRedirect('/treconomics/next/')
+    if time_search_experiment_out(request):
+        return HttpResponseRedirect('/treconomics/timeout/')
     else:
         """show base index view"""
         context = RequestContext(request)
@@ -278,6 +285,14 @@ def search(request, taskid=0):
         result_dict['application_root'] = '/treconomics/'
         result_dict['ajax_search_url'] = 'searcha/'
         result_dict['autocomplete'] = experiment_setups[condition].autocomplete
+
+        # Ensure that we set a queryurl.
+        # This means that if a user clicks "View Saved" before posing a query, there will be something
+        # to go back to!
+        if not request.session.get('queryurl'):
+            queryurl = result_dict['application_root'] + 'search/'
+            print "Set queryurl to : " + queryurl
+            request.session['queryurl'] = queryurl
 
         suggestions = False
         query_flag = False
@@ -376,7 +391,7 @@ def ajax_search(request, taskid=0):
         # This means that if a user clicks "View Saved" before posing a query, there will be something
         # to go back to!
         if not request.session.get('queryurl'):
-            queryurl = context_dict['application_root'] + 'ajax_search/'
+            queryurl = context_dict['application_root'] + 'searcha/'
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
 

@@ -1,14 +1,10 @@
-# Create your views here.
-import os
-import datetime
-# Django
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from models import DocumentsExamined
 from models import TaskDescription
-from models_experiments import DemographicsSurvey, DemographicsSurveyForm
+from models_experiments import DemographicsSurvey
 from models_experiments import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
 from models_experiments import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
 
@@ -18,7 +14,6 @@ from models_experiments import SearchEfficacy
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.forms.models import inlineformset_factory, modelformset_factory
 
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
@@ -44,11 +39,13 @@ def view_reset_test_users(request):
         nasaa = NasaAssessmentLoad.objects.filter(user=temp_user).delete()
         eff = SearchEfficacy.objects.filter(user=temp_user).delete()
         request.session['current_step'] = '0'
-    return HttpResponse("Test users reset.")
+    return HttpResponse("<script type='text/javascript'>setTimeout(function(){window.location='/treconomics/'}, 1500);</script>Test users reset, redirecting to login...")
+
 
 def view_login(request):
     context = RequestContext(request)
     return render_to_response('base/login.html', {}, context)
+
 
 def view_start_experiment(request):
     context = RequestContext(request)
@@ -91,6 +88,7 @@ def view_logout(request):
     # Redirect to a success page.
     return render_to_response('base/logout.html', {}, context)
 
+
 @login_required
 def view_next(request):
     # define experiment flow here
@@ -126,6 +124,7 @@ def view_next(request):
     print "view_next - step : "+ str(next_step) + " url to vist next: " + url_to_visit_next
     #request.session['current_url'] = url_to_visit_next
     return HttpResponseRedirect( url_to_visit_next )
+
 
 @login_required
 def view_pre_task(request, taskid):
@@ -287,6 +286,7 @@ def view_pre_experiment(request, version):
     else:
         return render_to_response('base/pre_experiment.html', {'participant': uname, 'condition': condition }, context)
 
+
 @login_required
 def view_post_experiment(request):
     context = RequestContext(request)
@@ -294,11 +294,11 @@ def view_post_experiment(request):
     uname = ec["username"]
     condition = ec["condition"]
     # if we had post task survey we could ask them here
-    # else we can provide a link to a hosted questionairre
+    # else we can provide a link to a hosted questionnaire
 
-    # Provide debreifing
-
+    # Provide debriefing
     return render_to_response('base/post_experiment.html', {'participant': uname, 'condition': condition }, context)
+
 
 @login_required
 def view_end_experiment(request):
@@ -307,9 +307,16 @@ def view_end_experiment(request):
     uname = ec["username"]
     condition = ec["condition"]
     # if we had post task survey we could ask them here
-    # else we can provide a link to a hosted questionairre
+    # else we can provide a link to a hosted questionnaire
 
-    # Provide debreifing
+    # Provide debriefing
     return render_to_response('base/end_experiment.html', {'participant': uname, 'condition': condition }, context)
 
 
+@login_required
+def show_timeout_message(request):
+    """
+    Used to display a simple page indicating the user to the fact that their time for a task has expired.
+    After a 5 second delay, the page automatically redirects to /treconomics/next/.
+    """
+    return render_to_response('base/timeout.html', {}, RequestContext(request))

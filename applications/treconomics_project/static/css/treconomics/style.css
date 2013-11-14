@@ -268,7 +268,8 @@ p.summary {
 	color: #666;
 	height: 34px;
 	width: 70px;
-	border-radius: 4;
+	border-radius: 4px;
+    cursor: pointer;
 	}
 
 .button:hover {
@@ -284,7 +285,7 @@ p.summary {
 	height: 34px;
 	width: 150px;
 	margin: 0px 5px;
-	border-radius: 4;
+	border-radius: 4px;
     cursor: pointer;
 	}
 
@@ -301,7 +302,7 @@ p.summary {
     	height: 34px;
     	width: 150px;
     	margin: 0px 5px;
-    	border-radius: 4;
+    	border-radius: 4px;
     	float: right;
 }
 

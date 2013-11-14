@@ -76,11 +76,11 @@ def time_search_experiment_out(request):
         return False
     else:
         current_time = datetime.datetime.now()
-        print current_time
-        print start_time
+        start_time_obj = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+
         datetime.timedelta(0, 2700)
 
-        diff = (current_time - start_time )
+        diff = (current_time - start_time_obj)
         d = diff.total_seconds()
         if d > timeout:
             return True

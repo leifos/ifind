@@ -34,6 +34,8 @@ urlpatterns = patterns('',
 
     (r'^reset/$', views.view_reset_test_users),
 
+    (r'^timeout/$', views.show_timeout_message),
+
     (r'^demographicssurvey/$', survey_views.view_demographics_survey),
     (r'^searchefficacysurvey/$', survey_views.view_search_efficacy_survey),
     (r'^nasaloadsurvey/$', survey_views.view_nasa_load_survey),
