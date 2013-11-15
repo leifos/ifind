@@ -85,7 +85,24 @@ def show_document(request, whoosh_docid):
 
             doc_length = ixr.doc_field_length(long(docid), 'content')
             user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
-            return render_to_response('trecdo/document.html', {'participant': uname, 'task': taskid, 'condition': condition, 'current_search': current_search, 'docid': docid, 'docnum': docnum, 'title': title, 'doc_date': doc_date,   'doc_source': doc_source, 'content': content, 'user_judgement': user_judgement, 'rank': rank}, context)
+
+            context_dict = {'participant': uname,
+                            'task': taskid,
+                            'condition': condition,
+                            'current_search': current_search,
+                            'docid': docid,
+                            'docnum': docnum,
+                            'title': title,
+                            'doc_date': doc_date,
+                            'doc_source': doc_source,
+                            'content': content,
+                            'user_judgement': user_judgement,
+                            'rank': rank}
+
+            if request.GET.get('backtoassessment', False):
+                context_dict['backtoassessment'] = True
+
+            return render_to_response('trecdo/document.html', context_dict, context)
 
 @login_required
 def show_saved_documents(request):

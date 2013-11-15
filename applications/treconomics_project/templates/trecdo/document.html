@@ -1,11 +1,16 @@
 {% extends 'base/base.html' %}
 
 {% block exp_info_block %}
- <p> <a href="{{current_search}}">Back to Results</a> |
+ <p>
+     {% if backtoassessment %}
+     <a href="/treconomics/saved/">Back to Saved Documents</a> |
+     {% else %}
+     <a href="{{current_search}}">Back to Results</a> |
      <a href="/treconomics/saved/">View Saved</a> |
+     {% endif %}
      <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
-
-     <a href="/treconomics/next/"> End Task</a> </p>
+     <a href="/treconomics/next/"> End Task</a>
+</p>
 {% endblock %}
 
 

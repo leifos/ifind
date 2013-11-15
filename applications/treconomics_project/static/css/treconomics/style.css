@@ -10,7 +10,12 @@ body {
 	line-height: 20px;
 	color: #333;
 	}
-	
+
+/** JQUERY AUTOCOMPLETE WIDGET **/
+.ui-widget {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
 /** CONTAINER **/
 
 .container {

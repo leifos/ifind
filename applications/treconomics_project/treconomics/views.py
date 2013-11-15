@@ -136,7 +136,7 @@ def view_pre_task(request, taskid):
     uname = ec["username"]
     condition = ec["condition"]
     topicnum = ec["topicnum"]
-    t = TaskDescription.objects.get( topic_num = topicnum )
+    t = TaskDescription.objects.get(topic_num=topicnum)
 
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionarre
@@ -154,11 +154,11 @@ def view_pre_task_with_questions(request, taskid):
     uname = ec["username"]
     condition = ec["condition"]
     topicnum = ec["topicnum"]
-    t = TaskDescription.objects.get( topic_num = topicnum )
+    t = TaskDescription.objects.get(topic_num=topicnum)
     errors = ""
 
     uname = request.user.username
-    u = User.objects.get( username = uname)
+    u = User.objects.get(username=uname)
 
 
     #handle post within this element. save data to survey table,

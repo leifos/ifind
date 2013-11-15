@@ -11,26 +11,32 @@
 
 
 {% block document_content %}
-<h1>Assessed Document</h1>
+<h1>Assessed Document(s)</h1>
 
+{% if not docs %}
 <p>
-Here is the list of the documents that you have assessed as relevant for this topic:
+You currently have no document(s) marked for this particular topic.
+</p>
+{% else %}
+<p>
+Here is the list of the documents that you have assessed for this topic.<br />
+You can change your assessment of a given document by clicking the button to the right of the document title.
 </p>
 <p>
-<table>
-    <tr> <td> <b>News Article Title</b></td><td> <b>Current Assessment</b></td> <td><b>Change Assessment</b> </td></tr>
+<table style="width: 100%;">
+    <tr> <td> <b>News Article Title</b></td><td style="text-align: center;"> <b>Current Assessment</b></td> <td style="text-align: center;"><b>Change Assessment</b> </td></tr>
 {% for doc in docs  %}
-<tr>
-<td> <a href="{{doc.url}}">{{ doc.title}}</a> </td>
-<td>
+<tr style="height: 50px; background-color: #{% if doc.judgement  == 0 %}FFCCCC{% else %}CCFFCC{% endif %};">
+<td style="padding-left: 10px;"> <a href="{{doc.url}}?backtoassessment=true">{{ doc.title}}</a> </td>
+<td style="text-align: center;">
     
     {% if doc.judgement  == 0 %}
-           Marked as NOT Relevant. 
+           <strong style="color: red;">NOT</strong> Relevant
     {%  else %}
-    Marked as Relevant.
+    Relevant
          
     {% endif %}
-</td><td>
+</td><td style="text-align: center;">
     {% if doc.judgement  == 1 %}
     <a id="link12" class="next_links" href="#" row="row13" nextlink="link13"></a>
         <a href="/treconomics/saved/?docid={{doc.docid}}&judge=0"><button class="largebutton" type="next" > Change to NOT Relevant </button> </a>
@@ -43,6 +49,7 @@ Here is the list of the documents that you have assessed as relevant for this to
 {% endfor %}
 </table>
 </p>
+{% endif %}
 {% endblock %}
 
 

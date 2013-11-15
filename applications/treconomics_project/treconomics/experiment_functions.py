@@ -6,7 +6,6 @@ import logging.config
 import logging.handlers
 from ifind.seeker.trec_qrel_handler import TrecQrelHandler
 
-
 from django.contrib.auth.models import User
 from models import DocumentsExamined
 from experiment_configuration import event_logger, qrels_file
@@ -21,7 +20,7 @@ qrels = TrecQrelHandler(qrels_file)
 def get_experiment_context(request):
     ec = {}
     ec["username"] = request.user.username
-    u = User.objects.get( username=ec["username"] )
+    u = User.objects.get(username=ec["username"])
     profile = u.get_profile()
     ec["rotation"] = profile.rotation
     ec["condition"] = profile.condition
@@ -134,7 +133,7 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
 
     except DocumentsExamined.DoesNotExist:
         # create an entry to show the document has been judged
-#        print "no doc found in db"
+        # print "no doc found in db"
         if judgement > -1:
             print "doc judge set to: " + str(judgement)
             doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/'+whooshid+'/', task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement, judgement_date=datetime.datetime.now(tz=settings_timezone))

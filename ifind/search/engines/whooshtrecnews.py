@@ -87,9 +87,6 @@ class WhooshTrecNews(Engine):
             Private method.
 
         """
-
-
-
         if not query.top:
             raise QueryParamException(self.name, "Total result amount (query.top) not specified")
 
@@ -118,8 +115,8 @@ class WhooshTrecNews(Engine):
             Private method.
 
         """
-
         response = None
+
         try:
             query_terms = self.parser.parse(unicode(query.terms))
             page = query.skip
