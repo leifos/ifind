@@ -44,17 +44,11 @@ function launchPopup(url, width, height) {
     else {
         var pollInterval = setInterval(function(){
             if (popup.closed) {
-                $('#instructions_text').empty();
-
                 if (COMPLETED_EXPERIMENT) {
-                    $('#instructions_text').append(
-                        $('<div>Thank you very much for participating in this NewsSearch experiment!<br />Please let David know you have finished.</div>')
-                            .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
+                    displayCompletionMessage($('#instructions_text'));
                 }
                 else {
-                    $('#instructions_text').append(
-                        $('<div>You closed the experiment popup before completing. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> to relaunch the popup.</div>')
-                            .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
+                    displayIncompleteMessage($('#instructions_text'));
                 }
 
                 clearInterval(pollInterval); // This should work as pollInterval will already be defined. Think about it...
@@ -78,11 +72,32 @@ the opened popup. Haha!
 */
 function completeExperiment() {
     if (window.opener) {
-        window.opener.$('#instructions_text').empty();
-        window.opener.$('#instructions_text').append(
-            $('<div>Thank you very much for participating in this Treconomics experiment!</div>')
-                .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
+        displayCompletionMessage(window.opener.$('#instructions_text'));
     }
 
     window.close();
+}
+
+/*
+Displays the completion message to the user in the parent window.
+Supply a reference to the JQuery object for element with ID instructions_text in the parent window.
+ */
+function displayCompletionMessage(instructionsElement) {
+    instructionsElement.empty();
+    instructionsElement.append(
+        $('<div>Thank you very much for participating in this NewsSearch experiment!</div>')
+            .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
+    instructionsElement.append(
+        $('<div>Please let David know you have finished.</div>')
+            .attr({'style': 'text-align: center; margin-top: 8px;'}));
+}
+
+function displayIncompleteMessage(instructionsElement) {
+    instructionsElement.empty();
+    instructionsElement.append(
+        $('<div>You closed the experiment popup before completing.</div>')
+            .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold; color: red;'}));
+    instructionsElement.append(
+        $('<div>Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> to relaunch the popup window.</div>')
+            .attr({'style': 'text-align: center; margin-top: 8px;'}));
 }
