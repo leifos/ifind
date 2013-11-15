@@ -189,3 +189,31 @@ def getQueryResultPerformance(results, topic_num):
 
 
     return [rels_found, i]
+
+def get_topic_relevant_count(topic_num):
+    """
+    Returns the number of documents considered relevant for topic topic_num.
+    """
+    count = 0
+
+    for document in qrels.get_doc_list(topic_num):
+        if qrels.get_value(topic_num, document) > 0:
+            count = count + 1
+
+    return count
+
+def get_query_performance_metrics(results, topic_num):
+    """
+    Returns performance metrics for a given list of results, results, and a TREC topic, topic_num.
+    List returned is in the format [p@10, p@10, Rprec]
+    """
+    query_performance = getQueryResultPerformance(results, topic_num)
+    relevant_docs_in_range = query_performance[0]
+    total_docs = query_performance[1]
+
+    # Remember the .0 on the no of retrieved documents for a float division!
+    p_at_10 = relevant_docs_in_range / 10.0
+    p_at_20 = relevant_docs_in_range / 20.0
+    r_prec = relevant_docs_in_range / float(get_topic_relevant_count(topic_num))
+
+    return [p_at_10, p_at_20, r_prec]
