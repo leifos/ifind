@@ -15,6 +15,10 @@ $(function() {
     // When the search form is submitted...
     $("#search_form").submit(function(event) {
         event.preventDefault();
+
+        $('.searchbox').blur();
+        $('.smallsearchbox').blur();
+
         processRequest($("form").serialize());
         interface1Querystring = "";
     });
