@@ -86,7 +86,7 @@ def time_search_experiment_out(request):
         else:
             return False
 
-def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0):
+def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0, metrics=None):
     ec = get_experiment_context(request)
 
     msg = ec["username"] + " " + str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(ec["topicnum"]) + " " + event
@@ -96,6 +96,15 @@ def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", ra
     else:
         if page > 0:
             event_logger.info(msg + " " + str(page))
+        elif metrics:
+            metrics_string = ""
+
+            # The order in which metrics appear is determined by how they are returned in
+            # experiment_functions.get_query_performance_metrics().
+            for metric in metrics:
+                metrics_string = metrics_string + " " + ("%.4f" % metric)
+
+            event_logger.info(msg + " '" + query + "'" + str(metrics_string))
         else:
             event_logger.info(msg + " " + query)
 
@@ -202,18 +211,25 @@ def get_topic_relevant_count(topic_num):
 
     return count
 
+def calculate_precision(results, topic_num, k):
+    """
+    Returns a float representing the precision @ k for a given topic, topic_num, and set of results, results.
+    """
+    results = results[0:k]
+    no_relevant = getQueryResultPerformance(results, topic_num)[0]
+
+    return no_relevant / float(k)
+
+
 def get_query_performance_metrics(results, topic_num):
     """
     Returns performance metrics for a given list of results, results, and a TREC topic, topic_num.
     List returned is in the format [p@10, p@10, Rprec]
     """
-    query_performance = getQueryResultPerformance(results, topic_num)
-    relevant_docs_in_range = query_performance[0]
-    total_docs = query_performance[1]
+    total_relevant_docs = getQueryResultPerformance(results, topic_num)[0]
 
-    # Remember the .0 on the no of retrieved documents for a float division!
-    p_at_10 = relevant_docs_in_range / 10.0
-    p_at_20 = relevant_docs_in_range / 20.0
-    r_prec = relevant_docs_in_range / float(get_topic_relevant_count(topic_num))
+    p_at_10 = calculate_precision(results, topic_num, 10)
+    p_at_20 = calculate_precision(results, topic_num, 20)
+    r_prec = calculate_precision(results, topic_num, total_relevant_docs)
 
     return [p_at_10, p_at_20, r_prec]

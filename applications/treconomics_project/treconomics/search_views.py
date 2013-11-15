@@ -23,10 +23,11 @@ from django.core.cache import cache
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
-from experiment_functions import time_search_experiment_out, getPerformance, getQueryResultPerformance
+from experiment_functions import time_search_experiment_out,getPerformance, getQueryResultPerformance, get_query_performance_metrics
 from experiment_configuration import my_whoosh_doc_index_dir
 from experiment_configuration import experiment_setups
 from time import sleep
+from threading import Thread
 import json
 
 ix = open_dir(my_whoosh_doc_index_dir)
@@ -217,11 +218,12 @@ def constructStructuredQuery(request):
     return user_query
 
 
-def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
-
+def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, condition=0, stop_spawning=False):
     # Stops an AWFUL lot of problems when people get up to mischief
     if page < 1:
         page = 1
+
+    ec = get_experiment_context(request)
 
     query = Query(query_terms)
     query.skip = page
@@ -251,6 +253,19 @@ def run_query(condition=0, result_dict={}, query_terms='', page=1, page_len=10):
             result_dict['next_page'] = page + 1
             result_dict['next_page_show'] = True
             result_dict['next_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page + 1)
+
+    if stop_spawning:
+        # Don't spawn another thread - log the performance of the query and its results.
+        print
+
+        log_event(event="QUERY_PERF",
+                  request=request,
+                  query=query_terms,
+                  metrics=get_query_performance_metrics(result_dict['trec_results'], ec['topicnum']))
+    else:
+        # Thread spawning condition is False, so create a new thread!
+        perf_thread = Thread(target=run_query, args=(request, {}, query_terms, 1, 500, condition, True))
+        perf_thread.start()
 
     return result_dict
 
@@ -343,7 +358,8 @@ def search(request, taskid=0):
             result_dict['page'] = page
 
         if query_flag:
-            result_dict = run_query(condition, result_dict, user_query, page, page_len)
+            result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
+
             if interface == 3:
                     # getQuerySuggestions(topic_num)
                     suggestions = TopicQuerySuggestion.objects.filter(topic_num=topic_num)
@@ -456,7 +472,7 @@ def ajax_search(request, taskid=0):
             if page_request:
                 page = int(page_request)
 
-            result_dict = run_query(condition, result_dict, user_query, page, page_len)
+            result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
 
             queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
@@ -595,18 +611,11 @@ def autocomplete_suggestion(request):
             results = cache.get(chars)
 
             if not results:
-                print "Results not in cache"
-                print results
-                print
                 suggestion_trie = experiment_setups[condition].get_trie()
                 results = suggestion_trie.suggest(chars)
                 cache_time = 300
 
                 cache.set(chars, results, cache_time)
-            else:
-                print "Results in cache"
-                print results
-                print
 
         response_data = {
             'count': len(results),
