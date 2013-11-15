@@ -17,6 +17,9 @@ from ifind.search import Query, Response
 # Whoosh
 from whoosh.index import open_dir
 
+# Cache for autocomplete trie
+from django.core.cache import cache
+
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
@@ -457,7 +460,6 @@ def ajax_search(request, taskid=0):
 
 @login_required
 def ajax_interface1_querystring(request):
-
     querydict = request.session['last_ajax_interface1_querystring']
     querystring = ""
 
@@ -488,7 +490,7 @@ def view_performance(request):
         """
         dem = rels + nonrels
         if dem > 0.0:
-            return round((rels * rels) / dem ,2)
+            return round((rels * rels) / dem, 2)
         else:
             return 0.0
 
@@ -497,9 +499,9 @@ def view_performance(request):
     performances = []
     for t in topics:
         perf = getPerformance(uname, t)
-        topic_desc =  TaskDescription.objects.get( topic_num = t ).title
+        topic_desc = TaskDescription.objects.get( topic_num = t ).title
         perf["title"] = topic_desc
-        perf["score"] =  ratio(float(perf["rels"]), float(perf["nons"]))
+        perf["score"] = ratio(float(perf["rels"]), float(perf["nons"]))
 
         performances.append(perf)
 
@@ -566,11 +568,28 @@ def autocomplete_suggestion(request):
 
     if request.GET.get('suggest'):
         results = []
+
         if experiment_setups[condition].autocomplete:
-            suggestion_trie = experiment_setups[condition].get_trie()
-            # A querystring for suggestions has been supplied; so we return a JSON object with suggestions.
             chars = unicode(request.GET.get('suggest'))
-            results = suggestion_trie.suggest(chars)
+
+            # See if the cache has what we are looking for.
+            # If it does, pull it out and use that.
+            # If it doesn't, query the trie and store the results in the cache before returning.
+            results = cache.get(chars)
+
+            if not results:
+                print "Results not in cache"
+                print results
+                print
+                suggestion_trie = experiment_setups[condition].get_trie()
+                results = suggestion_trie.suggest(chars)
+                cache_time = 300
+
+                cache.set(chars, results, cache_time)
+            else:
+                print "Results in cache"
+                print results
+                print
 
         response_data = {
             'count': len(results),
