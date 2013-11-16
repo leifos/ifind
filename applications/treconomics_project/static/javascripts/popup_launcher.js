@@ -11,9 +11,9 @@ COMPLETED_EXPERIMENT = false;
 Starts a new popup window pointing at the URL provided by parameter URL.
 Width and height are optional parameters - 1024x768 is the default size of the popup if the parameters are not supplied.
 */
-function launchPopup(url, width, height) {
-    var topPos = (screen.height / 2) - (height / 2);
-    var leftPos = (screen.width / 2) - (width / 2);
+function launchPopup(url, width, height, topPos, leftPos) {
+    topPos = (typeof topPos === 'undefined') ? ((screen.height / 2) - (height / 2)) : topPos;
+    leftPos = (typeof leftPos === 'undefined') ? ((screen.width / 2) - (width / 2)) : leftPos;
 
     if (typeof width === 'undefined') {
         width = 1024;
@@ -39,7 +39,7 @@ function launchPopup(url, width, height) {
                     'left='+ leftPos);
 
     if (wasPopupBlocked(popup)) {
-        alert("The popup failed to launch. Please try starting the experiment by clicking on the link.");
+        displayPopupFailed($('#instructions_text'));
     }
     else {
         var pollInterval = setInterval(function(){
@@ -55,6 +55,13 @@ function launchPopup(url, width, height) {
             }
         }, 100);
     }
+}
+
+/*
+Open a popup window displaying the search task the user must perform.
+*/
+function taskPopup(url) {
+    launchPopup(url, 400, 600, 10, 10);
 }
 
 /*
@@ -99,5 +106,15 @@ function displayIncompleteMessage(instructionsElement) {
             .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold; color: red;'}));
     instructionsElement.append(
         $('<div>Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> to relaunch the popup window.</div>')
+            .attr({'style': 'text-align: center; margin-top: 8px;'}));
+}
+
+function displayPopupFailed(instructionsElement) {
+    instructionsElement.empty();
+    instructionsElement.append(
+        $('<div>You logged in successfully, but the experiment popup failed to launch automatically.</div>')
+            .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold; color: red;'}));
+    instructionsElement.append(
+        $('<div>Your browser most likely blocked the popup from appearing. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> to launch the popup window manually.</div>')
             .attr({'style': 'text-align: center; margin-top: 8px;'}));
 }
