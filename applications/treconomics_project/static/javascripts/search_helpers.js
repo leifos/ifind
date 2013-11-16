@@ -1,6 +1,6 @@
 /*
 
-Search Helpers for Treconomics - used for all types of search.
+Search Helpers for NewsSearch - used for all types of search.
 
 Author: David Maxwell
 Date: 2013-11-13

@@ -24,7 +24,7 @@ function launchPopup(url, width, height, topPos, leftPos) {
     }
 
     var popup = window.open(url,
-            'Treconomics Experiment',
+            'NewsSearch Experiment',
             'toolbar=no,' +
                     'location=no,' +
                     'directories=no,' +
