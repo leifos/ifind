@@ -256,16 +256,18 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
 
     if stop_spawning:
         # Don't spawn another thread - log the performance of the query and its results.
-        print
-
         log_event(event="QUERY_PERF",
                   request=request,
                   query=query_terms,
                   metrics=get_query_performance_metrics(result_dict['trec_results'], ec['topicnum']))
     else:
         # Thread spawning condition is False, so create a new thread!
-        perf_thread = Thread(target=run_query, args=(request, {}, query_terms, 1, 500, condition, True))
-        perf_thread.start()
+        # We only want to do this for the first time the query is issued - if the user selects another
+        # page of results, we don't want to report the same performance values. Hence the page number check.
+        if page == 1:
+            print "Spawning thread to obtain performance of query '{0}'".format(query_terms)
+            perf_thread = Thread(target=run_query, args=(request, {}, query_terms, 1, 500, condition, True))
+            perf_thread.start()
 
     return result_dict
 

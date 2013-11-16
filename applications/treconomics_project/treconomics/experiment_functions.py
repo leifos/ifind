@@ -106,7 +106,10 @@ def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", ra
 
             event_logger.info(msg + " '" + query + "'" + str(metrics_string))
         else:
-            event_logger.info(msg + " " + query)
+            if query:
+                event_logger.info(msg + " '" + query + "'")
+            else:
+                event_logger.info(msg)
 
 def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc_length=-1):
     ec = get_experiment_context(request)
@@ -217,7 +220,6 @@ def calculate_precision(results, topic_num, k):
     """
     results = results[0:k]
     no_relevant = getQueryResultPerformance(results, topic_num)[0]
-
     return no_relevant / float(k)
 
 
@@ -226,7 +228,7 @@ def get_query_performance_metrics(results, topic_num):
     Returns performance metrics for a given list of results, results, and a TREC topic, topic_num.
     List returned is in the format [p@10, p@10, Rprec]
     """
-    total_relevant_docs = getQueryResultPerformance(results, topic_num)[0]
+    total_relevant_docs = get_topic_relevant_count(topic_num)
 
     p_at_10 = calculate_precision(results, topic_num, 10)
     p_at_20 = calculate_precision(results, topic_num, 20)
