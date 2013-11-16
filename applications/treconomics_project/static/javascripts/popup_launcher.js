@@ -39,9 +39,15 @@ function launchPopup(url, width, height, topPos, leftPos) {
                     'left='+ leftPos);
 
     if (wasPopupBlocked(popup)) {
-        displayPopupFailed($('#instructions_text'));
+        $(document).ready(function() {
+            displayPopupFailed($('#instructions_text'));
+        });
     }
     else {
+        $(document).ready(function() {
+            displayPopupLaunched($('#instructions_text'));
+        });
+
         var pollInterval = setInterval(function(){
             if (popup.closed) {
                 if (COMPLETED_EXPERIMENT) {
@@ -112,9 +118,19 @@ function displayIncompleteMessage(instructionsElement) {
 function displayPopupFailed(instructionsElement) {
     instructionsElement.empty();
     instructionsElement.append(
-        $('<div>You logged in successfully, but the experiment popup failed to launch automatically.</div>')
+        $('<div>You logged in successfully, but the experiment popup failed to launch.</div>')
             .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold; color: red;'}));
     instructionsElement.append(
-        $('<div>Your browser most likely blocked the popup from appearing. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> to launch the popup window manually.</div>')
+        $('<div>Your browser blocked the popup from appearing. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> to launch the popup window manually.</div>')
+            .attr({'style': 'text-align: center; margin-top: 8px;'}));
+}
+
+function displayPopupLaunched(instructionsElement) {
+    instructionsElement.empty();
+    instructionsElement.append(
+        $('<div>The experiment popup has launched.</div>')
+            .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
+    instructionsElement.append(
+        $('<div>Please interact with the experiment through the popup window.</div>')
             .attr({'style': 'text-align: center; margin-top: 8px;'}));
 }
