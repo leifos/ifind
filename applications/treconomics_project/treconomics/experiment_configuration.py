@@ -30,9 +30,13 @@ exp_work_flows = [
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/',
  '/treconomics/nasaloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
-['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/','/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
- '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/','/treconomics/shortstresssurvey/',
- '/treconomics/nasaloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/conceptlistingsurvey/1/','/treconomics/conceptlistingsurvey/2/','/treconomics/logout/','/treconomics/conceptlistingsurvey/1/','/treconomics/conceptlistingsurvey/2/','/treconomics/logout/'],
+['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/',
+ '/treconomics/prepracticetask/0/','/treconomics/search/0/','/treconomics/postpracticetask/0/',
+ '/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
+ '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/',
+ '/treconomics/shortstresssurvey/','/treconomics/nasaloadsurvey/','/treconomics/nasafactorcomparesurvey/',
+ '/treconomics/conceptlistingsurvey/1/','/treconomics/conceptlistingsurvey/2/',
+ '/treconomics/sessioncompleted/','/treconomics/conceptlistingsurvey/1/','/treconomics/conceptlistingsurvey/2/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/nasafactorcomparesurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/search/1/','/treconomics/search/2/','/treconomics/search/3/','/treconomics/nasaloadsurvey/','/treconomics/nasaqueryloadsurvey/','/treconomics/nasanavigationloadsurvey/','/treconomics/nasaassessmentloadsurvey/','/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/demographicssurvey/','/treconomics/conceptlistingsurvey/1/','/treconomics/shortstresssurvey/','/treconomics/pretaskquestions/1/','/treconomics/searcha/1/','/treconomics/posttask/1/','/treconomics/pretaskquestions/2/','/treconomics/searcha/2/','/treconomics/posttask/2/','/treconomics/logout/']
@@ -43,8 +47,7 @@ class ExperimentSetup(object):
     def __init__(self,
                  workflow,
                  engine,
-                 #timeout=660,
-                 timeout=5,
+                 timeout=0,
                  topics=['347', '344'],
                  practice_topic='999',
                  rpp=10,
@@ -72,6 +75,7 @@ class ExperimentSetup(object):
         # in an if - if interface == 1:
         self.autocomplete = autocomplete
         self.trie = trie
+
 
         if self.autocomplete and not self.trie:
             raise ValueError("If you want to use autocomplete, you must also specify the 'trie' parameter.")
@@ -132,8 +136,8 @@ exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=2, des
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
 exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
 
-exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=1, description='structured condition bm25')
-exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, topics=['344', '435', ], rpp=10, interface=0, description='standard condition bm25')
+exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367', topics=['347', '435', ], rpp=10, interface=1, description='structured condition bm25')
+exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367',  topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25')
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', trie=suggestion_trie, autocomplete=True)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, trie=suggestion_trie, autocomplete=True)
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf no delay', trie=suggestion_trie, autocomplete=True)

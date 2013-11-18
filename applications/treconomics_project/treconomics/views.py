@@ -146,6 +146,46 @@ def view_pre_task(request, taskid):
 
 
 @login_required
+def view_pre_practice_task(request, taskid):
+    context = RequestContext(request)
+    # Set the tasks id
+    request.session['taskid']  = taskid
+
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    topicnum = ec["topicnum"]
+    t = TaskDescription.objects.get(topic_num=topicnum)
+
+    # provide link to search interface / next system
+    return render_to_response('base/pre_practice_task.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description }, context)
+
+@login_required
+def view_post_practice_task(request, taskid):
+    context = RequestContext(request)
+
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+
+    # Save out to profile what task has just been completed
+    # This is probably not neccessary ---- as the step  and taskid coming defines this.
+    u = User.objects.get(username=uname)
+    profile = u.get_profile()
+    profile.tasks_completed = int(taskid)
+    profile.save()
+
+    # write_to_log
+    print "PRACTICE SEARCH TASK COMPLETED"
+    log_event(event="PRACTICE_SEARCH_TASK_COMPLETED", request=request)
+
+    # if participant has completed all the tasks, go to the post experiment view
+    # else direct the participant to the pre task view
+    return render_to_response('base/post_practice_task.html', {'participant': uname, 'condition': condition, 'task': taskid }, context)
+
+
+
+@login_required
 def view_pre_task_with_questions(request, taskid):
     context = RequestContext(request)
     # Set the tasks id manually from request
@@ -311,6 +351,18 @@ def view_end_experiment(request):
 
     # Provide debriefing
     return render_to_response('base/end_experiment.html', {'participant': uname, 'condition': condition }, context)
+
+
+@login_required
+def view_session_completed(request):
+    context = RequestContext(request)
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    print "SESSION COMPLETED"
+    log_event(event="SESSION_COMPLETED", request=request)
+    return render_to_response('base/session_completed.html', {'participant': uname, 'condition': condition }, context)
+
 
 
 @login_required

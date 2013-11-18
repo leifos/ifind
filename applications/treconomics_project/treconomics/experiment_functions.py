@@ -27,11 +27,6 @@ def get_experiment_context(request):
     ec["completed_steps"] = profile.steps_completed
     ec["workflow"] = experiment_setups[ec['condition']].workflow
 
-    if profile.data == "test":
-        ec["test_user"] = True
-    else:
-        ec["test_user"] = False
-
     if "current_step" in request.session:
         ec["current_step"] = int(request.session['current_step'])
     else:
@@ -71,7 +66,7 @@ def time_search_experiment_out(request):
     ec = get_experiment_context(request)
     timeout = experiment_setups[ec['condition']].timeout
 
-    if ec["test_user"]:
+    if timeout == 0:
         return False
     else:
         current_time = datetime.datetime.now()
@@ -85,6 +80,9 @@ def time_search_experiment_out(request):
             return True
         else:
             return False
+
+
+
 
 def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0, metrics=None):
     ec = get_experiment_context(request)
@@ -110,6 +108,7 @@ def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", ra
                 event_logger.info(msg + " '" + query + "'")
             else:
                 event_logger.info(msg)
+
 
 def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc_length=-1):
     ec = get_experiment_context(request)
@@ -147,7 +146,6 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
         # create an entry to show the document has been judged
         # print "no doc found in db"
         if judgement > -1:
-            print "doc judge set to: " + str(judgement)
             doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/'+whooshid+'/', task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement, judgement_date=datetime.datetime.now(tz=settings_timezone))
             doc.save()
 
@@ -230,8 +228,15 @@ def get_query_performance_metrics(results, topic_num):
     """
     total_relevant_docs = get_topic_relevant_count(topic_num)
 
+    p_at_1 = calculate_precision(results, topic_num, 1)
+    p_at_2 = calculate_precision(results, topic_num, 2)
+    p_at_3 = calculate_precision(results, topic_num, 3)
+    p_at_4 = calculate_precision(results, topic_num, 5)
+    p_at_5 = calculate_precision(results, topic_num, 6)
     p_at_10 = calculate_precision(results, topic_num, 10)
     p_at_20 = calculate_precision(results, topic_num, 20)
+    p_at_30 = calculate_precision(results, topic_num, 30)
+    p_at_50 = calculate_precision(results, topic_num, 50)
     r_prec = calculate_precision(results, topic_num, total_relevant_docs)
 
-    return [p_at_10, p_at_20, r_prec]
+    return [p_at_1, p_at_2, p_at_3, p_at_4, p_at_5, p_at_10, p_at_20, p_at_30, p_at_50, r_prec, total_relevant_docs]
