@@ -12,7 +12,7 @@ from ifind.common.position_content_extractor import PositionContentExtractor
 import sys
 """
 This class is an experiment configuration parser for the page calculator
-It reads a config file called experiments.cfg and parses the configuration
+It reads a config file called experiments.ini and parses the configuration
 It then constructs an appropriate query extractor and executes the queries
 to calculate the retrievability of the page
 """
@@ -21,8 +21,8 @@ to calculate the retrievability of the page
 class ExpConfigurationParser(object):
     def __init__(self):
         self.engine = None
-        self.config = ConfigParser.ConfigParser()
-        self.config.read('experiments.cfg')
+        self.config = ConfigParser.ConfigParser(allow_no_value=True)
+        self.config.read('experiments.ini')
         self.get_config()
         self.set_engine()
         self.read_html()
@@ -35,11 +35,11 @@ class ExpConfigurationParser(object):
         self.key = self.config.get('experiment','key')
         self.domain = self.config.get('experiment','domain')
         self.cutoff = self.config.get('experiment','cutoff')
-        self.maxqueries = self.config.get('experiment','maxqueries')
-        self.stopfile = self.config.get('experiment','stopfile')
-        self.cache = self.config.get('experiment','cache')
+        self.maxqueries = self.config.getint('experiment','maxqueries')
+        self.stopwordfile = self.config.get('experiment','stopfile')
+        self.cache = self.config.getboolean('experiment','cache')
         self.query_type = self.config.get('experiment','query_type')
-        self.doc_portion_percent = self.config.get('experiment','doc_portion_perc')
+        self.doc_portion_percent = self.config.getint('experiment','doc_portion_perc')
         self.doc_portion_count = self.config.get('experiment', 'doc_portion_count')
         self.selection_type = self.config.get('experiment', 'selection_type')
         self.rank_type = self.config.get('experiment', 'rank_type')
@@ -68,9 +68,9 @@ class ExpConfigurationParser(object):
         self.page_text = self.page_html
 
     def get_queries(self):
+        query_list =[]
         if self.selection_type == 'position':
             query_list = self.get_position_queries()
-            print 'position'
         elif self.selection_type == 'rank':
             query_list = self.get_ranked_queries()
         elif self.selection_type == 'position_ranked':
@@ -79,15 +79,18 @@ class ExpConfigurationParser(object):
         return query_list
 
     def set_divs(self):
+        #todo splitting by letter, not by space or comma
         if self.divs:
-            self.divs = self.divs.split(',')
+            self.divs = self.divs.split()
 
     def get_position_queries(self):
         pce = PositionContentExtractor()
         pce.process_html_page(self.page_html)
         #now set the text of the pce to be the text from the divs with given ids
+        self.set_divs()
         pce.set_all_content(self.divs,"div")
         #now check if to limit by words
+        text =''
         if self.doc_portion_count:
             if self.is_integer(self.doc_portion_count):
                 words = int(self.doc_portion_count)
@@ -98,12 +101,15 @@ class ExpConfigurationParser(object):
                 text = pce.get_subtext(percentage=percentage)
         else:
             text = pce.get_subtext()
+        #print "text is ", text
         query_gen = None
+        query_list = []
         if self.stopwordfile:
             query_gen = BiTermQueryGeneration(minlen=3, stopwordfile=self.stopwordfile)
         else:
             query_gen = BiTermQueryGeneration(minlen=3)
-            query_list = query_gen.extract_queries_from_text(text)
+        query_list = query_gen.extract_queries_from_text(text)
+        print query_list
         return query_list
 
     def get_ranked_queries(self, text=''):
@@ -139,9 +145,9 @@ class ExpConfigurationParser(object):
     def process_queries(self):
         prc = None
         if self.cutoff:
-            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.mq)
+            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.maxqueries)
         else:
-            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.mq)
+            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.maxqueries)
         prc.score_page(self.url, self.query_list)
 
         print "\nRetrievability Scores for cumulative pce=20"

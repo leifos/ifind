@@ -152,7 +152,7 @@ class PageRetrievabilityCalculator:
         :return: rank of url in the search results, else 0
 
         """
-
+        print "processing ", query.terms
         rank = 0
 
         result_list = self.engine.search(query)
