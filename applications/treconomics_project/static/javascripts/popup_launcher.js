@@ -11,9 +11,10 @@ COMPLETED_EXPERIMENT = false;
 Starts a new popup window pointing at the URL provided by parameter URL.
 Width and height are optional parameters - 1024x768 is the default size of the popup if the parameters are not supplied.
 */
-function launchPopup(url, width, height, topPos, leftPos) {
+function launchPopup(url, width, height, topPos, leftPos, title) {
     topPos = (typeof topPos === 'undefined') ? ((screen.height / 2) - (height / 2)) : topPos;
     leftPos = (typeof leftPos === 'undefined') ? ((screen.width / 2) - (width / 2)) : leftPos;
+    title =(typeof leftPos === 'undefined') ? "NewsSearch Experiment" : title;
 
     if (typeof width === 'undefined') {
         width = 1024;
@@ -24,7 +25,7 @@ function launchPopup(url, width, height, topPos, leftPos) {
     }
 
     var popup = window.open(url,
-            'NewsSearch Experiment',
+            title,
             'toolbar=no,' +
                     'location=no,' +
                     'directories=no,' +
@@ -67,7 +68,7 @@ function launchPopup(url, width, height, topPos, leftPos) {
 Open a popup window displaying the search task the user must perform.
 */
 function taskPopup(url) {
-    launchPopup(url, 400, 600, 10, 10);
+    launchPopup(url, 400, 600, 10, 10, "NewsSearch Experiment: Your Task");
 }
 
 /*

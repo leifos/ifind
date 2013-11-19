@@ -11,7 +11,7 @@
 
 <div>
 <div class="experimentPageTitle">
-    <p>Below is a description of the search task that we would like you to undertake.</p> 
+    <p>Below is a description of the search task that we would like you to undertake.</p>
     <p>The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.</p>
 
     <hr/>
@@ -26,7 +26,9 @@
 </div>
   
     
- <div class="survey">   
+ <div class="survey">
+     <div id='survey_form_errorloc' class='error_strings' style="color: #F00; text-align: center;"></div>
+
     <form id="survey_form" method="post" action="{{action}}">
         {% csrf_token %}
         <table class="survey_radio" cellpadding="20"> 
@@ -54,11 +56,9 @@
                 frmvalidator.addValidation("{{field.html_name}}", "selectradio", "{{ field.label }}");
                 {% endfor %}
             frmvalidator.EnableOnPageErrorDisplaySingleBox();
-            frmvalidator.EnableMsgsTogether();
             frmvalidator.EnableFocusOnError(true);
 
             </script>
-            <div id='survey_form_errorloc' class='error_strings'></div>
             
             
             <div class="surveySubmitButton">
