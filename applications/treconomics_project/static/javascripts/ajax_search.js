@@ -179,6 +179,7 @@ function processRequest(serializedFormData, noDelay) {
         $('*').css('cursor', 'default');
         $('a').css('cursor', 'pointer');
         $('.navButton').css('cursor', 'pointer');
+        $('#full-grey-out').css('display', 'none');
         $('body').scrollTop(0);
     });
 }

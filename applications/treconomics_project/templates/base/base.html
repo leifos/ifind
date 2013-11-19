@@ -19,6 +19,15 @@
         <script type="text/javascript" src="{% static 'javascripts/popup_launcher.js' %}"></script>
     </head>
     <body>
+        <div id="full-grey-out">
+            <div id="wait-box">
+                <p>
+                    Retrieving your Results...<br />
+                    <img src="{% static 'images/wait.gif' %}" alt="Wait wait wait..." />
+                </p>
+            </div>
+        </div>
+
         <div class="container">
         <div class="header">
 	    <h1>NewsSearch Experiment</h1>

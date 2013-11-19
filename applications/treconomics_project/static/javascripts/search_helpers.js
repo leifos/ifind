@@ -51,7 +51,9 @@ function bindResultHovering() {
 
 function changePointer() {
     $("#search_form").submit(function(event) {
+
         $('*').css('cursor', 'progress');
+        $('#full-grey-out').css('display', 'block');
 
         // If they are present, close all autocomplete boxes upon form submission.
 
