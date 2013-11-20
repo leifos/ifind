@@ -169,7 +169,7 @@ class Result(object):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.__dict__ = {key: str(value).encode('utf-8').rstrip() for key, value in self.__dict__.items()}
+        self.__dict__ = {key: value.encode('utf-8').rstrip() for key, value in self.__dict__.items()}
 
     def __str__(self):
         """
