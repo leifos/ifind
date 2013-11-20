@@ -106,7 +106,12 @@ class PageRetrievabilityCalculator:
         this is for each query, i.e. breakdown of the summary
         :return: a string with the details of the report
         """
-        report = ""
+        report = "%-40s %-20s %-10s %-10s" % ('URL','query','rank','score')
+
+        for query in self.successful_queries:
+            report += "\n %-40s %-20s %-10d %-10.2f" % (self.url, query.terms, query.rank, query.ret_score)
+            print query.terms + " ; "
+        return report
 
     def calculate_page_retrievability(self, c=None, beta=None):
         """
