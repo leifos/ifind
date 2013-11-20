@@ -149,6 +149,9 @@ function processRequest(serializedFormData, noDelay) {
         if ('timeout' in data) {
             results.append('<div class="query" style="text-align: center;"><strong>Task Timed Out.</strong><br />Your search task has timed out. Please click <a href="/treconomics/next/">here</a> to continue.</div>');
         }
+        else if ('no_results' in data) {
+            alert('No search term(s) were provided.');
+        }
         else {
             if (data['trec_search']) {
                 // Add the top part

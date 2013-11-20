@@ -516,27 +516,31 @@ def ajax_search(request, taskid=0):
             if page_request:
                 page = int(page_request)
 
-            # Get some results! Call this wrapper function which uses the Django cache backend.
-            result_dict = get_results(request,
-                                       page,
-                                       page_len,
-                                       condition,
-                                       user_query,
-                                       request.POST.get('noperf'),
-                                       experiment_setups[ec['condition']].engine)
+            if user_query == "":
+                # Nothing to query, tell the client.
+                return HttpResponse(json.dumps({'no_results': True}), content_type='application/json')
+            else:
+                # Get some results! Call this wrapper function which uses the Django cache backend.
+                result_dict = get_results(request,
+                                           page,
+                                           page_len,
+                                           condition,
+                                           user_query,
+                                           request.POST.get('noperf'),
+                                           experiment_setups[ec['condition']].engine)
 
-            queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
-            print "Set queryurl to : " + queryurl
-            request.session['queryurl'] = queryurl
+                queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+                print "Set queryurl to : " + queryurl
+                request.session['queryurl'] = queryurl
 
-            if experiment_setups[condition].delay_results > 0 and not do_delay:
-                log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
-                sleep(experiment_setups[condition].delay_results)  # Delay search results.
+                if experiment_setups[condition].delay_results > 0 and not do_delay:
+                    log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
+                    sleep(experiment_setups[condition].delay_results)  # Delay search results.
 
-            # Serialis(z?)e the data structure and send it back
-            if not do_delay:  # Only log the following if the user is not returning back to the results page.
-                log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
-            return HttpResponse(json.dumps(result_dict), content_type='application/json')
+                # Serialis(z?)e the data structure and send it back
+                if not do_delay:  # Only log the following if the user is not returning back to the results page.
+                    log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+                return HttpResponse(json.dumps(result_dict), content_type='application/json')
         else:
             # Render the search template as usual...
             log_event(event="VIEW_SEARCH_BOX", request=request, page=page)
