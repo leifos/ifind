@@ -18,7 +18,7 @@ from ifind.search import Query, Response
 from whoosh.index import open_dir
 
 # Cache for autocomplete trie
-from django.core.cache import cache
+from django.core import cache
 
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
@@ -610,14 +610,15 @@ def autocomplete_suggestion(request):
             # See if the cache has what we are looking for.
             # If it does, pull it out and use that.
             # If it doesn't, query the trie and store the results in the cache before returning.
-            results = cache.get(chars)
+            autocomplete_cache = cache.get_cache('autocomplete')
+            results = autocomplete_cache.get(chars)
 
             if not results:
                 suggestion_trie = experiment_setups[condition].get_trie()
                 results = suggestion_trie.suggest(chars)
                 cache_time = 300
 
-                cache.set(chars, results, cache_time)
+                autocomplete_cache.set(chars, results, cache_time)
 
         response_data = {
             'count': len(results),

@@ -30,12 +30,16 @@ DATABASES = {
     }
 }
 
-# Add a cache for autocomplete suggestions to be stored in once the trie has been queried.
+# Add caches for autocomplete suggestions and query results
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'newssearch-results',
+    },
+    'autocomplete': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'newssearch-autocomplete'
-    }
+    },
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
