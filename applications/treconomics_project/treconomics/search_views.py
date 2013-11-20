@@ -385,6 +385,8 @@ def search(request, taskid=0):
                           rank=qrp[0],
                           judgement=qrp[1])
 
+            result_dict['delay_results'] = experiment_setups[condition].delay_results
+
             queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
             request.session['queryurl'] = queryurl
@@ -397,6 +399,7 @@ def search(request, taskid=0):
             return render_to_response('trecdo/results.html', result_dict, context)
         else:
             log_event(event='VIEW_SEARCH_BOX', request=request, page=page)
+            result_dict['delay_results'] = experiment_setups[condition].delay_results
             return render_to_response('trecdo/search.html', result_dict, context)
 
 
@@ -537,6 +540,7 @@ def ajax_search(request, taskid=0):
         else:
             # Render the search template as usual...
             log_event(event="VIEW_SEARCH_BOX", request=request, page=page)
+            context_dict['delay_results'] = experiment_setups[condition].delay_results
             return render_to_response('trecdo/search.html', context_dict, context)
 
 @login_required

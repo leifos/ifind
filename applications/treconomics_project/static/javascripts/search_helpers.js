@@ -51,7 +51,10 @@ function bindResultHovering() {
 
 function formSubmit() {
     $("#search_form").submit(function(event) {
-        $('#full-grey-out').css('display', 'block');
+        // Only show the waiting box when a delay is enforced
+        if (parseInt($('#delay_results').val()) > 0) {
+            $('#full-grey-out').css('display', 'block');
+        }
 
         // If they are present, close all autocomplete boxes upon form submission.
 
