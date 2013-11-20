@@ -46,6 +46,7 @@
         frmvalidator.addValidation("{{field.html_name}}", "selectradio", "{{ field.label }}");
         {% endfor %}
     frmvalidator.EnableOnPageErrorDisplaySingleBox();
+    frmvalidator.EnableMsgsTogether();
     frmvalidator.EnableFocusOnError(true);
 
     </script>
