@@ -218,7 +218,7 @@ def constructStructuredQuery(request):
     return user_query
 
 
-def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, condition=0, stop_spawning=False):
+def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, condition=0, log_performance=False):
     # Stops an AWFUL lot of problems when people get up to mischief
     if page < 1:
         page = 1
@@ -248,26 +248,22 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
         if page > 1:
             result_dict['prev_page'] = page - 1
             result_dict['prev_page_show'] = True
-            result_dict['prev_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page - 1)
+
+            if (page - 1) == 1:
+                result_dict['prev_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=1&noperf=true'
+            else:
+                result_dict['prev_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page - 1)
         if page < num_pages:
             result_dict['next_page'] = page + 1
             result_dict['next_page_show'] = True
             result_dict['next_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page + 1)
 
-    if stop_spawning:
-        # Don't spawn another thread - log the performance of the query and its results.
+    # If log_performance is True, we log the performance metrics.
+    if log_performance:
         log_event(event="QUERY_PERF",
                   request=request,
                   query=query_terms,
                   metrics=get_query_performance_metrics(result_dict['trec_results'], ec['topicnum']))
-    else:
-        # Thread spawning condition is False, so create a new thread!
-        # We only want to do this for the first time the query is issued - if the user selects another
-        # page of results, we don't want to report the same performance values. Hence the page number check.
-        if page == 1:
-            print "Spawning thread to obtain performance of query '{0}'".format(query_terms)
-            perf_thread = Thread(target=run_query, args=(request, {}, query_terms, 1, 500, condition, True))
-            perf_thread.start()
 
     return result_dict
 
@@ -366,6 +362,7 @@ def search(request, taskid=0):
                                       page_len,
                                       condition,
                                       user_query,
+                                      request.GET.get('noperf'),
                                       experiment_setups[ec['condition']].engine)
 
             if interface == 3:
@@ -403,7 +400,7 @@ def search(request, taskid=0):
             return render_to_response('trecdo/search.html', result_dict, context)
 
 
-def get_results(request, page, page_len, condition, user_query, engine):
+def get_results(request, page, page_len, condition, user_query, prevent_performance_logging, engine):
     """
     Returns a results dictionary object for the given parameters above.
     If the combinations have been previously used, we return a cached version (if it still exists).
@@ -422,6 +419,13 @@ def get_results(request, page, page_len, condition, user_query, engine):
     cache_key = get_cache_key(page, user_query, engine)
     result_cache = cache.get_cache('default')
     result_dict = result_cache.get(cache_key)  # Query the cache...
+
+    # prevent_performance_logging can be passed to override logging.
+    # If a user is on page 2 then goes back to page 1, we don't want to get the performance again.
+    if not prevent_performance_logging and page == 1:
+        print "Spawning thread to obtain performance of query '{0}'".format(user_query)
+        perf_thread = Thread(target=run_query, args=(request, {}, user_query, 1, 500, condition, True))
+        perf_thread.start()
 
     # If the result_dict is None, the stuff isn't in the cache so we query Whoosh.
     if not result_dict:
@@ -515,6 +519,7 @@ def ajax_search(request, taskid=0):
                                        page_len,
                                        condition,
                                        user_query,
+                                       request.POST.get('noperf'),
                                        experiment_setups[ec['condition']].engine)
 
             queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)

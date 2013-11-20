@@ -37,28 +37,44 @@ $(function() {
 /*
 Switches the current search results to the page specified by the URL supplied.
 */
-function switchToPage(url) {
+function switchToPage(url, noPerf) {
     var page_interface = $('#interface_type');
+    var pageNumber = getPageNumber(url);
 
     if (parseInt(page_interface.val()) == 1) {
-        var pageNumber = getPageNumber(url);
-
         if (interface1Querystring != "") {
             interface1Querystring += '&page=' + pageNumber;
+
+            if (pageNumber == 1) {
+                interface1Querystring += '&noperf=true';
+            }
+
             processRequest(interface1Querystring, true);
         }
         else {
             var pageNumber = getPageNumber(url);
             var formData = $("form").serialize();
-            formData = formData + '&page=' + pageNumber;
+
+            if (pageNumber == 1) {
+                formData = formData + '&page=' + pageNumber + '&noperf=true';
+            }
+            else {
+                formData = formData + '&page=' + pageNumber;
+            }
 
             processRequest(formData, true);
         }
     }
     else {
-        var pageNumber = getPageNumber(url);
         var formData = $("form").serialize();
         formData = formData + '&page=' + pageNumber;
+
+        if (pageNumber == 1) {
+            formData = formData + '&page=' + pageNumber + '&noperf=true';
+        }
+        else {
+            formData = formData + '&page=' + pageNumber;
+        }
 
         processRequest(formData, true);
     }
@@ -112,8 +128,6 @@ function getHashValue(key) {
 Function which processes the AJAX request. Sends the request and displays the results on the page.
 */
 function processRequest(serializedFormData, noDelay) {
-    $('*').css('cursor', 'progress');
-
     if (noDelay) {
         serializedFormData += '&noDelay=true';
     }
@@ -121,7 +135,6 @@ function processRequest(serializedFormData, noDelay) {
     var posting = $.post("", serializedFormData);
 
     posting.fail(function(data) {
-        $('body').css('cursor', 'default');
         alert("Something went wrong when processing your request!");
         console.log("Server error on AJAX request: " + data.responseText);
     });
@@ -156,7 +169,12 @@ function processRequest(serializedFormData, noDelay) {
                 }
 
                 if (data['curr_page'] > 1) {
-                    prevButton = '<input class="navButton largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\');" value="Prev Page" />';
+                    if ((data['curr_page'] - 1) == 1) {
+                        prevButton = '<input class="navButton largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\', true);" value="Prev Page" />';
+                    }
+                    else {
+                        prevButton = '<input class="navButton largebutton" type="button" onclick="switchToPage(\'' + data['prev_page_link'] + '\');" value="Prev Page" />';
+                    }
                 }
 
                 results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
@@ -176,9 +194,6 @@ function processRequest(serializedFormData, noDelay) {
         }
 
         bindResultHovering(); // Bind hovering actions to the new document elements.
-        $('*').css('cursor', 'default');
-        $('a').css('cursor', 'pointer');
-        $('.navButton').css('cursor', 'pointer');
         $('#full-grey-out').css('display', 'none');
         $('body').scrollTop(0);
     });

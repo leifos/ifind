@@ -10,7 +10,7 @@ Revision: 1
 
 $(function() {
     bindResultHovering();
-    changePointer();
+    formSubmit();
 
     if ($('#query')) {
         $('#query').focus();
@@ -31,7 +31,7 @@ function bindResultHovering() {
             var page = $(parent[0]).attr('page');
 
             $.ajax({
-                url: APP_ROOT + 'hover/',
+                url: '/treconomics/hover/',
                 data: {'status': 'in', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
             });
         },
@@ -43,16 +43,14 @@ function bindResultHovering() {
             var page = $(parent[0]).attr('page');
 
             $.ajax({
-                url: APP_ROOT + 'hover/',
+                url: '/treconomics/hover/',
                 data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
         });
     });
 }
 
-function changePointer() {
+function formSubmit() {
     $("#search_form").submit(function(event) {
-
-        $('*').css('cursor', 'progress');
         $('#full-grey-out').css('display', 'block');
 
         // If they are present, close all autocomplete boxes upon form submission.
