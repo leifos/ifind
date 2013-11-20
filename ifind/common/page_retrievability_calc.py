@@ -89,6 +89,24 @@ class PageRetrievabilityCalculator:
     def stats(self):
         return {'url':self.url, 'query_count': self.query_count, 'retrieved': self.page_retrieved, 'retrievability':self.ret_score }
 
+    def output_summary_report(self):
+        """
+        this method creates a string with the information to be output to a file for experiments
+        this is for the page overall
+        :return: a string with the details of the report
+        """
+        report = "%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score')
+
+        report += "\n %-40s %-20d %-10d %-10d %-10.2f" % (self.url,self.query_count,self.engine.num_requests, self.page_retrieved, self.ret_score)
+        return report
+
+    def output_query_report(self):
+        """
+        this method creates a string with the information to be output to a file for experiments
+        this is for each query, i.e. breakdown of the summary
+        :return: a string with the details of the report
+        """
+        report = ""
 
     def calculate_page_retrievability(self, c=None, beta=None):
         """
