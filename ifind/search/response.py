@@ -146,7 +146,7 @@ class Result(object):
     Models a Result object for use with ifind's Response class.
 
     """
-    def __init__(self, title, url, summary, rank, **kwargs):
+    def __init__(self, title='', url='', summary='', rank=0, **kwargs):
         """
         Result constructor.
 
@@ -161,15 +161,19 @@ class Result(object):
             result = Result(title="pam's shop", url="www.pam.com", summary="a nice place")
 
         """
-        self.title = title if title else ""
-        self.url = url if url else ""
-        self.summary = summary if summary else ""
-        self.rank = rank if rank else -1
+        self.title = title
+        self.url = url
+        self.summary = summary
+        self.rank = rank
 
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.__dict__ = {key: value.encode('utf-8').rstrip() for key, value in self.__dict__.items()}
+        for key, value in self.__dict__.items():
+            self.__dict__[key] = value
+
+            if isinstance(value, str):
+                self.__dict__[key] = value.encode('utf-8').rstrip()
 
     def __str__(self):
         """

@@ -474,7 +474,10 @@ def ajax_search(request, taskid=0):
             if page_request:
                 page = int(page_request)
 
+
             result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
+
+            print result_dict
 
             queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl
@@ -582,9 +585,7 @@ def suggestion_selected(request):
     Called when a suggestion is selected from the suggestion interface.
     Logs the suggestion being selected.
     """
-
     new_query = request.GET.get('new_query')
-
     log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
@@ -626,5 +627,5 @@ def autocomplete_suggestion(request):
         }
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
-    else:
-        return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')
+
+    return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')
