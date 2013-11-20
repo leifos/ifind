@@ -152,11 +152,22 @@ class ExpConfigurationParser(object):
 
         print "\nRetrievability Scores for cumulative pce=20"
         prc.calculate_page_retrievability(c=20)
-        prc.report()
+        #prc.report()
+        print prc.output_summary_report()
+        "\n individual query results"
+        print prc.output_query_report()
         print "\nRetrievability Scores for gravity beta=1.0"
 
+
         prc.calculate_page_retrievability(c=20, beta=1.0)
-        prc.report()
+        #prc.report()
+        print prc.output_summary_report()
+
+    def write_output_files(self):
+        """
+        a method which writes the output files, summary and  
+        :return:None
+        """
 
     def is_integer(self, value):
         """
