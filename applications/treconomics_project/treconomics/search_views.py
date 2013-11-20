@@ -360,7 +360,13 @@ def search(request, taskid=0):
             result_dict['page'] = page
 
         if query_flag:
-            result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
+            # Get some results! Call this wrapper function which uses the Django cache backend.
+            result_dict = get_results(request,
+                                      page,
+                                      page_len,
+                                      condition,
+                                      user_query,
+                                      experiment_setups[ec['condition']].engine)
 
             if interface == 3:
                     # getQuerySuggestions(topic_num)
@@ -395,6 +401,36 @@ def search(request, taskid=0):
         else:
             log_event(event='VIEW_SEARCH_BOX', request=request, page=page)
             return render_to_response('trecdo/search.html', result_dict, context)
+
+
+def get_results(request, page, page_len, condition, user_query, engine):
+    """
+    Returns a results dictionary object for the given parameters above.
+    If the combinations have been previously used, we return a cached version (if it still exists).
+    If a cached version does not exist, we query Whoosh and return the results.
+    """
+    def get_cache_key(page_no, query_terms, engine):
+        """
+        Nested function to return a unique key for a given combination of inputs.
+        The returned string is used as a key value for the cache so results can be stored and retrieved.
+        """
+        no_space_terms = query_terms.replace(' ', '_')
+        return "key-{0}-{1}-{2}".format(engine.get_setup_identifier(), page_no, no_space_terms)
+
+    # Check the cache - has it been queried already?
+    # If it has, use the stored result. Else, we need to ask Whoosh.
+    cache_key = get_cache_key(page, user_query, engine)
+    result_cache = cache.get_cache('default')
+    result_dict = result_cache.get(cache_key)  # Query the cache...
+
+    # If the result_dict is None, the stuff isn't in the cache so we query Whoosh.
+    if not result_dict:
+        result_dict = {}
+        result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
+        result_cache.set(cache_key, result_dict, 300)
+
+    return result_dict
+
 
 @login_required
 def ajax_search(request, taskid=0):
@@ -452,7 +488,6 @@ def ajax_search(request, taskid=0):
         if request.method == 'POST':
             # AJAX POST request for a given query.
             # Returns a AJAX response with the document list to populate the container <DIV>.
-            result_dict = {}
 
             # Should we do a delay? This is true when a user navigates back to the results page from elsewhere.
             do_delay = bool(request.POST.get('noDelay'))
@@ -474,10 +509,13 @@ def ajax_search(request, taskid=0):
             if page_request:
                 page = int(page_request)
 
-
-            result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
-
-            print result_dict
+            # Get some results! Call this wrapper function which uses the Django cache backend.
+            result_dict = get_results(request,
+                                       page,
+                                       page_len,
+                                       condition,
+                                       user_query,
+                                       experiment_setups[ec['condition']].engine)
 
             queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
             print "Set queryurl to : " + queryurl

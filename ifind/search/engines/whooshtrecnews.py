@@ -53,6 +53,28 @@ class WhooshTrecNews(Engine):
             msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
 
+    def get_setup_identifier(self):
+        """
+        Returns a string representing the state of a given instance of the WhooshTrecNews class.
+        Implemented for a way of determining a unique identifiable key for caching search results.
+        Returns a string in the format {0}**{1}, where
+            {0}: An identifier for the model used (0=TFIDF, 1=BM25F, 2=PL2)
+            {1}: 1 for use of implicit ORing, 0 for no use
+        """
+        model_identifier = 1
+
+        if isinstance(self.scoring_model, scoring.TF_IDF):
+            model_identifier = 0
+        if isinstance(self.scoring_model, scoring.PL2):
+            model_identifier = 2
+
+        if self.implicit_or:
+            implicit_or_identifier = 1
+        else:
+            implicit_or_identifier = 0
+
+        return "{0}-{1}".format(model_identifier, implicit_or_identifier)
+
     @staticmethod
     def build_query_parts(term_list, operator):
         return_query = ''
