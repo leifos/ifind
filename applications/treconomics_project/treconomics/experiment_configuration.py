@@ -141,7 +141,7 @@ exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, pra
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', trie=suggestion_trie, autocomplete=True)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, trie=suggestion_trie, autocomplete=True)
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf no delay', trie=suggestion_trie, autocomplete=True)
-exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf delay', delay_results=7, trie=suggestion_trie, autocomplete=True)
+exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, timeout=5, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf delay', delay_results=7, trie=suggestion_trie, autocomplete=True)
 
 
 # these correspond to conditions

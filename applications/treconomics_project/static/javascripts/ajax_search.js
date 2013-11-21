@@ -139,8 +139,14 @@ function processRequest(serializedFormData, noDelay) {
     var posting = $.post("", serializedFormData);
 
     posting.fail(function(data) {
-        alert("Something went wrong when processing your request!");
-        console.log("Server error on AJAX request: " + data.responseText);
+        if ('timeout' in data) {
+            alert("Your time on this task has expired. You will now be redirect to the next page.");
+            window.location = '/treconomics/next/';
+        }
+        else {
+            alert("Something went wrong when processing your request!");
+            console.log("Server error on AJAX request: " + data.responseText);
+        }
     });
 
     posting.done(function(data) {
@@ -150,10 +156,7 @@ function processRequest(serializedFormData, noDelay) {
         var results_nav = $('div.results_nav');
         results_nav.empty(); // Remove all children from the navigation button container
 
-        if ('timeout' in data) {
-            results.append('<div class="query" style="text-align: center;"><strong>Task Timed Out.</strong><br />Your search task has timed out. Please click <a href="/treconomics/next/">here</a> to continue.</div>');
-        }
-        else if ('no_results' in data) {
+        if ('no_results' in data) {
             alert('No search term(s) were provided.');
         }
         else {
