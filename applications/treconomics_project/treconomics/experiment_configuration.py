@@ -136,7 +136,7 @@ exp3 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=2, des
 exp4 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=1, description='structured condition')
 exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '347', ], rpp=10, interface=0, description='standard condition')
 
-exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367', topics=['347', '435', ], rpp=10, interface=1, description='structured condition bm25')
+exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367', topics=['347', '435', ], rpp=10, interface=1, description='structured condition bm25', trie=suggestion_trie, autocomplete=True)
 exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367',  topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25')
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', trie=suggestion_trie, autocomplete=True)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=7, trie=suggestion_trie, autocomplete=True)

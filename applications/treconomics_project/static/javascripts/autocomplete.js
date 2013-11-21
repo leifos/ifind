@@ -29,7 +29,7 @@ $(function() {
     Bind all input fields to have autocomplete functionality.
     Check out http://api.jquery.com/text-selector/ for more information on the selector used.
      */
-    $(':text').autocomplete({
+    $('.searchbox, .smallsearchbox').autocomplete({
         minLength: 1,
         source: function(request, response) {
             var selectedElement = $(this.element);
@@ -114,8 +114,6 @@ $(function() {
             var suggestion = ui.item.value;
             var rank = label_element.attr('rank');
 
-            console.log(suggestion + " at rank " + rank);
-
             $.ajax({
                 url: '/treconomics/suggestion_hover/',
                 data: {'suggestion': suggestion, 'rank': rank}
@@ -149,9 +147,6 @@ $(function() {
             }
 
             event.target.value = newFieldValue;
-            // Update the oldVal data AFTER, not BEFORE.
-            // This is why we update the oldVal data item here.
-            //$(this).data('oldVal', $(this).val());
 
             // Log the event - the user has selected a new word, query is now...
             $.ajax({
@@ -159,12 +154,17 @@ $(function() {
                 data: {'added_term': selectedItem, 'new_query': newFieldValue}
             });
       }
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-     return $("<li></li>")
-         .data("item.autocomplete", item)
-         .append("<a>" + item.label + "</a>")
-         .appendTo(ul);
- };
+    });
+
+    // For each query box, update the _renderItem function for autocomplete. This ensures HTML is rendered correctly. */
+    $.each($('.searchbox, .smallsearchbox'), function(index, item) {
+        $(item).data('ui-autocomplete')._renderItem = function(ul, item) {
+            return $("<li></li>")
+             .data("item.autocomplete", item)
+             .append("<a>" + item.label + "</a>")
+             .appendTo(ul);
+        };
+    });
 
     // When the page loads, set each input text field to have an oldVal property.
     $(document).ready(function() {
