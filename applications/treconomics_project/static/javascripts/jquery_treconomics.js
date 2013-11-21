@@ -18,13 +18,11 @@ $(document).ready(function()
 
     $('.searchbox').focus(function() {
         $.get('/treconomics/query_focus/', function(data){
-            console.log('query focus event logged ' + data)
         });
     });
 
     $('.smallsearchbox').focus(function() {
         $.get('/treconomics/query_focus/', function(data){
-            console.log('query focus event logged ' + data)
         });
     });
 

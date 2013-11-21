@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
+from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query, Response
 
 # Whoosh
@@ -617,12 +618,24 @@ def view_log_hover(request):
     """
     View which logs a user hovering over a search result.
     """
+    ec = get_experiment_context(request)
+
+    uname = ec['username']
+    taskid = ec['taskid']
+    u = User.objects.get(username=uname)
+
     status = request.GET.get('status')
     rank = request.GET.get('rank')
     page = request.GET.get('page')
     trec_id = request.GET.get('trecID')
     whoosh_id = request.GET.get('whooshID')
     doc_length = ixr.doc_field_length(long(whoosh_id), 'content')
+
+    try:
+        examined = DocumentsExamined.objects.get(user=u, task=taskid, doc_num=trec_id)
+        judgement = examined.judgement
+    except ObjectDoesNotExist:
+        judgement = -2
 
     if status == 'in':
         log_event(event="DOCUMENT_HOVER_IN",
@@ -631,6 +644,7 @@ def view_log_hover(request):
                   trecid=trec_id,
                   rank=rank,
                   page=page,
+                  judgement=judgement,
                   doc_length=doc_length)
     elif status == 'out':
         log_event(event="DOCUMENT_HOVER_OUT",
@@ -639,6 +653,7 @@ def view_log_hover(request):
                   trecid=trec_id,
                   rank=rank,
                   page=page,
+                  judgement=judgement,
                   doc_length=doc_length)
 
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
