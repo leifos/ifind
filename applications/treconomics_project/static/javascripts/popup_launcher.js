@@ -31,7 +31,7 @@ function launchPopup(url, width, height, topPos, leftPos, title) {
                     'directories=no,' +
                     'status=no,' +
                     'menubar=no,' +
-                    'scrollbars=no,' +
+                    'scrollbars=yes,' +
                     'resizable=no,' +
                     'copyhistory=no,' +
                     'width='+ width +',' +
