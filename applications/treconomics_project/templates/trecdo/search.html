@@ -34,7 +34,7 @@
 
 {% block query_box %}
 	<div class="entry" id="search_box_area">
-		<form id="search_form" action="/treconomics/search/" onsubmit="return validate_form(this)" method="post">
+		<form id="search_form" action="/treconomics/search/" method="post">
 	        {% csrf_token %} 								
 	        <!-- cross-site request forgery protection -->
 	        {% if interface == 1%}

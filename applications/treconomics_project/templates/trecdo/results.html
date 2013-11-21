@@ -21,9 +21,14 @@
         {% endfor %}
 
     {% else %}
+         {% if blank_query %}
+         <div class="query"><strong>No search terms supplied.</em></strong>
+         </div>
+         {% else %}
          <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong>
             No results found.
          </div>
+         {% endif %}
     {% endif %}
 
 

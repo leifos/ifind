@@ -356,47 +356,52 @@ def search(request, taskid=0):
             result_dict['page'] = page
 
         if query_flag:
-            # Get some results! Call this wrapper function which uses the Django cache backend.
-            result_dict = get_results(request,
-                                      page,
-                                      page_len,
-                                      condition,
-                                      user_query,
-                                      request.GET.get('noperf'),
-                                      experiment_setups[ec['condition']].engine)
+            # If the user poses a blank query, we just send back a results page saying so.
+            if user_query == '':
+                result_dict['blank_query'] = True
+                return render_to_response('trecdo/results.html', result_dict, context)
+            else:
+                # Get some results! Call this wrapper function which uses the Django cache backend.
+                result_dict = get_results(request,
+                                          page,
+                                          page_len,
+                                          condition,
+                                          user_query,
+                                          request.GET.get('noperf'),
+                                          experiment_setups[ec['condition']].engine)
 
-            if interface == 3:
-                    # getQuerySuggestions(topic_num)
-                    suggestions = TopicQuerySuggestion.objects.filter(topic_num=topic_num)
-                    if suggestions:
-                        result_dict['query_suggest_search'] = True
-                        entries = []
-                        for s in suggestions:
-                            entries.append({'title': s.title, 'link': s.link})
-                        print entries
-                        result_dict['query_suggest_results'] = entries
-                    # addSuggestions to results dictionary
+                if interface == 3:
+                        # getQuerySuggestions(topic_num)
+                        suggestions = TopicQuerySuggestion.objects.filter(topic_num=topic_num)
+                        if suggestions:
+                            result_dict['query_suggest_search'] = True
+                            entries = []
+                            for s in suggestions:
+                                entries.append({'title': s.title, 'link': s.link})
+                            print entries
+                            result_dict['query_suggest_results'] = entries
+                        # addSuggestions to results dictionary
 
-            if result_dict['trec_results']:
-                qrp = getQueryResultPerformance(result_dict['trec_results'], topic_num)
-                log_event(event='SEARCH_RESULTS_PAGE_QUALITY',
-                          request=request,
-                          whooshid=page,
-                          rank=qrp[0],
-                          judgement=qrp[1])
+                if result_dict['trec_results']:
+                    qrp = getQueryResultPerformance(result_dict['trec_results'], topic_num)
+                    log_event(event='SEARCH_RESULTS_PAGE_QUALITY',
+                              request=request,
+                              whooshid=page,
+                              rank=qrp[0],
+                              judgement=qrp[1])
 
-            result_dict['delay_results'] = experiment_setups[condition].delay_results
+                result_dict['delay_results'] = experiment_setups[condition].delay_results
 
-            queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page)
-            print "Set queryurl to : " + queryurl
-            request.session['queryurl'] = queryurl
+                queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+                print "Set queryurl to : " + queryurl
+                request.session['queryurl'] = queryurl
 
-            if experiment_setups[condition].delay_results > 0 and is_from_search_request(page):
-                log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
-                sleep(experiment_setups[condition].delay_results)  # Delay search results.
+                if experiment_setups[condition].delay_results > 0 and is_from_search_request(page):
+                    log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
+                    sleep(experiment_setups[condition].delay_results)  # Delay search results.
 
-            log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
-            return render_to_response('trecdo/results.html', result_dict, context)
+                log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+                return render_to_response('trecdo/results.html', result_dict, context)
         else:
             log_event(event='VIEW_SEARCH_BOX', request=request, page=page)
             result_dict['delay_results'] = experiment_setups[condition].delay_results

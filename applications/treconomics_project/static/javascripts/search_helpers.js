@@ -52,7 +52,7 @@ function bindResultHovering() {
 function formSubmit() {
     $("#search_form").submit(function(event) {
         // Only show the waiting box when a delay is enforced
-        if (parseInt($('#delay_results').val()) > 0) {
+        if (($('#delay_results').val() !== 'undefined') || (parseInt($('#delay_results').val()) > 0)) {
             $('#full-grey-out').css('display', 'block');
         }
 
