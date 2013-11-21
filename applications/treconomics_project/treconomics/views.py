@@ -218,6 +218,7 @@ def view_pre_task_with_questions(request, taskid):
             survey = PreTaskTopicKnowledgeSurveyForm(request.POST)
 
     else:
+        log_event(event="PRE_TASK_SURVEY_STARTED", request=request)
         survey = PreTaskTopicKnowledgeSurveyForm()
 
 

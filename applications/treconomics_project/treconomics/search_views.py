@@ -377,7 +377,7 @@ def search(request, taskid=0):
                 result_dict['application_root'] = '/treconomics/'
                 result_dict['ajax_search_url'] = 'searcha/'
                 result_dict['autocomplete'] = experiment_setups[condition].autocomplete
-                
+
                 if interface == 3:
                         # getQuerySuggestions(topic_num)
                         suggestions = TopicQuerySuggestion.objects.filter(topic_num=topic_num)
@@ -651,6 +651,17 @@ def suggestion_selected(request):
     """
     new_query = request.GET.get('new_query')
     log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
+    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+
+@login_required
+def suggestion_hover(request):
+    """
+    Called when a user hovers over a query suggestion.
+    """
+    suggestion = request.GET.get('suggestion')
+    rank = int(request.GET.get('rank'))
+
+    log_event(event='AUTOCOMPLETE_QUERY_HOVER', query=suggestion, rank=rank, request=request)
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 @login_required

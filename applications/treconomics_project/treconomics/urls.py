@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     (r'^performance/$', search_views.view_performance),
 
     (r'^suggestion_selected/$', search_views.suggestion_selected),
+    (r'^suggestion_hover/$', search_views.suggestion_hover),
     (r'^query_focus/$', search_views.view_log_query_focus),
     (r'^hover/$', search_views.view_log_hover),
     (r'^autocomplete/$', search_views.autocomplete_suggestion),

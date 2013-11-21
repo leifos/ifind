@@ -107,7 +107,9 @@ def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", ra
 
             event_logger.info(msg + " '" + query + "'" + str(metrics_string))
         else:
-            if query:
+            if query and rank > 0:
+                event_logger.info(msg + " '" + query + "' " + str(rank))
+            elif query:
                 event_logger.info(msg + " '" + query + "'")
             else:
                 event_logger.info(msg)

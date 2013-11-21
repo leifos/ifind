@@ -41,11 +41,11 @@ $(function() {
 
             difference = getDifferentTerm(oldArray, newArray);
 
-            function getSuggestionString(difference, selectedItem, element, fieldValue) {
-                var suggestionValue = "";
+            function getSuggestionString(difference, selectedItem, element, fieldValue, rank) {
+                var suggestionValue = '<p class="autocomplete-item" rank="' + rank + '">';
 
                 if (previousValue === undefined || previousValue == "") {
-                    suggestionValue = "<strong>" + selectedItem + "</strong>";
+                    suggestionValue += "<strong>" + selectedItem + "</strong>";
                 }
                 else {
                     for (termIndex in newArray) {
@@ -61,7 +61,18 @@ $(function() {
                 }
 
                 element.data('oldVal', fieldValue);
-                return suggestionValue;
+                return suggestionValue + '</p>';
+            }
+
+            function getSuggestionRank(results, suggestion) {
+                for (var i in results) {
+                    i = parseInt(i);
+
+                    if (results[i] == suggestion)
+                        return i + 1;
+                }
+
+                return -1;
             }
 
             var affectedWord = getSuggestion($(this), request.term)[0];
@@ -75,8 +86,9 @@ $(function() {
                     },
                     success: function(data) {
                         response( $.map( data.results, function(item) {
+                            var rank = getSuggestionRank(data.results, item);
                             return {
-                                label: getSuggestionString(difference, item, selectedElement, currFieldValue),
+                                label: getSuggestionString(difference, item, selectedElement, currFieldValue, rank),
                                 value: item}
                             }));
                     },
@@ -95,8 +107,19 @@ $(function() {
             }
         },
         //autoFocus: true, // Focus on the first element by default
-        focus: function(event) {
+        focus: function(event, ui) {
             event.preventDefault();
+
+            var label_element = $(ui.item.label);
+            var suggestion = ui.item.value;
+            var rank = label_element.attr('rank');
+
+            console.log(suggestion + " at rank " + rank);
+
+            $.ajax({
+                url: '/treconomics/suggestion_hover/',
+                data: {'suggestion': suggestion, 'rank': rank}
+            });
         },
         select: function(event, ui) {
             event.preventDefault();
@@ -145,8 +168,6 @@ $(function() {
 
     // When the page loads, set each input text field to have an oldVal property.
     $(document).ready(function() {
-        $('#query').focus();
-
         $(':text').each(function(i, obj) {
             var element = $(obj);
             element.data('oldVal', element.val());
