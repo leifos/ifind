@@ -75,7 +75,7 @@ def view_start_experiment(request):
         else:
             # Return an 'invalid login' error message.
             print  "invalid login details " + username + " " + password
-            return render_to_response('base/login.html', {}, context)
+            return render_to_response('base/login.html', {'invalid': True}, context)
     else:
         return render_to_response('base/login.html', {}, context)
 

@@ -4,6 +4,10 @@
 <script type="text/javascript">$(function() {$('#username').focus()});</script>
 <div class="topmargin">
 
+{% if invalid %}
+<div style="margin-bottom: 20px; text-align: center; color: red; font-size: 14pt; font-weight: bold;">Invalid credentials supplied.</div>
+{% endif %}
+
 <form action="/treconomics/startexperiment/"  method="post">
 	{% csrf_token %} 								<!-- cross-site request forgery protection -->
 	<table class="searchtable">	
