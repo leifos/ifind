@@ -9,17 +9,15 @@
 
 
 Below is a description of a <b>practice search task</b> that we would like you to undertake. The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.
+When you have read the description, click the <em>Next</em> button to begin the search task.
 
 <hr/>
 
-<div class="query" > <b> {{tasktitle}} </b> <span>Search Task: {{task}} Search Topic: {{topic}}</span></div>
+<div class="query" > <b> {{tasktitle}} </b> <span>Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></span></div>
 
-<p>{% autoescape off %} {{taskdescription}} {% endautoescape %} </p>
+<p>{% autoescape off %} <em>{{taskdescription}}</em> {% endautoescape %} </p>
 
-
-<p> Click the next button to begin the search task: </p>
-
-<a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
+<a href="/treconomics/next/"> <button class="button" type="next" >Next</button></a>
 
 
 {% endblock %}

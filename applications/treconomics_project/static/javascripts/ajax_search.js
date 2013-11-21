@@ -228,7 +228,7 @@ function doHashSearch() {
             else {
                 // With an interface of 1, we have to pull the previous querystring from the server!
                 $.ajax({
-                    url: APP_ROOT + 'ajax_search_querystring/',
+                    url: APP_ROOT + 'searcha_querystring/',
                     success: function(data) {
                         interface1Querystring = data['querystring'];
                         interface1Querystring += '&page=' + page;
