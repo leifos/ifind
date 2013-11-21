@@ -365,11 +365,11 @@ def view_session_completed(request):
     return render_to_response('base/session_completed.html', {'participant': uname, 'condition': condition }, context)
 
 
-
 @login_required
 def show_timeout_message(request):
     """
     Used to display a simple page indicating the user to the fact that their time for a task has expired.
     After a 5 second delay, the page automatically redirects to /treconomics/next/.
     """
+    log_event(event="EXPERIMENT_TIMEOUT", request=request)
     return render_to_response('base/timeout.html', {}, RequestContext(request))

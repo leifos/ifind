@@ -138,17 +138,6 @@ function processRequest(serializedFormData, noDelay) {
 
     var posting = $.post("", serializedFormData);
 
-    posting.fail(function(data) {
-        if ('timeout' in data) {
-            alert("Your time on this task has expired. You will now be redirect to the next page.");
-            window.location = '/treconomics/next/';
-        }
-        else {
-            alert("Something went wrong when processing your request!");
-            console.log("Server error on AJAX request: " + data.responseText);
-        }
-    });
-
     posting.done(function(data) {
         var results = $('div.results');
         results.empty(); // Remove all children for the new results set
@@ -206,6 +195,19 @@ function processRequest(serializedFormData, noDelay) {
         bindResultHovering(); // Bind hovering actions to the new document elements.
         $('#full-grey-out').css('display', 'none');
         $('body').scrollTop(0);
+    });
+
+    posting.fail(function(data) {
+        var responseData = $.parseJSON(data.responseText);
+
+        if ('timeout' in responseData) {
+            alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+            window.location = APP_ROOT + 'next/';
+        }
+        else {
+            alert("Something went wrong with your request!");
+            console.log("Server error on AJAX request: " + data.responseText);
+        }
     });
 }
 

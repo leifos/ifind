@@ -470,7 +470,6 @@ def ajax_search(request, taskid=-1):
     if isinstance(taskid, unicode):
         taskid = int(taskid)
 
-    print taskid
     # If taskid is set, then it marks the start of a new search task
     # Update the session variable to reflect this
     if taskid >= 0:
@@ -487,7 +486,8 @@ def ajax_search(request, taskid=-1):
     # Has the experiment timed out? If so, indicate to the user.
     # Send a JSON object back which will be interpreted by the JavaScript.
     if time_search_experiment_out(request):
-        return HttpResponse(json.dumps({'timeout': True}), content_type='application/json')
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
     else:
         context = RequestContext(request)
         context_dict = {}
@@ -705,6 +705,7 @@ def autocomplete_suggestion(request):
     condition = ec["condition"]
 
     if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
         return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
 
     if request.GET.get('suggest'):

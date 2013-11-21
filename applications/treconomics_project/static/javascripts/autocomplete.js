@@ -93,15 +93,16 @@ $(function() {
                             }));
                     },
                     error: function(data) {
-                        // If there was an error, we tell the user.
-                        if ('error' in data) {
-                            alert("Something went wrong with your request!");
-                        }
-
                         // If the experiment's time has been reached, we alert the user and redirect.
-                        if ('timeout' in data) {
-                            alert("Your time for this exercise has expired.");
+                        var responseData = $.parseJSON(data.responseText);
+
+                        if ('timeout' in responseData) {
+                            alert("Your time for this exercise has expired. We will now redirect you to the next step.");
                             window.location = APP_ROOT + 'next/';
+                        }
+                        else {
+                            alert("Something went wrong with your request!");
+                            console.log("Server error on AJAX request: " + data.responseText);
                         }
                     }});
             }

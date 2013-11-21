@@ -45,7 +45,7 @@ function bindResultHovering() {
             $.ajax({
                 url: '/treconomics/hover/',
                 data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
-        });
+            });
     });
 }
 
