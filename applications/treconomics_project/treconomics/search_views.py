@@ -269,7 +269,7 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
     return result_dict
 
 @login_required
-def search(request, taskid=0):
+def search(request, taskid=-1):
 
     def is_from_search_request(new_page_no):
         """
@@ -290,13 +290,21 @@ def search(request, taskid=0):
 
         return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
 
+    if isinstance(taskid, unicode):
+        taskid = int(taskid)
+
     # If taskid is set, then it marks the start of a new search task
     # Update the session variable to reflect this
-    if taskid >= 1:
+    if taskid >= 0:
         request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         request.session['taskid'] = taskid
-        log_event(event="SEARCH_TASK_COMMENCED", request=request)
-     #check for timeout
+
+        if taskid == 0:
+            log_event(event="PRACTICE_SEARCH_TASK_COMMENCED", request=request)
+        else:
+            log_event(event="SEARCH_TASK_COMMENCED", request=request)
+
+    #check for timeout
     if time_search_experiment_out(request):
         return HttpResponseRedirect('/treconomics/timeout/')
     else:
@@ -401,7 +409,7 @@ def search(request, taskid=0):
 
                 result_dict['delay_results'] = experiment_setups[condition].delay_results
 
-                queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+                queryurl = '/treconomics/search/?query=' + user_query.replace(' ', '+') + '&page=' + str(page) + '&noperf=true'
                 print "Set queryurl to : " + queryurl
                 request.session['queryurl'] = queryurl
 
@@ -454,21 +462,27 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
 
 
 @login_required
-def ajax_search(request, taskid=0):
+def ajax_search(request, taskid=-1):
     """
     David's crummy AJAX search implementation.
     Actually, it's not that crummy at all.
     """
+    if isinstance(taskid, unicode):
+        taskid = int(taskid)
+
+    print taskid
     # If taskid is set, then it marks the start of a new search task
     # Update the session variable to reflect this
-    if taskid >= 1:
+    if taskid >= 0:
         request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         request.session['taskid'] = taskid
-        log_event(event="SEARCH_TASK_COMMENCED", request=request)
-    if taskid == 0:
-        request.session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        request.session['taskid'] = 0
-        log_event(event="PRACTICE_SEARCH_TASK_COMMENCED", request=request)
+
+        if taskid == 0:
+            log_event(event="PRACTICE_SEARCH_TASK_COMMENCED", request=request)
+        else:
+            log_event(event="SEARCH_TASK_COMMENCED", request=request)
+
+        return HttpResponseRedirect('/treconomics/searcha/')
 
     # Has the experiment timed out? If so, indicate to the user.
     # Send a JSON object back which will be interpreted by the JavaScript.
@@ -543,7 +557,7 @@ def ajax_search(request, taskid=0):
                                            request.POST.get('noperf'),
                                            experiment_setups[ec['condition']].engine)
 
-                queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page)
+                queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page) + '&noperf=true'
                 print "Set queryurl to : " + queryurl
                 request.session['queryurl'] = queryurl
 
@@ -611,6 +625,7 @@ def view_performance(request):
     for p in performances:
         print p
 
+    log_event(event="VIEW_PERFORMANCE", request=request)
     return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 'performances': performances }, context)
 
 @login_required

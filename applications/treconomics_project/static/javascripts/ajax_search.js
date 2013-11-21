@@ -132,6 +132,10 @@ function processRequest(serializedFormData, noDelay) {
         serializedFormData += '&noDelay=true';
     }
 
+    if (getHashValue('noperf') == 'true') {
+        serializedFormData += '&noperf=true';
+    }
+
     var posting = $.post("", serializedFormData);
 
     posting.fail(function(data) {

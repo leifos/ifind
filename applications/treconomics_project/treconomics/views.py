@@ -83,6 +83,7 @@ def view_start_experiment(request):
 @login_required
 def view_logout(request):
     context = RequestContext(request)
+    log_event(event='EXPERIMENT_COMPLETED', request=request)
     pid = request.user.username
     logout(request)
     # Redirect to a success page.
@@ -117,8 +118,6 @@ def view_next(request):
         request.session['current_step'] = str(next_step)
     else:
         next_step = step
-
-
 
     url_to_visit_next = workflow[next_step]
     print "view_next - step : "+ str(next_step) + " url to vist next: " + url_to_visit_next
@@ -304,6 +303,7 @@ def view_post_task_with_questions(request, taskid):
         profile.save()
         print "SEARCH TASK COMPLETED"
         log_event(event="SEARCH_TASK_COMPLETED", request=request)
+        log_event(event="POST_TASK_SURVEY_STARTED", request=request)
 
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionarre
