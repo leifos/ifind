@@ -7,11 +7,11 @@
 {% block exp_block %}
 Below is a description of the search task that we would like you to undertake. The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.
 
-<p> Search Task: {{task}} Search Topic: {{topic}}</p>
+<p> Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></p>
 
 <p><b> {{tasktitle}} </b><p>
 
-<p> {% autoescape off %} {{taskdescription}} {% endautoescape %}</p>
+<p> {% autoescape off %} <em>{{taskdescription}}</em> {% endautoescape %}</p>
 
 
 {% endblock %}

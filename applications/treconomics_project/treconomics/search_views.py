@@ -370,6 +370,14 @@ def search(request, taskid=0):
                                           request.GET.get('noperf'),
                                           experiment_setups[ec['condition']].engine)
 
+                result_dict['participant'] = uname
+                result_dict['task'] = taskid
+                result_dict['condition'] = condition
+                result_dict['interface'] = interface
+                result_dict['application_root'] = '/treconomics/'
+                result_dict['ajax_search_url'] = 'searcha/'
+                result_dict['autocomplete'] = experiment_setups[condition].autocomplete
+                
                 if interface == 3:
                         # getQuerySuggestions(topic_num)
                         suggestions = TopicQuerySuggestion.objects.filter(topic_num=topic_num)
