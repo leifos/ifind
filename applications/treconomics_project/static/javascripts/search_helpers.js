@@ -30,9 +30,17 @@ function bindResultHovering() {
             var rank = $(parent[0]).attr('rank');
             var page = $(parent[0]).attr('page');
 
+
             $.ajax({
                 url: '/treconomics/hover/',
                 data: {'status': 'in', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
+            }).fail(function(data) {
+                var responseData = $.parseJSON(data.responseText);
+
+                if ('timeout' in responseData) {
+                    alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                    window.location = '/treconomics/next/';
+                }
             });
         },
         function(event) {
@@ -45,6 +53,13 @@ function bindResultHovering() {
             $.ajax({
                 url: '/treconomics/hover/',
                 data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
+            }).fail(function(data) {
+                var responseData = $.parseJSON(data.responseText);
+
+                if ('timeout' in responseData) {
+                    alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                    window.location = '/treconomics/next/';
+                }
             });
     });
 }

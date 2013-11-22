@@ -202,7 +202,7 @@ function processRequest(serializedFormData, noDelay) {
 
         if ('timeout' in responseData) {
             alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-            window.location = APP_ROOT + 'next/';
+            window.location = '/treconomics/next/';
         }
         else {
             alert("Something went wrong with your request!");

@@ -362,8 +362,6 @@ def search(request, taskid=-1):
             else:
                 page = 1
 
-            result_dict['page'] = page
-
         if query_flag:
             # If the user poses a blank query, we just send back a results page saying so.
             if user_query == '':
@@ -386,6 +384,7 @@ def search(request, taskid=-1):
                 result_dict['application_root'] = '/treconomics/'
                 result_dict['ajax_search_url'] = 'searcha/'
                 result_dict['autocomplete'] = experiment_setups[condition].autocomplete
+                result_dict['page'] = page
 
                 if interface == 3:
                         # getQuerySuggestions(topic_num)
@@ -633,6 +632,10 @@ def view_log_hover(request):
     """
     View which logs a user hovering over a search result.
     """
+    if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
+
     ec = get_experiment_context(request)
 
     uname = ec['username']
@@ -679,6 +682,10 @@ def suggestion_selected(request):
     Called when a suggestion is selected from the suggestion interface.
     Logs the suggestion being selected.
     """
+    if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
+
     new_query = request.GET.get('new_query')
     log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
@@ -702,11 +709,7 @@ def autocomplete_suggestion(request):
     # Get the condition from the user's experiment context.
     # This will yield us access to the autocomplete trie!
     ec = get_experiment_context(request)
-    condition = ec["condition"]
-
-    if time_search_experiment_out(request):
-        log_event(event="EXPERIMENT_TIMEOUT", request=request)
-        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
+    condition = ec['condition']
 
     if request.GET.get('suggest'):
         results = []
