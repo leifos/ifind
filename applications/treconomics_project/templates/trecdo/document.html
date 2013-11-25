@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load treconomics_tags %}
 
 {% block exp_info_block %}
  <p>
@@ -17,7 +18,7 @@
 {% block document_content %}
 <h1 class="document_title">{{ title }}  </h1>
 <p class="document_source_date"><b>{{doc_source}}</b> <span> <b>{{doc_date}}</b></span></p>
-<div class="article"> {% autoescape off %} {{ content }} {% endautoescape %}  </div>
+<div class="article"> {% autoescape off %} {{ content|linebreaksbrbr:doc_source }} {% endautoescape %}  </div>
 <p/>
 
 <div id="marked">
