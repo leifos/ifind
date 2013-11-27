@@ -39,6 +39,8 @@ config = ConfigParser.ConfigParser()
 # set a number of parameters
 
 def set_config():
+
+
     config.add_section("experiment")
     for url in urls:
             for part in parts:
@@ -66,7 +68,12 @@ def set_config():
                                     config.set("experiment","crawl_file",crawl_file)
                                 if rank == "position_ranked" or rank == "position":
                                     config.set("experiment","divs",divs)
-                                config.write(sys.stdout)
+                                #config.write(sys.stdout)
+                                if not os.path.exists(directory):
+                                    os.makedirs(directory)
+                                directory += "experiment_"+engine+".ini"
+                                with open(directory, "w") as config_file:
+                                    config.write(config_file)
                                 reset()
 
 
