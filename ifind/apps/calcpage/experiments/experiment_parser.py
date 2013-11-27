@@ -150,24 +150,31 @@ class ExpConfigurationParser(object):
             prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.maxqueries)
         prc.score_page(self.url, self.query_list)
 
-        print "\nRetrievability Scores for cumulative pce=20"
+
         prc.calculate_page_retrievability(c=20)
         #prc.report()
-        print prc.output_summary_report()
-        "\n individual query results"
-        print prc.output_query_report()
+        summary_report = prc.output_summary_report()
+        breakdown_report = prc.output_query_report()
+        self.write_output_files(summary_report,breakdown_report)
+        print "\nRetrievability Scores for cumulative pce=20 written out"
+
         print "\nRetrievability Scores for gravity beta=1.0"
-
-
         prc.calculate_page_retrievability(c=20, beta=1.0)
         #prc.report()
         print prc.output_summary_report()
 
-    def write_output_files(self):
+    def write_output_files(self, summary, breakdown):
         """
-        a method which writes the output files, summary and  
+        a method which writes the output files, summary and breakdown
         :return:None
         """
+        summary_file = open("summary_report.txt","w")
+        summary_file.write(summary)
+        summary_file.close()
+
+        breakdown_file = open("breakdown_report.txt","w")
+        breakdown_file.write(breakdown)
+        breakdown_file.close()
 
     def is_integer(self, value):
         """
