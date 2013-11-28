@@ -30,7 +30,8 @@ urls = ["https://www.gov.uk/vehicles-you-can-drive", "https://www.gov.uk/youth-c
 engines = ["govuk","bing","sitebing"]
 bing_key = "D3KxWY+hGljThaf/hVXqjMC21FThDjF0TP5xLHH3rhU"
 domain = "gov.uk"
-stopfile= "stopwords.txt"
+#hard coded in stopfile location
+stopfile= "/Users/rose/code/ifind/ifind/apps/calcpage/experiments/stopwords.txt"
 rank_type = "odds"
 top_path="results"
 crawl_file="crawl.txt"

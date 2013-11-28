@@ -10,6 +10,7 @@ from ifind.common.pagecapture import PageCapture
 from ifind.common.query_ranker import QueryRanker, OddsRatioQueryRanker
 from ifind.common.position_content_extractor import PositionContentExtractor
 import sys
+import string
 """
 This class is an experiment configuration parser for the page calculator
 It reads a config file called experiments.ini and parses the configuration
@@ -19,42 +20,80 @@ to calculate the retrievability of the page
 
 
 class ExpConfigurationParser(object):
-    def __init__(self):
-        self.engine = None
+    def __init__(self, config_file_dir):
+        self.directory = config_file_dir
+        #each config file directory has three config files in it, one for each search engine
+        #create a list of the full path for each config file for the current directory
+        self.config_files = [self.directory + "experiment_bing.ini", self.directory + "experiment_sitebing.ini", self.directory + "experiment_govuk.ini"]
+        #need to set the optional values to none here to avoid errors when checking if they exist later
+        self.reset()
+
         self.config = ConfigParser.ConfigParser(allow_no_value=True)
-        self.config.read('experiments.ini')
-        self.get_config()
-        self.set_engine()
-        self.read_html()
-        self.query_list = self.get_queries()
-        self.process_queries()
+        for config_file in self.config_files:
+            self.current_config_file = config_file#copy current config file so it can be used in writing out results file
+            self.config.read(config_file)
+            self.get_config()
+            self.set_engine()
+            self.read_html()
+            self.query_list = self.get_queries()
+            self.process_queries()
+            self.reset()
+
+    def reset(self):
+        """this method sets/resets optional values for a config so there's no interference between
+        configs"""
+        self.engine = None
+        self.cache = None
+        self.domain = None
+        self.cutoff = None
+        self.maxqueries = None
+        self.doc_portion_count = None
+        self.doc_portion_percent = None
+        self.crawl_file = None
+        self.divs = None
+        self.key = None
 
     def get_config(self):
         self.url = self.config.get('experiment','url')
         self.engine_name = self.config.get('experiment','engine')
-        self.key = self.config.get('experiment','key')
-        self.domain = self.config.get('experiment','domain')
-        self.cutoff = self.config.get('experiment','cutoff')
-        self.maxqueries = self.config.getint('experiment','maxqueries')
-        self.stopwordfile = self.config.get('experiment','stopfile')
-        self.cache = self.config.getboolean('experiment','cache')
-        self.query_type = self.config.get('experiment','query_type')
-        self.doc_portion_percent = self.config.getint('experiment','doc_portion_perc')
-        self.doc_portion_count = self.config.get('experiment', 'doc_portion_count')
+        if self.engine_name == 'bing' or self.engine_name== 'sitebing':
+            self.key = self.config.get('experiment','key')
+        if self.engine_name == 'sitebing':
+            self.domain = self.config.get('experiment','domain')
+        #only get the configs for cutoff queries, maxqueries, cache, doc portions if they are in the config file
+        for candidate in [ 'cutoff', 'maxqueries', 'cache', 'doc_portion_percent', 'doc_portion_count']:
+            if self.config.has_option('experiment',candidate):
+                if candidate == 'cutoff':
+                    self.cutoff = self.config.get('experiment','cutoff')
+                if candidate == 'maxqueries':
+                    self.maxqueries = self.config.getint('experiment','maxqueries')
+                if candidate == 'cache':
+                    self.cache = self.config.getboolean('experiment','cache')
+                if candidate == 'doc_portion_percent':
+                    self.doc_portion_percent = self.config.getint('experiment','doc_portion_perc')
+                if candidate == 'doc_portion_count':
+                    self.doc_portion_count = self.config.get('experiment', 'doc_portion_count')
         self.selection_type = self.config.get('experiment', 'selection_type')
-        self.rank_type = self.config.get('experiment', 'rank_type')
-        self.crawl_file = self.config.get('experiment', 'crawl_file')
-        self.divs = self.config.get('experiment','divs')
+        #if selection_type is ranked or position_ranked then get the crawl file
+        if self.selection_type == 'ranked' or self.selection_type == 'position_ranked':
+            self.crawl_file = self.config.get('experiment', 'crawl_file')
+        #if selection_type is position or position_ranked get the divs
+        if self.selection_type == 'position_ranked' or self.selection_type == 'position':
+            self.divs = self.config.get('experiment','divs')
+        self.stopwordfile = self.config.get('experiment','stopfile')
+        self.query_type = self.config.get('experiment','query_type')
+        #todo need to add in rank type e.g. odds
+        #self.rank_type = self.config.get('experiment', 'rank_type')
+
 
     def set_engine(self):
-        cache = None
         if self.cache:
             self.cache = 'engine'
 
         if self.key:
-            self.engine = EngineFactory(engine=self.engine_name, api_key=self.key, throttle=0.1, cache=cache)
+            self.engine = EngineFactory(engine=self.engine_name, api_key=self.key, throttle=0.1, cache=self.cache)
         else:
-            self.engine = EngineFactory(engine=self.engine_name, cache=cache, throttle=0.1)
+            self.engine = EngineFactory(engine=self.engine_name, cache=self.cache, throttle=0.1)
 
         if self.domain:
             self.engine.site = self.domain
@@ -155,7 +194,7 @@ class ExpConfigurationParser(object):
         #prc.report()
         summary_report = prc.output_summary_report()
         breakdown_report = prc.output_query_report()
-        self.write_output_files(summary_report,breakdown_report)
+        self.write_output_files(summary_report,breakdown_report,"cumulative")
         print "\nRetrievability Scores for cumulative pce=20 written out"
 
         print "\nRetrievability Scores for gravity beta=1.0"
@@ -163,18 +202,29 @@ class ExpConfigurationParser(object):
         #prc.report()
         print prc.output_summary_report()
 
-    def write_output_files(self, summary, breakdown):
+    def write_output_files(self, summary, breakdown, scoring):
         """
         a method which writes the output files, summary and breakdown
         :return:None
         """
-        summary_file = open("summary_report.txt","w")
+        summary_file = open(self.directory + "/" +self.engine_name + "_" + scoring + "_summary_report.txt","a")
         summary_file.write(summary)
         summary_file.close()
 
-        breakdown_file = open("breakdown_report.txt","w")
+        page = self.get_page_from_url(self.url)
+        print "page is ", page
+        breakdown_file = open(self.directory + "/" + page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt","w")
         breakdown_file.write(breakdown)
         breakdown_file.close()
+
+    def get_page_from_url(self, url):
+        """
+        a method which takes a whole url and extracts the name of the page
+        :param url:
+        :return:
+        """
+        last_slash_pos = url.rfind("/")
+        return url[last_slash_pos+1:]
 
     def is_integer(self, value):
         """
@@ -188,7 +238,7 @@ class ExpConfigurationParser(object):
         except ValueError:
             return False
 
-parser = ExpConfigurationParser()
+parser = ExpConfigurationParser('/Users/rose/code/ifind/ifind/apps/calcpage/experiments/results/all/100/position/50/')
 
 
 
