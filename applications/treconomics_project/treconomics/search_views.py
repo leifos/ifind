@@ -25,6 +25,7 @@ from django.core import cache
 import timeit
 
 # Experiments
+from experiment_functions import get_topic_relevant_count
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
 from experiment_functions import time_search_experiment_out,getPerformance, getQueryResultPerformance, get_query_performance_metrics
@@ -421,9 +422,11 @@ def search(request, taskid=-1):
                 if len(result_dict['query']) > 50:
                     result_dict['display_query'] = result_dict['query'][0:50] + '...'
 
-                if experiment_setups[condition].delay_results > 0 and is_from_search_request(page):
+                print "Delay time - query execution time: {0}".format(experiment_setups[condition].delay_results - result_dict['query_time'])
+
+                if experiment_setups[condition].delay_results > 0 and (experiment_setups[condition].delay_results - result_dict['query_time'] > 0) and is_from_search_request(page):
                     log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
-                    sleep(experiment_setups[condition].delay_results)  # Delay search results.
+                    sleep(experiment_setups[condition].delay_results - result_dict['query_time'])  # Delay search results.
 
                 log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
                 return render_to_response('trecdo/results.html', result_dict, context)
@@ -638,6 +641,7 @@ def view_performance(request):
         topic_desc = TaskDescription.objects.get( topic_num = t ).title
         perf["title"] = topic_desc
         perf["score"] = ratio(float(perf["rels"]), float(perf["nons"]))
+        perf["total"] = get_topic_relevant_count(t)
 
         performances.append(perf)
 
@@ -645,7 +649,7 @@ def view_performance(request):
         print p
 
     log_event(event="VIEW_PERFORMANCE", request=request)
-    return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 'performances': performances }, context)
+    return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 'performances': performances}, context)
 
 @login_required
 def view_log_hover(request):

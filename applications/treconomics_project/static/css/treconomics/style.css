@@ -192,8 +192,8 @@ input {
 }
 
 .document_content, .experiment{
-	width: 70%;
-	margin: 0px auto;
+	width: 80%;
+	margin: 0 auto 0 auto;
 }
 	
 #rightnav {

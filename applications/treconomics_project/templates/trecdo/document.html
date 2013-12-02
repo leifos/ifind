@@ -16,10 +16,11 @@
 
 
 {% block document_content %}
+<div style="width: 90%;">
 <h1 class="document_title">{{ title }}  </h1>
 <p class="document_source_date"><b>{{doc_source}}</b> <span> <b>{{doc_date}}</b></span></p>
 <div class="article"> {% autoescape off %} {{ content|linebreaksbrbr:doc_source }} {% endautoescape %}  </div>
-<p/>
+</div>
 
 <div id="marked">
 {% if user_judgement  == 1 %}

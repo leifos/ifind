@@ -40,10 +40,10 @@ class DemographicsSurveyForm(ModelForm):
     sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
     occupation = forms.CharField(max_length=30, label="Please indicate your occupation.", required=False)
     english_first_lang = forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Is English your first language?", required=False)
-    education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking or have you obtained an undergraduate degree?", required=False)
-    education_undergrad_major =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If Yes, what is your major/subject area?", required=False)
-    education_postgrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking or have you obtained a postgraduate degree?", required=False)
-    education_postgrad_major =forms.CharField( widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), max_length=100,label="If Yes, what is your major/subject area?", required=False)
+    education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, an undergraduate degree?", required=False)
+    education_undergrad_major =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
+    education_postgrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, a postgraduate degree?", required=False)
+    education_postgrad_major =forms.CharField( widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), max_length=100,label="If Yes, what is/was your subject area?", required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
