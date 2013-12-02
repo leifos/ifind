@@ -21,6 +21,9 @@ from whoosh.index import open_dir
 # Cache for autocomplete trie
 from django.core import cache
 
+# Timing Query
+import timeit
+
 # Experiments
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
@@ -259,12 +262,13 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
             result_dict['next_page_show'] = True
             result_dict['next_page_link'] = "?query=" + query_terms.replace(' ', '+') + '&page=' + str(page + 1)
 
+    # Disable performance logging - it's a hogging the performance!
     # If log_performance is True, we log the performance metrics.
-    if log_performance:
-        log_event(event="QUERY_PERF",
-                  request=request,
-                  query=query_terms,
-                  metrics=get_query_performance_metrics(result_dict['trec_results'], ec['topicnum']))
+    #if log_performance:
+    #    log_event(event="QUERY_PERF",
+    #              request=request,
+    #              query=query_terms,
+    #              metrics=get_query_performance_metrics(result_dict['trec_results'], ec['topicnum']))
 
     return result_dict
 
@@ -438,6 +442,8 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
         no_space_terms = query_terms.replace(' ', '_')
         return "key-{0}-{1}-{2}".format(engine.get_setup_identifier(), page_no, no_space_terms)
 
+    start_time = timeit.default_timer()
+
     # Check the cache - has it been queried already?
     # If it has, use the stored result. Else, we need to ask Whoosh.
     cache_key = get_cache_key(page, user_query, engine)
@@ -447,9 +453,10 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
     # prevent_performance_logging can be passed to override logging.
     # If a user is on page 2 then goes back to page 1, we don't want to get the performance again.
     if not prevent_performance_logging and page == 1:
-        print "Spawning thread to obtain performance of query '{0}'".format(user_query)
-        perf_thread = Thread(target=run_query, args=(request, {}, user_query, 1, 500, condition, True))
-        perf_thread.start()
+        print "Performance should be measured - but it's disabled as it's too costly!"
+        #print "Spawning thread to obtain performance of query '{0}'".format(user_query)
+        #perf_thread = Thread(target=run_query, args=(request, {}, user_query, 1, 500, condition, True))
+        #perf_thread.start()
 
     # If the result_dict is None, the stuff isn't in the cache so we query Whoosh.
     if not result_dict:
@@ -457,6 +464,7 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
         result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
         result_cache.set(cache_key, result_dict, 300)
 
+    result_dict['query_time'] = timeit.default_timer() - start_time
     return result_dict
 
 
@@ -560,7 +568,9 @@ def ajax_search(request, taskid=-1):
                 print "Set queryurl to : " + queryurl
                 request.session['queryurl'] = queryurl
 
-                if experiment_setups[condition].delay_results > 0 and not do_delay:
+                print experiment_setups[condition].delay_results - result_dict['query_time']
+
+                if experiment_setups[condition].delay_results > 0 and (experiment_setups[condition].delay_results - result_dict['query_time'] > 0) and not do_delay:
                     log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
                     sleep(experiment_setups[condition].delay_results)  # Delay search results.
 
