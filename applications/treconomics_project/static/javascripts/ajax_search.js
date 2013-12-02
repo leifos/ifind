@@ -153,7 +153,7 @@ function processRequest(serializedFormData, noDelay) {
         else {
             if (data['trec_search']) {
                 // Add the top part
-                results.append('<div class="results_squash"><div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> page(s).</span></div></div>');
+                results.append('<div class="results_squash"><div class="query"><strong>Search Terms: <em>' + data['display_query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> page(s).</span></div></div>');
 
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
