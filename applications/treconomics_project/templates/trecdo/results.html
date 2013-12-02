@@ -5,17 +5,23 @@
 
     {% if trec_search %}
   
-	    <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
-		 Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span></div>
+	    <div class="query">
+            <div class="results_squash">
+                <strong>Search Terms: <em>{{ query }}</em></strong><span>
+		        Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span>
+            </div>
+        </div>
 		{% for result in trec_results %}
             <div class="search_result" id="{{ result.docid }}" rank="{{ result.rank }}" page="{{ page }}" whooshid="{{ result.whooshid }}">
-                <div class="entry">
-                    <p class="result_title"><strong><a href="{{ result.url }}">{{ result.title }}</a></strong></p>
-                    <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>
-                </div>
+                <div class="results_squash">
+                    <div class="entry">
+                        <p class="result_title"><strong><a href="{{ result.url }}">{{ result.title }}</a></strong></p>
+                        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>
+                    </div>
 
-                <div class="byline">
-                    {{ result.source }}
+                    <div class="byline">
+                        {{ result.source }}
+                    </div>
                 </div>
             </div>
         {% endfor %}

@@ -130,8 +130,6 @@ input {
 
 /** MULTIFIELD SEARCH STYLES **/ 
 
-
-
 .addButton {
 	border: 1px solid #999;
 	background: #eee;
@@ -184,8 +182,13 @@ input {
 }
 	
 .results {
-	width: 60%;
+	width: 100%;
 	margin: 0px auto;
+}
+
+.results_squash {
+    width: 75%;
+    margin: 0 auto 0 auto;
 }
 
 .document_content, .experiment{

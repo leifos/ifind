@@ -41,6 +41,8 @@ function switchToPage(url, noPerf) {
     var page_interface = $('#interface_type');
     var pageNumber = getPageNumber(url);
 
+    $('*').css('cursor', 'progress');
+
     if (parseInt(page_interface.val()) == 1) {
         if (interface1Querystring != "") {
             interface1Querystring += '&page=' + pageNumber;
@@ -151,12 +153,12 @@ function processRequest(serializedFormData, noDelay) {
         else {
             if (data['trec_search']) {
                 // Add the top part
-                results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> page(s).</span></div>');
+                results.append('<div class="results_squash"><div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>Showing page <em>' + data['curr_page'] + '</em> out of <em>' + data['num_pages'] + '</em> page(s).</span></div></div>');
 
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
                     var result = data['trec_results'][result_no];
-                    results.append('<div class="search_result" id="' + result['docid'] + '" rank="' + result['rank'] + '" page="' + data['curr_page'] + '" whooshid="' + result['whooshid'] + '"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div>');
+                    results.append('<div class="search_result" id="' + result['docid'] + '" rank="' + result['rank'] + '" page="' + data['curr_page'] + '" whooshid="' + result['whooshid'] + '"><div class="results_squash"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div></div>');
                 }
 
                 // Add navigation buttons at bottom of page (if applicable)
@@ -195,6 +197,7 @@ function processRequest(serializedFormData, noDelay) {
         bindResultHovering(); // Bind hovering actions to the new document elements.
         $('#full-grey-out').css('display', 'none');
         $('body').scrollTop(0);
+        $('*').css('cursor', 'auto');
     });
 
     posting.fail(function(data) {

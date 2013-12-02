@@ -568,11 +568,11 @@ def ajax_search(request, taskid=-1):
                 print "Set queryurl to : " + queryurl
                 request.session['queryurl'] = queryurl
 
-                print experiment_setups[condition].delay_results - result_dict['query_time']
+                print "Delay time - query execution time: {0}".format(experiment_setups[condition].delay_results - result_dict['query_time'])
 
                 if experiment_setups[condition].delay_results > 0 and (experiment_setups[condition].delay_results - result_dict['query_time'] > 0) and not do_delay:
                     log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
-                    sleep(experiment_setups[condition].delay_results)  # Delay search results.
+                    sleep(experiment_setups[condition].delay_results - result_dict['query_time'])  # Delay search results.
 
                 # Serialis(z?)e the data structure and send it back
                 if not do_delay:  # Only log the following if the user is not returning back to the results page.

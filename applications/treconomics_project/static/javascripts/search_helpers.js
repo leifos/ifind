@@ -8,6 +8,15 @@ Revision: 1
 
 */
 
+function adjustFullWidthHeight() {
+    $('div.search_result div.fullwidth').each(function(i, element) {
+        var jElement = $(element);
+        var parent_height = jElement.parent().css('height');
+
+        jElement.css('height', parent_height);
+    });
+}
+
 $(function() {
     bindResultHovering();
     formSubmit();
@@ -15,6 +24,8 @@ $(function() {
     if ($('#query')) {
         $('#query').focus();
     }
+
+    adjustFullWidthHeight();
 });
 
 /*
@@ -29,7 +40,6 @@ function bindResultHovering() {
             var whooshID = $(parent[0]).attr('whooshid');
             var rank = $(parent[0]).attr('rank');
             var page = $(parent[0]).attr('page');
-
 
             $.ajax({
                 url: '/treconomics/hover/',
