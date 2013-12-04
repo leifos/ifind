@@ -57,10 +57,8 @@ result_file3 = os.path.join(work_dir,'res.pl2')
 #engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 #run_queries(engine, query_file, result_file1)
 
-engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
+engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=False)
 run_queries(engine2, query_file, result_file2)
 
 #engine3 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
 #run_queries(engine3, query_file, result_file3)
-
-

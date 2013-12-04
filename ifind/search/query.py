@@ -95,7 +95,7 @@ class Query(object):
         s = input_string.encode('ascii', 'ignore')
 
         # remove all punctuation
-        s = s.translate(string.maketrans("",""), PUNCTUATION)
+        s = s.translate(string.maketrans(PUNCTUATION, ' '*len(PUNCTUATION)))
 
         # set to None if just spaces
         if s.isspace():
