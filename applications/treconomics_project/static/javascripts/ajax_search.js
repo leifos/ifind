@@ -147,8 +147,12 @@ function processRequest(serializedFormData, noDelay) {
         var results_nav = $('div.results_nav');
         results_nav.empty(); // Remove all children from the navigation button container
 
+        $('#search-button').prop('value', 'Search');
+        $('#search-button').removeAttr('disabled');
+
         if ('no_results' in data) {
             alert('No search term(s) were provided.');
+            $('#query').focus();
         }
         else {
             if (data['trec_search']) {
@@ -181,7 +185,7 @@ function processRequest(serializedFormData, noDelay) {
                 results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
             }
             else {
-                results.append('<div class="query"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>No results found.</span></div>');
+                results.append('<div class="query"><div class="results_squash"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>No results found.</span></div></div>');
             }
 
             stopHashChange = true;

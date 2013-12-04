@@ -28,11 +28,15 @@
 
     {% else %}
          {% if blank_query %}
-         <div class="query"><strong>No search terms supplied.</em></strong>
+         <div class="query">
+             <div class="results_squash"><strong>No search terms supplied.</em></strong></div>
          </div>
          {% else %}
-         <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong>
-            No results found.
+         <div class="query">
+             <div class="results_squash">
+                <strong>Search Terms: <em>{{ query }}</em></strong>
+                <span>No results found.</span>
+             </div>
          </div>
          {% endif %}
     {% endif %}

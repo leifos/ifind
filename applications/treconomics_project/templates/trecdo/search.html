@@ -13,11 +13,12 @@
     </script>
     <input type="hidden" id="interface_type" value="{{ interface }}" />
     <input type="hidden" id="delay_results" value="{{ delay_results }}" />
+    <input type="hidden" id="is_fast" value="{{ is_fast }}" />
 
      <p>
          <a href="/treconomics/saved/">View Saved</a> |
          <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
-         <a href="/treconomics/next/"> End Task</a>
+         <a href="/treconomics/next/" id="end-task-link"> End Task</a>
      </p>
 {% endblock %}
 
@@ -109,7 +110,7 @@
 		        {% else %}
 		            <td><input class="searchbox" type="text" name="query" value="" id="query" size="50" /></td>
                 {% endif %}
-		        <td> <input class="button" type="submit" name="submit" value="Search" /> </td></tr>
+		        <td> <input class="button" type="submit" name="submit" value="Search" id="search-button" /> </td></tr>
 	            </table>
 	        {% endif %}	
         </form>

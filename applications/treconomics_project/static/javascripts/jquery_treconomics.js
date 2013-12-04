@@ -26,6 +26,10 @@ $(document).ready(function()
         });
     });
 
+    $('#end-task-link').click(function() {
+        return confirm("Clicking OK will take you to the next stage of the experiment. If you clicked the 'End Task' link by accident, you can push the Cancel button below.");
+    })
+
 }); 
 
 

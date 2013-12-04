@@ -202,7 +202,7 @@ class WhooshTrecNews(Engine):
 
             rank = ((int(results.pagenum)-1) * results.pagelen) + r
 
-            url = "/treconomics/" + str(result.docnum) + "?rank="+str(rank)
+            url = "/treconomics/" + str(result.docnum)
 
             summary = result.highlights("content")
             trecid = result["docid"]

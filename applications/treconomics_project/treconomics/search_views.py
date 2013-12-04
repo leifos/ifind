@@ -66,6 +66,23 @@ def show_document(request, whoosh_docid):
     docid = whoosh_docid
     topicnum = ec["topicnum"]
 
+    def get_document_rank():
+        """
+        Returns the rank (integer) for the given document ID.
+        -1 is returned if the document is not found in the session ranked list.
+        """
+        the_docid = int(whoosh_docid)
+        ranked_results = request.session.get('results_ranked', [])
+
+        # Some list comprehension - returns a list of one integer with the rank of a given document
+        # if it exists in ranked_results; returns a blank list if the document is not present.
+        at_rank = [item[1] for item in ranked_results if item[0] == the_docid]
+
+        if len(at_rank) > 0:
+            return at_rank[0]
+        else:
+            return -1
+
     # check if there are any get parameters.
     user_judgement = -2
     rank = 0
@@ -74,9 +91,7 @@ def show_document(request, whoosh_docid):
 
         if 'judge' in getdict:
             user_judgement = int(getdict['judge'])
-
-            if 'rank' in getdict:
-                rank = int(getdict['rank'])
+            rank = get_document_rank()
 
             #marks that the document has been marked rel or nonrel
             doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
@@ -88,10 +103,7 @@ def show_document(request, whoosh_docid):
             return HttpResponseRedirect('/treconomics/next/')
         else:
             #marks that the document has been viewed
-            if request.method == 'GET':
-                getdict = request.GET
-                if 'rank' in getdict:
-                    rank = int(getdict['rank'])
+            rank = get_document_rank()
 
             doc_length = ixr.doc_field_length(long(docid), 'content')
             user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
@@ -336,6 +348,7 @@ def search(request, taskid=-1):
         result_dict['application_root'] = '/treconomics/'
         result_dict['ajax_search_url'] = 'searcha/'
         result_dict['autocomplete'] = experiment_setups[condition].autocomplete
+        result_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
@@ -404,6 +417,7 @@ def search(request, taskid=-1):
                 result_dict['ajax_search_url'] = 'searcha/'
                 result_dict['autocomplete'] = experiment_setups[condition].autocomplete
                 result_dict['page'] = page
+                result_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
 
                 if interface == 3:
                         # getQuerySuggestions(topic_num)
@@ -441,6 +455,8 @@ def search(request, taskid=-1):
                 if experiment_setups[condition].delay_results > 0 and (experiment_setups[condition].delay_results - result_dict['query_time'] > 0) and is_from_search_request(page):
                     log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
                     sleep(experiment_setups[condition].delay_results - result_dict['query_time'])  # Delay search results.
+
+                set_results_session_var(request, result_dict)
 
                 log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
                 request.session['last_request_time'] = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
@@ -509,6 +525,19 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
     result_dict['query_time'] = timeit.default_timer() - start_time
     return result_dict
 
+@login_required
+def set_results_session_var(request, result_dict):
+    """
+    A helper function which sets a session variable containing the Whoosh document IDs for a given
+    response.
+    """
+    results_ranked = []
+
+    if not result_dict['trec_results'] is None:
+        for result in result_dict['trec_results']:
+           results_ranked.append((result.whooshid, result.rank))
+
+    request.session['results_ranked'] = results_ranked
 
 @login_required
 def ajax_search(request, taskid=-1):
@@ -568,6 +597,7 @@ def ajax_search(request, taskid=-1):
         context_dict['condition'] = condition
         context_dict['interface'] = interface
         context_dict['autocomplete'] = experiment_setups[condition].autocomplete
+        context_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
 
         if request.method == 'POST':
             # AJAX POST request for a given query.
@@ -638,6 +668,8 @@ def ajax_search(request, taskid=-1):
                               whooshid=page,
                               rank=qrp[0],
                               judgement=qrp[1])
+
+                set_results_session_var(request, result_dict)
 
                 # Serialis(z?)e the data structure and send it back
                 #if not do_delay:  # Only log the following if the user is not returning back to the results page.
