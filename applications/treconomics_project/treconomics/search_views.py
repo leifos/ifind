@@ -38,6 +38,10 @@ import json
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
 
+CACHING_FORWARD_LOOK = 3  # Controls how many pages in advance we should cache
+CACHING_DELAY_FACTOR = 8  # How long we delay multiplied by how far we're looking (i.e. 3 pages forward * 5 seconds = 15 sec delay)
+CACHING_TOO_FAST = 5  # Number of seconds between requests that we ignore the delay and go searching again...
+
 @login_required
 def show_document(request, whoosh_docid):
     #check for timeout
@@ -62,6 +66,23 @@ def show_document(request, whoosh_docid):
     docid = whoosh_docid
     topicnum = ec["topicnum"]
 
+    def get_document_rank():
+        """
+        Returns the rank (integer) for the given document ID.
+        -1 is returned if the document is not found in the session ranked list.
+        """
+        the_docid = int(whoosh_docid)
+        ranked_results = request.session.get('results_ranked', [])
+
+        # Some list comprehension - returns a list of one integer with the rank of a given document
+        # if it exists in ranked_results; returns a blank list if the document is not present.
+        at_rank = [item[1] for item in ranked_results if item[0] == the_docid]
+
+        if len(at_rank) > 0:
+            return at_rank[0]
+        else:
+            return -1
+
     # check if there are any get parameters.
     user_judgement = -2
     rank = 0
@@ -70,9 +91,7 @@ def show_document(request, whoosh_docid):
 
         if 'judge' in getdict:
             user_judgement = int(getdict['judge'])
-
-            if 'rank' in getdict:
-                rank = int(getdict['rank'])
+            rank = get_document_rank()
 
             #marks that the document has been marked rel or nonrel
             doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
@@ -84,10 +103,7 @@ def show_document(request, whoosh_docid):
             return HttpResponseRedirect('/treconomics/next/')
         else:
             #marks that the document has been viewed
-            if request.method == 'GET':
-                getdict = request.GET
-                if 'rank' in getdict:
-                    rank = int(getdict['rank'])
+            rank = get_document_rank()
 
             doc_length = ixr.doc_field_length(long(docid), 'content')
             user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
@@ -332,6 +348,7 @@ def search(request, taskid=-1):
         result_dict['application_root'] = '/treconomics/'
         result_dict['ajax_search_url'] = 'searcha/'
         result_dict['autocomplete'] = experiment_setups[condition].autocomplete
+        result_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
@@ -382,6 +399,16 @@ def search(request, taskid=-1):
                                           request.GET.get('noperf'),
                                           experiment_setups[ec['condition']].engine)
 
+                if not request.GET.get('noperf'):
+                    # Now query for the next page of results so they are cached and ready when the user asks for them.
+                    print "Starting thread(s) to get cache next page of results..."
+                    for i in range(1, (CACHING_FORWARD_LOOK + 1)):
+                        if i == 1:
+                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.GET.get('noperf'), experiment_setups[ec['condition']].engine, 0))
+                        else:
+                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.GET.get('noperf'), experiment_setups[ec['condition']].engine, (i * CACHING_DELAY_FACTOR)))
+                        forward_thread.start()
+
                 result_dict['participant'] = uname
                 result_dict['task'] = taskid
                 result_dict['condition'] = condition
@@ -390,6 +417,7 @@ def search(request, taskid=-1):
                 result_dict['ajax_search_url'] = 'searcha/'
                 result_dict['autocomplete'] = experiment_setups[condition].autocomplete
                 result_dict['page'] = page
+                result_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
 
                 if interface == 3:
                         # getQuerySuggestions(topic_num)
@@ -428,7 +456,10 @@ def search(request, taskid=-1):
                     log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
                     sleep(experiment_setups[condition].delay_results - result_dict['query_time'])  # Delay search results.
 
+                set_results_session_var(request, result_dict)
+
                 log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+                request.session['last_request_time'] = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
                 return render_to_response('trecdo/results.html', result_dict, context)
         else:
             log_event(event='VIEW_SEARCH_BOX', request=request, page=page)
@@ -436,7 +467,7 @@ def search(request, taskid=-1):
             return render_to_response('trecdo/search.html', result_dict, context)
 
 
-def get_results(request, page, page_len, condition, user_query, prevent_performance_logging, engine):
+def get_results(request, page, page_len, condition, user_query, prevent_performance_logging, engine, execution_delay=0):
     """
     Returns a results dictionary object for the given parameters above.
     If the combinations have been previously used, we return a cached version (if it still exists).
@@ -468,13 +499,45 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
 
     # If the result_dict is None, the stuff isn't in the cache so we query Whoosh.
     if not result_dict:
+        skip_delay = True
+        # If the execution_delay parameter is > 0, we delay (assume we are running in a new thread!)
+        if execution_delay > 0:
+            last_request_time = request.session.get('last_request_time')
+
+            if last_request_time is not None:
+                last_request_time = datetime.datetime.strptime(request.session.get('last_request_time'), '%Y-%m-%d %H:%M:%S.%f')
+                timenow = datetime.datetime.utcnow()
+
+                if (timenow - last_request_time).total_seconds() < CACHING_TOO_FAST:
+                    skip_delay = True
+                    print "Skipping sleeping phase, user is pushing buttons fast!"
+                else:
+                    skip_delay = False
+
+            if not skip_delay:
+                print "Delaying execution of '{0}' page {1} by {2} second(s)".format(user_query, page, execution_delay)
+                sleep(execution_delay)
+
         result_dict = {}
         result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
-        result_cache.set(cache_key, result_dict, 300)
+        result_cache.set(cache_key, result_dict, 20*60)
 
     result_dict['query_time'] = timeit.default_timer() - start_time
     return result_dict
 
+@login_required
+def set_results_session_var(request, result_dict):
+    """
+    A helper function which sets a session variable containing the Whoosh document IDs for a given
+    response.
+    """
+    results_ranked = []
+
+    if not result_dict['trec_results'] is None:
+        for result in result_dict['trec_results']:
+           results_ranked.append((result.whooshid, result.rank))
+
+    request.session['results_ranked'] = results_ranked
 
 @login_required
 def ajax_search(request, taskid=-1):
@@ -534,6 +597,7 @@ def ajax_search(request, taskid=-1):
         context_dict['condition'] = condition
         context_dict['interface'] = interface
         context_dict['autocomplete'] = experiment_setups[condition].autocomplete
+        context_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
 
         if request.method == 'POST':
             # AJAX POST request for a given query.
@@ -572,6 +636,16 @@ def ajax_search(request, taskid=-1):
                                            request.POST.get('noperf'),
                                            experiment_setups[ec['condition']].engine)
 
+                if not request.POST.get('noperf'):
+                    # Now query for the next page of results so they are cached and ready when the user asks for them.
+                    print "Starting thread(s) to get cache next page of results..."
+                    for i in range(1, (CACHING_FORWARD_LOOK + 1)):
+                        if i == 1:
+                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.POST.get('noperf'), experiment_setups[ec['condition']].engine, 0))
+                        else:
+                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.POST.get('noperf'), experiment_setups[ec['condition']].engine, (i * CACHING_DELAY_FACTOR)))
+                        forward_thread.start()
+
                 queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page) + '&noperf=true'
                 print "Set queryurl to : " + queryurl
                 request.session['queryurl'] = queryurl
@@ -587,9 +661,20 @@ def ajax_search(request, taskid=-1):
                 if len(result_dict['query']) > 50:
                     result_dict['display_query'] = result_dict['query'][0:50] + '...'
 
+                if result_dict['trec_results']:
+                    qrp = getQueryResultPerformance(result_dict['trec_results'], topic_num)
+                    log_event(event='SEARCH_RESULTS_PAGE_QUALITY',
+                              request=request,
+                              whooshid=page,
+                              rank=qrp[0],
+                              judgement=qrp[1])
+
+                set_results_session_var(request, result_dict)
+
                 # Serialis(z?)e the data structure and send it back
-                if not do_delay:  # Only log the following if the user is not returning back to the results page.
-                    log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+                #if not do_delay:  # Only log the following if the user is not returning back to the results page.
+                log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
+                request.session['last_request_time'] = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
                 return HttpResponse(json.dumps(result_dict), content_type='application/json')
         else:
             # Render the search template as usual...
@@ -613,7 +698,7 @@ def ajax_interface1_querystring(request):
 @login_required
 def view_log_query_focus(request):
     context = RequestContext(request)
-    log_event(event='QUERY_FOCUS', request=request )
+    log_event(event='QUERY_FOCUS', request=request)
     return HttpResponse(1)
 
 @login_required

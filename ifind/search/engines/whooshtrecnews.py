@@ -30,7 +30,7 @@ class WhooshTrecNews(Engine):
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
 
         self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
-        self.scoring_model = scoring.BM25F()  # Use the BM25F scoring module by default (with default values)
+        self.scoring_model = scoring.BM25F(B=0.70)  # Use the BM25F scoring module by default (with default values)
 
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
@@ -202,7 +202,7 @@ class WhooshTrecNews(Engine):
 
             rank = ((int(results.pagenum)-1) * results.pagelen) + r
 
-            url = "/treconomics/" + str(result.docnum) + "?rank="+str(rank)
+            url = "/treconomics/" + str(result.docnum)
 
             summary = result.highlights("content")
             trecid = result["docid"]

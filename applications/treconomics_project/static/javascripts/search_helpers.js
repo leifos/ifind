@@ -8,13 +8,10 @@ Revision: 1
 
 */
 
-function adjustFullWidthHeight() {
-    $('div.search_result div.fullwidth').each(function(i, element) {
-        var jElement = $(element);
-        var parent_height = jElement.parent().css('height');
-
-        jElement.css('height', parent_height);
-    });
+function disableClick(event) {
+    if (event.button==2) {
+        return false;
+    }
 }
 
 $(function() {
@@ -25,7 +22,8 @@ $(function() {
         $('#query').focus();
     }
 
-    adjustFullWidthHeight();
+    $('body').attr('oncontextmenu', 'return false');
+    document.onmousedown=disableClick;
 });
 
 /*
@@ -89,6 +87,11 @@ function formSubmit() {
 
         if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
             $('.smallsearchbox').autocomplete('close');
+        }
+
+        if ($('#is_fast').val() == 'true') {
+            $('#search-button').prop('value', '...');
+            $('#search-button').prop('disabled', 'disabled');
         }
     });
 }
