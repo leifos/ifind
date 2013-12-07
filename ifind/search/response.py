@@ -32,6 +32,16 @@ class Response(object):
         self.query_terms = query_terms
         self.results = []
         self.result_total = 0
+        self.total_pages = 0
+        self.results_on_page = 0
+        self.actual_page = 0
+
+    def add_result_object(self, result_object):
+        """
+        Adds a Result object to the Response's results list.
+        """
+        self.results.append(result_object)
+        self.result_total += 1
 
     def add_result(self, title="", url="", summary="", rank=-1, **kwargs):
         """

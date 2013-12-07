@@ -12,6 +12,7 @@ def linebreaksbrbr(article, service):
 
     if 'Associated Press' in service:
         article = article.replace('\n\t   ', '<p></p>')
+        article = article.replace('\n   ', '<p></p>')
         return article.replace(' \n\t', '<p></p>')
 
     # Assume New York Times News Service formatting

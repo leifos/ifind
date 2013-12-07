@@ -399,15 +399,16 @@ def search(request, taskid=-1):
                                           request.GET.get('noperf'),
                                           experiment_setups[ec['condition']].engine)
 
-                if not request.GET.get('noperf'):
-                    # Now query for the next page of results so they are cached and ready when the user asks for them.
-                    print "Starting thread(s) to get cache next page of results..."
-                    for i in range(1, (CACHING_FORWARD_LOOK + 1)):
-                        if i == 1:
-                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.GET.get('noperf'), experiment_setups[ec['condition']].engine, 0))
-                        else:
-                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.GET.get('noperf'), experiment_setups[ec['condition']].engine, (i * CACHING_DELAY_FACTOR)))
-                        forward_thread.start()
+                #  Caching is now handled in WhooshTrecNews
+                #if not request.GET.get('noperf'):
+                #    # Now query for the next page of results so they are cached and ready when the user asks for them.
+                #    print "Starting thread(s) to get cache next page of results..."
+                #    for i in range(1, (CACHING_FORWARD_LOOK + 1)):
+                #        if i == 1:
+                #            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.GET.get('noperf'), experiment_setups[ec['condition']].engine, 0))
+                #        else:
+                #            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.GET.get('noperf'), experiment_setups[ec['condition']].engine, (i * CACHING_DELAY_FACTOR)))
+                #        forward_thread.start()
 
                 result_dict['participant'] = uname
                 result_dict['task'] = taskid
@@ -467,7 +468,7 @@ def search(request, taskid=-1):
             return render_to_response('trecdo/search.html', result_dict, context)
 
 
-def get_results(request, page, page_len, condition, user_query, prevent_performance_logging, engine, execution_delay=0):
+def get_results(request, page, page_len, condition, user_query, prevent_performance_logging, engine):
     """
     Returns a results dictionary object for the given parameters above.
     If the combinations have been previously used, we return a cached version (if it still exists).
@@ -485,9 +486,9 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
 
     # Check the cache - has it been queried already?
     # If it has, use the stored result. Else, we need to ask Whoosh.
-    cache_key = get_cache_key(page, user_query, engine)
-    result_cache = cache.get_cache('default')
-    result_dict = result_cache.get(cache_key)  # Query the cache...
+    #cache_key = get_cache_key(page, user_query, engine)
+    #result_cache = cache.get_cache('default')
+    #result_dict = result_cache.get(cache_key)  # Query the cache...
 
     # prevent_performance_logging can be passed to override logging.
     # If a user is on page 2 then goes back to page 1, we don't want to get the performance again.
@@ -498,31 +499,47 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
         #perf_thread.start()
 
     # If the result_dict is None, the stuff isn't in the cache so we query Whoosh.
-    if not result_dict:
-        skip_delay = True
-        # If the execution_delay parameter is > 0, we delay (assume we are running in a new thread!)
-        if execution_delay > 0:
-            last_request_time = request.session.get('last_request_time')
+    #if not result_dict:
+    #    skip_delay = True
+    #    # If the execution_delay parameter is > 0, we delay (assume we are running in a new thread!)
+    #    if execution_delay > 0:
+    #        last_request_time = request.session.get('last_request_time')
+    #
+    #        if last_request_time is not None:
+    #            last_request_time = datetime.datetime.strptime(request.session.get('last_request_time'), '%Y-%m-%d %H:%M:%S.%f')
+    #            timenow = datetime.datetime.utcnow()
+    #
+    #            if (timenow - last_request_time).total_seconds() < CACHING_TOO_FAST:
+    #                skip_delay = True
+    #                print "Skipping sleeping phase, user is pushing buttons fast!"
+    #            else:
+    #                skip_delay = False
+    #
+    #        if not skip_delay:
+    #            print "Delaying execution of '{0}' page {1} by {2} second(s)".format(user_query, page, execution_delay)
+    #            sleep(execution_delay)
+    #
+    #   result_dict = {}
+    #    result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
+    #    result_cache.set(cache_key, result_dict, 20*60)
 
-            if last_request_time is not None:
-                last_request_time = datetime.datetime.strptime(request.session.get('last_request_time'), '%Y-%m-%d %H:%M:%S.%f')
-                timenow = datetime.datetime.utcnow()
-
-                if (timenow - last_request_time).total_seconds() < CACHING_TOO_FAST:
-                    skip_delay = True
-                    print "Skipping sleeping phase, user is pushing buttons fast!"
-                else:
-                    skip_delay = False
-
-            if not skip_delay:
-                print "Delaying execution of '{0}' page {1} by {2} second(s)".format(user_query, page, execution_delay)
-                sleep(execution_delay)
-
-        result_dict = {}
-        result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
-        result_cache.set(cache_key, result_dict, 20*60)
-
+    result_dict = {}
+    result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
     result_dict['query_time'] = timeit.default_timer() - start_time
+
+    #  New look-forward code - replaces the old code in this function to retrieve the next set of documents.
+    highest_cached_page = engine.get_highest_cached_page(user_query)
+
+    if highest_cached_page == -1:
+        print "Nothing is cached, get from page 1."
+        cache_thread = Thread(target=run_query, args=(request, {}, user_query, 1, page_len, condition))
+        cache_thread.start()
+    else:
+        if (highest_cached_page - page) < 4:
+            print "Caching next set of results for query '{0}'".format(user_query)
+            cache_thread = Thread(target=run_query, args=(request, {}, user_query, (highest_cached_page + 1), page_len, condition))
+            cache_thread.start()
+
     return result_dict
 
 @login_required
@@ -636,15 +653,16 @@ def ajax_search(request, taskid=-1):
                                            request.POST.get('noperf'),
                                            experiment_setups[ec['condition']].engine)
 
-                if not request.POST.get('noperf'):
-                    # Now query for the next page of results so they are cached and ready when the user asks for them.
-                    print "Starting thread(s) to get cache next page of results..."
-                    for i in range(1, (CACHING_FORWARD_LOOK + 1)):
-                        if i == 1:
-                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.POST.get('noperf'), experiment_setups[ec['condition']].engine, 0))
-                        else:
-                            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.POST.get('noperf'), experiment_setups[ec['condition']].engine, (i * CACHING_DELAY_FACTOR)))
-                        forward_thread.start()
+                #  Caching is now handled by WhooshTrecNews
+                #if not request.POST.get('noperf'):
+                #    # Now query for the next page of results so they are cached and ready when the user asks for them.
+                #    print "Starting thread(s) to get cache next page of results..."
+                #    for i in range(1, (CACHING_FORWARD_LOOK + 1)):
+                #        if i == 1:
+                #            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.POST.get('noperf'), experiment_setups[ec['condition']].engine, 0))
+                #        else:
+                #            forward_thread = Thread(target=get_results, args=(request, (page + i), page_len, condition, user_query, request.POST.get('noperf'), experiment_setups[ec['condition']].engine, (i * CACHING_DELAY_FACTOR)))
+                #        forward_thread.start()
 
                 queryurl = context_dict['application_root'] + context_dict['ajax_search_url'] + '#query=' + user_query.replace(' ', '+') + '&page=' + str(page) + '&noperf=true'
                 print "Set queryurl to : " + queryurl

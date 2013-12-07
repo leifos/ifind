@@ -7,13 +7,17 @@ from whoosh.qparser import QueryParser
 from whoosh.qparser import MultifieldParser
 from whoosh import highlight
 from whoosh import scoring
+import redis
+import pickle
+
+FORWARD_LOOK_PAGES = 10  # How many pages do we look forward to cache?
 
 class WhooshTrecNews(Engine):
     """
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, interleave=False, use_cache=True, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -29,8 +33,11 @@ class WhooshTrecNews(Engine):
         if not self.whoosh_index_dir:
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
 
+        self.use_cache = use_cache
+        self.cache = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.interleave = interleave  # Should we interleave results, and how often?
         self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
-        self.scoring_model = scoring.BM25F(B=0.70)  # Use the BM25F scoring module by default (with default values)
+        self.scoring_model = scoring.BM25F(B=0.25)  # Use the BM25F scoring module by default, where b=0.25
 
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
@@ -52,28 +59,6 @@ class WhooshTrecNews(Engine):
         except:
             msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
-
-    def get_setup_identifier(self):
-        """
-        Returns a string representing the state of a given instance of the WhooshTrecNews class.
-        Implemented for a way of determining a unique identifiable key for caching search results.
-        Returns a string in the format {0}**{1}, where
-            {0}: An identifier for the model used (0=TFIDF, 1=BM25F, 2=PL2)
-            {1}: 1 for use of implicit ORing, 0 for no use
-        """
-        model_identifier = 1
-
-        if isinstance(self.scoring_model, scoring.TF_IDF):
-            model_identifier = 0
-        if isinstance(self.scoring_model, scoring.PL2):
-            model_identifier = 2
-
-        if self.implicit_or:
-            implicit_or_identifier = 1
-        else:
-            implicit_or_identifier = 0
-
-        return "{0}-{1}".format(model_identifier, implicit_or_identifier)
 
     @staticmethod
     def build_query_parts(term_list, operator):
@@ -116,8 +101,110 @@ class WhooshTrecNews(Engine):
             query_terms = query.terms.split(' ')
             query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
 
+        query.terms = query.terms.strip()
 
         return self._request(query)
+
+    def get_cache_key(self, page_no, query_terms):
+        """
+        Returns a string representing the state of a given instance of the WhooshTrecNews class.
+        Implemented for a way of determining a unique identifiable key for caching search results.
+        Returns a string in the format {0}**{1}, where
+            {0}: An identifier for the model used (0=TFIDF, 1=BM25F, 2=PL2)
+            {1}: 1 for use of implicit ORing, 0 for no use
+        """
+        model_identifier = 1
+
+        if isinstance(self.scoring_model, scoring.TF_IDF):
+            model_identifier = 0
+        if isinstance(self.scoring_model, scoring.PL2):
+            model_identifier = 2
+
+        if self.implicit_or:
+            implicit_or_identifier = 1
+        else:
+            implicit_or_identifier = 0
+
+        if not self.interleave:
+            interleave_identifier = 0
+        else:
+            interleave_identifier = self.interleave
+
+        no_space_terms = query_terms.replace(' ', '_')
+        return "search:{0}:{1}:{2}:{3}:'{4}'".format(model_identifier, implicit_or_identifier, interleave_identifier, page_no, no_space_terms)
+
+    def __get__results_length(self, results):
+        """
+        Returns the number of hits in a results object.
+        For some reason, this is incorrectly reported when calling len(results).
+        """
+        counter = 0
+
+        for hit in results:
+            counter = counter + 1
+
+        return counter
+
+    def __split_results(self, query, results):
+        """
+        Splits results.
+        """
+        results_len = self.__get__results_length(results)
+        return [results[i:i + query.top] for i in range(0, results_len, query.top)]
+
+    def __interleave_results(self, results):
+        """
+        Interleaves results.
+        """
+        if not self.interleave:
+            return results  # Do nothing, interleave value not set.
+
+        split_lists = [[[], 0] for x in xrange(self.interleave)]
+
+        for i in range(0, len(results)):
+            split_lists[i % self.interleave][0].append(results[i])
+
+        interleaved = []
+
+        for i in range(0, self.interleave):
+            interleaved += split_lists[i][0]
+
+        return interleaved
+
+    def get_highest_cached_page(self, query_terms):
+        """
+        Returns an integer representing the highest page number that has been cached for the given query terms and engine.
+        This assumes that all pages up to that point have been cached - and no pages afterwards have been, either.
+        That's the way it should be - people can't jump in at page 10 of results, they sequentially move through.
+
+        ALSO ASSUMES THAT PAGE NUMBER IS THE PENULTIMATE VALUE, BEFORE THE QUERY TERMS.
+
+        Returns -1 if no pages have been cached for the given engine and query terms.
+        """
+        page_identifier = -100
+        cache_key = self.get_cache_key(-100, query_terms)
+        cache_key = cache_key.split(':')
+        generic_cache_key = ''
+
+        for phrase in cache_key:
+            if phrase == str(page_identifier):
+                generic_cache_key = generic_cache_key + '*'
+            else:
+                generic_cache_key = generic_cache_key + phrase + ':'
+
+        generic_cache_key = generic_cache_key[:-1]
+        keys = self.cache.keys(generic_cache_key)
+
+        highest_page = -1
+
+        for key in keys:
+            key = key.split(':')
+            pageno = int(key[4])
+
+            if pageno > highest_page:
+                highest_page = pageno
+
+        return highest_page
 
     def _request(self, query):
         """
@@ -137,37 +224,83 @@ class WhooshTrecNews(Engine):
             Private method.
 
         """
-        response = None
+        #try:
+        query_terms = self.parser.parse(unicode(query.terms))
+        page = query.skip
+        pagelen = query.top
 
-        try:
-            query_terms = self.parser.parse(unicode(query.terms))
-            page = query.skip
-            pagelen = query.top
+        with self.docIndex.searcher(weighting=self.scoring_model) as searcher:
+            #invalid_page_no = True
 
-            with self.docIndex.searcher(weighting=self.scoring_model) as searcher:
-                invalid_page_no = True
+            cache_key = self.get_cache_key(page, query.terms)
 
-                # If the user specifies a page number that's higher than the number of pages available,
-                # this loop looks until a page number is found that contains results and uses that instead.
-                # Prevents a horrible AttributeError exception later on!
-                while invalid_page_no:
-                    try:
-                        results = searcher.search_page(query_terms, page, pagelen)
-                        invalid_page_no = False
-                        setattr(results, 'actual_page', page)
-                    except ValueError:
-                        page -= page
+            if self.use_cache and self.cache.exists(cache_key):
+                return_response = self.cache.get(cache_key)
+                return_response = pickle.loads(return_response)
 
-                results.fragmenter = highlight.ContextFragmenter(maxchars=300, surround=300)
+                print "WhooshTRECNewsEngine found CACHED results"
+            else:
+                results = searcher.search_page(query_terms, page, pagelen=(FORWARD_LOOK_PAGES * pagelen))
+                results.fragmenter = highlight.ContextFragmenter(maxchars=3000, surround=3000)
                 results.formatter = highlight.HtmlFormatter()
                 results.fragmenter.charlimit = 100000
-                print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
-                print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
-                response = self._parse_whoosh_response(query, results)
-        except:
-            print "Error in Search Service: Whoosh TREC News search failed"
+                setattr(results, 'actual_page', page)
 
-        return response
+                ifind_response = self._parse_whoosh_response(query, results)
+                interleaved_results = self.__interleave_results(ifind_response.results)
+                split_results = self.__split_results(query, interleaved_results)
+
+                page_counter = page
+                return_response = Response(query.terms)
+
+                for page_list in split_results:
+                    response = Response(query.terms)
+
+                    for hit in page_list:
+                        response.add_result_object(hit)
+
+                    response.pagenum = results.pagenum
+                    response.total_pages = results.pagecount
+                    response.results_on_page = len(page_list)
+                    response.actual_page = page_counter
+
+                    loop_cache_key = self.get_cache_key(page_counter, query.terms)
+
+                    if self.use_cache and not self.cache.exists(loop_cache_key):
+                        response_str = pickle.dumps(response)
+                        self.cache.set(loop_cache_key, response_str)
+
+                    if page_counter == page:
+                        return_response = response
+                        print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
+                        print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
+
+                    page_counter = page_counter + 1
+
+
+            """
+            # If the user specifies a page number that's higher than the number of pages available,
+            # this loop looks until a page number is found that contains results and uses that instead.
+            # Prevents a horrible AttributeError exception later on!
+            while invalid_page_no:
+                try:
+                    results = searcher.search_page(query_terms, page, pagelen)
+                    invalid_page_no = False
+                    setattr(results, 'actual_page', page)
+                except ValueError:
+                    page -= page
+
+            results.fragmenter = highlight.ContextFragmenter(maxchars=300, surround=300)
+            results.formatter = highlight.HtmlFormatter()
+            results.fragmenter.charlimit = 100000
+            print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
+            print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
+            response = self._parse_whoosh_response(query, results)
+            """
+        #except:
+        #    print "Error in Search Service: Whoosh TREC News search failed"
+
+        return return_response
 
     @staticmethod
     def _parse_whoosh_response(query, results):
@@ -220,8 +353,8 @@ class WhooshTrecNews(Engine):
                                 whooshid=result.docnum,
                                 score=result.score)
 
-            if len(response) == query.top:
-                break
+            #if len(response) == query.top:
+            #    break
 
         # Dmax has added this line as a replacement for the one commented out above.
         response.result_total = len(results)

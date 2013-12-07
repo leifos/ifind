@@ -28,7 +28,7 @@ def run_queries(engine, query_file, result_file):
         #or_query=  buildQueryParts(query_str.split(' '), 'OR')
 
         #query = Query(terms=or_query,top=1000)
-        query = Query(terms=query_str,top=1000)
+        query = Query(terms=query_str,top=10)
         query.skip = 1
         response = engine.search(query)
 
@@ -57,7 +57,7 @@ result_file3 = os.path.join(work_dir,'res.pl2')
 #engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 #run_queries(engine, query_file, result_file1)
 
-engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=False)
+engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=1, use_cache=True)
 run_queries(engine2, query_file, result_file2)
 
 #engine3 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
