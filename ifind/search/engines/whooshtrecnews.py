@@ -38,12 +38,14 @@ class WhooshTrecNews(Engine):
         self.interleave = interleave  # Should we interleave results, and how often?
         self.interleave_continuous = interleave_continuous  # Do we continue to interleave after the initial loop?
         self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
-        self.scoring_model = scoring.BM25F(B=0.25)  # Use the BM25F scoring module by default, where b=0.25
+        self.scoring_model = scoring.BM25F(B=0.25)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
 
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
         if model == 2:
             self.scoring_model = scoring.PL2()  # Use PL2 with default values
+        if model == 3:
+            self.scoring_model = scoring.BM25F(B=1)  # BM11
 
         try:
             #self.docIndex = open_dir(whoosh_index_dir)
@@ -120,6 +122,8 @@ class WhooshTrecNews(Engine):
             model_identifier = 0
         if isinstance(self.scoring_model, scoring.PL2):
             model_identifier = 2
+        if isinstance(self.scoring_model, scoring.BM25F) and (self.scoring_model.B == 1):
+            model_identifier = 3
 
         if self.implicit_or:
             implicit_or_identifier = 1
@@ -167,7 +171,6 @@ class WhooshTrecNews(Engine):
         CONTINUOUS = new var
 
         """
-        print "yo"
         def do_interleave(res_list):
             """
             Nested function which does the actual interleaving for the given list.
@@ -189,17 +192,24 @@ class WhooshTrecNews(Engine):
         original = results
         final_order = []
 
+        PAGE_LEN = 10  # CHANGE THIS BACK TO pagelen!
+
         if self.interleave_continuous:
-            original = [original[i:(i + (self.interleave * pagelen))] for i in range(0, len(original), (self.interleave * pagelen))]
+            original = [original[i:(i + (self.interleave * PAGE_LEN))] for i in range(0, len(original), (self.interleave * PAGE_LEN))]
 
             for split_list in original:
                 final_order += do_interleave(split_list)
         else:
-            original = original[:(self.interleave * pagelen)]
+            original = original[:(self.interleave * PAGE_LEN)]
             final_order = do_interleave(original)
 
             if len(original) < len(results):
                 final_order += results[len(original):]
+
+        #c = 1
+        #for res in final_order:
+        #    print "{0}\t{1}\t{2}".format(c, results[c - 1].docid, res.docid)
+        #    c = c + 1
 
         return final_order
 
