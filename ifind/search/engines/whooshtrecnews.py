@@ -17,7 +17,7 @@ class WhooshTrecNews(Engine):
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, interleave=False, use_cache=True, **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, use_cache=True, interleave=False, interleave_continuous=False, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -36,6 +36,7 @@ class WhooshTrecNews(Engine):
         self.use_cache = use_cache
         self.cache = redis.StrictRedis(host='localhost', port=6379, db=0)
         self.interleave = interleave  # Should we interleave results, and how often?
+        self.interleave_continuous = interleave_continuous  # Do we continue to interleave after the initial loop?
         self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
         self.scoring_model = scoring.BM25F(B=0.25)  # Use the BM25F scoring module by default, where b=0.25
 
@@ -152,24 +153,49 @@ class WhooshTrecNews(Engine):
         results_len = self.__get__results_length(results)
         return [results[i:i + query.top] for i in range(0, results_len, query.top)]
 
-    def __interleave_results(self, results):
+    def __interleave_results(self, results, pagelen):
         """
         Interleaves results.
+
+        in_steps_of = self.interleave
+        CONTINUOUS = new var
+
         """
+        print "yo"
+        def do_interleave(res_list):
+            """
+            Nested function which does the actual interleaving for the given list.
+            """
+            split_lists = [[] for x in xrange(self.interleave)]
+            final = []
+
+            for j in range(0, len(res_list)):
+                split_lists[j % self.interleave].append(res_list[j])
+
+            for j in range(0, self.interleave):
+                final += split_lists[j]
+
+            return final
+
         if not self.interleave:
             return results  # Do nothing, interleave value not set.
 
-        split_lists = [[[], 0] for x in xrange(self.interleave)]
+        original = results
+        final_order = []
 
-        for i in range(0, len(results)):
-            split_lists[i % self.interleave][0].append(results[i])
+        if self.interleave_continuous:
+            original = [original[i:(i + (self.interleave * pagelen))] for i in range(0, len(original), (self.interleave * pagelen))]
 
-        interleaved = []
+            for split_list in original:
+                final_order += do_interleave(split_list)
+        else:
+            original = original[:(self.interleave * pagelen)]
+            final_order = do_interleave(original)
 
-        for i in range(0, self.interleave):
-            interleaved += split_lists[i][0]
-
-        return interleaved
+            if len(original) < len(results):
+                final_order += results[len(original):]
+        
+        return final_order
 
     def get_highest_cached_page(self, query_terms):
         """
@@ -247,7 +273,7 @@ class WhooshTrecNews(Engine):
                 setattr(results, 'actual_page', page)
 
                 ifind_response = self._parse_whoosh_response(query, results)
-                interleaved_results = self.__interleave_results(ifind_response.results)
+                interleaved_results = self.__interleave_results(ifind_response.results, pagelen)
                 split_results = self.__split_results(query, interleaved_results)
 
                 page_counter = page
