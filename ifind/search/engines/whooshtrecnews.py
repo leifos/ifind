@@ -128,11 +128,17 @@ class WhooshTrecNews(Engine):
 
         if not self.interleave:
             interleave_identifier = 0
+            interleave_continuous_identifer = 2
         else:
             interleave_identifier = self.interleave
 
+            if self.interleave_continuous:
+                interleave_continuous_identifer = 1
+            else:
+                interleave_continuous_identifer = 0
+
         no_space_terms = query_terms.replace(' ', '_')
-        return "search:{0}:{1}:{2}:{3}:'{4}'".format(model_identifier, implicit_or_identifier, interleave_identifier, page_no, no_space_terms)
+        return "search:{0}:{1}:{2}:{3}:{4}:'{5}'".format(model_identifier, implicit_or_identifier, interleave_identifier, interleave_continuous_identifer, page_no, no_space_terms)
 
     def __get__results_length(self, results):
         """
@@ -194,7 +200,7 @@ class WhooshTrecNews(Engine):
 
             if len(original) < len(results):
                 final_order += results[len(original):]
-        
+
         return final_order
 
     def get_highest_cached_page(self, query_terms):
