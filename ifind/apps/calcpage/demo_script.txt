@@ -1,0 +1,25 @@
+cd to ifind/ifind/apps/calcpage/experiments
+run:
+python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'govuk' -s stopwords.txt -ca
+hit enter in answer to the five questions:
+this give a default of a position based extractor using the wrapper id for govuk pages, with no limit
+on the number of words
+
+To compare this to rank based:
+run:
+python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'govuk' -s stopwords.txt -ca
+enter 'n'
+hit enter
+hit enter
+
+To compare this to position and rank based:
+
+python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'govuk' -s stopwords.txt -ca
+enter 'n'
+enter 'n'
+hit enter (default yes)
+hit enter (default include)
+hit enter  (default wrapper)
+hit enter (default no limit)
+hit enter (default no limit)
+hit enter (default background.txt)
