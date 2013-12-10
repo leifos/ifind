@@ -61,8 +61,8 @@ scoring_function = create_scoring_function(2)  # Which function should we use to
 #  Get paths to the necessary files/directories
 work_dir = os.getcwd()
 whoosh_index_dir = os.path.join(work_dir, 'fullindex')
-query_file = os.path.join(work_dir, '347.sigir2013.queries')
-result_file = os.path.join(work_dir, 'res.redis_pl2_or.347')
+query_file = os.path.join(work_dir, '435.sigir2013.queries')
+result_file = os.path.join(work_dir, 'res.redis_pl2_or.435')
 
 #  Open the index and necessary Whoosh ancillaries
 ix = open_dir(whoosh_index_dir)

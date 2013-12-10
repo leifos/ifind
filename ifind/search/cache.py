@@ -94,6 +94,16 @@ class RedisConn(object):
             return pickle.loads(base64.b64decode(value))
         else:
             return None
+            
+    def exists(self, key):
+        return self.connection.exists(key)
+    
+    def __contains__(self, key):
+        """
+        Special containment override for 'in' operator.
+
+        """
+        return self.connection.exists(key)
 
 
 class QueryCache(object):

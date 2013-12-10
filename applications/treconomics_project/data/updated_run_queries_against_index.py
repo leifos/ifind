@@ -40,18 +40,19 @@ def update_scores(doc_scores, postings):
 max_limit = 1000  # The maximum number of documents to return
 grouping = OrGroup  # How do we group terms in our query?
 field_name = 'content'  # Which field are we using?
-scoring_function = create_scoring_function(1)  # Which function should we use to score docs?
+scoring_function = create_scoring_function(2)  # Which function should we use to score docs?
 
 #  Get paths to the necessary files/directories
 work_dir = os.getcwd()
 whoosh_index_dir = os.path.join(work_dir, 'fullindex')
-query_file = os.path.join(work_dir, 'queries.trec.title.2005')
-result_file = os.path.join(work_dir, 'aq_title_bm25_or.res')
+query_file = os.path.join(work_dir, '347.sigir2013.queries')
+result_file = os.path.join(work_dir, 'res.pl2.or.347')
 
 #  Open the index and necessary Whoosh ancillaries
 ix = open_dir(whoosh_index_dir)
 reader = ix.reader()
 query_parser = QueryParser(field_name, schema=ix.schema, group=grouping)
+print ix.schema
 
 #  Open the input and output files for reading and writing
 input_file = open(query_file, 'r')
@@ -74,13 +75,19 @@ for line in input_file:
 		#  If a single term is provided as the query, we get NotImplementedError exceptions in the Whoosh library!
 		#  To avoid this, check if the query returned is unicode - if it is, there's one term only - if not, there's >1 term.
 		if isinstance(whoosh_query, unicode):
-			postings = searcher.postings(field_name, whoosh_query)
-			update_scores(doc_scores, postings)
+			try:
+				postings = searcher.postings(field_name, whoosh_query)
+				update_scores(doc_scores, postings)
+			except:
+				pass
 		else:
 			for term in whoosh_query:
-				postings = searcher.postings(term.fieldname, term.text)
-				update_scores(doc_scores, postings)
-		
+				try:
+					postings = searcher.postings(term.fieldname, term.text)
+					update_scores(doc_scores, postings)				   
+				except:
+					pass
+					
 		results = []
 		n = len(doc_scores)
 		
