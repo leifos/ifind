@@ -101,17 +101,17 @@
 435-100  curbing population growth
 435-101  curbing population
 435-102  increasing population growth countermeasure
-435-103  increasing population growth countermeasure NOT economic
-435-104  population growth countermeasure NOT economic
-435-105  population growth measure NOT economic
-435-106  population growth how to slow down NOT economic
-435-107  population growth stabililise NOT economic
+435-103  increasing population growth countermeasure economic
+435-104  population growth countermeasure economic
+435-105  population growth measure economic
+435-106  population growth how to slow down 
+435-107  population growth stabililise 
 435-108  population OR decrease OR curb OR result OR results
 435-109  population OR decrease OR curb OR result OR results
-435-110  population growth stabilise NOT economic
-435-111  population growth effective stop NOT economic
-435-112  population growth stop NOT economic
-435-113  population control NOT economic
+435-110  population growth stabilise 
+435-111  population growth effective stop 
+435-112  population growth stop 
+435-113  population control
 435-114  measures to control population
 435-115  measures to control population in south america
 435-116  measures to control population in south america
@@ -140,7 +140,7 @@
 435-139  chinese curbing population growth
 435-140  curb worldwide population growth
 435-141  curb population growth
-435-142  population control NOT economic
+435-142  population control
 435-143  controlling population growth
 435-144  controlling population growth
 435-145  population control
