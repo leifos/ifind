@@ -1,10 +1,10 @@
 python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'govuk' -s stopwords.txt -ca
-python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'bing' -k D3KxWY+hGljThaf/hVXqjMC21FThDjF0TP5xLHH3rhU -s stopwords.txt -ca
-python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'sitebing' -k D3KxWY+hGljThaf/hVXqjMC21FThDjF0TP5xLHH3rhU -d 'gov.uk' -s stopwords.txt -ca
+python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'bing' -k INSERT OWN BING KEY -s stopwords.txt -ca
+python generic_exp.py -u https://www.gov.uk/vehicles-you-can-drive -e 'sitebing' -k INSERT OWN BING KEY -d 'gov.uk' -s stopwords.txt -ca
 
 python generic_exp.py -u https://www.gov.uk/renew-adult-passport -e 'govuk'  -s stopwords.txt -ca
-python generic_exp.py -u https://www.gov.uk/renew-adult-passport -e 'bing' -k D3KxWY+hGljThaf/hVXqjMC21FThDjF0TP5xLHH3rhU -s stopwords.txt -ca
-python generic_exp.py -u https://www.gov.uk/renew-adult-passport -e 'sitebing' -k D3KxWY+hGljThaf/hVXqjMC21FThDjF0TP5xLHH3rhU -d 'gov.uk' -s stopwords.txt -ca
+python generic_exp.py -u https://www.gov.uk/renew-adult-passport -e 'bing' -k INSERT OWN BING KEY -s stopwords.txt -ca
+python generic_exp.py -u https://www.gov.uk/renew-adult-passport -e 'sitebing' -k INSERT OWN BING KEY -d 'gov.uk' -s stopwords.txt -ca
 
 exp 1:
 transport driving ;
