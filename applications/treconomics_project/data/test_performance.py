@@ -25,10 +25,10 @@ def run_queries(engine, query_file, result_file):
                         qp = t
             return qp
 
-        #or_query=  buildQueryParts(query_str.split(' '), 'OR')
+        or_query=  buildQueryParts(query_str.split(' '), 'OR')
 
-        #query = Query(terms=or_query,top=1000)
-        query = Query(terms=query_str,top=1000)
+        query = Query(terms=or_query,top=1000)
+        #query = Query(terms=query_str,top=1000)
         query.skip = 1
         response = engine.search(query)
 
@@ -50,15 +50,8 @@ work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'fullindex')
 
 query_file = os.path.join(work_dir,'queries.trec.title.2005')
-result_file1 = os.path.join(work_dir,'res.bm25')
-result_file2 = os.path.join(work_dir,'res.tfidf')
-result_file3 = os.path.join(work_dir,'res.pl2')
+result_file1 = os.path.join(work_dir,'res.bm25.tp.or')
 
-#engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-#run_queries(engine, query_file, result_file1)
+engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir,use_cache=False)
+run_queries(engine, query_file, result_file1)
 
-engine2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=1, use_cache=False, implicit_or=False, interleave=False, interleave_continuous=False)
-run_queries(engine2, query_file, result_file2)
-
-#engine3 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
-#run_queries(engine3, query_file, result_file3)

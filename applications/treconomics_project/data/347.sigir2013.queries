@@ -8,28 +8,28 @@
 347-7  extinction europe
 347-8  extinction africa
 347-9  extinction scheme
-347-10  conservation
-347-11  conservation scheme
-347-12  "conservation" scheme
-347-13  tiger
-347-14  elephant
-347-15  elephant conservation
-347-16  panda
-347-17  animal conservation
-347-18  spotted owl
-347-19  spotted owl protection
-347-20  spotted owl protection
-347-21  protection of the spotted owl
+347-10 conservation
+347-11 conservation scheme
+347-12 "conservation" scheme
+347-13 tiger
+347-14 elephant
+347-15 elephant conservation
+347-16 panda
+347-17 animal conservation
+347-18 spotted owl
+347-19 spotted owl protection
+347-20 spotted owl protection
+347-21 protection of the spotted owl
 347-22  protection of the spotted owl
 347-23  protection of the spotted owl worldwide
-347-24  protection of the spotted owloutwith usa
+347-24  protection of the spotted owl outwith usa
 347-25  protection of the spotted outwith usa
 347-26  protecting spotted owl in canada
 347-27  protecting spotted owl in uk
 347-28  protecting spotted owl in australia
 347-29  protecting spotted owl in new zealand
-347-30  "protecting spotted owl" strategies
-347-31  "protecting spotted owl"
+347-30  protecting spotted owl strategies
+347-31  protecting spotted owl
 347-32  protecting spotted owl worldwide
 347-33  methods of protecting spotted owl
 347-34  wildlife conservation areas spotted owl
@@ -87,11 +87,11 @@
 347-86  native species
 347-87  native species country
 347-88  biodiversity countries
-347-89  species OR endangered OR protect OR extinct
+347-89  species endangered protect extinct
 347-90  wildlife extinction
-347-91  wildlife OR prevent OR extinction
+347-91  wildlife prevent extinction
 347-92  NATIVE WILDLIFE EXTINCTION
-347-93  NATIVE WILDLIFE EXTINCTION NOT "UNITED STATES"
+347-93  NATIVE WILDLIFE EXTINCTION UNITED STATES
 347-94  BRITAIN SQUIRELL
 347-95  BRITAIN SQUIREL
 347-96  BRITAIN SQUIRREL
@@ -103,36 +103,36 @@
 347-102  country species steps taken to save species
 347-103  wildlife in native species nature
 347-104  protection of native species
-347-105  asia OR rhino OR elephant
-347-106  amphibians OR asia OR south OR america
-347-107  amphibians OR asia OR south OR america
-347-108  amphibians OR asia OR south OR america
-347-109  amphibians OR asia OR south OR america
-347-110  red OR panda OR marsupial
-347-111  glapagos OR tortoise OR bird OR monkey
+347-105  asia rhino elephant
+347-106  amphibians asia south america
+347-107  amphibians asia south america
+347-108  amphibians asia south america
+347-109  amphibians asia south america
+347-110  red panda marsupial
+347-111  glapagos tortoise bird monkey
 347-112  Countries trying to save native species
 347-113  Countries trying to preserve native species
 347-114  Countries trying to preserve native species from extinction
 347-115  wildlife extinction
 347-116  spotted owl extinction
-347-117  "spotted owl" extinction
-347-118  "spotted owl" extinct
-347-119  "spotted owl" save
-347-120  "spotted owl"
+347-117  spotted owl extinction
+347-118  spotted owl extinct
+347-119  spotted owl save
+347-120  spotted owl
 347-121  wildlife extinction America
 347-122  wildlife extinction America magazine
 347-123  wildlife extinction spotted owl America magazine
 347-124  wildlife extinction spotted owl America
 347-125  spotted owl extinct America
-347-126  endangered OR species OR spotted OR extinction
-347-127  animal extiction preserve
-347-128  animal extiction worldwide
-347-129  animal extiction
+347-126  endangered species spotted extinction
+347-127  animal extinction preserve
+347-128  animal extinction worldwide
+347-129  animal extinction
 347-130  animal extinct
-347-131  animal endagered
+347-131  animal endangered
 347-132  endangered animals save
-347-133  endangered animals save -china
-347-134  endangered animals save NOT China
+347-133  endangered animals save 
+347-134  endangered animals save China
 347-135  country's efforts towards extinction of species
 347-136  asian countries efforts towards extinction of species
 347-137  extinction
@@ -143,13 +143,13 @@
 347-142  endangered species in UK
 347-143  endangered species in scotland
 347-144  endangered species in asia
-347-145  endangered species in austalia
-347-146  endangered species in austalia
+347-145  endangered species in Australia
+347-146  endangered species in Australia
 347-147  endangered species in asia
 347-148  prevention of extinction
 347-149  actions which prevent extinction
 347-150  extinction
-347-151  chinas role in preventing exinction
+347-151  chinas role in preventing extinction
 347-152  china extinction
 347-153  native animal extinction protection plans
 347-154  animal extinction protection plans
@@ -177,11 +177,11 @@
 347-176  animal extinction africa
 347-177  animal extinction uk
 347-178  animal extinction resolution
-347-179  animal extinc
+347-179  animal extinction
 347-180  animal extinct
 347-181  curbing population growth
 347-182  wildlife distinction
-347-183  wildlife exstinction
+347-183  wildlife extinction
 347-184  wildlife extinction
 347-185  save the tiger
 347-186  wwf
@@ -195,7 +195,7 @@
 347-194  wildlife extinction in australia
 347-195  spotted owl america
 347-196  prevention of extinction
-347-197  prevent extinsion
+347-197  prevent extinction
 347-198  countries prevent the demise of species
 347-199  spotted owl america
 347-200  spotted owl america prevent demise
@@ -205,8 +205,8 @@
 347-204  prevent extinction countries
 347-205  prevent extinction countries wildlife
 347-206  america wildlife prevent extinction
-347-207  countries begun offerts to prevent extinction of wildlife
-347-208  endangered speacies protection
+347-207  countries begun efforts to prevent extinction of wildlife
+347-208  endangered species protection
 347-209  protecting endangered species
 347-210  wildlife conservation areas
 347-211  prevention wildlife extinction
