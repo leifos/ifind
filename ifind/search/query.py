@@ -26,6 +26,7 @@ class Query(object):
 
         """
         self.terms = Query.check_input(terms)
+        self.parsed_terms = None
         self.result_type = result_type.lower()
         self.lang = lang
         self.top = top

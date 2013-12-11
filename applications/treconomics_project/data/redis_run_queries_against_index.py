@@ -1,6 +1,8 @@
 from whoosh import scoring
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser, OrGroup, AndGroup
+from whoosh.highlight import ContextFragmenter
+from whoosh.highlight import HtmlFormatter
 import operator
 import os
 from ifind.search.cache import RedisConn
@@ -40,7 +42,7 @@ def update_scores(doc_scores, doc_term_scores):
 
 
 def make_key(field_name,term):
-    key = '%s:%s' % ( field_name, term)
+    key = '1:%s:%s' % ( field_name, term)
     return key
 
 
@@ -140,6 +142,21 @@ for line in input_file:
 				trec_docid = reader.stored_fields(ranked_results[rank][0])['docid']
 				score_formatted = "{0:.6f}".format(ranked_results[rank][1])
 				output_file.write("{0} Q0 {1} {2} {3} Exp{4}".format(query_num, trec_docid, (rank + 1), score_formatted, os.linesep))
+				
+				content = reader.stored_fields(ranked_results[rank][0])['content']
+				
+				if isinstance(whoosh_query, str):
+					termz = [unicode(whoosh_query)]
+				else:
+					termz = [text for fieldname, text in whoosh_query.all_terms() if fieldname == 'content']
+				
+				from whoosh.highlight import highlight
+				
+				analyzer = ix.schema['content'].analyzer
+				fragmenter = ContextFragmenter()
+				formatter = HtmlFormatter()
+				
+				#print highlight(content, termz, analyzer, fragmenter, formatter)
 
 ix.close()
 input_file.close()
