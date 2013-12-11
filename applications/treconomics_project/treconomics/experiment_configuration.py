@@ -54,6 +54,7 @@ class ExperimentSetup(object):
                  interface=1,
                  description='',
                  delay_results=0,
+                 delay_docview=10,
                  autocomplete=False,
                  trie=None):
         self.timeout = timeout
@@ -65,10 +66,11 @@ class ExperimentSetup(object):
         self.workflow = workflow
         self.pro = PermutatedRotationOrdering()
         self.n = self.pro.number_of_orderings(self.topics)
-        # Instance variable to allow you to delay results from appearing.
+        # Instance variable to allow you to delay results from appearing, and for delaying documents from appearing.
         # Specify an integer or float value. The value specifies the number of seconds the delay should last for.
         # If 0, there is no delay.
         self.delay_results = delay_results
+        self.delay_docview = delay_docview
         self.practice_topic = practice_topic
         # Do you want to use AJAX suggestions if the AJAX search interface is used?
         # To ensure that suggestions do not show with the structured interface, wrap the following assignments

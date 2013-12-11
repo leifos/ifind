@@ -162,7 +162,7 @@ function processRequest(serializedFormData, noDelay) {
                 // Add each of the results
                 for (var result_no in data['trec_results']) {
                     var result = data['trec_results'][result_no];
-                    results.append('<div class="search_result" id="' + result['docid'] + '" rank="' + result['rank'] + '" page="' + data['curr_page'] + '" whooshid="' + result['whooshid'] + '"><div class="results_squash"><div class="entry"><p class="result_title"><strong><a href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div></div>');
+                    results.append('<div class="search_result" id="' + result['docid'] + '" rank="' + result['rank'] + '" page="' + data['curr_page'] + '" whooshid="' + result['whooshid'] + '"><div class="results_squash"><div class="entry"><p class="result_title"><strong><a class="doc-link" href="' + result['url'] + '">' + result['title'] + '</a></strong></p><p class="summary">' + result['summary'] + '</p></div><div class="byline">' + result['source'] + '</div></div></div>');
                 }
 
                 // Add navigation buttons at bottom of page (if applicable)
@@ -198,8 +198,9 @@ function processRequest(serializedFormData, noDelay) {
             }
         }
 
+        bindDocumentClicks();
         bindResultHovering(); // Bind hovering actions to the new document elements.
-        $('#full-grey-out').css('display', 'none');
+        controlGreyOutBox(false);
         $('body').scrollTop(0);
         $('*').css('cursor', 'auto');
     });

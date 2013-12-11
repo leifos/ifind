@@ -13,6 +13,7 @@
     </script>
     <input type="hidden" id="interface_type" value="{{ interface }}" />
     <input type="hidden" id="delay_results" value="{{ delay_results }}" />
+    <input type="hidden" id="delay_docview" value="{{ delay_docview }}" />
     <input type="hidden" id="is_fast" value="{{ is_fast }}" />
 
      <p>
@@ -26,7 +27,7 @@
 <div id="full-grey-out">
     <div id="wait-box">
         <p>
-            Retrieving your Results...<br />
+            <span id="full-grey-out-message">Retrieving your results...</span><br />
             <img src="{% static 'images/wait.gif' %}" alt="Wait wait wait..." />
         </p>
     </div>
