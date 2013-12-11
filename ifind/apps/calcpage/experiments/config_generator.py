@@ -28,7 +28,7 @@ rankings = ["ranked","position_ranked","position"]
 max_queries = ['25','50','75']
 urls = ["https://www.gov.uk/vehicles-you-can-drive", "https://www.gov.uk/youth-crime-prevention-programmes","https://www.gov.uk/apply-for-student-finance"]
 engines = ["govuk","bing","sitebing"]
-bing_key = "D3KxWY+hGljThaf/hVXqjMC21FThDjF0TP5xLHH3rhU"
+bing_key = "" #INSERT OWN BING KEY WHEN RUNNING
 domain = "gov.uk"
 #hard coded in stopfile location
 stopfile= "/Users/rose/code/ifind/ifind/apps/calcpage/experiments/stopwords.txt"
