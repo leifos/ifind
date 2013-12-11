@@ -29,15 +29,28 @@ class ExpConfigurationParser(object):
         self.reset()
 
         self.config = ConfigParser.ConfigParser(allow_no_value=True)
-        for config_file in self.config_files:
-            self.current_config_file = config_file#copy current config file so it can be used in writing out results file
-            self.config.read(config_file)
-            self.get_config()
-            self.set_engine()
+        #read the urls to be processed, this is in the urls.txt file
+        self.urls = self.read_urls()
+        for url in self.urls:
+            self.url = url
             self.read_html()
-            self.query_list = self.get_queries()
-            self.process_queries()
-            self.reset()
+            for config_file in self.config_files:
+                self.current_config_file = config_file#copy current config file so it can be used in writing out results file
+                self.config.read(config_file)
+                self.get_config()
+                self.set_engine()
+                self.query_list = self.get_queries()
+                self.process_queries()
+                self.reset()
+
+    def read_urls(self):
+        """
+        reads in the file urls.txt line by line and stores in a list of urls
+        :return: a list of urls
+        """
+        with open('urls.txt') as f:
+            urls = f.read().splitlines()
+        return urls
 
     def reset(self):
         """this method sets/resets optional values for a config so there's no interference between
@@ -54,7 +67,6 @@ class ExpConfigurationParser(object):
         self.key = None
 
     def get_config(self):
-        self.url = self.config.get('experiment','url')
         self.engine_name = self.config.get('experiment','engine')
         if self.engine_name == 'bing' or self.engine_name== 'sitebing':
             self.key = self.config.get('experiment','key')
@@ -243,6 +255,18 @@ parser = ExpConfigurationParser('/Users/rose/code/ifind/ifind/apps/calcpage/expe
 
 
 
-
+# parts = ["all","main"]
+# portions = ['100','75','50','25']
+# rankings = ["ranked","position_ranked","position"]
+# max_queries = ['25','50','75']
+# top_path="results"
+# parser = None
+# # set a number of parameters
+# for part in parts:
+#     for portion in portions:
+#         for rank in rankings:
+#             for max_query in max_queries:
+#                 directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/"
+#                 parser = ExpConfigurationParser(directory)
 
 
