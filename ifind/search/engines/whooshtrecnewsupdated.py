@@ -45,7 +45,7 @@ class WhooshTrecNews(Engine):
 
             #  Objects required for document snippet generation
             self.analyzer = self.doc_index.schema[self.parser.fieldname].analyzer
-            self.fragmenter = ContextFragmenter()
+            self.fragmenter = ContextFragmenter(maxchars=200, surround=40)
             self.formatter = HtmlFormatter()
         except:
             message = "Could not open Whoosh index at '{0}'".format(self.whoosh_index_dir)
@@ -249,6 +249,7 @@ class WhooshTrecNews(Engine):
                             self.analyzer,
                             self.fragmenter,
                             self.formatter)
+            summary = "{0}...".format(summary)
 
             response.add_result(title=title,
                                 url=url,
