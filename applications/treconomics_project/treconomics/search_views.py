@@ -261,6 +261,9 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
     result_dict['trec_search'] = False
     result_dict['num_pages'] = num_pages
 
+    print "PAGE"
+    print num_pages
+
     if num_pages > 0:
         result_dict['trec_search'] = True
         result_dict['trec_results'] = response.results
@@ -476,13 +479,13 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
     If the combinations have been previously used, we return a cached version (if it still exists).
     If a cached version does not exist, we query Whoosh and return the results.
     """
-    def get_cache_key(page_no, query_terms, engine):
-        """
-        Nested function to return a unique key for a given combination of inputs.
-        The returned string is used as a key value for the cache so results can be stored and retrieved.
-        """
-        no_space_terms = query_terms.replace(' ', '_')
-        return "key-{0}-{1}-{2}".format(engine.get_setup_identifier(), page_no, no_space_terms)
+    #def get_cache_key(page_no, query_terms, engine):
+    #    """
+    #    Nested function to return a unique key for a given combination of inputs.
+    #    The returned string is used as a key value for the cache so results can be stored and retrieved.
+    #    """
+    #    no_space_terms = query_terms.replace(' ', '_')
+    #    return "key-{0}-{1}-{2}".format(engine.get_setup_identifier(), page_no, no_space_terms)
 
     start_time = timeit.default_timer()
 
@@ -530,17 +533,17 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
     result_dict['query_time'] = timeit.default_timer() - start_time
 
     #  New look-forward code - replaces the old code in this function to retrieve the next set of documents.
-    highest_cached_page = engine.get_highest_cached_page(user_query)
+    #highest_cached_page = engine.get_highest_cached_page(user_query)
 
-    if highest_cached_page == -1:
-        print "Nothing is cached, get from page 1."
-        cache_thread = Thread(target=run_query, args=(request, {}, user_query, 1, page_len, condition))
-        cache_thread.start()
-    else:
-        if (highest_cached_page - page) < 4:
-            print "Caching next set of results for query '{0}'".format(user_query)
-            cache_thread = Thread(target=run_query, args=(request, {}, user_query, (highest_cached_page + 1), page_len, condition))
-            cache_thread.start()
+    #if highest_cached_page == -1:
+    #    print "Nothing is cached, get from page 1."
+    #    cache_thread = Thread(target=run_query, args=(request, {}, user_query, 1, page_len, condition))
+    #    cache_thread.start()
+    #else:
+    #    if (highest_cached_page - page) < 4:
+    #        print "Caching next set of results for query '{0}'".format(user_query)
+    #        cache_thread = Thread(target=run_query, args=(request, {}, user_query, (highest_cached_page + 1), page_len, condition))
+    #        cache_thread.start()
 
     return result_dict
 

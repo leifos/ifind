@@ -193,6 +193,7 @@ class WhooshTrecNews(Engine):
         page = query.skip
         page_len = query.top
         results = [results[i: i + page_len] for i in range(0, len(results), page_len)]
+        total_pages = len(results)
 
         try:
             if page < 1:  # Valid Python to have negative indices for lists!
@@ -208,7 +209,7 @@ class WhooshTrecNews(Engine):
                 results = results[len(results) - 1]
                 page = len(results)
 
-        return page, results
+        return page, total_pages, results
 
     def __parse_response(self, query, results):
         """
@@ -220,7 +221,7 @@ class WhooshTrecNews(Engine):
         response = Response(query.terms)
         response.result_total = len(results)
 
-        page, results = self.__get_page(query, results)
+        page, response.total_pages, results = self.__get_page(query, results)
         page_len = query.top
 
         i = 0
@@ -257,5 +258,10 @@ class WhooshTrecNews(Engine):
                                 rank=rank,
                                 whooshid=whoosh_docnum,
                                 score=score)
+
+        # The following two lines are for compatibility purposes with the existing codebase.
+        # Would really like to take these out.
+        setattr(response, 'results_on_page', len(results))
+        setattr(response, 'actual_page', page)
 
         return response
