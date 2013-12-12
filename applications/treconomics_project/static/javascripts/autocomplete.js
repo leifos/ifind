@@ -183,8 +183,6 @@ $(function() {
                 url: APP_ROOT + 'suggestion_selected/',
                 data: {'added_term': selectedItem, 'new_query': newFieldValue}
             });
-
-            $('#search_form').submit();
       }
     });
 
