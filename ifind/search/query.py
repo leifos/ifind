@@ -103,3 +103,17 @@ class Query(object):
             s = None
 
         return s
+
+    def __unicode__(self):
+        """
+        Unicode method - returns the query.
+        """
+        if isinstance(self.parsed_terms, unicode):
+            return self.parsed_terms
+
+        return_str = u""
+
+        for term in self.parsed_terms:
+            return_str = "{0} {1}".format(return_str, term.text)
+
+        return return_str.strip()

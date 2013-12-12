@@ -6,7 +6,7 @@ from ifind.search.engines.whooshtrecnewsupdated import WhooshTrecNews
 work_dir = os.getcwd()
 whoosh_index_dir = os.path.join(work_dir, 'fullindex')
 
-query = Query(terms='lol', top=10)
+query = Query(terms='banana monkey', top=10)
 query.skip=1
 query.top = 10
 engine = WhooshTrecNews(whoosh_index_dir=whoosh_index_dir)

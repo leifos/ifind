@@ -47,7 +47,6 @@ class WhooshTrecNews(Engine):
             self.analyzer = self.doc_index.schema[self.parser.fieldname].analyzer
             self.fragmenter = ContextFragmenter()
             self.formatter = HtmlFormatter()
-
         except:
             message = "Could not open Whoosh index at '{0}'".format(self.whoosh_index_dir)
             raise EngineConnectionException(self.name, message)
@@ -70,22 +69,28 @@ class WhooshTrecNews(Engine):
         Returns a response from either the Redis cache or Whoosh (if results are not cached).
         """
         self.__parse_query_terms(query)  # Strips unwanted terms, prepares parsed query object
+        cache_key = self.__get_cache_key(unicode(query), is_term=False)  # Cache key for the query
 
-        with self.doc_index.searcher(weighting=self.scoring_model) as searcher:
-            doc_scores = {}
+        if self.use_cache and self.cache.exists(cache_key):
+            sorted_results = self.cache.get(cache_key)
+        else:
+            with self.doc_index.searcher(weighting=self.scoring_model) as searcher:
+                doc_scores = {}
 
-            if isinstance(query.parsed_terms, unicode):
-                doc_term_scores = self.__get_doc_term_scores(searcher, query.parsed_terms)
-                self.__update_scores(doc_scores, doc_term_scores)
-            else:
-                for term in query.parsed_terms:
-                    doc_term_scores = self.__get_doc_term_scores(searcher, term.text)
+                if isinstance(query.parsed_terms, unicode):
+                    doc_term_scores = self.__get_doc_term_scores(searcher, query.parsed_terms)
                     self.__update_scores(doc_scores, doc_term_scores)
+                else:
+                    for term in query.parsed_terms:
+                        doc_term_scores = self.__get_doc_term_scores(searcher, term.text)
+                        self.__update_scores(doc_scores, doc_term_scores)
 
-        sorted_results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
+            sorted_results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
+
+            if self.use_cache:
+                self.cache.store(cache_key, sorted_results)
+
         return self.__parse_response(query, sorted_results)
-        # TODO: tidy up the use of page/actual_page in the rest of the codebase
-        # TODO: additional todos in the todo list on my desk
 
     def __update_scores(self, doc_scores, doc_term_scores):
         """
@@ -105,7 +110,7 @@ class WhooshTrecNews(Engine):
         Parameter term should be a unicode string. The Whoosh searcher instance should be provided as parameter searcher.
         """
         doc_term_scores = {}
-        cache_key = self.__get_cache_key(term)
+        cache_key = self.__get_cache_key(term)  # Cache key for individual terms
 
         if self.use_cache and self.cache.exists(cache_key):
             return self.cache.get(cache_key)  # That was simple!
@@ -167,15 +172,23 @@ class WhooshTrecNews(Engine):
 
         return [text for fieldname, text in query.parsed_terms.all_terms() if fieldname == self.parser.fieldname]
 
-    def __get_cache_key(self, term):
+    def __get_cache_key(self, term, is_term=True):
         """
         Returns a string representing the cache key for the given term.
         """
-        return "{0}:{1}:{2}".format(self.scoring_model_identifier, self.parser.fieldname, term)
+        if is_term:
+            type_identifier = 'term'
+        else:
+            type_identifier = 'query'
+
+        return "{0}:{1}:{2}:{3}".format(self.scoring_model_identifier, type_identifier, self.parser.fieldname, term)
 
     def __get_page(self, query, results):
         """
-
+        Given a Query object and a set of results, returns the page number that has been requested.
+        Also includes the corresponding set of results for the requested page.
+        Note that if the page number if out of acceptable range, the last page of available results is returned.
+        If the page number requested is negative, the first page of results is returned.
         """
         page = query.skip
         page_len = query.top
