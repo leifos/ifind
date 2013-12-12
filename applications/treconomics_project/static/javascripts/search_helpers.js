@@ -27,7 +27,7 @@ $(function() {
         var regex = new RegExp("^[a-zA-Z0-9 ]+$");
         var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 
-        if (e.charCode == 13 || regex.test(str)) {
+        if (regex.test(str)) {
             return true;
         }
 
