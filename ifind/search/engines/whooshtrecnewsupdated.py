@@ -4,9 +4,11 @@ from whoosh import scoring
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser
 from whoosh.reading import TermNotFound
+from whoosh.highlight import highlight, HtmlFormatter, ContextFragmenter
 
 from ifind.search.engine import Engine
 from ifind.search.cache import RedisConn
+from ifind.search.response import Response
 from ifind.search.exceptions import EngineConnectionException, QueryParamException
 
 class WhooshTrecNews(Engine):
@@ -36,8 +38,16 @@ class WhooshTrecNews(Engine):
 
         try:
             self.doc_index = open_dir(self.whoosh_index_dir)
+            self.reader = self.doc_index.reader()
+
             self.parser = QueryParser('content', self.doc_index.schema)  # By default, we use AND grouping.
                                                                          # Use the grouping parameter and specify whoosh.qparser.OrGroup, AndGroup...
+
+            #  Objects required for document snippet generation
+            self.analyzer = self.doc_index.schema[self.parser.fieldname].analyzer
+            self.fragmenter = ContextFragmenter()
+            self.formatter = HtmlFormatter()
+
         except:
             message = "Could not open Whoosh index at '{0}'".format(self.whoosh_index_dir)
             raise EngineConnectionException(self.name, message)
@@ -47,7 +57,10 @@ class WhooshTrecNews(Engine):
         The concrete method of the Engine's interface method, search().
         """
         if not query.top:
-            raise QueryParamException(self.name, "Total number of results (query.top) not specified!")
+            raise QueryParamException(self.name, "Total number of results (query.top) not specified.")
+
+        if query.top < 1:
+            raise QueryParamException(self.name, "Page length (query.top) must be at least 1.")
 
         query.terms = query.terms.strip()
         return self._request(query)
@@ -69,10 +82,8 @@ class WhooshTrecNews(Engine):
                     doc_term_scores = self.__get_doc_term_scores(searcher, term.text)
                     self.__update_scores(doc_scores, doc_term_scores)
 
-        results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
-
-        # TODO: get results for a particular page (using query.top and query.skip)
-        # TODO: turn the results list into a fully fledged ifind Response object in __parse_response
+        sorted_results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
+        return self.__parse_response(query, sorted_results)
         # TODO: tidy up the use of page/actual_page in the rest of the codebase
         # TODO: additional todos in the todo list on my desk
 
@@ -142,10 +153,19 @@ class WhooshTrecNews(Engine):
 
         tidy_terms(query)
 
-        if len(query.terms) == 1:
+        if len(query.terms.split()) == 1:
             query.parsed_terms = unicode(query.terms)
+        else:
+            query.parsed_terms = self.parser.parse(query.terms)
 
-        query.parsed_terms = self.parser.parse(query.terms)
+    def __get_term_list(self, query):
+        """
+        Returns a list of unicode strings, each representing a term provided in the user's query.
+        """
+        if isinstance(query.parsed_terms, unicode):
+            return [query.parsed_terms]
+
+        return [text for fieldname, text in query.parsed_terms.all_terms() if fieldname == self.parser.fieldname]
 
     def __get_cache_key(self, term):
         """
@@ -153,9 +173,76 @@ class WhooshTrecNews(Engine):
         """
         return "{0}:{1}:{2}".format(self.scoring_model_identifier, self.parser.fieldname, term)
 
-    @staticmethod
-    def __parse_response(query, results):
+    def __get_page(self, query, results):
+        """
+
+        """
+        page = query.skip
+        page_len = query.top
+        results = [results[i: i + page_len] for i in range(0, len(results), page_len)]
+
+        try:
+            if page < 1:  # Valid Python to have negative indices for lists!
+                results = results[0]
+                page = 1
+            else:
+                results = results[page - 1]
+        except IndexError:
+            if page < 1:  # If the requested page is out of range in a negative direction
+                results = results[0]
+                page = 1
+            else:  # If the requested page is out of range in a positive direction
+                results = results[len(results) - 1]
+                page = len(results)
+
+        return page, results
+
+    def __parse_response(self, query, results):
         """
         Returns an ifind Response, given a query and set of results from Whoosh/Redis.
+        Takes an ifind Query object and a list of SORTED results for the given query.
+
+        If the page requested (query.skip) is < 0
         """
-        pass
+        response = Response(query.terms)
+        response.result_total = len(results)
+
+        page, results = self.__get_page(query, results)
+        page_len = query.top
+
+        i = 0
+
+        for result in results:
+            i = i + 1
+            rank = (page - 1) * page_len + i
+            whoosh_docnum = result[0]
+            score = result[1]
+            stored_data = self.reader.stored_fields(whoosh_docnum)
+
+            title = stored_data['title']
+
+            if title:
+                title = title.strip()
+            else:
+                title = "Untitled Document"
+
+            url = "/treconomics/{0}/".format(whoosh_docnum)
+            trecid = stored_data['docid'].strip()
+            source = stored_data['source'].strip()
+
+            summary = highlight(stored_data['content'],
+                            self.__get_term_list(query),
+                            self.analyzer,
+                            self.fragmenter,
+                            self.formatter)
+
+            response.add_result(title=title,
+                                url=url,
+                                summary=summary,
+                                docid=trecid,
+                                source=source,
+                                rank=rank,
+                                whooshid=whoosh_docnum,
+                                score=score)
+
+        return response
