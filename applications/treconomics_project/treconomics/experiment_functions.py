@@ -229,8 +229,9 @@ def calculate_precision(results, topic_num, k):
 def get_query_performance_metrics(results, topic_num):
     """
     Returns performance metrics for a given list of results, results, and a TREC topic, topic_num.
-    List returned is in the format [p@1, p@2, p@3, p@4, p@5, p@10, p@20, p@30, p@50, Rprec, total rel. docs]
+    List returned is in the format [p@1, p@2, p@3, p@4, p@5, p@10, p@15, p@20, p@125, p@30, p@40, p@50, Rprec, total rel. docs]
     """
+    
     total_relevant_docs = get_topic_relevant_count(topic_num)
 
     p_at_1 = calculate_precision(results, topic_num, 1)
@@ -239,9 +240,12 @@ def get_query_performance_metrics(results, topic_num):
     p_at_4 = calculate_precision(results, topic_num, 5)
     p_at_5 = calculate_precision(results, topic_num, 6)
     p_at_10 = calculate_precision(results, topic_num, 10)
+    p_at_15 = calculate_precision(results, topic_num, 15)
     p_at_20 = calculate_precision(results, topic_num, 20)
+    p_at_25 = calculate_precision(results, topic_num, 25)
     p_at_30 = calculate_precision(results, topic_num, 30)
+    p_at_40 = calculate_precision(results, topic_num, 40)
     p_at_50 = calculate_precision(results, topic_num, 50)
     r_prec = int(calculate_precision(results, topic_num, total_relevant_docs))
 
-    return [p_at_1, p_at_2, p_at_3, p_at_4, p_at_5, p_at_10, p_at_20, p_at_30, p_at_50, r_prec, total_relevant_docs]
+    return [p_at_1, p_at_2, p_at_3, p_at_4, p_at_5, p_at_10, p_at_15, p_at_20, p_at_25, p_at_30, p_at_40, p_at_50, r_prec, total_relevant_docs]
