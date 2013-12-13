@@ -42,7 +42,7 @@ def update_scores(doc_scores, doc_term_scores):
 
 
 def make_key(field_name,term):
-    key = '1:%s:%s' % ( field_name, term)
+    key = '1:term:%s:%s' % ( field_name, term)
     return key
 
 

@@ -23,6 +23,23 @@ $(function() {
         $('#query').focus();
     }
 
+    $('.searchbox, .smallsearchbox').keypress(function(e) {
+        var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+
+        if (e.charCode == 13) {
+            //$('#search_form').submit();
+            return true;
+        }
+
+        if (regex.test(str)) {
+            return true;
+        }
+
+        e.preventDefault();
+        return false;
+    });
+
     $('body').attr('oncontextmenu', 'return false');
     document.onmousedown=disableClick;
 });

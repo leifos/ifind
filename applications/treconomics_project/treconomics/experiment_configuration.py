@@ -5,6 +5,7 @@ import logging.config
 import logging.handlers
 from ifind.common.autocomplete_trie import AutocompleteTrie
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
+from ifind.search.engines.whooshtrecnewsupdated import WhooshTrecNews as UpdatedWhooshTrecNews
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
 work_dir = os.getcwd()
@@ -131,6 +132,8 @@ tfidf = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
 bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
 tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
 
+new_engine = UpdatedWhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
+
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)
 exp2 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, description='standard condition')
@@ -143,7 +146,7 @@ exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, pra
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 no delay', trie=suggestion_trie, autocomplete=True)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25or, topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25 delay', delay_results=5, trie=suggestion_trie, autocomplete=True)
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf no delay', trie=suggestion_trie, autocomplete=True)
-exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=tfidfor, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf delay', delay_results=5, trie=suggestion_trie, autocomplete=True)
+exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, topics=['347', '435', ], rpp=10, interface=0, description='standard condition tfidf delay', delay_results=5, trie=suggestion_trie, autocomplete=True)
 
 
 # these correspond to conditions

@@ -115,6 +115,35 @@ $(function() {
             var suggestion = ui.item.value;
             var rank = label_element.attr('rank');
 
+            // START NEW CODE
+            var currFieldValue = event.target.value;
+            var previousValue = $(this).data('oldVal');
+
+            var selectedItem = ui.item.value;
+            var newFieldValue = "";
+
+            var oldArray = previousValue.split(' ');
+            var newArray = currFieldValue.split(' ');
+
+            if (previousValue === undefined || previousValue == "") {
+                newFieldValue = selectedItem
+            }
+            else {
+                for (termIndex in newArray) {
+                    if (termIndex == difference[1]) {
+                        if (termIndex == 0) newFieldValue += selectedItem;
+                        else newFieldValue += " " + selectedItem;
+                    }
+                    else {
+                        if (termIndex == 0) newFieldValue += newArray[termIndex];
+                        else newFieldValue += " " + newArray[termIndex];
+                    }
+                }
+            }
+
+            event.target.value = newFieldValue;
+            // END NEW CODE
+
             $.ajax({
                 url: '/treconomics/suggestion_hover/',
                 data: {'suggestion': suggestion, 'rank': rank}
@@ -128,8 +157,8 @@ $(function() {
             var selectedItem = ui.item.value;
             var newFieldValue = "";
 
-            oldArray = previousValue.split(' ');
-            newArray = currFieldValue.split(' ');
+            var oldArray = previousValue.split(' ');
+            var newArray = currFieldValue.split(' ');
 
             if (previousValue === undefined || previousValue == "") {
                 newFieldValue = selectedItem

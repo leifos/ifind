@@ -34,7 +34,22 @@ def populate():
     add_user('d6','6',8,0,0,'')
     add_user('d7','7',9,0,1,'')
     add_user('d8','8',9,0,0,'')
-
+    
+    cond = 6
+    for i in range(0,56):
+        
+        #increment the condition every 13 participants
+        if i % 14 == 0:
+            cond = cond + 1
+            
+        username = 'x' + str(i)
+        password = str(i)
+        rotation = (i % 2)
+        experiment = 0 # not used
+        data = None # not used
+        
+        print '%s %s %d %d  ' % (username, password, cond, rotation)
+        add_user(username, password,cond, experiment, rotation, data)
 
 def add_user(username,password, condition, experiment, rotation, data=None):
     u = User.objects.get_or_create(username=username)[0]
