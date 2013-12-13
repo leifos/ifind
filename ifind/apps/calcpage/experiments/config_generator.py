@@ -24,21 +24,22 @@ import ConfigParser
 parts = ["all","main"]
 portions = ['100','75','50','25']
 rankings = ["ranked","position_ranked","position"]
-max_queries = ['25','50','75']
+max_queries = ['25','50','75','all']
 engines = ["govuk","bing","sitebing"]
-bing_key = "" #INSERT OWN BING KEY WHEN RUNNING
+bing_key = "" #have a file called personal_bin_key.txt in this directory which contains your bing key
 domain = "gov.uk"
 #hard coded in stopfile location
 stopfile= "/Users/rose/code/ifind/ifind/apps/calcpage/experiments/stopwords.txt"
 rank_type = "odds"
 top_path="results"
-crawl_file="crawl.txt"
+#hard coded in crawl file location, if doing urls which aren't .gov.uk, need a different crawl file
+crawl_file="/Users/rose/code/ifind/ifind/apps/calcpage/experiments/background.txt"
 divs = "wrapper"
 config = ConfigParser.ConfigParser()
 # set a number of parameters
 
 def set_config():
-
+    bing_key = read_bing_key()
     config.add_section("experiment")
     for part in parts:
         for portion in portions:
@@ -84,6 +85,15 @@ def reset():
     config.remove_option("experiment","crawl_file")
     config.remove_option("experiment","divs")
 
+def read_bing_key():
+    """
+    a method to read in a bing API key from a text file
+    :return: the key
+    """
+    with open("personal_bing_key.txt", "r") as f:
+        key = f.read()
+    return key
 
 
 set_config()
+print "config directories and files generated"

@@ -16,6 +16,7 @@ This class is an experiment configuration parser for the page calculator
 It reads a config file called experiments.ini and parses the configuration
 It then constructs an appropriate query extractor and executes the queries
 to calculate the retrievability of the page
+YOU NEED TO SET UP A REDIS CACHE FIRST
 """
 
 
@@ -78,7 +79,11 @@ class ExpConfigurationParser(object):
                 if candidate == 'cutoff':
                     self.cutoff = self.config.get('experiment','cutoff')
                 if candidate == 'maxqueries':
-                    self.maxqueries = self.config.getint('experiment','maxqueries')
+                    self.maxqueries = self.config.get('experiment','maxqueries')
+                    if self.is_integer(self.maxqueries):
+                        self.maxqueries = int(self.maxqueries)
+                    else: #otherwise there is no max queries to issue, so set max queries = None
+                        self.maxqueries = None
                 if candidate == 'cache':
                     self.cache = self.config.getboolean('experiment','cache')
                 if candidate == 'doc_portion_percent':
@@ -99,8 +104,9 @@ class ExpConfigurationParser(object):
 
 
     def set_engine(self):
-        if self.cache:
-            self.cache = 'engine'
+        #if self.cache:
+        #todo currently defaults to using cache, may want to change this
+        self.cache = 'engine'
 
         if self.key:
             self.engine = EngineFactory(engine=self.engine_name, api_key=self.key, throttle=0.1, cache=self.cache)
@@ -195,10 +201,10 @@ class ExpConfigurationParser(object):
 
     def process_queries(self):
         prc = None
-        if self.cutoff:
+        if self.maxqueries:
             prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.maxqueries)
         else:
-            prc = PageRetrievabilityCalculator(engine=self.engine, max_queries=self.maxqueries)
+            prc = PageRetrievabilityCalculator(engine=self.engine)
         prc.score_page(self.url, self.query_list)
 
 
@@ -211,7 +217,9 @@ class ExpConfigurationParser(object):
 
         print "\nRetrievability Scores for gravity beta=1.0"
         prc.calculate_page_retrievability(c=20, beta=1.0)
-        #prc.report()
+        summary_report = prc.output_summary_report()
+        breakdown_report = prc.output_query_report()
+        self.write_output_files(summary_report,breakdown_report,"gravity")
         print prc.output_summary_report()
 
     def write_output_files(self, summary, breakdown, scoring):
