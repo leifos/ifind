@@ -32,10 +32,9 @@ class UKDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0,help_text="Please provide your age (in years).")
     sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
-    occupation = models.CharField(max_length=50, help_text="Please indicate your occupation.")
     education_undergrad = models.CharField(max_length=1,default="N")
     education_undergrad_major = models.CharField(max_length=100, default="")
-    education_undergrad_year = models.CharField(max_length=6,default="")
+    education_undergrad_year = models.CharField(max_length=1,default="")
 
     def __unicode__(self):
         return self.user.username
@@ -43,10 +42,9 @@ class UKDemographicsSurvey(models.Model):
 class UKDemographicsSurveyForm(ModelForm):
     age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
     sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
-    occupation = forms.CharField(max_length=30, label="Please indicate your occupation.", required=False)
     education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, an undergraduate degree?", required=False)
     education_undergrad_major = forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
-    education_undergrad_year = forms.CharField( widget=forms.Select(choices=STANDING_CHOICES), label="What is your class standing?", required=False)
+    education_undergrad_year = forms.CharField( widget=forms.Select(choices=YEAR_CHOICES), label="What year are you in?", required=False)
     
     
     def clean(self):
