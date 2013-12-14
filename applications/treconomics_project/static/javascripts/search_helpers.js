@@ -53,24 +53,6 @@ $(function() {
 });
 
 /*
-Controls the grey-out box. Allows you to turn it on, turn it off, and display a custom message in the box.
-*/
-/*
-function controlGreyOutBox(enable, message) {
-    if (message) {
-        $('#full-grey-out-message').text(message);
-    }
-
-    if (enable) {
-        $('#full-grey-out').css('display', 'block');
-    }
-    else {
-        $('#full-grey-out').css('display', 'none');
-    }
-}
-*/
-
-/*
 A helper function to enable or disable interaction with the user interface.
 If enableInterface is set to true, the interface can be interacted with.
 Otherwise, form fields and buttons are disabled, as well as document hit links.
@@ -81,7 +63,6 @@ function changeInteractionStatus(enableInterface) {
 
     if (enableInterface) {
         INTERFACE_ENABLED = true;
-        console.log("Interface to be enabled.");
 
         // Turn off the progress cursor
         $('*').css('cursor', 'auto');
@@ -105,7 +86,6 @@ function changeInteractionStatus(enableInterface) {
     }
     else {
         INTERFACE_ENABLED = false;
-        console.log("Interface to be disabled.");
 
         // Turn on the progress cursor
         $('*').css('cursor', 'progress');
@@ -148,6 +128,26 @@ function bindDocumentClicks() {
 
                 if (delay > 0) {
                     changeInteractionStatus(false);
+
+                    // Gather information for, and initiate, an AJAX call to indicate that the result is delayed.
+                    var parent = $(event.target).closest('div[class="search_result"]');
+                    var trecID = $(parent[0]).attr('id');
+                    var whooshID = $(parent[0]).attr('whooshid');
+                    var rank = $(parent[0]).attr('rank');
+                    var page = $(parent[0]).attr('page');
+
+                    $.ajax({
+                        url: '/treconomics/docview_delay/',
+                        data: {'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
+                    }).fail(function(data) {
+                        var responseData = $.parseJSON(data.responseText);
+
+                        if ('timeout' in responseData) {
+                            alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                            window.location = '/treconomics/next/';
+                        }
+                    });
+
                     setTimeout(function() {window.location = targetURL;}, (delay * 1000));
                 }
                 else {
@@ -208,33 +208,6 @@ function bindResultHovering() {
 
 function bindFormSubmit() {
     $('#search_form').submit(function(event) {
-        console.log("Search form submitted.");
         changeInteractionStatus(false);
     });
 }
-
-/*
-function formSubmit() {
-    $("#search_form").submit(function(event) {
-        // Only show the waiting box when a delay is enforced
-        if (($('#delay_results').val() != "") && (parseInt($('#delay_results').val()) > 0)) {
-            controlGreyOutBox(true, "Retrieving results...");
-        }
-
-        // If they are present, close all autocomplete boxes upon form submission.
-
-        if ($('.searchbox').hasClass('ui-autocomplete-input')) {
-            $('.searchbox').autocomplete('close');
-        }
-
-        if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
-            $('.smallsearchbox').autocomplete('close');
-        }
-
-        if ($('#is_fast').val() == 'true') {
-            $('#search-button').prop('value', '...');
-            $('#search-button').prop('disabled', 'disabled');
-        }
-    });
-}
-*/

@@ -810,6 +810,44 @@ def view_log_hover(request):
     return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 @login_required
+def docview_delay(request):
+    """
+    Logs when a user clicks on a document, but is delayed from viewing the document.
+    """
+    if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
+
+    ec = get_experiment_context(request)
+
+    uname = ec['username']
+    taskid = ec['taskid']
+    u = User.objects.get(username=uname)
+
+    rank = request.GET.get('rank')
+    page = request.GET.get('page')
+    trec_id = request.GET.get('trecID')
+    whoosh_id = request.GET.get('whooshID')
+    doc_length = ixr.doc_field_length(long(whoosh_id), 'content')
+
+    try:
+        examined = DocumentsExamined.objects.get(user=u, task=taskid, doc_num=trec_id)
+        judgement = examined.judgement
+    except ObjectDoesNotExist:
+        judgement = -2
+
+    log_event(event="DOCUMENT_DELAY_VIEW",
+              request=request,
+              whooshid=whoosh_id,
+              trecid=trec_id,
+              rank=rank,
+              page=page,
+              judgement=judgement,
+              doc_length=doc_length)
+
+    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+
+@login_required
 def suggestion_selected(request):
     """
     Called when a suggestion is selected from the suggestion interface.
