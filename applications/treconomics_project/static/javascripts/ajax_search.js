@@ -130,6 +130,10 @@ function getHashValue(key) {
 Function which processes the AJAX request. Sends the request and displays the results on the page.
 */
 function processRequest(serializedFormData, noDelay) {
+    if (INTERFACE_ENABLED) {
+        changeInteractionStatus(false);
+    }
+
     if (noDelay) {
         serializedFormData += '&noDelay=true';
     }

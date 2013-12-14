@@ -361,6 +361,9 @@ p.summary {
     color: black;
 }
 
+.navButton {
+    cursor: pointer;
+}
 
 .searchbox {
 	border: 1px solid #999;

@@ -101,6 +101,7 @@ function changeInteractionStatus(enableInterface) {
 
         // Enable the previous/next buttons
         $('.navButton').removeAttr('disabled');
+        $('.navButton').css('cursor', 'pointer');
     }
     else {
         INTERFACE_ENABLED = false;
@@ -122,6 +123,8 @@ function changeInteractionStatus(enableInterface) {
 
         // Disable the previous/next buttons
         $('.navButton').attr('disabled', 'disabled');
+        $('.navButton').css('background-color', '#8B3A3A');
+        $('.navButton').css('color', 'white');
     }
 
 }
