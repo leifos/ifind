@@ -11,7 +11,7 @@ from ifind.search.cache import RedisConn
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineConnectionException, QueryParamException
 
-class WhooshTrecNews(Engine):
+class WhooshTrecNewsRedis(Engine):
     """
     An updated Whoosh ifind engine.
     Implementing the new way of poking the postings file by @leifos, and also some tasty Redis caching.

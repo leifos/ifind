@@ -1,7 +1,7 @@
 import os
 import timeit
 from ifind.search.query import Query
-from ifind.search.engines.whooshtrecnewsupdated import WhooshTrecNews
+from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
 
 # Paths
 work_dir = os.getcwd()
@@ -14,7 +14,7 @@ top = 10
 ignore_terms = ['and', 'or', 'not']
 
 # Engine
-engine = WhooshTrecNews(whoosh_index_dir=whoosh_index_dir)
+engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir)
 
 def get_query_list():
 	input_file = open(query_file, 'r')
