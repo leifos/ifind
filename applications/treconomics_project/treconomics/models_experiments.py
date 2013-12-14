@@ -19,31 +19,64 @@ YES_NO_CHOICES = (
     ('Y','Yes'),('N','No')
 )
 
+STANDING_CHOICES = ( ('','Not Specified'),
+    ('Freshman','Freshman'),('Sophomore','Sophomore'),('Junior','Junior'),('Senior','Senior') 
+)
 
-class DemographicsSurvey(models.Model):
+YEAR_CHOICES = ( ('','Not Specified'),
+    ('1','First Year'), ('2','Second Year'), ('3','Third Year'), ('4','Fourth Year') ,('5','Fifth Year') 
+)
+
+
+class UKDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0,help_text="Please provide your age (in years).")
     sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
     occupation = models.CharField(max_length=50, help_text="Please indicate your occupation.")
-    english_first_lang = models.CharField(max_length=1, help_text="Is English your first language?")
     education_undergrad = models.CharField(max_length=1,default="N")
     education_undergrad_major = models.CharField(max_length=100, default="")
-    education_postgrad = models.CharField(max_length=1,default="N")
-    education_postgrad_major = models.CharField(max_length=100, default="")
-
+    education_undergrad_year = models.CharField(max_length=6,default="")
 
     def __unicode__(self):
         return self.user.username
 
-class DemographicsSurveyForm(ModelForm):
+class UKDemographicsSurveyForm(ModelForm):
     age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
     sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
     occupation = forms.CharField(max_length=30, label="Please indicate your occupation.", required=False)
-    english_first_lang = forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Is English your first language?", required=False)
     education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, an undergraduate degree?", required=False)
-    education_undergrad_major =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
-    education_postgrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, a postgraduate degree?", required=False)
-    education_postgrad_major =forms.CharField( widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), max_length=100,label="If Yes, what is/was your subject area?", required=False)
+    education_undergrad_major = forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
+    education_undergrad_year = forms.CharField( widget=forms.Select(choices=STANDING_CHOICES), label="What is your class standing?", required=False)
+    
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if not cleaned_data.get("age"):
+            cleaned_data["age"] = 0
+            print "clean age"
+        return cleaned_data
+
+    class Meta:
+        model = UKDemographicsSurvey
+        exclude = ('user',)
+
+class USDemographicsSurvey(models.Model):
+    user = models.ForeignKey(User)
+    age = models.IntegerField(default=0,help_text="Please provide your age (in years).")
+    sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
+    education_undergrad = models.CharField(max_length=1,default="N")
+    education_undergrad_major = models.CharField(max_length=100, default="")
+    education_standing = models.CharField(max_length=30, default="")
+
+    def __unicode__(self):
+        return self.user.username
+
+class USDemographicsSurveyForm(ModelForm):
+    age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
+    sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
+    education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, an undergraduate degree?", required=False)
+    education_undergrad_major = forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
+    education_standing = forms.CharField( widget=forms.Select(choices=STANDING_CHOICES), label="What is your class standing?", required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -52,16 +85,10 @@ class DemographicsSurveyForm(ModelForm):
             print "clean age"
         return cleaned_data
 
-    #def clean_education_high_school_years(self):
-    #    years = self.cleaned_data.get('education_high_school_years')
-    #   if years is None:
-    #        return 0
-    #    else:
-    #        return years
-
     class Meta:
-        model = DemographicsSurvey
+        model = USDemographicsSurvey
         exclude = ('user',)
+
 
 
 NASA_LOW_CHOICES = ( (1,'Very Low'), (2,''), (3,''), (4,''), (5,''), (6,''), (7,''), (8,''), (9,''), (10,''), (11,''), (12,''), (13,''), (14,''), (15,''), (16,''), (17,''), (18,''), (19,''), (20,''), (21,'Very High') )
@@ -366,6 +393,16 @@ class ShortStressSurvey(models.Model):
     stress_reflecting  = models.IntegerField(default=0)
     stress_concerned  = models.IntegerField(default=0)
     stress_committed  = models.IntegerField(default=0)
+    stress_annoyed = models.IntegerField(default=0)
+    stress_impatient = models.IntegerField(default=0)
+    stress_self_conscious  = models.IntegerField(default=0)
+    stress_daydreaming = models.IntegerField(default=0)
+    stress_control = models.IntegerField(default=0)
+    stress_sad = models.IntegerField(default=0)
+    stress_active = models.IntegerField(default=0)
+    stress_motivated = models.IntegerField(default=0)
+    stress_dissatisfied = models.IntegerField(default=0)
+    stress_performance = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.user.username
@@ -385,6 +422,16 @@ class ShortStressSurveyForm(ModelForm):
     stress_reflecting = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm reflecting about myself.", required=False)
     stress_concerned = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt concerned about the impression I was making.", required=False)
     stress_committed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt committed to succeed to these tasks.", required=False)
+    stress_annoyed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt annoyted while I was completing these tasks.", required=False)
+    stress_impatient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt impatient while I was completing these tasks.", required=False)
+    stress_self_conscious  = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I feel self-conscious.", required=False)
+    stress_daydreaming = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm daydreaming about myself.", required=False)
+    stress_control = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt in control of things.", required=False)
+    stress_sad = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt sad while I was completing these tasks.", required=False)
+    stress_active = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt active while I was completing these tasks.", required=False)
+    stress_motivated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt motivated to do these tasks.", required=False)
+    stress_dissatisfied = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt dissatisfied while I was completing these tasks.", required=False)
+    stress_performance = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I was committed to attaining my performance goals for these search tasks.", required=False)
 
 
     def clean(self):
@@ -399,6 +446,7 @@ class ConceptListingSurvey(models.Model):
     user = models.ForeignKey(User)
     task_id = models.IntegerField(default=0)
     topic_num = models.IntegerField(default=0)
+    when = models.CharField(max_length=4, default='')
     concepts  = models.TextField(default=0)
     paragraph  = models.TextField(default=0)
 
@@ -415,7 +463,7 @@ class ConceptListingSurveyForm(ModelForm):
 
     class Meta:
         model = ConceptListingSurvey
-        exclude = ('user','task_id','topic_num')
+        exclude = ('user','task_id','topic_num','when')
 
 
 class PostConceptListingSurvey(ConceptListingSurvey):

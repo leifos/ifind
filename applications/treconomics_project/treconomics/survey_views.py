@@ -15,7 +15,8 @@ from experiment_functions import get_experiment_context
 from experiment_functions import log_event
 
 
-from models_experiments import DemographicsSurvey, DemographicsSurveyForm
+from models_experiments import UKDemographicsSurvey, UKDemographicsSurveyForm
+from models_experiments import USDemographicsSurvey, USDemographicsSurveyForm
 from models_experiments import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
 from models_experiments import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
 from models_experiments import NasaSystemLoad, NasaSystemLoadForm
@@ -58,8 +59,12 @@ def view_search_efficacy_survey( request ):
     return handle_survey(request, SearchEfficacyForm, 'SELF_SEARCH_EFFICACY', '/treconomics/searchefficacysurvey/', 'survey/search_efficacy_survey.html')
 
 @login_required
-def view_demographics_survey( request ):
-    return handle_survey(request, DemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/demographicssurvey/', 'survey/demographics_survey.html')
+def view_demographics_survey( request, country ):
+    
+    if country == 'US':
+        return handle_survey(request, USDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/demographicssurvey/US/', 'survey/demographics_survey.html')
+    else:
+        return handle_survey(request, UKDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/demographicssurvey/UK/', 'survey/demographics_survey.html')
 
 @login_required
 def view_nasa_load_survey( request ):
@@ -92,7 +97,7 @@ def view_concept_listing_survey( request ):
 
 
 @login_required
-def view_concept_listing_survey(request, taskid):
+def view_concept_listing_survey(request, taskid, when):
     context = RequestContext(request)
     # Set the tasks id manually from request
     request.session['taskid']  = taskid
@@ -114,6 +119,7 @@ def view_concept_listing_survey(request, taskid):
             obj.user = u
             obj.task_id = ec["taskid"]
             obj.topic_num = ec["topicnum"]
+            obj.when = when
             obj.save()
             log_event(event="CONCEPT_LISTING_COMPLETED", request=request)
             return HttpResponseRedirect('/treconomics/next/')
@@ -126,7 +132,7 @@ def view_concept_listing_survey(request, taskid):
         survey = ConceptListingSurveyForm()
 
 
-    action = '/treconomics/conceptlistingsurvey/'+taskid+'/'
+    action = '/treconomics/conceptlistingsurvey/'+taskid+'/' + when +'/'
 
     # provide link to search interface / next system
     return render_to_response('survey/concept_listing_survey.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey, 'action': action, 'errors' : errors  }, context)

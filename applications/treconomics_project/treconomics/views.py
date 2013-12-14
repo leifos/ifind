@@ -4,12 +4,14 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from models import DocumentsExamined
 from models import TaskDescription
-from models_experiments import DemographicsSurvey
+from models_experiments import USDemographicsSurvey, UKDemographicsSurvey
 from models_experiments import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
 from models_experiments import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
 
 from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad
 from models_experiments import SearchEfficacy
+from models_experiments import ConceptListingSurvey
+from models_experiments import ShortStressSurvey
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -32,12 +34,15 @@ def view_reset_test_users(request):
         docs = DocumentsExamined.objects.filter(user=temp_user).delete()
         pre_tasks = PreTaskTopicKnowledgeSurvey.objects.filter(user=temp_user).delete()
         post_tasks = PostTaskTopicRatingSurvey.objects.filter(user=temp_user).delete()
-        demo = DemographicsSurvey.objects.filter(user=temp_user).delete()
+        USdemo = USDemographicsSurvey.objects.filter(user=temp_user).delete()
+        UKdemo = USDemographicsSurvey.objects.filter(user=temp_user).delete()
         nasa = NasaSystemLoad.objects.filter(user=temp_user).delete()
         nasaq = NasaQueryLoad.objects.filter(user=temp_user).delete()
         nasan = NasaNavigationLoad.objects.filter(user=temp_user).delete()
         nasaa = NasaAssessmentLoad.objects.filter(user=temp_user).delete()
         eff = SearchEfficacy.objects.filter(user=temp_user).delete()
+        stess = ShortStressSurvey.objects.filter(user=temp_user).delete()
+        concepts = ConceptListingSurvey.objects.filter(user=temp_user).delete()
         request.session['current_step'] = '0'
     return HttpResponse("<script type='text/javascript'>setTimeout(function(){window.location='/treconomics/'}, 1500);</script>Test users reset, redirecting to login...")
 
@@ -365,6 +370,18 @@ def view_session_completed(request):
     print "SESSION COMPLETED"
     log_event(event="SESSION_COMPLETED", request=request)
     return render_to_response('base/session_completed.html', {'participant': uname, 'condition': condition }, context)
+
+@login_required
+def view_commence_session(request):
+    context = RequestContext(request)
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    print "SESSION COMMENCED"
+    log_event(event="SESSION_COMMENCED", request=request)
+    return render_to_response('base/session_commenced.html', {'participant': uname, 'condition': condition }, context)
+
+
 
 
 @login_required

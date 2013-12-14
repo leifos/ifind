@@ -3,7 +3,7 @@ __author__ = 'leif'
 from models import DocumentsExamined
 from models import UserProfile
 from models import TaskDescription, TopicQuerySuggestion
-from models_experiments import DemographicsSurvey
+from models_experiments import USDemographicsSurvey, UKDemographicsSurvey
 from models_experiments import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
 from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
 from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey
@@ -56,7 +56,8 @@ admin.site.register(DocumentsExamined)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(TaskDescription, TaskDescriptionAdmin)
 admin.site.register(TopicQuerySuggestion, TopicQuerySuggestionAdmin)
-admin.site.register(DemographicsSurvey, UserSurveyAdmin)
+admin.site.register(USDemographicsSurvey, UserSurveyAdmin)
+admin.site.register(UKDemographicsSurvey, UserSurveyAdmin)
 admin.site.register(PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyAdmin)
 admin.site.register(PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyAdmin)
 admin.site.register(NasaSystemLoad, NasaLoadAdmin)

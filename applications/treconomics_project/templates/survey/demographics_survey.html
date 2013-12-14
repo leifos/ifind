@@ -43,10 +43,7 @@
     var frmvalidator = new Validator("survey_form");
     frmvalidator.addValidation("id_age", "req", "Please provide your age (in years).");
     frmvalidator.addValidation("id_sex", "req", "Please indicate your sex.");
-    frmvalidator.addValidation("id_occupation", "req", "Please indicate your occupation.");
-    frmvalidator.addValidation("id_english_first_lang", "req", "Is English your first language?");
     frmvalidator.addValidation("id_education_undergrad", "req", "Are you undertaking or have you obtained an undergraduate degree?");
-    frmvalidator.addValidation("id_education_postgrad", "req", "Are you undertaking or have you obtained a postgraduate degree?");
 
     frmvalidator.EnableOnPageErrorDisplaySingleBox();
     frmvalidator.EnableMsgsTogether();
