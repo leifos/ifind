@@ -29,6 +29,6 @@ class TrecQrelHandler(TopicDocumentFileHandler):
     def _get_out_line(self, topic, doc):
         # outputs the topic document and value as the TREC QREL Format with iteration default to zero
         return "%s 0 %s %d\n" % (topic, doc, self.data[topic][doc])
-
-
+    
+    
 

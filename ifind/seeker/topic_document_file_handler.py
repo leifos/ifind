@@ -82,3 +82,6 @@ class TopicDocumentFileHandler(object):
             self.data[topic][doc] = self.data[topic][doc] + value
         else:
             self.data[topic][doc] = value
+
+    def __str__(self):
+        return  'TOPICS READ IN: ' + str(len(self.data))

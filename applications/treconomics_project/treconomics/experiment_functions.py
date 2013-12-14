@@ -16,7 +16,6 @@ from django.conf import settings
 settings_timezone = timezone(settings.TIME_ZONE)
 qrels = TrecQrelHandler(qrels_file)
 
-
 def get_experiment_context(request):
     ec = {}
     ec["username"] = request.user.username
@@ -80,9 +79,6 @@ def time_search_experiment_out(request):
             return True
         else:
             return False
-
-
-
 
 def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0, metrics=None):
     ec = get_experiment_context(request)
@@ -193,7 +189,6 @@ def getPerformance(username, topic_num):
 
 
 def getQueryResultPerformance(results, topic_num):
-
     i = 0
     rels_found = 0
     for r in results:
@@ -201,8 +196,6 @@ def getQueryResultPerformance(results, topic_num):
         val = qrels.get_value(topic_num, r.docid)
         if val > 0:
             rels_found = rels_found + 1
-
-
     return [rels_found, i]
 
 def get_topic_relevant_count(topic_num):
