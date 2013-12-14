@@ -41,7 +41,7 @@ function switchToPage(url, noPerf) {
     var page_interface = $('#interface_type');
     var pageNumber = getPageNumber(url);
 
-    $('*').css('cursor', 'progress');
+    //$('*').css('cursor', 'progress');
 
     if (parseInt(page_interface.val()) == 1) {
         if (interface1Querystring != "") {
@@ -147,8 +147,8 @@ function processRequest(serializedFormData, noDelay) {
         var results_nav = $('div.results_nav');
         results_nav.empty(); // Remove all children from the navigation button container
 
-        $('#search-button').prop('value', 'Search');
-        $('#search-button').removeAttr('disabled');
+        //$('#search-button').prop('value', 'Search');
+        //$('#search-button').removeAttr('disabled');
 
         if ('no_results' in data) {
             alert('No search term(s) were provided.');
@@ -200,9 +200,10 @@ function processRequest(serializedFormData, noDelay) {
 
         bindDocumentClicks();
         bindResultHovering(); // Bind hovering actions to the new document elements.
-        controlGreyOutBox(false);
+        //controlGreyOutBox(false);
+        changeInteractionStatus(true);
         $('body').scrollTop(0);
-        $('*').css('cursor', 'auto');
+        //$('*').css('cursor', 'auto');
     });
 
     posting.fail(function(data) {

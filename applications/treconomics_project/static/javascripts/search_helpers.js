@@ -8,6 +8,8 @@ Revision: 1
 
 */
 
+var INTERFACE_ENABLED = true;
+
 function disableClick(event) {
     if (event.button==2) {
         return false;
@@ -17,27 +19,33 @@ function disableClick(event) {
 $(function() {
     bindDocumentClicks();
     bindResultHovering();
-    formSubmit();
+    bindFormSubmit();
 
     if ($('#query')) {
         $('#query').focus();
     }
 
     $('.searchbox, .smallsearchbox').keypress(function(e) {
-        var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (INTERFACE_ENABLED) {
+            var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 
-        if (e.charCode == 13) {
-            //$('#search_form').submit();
-            return true;
+            if (e.charCode == 13) {
+                //$('#search_form').submit();
+                return true;
+            }
+
+            if (regex.test(str)) {
+                return true;
+            }
+
+            e.preventDefault();
+            return false;
         }
-
-        if (regex.test(str)) {
-            return true;
+        else {
+            e.preventDefault();
+            return false;
         }
-
-        e.preventDefault();
-        return false;
     });
 
     $('body').attr('oncontextmenu', 'return false');
@@ -47,6 +55,7 @@ $(function() {
 /*
 Controls the grey-out box. Allows you to turn it on, turn it off, and display a custom message in the box.
 */
+/*
 function controlGreyOutBox(enable, message) {
     if (message) {
         $('#full-grey-out-message').text(message);
@@ -59,7 +68,63 @@ function controlGreyOutBox(enable, message) {
         $('#full-grey-out').css('display', 'none');
     }
 }
+*/
 
+/*
+A helper function to enable or disable interaction with the user interface.
+If enableInterface is set to true, the interface can be interacted with.
+Otherwise, form fields and buttons are disabled, as well as document hit links.
+*/
+function changeInteractionStatus(enableInterface) {
+    var delay_results = parseInt($('#delay_results').val());
+    var delay_docview = parseInt($('#delay_docview').val());
+
+    if (enableInterface) {
+        INTERFACE_ENABLED = true;
+        console.log("Interface to be enabled.");
+
+        // Turn off the progress cursor
+        $('*').css('cursor', 'auto');
+
+        // Turn on the search button
+        $('#search-button').removeAttr('disabled');
+        $('#search-button').attr('value', 'Search');
+        $('#search-button').css('background-color', '#EEEEEE');
+        $('#search-button').css('color', '#666666');
+        $('#search-button').css('cursor', 'pointer');
+
+        // Enable the query field(s)
+        $('.searchbox, .smallsearchbox').removeAttr('disabled');
+
+        // Remove the spinner from the first query field
+        $('#query').css('background', 'none');
+
+        // Enable the previous/next buttons
+        $('.navButton').removeAttr('disabled');
+    }
+    else {
+        INTERFACE_ENABLED = false;
+        console.log("Interface to be disabled.");
+
+        // Turn on the progress cursor
+        $('*').css('cursor', 'progress');
+
+        // Turn off the search button
+        $('#search-button').attr('disabled', 'disabled');
+        $('#search-button').attr('value', 'Loading...');
+        $('#search-button').css('background-color', '#8B3A3A');
+        $('#search-button').css('color', 'white');
+
+        // Add the spinner to the first query field
+        $('#query').css('background', 'url(\'/static/images/spinner.gif\')');
+        $('#query').css('background-repeat', 'no-repeat');
+        $('#query').css('background-position', 'right');
+
+        // Disable the previous/next buttons
+        $('.navButton').attr('disabled', 'disabled');
+    }
+
+}
 
 /*
 Binds anchor clicks with class doc-link with the following code.
@@ -69,21 +134,26 @@ function bindDocumentClicks() {
     $('.doc-link').click(
         function(event) {
             event.preventDefault();
-            var delay = parseInt($('#delay_docview').val());
-            var targetURL = event.target.href;
 
-            if (delay == "") {
-                delay = 0;
-            }
+            if (INTERFACE_ENABLED) {
+                var delay = parseInt($('#delay_docview').val());
+                var targetURL = event.target.href;
 
-            if (delay > 0) {
-                controlGreyOutBox(true, "Downloading document...");
-                setTimeout(function() {window.location = targetURL;}, (delay * 1000));
+                if (delay == "") {
+                    delay = 0;
+                }
+
+                if (delay > 0) {
+                    changeInteractionStatus(false);
+                    setTimeout(function() {window.location = targetURL;}, (delay * 1000));
+                }
+                else {
+                    window.location = targetURL;
+                }
             }
             else {
-                window.location = targetURL;
+                alert("We're processing your previous request; please wait.");
             }
-
     });
 }
 
@@ -133,6 +203,14 @@ function bindResultHovering() {
     });
 }
 
+function bindFormSubmit() {
+    $('#search_form').submit(function(event) {
+        console.log("Search form submitted.");
+        changeInteractionStatus(false);
+    });
+}
+
+/*
 function formSubmit() {
     $("#search_form").submit(function(event) {
         // Only show the waiting box when a delay is enforced
@@ -156,3 +234,4 @@ function formSubmit() {
         }
     });
 }
+*/

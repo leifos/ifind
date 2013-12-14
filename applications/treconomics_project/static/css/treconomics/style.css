@@ -323,8 +323,8 @@ p.summary {
 	}
 
 .button:hover {
-	background: #fff;
-	color: black;
+	background: #fff !important;
+	color: black !important;
 	}
 
 .largebutton {
