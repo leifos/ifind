@@ -17,7 +17,7 @@ class WhooshTrecNewsRedis(Engine):
     Implementing the new way of poking the postings file by @leifos, and also some tasty Redis caching.
     """
 
-    def __init__(self, whoosh_index_dir='', use_cache=True, **kwargs):
+    def __init__(self, whoosh_index_dir='', use_cache=True, cache_host='localhost', cache_port=6379, **kwargs):
         """
         Constructor for the engine.
         """
@@ -29,7 +29,7 @@ class WhooshTrecNewsRedis(Engine):
 
         self.use_cache = use_cache
         if self.use_cache:
-            self.cache = RedisConn()
+            self.cache = RedisConn(host=cache_host, port=cache_port)
             self.cache.connect()
 
         #  Only put PL2 in for now (for more, add the model parameter to the constructor to specify!)

@@ -43,7 +43,7 @@ class RedisConn(object):
         """
         try:
             ping_result = redis.StrictRedis(host=self.host, port=self.port, password=self.password).ping()
-            print "CACHE: ping result - {0}".format(ping_result)
+            #print "CACHE: ping result - {0}".format(ping_result)
         except redis.ConnectionError:
             raise CacheConnectionException(MODULE, "Failed to establish connection to "
                                                    "redis server @ {0}:{1}".format(self.host, self.port))
