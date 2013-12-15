@@ -83,6 +83,9 @@ function changeInteractionStatus(enableInterface) {
         // Enable the previous/next buttons
         $('.navButton').removeAttr('disabled');
         $('.navButton').css('cursor', 'pointer');
+
+        // Rebind hover events
+        bindResultHovering();
     }
     else {
         INTERFACE_ENABLED = false;
@@ -105,6 +108,10 @@ function changeInteractionStatus(enableInterface) {
         $('.navButton').attr('disabled', 'disabled');
         $('.navButton').css('background-color', '#8B3A3A');
         $('.navButton').css('color', 'white');
+
+        // Remove hover bindings
+        console.log('unbind');
+        $('.search_result').unbind();
     }
 
 }
