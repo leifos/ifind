@@ -351,7 +351,10 @@ def search(request, taskid=-1):
         result_dict['application_root'] = '/treconomics/'
         result_dict['ajax_search_url'] = 'searcha/'
         result_dict['autocomplete'] = experiment_setups[condition].autocomplete
-        result_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
+        result_dict['is_fast'] = 'true'
+
+        if experiment_setups[condition].delay_results == 0:
+            result_dict['is_fast'] = 'false'
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
@@ -421,7 +424,10 @@ def search(request, taskid=-1):
                 result_dict['ajax_search_url'] = 'searcha/'
                 result_dict['autocomplete'] = experiment_setups[condition].autocomplete
                 result_dict['page'] = page
-                result_dict['is_fast'] = 'true' if experiment_setups[condition].delay_results == 0 else 'false'
+                result_dict['is_fast'] = 'true'
+
+                if experiment_setups[condition].delay_results == 0:
+                    result_dict['is_fast'] = 'false'
 
                 if interface == 3:
                         # getQuerySuggestions(topic_num)

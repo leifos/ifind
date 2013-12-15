@@ -11,7 +11,7 @@ Revision: 1
 var INTERFACE_ENABLED = true;
 
 function disableClick(event) {
-    if (event.button==2) {
+    if (event.button == 2) {
         return false;
     }
 }
@@ -110,8 +110,16 @@ function changeInteractionStatus(enableInterface) {
         $('.navButton').css('color', 'white');
 
         // Remove hover bindings
-        console.log('unbind');
         $('.search_result').unbind();
+
+        // Hide any autocomplete suggestion boxes
+        if ($('.searchbox').hasClass('ui-autocomplete-input')) {
+            $('.searchbox').autocomplete('close');
+        }
+
+        if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
+            $('.smallsearchbox').autocomplete('close');
+        }
     }
 
 }
