@@ -49,11 +49,11 @@
 <div class="result_nav">
 	<center><form>
 	{% if prev_page_show %}
-	<input  class="navButton largebutton" type="button" onClick="parent.location='{{prev_page_link}}'" value="Prev. Page" />
+	<input  class="navButton largebutton" type="button" onClick="parent.location='{{prev_page_link}}'; changeInteractionStatus(false);" value="Prev. Page" />
 	    <!-- a href="{{prev_page_link}}">Prev Page</a--> &nbsp;&nbsp;
 	{% endif %}
 	{% if next_page_show %}
-    <input  class="navButton largebutton" type="button" onClick="parent.location='{{next_page_link}}'" value="Next Page" />
+    <input  class="navButton largebutton" type="button" onClick="parent.location='{{next_page_link}}'; changeInteractionStatus(false);" value="Next Page" />
 	    <!-- a href="{{next_page_link}}">Next Page</a -->
 	{% endif %}
 	</form></center>
