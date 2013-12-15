@@ -146,10 +146,10 @@ exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '
 
 exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367', topics=['347', '435', ], rpp=10, interface=1, description='structured condition bm25')
 exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367',  topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25')
-exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 no delay', trie=suggestion_trie, autocomplete=True)
-exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 query delay', delay_results=5, trie=suggestion_trie, autocomplete=True)
-exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True)
-exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True)
+exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 no delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 query delay', delay_results=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=20)
 
 
 # these correspond to conditions

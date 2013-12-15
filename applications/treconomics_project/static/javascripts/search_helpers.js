@@ -154,13 +154,13 @@ function bindDocumentClicks() {
                     $.ajax({
                         url: '/treconomics/docview_delay/',
                         data: {'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
-                    }).fail(function(data) {
-                        var responseData = $.parseJSON(data.responseText);
+                        }).fail(function(data) {
+                            var responseData = $.parseJSON(data.responseText);
 
-                        if ('timeout' in responseData) {
-                            alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-                            window.location = '/treconomics/next/';
-                        }
+                            if ('timeout' in responseData) {
+                                alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                                window.location = '/treconomics/next/';
+                            }
                     });
 
                     setTimeout(function() {window.location = targetURL;}, (delay * 1000));

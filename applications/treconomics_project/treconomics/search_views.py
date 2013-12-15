@@ -727,6 +727,10 @@ def ajax_interface1_querystring(request):
 
 @login_required
 def view_log_query_focus(request):
+    if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
+
     context = RequestContext(request)
     log_event(event='QUERY_FOCUS', request=request)
     return HttpResponse(1)
@@ -872,6 +876,10 @@ def suggestion_hover(request):
     """
     Called when a user hovers over a query suggestion.
     """
+    if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
+
     suggestion = request.GET.get('suggestion')
     rank = int(request.GET.get('rank'))
 
@@ -887,6 +895,10 @@ def autocomplete_suggestion(request):
     # This will yield us access to the autocomplete trie!
     ec = get_experiment_context(request)
     condition = ec['condition']
+
+    if time_search_experiment_out(request):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
+        return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
 
     if request.GET.get('suggest'):
         results = []

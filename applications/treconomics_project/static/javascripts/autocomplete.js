@@ -146,8 +146,23 @@ $(function() {
 
             $.ajax({
                 url: '/treconomics/suggestion_hover/',
-                data: {'suggestion': suggestion, 'rank': rank}
-            });
+                dataType: "json",
+                data: {
+                    suggestion: suggestion,
+                    rank: rank
+                },
+                error: function(data) {
+                    // If the experiment's time has been reached, we alert the user and redirect.
+                    var responseData = $.parseJSON(data.responseText);
+
+                    if ('timeout' in responseData) {
+                        alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                        window.location = APP_ROOT + 'next/';
+                    }
+                    else {
+                        console.log("Server error on AJAX request: " + data.responseText);
+                    }
+            }});
         },
         select: function(event, ui) {
             event.preventDefault();
@@ -179,10 +194,31 @@ $(function() {
             event.target.value = newFieldValue;
 
             // Log the event - the user has selected a new word, query is now...
+            //$.ajax({
+            //    url: APP_ROOT + 'suggestion_selected/',
+            //    data: {'added_term': selectedItem, 'new_query': newFieldValue}
+            //});
+
+
             $.ajax({
-                url: APP_ROOT + 'suggestion_selected/',
-                data: {'added_term': selectedItem, 'new_query': newFieldValue}
-            });
+                url: '/treconomics/suggestion_selected/',
+                dataType: "json",
+                data: {
+                    added_term: selectedItem,
+                    new_query: newFieldValue
+                },
+                error: function(data) {
+                    // If the experiment's time has been reached, we alert the user and redirect.
+                    var responseData = $.parseJSON(data.responseText);
+
+                    if ('timeout' in responseData) {
+                        alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                        window.location = APP_ROOT + 'next/';
+                    }
+                    else {
+                        console.log("Server error on AJAX request: " + data.responseText);
+                    }
+            }});
       }
     });
 

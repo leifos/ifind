@@ -197,8 +197,8 @@ function processRequest(serializedFormData, noDelay) {
             }
         }
 
-        bindDocumentClicks();
-        bindResultHovering(); // Bind hovering actions to the new document elements.
+        //bindDocumentClicks();
+        //bindResultHovering(); // Bind hovering actions to the new document elements.
         changeInteractionStatus(true);
         $('body').scrollTop(0);
     });
