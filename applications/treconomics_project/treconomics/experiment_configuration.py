@@ -135,7 +135,7 @@ bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 #bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
 #tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
 
-pl2 = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
+pl2cache = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)
