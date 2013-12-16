@@ -33,7 +33,7 @@ exp_work_flows = [
 '/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/',
  '/treconomics/shortstresssurvey/', '/treconomics/nasaloadsurvey/','/treconomics/nasafactorcomparesurvey/',
- '/treconomics/conceptlistingsurvey/1/PRE/','/treconomics/conceptlistingsurvey/2/PRE/','/treconomics/performance/','/treconomics/logout/'],
+'/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/US/',
  '/treconomics/prepracticetask/0/','/treconomics/search/0/','/treconomics/postpracticetask/0/',
  '/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
@@ -135,7 +135,7 @@ bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 #bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
 #tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
 
-new_engine = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir)
+pl2 = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)
@@ -146,10 +146,10 @@ exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '
 
 exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367', topics=['347', '435', ], rpp=10, interface=1, description='structured condition bm25')
 exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367',  topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25')
-exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 no delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
-exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 query delay', delay_results=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
-exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
-exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=new_engine, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=20)
+exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 no delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 query delay', delay_results=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 
 
 # these correspond to conditions

@@ -17,7 +17,7 @@ class WhooshTrecNews(Engine):
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, use_cache=True, interleave=False, interleave_continuous=False, **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, use_cache=False, interleave=False, interleave_continuous=False, **kwargs):
         """
         Whoosh engine constructor.
 
