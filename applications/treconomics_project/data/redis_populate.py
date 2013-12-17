@@ -102,17 +102,18 @@ def cache_queries():
     query_list = read_query_terms()
 
     for query in query_list:
-        query_start_time = timeit.default_timer()
-        print "-" * 80
-        print "> {0}".format(query)
+        if not (query.isspace() or query == ""):
+            query_start_time = timeit.default_timer()
+            print "-" * 80
+            print "> {0}".format(query)
 
-        query = Query(terms=query)
-        query.top = 10
-        query.skip = 1
+            query = Query(terms=query)
+            query.top = 10
+            query.skip = 1
 
-        ENGINE.search(query)
+            ENGINE.search(query)
 
-        print "  >> Elapsed time: {0:.2f} second(s)".format(timeit.default_timer() - query_start_time)
+            print "  >> Elapsed time: {0:.2f} second(s)".format(timeit.default_timer() - query_start_time)
 
     print "=" * 80
     print "> Total execution time: {0:.2f} seconds".format(timeit.default_timer() - execution_time)
