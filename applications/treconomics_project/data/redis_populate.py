@@ -108,7 +108,7 @@ def cache_queries():
 
         query = Query(terms=query)
         query.top = 10
-        query.skip = 300000000
+        query.skip = 1
 
         ENGINE.search(query)
 
