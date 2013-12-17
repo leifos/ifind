@@ -87,7 +87,7 @@ class WhooshTrecNewsRedis(Engine):
             highest_cached_page = self.__get_highest_cached_page(query)
 
             if highest_cached_page - query.skip < self.page_cache_when:  # Do we need to cache some more pages?
-                self.__add_to_page_cacher(query, (highest_cached_page + 1))
+                self.__add_to_page_cacher((highest_cached_page + 1), query, page_results)
 
             return parse_response(reader=self.reader,
                                  fieldname=self.parser.fieldname,
@@ -134,9 +134,9 @@ class WhooshTrecNewsRedis(Engine):
             highest_cached_page = self.__get_highest_cached_page(query)
 
             if highest_cached_page == -1:  # Cache pages from page 1.
-                self.__add_to_page_cacher(query, 1)
+                self.__add_to_page_cacher(1, query, sorted_results)
             elif highest_cached_page - query.skip < self.page_cache_when:  # Start caching from page x
-                self.__add_to_page_cacher(query, (highest_cached_page + 1))
+                self.__add_to_page_cacher((highest_cached_page + 1), query, sorted_results)
 
         return parse_response(reader=self.reader,
                               fieldname=self.parser.fieldname,
@@ -258,7 +258,7 @@ class WhooshTrecNewsRedis(Engine):
 
         return highest_page
 
-    def __add_to_page_cacher(self, query, start_page):
+    def __add_to_page_cacher(self, start_page, query, results):
         """
         Adds a page to the queue in the caching thread.
         If the thread is not started (i.e. it died because it got old), a new thread is started.
@@ -281,7 +281,8 @@ class WhooshTrecNewsRedis(Engine):
                                                                  cache_forward_look=self.page_cache_forward_look)
                 self.page_cache_controller.start()
 
-        self.page_cache_controller.add(query, start_page)
+        # We can only be certain here if the page caching thread is alive - so we can now add to its queue.
+        self.page_cache_controller.add(start_page, query, results)
 
 
 class PageCacheController(Thread):
@@ -335,47 +336,40 @@ class PageCacheController(Thread):
             try:
                 item = self.__queue.get(timeout=1)
                 ticks = 0
-                query = item[0]
-                start_page = item[1]
 
-                query_cache_key = get_cache_key(model_identifier=self.__scoring_model_identifier,
-                                                fieldname=self.__parser.fieldname,
-                                                term=query.terms,
-                                                key_type=1)
+                start_page = item[0]
+                query = item[1]
+                results = item[2]
 
-                results = self.__cache.get(query_cache_key)
-
-                # Loop for x pages and cache each page of results separately.
                 for curr_page in range(start_page, (start_page + self.__cache_forward_look)):
                     query.skip = curr_page
-
-                    page_results = get_page(query, results)
+                    page_results = get_page(query, results)  # Obtain results from the queue, not the cache.
+                                                             # Even though the caching starts before this, there is
+                                                             # no guarantee that the cache will be ready to service it!
 
                     if curr_page < page_results[1]:  # If this is not true, the page looked at is greater than
                                                      # the highest page of results; so we do not cache.
-
                         page_cache_key = get_cache_key(model_identifier=self.__scoring_model_identifier,
                                                        fieldname=self.__parser.fieldname,
                                                        term=query.terms,
                                                        key_type=2,
                                                        page=curr_page)
 
-                        self.__cache.store(page_cache_key, page_results)
+                        self.__cache.store(page_cache_key, page_results)  # Store the page.
                     else:
                         break
 
                 print "Pages {0} to {1} cached for '{2}'".format(start_page, curr_page, query.terms)
-
             except Queue.Empty:  # This is reached when we try look for an item in the queue and find nothing.
                                  # So we're one tick closer to death...
                 ticks = ticks + 1
                 continue
 
-    def add(self, query, start_page):
+    def add(self, start_page, query, results):
         """
         Adds an item to the queue for processing.
         """
-        self.__queue.put((query, start_page))
+        self.__queue.put((start_page, query, results))
 
 
 def get_cache_key(model_identifier, fieldname, term, key_type=0, page=0):
