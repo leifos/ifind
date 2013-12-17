@@ -353,7 +353,7 @@ class PageCacheController(Thread):
 
                     if curr_page < page_results[1]:  # If this is not true, the page looked at is greater than
                                                      # the highest page of results; so we do not cache.
-                        print "Cached page {0} for query '{1}'".format(curr_page, query.terms)
+
                         page_cache_key = get_cache_key(model_identifier=self.__scoring_model_identifier,
                                                        fieldname=self.__parser.fieldname,
                                                        term=query.terms,
@@ -361,6 +361,10 @@ class PageCacheController(Thread):
                                                        page=curr_page)
 
                         self.__cache.store(page_cache_key, page_results)
+                    else:
+                        break
+
+                print "Pages {0} to {1} cached for '{2}'".format(start_page, curr_page, query.terms)
 
             except Queue.Empty:  # This is reached when we try look for an item in the queue and find nothing.
                                  # So we're one tick closer to death...

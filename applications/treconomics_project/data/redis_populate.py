@@ -108,7 +108,7 @@ def cache_queries():
 
         query = Query(terms=query)
         query.top = 10
-        query.skip = 39
+        query.skip = 300000000
 
         ENGINE.search(query)
 
@@ -116,6 +116,7 @@ def cache_queries():
 
     print "=" * 80
     print "> Total execution time: {0:.2f} seconds".format(timeit.default_timer() - execution_time)
+    print "> Page caching thread will die shortly, or just kill the Python process."
 
 
 def read_query_terms():
