@@ -354,7 +354,7 @@ class PageCacheController(Thread):
                                                        term=query.terms,
                                                        key_type=2,
                                                        page=curr_page)
-
+                        
                         self.__cache.store(page_cache_key, page_results)  # Store the page.
                     else:
                         break

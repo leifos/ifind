@@ -16,7 +16,7 @@ class RedisConn(object):
 
     """
 
-    def __init__(self, host="localhost", port=6379, db=0, limit=1000, password=''):
+    def __init__(self, host="localhost", port=6379, db=0, limit=10000000, password=''):
 
         self.host = host
         self.port = port
@@ -72,7 +72,7 @@ class RedisConn(object):
         pipe = self.connection.pipeline()
         pipe.hmset(key, {'response': value, 'count': 0, 'last': ''})
         pipe.zadd(self.set_name, 0, key)
-        pipe.expire(key, self.expires)
+        #pipe.expire(key, self.expires)
         pipe.execute()
 
     def get(self, key):
