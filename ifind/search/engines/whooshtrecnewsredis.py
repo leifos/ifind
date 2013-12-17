@@ -359,7 +359,7 @@ class PageCacheController(Thread):
                     else:
                         break
 
-                print "Pages {0} to {1} cached for '{2}'".format(start_page, curr_page, query.terms)
+                print "  >>> PAGE_CACHE: Pages {0} to {1} cached for '{2}'".format(start_page, curr_page, query.terms)
             except Queue.Empty:  # This is reached when we try look for an item in the queue and find nothing.
                                  # So we're one tick closer to death...
                 ticks = ticks + 1
