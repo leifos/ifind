@@ -97,6 +97,9 @@ class RedisConn(object):
             
     def exists(self, key):
         return self.connection.exists(key)
+
+    def keys(self, wildcard):
+        return self.connection.keys(wildcard)
     
     def __contains__(self, key):
         """
