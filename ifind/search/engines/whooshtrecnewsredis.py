@@ -400,9 +400,6 @@ def get_page(query, results):
     page = query.skip
     page_len = query.top
 
-    print "RESULTS"
-    print results
-
     results = [results[i: i + page_len] for i in range(0, len(results), page_len)]
     total_pages = len(results)
 
