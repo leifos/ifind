@@ -120,9 +120,12 @@ class WhooshTrecNewsRedis(Engine):
                     doc_term_scores = self.__get_doc_term_scores(searcher, query.parsed_terms)
                     self.__update_scores(doc_scores, doc_term_scores)
                 else:
-                    for term in query.parsed_terms:
-                        doc_term_scores = self.__get_doc_term_scores(searcher, term.text)
-                        self.__update_scores(doc_scores, doc_term_scores)
+                    try:
+                        for term in query.parsed_terms:
+                            doc_term_scores = self.__get_doc_term_scores(searcher, term.text)
+                            self.__update_scores(doc_scores, doc_term_scores)
+                    except NotImplementedError:
+                        pass
 
             sorted_results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
 
