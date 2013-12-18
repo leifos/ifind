@@ -27,10 +27,10 @@ $(function() {
 
     $('.searchbox, .smallsearchbox').keypress(function(e) {
         if (INTERFACE_ENABLED) {
-            var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+            var regex = new RegExp("^[a-zA-Z0-9 \b]+$");
             var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-
-            if (e.charCode == 13 || e.charCode == 8) {
+            
+            if (e.charCode == 13 || e.keyCode == 39 || e.keyCode == 37) {
                 //$('#search_form').submit();
                 return true;
             }
