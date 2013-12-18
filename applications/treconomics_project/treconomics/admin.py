@@ -6,7 +6,7 @@ from models import TaskDescription, TopicQuerySuggestion
 from models_experiments import USDemographicsSurvey, UKDemographicsSurvey
 from models_experiments import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
 from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
-from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey
+from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
 
 from django.contrib import admin
 from django import forms
@@ -68,3 +68,4 @@ admin.site.register(NasaFactorCompare)
 admin.site.register(SearchEfficacy, UserSurveyAdmin)
 admin.site.register(ConceptListingSurvey, UserSurveyAdmin)
 admin.site.register(ShortStressSurvey, UserSurveyAdmin)
+admin.site.register(ModifiedStressSurvey, UserSurveyAdmin)
