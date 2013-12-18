@@ -30,7 +30,7 @@ $(function() {
             var regex = new RegExp("^[a-zA-Z0-9 ]+$");
             var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 
-            if (e.charCode == 13) {
+            if (e.charCode == 13 || e.charCode == 8) {
                 //$('#search_form').submit();
                 return true;
             }
