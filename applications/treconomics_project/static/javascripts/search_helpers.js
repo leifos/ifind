@@ -29,7 +29,7 @@ $(function() {
         if (INTERFACE_ENABLED) {
             var regex = new RegExp("^[a-zA-Z0-9 \b]+$");
             var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-            
+
             if (e.charCode == 13 || e.keyCode == 39 || e.keyCode == 37) {
                 //$('#search_form').submit();
                 return true;
@@ -57,7 +57,7 @@ A helper function to enable or disable interaction with the user interface.
 If enableInterface is set to true, the interface can be interacted with.
 Otherwise, form fields and buttons are disabled, as well as document hit links.
 */
-function changeInteractionStatus(enableInterface) {
+function changeInteractionStatus(enableInterface, useBox) {
     var delay_results = parseInt($('#delay_results').val());
     var delay_docview = parseInt($('#delay_docview').val());
 
@@ -93,32 +93,37 @@ function changeInteractionStatus(enableInterface) {
         // Turn on the progress cursor
         $('*').css('cursor', 'progress');
 
-        // Turn off the search button
-        $('#search-button').attr('disabled', 'disabled');
-        $('#search-button').attr('value', 'Loading...');
-        $('#search-button').css('background-color', '#8B3A3A');
-        $('#search-button').css('color', 'white');
-
-        // Add the spinner to the first query field
-        $('#query').css('background', 'url(\'/static/images/spinner.gif\')');
-        $('#query').css('background-repeat', 'no-repeat');
-        $('#query').css('background-position', 'right');
-
-        // Disable the previous/next buttons
-        $('.navButton').attr('disabled', 'disabled');
-        $('.navButton').css('background-color', '#8B3A3A');
-        $('.navButton').css('color', 'white');
-
-        // Remove hover bindings
-        $('.search_result').unbind();
-
-        // Hide any autocomplete suggestion boxes
-        if ($('.searchbox').hasClass('ui-autocomplete-input')) {
-            $('.searchbox').autocomplete('close');
+        if (useBox) {
+            $('#full-grey-out').css('display', 'block');
         }
+        else {
+            // Turn off the search button
+            $('#search-button').attr('disabled', 'disabled');
+            $('#search-button').attr('value', 'Loading...');
+            $('#search-button').css('background-color', '#8B3A3A');
+            $('#search-button').css('color', 'white');
 
-        if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
-            $('.smallsearchbox').autocomplete('close');
+            // Add the spinner to the first query field
+            $('#query').css('background', 'url(\'/static/images/spinner.gif\')');
+            $('#query').css('background-repeat', 'no-repeat');
+            $('#query').css('background-position', 'right');
+
+            // Disable the previous/next buttons
+            $('.navButton').attr('disabled', 'disabled');
+            $('.navButton').css('background-color', '#8B3A3A');
+            $('.navButton').css('color', 'white');
+
+            // Remove hover bindings
+            $('.search_result').unbind();
+
+            // Hide any autocomplete suggestion boxes
+            if ($('.searchbox').hasClass('ui-autocomplete-input')) {
+                $('.searchbox').autocomplete('close');
+            }
+
+            if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
+                $('.smallsearchbox').autocomplete('close');
+            }
         }
     }
 
@@ -142,7 +147,7 @@ function bindDocumentClicks() {
                 }
 
                 if (delay > 0) {
-                    changeInteractionStatus(false);
+                    changeInteractionStatus(false, true);
 
                     // Gather information for, and initiate, an AJAX call to indicate that the result is delayed.
                     var parent = $(event.target).closest('div[class="search_result"]');
