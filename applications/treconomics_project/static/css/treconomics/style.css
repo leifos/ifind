@@ -391,13 +391,16 @@ p.summary {
 
 #marked {
 	position: fixed;
-	top: 125px;
-	width: 200px;
-	right: -20px;
+	top: 112px;
+	width: 190px;
+	right: 20px;
+    text-align: center;
+    font-size: 16pt;
+    line-height: 30px;
 	}
 
 #marked .largebutton {
-	margin-bottom: 20px;
+	margin: 0;
 }
 
 

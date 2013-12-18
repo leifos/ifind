@@ -22,11 +22,11 @@
 <div class="article"> {% autoescape off %} {{ content|linebreaksbrbr:doc_source }} {% endautoescape %}  </div>
 </div>
 
-<div id="marked">
 {% if user_judgement  == 1 %}
-    <b>Document Marked as Relevant</b>
+<div id="marked" style="background-color: #CCFFCC; color: #3D5229;">
+    <strong>Marked Relevant</strong>
 {% else %}
-	<br />
+<div id="marked">
     <!--a href="/treconomics/{{ docid }}?judge=1&docid={{ docid }}">Mark Document as Relevant</a -->
     <button class="largebutton" type="relevant" value="{{ docid }}" name="{{ docid }}" onclick="markRelevant()" > Mark as Relevant </button>
 {%  endif %}
@@ -35,7 +35,7 @@
 
 <script>
 function markRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=1&docid="+{{docid}}+"&rank="+{{rank}}, complete: function(data){
-    $('#marked').replaceWith('<div id="marked"> <b> Document Marked as Relevant</b> </div>');
+    $('#marked').replaceWith('<div id="marked" style="background-color: #CCFFCC; color: #3D5229;"> <strong>Marked Relevant</strong> </div>');
      } }); }
 function markNonRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=0&docid="+{{docid}}+"&rank="+{{rank}}, complete: function(data){
      $('#marked').replaceWith('<div id="marked">  <button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markRelevant()" >Mark as Relevant </button></div>');
