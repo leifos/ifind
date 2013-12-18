@@ -30,7 +30,7 @@ $(function() {
             var regex = new RegExp("^[a-zA-Z0-9 \b]+$");
             var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 
-            if (e.charCode == 13 || e.keyCode == 39 || e.keyCode == 37) {
+            if (e.charCode == 13 || e.keyCode == 13 || e.keyCode == 39 || e.keyCode == 37) {
                 //$('#search_form').submit();
                 return true;
             }
@@ -110,8 +110,8 @@ function changeInteractionStatus(enableInterface, useBox) {
 
             // Disable the previous/next buttons
             $('.navButton').attr('disabled', 'disabled');
-            $('.navButton').css('background-color', '#8B3A3A');
-            $('.navButton').css('color', 'white');
+            //$('.navButton').css('background-color', '#8B3A3A');
+            //$('.navButton').css('color', 'white');
 
             // Remove hover bindings
             $('.search_result').unbind();
