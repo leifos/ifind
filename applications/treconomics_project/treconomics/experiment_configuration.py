@@ -32,7 +32,7 @@ exp_work_flows = [
 '/treconomics/prepracticetask/0/', '/treconomics/search/0/','/treconomics/postpracticetask/0/',
 '/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
  '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/',
- '/treconomics/shortstresssurvey/', '/treconomics/nasaloadsurvey/','/treconomics/nasafactorcomparesurvey/',
+ '/treconomics/modifiedstresssurvey/', '/treconomics/nasaloadsurvey/','/treconomics/nasafactorcomparesurvey/',
 '/treconomics/performance/','/treconomics/logout/'],
 ['/treconomics/startexperiment/','/treconomics/preexperiment/US/','/treconomics/demographicssurvey/US/',
  '/treconomics/prepracticetask/0/','/treconomics/search/0/','/treconomics/postpracticetask/0/',

@@ -27,6 +27,7 @@ from models_experiments import NasaFactorCompare, NasaFactorCompareForm
 from models_experiments import SearchEfficacy, SearchEfficacyForm
 from models_experiments import ConceptListingSurvey, ConceptListingSurveyForm
 from models_experiments import ShortStressSurvey, ShortStressSurveyForm
+from models_experiments import ModifiedStressSurvey, ModifiedStressSurveyForm
 from models import TaskDescription
 
 def handle_survey(request, SurveyForm, survey_name, action, template):
@@ -89,6 +90,12 @@ def view_nasa_factor_compare_survey( request ):
 @login_required
 def view_short_stress_survey( request ):
     return handle_survey(request, ShortStressSurveyForm, 'SHORT_STRESS', '/treconomics/shortstresssurvey/', 'survey/short_stress_survey.html')
+
+
+@login_required
+def view_modified_stress_survey( request ):
+    return handle_survey(request, ModifiedStressSurveyForm, 'MODIFIED_STRESS', '/treconomics/modifiedstresssurvey/', 'survey/short_stress_survey.html')
+
 
 
 @login_required

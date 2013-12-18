@@ -420,7 +420,7 @@ class ShortStressSurveyForm(ModelForm):
     stress_reflecting = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm reflecting about myself.", required=False)
     stress_concerned = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt concerned about the impression I was making.", required=False)
     stress_committed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt committed to succeed to these tasks.", required=False)
-    stress_annoyed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt annoyted while I was completing these tasks.", required=False)
+    stress_annoyed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt annoyed while I was completing these tasks.", required=False)
     stress_impatient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt impatient while I was completing these tasks.", required=False)
     stress_self_conscious  = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I feel self-conscious.", required=False)
     stress_daydreaming = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm daydreaming about myself.", required=False)
@@ -474,3 +474,60 @@ class PostConceptListingSurveyForm(ConceptListingSurveyForm):
     class Meta:
         model = PostConceptListingSurvey
         exclude = ('user','task_id','topic_num')
+        
+        
+        
+#
+class ModifiedStressSurvey(models.Model):
+    user = models.ForeignKey(User)
+    stress_confident  = models.IntegerField(default=0)
+    stress_alert  = models.IntegerField(default=0)
+    stress_irritated  = models.IntegerField(default=0)
+    stress_others  = models.IntegerField(default=0)
+    stress_angry  = models.IntegerField(default=0)
+    stress_proficient  = models.IntegerField(default=0)
+    stress_grouchy  = models.IntegerField(default=0)
+    stress_concerned  = models.IntegerField(default=0)
+    stress_committed  = models.IntegerField(default=0)
+    stress_annoyed = models.IntegerField(default=0)
+    stress_impatient = models.IntegerField(default=0)
+    stress_self_conscious  = models.IntegerField(default=0)
+    stress_control = models.IntegerField(default=0)
+    stress_sad = models.IntegerField(default=0)
+    stress_active = models.IntegerField(default=0)
+    stress_motivated = models.IntegerField(default=0)
+    stress_dissatisfied = models.IntegerField(default=0)
+    stress_performance = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+
+
+class ModifiedStressSurveyForm(ModelForm):
+    stress_confident = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt confident in my abilities.", required=False)
+    stress_alert = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt alert while I was completing these tasks.", required=False)
+    stress_irritated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt irritated while I was completing these tasks.", required=False)
+    stress_others = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I thought about how others have done on these tasks.", required=False)
+    stress_angry = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt angry while I was completing these tasks.", required=False)
+    stress_proficient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I expected to perform proficiently on these tasks.", required=False)
+    stress_grouchy = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt grouchy while I was completing these tasks.", required=False)
+    stress_concerned = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt concerned about the impression I was making.", required=False)
+    stress_committed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt committed to succeed to these tasks.", required=False)
+    stress_annoyed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt annoyed while I was completing these tasks.", required=False)
+    stress_impatient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt impatient while I was completing these tasks.", required=False)
+    stress_self_conscious  = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt self-conscious.", required=False)
+    stress_control = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt in control of things.", required=False)
+    stress_sad = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt sad while I was completing these tasks.", required=False)
+    stress_active = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt active while I was completing these tasks.", required=False)
+    stress_motivated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt motivated to do these tasks.", required=False)
+    stress_dissatisfied = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt dissatisfied while I was completing these tasks.", required=False)
+    stress_performance = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I was committed to attaining my performance goals for these search tasks.", required=False)
+
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = ModifiedStressSurvey
+        exclude = ('user')

@@ -52,5 +52,6 @@ urlpatterns = patterns('',
     (r'^nasafactorcomparesurvey/$', survey_views.view_nasa_factor_compare_survey),
     (r'^conceptlistingsurvey/(?P<taskid>\d+)/(?P<when>[A-Z]{3})/$', survey_views.view_concept_listing_survey),
     (r'^shortstresssurvey/$', survey_views.view_short_stress_survey),
-
+    (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
+    
     )
