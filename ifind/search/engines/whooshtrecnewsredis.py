@@ -160,8 +160,8 @@ class WhooshTrecNewsRedis(Engine):
             Nested function to remove unwanted query terms (e.g. AND, OR, NOT) from the query.
             Also tidies the query by removing redundant whitespace and newline characters.
             """
-            ignore = ['and', 'or', 'not', 'in', 'the', 'a']  # Terms to be ignored. These are not included in the tidied querystring.
-                                                        # Ensure the terms in the list are all lowercase!
+            ignore = ['and', 'or', 'not', 'in', 'the', 'a', 'to']  # Terms to be ignored. These are not included in the tidied querystring.
+                                                                   # Ensure the terms in the list are all lowercase!
 
             terms = query.terms
             terms = terms.lower()
