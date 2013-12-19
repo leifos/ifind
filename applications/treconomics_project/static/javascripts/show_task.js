@@ -8,7 +8,9 @@ Author: David
 function checkPopupStatus() {
     var parentPath = window.opener.location.pathname;
 
-    if (parentPath.indexOf('postpracticetask') != -1 || parentPath.indexOf('posttaskquestions') != -1) {
+    if (parentPath.indexOf('postpracticetask') != -1 ||
+        parentPath.indexOf('posttaskquestions') != -1 ||
+        parentPath.indexOf('timeout') != -1) {
         self.close();
     }
 }

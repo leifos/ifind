@@ -111,7 +111,7 @@
 		        {% else %}
 		            <td><input class="searchbox" type="text" name="query" value="" id="query" size="50" /></td>
                 {% endif %}
-		        <td> <input class="button" type="submit" name="submit" value="Search" id="search-button" /> </td></tr>
+		        <td> <input type="hidden" name="newquery" value="true" /> <input class="button" type="submit" name="submit" value="Search" id="search-button" /> </td></tr>
 	            </table>
 	        {% endif %}	
         </form>

@@ -312,7 +312,10 @@ def search(request, taskid=-1):
                 item = item.split('=')
                 page = int(item[1])
 
-        return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
+        if request.POST.get('newquery') == 'true':
+            return '/treconomics/search/' in request.META['HTTP_REFERER']
+        else:
+            return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
 
     if isinstance(taskid, unicode):
         taskid = int(taskid)
