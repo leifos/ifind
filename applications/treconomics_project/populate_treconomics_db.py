@@ -42,8 +42,8 @@ def populate():
         if i % 14 == 0:
             cond = cond + 1
             
-        username = 'newssearch_' + str(i)
-        password = 'search' + str(i)
+        username = 'search' + str(i)
+        password = str(i)
         rotation = (i % 2)
         experiment = 0 # not used
         data = None # not used
