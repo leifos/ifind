@@ -34,6 +34,8 @@ def populate():
     add_user('d6','6',8,0,0,'')
     add_user('d7','7',9,0,1,'')
     add_user('d8','8',9,0,0,'')
+
+    passwords = ['bbkzd', 'cfres', 'bguvt', 'uquyl', 'gjayh', 'zpulx', 'qqste', 'aaavg', 'woegc', 'mybqs', 'msyhh', 'vmfia', 'jjdnk', 'rxnwq', 'lifqv', 'rwyjt', 'ikzxv', 'penqy', 'tgnhy', 'ekvej', 'iknnm', 'rbvop', 'mvevh', 'dwtdp', 'wtswq', 'oedhp', 'dophj', 'yuyau', 'ixqgx', 'klhrv', 'gijjg', 'kkfro', 'hjcvd', 'aiogp', 'yatgp', 'pttfy', 'zyjmd', 'tqqic', 'mmevq', 'akktp', 'ssnyy', 'nowmz', 'hyykw', 'xmjjk', 'dzdoq', 'pdfcn', 'rrelr', 'hssar', 'phvsz', 'djlbh', 'mrmwp', 'tufcg', 'udmed', 'sytal', 'umcsz']
     
     cond = 5
     for i in range(0,56):
@@ -43,7 +45,7 @@ def populate():
             cond = cond + 1
             
         username = 'search' + str(i)
-        password = str(i)
+        password = passwords[i]
         rotation = (i % 2)
         experiment = 0 # not used
         data = None # not used
@@ -56,7 +58,7 @@ def add_user(username,password, condition, experiment, rotation, data=None):
     u.set_password(password)
     u.save()
     up = UserProfile.objects.get_or_create(user=u, condition=condition, experiment=experiment, rotation=rotation, data=data)[0]
-    print "\t %s" % (u)
+    #print "\t %s" % (u)
 
 def add_task(topic_num, title, description):
     t = TaskDescription.objects.get_or_create(topic_num=topic_num, title=title, description=description)[0]
