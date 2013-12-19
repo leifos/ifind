@@ -111,6 +111,7 @@ $(function() {
         focus: function(event, ui) {
             event.preventDefault();
 
+            /*
             var label_element = $(ui.item.label);
             var suggestion = ui.item.value;
             var rank = label_element.attr('rank');
@@ -142,7 +143,6 @@ $(function() {
             }
 
             event.target.value = newFieldValue;
-            // END NEW CODE
 
             $.ajax({
                 url: '/treconomics/suggestion_hover/',
@@ -163,6 +163,7 @@ $(function() {
                         console.log("Server error on AJAX request: " + data.responseText);
                     }
             }});
+            */
         },
         select: function(event, ui) {
             event.preventDefault();
