@@ -22,7 +22,9 @@ $(function() {
     bindFormSubmit();
 
     if ($('#query')) {
-        $('#query').focus();
+        if ($('#focus_querybox').val() == 'true') {
+            $('#query').focus();
+        }
     }
 
     $('.searchbox, .smallsearchbox').keypress(function(e) {
@@ -124,6 +126,8 @@ function changeInteractionStatus(enableInterface, useBox) {
             if ($('.smallsearchbox').hasClass('ui-autocomplete-input')) {
                 $('.smallsearchbox').autocomplete('close');
             }
+
+            $('.searchbox, .smallsearchbox').blur();
         }
     }
 

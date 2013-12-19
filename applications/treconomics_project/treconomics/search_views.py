@@ -314,8 +314,8 @@ def search(request, taskid=-1):
 
         if request.POST.get('newquery') == 'true':
             return '/treconomics/search/' in request.META['HTTP_REFERER']
-        else:
-            return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
+
+        return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
 
     if isinstance(taskid, unicode):
         taskid = int(taskid)
@@ -428,6 +428,10 @@ def search(request, taskid=-1):
                 result_dict['autocomplete'] = experiment_setups[condition].autocomplete
                 result_dict['page'] = page
                 result_dict['is_fast'] = 'true'
+                result_dict['focus_querybox'] = 'false'
+
+                if result_dict['trec_results'] is None:
+                    result_dict['focus_querybox'] = 'true'
 
                 if experiment_setups[condition].delay_results == 0:
                     result_dict['is_fast'] = 'false'

@@ -182,9 +182,11 @@ function processRequest(serializedFormData, noDelay) {
                 }
 
                 results_nav.append('<div class="result_nav"><center><form>' + prevButton + nextButton + '</form></center></div>');
+                $('.searchbox, .smallsearchbox').blur();
             }
             else {
                 results.append('<div class="query"><div class="results_squash"><strong>Search Terms: <em>' + data['query'] + '</em></strong> <span>No results found.</span></div></div>');
+                $('#query').focus();
             }
 
             stopHashChange = true;
