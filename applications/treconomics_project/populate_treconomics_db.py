@@ -42,13 +42,13 @@ def populate():
         if i % 14 == 0:
             cond = cond + 1
             
-        username = 'x' + str(i)
-        password = str(i)
+        username = 'newssearch_' + str(i)
+        password = 'search' + str(i)
         rotation = (i % 2)
         experiment = 0 # not used
         data = None # not used
         
-        print '%s %s %d %d  ' % (username, password, cond, rotation)
+        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
         add_user(username, password,cond, experiment, rotation, data)
 
 def add_user(username,password, condition, experiment, rotation, data=None):
