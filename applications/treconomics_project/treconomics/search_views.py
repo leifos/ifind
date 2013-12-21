@@ -28,7 +28,7 @@ import timeit
 from experiment_functions import get_topic_relevant_count
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
-from experiment_functions import time_search_experiment_out,getPerformance, getQueryResultPerformance, get_query_performance_metrics
+from experiment_functions import time_search_experiment_out,getPerformance, getQueryResultPerformance, get_query_performance_metrics, log_performance
 from experiment_configuration import my_whoosh_doc_index_dir
 from experiment_configuration import experiment_setups
 from time import sleep
@@ -765,16 +765,18 @@ def view_performance(request):
     for t in topics:
         perf = getPerformance(uname, t)
         topic_desc = TaskDescription.objects.get( topic_num = t ).title
+        perf["num"] = t
         perf["title"] = topic_desc
         perf["score"] = ratio(float(perf["rels"]), float(perf["nons"]))
         perf["total"] = get_topic_relevant_count(t)
 
+        # Should log the performance of each topic here.
+        log_performance(request, perf)
         performances.append(perf)
-
+        
     for p in performances:
         print p
 
-    log_event(event="VIEW_PERFORMANCE", request=request)
     return render_to_response('base/performance_experiment.html', {'participant': uname, 'condition': condition, 'performances': performances}, context)
 
 @login_required
