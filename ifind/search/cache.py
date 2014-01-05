@@ -16,7 +16,7 @@ class RedisConn(object):
 
     """
 
-    def __init__(self, host="localhost", port=6379, db=0, limit=1000, password=''):
+    def __init__(self, host="localhost", port=6379, db=0, limit=10000000, password=''):
 
         self.host = host
         self.port = port
@@ -42,8 +42,8 @@ class RedisConn(object):
 
         """
         try:
-            print "tyring to ping"
-            print redis.StrictRedis(host=self.host, port=self.port, password=self.password).ping()
+            ping_result = redis.StrictRedis(host=self.host, port=self.port, password=self.password).ping()
+            #print "CACHE: ping result - {0}".format(ping_result)
         except redis.ConnectionError:
             raise CacheConnectionException(MODULE, "Failed to establish connection to "
                                                    "redis server @ {0}:{1}".format(self.host, self.port))
@@ -72,7 +72,7 @@ class RedisConn(object):
         pipe = self.connection.pipeline()
         pipe.hmset(key, {'response': value, 'count': 0, 'last': ''})
         pipe.zadd(self.set_name, 0, key)
-        pipe.expire(key, self.expires)
+        #pipe.expire(key, self.expires)
         pipe.execute()
 
     def get(self, key):
@@ -94,6 +94,19 @@ class RedisConn(object):
             return pickle.loads(base64.b64decode(value))
         else:
             return None
+            
+    def exists(self, key):
+        return self.connection.exists(key)
+
+    def keys(self, wildcard):
+        return self.connection.keys(wildcard)
+    
+    def __contains__(self, key):
+        """
+        Special containment override for 'in' operator.
+
+        """
+        return self.connection.exists(key)
 
 
 class QueryCache(object):

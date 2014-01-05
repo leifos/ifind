@@ -5,21 +5,40 @@
 
     {% if trec_search %}
   
-	    <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
-		 Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span></div>
+	    <div class="query">
+            <div class="results_squash">
+                <strong>Search Terms: <em>{{ display_query }}</em></strong><span>
+		        Showing page <em>{{ curr_page }}</em> out of <em>{{num_pages}}</em> pages.</span>
+            </div>
+        </div>
 		{% for result in trec_results %}
-		    <div class="entry" id="{{result.docid}}">
-		        <p class="result_title"><a href="{{ result.url }}"><strong>{{ result.title }}</strong></a></p>
-  		        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>		
-  		    </div>
-  		    <div class="byline">{{ result.source }}</div>
-  		    
+            <div class="search_result" id="{{ result.docid }}" rank="{{ result.rank }}" page="{{ page }}" whooshid="{{ result.whooshid }}">
+                <div class="results_squash">
+                    <div class="entry">
+                        <p class="result_title"><strong><a class="doc-link" href="{{ result.url }}">{{ result.title }}</a></strong></p>
+                        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>
+                    </div>
+
+                    <div class="byline">
+                        {{ result.source }}
+                    </div>
+                </div>
+            </div>
         {% endfor %}
 
     {% else %}
-         <div class="query"><strong>Search Terms: <em>{{ query }}</em></strong><span>
-            No results found.
+         {% if blank_query %}
+         <div class="query">
+             <div class="results_squash"><strong>No search terms supplied.</em></strong></div>
+         </div>
+         {% else %}
+         <div class="query">
+             <div class="results_squash">
+                <strong>Search Terms: <em>{{ query }}</em></strong>
+                <span>No results found.</span>
              </div>
+         </div>
+         {% endif %}
     {% endif %}
 
 
@@ -30,11 +49,11 @@
 <div class="result_nav">
 	<center><form>
 	{% if prev_page_show %}
-	<input  class="largebutton" type="button" onClick="parent.location='{{prev_page_link}}'" value="Prev. Page" />
+	<input  class="navButton largebutton" type="button" onClick="parent.location='{{prev_page_link}}'; changeInteractionStatus(false);" value="Prev. Page" />
 	    <!-- a href="{{prev_page_link}}">Prev Page</a--> &nbsp;&nbsp;
 	{% endif %}
 	{% if next_page_show %}
-    <input  class="largebutton" type="button" onClick="parent.location='{{next_page_link}}'" value="Next Page" />
+    <input  class="navButton largebutton" type="button" onClick="parent.location='{{next_page_link}}'; changeInteractionStatus(false);" value="Next Page" />
 	    <!-- a href="{{next_page_link}}">Next Page</a -->
 	{% endif %}
 	</form></center>

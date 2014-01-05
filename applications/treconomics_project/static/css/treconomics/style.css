@@ -10,7 +10,49 @@ body {
 	line-height: 20px;
 	color: #333;
 	}
-	
+
+/** JQUERY AUTOCOMPLETE WIDGET **/
+.ui-widget {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+p.autocomplete-item {
+    margin: 0;
+    padding: 0;
+}
+
+/** PLEASE WAIT BOX **/
+div#full-grey-out {
+    display: none;
+    position: fixed;
+    z-index: 30000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(94, 110, 160, 0.8);
+}
+
+div#wait-box {
+    position: fixed;
+    z-index: 30001;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 250px;
+    margin-left: -250px;
+    margin-top: -125px;
+    background-color: #FFF;
+    border-radius: 4px;
+    border: 1px solid #000;
+}
+
+div#wait-box p {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    line-height: 45px;
+    margin-top: 80px;
+}
+
 /** CONTAINER **/
 
 .container {
@@ -25,11 +67,11 @@ body {
 	top: 0px;
 	width: 100%;
 	background-color: blue;
-	color: white;	
+	color: white;
 	padding: 10px 20px;
-	z-index: 2;	
+	z-index: 2;
 	}
-	
+
 
 .header a, .header a:visited {
 	font-size: 25px;
@@ -44,7 +86,7 @@ body {
 .header h1 {
 	color: #ccccff;
 }
-	
+
 /** INFO BLOCK **/
 
 .info_block {
@@ -54,21 +96,25 @@ body {
 	color: white;
 	font-size: 12px;
 }
-	
+
 .info_block a {
 	font-weight: bold;
 	font-size: 12px;
 	color: #ccc;
 	text-decoration: none;
 	}
-		
+
 #info_block a:hover {
 	font-weight: bold;
-	color: white;	
-	text-decoration: underline;		
+	color: white;
+	text-decoration: underline;
 	}
 
 /** SEARCH**/
+
+input {
+    border-radius: 4px;
+}
 
 .search {
 	position: relative;
@@ -82,9 +128,7 @@ body {
 	margin: 0 auto 0 auto;
 	}
 
-/** MULTIFIELD SEARCH STYLES **/ 
-
-
+/** MULTIFIELD SEARCH STYLES **/
 
 .addButton {
 	border: 1px solid #999;
@@ -103,14 +147,14 @@ body {
 	font-family: Helvetica, Arial, sans-serif;
 	padding-left: 5px;
 	margin-right: 2px;
-	color: #666;	
+	color: #666;
 	}
 
 .hidden {
 	display: none;
 }
 
-	
+
 /** QUERY SUGGESTION AREA **/
 
 #query_suggestion_area {
@@ -123,7 +167,7 @@ body {
 #query_suggestion_area a {
 	text-decoration: none;
 	}
-	
+
 #query_suggestion_area a:hover {
 	text-decoration: underline;
 	}
@@ -132,21 +176,26 @@ body {
 	text-transform: none;
 	margin-bottom: 5px;
 }
-	
+
 .query span{
 	float: right;
 }
-	
+
 .results {
-	width: 60%;
+	width: 100%;
 	margin: 0px auto;
 }
 
-.document_content, .experiment{
-	width: 70%;
-	margin: 0px auto;
+.results_squash {
+    width: 75%;
+    margin: 0 auto 0 auto;
 }
-	
+
+.document_content, .experiment{
+	width: 80%;
+	margin: 0 auto 0 auto;
+}
+
 #rightnav {
 	position: absolute;
 	top: 0px;
@@ -172,30 +221,30 @@ body {
 	}
 
 h1.document_title {
-	margin: 40px 150px;
+	margin: 40px 40px;
 	font-size: 30px;
 	line-height: 35px;
 	color: #6699ff;
 	}
-	
+
 table {
 	margin: 0 auto;
 }
-	
+
 .article {
-	margin: 20px 150px;
-	line-height: 30px;
+	margin: 20px 40px;
+	line-height: 28px;
 	font-size: 16px;
 	text-align: justify;
 	}
-	
+
 .document_source_date {
-	margin: 20px 150px;
+	margin: 20px 40px;
 	line-height: 30px;
 	font-size: 16px;
 	font-style: italic;
 	}
-	
+
 .document_source_date span {
 	float: right;
 	}
@@ -224,7 +273,7 @@ p.result_title a {
 	font-size: 18px;
 	color: blue;
 	}
-	
+
 p.result_title a:visited {
 	color: #6611cc;
 	}
@@ -236,10 +285,11 @@ div.byline {
 
 p.summary {
 	margin-top: -12px;
-	}	
+    line-height: 22px;
+	}
 
 
-/* Footer */	
+/* Footer */
 
 .footer, .push {
 	height: 10px; /* .push must be the same height as .footer */
@@ -248,9 +298,9 @@ p.summary {
 
 .footer {
 	border-top: 1px solid #666;
-	color: #666;	
+	color: #666;
 	padding: 10px 0px;
-	text-align: center;	
+	text-align: center;
 	display: block;
 	}
 
@@ -268,14 +318,15 @@ p.summary {
 	color: #666;
 	height: 34px;
 	width: 70px;
-	border-radius: 4;
+	border-radius: 4px;
+    cursor: pointer;
 	}
 
 .button:hover {
-	background: #fff;
-	color: black;
+	background: #fff !important;
+	color: black !important;
 	}
-	
+
 .largebutton {
 	border: 1px solid #999;
 	background: #eee;
@@ -284,7 +335,8 @@ p.summary {
 	height: 34px;
 	width: 150px;
 	margin: 0px 5px;
-	border-radius: 4;
+	border-radius: 4px;
+    cursor: pointer;
 	}
 
 .largebutton:hover {
@@ -300,7 +352,7 @@ p.summary {
     	height: 34px;
     	width: 150px;
     	margin: 0px 5px;
-    	border-radius: 4;
+    	border-radius: 4px;
     	float: right;
 }
 
@@ -309,6 +361,9 @@ p.summary {
     color: black;
 }
 
+.navButton {
+    cursor: pointer;
+}
 
 .searchbox {
 	border: 1px solid #999;
@@ -318,19 +373,34 @@ p.summary {
 	font-weight: bold;
 	font-family: Helvetica, Arial, sans-serif;
 	padding-left: 5px;
-	color: #666;	
+	color: #666;
+	z-index: 2000;
+	}
+
+.loginbox {
+	border: 1px solid #999;
+	height: 30px;
+	width: 420px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	color: #666;
 	z-index: 2000;
 	}
 
 #marked {
 	position: fixed;
-	top: 125px;
-	width: 200px;
-	right: -20px;
+	top: 112px;
+	width: 190px;
+	right: 20px;
+    text-align: center;
+    font-size: 16pt;
+    line-height: 30px;
 	}
 
 #marked .largebutton {
-	margin-bottom: 20px;
+	margin: 0;
 }
 
 
@@ -342,11 +412,11 @@ p.summary {
 .floatright {
     float: right;
 }
- 
+
 .errorlist {
     color: white;
     letter-spacing: 1px;
-    font-weight: bold; 
+    font-weight: bold;
     background-color: red;
     padding: 10px;
     text-transform: uppercase;
@@ -354,7 +424,7 @@ p.summary {
 }
 
 
-/** SURVEYS **/  
+/** SURVEYS **/
 
 
 .experimentPageTitle {
@@ -374,7 +444,7 @@ p.summary {
 	font-weight: bold;
 	font-family: Helvetica, Arial, sans-serif;
 	padding-left: 5px;
-	color: #666;	
+	color: #666;
 	}
 
 
@@ -390,7 +460,7 @@ p.summary {
 	font-size: 16px;
 	font-family: Helvetica, Arial, sans-serif;
 	padding-left: 5px;
-	color: #666;	
+	color: #666;
 	}
 
 
@@ -420,8 +490,8 @@ p.summary {
 
 
 ul {
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 }
 
 li {
@@ -434,6 +504,7 @@ li {
 	width: 30px;
 	height: 15px;
 	margin-left: 50px;
+    background-color: #C0C0C0;
 	}
 
 .survey_radio tr td ul {

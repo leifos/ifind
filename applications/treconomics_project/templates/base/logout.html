@@ -2,15 +2,22 @@
 
 
 {% block exp_info_block %}
- <p><a href="/treconomics/login">Login</a></p>
+ <p><a href="#" onmouseup="completeExperiment();">Close Popup</a></p>
 {% endblock %}
 
 {% block exp_block %}
+<script type="text/javascript">
+    if (window.opener) {
+        /*
+        Tell the parent window that we've finished.
+        Then the parent can display the appropriate message to the user.
+         */
+        window.opener.COMPLETED_EXPERIMENT = true;
+    }
+</script>
 <div class="topmargin">
-<center>
-	    <p><strong> Thank you for in participating in this experiment.</strong></p>
-	  </center>
-
+    <center>
+            <p><strong>Thank you for in participating in this experiment.</strong><br />You can now close the popup window.</p>
+    </center>
 </div>
-
 {% endblock %}

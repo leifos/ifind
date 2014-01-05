@@ -16,7 +16,9 @@
 </div>
 <div>
 
-<div class="survey">   
+<div class="survey">
+    <div id='survey_form_errorloc' class='error_strings' style="color: #F00; text-align: center;"></div>
+
     <form id="survey_form" method="post" action="{{action}}">
         {% csrf_token %}
 <table class="survey_radio" cellpadding="20"> 
@@ -31,7 +33,7 @@
 	<td id="nasa_load" class="matrix">
             {{ field.errors }}
             {{ field.label_tag }}
- 	    {{ field }}
+ 	    <div style="font-size: 9pt;">{{ field }}</div>
 	</td>
         </tr>
 	
@@ -48,7 +50,6 @@
     frmvalidator.EnableFocusOnError(true);
 
     </script>
-    <div id='survey_form_errorloc' class='error_strings'></div>
     
     
     <div class="surveySubmitButton">

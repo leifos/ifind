@@ -6,39 +6,32 @@
 
 {% block exp_block %}
 
+<p>This page shows your performance for each of the two main search tasks. For each task, the maximum number of relevant documents (determined by professional assessors) is shown alongside your score. The closer your score to the assessor's total, the better you did!</p>
+<p> Your performance with respect to the original assessors of these topic is as follows.</p>
 
-<p> Your performance with respect to the original TREC assessors of these topic is as follows:</p>
+{% for  topic in performances %}
+    <hr />
+    <p>Search task: <b>{{ topic.title }}</b> </p>
 
-<p>Search task 1: <b>{{ t1_title}}</b> </p>
-<p>
-<ul>
-<li>Items marked that were judged relevant by TREC assessors: {{t1_rels}}</li>
-<li>Items marked that were not relevant: {{t1_nons}}</li>
-<li>Total score: {{t1_score}}</li>
-</ul>
-</p>
+    <p><em>Total number of relevant documents: <strong style="color: #3366FF;">{{topic.total}}</strong></em></p>
 
-<p>Search task 2: <b>{{ t2_title}}</b> </p>
-<p>
-<ul>
-<li>Items marked that were judged relevant by TREC assessors: {{t2_rels}}</li>
-<li>Items marked that were not relevant: {{t2_nons}}</li>
-<li>Total score: {{t2_score}}</li>
-</ul>
-</p>
+    <p><ul>
+        <li>Documents you <em><strong>correctly</strong> identified:</em> <strong style="color: #007f00;">{{topic.rels}}</strong></li>
+        <li>Documents <em><strong>incorrectly</strong> identified:</em> <strong style="color: #800000;">{{topic.nons}}</strong></li>
 
-<p>Search task 3: <b>{{ t3_title}}</b> </p>
-<p>
-<ul>
-<li>Items marked that were judged relevant by TREC assessors: {{t3_rels}}</li>
-<li>Items marked that were not relevant: {{t3_nons}}</li>
-<li>Total score: {{t3_score}}</li>
-</ul>
-</p>
- 
+    </ul></p>
+
+    <p>
+        <strong>Your topic score: <span style="color: #3366FF;">{{topic.score}}</span></strong>
+    </p>
+{% endfor%}
+
+<hr />
+
+<p>When you have examined the results above, please click the <em>Next</em> button below to continue.</p>
+
 <div class="surveySubmitButton">
-
-  <a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
+    <a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
 </div>
 
 {% endblock %}

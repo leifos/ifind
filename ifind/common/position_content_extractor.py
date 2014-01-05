@@ -156,8 +156,8 @@ class PositionContentExtractor(object):
         """
         returns a string with the visible text the html with the content of
         tags with value tag (e.g. div, footer) and attr_values (e.g. id, class)
-        :param tag:
-        :param attr_values:
+        :param tag: the name of the tag e.g. div
+        :param attr_values: a list of the values such as id values
         :return:
         """
         #todo currently assumes dealing only with IDs

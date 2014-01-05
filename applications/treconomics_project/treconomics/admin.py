@@ -3,10 +3,10 @@ __author__ = 'leif'
 from models import DocumentsExamined
 from models import UserProfile
 from models import TaskDescription, TopicQuerySuggestion
-from models_experiments import DemographicsSurvey
+from models_experiments import USDemographicsSurvey, UKDemographicsSurvey
 from models_experiments import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
 from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
-from models_experiments import SearchEfficacy
+from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
 
 from django.contrib import admin
 from django import forms
@@ -48,10 +48,7 @@ class NasaLoadAdmin(admin.ModelAdmin):
     list_display = ['user', 'nasa_mental_demand', 'nasa_physical_demand','nasa_temporal', 'nasa_performance','nasa_effort','nasa_frustration'  ]
 
 
-class SearchEfficacyAdmin(admin.ModelAdmin):
-    list_display = ['user']
-
-class DemographicsSurveyAdmin(admin.ModelAdmin):
+class UserSurveyAdmin(admin.ModelAdmin):
     list_display = ['user']
 
 
@@ -59,7 +56,8 @@ admin.site.register(DocumentsExamined)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(TaskDescription, TaskDescriptionAdmin)
 admin.site.register(TopicQuerySuggestion, TopicQuerySuggestionAdmin)
-admin.site.register(DemographicsSurvey, DemographicsSurveyAdmin)
+admin.site.register(USDemographicsSurvey, UserSurveyAdmin)
+admin.site.register(UKDemographicsSurvey, UserSurveyAdmin)
 admin.site.register(PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyAdmin)
 admin.site.register(PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyAdmin)
 admin.site.register(NasaSystemLoad, NasaLoadAdmin)
@@ -67,4 +65,7 @@ admin.site.register(NasaQueryLoad, NasaLoadAdmin)
 admin.site.register(NasaNavigationLoad, NasaLoadAdmin)
 admin.site.register(NasaAssessmentLoad, NasaLoadAdmin)
 admin.site.register(NasaFactorCompare)
-admin.site.register(SearchEfficacy, SearchEfficacyAdmin)
+admin.site.register(SearchEfficacy, UserSurveyAdmin)
+admin.site.register(ConceptListingSurvey, UserSurveyAdmin)
+admin.site.register(ShortStressSurvey, UserSurveyAdmin)
+admin.site.register(ModifiedStressSurvey, UserSurveyAdmin)

@@ -1,35 +1,43 @@
 {% extends 'base/base.html' %}
+{% load treconomics_tags %}
 
 {% block exp_info_block %}
- <p> <a href="{{current_search}}">Back to Results</a> |
+ <p>
+     {% if backtoassessment %}
+     <a href="/treconomics/saved/">Back to Saved Documents</a> |
+     {% else %}
+     <a href="{{current_search}}">Back to Results</a> |
      <a href="/treconomics/saved/">View Saved</a> |
-     <a href="/treconomics/showtask/" target="_blank">Show Task</a> |
-     <a href="/treconomics/next/"> End Task</a> </p>
+     {% endif %}
+     <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
+     <a href="/treconomics/next/" id="end-task-link"> End Task</a>
+</p>
 {% endblock %}
 
 
 {% block document_content %}
+<div style="width: 90%;">
 <h1 class="document_title">{{ title }}  </h1>
 <p class="document_source_date"><b>{{doc_source}}</b> <span> <b>{{doc_date}}</b></span></p>
-<div class="article"> {% autoescape off %} {{ content }} {% endautoescape %}  </div>
-<p/>
+<div class="article"> {% autoescape off %} {{ content|linebreaksbrbr:doc_source }} {% endautoescape %}  </div>
+</div>
 
-<div id="marked">
 {% if user_judgement  == 1 %}
-    <b>Document Marked as Relevant</b>
+<div id="marked" style="background-color: #CCFFCC; color: #3D5229;">
+    <strong>Marked Relevant</strong>
 {% else %}
-	<br />
-    <!--a href="/treconomics/{{docid}}?judge=1">Mark Document as Relevant</a -->
-    <button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markRelevant()" > Mark as Relevant </button>
+<div id="marked">
+    <!--a href="/treconomics/{{ docid }}?judge=1&docid={{ docid }}">Mark Document as Relevant</a -->
+    <button class="largebutton" type="relevant" value="{{ docid }}" name="{{ docid }}" onclick="markRelevant()" > Mark as Relevant </button>
 {%  endif %}
 </div>
 
 
 <script>
-function markRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=1&rank="+{{rank}}, complete: function(data){ 
-    $('#marked').replaceWith('<div id="marked"> <b> Document Marked as Relevant</b> </div>');
+function markRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=1&docid="+{{docid}}+"&rank="+{{rank}}, complete: function(data){
+    $('#marked').replaceWith('<div id="marked" style="background-color: #CCFFCC; color: #3D5229;"> <strong>Marked Relevant</strong> </div>');
      } }); }
-function markNonRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=0&rank="+{{rank}}, complete: function(data){ 
+function markNonRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=0&docid="+{{docid}}+"&rank="+{{rank}}, complete: function(data){
      $('#marked').replaceWith('<div id="marked">  <button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markRelevant()" >Mark as Relevant </button></div>');
      } }); }
 </script>

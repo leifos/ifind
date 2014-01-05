@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 #import models_experiments
-from django.forms.widgets import RadioSelect, CheckboxSelectMultiple, CheckboxInput
+from django.forms.widgets import RadioSelect, CheckboxSelectMultiple, CheckboxInput, Textarea
 
 SEX_CHOICES = ( ('N','Not Indicated'),
     ('M','Male'), ('F','Female')
@@ -19,31 +19,62 @@ YES_NO_CHOICES = (
     ('Y','Yes'),('N','No')
 )
 
+STANDING_CHOICES = ( ('','Not Specified'),
+    ('Freshman','Freshman'),('Sophomore','Sophomore'),('Junior','Junior'),('Senior','Senior') 
+)
 
-class DemographicsSurvey(models.Model):
+YEAR_CHOICES = ( ('','Not Specified'),
+    ('1','First Year'), ('2','Second Year'), ('3','Third Year'), ('4','Fourth Year') ,('5','Fifth Year')  ,('6','Completed')
+)
+
+
+class UKDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0,help_text="Please provide your age (in years).")
     sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
-    occupation = models.CharField(max_length=50, help_text="Please indicate your occupation.")
-    english_first_lang = models.CharField(max_length=1, help_text="Is English your first language?")
     education_undergrad = models.CharField(max_length=1,default="N")
     education_undergrad_major = models.CharField(max_length=100, default="")
-    education_postgrad = models.CharField(max_length=1,default="N")
-    education_postgrad_major = models.CharField(max_length=100, default="")
-
+    education_undergrad_year = models.CharField(max_length=1,default="")
 
     def __unicode__(self):
         return self.user.username
 
-class DemographicsSurveyForm(ModelForm):
+class UKDemographicsSurveyForm(ModelForm):
     age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
     sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
-    occupation = forms.CharField(max_length=30, label="Please indicate your occupation.", required=False)
-    english_first_lang = forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Is English your first language?", required=False)
-    education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking or have you obtained an undergraduate degree?", required=False)
-    education_undergrad_major =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If Yes, what is your major/subject area?", required=False)
-    education_postgrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking or have you obtained a postgraduate degree?", required=False)
-    education_postgrad_major =forms.CharField( widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), max_length=100,label="If Yes, what is your major/subject area?", required=False)
+    education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, an undergraduate degree?", required=False)
+    education_undergrad_major = forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
+    education_undergrad_year = forms.CharField( widget=forms.Select(choices=YEAR_CHOICES), label="What year are you in?", required=False)
+    
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if not cleaned_data.get("age"):
+            cleaned_data["age"] = 0
+            print "clean age"
+        return cleaned_data
+
+    class Meta:
+        model = UKDemographicsSurvey
+        exclude = ('user',)
+
+class USDemographicsSurvey(models.Model):
+    user = models.ForeignKey(User)
+    age = models.IntegerField(default=0,help_text="Please provide your age (in years).")
+    sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
+    education_undergrad = models.CharField(max_length=1,default="N")
+    education_undergrad_major = models.CharField(max_length=100, default="")
+    education_standing = models.CharField(max_length=30, default="")
+
+    def __unicode__(self):
+        return self.user.username
+
+class USDemographicsSurveyForm(ModelForm):
+    age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
+    sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
+    education_undergrad =forms.CharField( widget=forms.Select(choices=YES_CHOICES), label="Are you undertaking, or have you obtained, an undergraduate degree?", required=False)
+    education_undergrad_major = forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="If yes, what is/was your subject area?", required=False)
+    education_standing = forms.CharField( widget=forms.Select(choices=STANDING_CHOICES), label="What is your class standing?", required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -52,16 +83,10 @@ class DemographicsSurveyForm(ModelForm):
             print "clean age"
         return cleaned_data
 
-    #def clean_education_high_school_years(self):
-    #    years = self.cleaned_data.get('education_high_school_years')
-    #   if years is None:
-    #        return 0
-    #    else:
-    #        return years
-
     class Meta:
-        model = DemographicsSurvey
+        model = USDemographicsSurvey
         exclude = ('user',)
+
 
 
 NASA_LOW_CHOICES = ( (1,'Very Low'), (2,''), (3,''), (4,''), (5,''), (6,''), (7,''), (8,''), (9,''), (10,''), (11,''), (12,''), (13,''), (14,''), (15,''), (16,''), (17,''), (18,''), (19,''), (20,''), (21,'Very High') )
@@ -108,10 +133,10 @@ def clean_to_zero(self):
 class NasaSystemLoadForm(ModelForm):
     nasa_mental_demand = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="MENTAL DEMAND: How mentally demanding was it to use this system to complete the search tasks?", required=False )
     nasa_physical_demand = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="PHYSICAL DEMAND: How physically demanding was it to use this system to complete the search tasks?", required=False)
-    nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TEMPORRAL DEMAND: How hurried or rushed did you feel when using this system to complete the search tasks?", required=False)
+    nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TEMPORAL DEMAND: How hurried or rushed did you feel when using this system to complete the search tasks?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful were you using this system to complete the search tasks?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to accomplish your level of performance with this system?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while using this system?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while using this system?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -120,14 +145,7 @@ class NasaSystemLoadForm(ModelForm):
         model = NasaSystemLoad
         exclude = ('user',)
 
-class NasaQueryLoad(models.Model):
-    user = models.ForeignKey(User)
-    nasa_mental_demand = models.IntegerField(default=0)
-    nasa_physical_demand = models.IntegerField(default=0)
-    nasa_temporal = models.IntegerField(default=0)
-    nasa_performance = models.IntegerField(default=0)
-    nasa_effort = models.IntegerField(default=0)
-    nasa_frustration = models.IntegerField(default=0)
+class NasaQueryLoad(NasaSystemLoad):
 
     def __unicode__(self):
         return self.user.username
@@ -138,7 +156,7 @@ class NasaQueryLoadForm(ModelForm):
     nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TERMPORAL DEMAND: How hurried or rushed did you feel when querying?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful were your queries?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to query?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while issuing queries?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while issuing queries?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -149,14 +167,7 @@ class NasaQueryLoadForm(ModelForm):
 
 
 
-class NasaNavigationLoad(models.Model):
-    user = models.ForeignKey(User)
-    nasa_mental_demand = models.IntegerField(default=0)
-    nasa_physical_demand = models.IntegerField(default=0)
-    nasa_temporal = models.IntegerField(default=0)
-    nasa_performance = models.IntegerField(default=0)
-    nasa_effort = models.IntegerField(default=0)
-    nasa_frustration = models.IntegerField(default=0)
+class NasaNavigationLoad(NasaSystemLoad):
 
     def __unicode__(self):
         return self.user.username
@@ -167,7 +178,7 @@ class NasaNavigationLoadForm(ModelForm):
     nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TERMPORAL DEMAND: How hurried or rushed did you feel when navigating through the search resutls?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful was your navigation through the search results?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to navigate through the search results?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while navigating through the search results?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while navigating through the search results?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -177,14 +188,7 @@ class NasaNavigationLoadForm(ModelForm):
         exclude = ('user',)
 
 
-class NasaAssessmentLoad(models.Model):
-    user = models.ForeignKey(User)
-    nasa_mental_demand = models.IntegerField(default=0)
-    nasa_physical_demand = models.IntegerField(default=0)
-    nasa_temporal = models.IntegerField(default=0)
-    nasa_performance = models.IntegerField(default=0)
-    nasa_effort = models.IntegerField(default=0)
-    nasa_frustration = models.IntegerField(default=0)
+class NasaAssessmentLoad(NasaSystemLoad):
 
     def __unicode__(self):
         return self.user.username
@@ -195,7 +199,7 @@ class NasaAssessmentLoadForm(ModelForm):
     nasa_temporal = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="TERMPORAL DEMAND: How hurried or rushed did you feel when assessing and judging documents for relevance?", required=False)
     nasa_performance = forms.ChoiceField(widget=RadioSelect,  choices = NASA_PERFECT_CHOICES, label="PERFORMANCE: How successful were you at assessing and judging documents for relevance?", required=False)
     nasa_effort = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="EFFORT: How hard did you have to work to assess and judge documents for relevance?", required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discourage, irrtated, stressed, and annoyed were you while assessing and judgin documents for relevance?", required=False)
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,  choices = NASA_LOW_CHOICES, label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while assessing and judgin documents for relevance?", required=False)
 
     def clean(self):
         return clean_nasa_data(self)
@@ -374,3 +378,156 @@ class PostTaskTopicRatingSurveyForm(ModelForm):
         exclude = ('user','task_id','topic_num')
 
 
+class ShortStressSurvey(models.Model):
+    user = models.ForeignKey(User)
+    stress_confident  = models.IntegerField(default=0)
+    stress_alert  = models.IntegerField(default=0)
+    stress_others  = models.IntegerField(default=0)
+    stress_figure  = models.IntegerField(default=0)
+    stress_angry  = models.IntegerField(default=0)
+    stress_proficient  = models.IntegerField(default=0)
+    stress_irritated  = models.IntegerField(default=0)
+    stress_grouchy  = models.IntegerField(default=0)
+    stress_reflecting  = models.IntegerField(default=0)
+    stress_concerned  = models.IntegerField(default=0)
+    stress_committed  = models.IntegerField(default=0)
+    stress_annoyed = models.IntegerField(default=0)
+    stress_impatient = models.IntegerField(default=0)
+    stress_self_conscious  = models.IntegerField(default=0)
+    stress_daydreaming = models.IntegerField(default=0)
+    stress_control = models.IntegerField(default=0)
+    stress_sad = models.IntegerField(default=0)
+    stress_active = models.IntegerField(default=0)
+    stress_motivated = models.IntegerField(default=0)
+    stress_dissatisfied = models.IntegerField(default=0)
+    stress_performance = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+STRESS_CHOICES = ( (1,'Not at all'), (2,''), (3,''), (4,''), (5,'Extremely')  )
+
+
+class ShortStressSurveyForm(ModelForm):
+    stress_confident = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt confident in my abilities.", required=False)
+    stress_alert = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt alert while I was completing these tasks.", required=False)
+    stress_others = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I thought about how others have done on these tasks.", required=False)
+    stress_figure = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm trying to figure myself out.", required=False)
+    stress_angry = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt angry while I was completing these tasks.", required=False)
+    stress_proficient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I expected to perform proficiently on these tasks.", required=False)
+    stress_irritated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt irritated while I was completing these tasks.", required=False)
+    stress_grouchy = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt grouchy while I was completing these tasks.", required=False)
+    stress_reflecting = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm reflecting about myself.", required=False)
+    stress_concerned = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt concerned about the impression I was making.", required=False)
+    stress_committed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt committed to succeed to these tasks.", required=False)
+    stress_annoyed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt annoyed while I was completing these tasks.", required=False)
+    stress_impatient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt impatient while I was completing these tasks.", required=False)
+    stress_self_conscious  = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I feel self-conscious.", required=False)
+    stress_daydreaming = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I'm daydreaming about myself.", required=False)
+    stress_control = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt in control of things.", required=False)
+    stress_sad = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt sad while I was completing these tasks.", required=False)
+    stress_active = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt active while I was completing these tasks.", required=False)
+    stress_motivated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt motivated to do these tasks.", required=False)
+    stress_dissatisfied = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt dissatisfied while I was completing these tasks.", required=False)
+    stress_performance = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I was committed to attaining my performance goals for these search tasks.", required=False)
+
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = ShortStressSurvey
+        exclude = ('user')
+
+
+class ConceptListingSurvey(models.Model):
+    user = models.ForeignKey(User)
+    task_id = models.IntegerField(default=0)
+    topic_num = models.IntegerField(default=0)
+    when = models.CharField(max_length=4, default='')
+    concepts  = models.TextField(default=0)
+    paragraph  = models.TextField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+
+class ConceptListingSurveyForm(ModelForm):
+    concepts = forms.CharField(widget=Textarea, label="Please list any concepts that come to mind for this topic. You can list any concepts that you feel are relevant or important.", required=False)
+    paragraph = forms.CharField(widget=Textarea, label="Imagine you would like to tell someone you know about what you have learned about this topic. Please compose a paragraph describing the topic and what you learnt about the topic. ", required=False)
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = ConceptListingSurvey
+        exclude = ('user','task_id','topic_num','when')
+
+
+class PostConceptListingSurvey(ConceptListingSurvey):
+
+    def __unicode__(self):
+        return self.user.username
+
+class PostConceptListingSurveyForm(ConceptListingSurveyForm):
+
+    class Meta:
+        model = PostConceptListingSurvey
+        exclude = ('user','task_id','topic_num')
+        
+        
+        
+#
+class ModifiedStressSurvey(models.Model):
+    user = models.ForeignKey(User)
+    stress_confident  = models.IntegerField(default=0)
+    stress_alert  = models.IntegerField(default=0)
+    stress_irritated  = models.IntegerField(default=0)
+    stress_others  = models.IntegerField(default=0)
+    stress_angry  = models.IntegerField(default=0)
+    stress_proficient  = models.IntegerField(default=0)
+    stress_grouchy  = models.IntegerField(default=0)
+    stress_concerned  = models.IntegerField(default=0)
+    stress_committed  = models.IntegerField(default=0)
+    stress_annoyed = models.IntegerField(default=0)
+    stress_impatient = models.IntegerField(default=0)
+    stress_self_conscious  = models.IntegerField(default=0)
+    stress_control = models.IntegerField(default=0)
+    stress_sad = models.IntegerField(default=0)
+    stress_active = models.IntegerField(default=0)
+    stress_motivated = models.IntegerField(default=0)
+    stress_dissatisfied = models.IntegerField(default=0)
+    stress_performance = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+
+
+class ModifiedStressSurveyForm(ModelForm):
+    stress_confident = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt confident in my abilities.", required=False)
+    stress_alert = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt alert while I was completing these tasks.", required=False)
+    stress_irritated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt irritated while I was completing these tasks.", required=False)
+    stress_others = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I thought about how others have done on these tasks.", required=False)
+    stress_angry = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt angry while I was completing these tasks.", required=False)
+    stress_proficient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I expected to perform proficiently on these tasks.", required=False)
+    stress_grouchy = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt grouchy while I was completing these tasks.", required=False)
+    stress_concerned = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt concerned about the impression I was making.", required=False)
+    stress_committed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt committed to succeed to these tasks.", required=False)
+    stress_annoyed = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt annoyed while I was completing these tasks.", required=False)
+    stress_impatient = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt impatient while I was completing these tasks.", required=False)
+    stress_self_conscious  = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt self-conscious.", required=False)
+    stress_control = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt in control of things.", required=False)
+    stress_sad = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt sad while I was completing these tasks.", required=False)
+    stress_active = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt active while I was completing these tasks.", required=False)
+    stress_motivated = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt motivated to do these tasks.", required=False)
+    stress_dissatisfied = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I felt dissatisfied while I was completing these tasks.", required=False)
+    stress_performance = forms.ChoiceField(widget=RadioSelect,  choices = STRESS_CHOICES, label="I was committed to attaining my performance goals for these search tasks.", required=False)
+
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = ModifiedStressSurvey
+        exclude = ('user')

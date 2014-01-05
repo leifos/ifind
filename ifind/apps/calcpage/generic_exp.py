@@ -95,7 +95,7 @@ class ExperimentRunner(object):
 
         query_list = []
         answer = raw_input("Do you want to use only a position based extractor? Enter y or n \n")
-        if answer == 'y':
+        if answer == 'y' or answer != 'n': #if enter is hit then assume y
             text = self.get_position_text()
             #todo at this stage this could be single, bi or tri terms
             query_gen = None
@@ -104,16 +104,16 @@ class ExperimentRunner(object):
             else:
                 query_gen = BiTermQueryGeneration(minlen=3)
             query_list = query_gen.extract_queries_from_text(text)
-        else:
+        elif answer == 'n':
             answer = raw_input("Do you want to use only a rank based extractor? Enter y or n \n")
-            if answer == 'y':
+            if answer == 'y' or answer != 'n': #if enter is hit then assume y:
                 query_list = self.get_ranked_queries()
-            else:
+            elif answer == 'n':
                 answer = raw_input("Do you want to use a rank based extractor combined with a position extractor? Enter y or n \n")
-                if answer == 'y':
+                if answer == 'y' or answer != 'n': #if enter is hit then assume y:
                     text = self.get_position_text()
                     query_list = self.get_ranked_queries(text)
-                else:
+                elif answer == 'n':
                     print "sorry, that's all the options, system will exit"
                     sys.exit(0)
 
@@ -155,13 +155,13 @@ class ExperimentRunner(object):
         text = ''
         include_answer = raw_input("Do you want to enter divs to be included or excluded? Enter i for include, "
                                    "e for exclude")
-        include = True
+        include = True#defaults to include
         if include_answer == 'e':
             include = False
 
         #todo check words and percentage are ints before convert
         divs = raw_input("enter IDs of the divs separated by spaces \n")
-        ids = []
+        ids = ['wrapper']#defaults to wrapper, overwritten if divs are entered
         if divs:
             #split string into list of IDs
             ids = divs.split()
@@ -176,6 +176,7 @@ class ExperimentRunner(object):
             pce.process_html_page(self.page_html)
 
         limit_by_words = raw_input("enter y if you want to limit by a number of words \n")
+        #defaults to no if you just hit enter
         yes_vals = ["y",'Y',"Yes",'yes']
         if limit_by_words in yes_vals:
             while True:

@@ -11,25 +11,26 @@
 
 <div>
 <div class="experimentPageTitle">
-    <p>Below is a description of the search task that we would like you to undertake.</p> 
+    <p>Below is a description of the search task that we would like you to undertake.</p>
     <p>The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.</p>
 
     <hr/>
-    <div id="query" > <b> {{tasktitle}} </b> <span>Search Task: {{task}} Search Topic: {{topic}}</span></div>
+    <div id="query" > <b> {{tasktitle}} </b> <span>Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></span></div>
 
-    <p>{% autoescape off %} {{taskdescription}} {% endautoescape %} </p>
+    <p>{% autoescape off %} <em>{{taskdescription}}</em> {% endautoescape %} </p>
 
     <hr/>
 
 <p> <b> Pre-Task Questions about the Topic/Task</b></p>  
 </div>
 </div>
-  
-    
- <div class="survey">   
+
+ <div class="survey">
+     <div id='survey_form_errorloc' class='error_strings' style="color: #F00; text-align: center;"></div>
+
     <form id="survey_form" method="post" action="{{action}}">
         {% csrf_token %}
-        <table class="survey_radio" cellpadding="20"> 
+        <table class="survey_radio" cellpadding="20">
 
                        {# Include the hidden fields #}
             {% for hidden in formset.hidden_fields %}
@@ -41,7 +42,7 @@
         	<td class="matrix" id="preTaskQuestions">
                     {{ field.errors }}
                     {{ field.label_tag }}
-	                {{ field }}
+                    {{ field }}
         	</td>
                 </tr>
 
@@ -58,7 +59,6 @@
             frmvalidator.EnableFocusOnError(true);
 
             </script>
-            <div id='survey_form_errorloc' class='error_strings'></div>
             
             
             <div class="surveySubmitButton">

@@ -8,6 +8,11 @@ keys.py
 tester.py
 .svn
 
+# Ignoring the large AQUAINT index and treconomics vocabulary files
+/applications/treconomics_project/data/fullindex
+/applications/treconomics_project/data/vocab.txt
+/applications/treconomics_project/data/vocab_trie.dat
+
 # Pycharm / Python
 .idea
 *.pyc

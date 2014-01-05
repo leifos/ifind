@@ -1,5 +1,6 @@
 import json
 import jsonpickle
+import ifind.common.make_json_serializable
 
 
 class Response(object):
@@ -31,8 +32,18 @@ class Response(object):
         self.query_terms = query_terms
         self.results = []
         self.result_total = 0
+        self.total_pages = 0
+        self.results_on_page = 0
+        self.actual_page = 0
 
-    def add_result(self, title="", url="", summary="", **kwargs):
+    def add_result_object(self, result_object):
+        """
+        Adds a Result object to the Response's results list.
+        """
+        self.results.append(result_object)
+        self.result_total += 1
+
+    def add_result(self, title="", url="", summary="", rank=-1, **kwargs):
         """
         Adds a result to Response's results list.
 
@@ -40,13 +51,14 @@ class Response(object):
             title (str): title of search result
             url (str): url of search result
             summary (str): summary of search result
+            rank (int): the rank of the result
             **kwargs: further optional result attributes
 
         Usage:
-            response.add_result(title="don's shop", url="www.dons.com", summary="a very nice place")
+            response.add_result(title="don's shop", url="www.dons.com", summary="a very nice place", rank=2)
 
         """
-        self.results.append(Result(title, url, summary, **kwargs))
+        self.results.append(Result(title, url, summary, rank, **kwargs))
         self.result_total += 1
 
     def to_json(self):
@@ -144,7 +156,7 @@ class Result(object):
     Models a Result object for use with ifind's Response class.
 
     """
-    def __init__(self, title, url, summary, **kwargs):
+    def __init__(self, title='', url='', summary='', rank=0, **kwargs):
         """
         Result constructor.
 
@@ -152,20 +164,26 @@ class Result(object):
             title (str): title of search result
             url (str): url of search result
             summary (str): summary of search result
+            rank (int): the rank of the search result
             **kwargs: further optional result attributes
 
         Usage:
             result = Result(title="pam's shop", url="www.pam.com", summary="a nice place")
 
         """
-        self.title = title if title else ""
-        self.url = url if url else ""
-        self.summary = summary if summary else ""
+        self.title = title
+        self.url = url
+        self.summary = summary
+        self.rank = rank
 
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.__dict__ = {key: value.encode('utf-8').rstrip() for key, value in self.__dict__.items()}
+        for key, value in self.__dict__.items():
+            self.__dict__[key] = value
+
+            if isinstance(value, str):
+                self.__dict__[key] = value.encode('utf-8').rstrip()
 
     def __str__(self):
         """
@@ -191,3 +209,9 @@ class Result(object):
 
         """
         return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+
+    def to_json(self):
+        """
+        Returns object instance as a JSON string.
+        """
+        return vars(self)

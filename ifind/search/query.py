@@ -26,6 +26,7 @@ class Query(object):
 
         """
         self.terms = Query.check_input(terms)
+        self.parsed_terms = None
         self.result_type = result_type.lower()
         self.lang = lang
         self.top = top
@@ -95,10 +96,24 @@ class Query(object):
         s = input_string.encode('ascii', 'ignore')
 
         # remove all punctuation
-        s = s.translate(string.maketrans("",""), PUNCTUATION)
+        s = s.translate(string.maketrans(PUNCTUATION, ' '*len(PUNCTUATION)))
 
         # set to None if just spaces
         if s.isspace():
             s = None
 
         return s
+
+    def __unicode__(self):
+        """
+        Unicode method - returns the query.
+        """
+        if isinstance(self.parsed_terms, unicode):
+            return self.parsed_terms
+
+        return_str = u""
+
+        for term in self.parsed_terms:
+            return_str = "{0} {1}".format(return_str, term.text)
+
+        return return_str.strip()

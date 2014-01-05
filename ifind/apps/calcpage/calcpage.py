@@ -51,6 +51,7 @@ def main():
     if args.key:
         engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=0.1, cache=cache)
     else:
+        print "cache is ", cache
         engine = EngineFactory(engine=args.engine, cache=cache, throttle=0.1)
 
 
