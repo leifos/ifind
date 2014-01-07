@@ -22,10 +22,11 @@ YOU NEED TO SET UP A REDIS CACHE FIRST
 
 class ExpConfigurationParser(object):
     def __init__(self, config_file_dir):
+        self.header_written = False #keeps track of whether a heading line has been written for summary results files
         self.directory = config_file_dir
         #each config file directory has three config files in it, one for each search engine
         #create a list of the full path for each config file for the current directory
-        self.config_files = [self.directory + "experiment_bing.ini", self.directory + "experiment_sitebing.ini", self.directory + "experiment_govuk.ini"]
+        self.config_files = [self.directory + "/configs/experiment_bing.ini", self.directory + "/configs/experiment_sitebing.ini", self.directory + "/configs/experiment_govuk.ini"]
         #need to set the optional values to none here to avoid errors when checking if they exist later
         self.reset()
 
@@ -42,6 +43,8 @@ class ExpConfigurationParser(object):
                 self.set_engine()
                 self.query_list = self.get_queries()
                 self.process_queries()
+                print "A total of %d queries were issued" % (self.engine.num_requests)
+                print "Of those %d were handled by the cache" % (self.engine.num_requests_cached)
                 self.reset()
 
     def read_urls(self):
@@ -128,7 +131,7 @@ class ExpConfigurationParser(object):
         query_list =[]
         if self.selection_type == 'position':
             query_list = self.get_position_queries()
-        elif self.selection_type == 'rank':
+        elif self.selection_type == 'ranked':
             query_list = self.get_ranked_queries()
         elif self.selection_type == 'position_ranked':
             text = self.get_position_text()
@@ -193,7 +196,7 @@ class ExpConfigurationParser(object):
         print "Queries generated: ", len(query_list)
         qr = OddsRatioQueryRanker(smoothed_language_model=slm)
         scored_queries = qr.calculate_query_list_probabilities(query_list)
-        queries = qr.get_top_queries(self.mq)
+        queries = qr.get_top_queries(self.maxqueries)
         query_list = []
         for query in queries:
             query_list.append(query[0])
@@ -228,14 +231,21 @@ class ExpConfigurationParser(object):
         :return:None
         """
         summary_file = open(self.directory + "/" +self.engine_name + "_" + scoring + "_summary_report.txt","a")
-        summary_file.write(summary)
+        if not self.header_written:
+            summary_file.write("%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score') + summary)
+            self.header_written = True
         summary_file.close()
 
         page = self.get_page_from_url(self.url)
         print "page is ", page
-        breakdown_file = open(self.directory + "/" + page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt","w")
-        breakdown_file.write(breakdown)
-        breakdown_file.close()
+        directory = self.directory + "/pages/" + page + "/"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            print "scoring is ", scoring
+        directory += page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt"
+        with open(directory, "w") as breakdown_file:
+            breakdown_file.write("%-40s %-20s %-10s %-10s" % ('URL','query','rank','score') +breakdown)
+            breakdown_file.close()
 
     def get_page_from_url(self, url):
         """
@@ -258,7 +268,7 @@ class ExpConfigurationParser(object):
         except ValueError:
             return False
 
-parser = ExpConfigurationParser('/Users/rose/code/ifind/ifind/apps/calcpage/experiments/results/all/100/position/50/')
+parser = ExpConfigurationParser('/Users/rose/code/ifind/ifind/apps/calcpage/experiments/results/all/100/ranked/all/')
 
 
 
@@ -266,7 +276,7 @@ parser = ExpConfigurationParser('/Users/rose/code/ifind/ifind/apps/calcpage/expe
 # parts = ["all","main"]
 # portions = ['100','75','50','25']
 # rankings = ["ranked","position_ranked","position"]
-# max_queries = ['25','50','75']
+# max_queries = ['25','50','75','all']
 # top_path="results"
 # parser = None
 # # set a number of parameters

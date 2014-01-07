@@ -46,7 +46,7 @@ def set_config():
             for rank in rankings:
                 for max_query in max_queries:
                     for engine in engines:
-                        directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/"
+                        directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/configs/"
                         #print directory
                         #if not os.path.exists(directory):
                         #    os.makedirs(directory)
