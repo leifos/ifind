@@ -27,14 +27,16 @@ rankings = ["ranked","position_ranked","position"]
 max_queries = ['25','50','75','all']
 engines = ["govuk","bing","sitebing"]
 bing_key = "" #have a file called personal_bin_key.txt in this directory which contains your bing key
-domain = "gov.uk"
+#todo domain should be appropriate e.g. gov.uk or  gla.ac.uk
+domain = "gla.ac.uk"
 #hard coded in stopfile location
 stopfile= "/Users/rose/code/ifind/ifind/apps/calcpage/experiments/stopwords.txt"
 rank_type = "odds"
 top_path="results"
-#hard coded in crawl file location, if doing urls which aren't .gov.uk, need a different crawl file
+#hard coded in crawl file location,  need a different crawl file
 crawl_file="/Users/rose/code/ifind/ifind/apps/calcpage/experiments/background.txt"
-divs = "wrapper"
+#DIVS SHOULD BE WRAPPER FOR GOV.UK AND MAINPAGE FOR GLA.AC.UK
+divs = "mainpage"
 config = ConfigParser.ConfigParser()
 # set a number of parameters
 
