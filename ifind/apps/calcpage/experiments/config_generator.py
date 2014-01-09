@@ -25,7 +25,7 @@ parts = ["all","main"]
 portions = ['100','75','50','25']
 rankings = ["ranked","position_ranked","position"]
 max_queries = ['25','50','75','all']
-engines = ["govuk","bing","sitebing"]
+engines = ["govuk","sitebing"]
 bing_key = "" #have a file called personal_bin_key.txt in this directory which contains your bing key
 #todo domain should be appropriate e.g. gov.uk or  gla.ac.uk
 domain = "gla.ac.uk"

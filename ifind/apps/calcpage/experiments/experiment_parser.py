@@ -26,8 +26,8 @@ class ExpConfigurationParser(object):
         #each config file directory has three config files in it, one for each search engine
         #create a list of the full path for each config file for the current directory
         #todo use line below if using govuk sites
-        #self.config_files = [self.directory + "/configs/experiment_bing.ini", self.directory + "/configs/experiment_sitebing.ini", self.directory + "/configs/experiment_govuk.ini"]
-        self.config_files = [self.directory + "/configs/experiment_bing.ini", self.directory + "/configs/experiment_sitebing.ini"]
+        #self.config_files = [ self.directory + "/configs/experiment_sitebing.ini", self.directory + "/configs/experiment_govuk.ini"]
+        self.config_files = [ self.directory + "/configs/experiment_sitebing.ini"]
         #need to set the optional values to none here to avoid errors when checking if they exist later
         self.reset()
 
