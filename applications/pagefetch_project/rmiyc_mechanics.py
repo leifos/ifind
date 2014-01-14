@@ -16,6 +16,9 @@ class RMIYCMechanic(GameMechanic):
         self.super().__init__()
     '''
 
+    def is_game_over(self):
+        return False
+
 
     def _score_rank(self, rank, bonus ,query_len=1):
         """
