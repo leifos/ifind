@@ -4,11 +4,11 @@ $(function()
 {
     initiate_game();
     var timeoutID;
-    window.onbeforeunload = confirmExit;
-    function confirmExit()
-    {
-        return 'Are you sure you want to quit the game?';
-    }
+    //window.onbeforeunload = confirmExit;
+    //function confirmExit()
+    //{
+    //    return 'Are you sure you want to quit the game?';
+    //}
 
     var skip_options ={
         trigger : 'hover',
