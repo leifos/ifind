@@ -12,6 +12,8 @@ from query_generation import SingleQueryGeneration
 from ifind.search.query import Query
 from urllib import urlopen
 import time
+from ifind.search.exceptions import EngineConnectionException
+import sys
 
 class PageRetrievabilityCalculator:
     """ Given a url calculate the retrievability scores for that page.
@@ -95,7 +97,8 @@ class PageRetrievabilityCalculator:
         this is for the page overall
         :return: a string with the details of the report
         """
-        report = "%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score')
+        #report = "%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score')
+        report = ""
 
         report += "\n %-40s %-20d %-10d %-10d %-10.2f" % (self.url,self.query_count,self.engine.num_requests, self.page_retrieved, self.ret_score)
         return report
@@ -106,7 +109,8 @@ class PageRetrievabilityCalculator:
         this is for each query, i.e. breakdown of the summary
         :return: a string with the details of the report
         """
-        report = "%-40s %-20s %-10s %-10s" % ('URL','query','rank','score')
+        #report = "%-40s %-20s %-10s %-10s" % ('URL','query','rank','score')
+        report = ""
 
         for query in self.successful_queries:
             report += "\n %-40s %-20s %-10d %-10.2f" % (self.url, query.terms, query.rank, query.ret_score)
@@ -175,26 +179,38 @@ class PageRetrievabilityCalculator:
         :return: rank of url in the search results, else 0
 
         """
-        print "processing ", query.terms
         rank = 0
+        max_attempts = 10
+        attempts = 0
+        if attempts < max_attempts:
+            try:
+                result_list = self.engine.search(query)
+                # check if url is in the results.
+                i = 0
+                match_url = self.url.rstrip("/")
+                for result in result_list:
+                    i += 1
+                    result_url = result.url.rstrip("/")
 
-        result_list = self.engine.search(query)
-        # check if url is in the results.
-        i = 0
-        match_url = self.url.rstrip("/")
-        for result in result_list:
-            i += 1
-            result_url = result.url.rstrip("/")
+                    #TODO(leifos): may need a better matching function in case there are small differences between url
+                    if result_url == match_url:
+                        rank = i
+                        #copy the query into the list of queries which returned the result
+                        self.successful_queries.append(query)
+                        break
+                print "issuing query with terms: ", query.terms
 
-            #TODO(leifos): may need a better matching function in case there are small differences between url
-            if result_url == match_url:
-                rank = i
-                #copy the query into the list of queries which returned the result
-                self.successful_queries.append(query)
-                break
-        print "issuing query with terms: ", query.terms
+            #print "%d  \t%d \t%d  \t%d  \t%s " % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
 
-        #print "%d  \t%d \t%d  \t%d  \t%s " % (len(result_list), rank, self.engine.num_requests, self.engine.num_requests_cached, query.terms)
+            except EngineConnectionException:
+                print 'engine exception, trying again in 10 seconds'
+                time.sleep(10)
+                print "trying now.."
+                attempts += 1
+        else:
+            print "attempted ", max_attempts, " times with no success, exiting"
+            sys.exit()
+
 
         return rank
 

@@ -9,8 +9,7 @@ from ifind.search.engines import ENGINE_LIST
 from ifind.common.pagecapture import PageCapture
 from ifind.common.query_ranker import QueryRanker, OddsRatioQueryRanker
 from ifind.common.position_content_extractor import PositionContentExtractor
-import sys
-import string
+import time
 """
 This class is an experiment configuration parser for the page calculator
 It reads a config file called experiments.ini and parses the configuration
@@ -22,15 +21,18 @@ YOU NEED TO SET UP A REDIS CACHE FIRST
 
 class ExpConfigurationParser(object):
     def __init__(self, config_file_dir):
+        self.header_written = False #keeps track of whether a heading line has been written for summary results files
         self.directory = config_file_dir
         #each config file directory has three config files in it, one for each search engine
         #create a list of the full path for each config file for the current directory
-        self.config_files = [self.directory + "experiment_bing.ini", self.directory + "experiment_sitebing.ini", self.directory + "experiment_govuk.ini"]
+        #todo use line below if using govuk sites
+        #self.config_files = [ self.directory + "/configs/experiment_sitebing.ini", self.directory + "/configs/experiment_govuk.ini"]
+        self.config_files = [ self.directory + "/configs/experiment_sitebing.ini"]
         #need to set the optional values to none here to avoid errors when checking if they exist later
         self.reset()
 
         self.config = ConfigParser.ConfigParser(allow_no_value=True)
-        #read the urls to be processed, this is in the urls.txt file
+        #read the urls to be processed, this is in the urls_simple.txt file
         self.urls = self.read_urls()
         for url in self.urls:
             self.url = url
@@ -42,11 +44,13 @@ class ExpConfigurationParser(object):
                 self.set_engine()
                 self.query_list = self.get_queries()
                 self.process_queries()
+                print "A total of %d queries were issued" % (self.engine.num_requests)
+                print "Of those %d were handled by the cache" % (self.engine.num_requests_cached)
                 self.reset()
 
     def read_urls(self):
         """
-        reads in the file urls.txt line by line and stores in a list of urls
+        reads in the file urls_simple.txt line by line and stores in a list of urls
         :return: a list of urls
         """
         with open('urls.txt') as f:
@@ -109,9 +113,9 @@ class ExpConfigurationParser(object):
         self.cache = 'engine'
 
         if self.key:
-            self.engine = EngineFactory(engine=self.engine_name, api_key=self.key, throttle=0.1, cache=self.cache)
+            self.engine = EngineFactory(engine=self.engine_name, api_key=self.key, throttle=0.25, cache=self.cache)
         else:
-            self.engine = EngineFactory(engine=self.engine_name, cache=self.cache, throttle=0.1)
+            self.engine = EngineFactory(engine=self.engine_name, cache=self.cache, throttle=0.25)
 
         if self.domain:
             self.engine.site = self.domain
@@ -127,8 +131,8 @@ class ExpConfigurationParser(object):
     def get_queries(self):
         query_list =[]
         if self.selection_type == 'position':
-            query_list = self.get_position_queries()
-        elif self.selection_type == 'rank':
+            query_list = self.get_position_queries(self.get_position_text())
+        elif self.selection_type == 'ranked':
             query_list = self.get_ranked_queries()
         elif self.selection_type == 'position_ranked':
             text = self.get_position_text()
@@ -140,7 +144,7 @@ class ExpConfigurationParser(object):
         if self.divs:
             self.divs = self.divs.split()
 
-    def get_position_queries(self):
+    def get_position_text(self):
         pce = PositionContentExtractor()
         pce.process_html_page(self.page_html)
         #now set the text of the pce to be the text from the divs with given ids
@@ -158,6 +162,10 @@ class ExpConfigurationParser(object):
                 text = pce.get_subtext(percentage=percentage)
         else:
             text = pce.get_subtext()
+        return text
+
+    def get_position_queries(self, text):
+
         #print "text is ", text
         query_gen = None
         query_list = []
@@ -193,7 +201,7 @@ class ExpConfigurationParser(object):
         print "Queries generated: ", len(query_list)
         qr = OddsRatioQueryRanker(smoothed_language_model=slm)
         scored_queries = qr.calculate_query_list_probabilities(query_list)
-        queries = qr.get_top_queries(self.mq)
+        queries = qr.get_top_queries(self.maxqueries)
         query_list = []
         for query in queries:
             query_list.append(query[0])
@@ -228,14 +236,21 @@ class ExpConfigurationParser(object):
         :return:None
         """
         summary_file = open(self.directory + "/" +self.engine_name + "_" + scoring + "_summary_report.txt","a")
-        summary_file.write(summary)
+        if not self.header_written:
+            summary_file.write("%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score') + summary)
+            self.header_written = True
         summary_file.close()
 
         page = self.get_page_from_url(self.url)
         print "page is ", page
-        breakdown_file = open(self.directory + "/" + page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt","w")
-        breakdown_file.write(breakdown)
-        breakdown_file.close()
+        directory = self.directory + "/pages/" + page + "/"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            print "scoring is ", scoring
+        directory += page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt"
+        with open(directory, "w") as breakdown_file:
+            breakdown_file.write("%-40s %-20s %-10s %-10s" % ('URL','query','rank','score') +breakdown)
+            breakdown_file.close()
 
     def get_page_from_url(self, url):
         """
@@ -258,23 +273,21 @@ class ExpConfigurationParser(object):
         except ValueError:
             return False
 
-parser = ExpConfigurationParser('/Users/rose/code/ifind/ifind/apps/calcpage/experiments/results/all/100/position/50/')
 
+st = time.time()
+parts = ["all","main"]
+portions = ['100','75','50','25']
+rankings = ["ranked","position_ranked","position"]
+max_queries = ['25','50','75','all']
+top_path="results"
+parser = None
+# set a number of parameters
+for part in parts:
+    for portion in portions:
+        for rank in rankings:
+            for max_query in max_queries:
+                directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/"
+                parser = ExpConfigurationParser(directory)
+                print "completed " ,  directory
 
-
-
-# parts = ["all","main"]
-# portions = ['100','75','50','25']
-# rankings = ["ranked","position_ranked","position"]
-# max_queries = ['25','50','75']
-# top_path="results"
-# parser = None
-# # set a number of parameters
-# for part in parts:
-#     for portion in portions:
-#         for rank in rankings:
-#             for max_query in max_queries:
-#                 directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/"
-#                 parser = ExpConfigurationParser(directory)
-
-
+print "time taken was " , st - time.time()
