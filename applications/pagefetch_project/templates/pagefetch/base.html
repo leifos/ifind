@@ -47,6 +47,25 @@
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap-dropdown.js"></script>
 
+    <!-- jquery timer code-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.countdown.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.countdown.js"></script>
+    <style type="text/css">
+        body > iframe { display: none; }
+
+        #defaultCountdown { width: 240px; height: 45px; }
+    </style>
+    <script type="text/javascript">
+    $(function () {
+        $('#defaultCountdown').countdown({until: +5, expiryUrl: 'http://jquery.com'});
+    });
+    </script>
+
+
+
+
+
 </head>
 
   <body>
