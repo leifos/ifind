@@ -52,15 +52,27 @@ class ExperimentRunner(object):
             return 2
         else:
             self.url = args.url
+#    cache = None
+#    if args.cache:
+#        cache = 'engine'
+
+#    if args.key:
+#        engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=0.1, cache=cache)
+#    else:
+#        print "cache is ", cache
+#        engine = EngineFactory(engine=args.engine, cache=cache, throttle=0.1)
+
 
         cache = None
         if args.cache:
             self.cache = 'engine'
+        else:
+            self.cache = cache
 
         if args.key:
-            self.engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=0.1, cache=cache)
+            self.engine = EngineFactory(engine=args.engine, api_key=args.key, throttle=0.1, cache=self.cache)
         else:
-            self.engine = EngineFactory(engine=args.engine, cache=cache, throttle=0.1)
+            self.engine = EngineFactory(engine=args.engine, cache=self.cache, throttle=0.1)
 
         if args.domain:
             self.engine.site = args.domain

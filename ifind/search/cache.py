@@ -232,10 +232,13 @@ class QueryCache(object):
             Private method.
 
         """
+        hash_query = hash(query.terms + ' '+ str(query.top)+ ' ' + str(query.skip))
+
         if self.cache_type.lower() == 'engine':
-            return "QueryCache::{0}::{1}".format(self.engine_name, hash(query))
+
+            return "QueryCache::{0}::{1}".format(self.engine_name, hash_query)
         if self.cache_type.lower() == 'instance':
-            return "QueryCache::{2}{0}::{1}".format(id(self), hash(query), self.engine_name)
+            return "QueryCache::{2}{0}::{1}".format(id(self), hash_query, self.engine_name)
 
     def get_set_name(self):
 

@@ -68,7 +68,7 @@ def main():
         backgroundfile = args.backgroundfile
 
     doc_extractor = SingleQueryGeneration(minlen=3,stopwordfile=stopwordfile)
-    query_generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile, maxsize=mq)
+    query_generator = BiTermQueryGeneration(minlen=3, stopwordfile=stopwordfile)
     print "Loading background distribution"
     colLM = LanguageModel(file=backgroundfile)
     print "Background loaded, number of terms: ", colLM.get_num_terms()
