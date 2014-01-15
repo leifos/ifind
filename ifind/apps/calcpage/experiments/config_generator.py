@@ -52,7 +52,7 @@ def set_config():
                         #print directory
                         #if not os.path.exists(directory):
                         #    os.makedirs(directory)
-                        if engine == 'binguk' or engine == 'bing':
+                        if engine == 'sitebing' or engine == 'bing':
                             config.set("experiment","key",bing_key)
                         config.set("experiment", "engine",engine)
                         if engine == 'sitebing':

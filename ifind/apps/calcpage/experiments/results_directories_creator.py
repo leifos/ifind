@@ -14,7 +14,7 @@ scoring = ["cumulative","gravity"]
 parts = ["all","main"]
 portions = ['100','75','50','25']
 rankings = ["ranked","unranked"]
-max_queries = ['25','50','75']
+max_queries = ['25','50','75','all']
 previous = ['']
 directory = ''
 for score in scoring:

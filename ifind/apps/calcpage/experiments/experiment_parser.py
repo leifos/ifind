@@ -21,7 +21,8 @@ YOU NEED TO SET UP A REDIS CACHE FIRST
 
 class ExpConfigurationParser(object):
     def __init__(self, config_file_dir):
-        self.header_written = False #keeps track of whether a heading line has been written for summary results files
+        self.gravity_header_written = False #keeps track of whether a heading line has been written for summary results files
+        self.cumulative_header_written = False
         self.directory = config_file_dir
         #each config file directory has three config files in it, one for each search engine
         #create a list of the full path for each config file for the current directory
@@ -236,9 +237,15 @@ class ExpConfigurationParser(object):
         :return:None
         """
         summary_file = open(self.directory + "/" +self.engine_name + "_" + scoring + "_summary_report.txt","a")
-        if not self.header_written:
-            summary_file.write("%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score') + summary)
-            self.header_written = True
+        if scoring == 'gravity':
+            if not self.gravity_header_written:
+                summary_file.write("%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score') + summary)
+                self.gravity_header_written = True
+        if scoring == 'cumulative':
+            if not self.cumulative_header_written:
+                summary_file.write("%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score') + summary)
+                self.cumulative_header_written = True
+        summary_file.write(summary)
         summary_file.close()
 
         page = self.get_page_from_url(self.url)
@@ -246,7 +253,6 @@ class ExpConfigurationParser(object):
         directory = self.directory + "/pages/" + page + "/"
         if not os.path.exists(directory):
             os.makedirs(directory)
-            print "scoring is ", scoring
         directory += page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt"
         with open(directory, "w") as breakdown_file:
             breakdown_file.write("%-40s %-20s %-10s %-10s" % ('URL','query','rank','score') +breakdown)
@@ -259,7 +265,13 @@ class ExpConfigurationParser(object):
         :return:
         """
         last_slash_pos = url.rfind("/")
-        return url[last_slash_pos+1:]
+        page = url[last_slash_pos+1:]
+        if page == '':#there may be a trailing /
+            last_slash_pos = url[:last_slash_pos].rfind("/")
+            page = url[last_slash_pos+1:len(url)-1]
+        return page
+
+
 
     def is_integer(self, value):
         """
@@ -289,5 +301,8 @@ for part in parts:
                 directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/"
                 parser = ExpConfigurationParser(directory)
                 print "completed " ,  directory
+
+#directory = "results/main/25/position/all/"
+#parser = ExpConfigurationParser(directory)
 
 print "time taken was " , st - time.time()
