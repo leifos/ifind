@@ -16,7 +16,7 @@
             <a href="/pagefetch/play/{{c.url}}">
                 <div>
                     <h3>{{c.name}}</h3>
-                    <img src="{{c.icon}}" class ="img-rounded" alt="{{c.name}}" height="200" width="300">
+                    <img src="/data/{{c.icon}}" class ="img-rounded" alt="{{c.name}}" height="200" width="300">
                     <br />
                     {% if user.is_authenticated %}
                         <p> <h4>Highest score: {{c.score}}</h4></p>
