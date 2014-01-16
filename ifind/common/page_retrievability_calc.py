@@ -14,6 +14,8 @@ from urllib import urlopen
 import time
 from ifind.search.exceptions import EngineConnectionException
 import sys
+import copy
+
 
 class PageRetrievabilityCalculator:
     """ Given a url calculate the retrievability scores for that page.
@@ -93,29 +95,34 @@ class PageRetrievabilityCalculator:
 
     def output_summary_report(self):
         """
-        this method creates a string with the information to be output to a file for experiments
+        this method creates a dictionary with the information to be output to a file for experiments
         this is for the page overall
-        :return: a string with the details of the report
+        :return: a dictionary with the details of the report
         """
         #report = "%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score')
-        report = ""
+        #report = ""
 
-        report += "\n %-40s %-20d %-10d %-10d %-10.2f" % (self.url,self.query_count,self.engine.num_requests, self.page_retrieved, self.ret_score)
-        return report
+        #report += "\n %-40s %-20d %-10d %-10d %-10.2f" % (self.url,self.query_count,self.engine.num_requests, self.page_retrieved, self.ret_score)
+        return {'url':self.url,'query_count':self.query_count,'queries_issued':self.engine.num_requests,'retrieved':self.page_retrieved,'score':self.ret_score}
+        #return report
 
     def output_query_report(self):
         """
-        this method creates a string with the information to be output to a file for experiments
+        this method creates a dictionary with the information to be output to a file for experiments
         this is for each query, i.e. breakdown of the summary
-        :return: a string with the details of the report
+        :return: a dictionary with the details of the report
         """
         #report = "%-40s %-20s %-10s %-10s" % ('URL','query','rank','score')
-        report = ""
+        #report = ""
+        results = {}
 
         for query in self.successful_queries:
-            report += "\n %-40s %-20s %-10d %-10.2f" % (self.url, query.terms, query.rank, query.ret_score)
-            print query.terms + " ; "
-        return report
+            #report += "\n %-40s %-20s %-10d %-10.2f" % (self.url, query.terms, query.rank, query.ret_score)
+            #print query.terms + " ; "
+            #print "self url is ", self.url
+            #print query
+            results[query.terms]=copy.deepcopy(query)
+        return results
 
     def calculate_page_retrievability(self, c=None, beta=None):
         """
@@ -170,6 +177,7 @@ class PageRetrievabilityCalculator:
             aQ.ret_score = 0.0
             self.query_dict[q] = aQ
         self.query_count = len(self.query_dict)
+        #print "query count is ", self.query_count
 
     def _process_query(self, query):
         """
