@@ -53,6 +53,30 @@ def populate():
         print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
         add_user(username, password,cond, experiment, rotation, data)
 
+
+    cond = 4
+    for i in range(1,16):
+        username = 'aca' + str(i)
+        password = 'p'+str(i)
+        rotation = (i % 2)
+        experiment = 0 # not used
+        data = None # not used
+        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
+        add_user(username, password,cond, experiment, rotation, data)
+
+    cond = 5
+    for i in range(1,16):
+        username = 'acb' + str(i)
+        password = 'p'+str(i)
+        rotation = (i % 2)
+        experiment = 0 # not used
+        data = None # not used
+        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
+        add_user(username, password,cond, experiment, rotation, data)
+
+
+
+
 def add_user(username,password, condition, experiment, rotation, data=None):
     u = User.objects.get_or_create(username=username)[0]
     u.set_password(password)
