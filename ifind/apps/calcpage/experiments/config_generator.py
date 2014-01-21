@@ -21,9 +21,9 @@ divs= wrapper
 import os, sys
 import ConfigParser
 
-parts = ["all","main"]
+#parts = ["all","main"]
 portions = ['100','75','50','25']
-rankings = ["ranked","position_ranked","position"]
+rankings = ["ranked","position_ranked","position","default"]
 max_queries = ['25','50','75','all']
 engines = ["govuk","sitebing"]
 bing_key = "" #have a file called personal_bin_key.txt in this directory which contains your bing key
@@ -43,37 +43,37 @@ config = ConfigParser.ConfigParser()
 def set_config():
     bing_key = read_bing_key()
     config.add_section("experiment")
-    for part in parts:
-        for portion in portions:
-            for rank in rankings:
-                for max_query in max_queries:
-                    for engine in engines:
-                        directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/configs/"
-                        #print directory
-                        #if not os.path.exists(directory):
-                        #    os.makedirs(directory)
-                        if engine == 'binguk' or engine == 'bing':
-                            config.set("experiment","key",bing_key)
-                        config.set("experiment", "engine",engine)
-                        if engine == 'sitebing':
-                            config.set("experiment","domain",domain)
-                        config.set("experiment","maxqueries",max_query)
-                        config.set("experiment","stopfile",stopfile)
-                        config.set("experiment","query_type","biterm")
-                        config.set("experiment","doc_portion_perc", portion)
-                        config.set("experiment","selection_type",rank)
-                        if rank == "ranked" or rank == "position_ranked":
-                            config.set("experiment","rank_type",rank_type)
-                            config.set("experiment","crawl_file",crawl_file)
-                        if rank == "position_ranked" or rank == "position":
-                            config.set("experiment","divs",divs)
+
+    for portion in portions:
+        for rank in rankings:
+            for max_query in max_queries:
+                for engine in engines:
+                    directory = top_path + "/" + portion + "/" + rank + "/" + max_query + "/configs/"
+                    #print directory
+                    #if not os.path.exists(directory):
+                    #    os.makedirs(directory)
+                    if engine == 'sitebing' or engine == 'bing':
+                        config.set("experiment","key",bing_key)
+                    config.set("experiment", "engine",engine)
+                    if engine == 'sitebing':
+                        config.set("experiment","domain",domain)
+                    config.set("experiment","maxqueries",max_query)
+                    config.set("experiment","stopfile",stopfile)
+                    config.set("experiment","query_type","biterm")
+                    config.set("experiment","doc_portion_perc", portion)
+                    config.set("experiment","selection_type",rank)
+                    if rank == "ranked" or rank == "position_ranked":
+                        config.set("experiment","rank_type",rank_type)
+                        config.set("experiment","crawl_file",crawl_file)
+                    if rank == "position_ranked" or rank == "position":
+                        config.set("experiment","divs",divs)
                         #config.write(sys.stdout)
-                        if not os.path.exists(directory):
-                            os.makedirs(directory)
-                        directory += "experiment_"+engine+".ini"
-                        with open(directory, "w") as config_file:
-                            config.write(config_file)
-                        reset()
+                    if not os.path.exists(directory):
+                        os.makedirs(directory)
+                    directory += "experiment_"+engine+".ini"
+                    with open(directory, "w") as config_file:
+                        config.write(config_file)
+                    reset()
 
 
 def reset():
