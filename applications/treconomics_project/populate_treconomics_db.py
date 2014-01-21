@@ -37,25 +37,25 @@ def populate():
 
     passwords = ['bbkzd', 'cfres', 'bguvt', 'uquyl', 'gjayh', 'zpulx', 'qqste', 'aaavg', 'woegc', 'mybqs', 'msyhh', 'vmfia', 'jjdnk', 'rxnwq', 'lifqv', 'rwyjt', 'ikzxv', 'penqy', 'tgnhy', 'ekvej', 'iknnm', 'rbvop', 'mvevh', 'dwtdp', 'wtswq', 'oedhp', 'dophj', 'yuyau', 'ixqgx', 'klhrv', 'gijjg', 'kkfro', 'hjcvd', 'aiogp', 'yatgp', 'pttfy', 'zyjmd', 'tqqic', 'mmevq', 'akktp', 'ssnyy', 'nowmz', 'hyykw', 'xmjjk', 'dzdoq', 'pdfcn', 'rrelr', 'hssar', 'phvsz', 'djlbh', 'mrmwp', 'tufcg', 'udmed', 'sytal', 'umcsz', 'ftyqo']
     
-    cond = 5
-    for i in range(0,56):
-        
-        #increment the condition every 13 participants
-        if i % 14 == 0:
-            cond = cond + 1
-            
-        username = 'search' + str(i)
-        password = passwords[i]
-        rotation = (i % 2)
-        experiment = 0 # not used
-        data = None # not used
-        
-        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
-        add_user(username, password,cond, experiment, rotation, data)
+#    cond = 5
+#    for i in range(0,56):
+#
+#        #increment the condition every 13 participants
+#        if i % 14 == 0:
+#            cond = cond + 1
+#
+#        username = 'search' + str(i)
+#        password = passwords[i]
+#        rotation = (i % 2)
+#        experiment = 0 # not used
+#        data = None # not used
+#
+#        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
+#        add_user(username, password,cond, experiment, rotation, data)
 
 
     cond = 4
-    for i in range(1,16):
+    for i in range(1,19):
         username = 'aca' + str(i)
         password = 'p'+str(i)
         rotation = (i % 2)
@@ -65,7 +65,7 @@ def populate():
         add_user(username, password,cond, experiment, rotation, data)
 
     cond = 5
-    for i in range(1,16):
+    for i in range(1,19):
         username = 'acb' + str(i)
         password = 'p'+str(i)
         rotation = (i % 2)
