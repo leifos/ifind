@@ -89,8 +89,8 @@ class PositionContentExtractor(object):
 
         cleaned = self._clean_result(visible_text)
         if not cleaned:
-            print "no text remains for generating queries, program will exit "
-            sys.exit(2)
+            print "no text remains for generating queries "
+            #sys.exit(2)
         #print cleaned
         return cleaned
 
@@ -166,8 +166,8 @@ class PositionContentExtractor(object):
             content += self._get_content(tag, id=value)
         self.text = content
         if not self.text:
-            print "no text remains for generating queries, program will exit "
-            sys.exit(2)
+            print "no text remains for generating queries"
+            #sys.exit(2)
 
 
 

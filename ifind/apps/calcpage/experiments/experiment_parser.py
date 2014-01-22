@@ -21,7 +21,6 @@ YOU NEED TO SET UP A REDIS CACHE FIRST
 
 class ExpConfigurationParser(object):
     def __init__(self, config_file_dir):
-        self.header_written = False #keeps track of whether a heading line has been written for summary results files
         self.directory = config_file_dir
         #each config file directory has three config files in it, one for each search engine
         #create a list of the full path for each config file for the current directory
@@ -130,13 +129,14 @@ class ExpConfigurationParser(object):
 
     def get_queries(self):
         query_list =[]
-        if self.selection_type == 'position':
+        if self.selection_type == 'position' or self.selection_type == 'default':
             query_list = self.get_position_queries(self.get_position_text())
         elif self.selection_type == 'ranked':
             query_list = self.get_ranked_queries()
         elif self.selection_type == 'position_ranked':
             text = self.get_position_text()
             query_list = self.get_ranked_queries(text)
+
         return query_list
 
     def set_divs(self):
@@ -149,7 +149,11 @@ class ExpConfigurationParser(object):
         pce.process_html_page(self.page_html)
         #now set the text of the pce to be the text from the divs with given ids
         self.set_divs()
-        pce.set_all_content(self.divs,"div")
+        #set the content to be that of the divs if there are any
+        if self.divs:
+            pce.set_all_content(self.divs,"div")
+        else:
+            print "no divs, in default **" #todo checking no divs works
         #now check if to limit by words
         text =''
         if self.doc_portion_count:
@@ -215,41 +219,73 @@ class ExpConfigurationParser(object):
             prc = PageRetrievabilityCalculator(engine=self.engine)
         prc.score_page(self.url, self.query_list)
 
-
+        #rose todo refactor following code, not optimal and a bit messy
         prc.calculate_page_retrievability(c=20)
-        #prc.report()
-        summary_report = prc.output_summary_report()
-        breakdown_report = prc.output_query_report()
-        self.write_output_files(summary_report,breakdown_report,"cumulative")
-        print "\nRetrievability Scores for cumulative pce=20 written out"
+        c_20_summary_data = prc.output_summary_report()
+        c_20_score = str(c_20_summary_data['score'])
+        c_20_breakdown_data = prc.output_query_report()
 
-        print "\nRetrievability Scores for gravity beta=1.0"
+        prc.calculate_page_retrievability(c=10)
+        c_10_summary_data = prc.output_summary_report()
+        c_10_score = str(c_10_summary_data['score'])
+        c_10_breakdown_data = prc.output_query_report()
+
+        prc.calculate_page_retrievability(c=5)
+        c_5_summary_data = prc.output_summary_report()
+        c_5_score = str(c_5_summary_data['score'])
+        c_5_breakdown_data = prc.output_query_report()
+
         prc.calculate_page_retrievability(c=20, beta=1.0)
-        summary_report = prc.output_summary_report()
-        breakdown_report = prc.output_query_report()
-        self.write_output_files(summary_report,breakdown_report,"gravity")
-        print prc.output_summary_report()
+        g_1_summary_data = prc.output_summary_report()
+        g_1_score = str(g_1_summary_data['score'])
+        g_1_breakdown_data = prc.output_query_report()
 
-    def write_output_files(self, summary, breakdown, scoring):
+        prc.calculate_page_retrievability(c=20, beta=0.5)
+        g_pt5_summary_data = prc.output_summary_report()
+        g_pt5_score = str(g_pt5_summary_data['score'])
+        g_pt5_breakdown_data = prc.output_query_report()
+        #print "c breakdown is NOW ", str(c_20_breakdown_data["internationally excellent site:gla.ac.uk"].ret_score)
+
+        #print "c breakdown is " , c_20_breakdown_data
+        #print "g breakdown is " , g_1_breakdown_data
+
+        summary_report = ""
+        #add all the details for cumulative to the summary report
+        for value in c_20_summary_data.values():
+            summary_report += str(value) + " "
+        #at the end add in the remaining c and gravity scores for the same page and a new line
+        summary_report += c_10_score + " " + c_5_score + " " + g_1_score + " " + g_pt5_score +  "\n"
+
+        breakdown_report = ""
+        for q_terms, curr_query in c_20_breakdown_data.items():
+            q_c20_score = str(curr_query.ret_score)
+            q_c10_score = str(c_10_breakdown_data[q_terms].ret_score)
+            q_c5_score = str(c_5_breakdown_data[q_terms].ret_score)
+            q_g1_score = str(g_1_breakdown_data[q_terms].ret_score)
+            q_gpt5_score = str(g_pt5_breakdown_data[q_terms].ret_score)
+            breakdown_report += self.url + " " + q_terms + " " + str(curr_query.rank) + " " + q_c20_score \
+                                + " " + q_c10_score + " " + q_c5_score + " " + q_g1_score + " " + q_gpt5_score + "\n"
+        self.write_output_files(summary_report,breakdown_report)
+        #print prc.output_summary_report()
+
+    def write_output_files(self, summary, breakdown):
         """
         a method which writes the output files, summary and breakdown
         :return:None
         """
-        summary_file = open(self.directory + "/" +self.engine_name + "_" + scoring + "_summary_report.txt","a")
-        if not self.header_written:
-            summary_file.write("%-40s %-10s %-20s %-10s %-10s" % ('URL','num_queries','queries_issued','retrieved','score') + summary)
-            self.header_written = True
+        summary_file = open(self.directory + "/" +self.engine_name + "_summary_report.txt","a")
+            #summary_file.write("%-40s %-10s %-20s %-10s %-10s" % summary)
+        summary_file.write(summary)
         summary_file.close()
 
         page = self.get_page_from_url(self.url)
-        print "page is ", page
         directory = self.directory + "/pages/" + page + "/"
         if not os.path.exists(directory):
             os.makedirs(directory)
-            print "scoring is ", scoring
-        directory += page + "_" + self.engine_name + "_" + scoring + "_breakdown_report.txt"
+        directory += page + "_" + self.engine_name  + "_breakdown_report.txt"
         with open(directory, "w") as breakdown_file:
-            breakdown_file.write("%-40s %-20s %-10s %-10s" % ('URL','query','rank','score') +breakdown)
+            #breakdown_file.write("%-40s %-20s %-10s %-10s" % ('URL','query','rank','score') +breakdown)
+            breakdown_file.write(breakdown)
             breakdown_file.close()
 
     def get_page_from_url(self, url):
@@ -259,7 +295,13 @@ class ExpConfigurationParser(object):
         :return:
         """
         last_slash_pos = url.rfind("/")
-        return url[last_slash_pos+1:]
+        page = url[last_slash_pos+1:]
+        if page == '':#there may be a trailing /
+            last_slash_pos = url[:last_slash_pos].rfind("/")
+            page = url[last_slash_pos+1:len(url)-1]
+        return page
+
+
 
     def is_integer(self, value):
         """
@@ -275,19 +317,20 @@ class ExpConfigurationParser(object):
 
 
 st = time.time()
-parts = ["all","main"]
 portions = ['100','75','50','25']
-rankings = ["ranked","position_ranked","position"]
+rankings = ["ranked","position_ranked","position","default"]
 max_queries = ['25','50','75','all']
 top_path="results"
 parser = None
 # set a number of parameters
-for part in parts:
-    for portion in portions:
-        for rank in rankings:
-            for max_query in max_queries:
-                directory = top_path + "/" + part + "/" + portion + "/" + rank + "/" + max_query + "/"
-                parser = ExpConfigurationParser(directory)
-                print "completed " ,  directory
+#for portion in portions:
+    # for rank in rankings:
+    #     for max_query in max_queries:
+    #         directory = top_path + "/" + portion + "/" + rank + "/" + max_query + "/"
+    #         parser = ExpConfigurationParser(directory)
+    #         print "completed " ,  directory
+
+directory = "results/100/default/all/"
+parser = ExpConfigurationParser(directory)
 
 print "time taken was " , st - time.time()

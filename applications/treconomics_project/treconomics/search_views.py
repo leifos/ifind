@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
 from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query, Response
+import pickle
 
 # Whoosh
 from whoosh.index import open_dir
@@ -262,7 +263,20 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
 
     result_dict['query'] = query_terms
     search_engine = experiment_setups[condition].get_engine()
-    response = search_engine.search(query)
+
+    result_cache = True
+    response = None
+
+    if result_cache:
+        if cache.cache.get(str(query)):
+            response = cache.cache.get(str(query))
+        else:
+            response = search_engine.search(query)
+            cache.cache.set(str(query),response, 500)
+    else:
+        response = search_engine.search(query)
+
+
 
     num_pages = response.total_pages
 
@@ -502,13 +516,6 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
     If the combinations have been previously used, we return a cached version (if it still exists).
     If a cached version does not exist, we query Whoosh and return the results.
     """
-    #def get_cache_key(page_no, query_terms, engine):
-    #    """
-    #    Nested function to return a unique key for a given combination of inputs.
-    #    The returned string is used as a key value for the cache so results can be stored and retrieved.
-    #    """
-    #    no_space_terms = query_terms.replace(' ', '_')
-    #    return "key-{0}-{1}-{2}".format(engine.get_setup_identifier(), page_no, no_space_terms)
 
     start_time = timeit.default_timer()
 
@@ -522,51 +529,12 @@ def get_results(request, page, page_len, condition, user_query, prevent_performa
     # If a user is on page 2 then goes back to page 1, we don't want to get the performance again.
     if not prevent_performance_logging and page == 1:
         print "Performance should be measured - but it's disabled as it's too costly!"
-        #print "Spawning thread to obtain performance of query '{0}'".format(user_query)
-        #perf_thread = Thread(target=run_query, args=(request, {}, user_query, 1, 500, condition, True))
-        #perf_thread.start()
-
-    # If the result_dict is None, the stuff isn't in the cache so we query Whoosh.
-    #if not result_dict:
-    #    skip_delay = True
-    #    # If the execution_delay parameter is > 0, we delay (assume we are running in a new thread!)
-    #    if execution_delay > 0:
-    #        last_request_time = request.session.get('last_request_time')
-    #
-    #        if last_request_time is not None:
-    #            last_request_time = datetime.datetime.strptime(request.session.get('last_request_time'), '%Y-%m-%d %H:%M:%S.%f')
-    #            timenow = datetime.datetime.utcnow()
-    #
-    #            if (timenow - last_request_time).total_seconds() < CACHING_TOO_FAST:
-    #                skip_delay = True
-    #                print "Skipping sleeping phase, user is pushing buttons fast!"
-    #            else:
-    #                skip_delay = False
-    #
-    #        if not skip_delay:
-    #            print "Delaying execution of '{0}' page {1} by {2} second(s)".format(user_query, page, execution_delay)
-    #            sleep(execution_delay)
-    #
-    #   result_dict = {}
-    #    result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
-    #    result_cache.set(cache_key, result_dict, 20*60)
 
     result_dict = {}
     result_dict = run_query(request, result_dict, user_query, page, page_len, condition)
     result_dict['query_time'] = timeit.default_timer() - start_time
 
     #  New look-forward code - replaces the old code in this function to retrieve the next set of documents.
-    #highest_cached_page = engine.get_highest_cached_page(user_query)
-
-    #if highest_cached_page == -1:
-    #    print "Nothing is cached, get from page 1."
-    #    cache_thread = Thread(target=run_query, args=(request, {}, user_query, 1, page_len, condition))
-    #    cache_thread.start()
-    #else:
-    #    if (highest_cached_page - page) < 4:
-    #        print "Caching next set of results for query '{0}'".format(user_query)
-    #        cache_thread = Thread(target=run_query, args=(request, {}, user_query, (highest_cached_page + 1), page_len, condition))
-    #        cache_thread.start()
 
     return result_dict
 
