@@ -27,6 +27,7 @@ class GameMechanic(object):
         self.logger = get_ifind_logger(__name__)
         self.common_log = None
         self.round_log = None
+        self.game_over = 0
 
     def create_game(self, user, cat, game_type=0):
         """ create a new game for the user given the category
@@ -266,6 +267,7 @@ class GameMechanic(object):
         results = self._run_query(query)
         rank = self._check_result(results)
         query_len = self.get_no_terms(query)
+        #query_len = self.query_char_len(query)
         score = self._score_rank(rank, self.game.bonus, query_len)
         common_log = 'event: issue_query %s' % (self.game)
         round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)

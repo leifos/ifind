@@ -216,6 +216,10 @@ def game_over(request):
         game_id = request.COOKIES.get('game_id')
         ds = EngineFactory("bing", api_key=BING_API_KEY)
         gm = RMIYCMechanic(ds)
+        #handle game over when request for this view made by jquery timer
+        gm.retrieve_game(user, game_id)
+        gm.game_over = 1
+        gm.handle_game_over()
         gm.retrieve_game(user, game_id)
         statistics =[]
 

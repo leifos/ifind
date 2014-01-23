@@ -17,7 +17,7 @@ class RMIYCMechanic(GameMechanic):
     '''
 
     def is_game_over(self):
-        return False
+        return self.game_over
 
 
     def _score_rank(self, rank, bonus ,query_len=1):
@@ -38,4 +38,4 @@ class RMIYCMechanic(GameMechanic):
             return 0
 
     def f(self, query_len):
-        return 1/ (math.pow(query_len,0.5))
+        return 1/ (math.pow(query_len,0.3))
