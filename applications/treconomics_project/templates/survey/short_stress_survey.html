@@ -29,7 +29,7 @@
     {# Include the visible fields #}
     {% for field in formset.visible_fields %}
 	<tr>
-	<td class="matrix">
+	<td id="preTaskQuestions" class="matrix">
             {{ field.errors }}
             {{ field.label_tag }}
  	    {{ field }}

@@ -179,8 +179,8 @@ def constructStructuredQuery(request):
     user_and2 = request.POST['queryAND2'].strip()
     user_and3 = request.POST['queryAND3'].strip()
     user_and4 = request.POST['queryAND4'].strip()
-    user_and5 = request.POST['queryAND5'].strip()
-    user_and6 = request.POST['queryAND6'].strip()
+    #user_and5 = request.POST['queryAND5'].strip()
+    #user_and6 = request.POST['queryAND6'].strip()
 
     def buildQueryParts(term_list, op):
         qp = ''
@@ -207,45 +207,45 @@ def constructStructuredQuery(request):
                 qp = qp + " " + t
         return qp
 
-    user_query = buildQuery([user_and, user_and1, user_and2, user_and3, user_and4, user_and5, user_and6])
-    print "Query: " + user_query
+    query_and = buildQueryParts([user_and, user_and1, user_and2, user_and3, user_and4],'AND')
 
-    #user_or = request.POST['queryANY'].strip()
-    #user_or1 = request.POST['queryANY1'].strip()
-    #user_or2 = request.POST['queryANY2'].strip()
-    #user_or3 = request.POST['queryANY3'].strip()
-    #user_or4 = request.POST['queryANY4'].strip()
+    print "AND Query:"  + query_and
 
-    #query_or = buildQueryParts([user_or,user_or1,user_or2,user_or3,user_or4], "OR")
+    user_or = request.POST['queryANY'].strip()
+    user_or1 = request.POST['queryANY1'].strip()
+    user_or2 = request.POST['queryANY2'].strip()
+    user_or3 = request.POST['queryANY3'].strip()
+    user_or4 = request.POST['queryANY4'].strip()
 
-    #print "OR-Query: " +  query_or
+    query_or = buildQueryParts([user_or,user_or1,user_or2,user_or3,user_or4], "OR")
 
-    #user_not = request.POST['queryNOT'].strip()
-    #user_not1 = request.POST['queryNOT1'].strip()
-    #user_not2 = request.POST['queryNOT2'].strip()
-    #user_not3 = request.POST['queryNOT3'].strip()
-    #user_not4 = request.POST['queryNOT4'].strip()
+    print "OR-Query: " +  query_or
 
-    #query_not = buildQueryPartsNot([user_not,user_not1,user_not2,user_not3,user_not4])
-    #print "Not-Query: " +  query_not
+    user_not = request.POST['queryNOT'].strip()
+    user_not1 = request.POST['queryNOT1'].strip()
+    user_not2 = request.POST['queryNOT2'].strip()
+    user_not3 = request.POST['queryNOT3'].strip()
+    user_not4 = request.POST['queryNOT4'].strip()
 
-    #if query_and:
-    # user_query = query_and
+    query_not = buildQueryPartsNot([user_not,user_not1,user_not2,user_not3,user_not4])
+    print "Not-Query: " +  query_not
 
-    #if query_or:
-    # if user_query:
-    #     user_query = user_query + " AND ( " + query_or + " ) "
-    # else:
-    #     user_query = query_or
+    if query_and:
+        user_query = query_and
 
-    #if user_not:
-    # if user_query:
-    #     user_query = user_query + " AND ( " + query_not + " ) "
-    # else:
-    #     user_query = query_not
+    if query_or:
+        if user_query:
+            user_query = user_query + " AND ( " + query_or + " ) "
+        else:
+            user_query = query_or
 
-    #print user_query
-    #user_query = user_and + ' ' + user_or + ' ' + user_not
+    if user_not:
+        if user_query:
+            user_query = user_query + " AND ( " + query_not + " ) "
+        else:
+            user_query = query_not
+
+    print user_query
     user_query = user_query.strip()
     return user_query
 

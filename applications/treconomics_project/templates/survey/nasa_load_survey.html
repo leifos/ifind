@@ -30,7 +30,10 @@
     {# Include the visible fields #}
     {% for field in formset.visible_fields %}
 	<tr>
-	<td id="nasa_load" class="matrix">
+
+	<!--td id="nasa_load" class="matrix"-->
+
+	<td id="preTaskQuestions" class="matrix">
             {{ field.errors }}
             {{ field.label_tag }}
  	    <div style="font-size: 9pt;">{{ field }}</div>
