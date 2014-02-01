@@ -89,8 +89,8 @@ class USDemographicsSurveyForm(ModelForm):
 
 
 
-NASA_LOW_CHOICES = ( (1,'Very Low'), (2,''), (3,''), (4,''), (5,''), (6,''), (7,''), (8,''), (9,''), (10,''), (11,''), (12,''), (13,''), (14,''), (15,''), (16,''), (17,''), (18,''), (19,''), (20,''), (21,'Very High') )
-NASA_PERFECT_CHOICES = ( (1,'Perfect'), (2,''), (3,''), (4,''), (5,''), (6,''), (7,''), (8,''), (9,''), (10,''), (11,''), (12,''), (13,''), (14,''), (15,''), (16,''), (17,''), (18,''), (19,''), (20,''), (21,'Failure') )
+NASA_LOW_CHOICES = ( (1,'Very Low'), (2,''), (3,''), (4,''), (5,''), (6,''),  (7,'Very High') )
+NASA_PERFECT_CHOICES = ( (1,'Perfect'), (2,''), (3,''), (4,''), (5,''), (6,''), (7,'Failure') )
 
 class NasaSystemLoad(models.Model):
     user = models.ForeignKey(User)

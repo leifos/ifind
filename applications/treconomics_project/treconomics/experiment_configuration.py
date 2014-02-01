@@ -5,7 +5,7 @@ import logging.config
 import logging.handlers
 from ifind.common.autocomplete_trie import AutocompleteTrie
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
-from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
+#from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
 work_dir = os.getcwd()
@@ -135,7 +135,8 @@ bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 #bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
 #tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
 
-pl2cache = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
+#pl2cache = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
+pl2cache = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)

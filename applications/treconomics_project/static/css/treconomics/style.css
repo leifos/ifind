@@ -524,7 +524,7 @@ li {
 
 
 .survey_radio tr td.matrix ul li label input {
-	float: left;
+    float: left;
 	height: 15px;
 	margin-left: 7px;
 	}

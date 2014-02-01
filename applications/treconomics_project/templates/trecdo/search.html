@@ -56,20 +56,52 @@
 	        
 <table>	
 <tr>
-<td class="searchlabel">Enter your query here</td>
+<td class="searchlabel">All these query terms</td>
 <td><input class="smallsearchbox restricted" type="text" name="queryAND" value="" id="query" size="20" /></td>
 <td><input class="smallsearchbox restricted" type="text" name="queryAND1" value="" id="query1" size="20" /></td>
 <td><input class="smallsearchbox restricted" type="text" name="queryAND2" value="" id="query2" size="20" /></td>
 <td><input class="smallsearchbox restricted" type="text" name="queryAND3" value="" id="query3" size="20" /></td>
 <td><input class="smallsearchbox restricted" type="text" name="queryAND4" value="" id="query4" size="20" /></td>
-<td><input class="smallsearchbox restricted"  type="text" name="queryAND5" value="" id="queryAND5" size="20" /></td>
-<td><input class="smallsearchbox restricted"  type="text" name="queryAND6" value="" id="queryAND6" size="20" /></td>
+<!--<td class="hidden"><input class="smallsearchbox restricted"  type="text" name="queryAND5" value="" id="queryAND5" size="20" /></td>
+<td class="hidden"><input class="smallsearchbox restricted"  type="text" name="queryAND6" value="" id="queryAND6" size="20" /></td>
+<td class="hidden"><input class="smallsearchbox restricted"  type="text" name="queryAND7" value="" id="queryAND7" size="20" /></td>
+-->
 <td></td>
+</tr>
+
+<tr>
+<td class="searchlabel">Any of these query terms</td>
+<td><input class="smallsearchbox restricted" type="text" name="queryANY" value="" id="queryANY" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryANY1" value="" id="queryANY1" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryANY2" value="" id="queryANY2" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryANY3" value="" id="queryANY3" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryANY4" value="" id="queryANY4" size="20" /></td>
+<!--<td class="hidden"><input class="smallsearchbox restricted" type="text" name="queryANY5" value="" id="queryANY5" size="20" /></td>
+<td class="hidden"><input class="smallsearchbox restricted" type="text" name="queryANY6" value="" id="queryANY6" size="20" /></td>
+<td class="hidden"><input class="smallsearchbox restricted" type="text" name="queryANY7" value="" id="queryANY7" size="20" /></td>
+-->
+<td></td>
+</tr>
+
+<tr>
+<td class="searchlabel">None of these query terms</td>
+<td><input class="smallsearchbox restricted" type="text" name="queryNOT" value="" id="queryNOT" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryNOT1" value="" id="queryNOT1" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryNOT2" value="" id="queryNOT2" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryNOT3" value="" id="queryNOT3" size="20" /></td>
+<td><input class="smallsearchbox restricted" type="text" name="queryNOT4" value="" id="queryNOT4" size="20" /></td>
+<!--<td class="hidden"><input class="smallsearchbox restricted" type="text" name="queryNOT5" value="" id="queryNOT5" size="20" /></td>
+<td class="hidden"><input class="smallsearchbox restricted" type="text" name="queryNOT6" value="" id="queryNOT6" size="20" /></td>
+<td class="hidden"><input class="smallsearchbox restricted" type="text" name="queryNOT7" value="" id="queryNOT7" size="20" /></td>
+-->
 <td> <!--<input type="submit" value="+" class="addButton" />-->
 <input type="submit" value="Search" class="button" /></td>
 
 </tr>
 </table>
+
+
+
 
 	        {% else %}
 	            <table>	
@@ -81,7 +113,8 @@
 		            <td><input class="searchbox" type="text" name="query" value="" id="query" size="50" /></td>
                 {% endif %}
 		        <td> <input type="hidden" name="newquery" value="true" /> <input class="button" type="submit" name="submit" value="Search" id="search-button" /> </td></tr>
-	            </table>
+	            <tr><td></td><td>You can use AND, OR and NOT operators in your query.</td><td></td></tr>
+                </table>
 	        {% endif %}	
         </form>
 
