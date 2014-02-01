@@ -187,7 +187,7 @@ def constructStructuredQuery(request):
         for t in term_list:
             if t:
                 if qp:
-                    qp = qp + " "+ op  +" " + t
+                    qp = qp + " " + op  +" " + t
                 else:
                     qp = t
         return qp
@@ -208,6 +208,8 @@ def constructStructuredQuery(request):
         return qp
 
     query_and = buildQueryParts([user_and, user_and1, user_and2, user_and3, user_and4],'AND')
+
+    user_query = ''
 
     print "AND Query:"  + query_and
 
