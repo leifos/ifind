@@ -4,7 +4,7 @@
 {% endblock %}
 {% block container %}
    <div class="well">
-        <h1 class="text-center text-warning">Leader board</h1>
+        <h1 class="text-center text-warning">Leaderboard</h1>
         <br />
         <h3 class="text-success">High Scores</h3>
         {% if high_scores %}
@@ -18,8 +18,7 @@
             {%endfor%}
             </table>
         {% endif %}
-        <!--
-        <h3 class="text-success">Category High Scores</h3>
+        <h3 class="text-success">Top 10 Category High Scores</h3>
         {% if cat_high_scores %}
             <table class="table table-hover table-bordered">
             {% for item in cat_high_scores %}
@@ -33,7 +32,7 @@
             </table>
         {% endif %}
 
-
+<!--
        <h3 class="text-success">School High Scores</h3>
         {% if school_hs %}
             <table class="table table-hover table-bordered">
@@ -63,7 +62,7 @@
             </table>
 
         {% endif %}
-
+-->
 
 
         <h3 class="text-success">High Scores by Gender</h3>
@@ -79,7 +78,6 @@
             </table>
         {% endif %}
 
-        -->
    </div>
 
 {% endblock %}
