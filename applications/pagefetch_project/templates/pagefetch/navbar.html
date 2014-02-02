@@ -22,6 +22,10 @@
 
                 <ul class="nav pull-right">
                     <li>
+                        <div style="color:white;font-size:300%;margin-top:10px;">Score:</div>
+                    </li>
+
+                    <li>
                         <div id="counter"><input type="hidden" name="counter-value" id="cval" value="0"/></div>
                     </li>
                     <script type="text/javascript">
@@ -31,10 +35,11 @@
                         });
                         /* ]]> */
                     </script>
-
-
                     <li>
-                        <div id="defaultCountdown"></div>
+                        <div style="color:white;font-size:300%;margin-top:10px;margin-left:20px;">Time:</div>
+                    </li>
+                    <li>
+                        <div id="defaultCountdown" style="height:25px;margin-left:5px;"></div>
                     </li>
                     {% if user.is_authenticated %}
                     <li><a href="#">({{ user.username }}) </a></li>
