@@ -50,7 +50,7 @@ class CatHighScoresLeaderboard(GameLeaderboard):
 
     def get_leaderboard(self):
         hs = HighScore.objects.all().order_by('-highest_score')[:self.top]
-        return self.highscore_to_list(hs)
+        return self.highscore_to_list(hs[:10])
 
     def __str__(self):
         return 'Highest Category Scores'
