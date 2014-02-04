@@ -10,14 +10,14 @@
     <!--When you pick a category, all the pages that you are going to be shown will belong to this category.-->
 </div>
 <div class="well">
-        <ul class="thumbnails centre text-center">
+        <ul class="thumbnails centre text-center" style="width:95%;margin:auto;">
             {% for c in cats %}
-            <li class="thumbnail span3.5">
-            <a href="/pagefetch/play/{{c.url}}">
+            <li id="{{c.desc}}" class="thumbnail span3.5" style="display:inline-block;margin-right:10px;">
+            <a href="/pagefetch/play/{{c.url}}" style="color:#000000;">
                 <div>
                     <h3>{{c.name}}</h3>
-                    <img src="/data/{{c.icon}}" class ="img-rounded" alt="{{c.name}}" height="200" width="300">
-                    <br />
+                    <img src="/data/{{c.icon}}" class ="img-rounded-cat" alt="{{c.name}}" style="height:170px;width:220px;font-color:black;">
+                    <br/>
                     {% if user.is_authenticated %}
                         <p> <h4>Highest score: {{c.score}}</h4></p>
                     {% endif %}

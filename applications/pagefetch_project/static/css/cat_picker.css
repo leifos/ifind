@@ -1,0 +1,48 @@
+.thumbnails > li {
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+/*
+ul {
+    width: 95%;
+    margin: auto;
+} */
+
+.thumbnails {
+    margin: auto;
+}
+
+#Games {
+
+    background-color:#f88624;
+}
+
+#Universities {
+    background-color:#96cc55;
+}
+
+#Actors {
+    background-color:#edd65a;
+}
+
+#Films {
+    background-color:#5bba91;
+}
+
+#SpaceObjects { 
+    background-color:#3e75ad;
+}
+
+#BusinessPeople {
+    background-color:#5c7fb8;
+}
+
+#MusicalArtists {
+    background-color:#674c87;
+}
+
+#KidsTv {
+    background-color:#be3b43;
+}
