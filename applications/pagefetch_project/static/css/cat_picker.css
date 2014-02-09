@@ -10,7 +10,7 @@
 }
 
 .well {
-    background-color:#fffaf0;
+    background-color: #ededed;
 }
 
 #Games {
@@ -54,4 +54,9 @@
 
 .thumbnails.prof > li {
     float:none;
+}
+
+.hero-unit.profile-form {
+    width: 340px;
+    margin: 0 auto;
 }
