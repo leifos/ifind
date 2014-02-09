@@ -2,7 +2,7 @@
     display: inline-block;
     margin-left: 20px;
     margin-right: 10px;
-    float: none;
+    /*float: none;*/
 }
 
 .thumbnails {
@@ -50,4 +50,8 @@
 .list_item {
     width:170px;
     margin-left:0px;
+}
+
+.thumbnails.prof > li {
+    float:none;
 }
