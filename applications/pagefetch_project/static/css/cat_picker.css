@@ -4,14 +4,12 @@
     margin-right: 10px;
 }
 
-/*
-ul {
-    width: 95%;
-    margin: auto;
-} */
-
 .thumbnails {
     margin: auto;
+}
+
+.well {
+    background-color:#fffaf0;
 }
 
 #Games {
