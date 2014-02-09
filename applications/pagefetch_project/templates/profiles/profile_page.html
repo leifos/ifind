@@ -82,7 +82,7 @@
             {% for item in highscores %}
             <li id="{{item.category.desc}}" class="thumbnail list_item" style="margin-right:40px;">
             <div class="hs">
-                <a href="/pagefetch/play/{{item.url}}">
+                <a href="/pagefetch/play/{{item.url}}" style="color:black;">
                     <h5>{{item.category.name}}</h5>
                     <img src="/data/{{item.category.icon}}" alt="{{item.category.name}}" style="height:145px;width=145px;">
                     <p>Highscore: {{item.highest_score}}</p></a>
