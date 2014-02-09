@@ -2,6 +2,7 @@
     display: inline-block;
     margin-left: 20px;
     margin-right: 10px;
+    float: none;
 }
 
 .thumbnails {
@@ -43,4 +44,10 @@
 
 #KidsTv {
     background-color:#be3b43;
+}
+
+
+.list_item {
+    width:170px;
+    margin-left:0px;
 }
