@@ -132,7 +132,7 @@ function display_next_page_success(data, textStatus, jqXHR) {
     $('#skip-button').html("<i class='icon-forward icon-white'></i> skip");
     $('#search-button').html('<i class="icon-search icon-white"></i> search');
     $('#image-box').hide();
-    $('#image-div').html("<image src= '" + obj.screenshot + "' height='1000' width='1000'> </image>");
+    $('#image-div').html("<image src= '" + obj.screenshot + "' style='background-color:white;' height='1000' width='1000'> </image>");
     adjust_body_divs_height();
 }
 
