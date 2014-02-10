@@ -21,9 +21,10 @@ SCHOOL_CHOICES = (
     ('Neither', 'Neither'),
 )
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    profile_pic = models.ImageField(upload_to=UPLOAD_DIR, blank=True, default='face.svg')
+    profile_pic = models.ImageField(upload_to=UPLOAD_DIR, blank=True, default='icons/user.png')
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     school = models.CharField(max_length=128, choices=SCHOOL_CHOICES, blank=True)
@@ -43,6 +44,7 @@ class UserProfile(models.Model):
 
     class Meta:
         app_label = APP_NAME
+
 
 class Category(models.Model):
     name = models.CharField(max_length=128)
@@ -65,7 +67,7 @@ class HighScore(models.Model):
     most_no_pages_found_in_a_row = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return  self.category.name
+        return self.category.name
 
     class Meta:
         app_label = APP_NAME
@@ -91,6 +93,7 @@ class Page(models.Model):
     class Meta:
         app_label = APP_NAME
 
+
 class Achievement(models.Model):
     name = models.CharField(max_length=128)
     level_of_achievement = models.IntegerField(default=0, blank=True)
@@ -98,11 +101,13 @@ class Achievement(models.Model):
     badge_icon = models.ImageField(null=True, upload_to=UPLOAD_DIR, blank=True)
     xp_earned = models.IntegerField(default=0, blank=True)
     achievement_class = models.CharField(max_length=128)
+
     def __unicode__(self):
         return self.name
 
     class Meta:
         app_label = APP_NAME
+
 
 class CurrentGame(models.Model):
     #
