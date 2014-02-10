@@ -62,31 +62,31 @@ div.step4:after {
 
 <div class="span11">
     <div class="alert alert-block" id="header-div">
-                    <div id="avatar-div">
-                        <h3>{{avatar}}</h3>
-                    </div>
+        <div id="avatar-div">
+            <h3>{{avatar}}</h3>
+        </div>
     </div>
 </div>
 
 <div class="span5">
     <!--<div id="header-div" class="alert alert-block">-->
-        <!--<table>-->
-            <!--<tr>-->
+    <!--<table>-->
+    <!--<tr>-->
 
-                <!--<td>-->
-            <!--<div id="icon-div" class="span2">-->
-                <!--<image src="{{ STATIC_URL }}imgs/cow-paper2.jpg" class ="img-rounded" style="height: 100px ;width: 150px"> </image>-->
-            <!--</div>-->
-                <!--</td>-->
-                <!--<td>-->
-                    <!--<div id="avatar-div">-->
-                        <!--<h3>{{avatar}}</h3>-->
-                    <!--</div>-->
-                <!--</td>-->
-            <!--</tr>-->
-        <!--</table>-->
+    <!--<td>-->
+    <!--<div id="icon-div" class="span2">-->
+    <!--<image src="{{ STATIC_URL }}imgs/cow-paper2.jpg" class ="img-rounded" style="height: 100px ;width: 150px"> </image>-->
     <!--</div>-->
-    <div id="search-div" class="alert alert-info step step2">
+    <!--</td>-->
+    <!--<td>-->
+    <!--<div id="avatar-div">-->
+    <!--<h3>{{avatar}}</h3>-->
+    <!--</div>-->
+    <!--</td>-->
+    <!--</tr>-->
+    <!--</table>-->
+    <!--</div>-->
+    <div id="search-div" class="alert alert-info step step2 {{cat.desc}}">
         <input id="query" name="query" class="input-xlarge search-query" type="text"
         placeholder=""/>
         <br/>
@@ -108,7 +108,7 @@ div.step4:after {
         </div>
 
     </div>
-    <div id="content-div" class="alert alert-error">
+    <div id="content-div" class="alert alert-error {{cat.desc}}">
         <div id="score-div" class="well well-large step step4">
         </div>
         <div id="search-results-div" class="well well-large step step3">
@@ -117,7 +117,7 @@ div.step4:after {
         </div>
     </div>
 </div>
-<div class="span6" id="{{category}}">
+<div class="span6 ">
     <!--<div id="statistics-div" class="alert alert-block">
         <table>
              <div id="game_updates-div">
@@ -128,7 +128,7 @@ div.step4:after {
             </div> 
         </table>
     </div> -->
-    <div id="image-div" class="align-center step step1">
+    <div id="image-div" class="alert alert-info align-center step step1 {{cat.desc}}">
         <div id="image-box">
             <img src="{{page}}"  width="500" height="500"></img>
         </div>
