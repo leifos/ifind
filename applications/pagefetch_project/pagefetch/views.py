@@ -61,7 +61,7 @@ def play(request, category_name):
 
             avatar.update(current_game=gm.game)
             msg = avatar.get()
-            response = render_to_response('pagefetch/game.html', {'page': p.screenshot, 'avatar':msg ,'game_running':True, 'category':decoded_category_name}, context)
+            response = render_to_response('pagefetch/game.html', {'page': p.screenshot, 'avatar':msg ,'game_running':True, 'category':decoded_category_name, 'cat':c}, context)
             response.set_cookie('game_id', game_id)
             # terminate the session whenever the browser closes
             #response.cookies.set_expiry(0)
