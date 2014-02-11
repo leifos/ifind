@@ -69,7 +69,7 @@ p {
   padding-right: 0px;
   border: 0px solid black;
   border-radius: 0px;
-  background-color: rgba(153, 222, 240, 0.36);
+  background-color: #ededed;
 }
 .hs {
   /*text-align: center;
@@ -88,7 +88,7 @@ p {
   margin-bottom: 20px;
   border: 0px solid black;
   border-radius: 0px;
-  background-color: rgba(153, 222, 240, 0.36);
+  background-color: #ededed;
   -webkit-transform: none;
   -ms-transform: none;
   -o-transform: none;
@@ -123,7 +123,7 @@ p {
   clear: none;
   border: 0px solid black;
   border-radius: 0px;
-  background-color: rgba(153, 222, 240, 0.36);
+  background-color: #ededed;
   background-image: none;
 }
 .edit_profile {
