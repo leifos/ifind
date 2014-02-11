@@ -3,16 +3,17 @@
         Index
 {% endblock %}
 {% block container %}
+<div class="well">
     <h1>How To Play</h1>
-    <p class="lead">You have <strong>five</strong> rounds to complete. <br />
-        In each round, you will be shown a <strong>screenshot</strong> from a webpage and you have to type in a  <strong>query</strong> to retrieve it.<br />
-        The query will be sent to the search engine and if the page shown was retrieved in the <strong>first 10 </strong>search results,you get points. <br />
-        The game is focused on searching for information on the university of glasgow's site using its new and latest site search engine! <br />
-        <strong>Note:</strong> the search will be restricted to the website of the University of Glasgow
-    </p>
+    <p class="lead">Fetch as many web pages as you can in 3 minutes! <br> Less words it takes you to retrieve the page in the picture, more points you score!</p>
+</div>
 
     <!-- This should go in a CSS file -->
     <style type="text/css">
+/*        .lead
+        {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        } */
         a.button-index {
             width: 100%;
             height: 40px;
@@ -68,16 +69,16 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
         }
 
-        div.step1 {
-            background: url('{{ STATIC_URL }}imgs/index_pick_cat.jpg') no-repeat top left;
+         div.step1 {
+            background: url('{{ STATIC_URL }}imgs/index_pick_cat.png') no-repeat center;
         }
 
         div.step2 {
-            background: url('{{ STATIC_URL }}imgs/index_game1.jpg') no-repeat top left;
+            background: url('{{ STATIC_URL }}imgs/index_game_image.png') no-repeat center;
         }
 
         div.step3 {
-            background: url('{{ STATIC_URL }}imgs/index_game.jpg') no-repeat top left;
+            background: url('{{ STATIC_URL }}imgs/index_game_search.png') no-repeat top left;
         }
 
         div.step1:after {
