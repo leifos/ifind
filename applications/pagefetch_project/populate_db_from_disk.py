@@ -24,14 +24,14 @@ import os
 
 
 def populate_cats():
-    game_model_functions.get_category('Space Objects', 'data/cat_images/the25.png','SpaceObjects',append=True)
-    game_model_functions.get_category('Actors', 'data/cat_images/oscars.png', 'Actors', append=True)
-    game_model_functions.get_category('Musical Artists','data/cat_images/dj1.png','MusicalArtists',append=True)
-    game_model_functions.get_category('Films', 'data/cat_images/clapper.png','Films',append=True)
-    game_model_functions.get_category('Games', 'data/cat_images/games4.png','Games',append=True)
-    game_model_functions.get_category('Kids TV', 'data/cat_images/television4.png','KidsTV',append=True)
-    game_model_functions.get_category('Business People', 'data/cat_images/career.png','BusinessPeople',append=True)
-    game_model_functions.get_category('Universities', 'data/cat_images/university2.png','Universities',append=True)
+    game_model_functions.get_category('Space Objects', 'cat_images/the25.png','SpaceObjects',append=True)
+    game_model_functions.get_category('Actors', 'cat_images/oscars.png', 'Actors', append=True)
+    game_model_functions.get_category('Musical Artists','cat_images/dj1.png','MusicalArtists',append=True)
+    game_model_functions.get_category('Films', 'cat_images/clapper.png','Films',append=True)
+    game_model_functions.get_category('Games', 'cat_images/games4.png','Games',append=True)
+    game_model_functions.get_category('Kids TV', 'cat_images/television4.png','KidsTV',append=True)
+    game_model_functions.get_category('Business People', 'cat_images/career.png','BusinessPeople',append=True)
+    game_model_functions.get_category('Universities', 'cat_images/university2.png','Universities',append=True)
 
 
 
