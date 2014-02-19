@@ -132,7 +132,7 @@ function display_next_page_success(data, textStatus, jqXHR) {
     $('#skip-button').html("<i class='icon-forward icon-white'></i> skip");
     $('#search-button').html('<i class="icon-search icon-white"></i> search');
     $('#image-box').hide();
-    $('#image-div').html("<image src= '" + obj.screenshot + "' height='1000' width='1000'> </image>");
+    $('#image-div').html("<image src= '" + obj.screenshot + "' style='background-color:white;' height='1000' width='1000'> </image>");
     adjust_body_divs_height();
 }
 
@@ -191,10 +191,10 @@ function initiate_game() {
 
 function search_button_click(event) {
     var opts = {
-        lines: 13, // The number of lines to draw
-        length: 20, // The length of each line
-        width: 10, // The line thickness
-        radius: 20, // The radius of the inner circle
+        lines: 6, // The number of lines to draw
+        length: 4, // The length of each line
+        width: 4, // The line thickness
+        radius: 3, // The radius of the inner circle
         corners: 1, // Corner roundness (0..1)
         rotate: 0, // The rotation offset
         direction: 1, // 1: clockwise, -1: counterclockwise
