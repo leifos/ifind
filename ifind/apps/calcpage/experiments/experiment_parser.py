@@ -25,8 +25,8 @@ class ExpConfigurationParser(object):
         #each config file directory has three config files in it, one for each search engine
         #create a list of the full path for each config file for the current directory
         #todo use line below if using govuk sites
-        #self.config_files = [ self.directory + "/configs/experiment_sitebing.ini", self.directory + "/configs/experiment_govuk.ini"]
-        self.config_files = [ self.directory + "/configs/experiment_sitebing.ini"]
+        self.config_files = [ self.directory + "/configs/experiment_sitebing.ini"] #, self.directory + "/configs/experiment_govuk.ini"]
+        #self.config_files = [ self.directory + "/configs/experiment_sitebing.ini"]
         #need to set the optional values to none here to avoid errors when checking if they exist later
         self.reset()
 
@@ -319,18 +319,18 @@ class ExpConfigurationParser(object):
 st = time.time()
 portions = ['100','75','50','25']
 rankings = ["ranked","position_ranked","position","default"]
-max_queries = ['25','50','75','all']
+max_queries = ['100','150','200']
 top_path="results"
 parser = None
 # set a number of parameters
-#for portion in portions:
-    # for rank in rankings:
-    #     for max_query in max_queries:
-    #         directory = top_path + "/" + portion + "/" + rank + "/" + max_query + "/"
-    #         parser = ExpConfigurationParser(directory)
-    #         print "completed " ,  directory
+for portion in portions:
+    for rank in rankings:
+        for max_query in max_queries:
+            directory = top_path + "/" + portion + "/" + rank + "/" + max_query + "/"
+            parser = ExpConfigurationParser(directory)
+            print "completed " ,  directory
 
-directory = "results/100/default/all/"
-parser = ExpConfigurationParser(directory)
+# directory = "results/100/default/all/"
+# parser = ExpConfigurationParser(directory)
 
 print "time taken was " , st - time.time()
