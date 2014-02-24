@@ -24,7 +24,7 @@ class GameAchievement(object):
 
 class AllCat(GameAchievement):
 
-    def __init__(self, userprofile, highscores, currentgame=None, num_of_cats = 6):
+    def __init__(self, userprofile, highscores, currentgame=None, num_of_cats = 8):
         GameAchievement.__init__(self,userprofile, highscores)
         self.logger.info("AllCats Achievement set to %d cats", num_of_cats)
         self.num_of_cats = num_of_cats
@@ -69,18 +69,16 @@ class HighScorer(GameAchievement):
 
 class UberSearcher(GameAchievement):
 
-    def __init__(self, userprofile, highscores, currentgame=None, score_required=30000):
+    def __init__(self, userprofile, highscores, currentgame=None, score_required=3000):
         GameAchievement.__init__(self,userprofile, highscores)
         self.score_required = score_required
 
     def check_achievement_criteria(self):
         total = 0
-        for hs in self.highscores:
-            total += hs.highest_score
-        if total >= self.score_required:
-            return True
-        else:
-            return False
+        #for hs in self.highscores:
+        #    total += hs.highest_score
+        #if total >= self.score_required:
+        return self.currentgame.current_score >= self.score_required
 
 
 class TenGamesPlayed(GameAchievement):
@@ -177,23 +175,6 @@ class GameAchievementChecker(object):
         if achievement.achievement_class in classes:
             gac = classes[achievement.achievement_class]
             ga = gac(userprofile, highscores, currentgame)
-
-        #if achievement.achievement_class == 'HighScorer':
-        #    ga = HighScorer(userprofile, highscores, currentgame)
-
-        #if achievement.achievement_class == 'AllCat':
-        #    ga = AllCat(userprofile, highscores, currentgame)
-
-        #if achievement.achievement_class == 'UberSearcher':
-        #    ga = UberSearcher(userprofile, highscores, currentgame)
-
-        #if achievement.achievement_class == 'TenGamesPlayed':
-        #    ga = TenGamesPlayed(userprofile, highscores, currentgame)
-
-        #if achievement.achievement_class == 'FivePagesInAGame':
-        #    for hs in highscores:
-        #        ga = FivePagesInAGame(userprofile, highscores, currentgame)
-
         if ga:
             outcome = ga.check_achievement_criteria()
 
