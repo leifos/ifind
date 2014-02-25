@@ -118,7 +118,7 @@ class IndexPage(Handler):
         """
         messages = ["Check out how to play!",
                     "Have you registered an account yet?",
-                    "Welcome to Retrieve Me if You Can!"]
+                    "Welcome to Pagefetch!"]
 
         return messages
 
@@ -265,13 +265,13 @@ class Search(Handler):
         if query_score == 0:
             messages.append('You scored 0 points... unlucky...')
             messages.append("Let's try for some points this time!")
-            messages.append('You can always click (Enter) to search')
+            messages.append('You can click (Enter) to search')
 
         ###### If user obtained less than 500 points with their query ######
         if 0 < query_score < 500:
             messages.append('Good. But not great...')
             messages.append("{} isn't a BAD score... just a bit low.".format(query_score))
-            messages.append('You can always click (Ctrl + Enter) to take the points and move on to the next round')
+            messages.append('You can click (Ctrl + Enter) to take the points and move on to the next round')
         #"Hmm, that's fair."
         if 500 <= query_score <= 700:
             messages.append('{} points is good!'.format(query_score))
@@ -279,7 +279,7 @@ class Search(Handler):
         if query_score > 700:
             messages.append('{} points? Well done...'.format(query_score))
             messages.append('{} points is pretty good!'.format(query_score))
-            messages.append('You can always click (Ctrl + Enter) to take the points and move on to the next round')
+            messages.append('You can click (Ctrl + Enter) to take the points and move on to the next round')
 
         if not messages:
             print query_score
@@ -322,7 +322,7 @@ class Skip(Handler):
 
         """
         messages = []
-        messages.append("You can always click (Enter) to search")
+        messages.append("You can click (Enter) to search")
         messages.append("Now look at this page carefully and enter a query")
         return messages
 
