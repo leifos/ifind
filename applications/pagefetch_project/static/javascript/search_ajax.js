@@ -173,7 +173,7 @@ function avatar1() {
     $('#search-div').fadeTo(1500, 1);
     $('#content-div').fadeTo(1500, 1);
     $('#image-div').fadeTo(1500, 1);
-    $('#avatar-div').html("<h3> if you retrieve the page, you can have the points!  </h3>")
+    $('#avatar-div').html("<h3> Fetch the page to score points!  </h3>")
     window.clearTimeout(timeoutID);
 }
 
