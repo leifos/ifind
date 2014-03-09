@@ -74,11 +74,9 @@ class UberSearcher(GameAchievement):
         self.score_required = score_required
 
     def check_achievement_criteria(self):
-        total = 0
-        #for hs in self.highscores:
-        #    total += hs.highest_score
-        #if total >= self.score_required:
-        return self.currentgame.current_score >= self.score_required
+        for hs in self.highscores:
+            if hs.highest_score >= self.score_required:
+                return True
 
 
 class TenGamesPlayed(GameAchievement):
