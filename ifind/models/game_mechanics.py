@@ -392,7 +392,7 @@ class GameMechanic(object):
             all_hs = HighScore.objects.filter(user=self.game.user)
             gac = game_achievements.GameAchievementChecker(self.game.user)
             up = UserProfile.objects.get(user=self.game.user)
-            gac.check_and_set_new_achievements(up,all_hs,self.game)
+            return gac.check_and_set_new_achievements(up,all_hs,self.game)
 
 
     def get_last_query_score(self):

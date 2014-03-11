@@ -74,12 +74,32 @@ GAME OVER
                 <strong>Well done! </strong>
             </h3></p>
         </div>
-        <div class="alert alert-block">
-            <h3>
-                We would like to hear from you
-                <a href="https://www.surveymonkey.com/s/BRJBRY3">please click here to fill in a survey</a>
-            </h3>
+        <div>
+            {% if nac %}
+    <div class="w-container badges">
+            <h3>You unlocked new badges!</h3>
+        <div id="badge-div">
+            <ul id="badge-list" class="thumbnails centre text-center">
+            {% for badge in nac%}
+                <li class="list_item_badge">
+                <div class="hs.badge">
+                    <h5>{{badge.achievement.name}}</h5>
+                    <img id="{{badge.achievement.name}}" src="{{murl}}{{badge.achievement.badge_icon}}" alt="{{badge.achievement.name}}" style="height:170px;width=170px;opacity:0.2;">
+                    <p>{{badge.achievement.}}</p>
+                </div>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
+            {% endif %}
+        </div>
+    </div>
+        <!--<div class="alert alert-block">-->
+            <!--<h3>-->
+                <!--We would like to hear from you-->
+                <!--<a href="https://www.surveymonkey.com/s/BRJBRY3">please click here to fill in a survey</a>-->
+            <!--</h3>-->
+        <!--</div>-->
         {% endfor %}
         {% endif %}
         <div class="row">
