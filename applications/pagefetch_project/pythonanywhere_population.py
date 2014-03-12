@@ -28,15 +28,18 @@ def achievements():
 
 
 def players():
+    anon = User(username="anon")
     jim = User(username="Jimmy")
     jane = User(username="Jane")
     jake = User(username="Jake")
     jim.set_password("test")
     jane.set_password("test")
     jake.set_password("test")
+    anon.save()
     jim.save()
     jane.save()
     jake.save()
+    UserProfile(user=anon, xp=0, no_games_played=0).save()
     UserProfile(user=jim, xp=760, no_games_played=8).save()
     UserProfile(user=jane, xp=2300, no_games_played=10).save()
     UserProfile(user=jake, xp=4300, no_games_played=12).save()

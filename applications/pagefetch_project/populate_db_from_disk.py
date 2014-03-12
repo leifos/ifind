@@ -29,7 +29,7 @@ def populate_cats():
     game_model_functions.get_category('Musical Artists','cat_images/dj1.png','MusicalArtists',append=True)
     game_model_functions.get_category('Films', 'cat_images/clapper.png','Films',append=True)
     game_model_functions.get_category('Games', 'cat_images/games4.png','Games',append=True)
-    game_model_functions.get_category('Kids TV', 'cat_images/television4.png','KidsTV',append=True)
+    game_model_functions.get_category('Kids TV', 'cat_images/television4.png','KidsTv',append=True)
     game_model_functions.get_category('Business People', 'cat_images/career.png','BusinessPeople',append=True)
     game_model_functions.get_category('Universities', 'cat_images/university2.png','Universities',append=True)
 
