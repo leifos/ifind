@@ -205,9 +205,13 @@ class GameAchievementTest(TestCase):
     def test_highscorer(self):
         HighScore(user=self.u,category=self.c,highest_score=9000).save()
         hs = HighScore.objects.filter(user=self.u)
+        total =0
+        for h in hs:
+            total += hs[0].highest_score
+        print("testing highscorer\nTotal score:{0}".format(total))
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
-        # The high scorer achievement is triggered
-        self.assertEquals(len(new_achievements_list), 0)
+        # The Ubersearcher achievement is triggered
+        self.assertEquals(len(new_achievements_list), 1)
         # the high scores were increased
         hs = HighScore.objects.filter(user=self.u)
         for s in hs:
