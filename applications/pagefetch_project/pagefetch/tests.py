@@ -258,17 +258,17 @@ class GameAchievementTest(TestCase):
     def test_uber_searcher(self):
         #Test UberSearcher
         # add a score in for the other category
-        HighScore(user=self.u,category=self.c, highest_score=3000).save()
+        HighScore(user=self.u,category=self.c, highest_score=2000).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         #should not trigger achievement
         self.assertEquals(len(new_achievements_list),0)
 
         # add a score in for the other category
-        HighScore(user=self.u,category=self.c, highest_score=50000).save()
+        HighScore(user=self.u,category=self.c, highest_score=3000).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
-        self.assertEquals(len(new_achievements_list),3)#1
+        self.assertEquals(len(new_achievements_list),1)
 
 
 
