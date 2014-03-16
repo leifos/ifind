@@ -186,7 +186,7 @@ class GameAchievementTest(TestCase):
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # check that no achievements are awarded
         self.assertEquals(len(new_achievements_list),0)
-        HighScore(user=self.u,category=self.c,highest_score=5000).save()
+        HighScore(user=self.u,category=self.c,highest_score=2900).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # still no achievements should be awarded yet
