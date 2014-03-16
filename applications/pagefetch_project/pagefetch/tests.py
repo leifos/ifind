@@ -104,6 +104,8 @@ class GameMechanicTest(TestCase):
         self.logger = create_ifind_logger("game_mechanic_test.log")
         print "Setting up Game Mechanic Test"
         User.objects.get_or_create(username='testy', password='test')
+        self.u = User.objects.get(username='testy')
+        UserProfile.objects.create(user=self.u)
         Category.objects.get_or_create(
             name='Numbers', desc='Looking for sites that around about numbers')
 
