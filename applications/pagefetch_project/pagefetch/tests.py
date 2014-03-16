@@ -231,7 +231,7 @@ class GameAchievementTest(TestCase):
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         #should trigger FivePagesInAGame achievement
-        self.assertEquals(len(new_achievements_list),2) #1
+        self.assertEquals(len(new_achievements_list),1)
 
     def test_ten_games_played(self):
         #Test TenGamesPlayed
