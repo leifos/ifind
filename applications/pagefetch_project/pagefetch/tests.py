@@ -162,6 +162,10 @@ class GameAchievementTest(TestCase):
         self.c1 = Category.objects.get(name='Letters')
         self.assertEquals(len(Category.objects.all()), 2)
 
+        #------------
+        for name in ['1', '2', '3', '4', '5', '6']:
+            Category.objects.get_or_create(name=name, desc='Looking for sites that  about {0}'.format(name))
+
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
         self.allcat = Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
         Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
@@ -190,8 +194,9 @@ class GameAchievementTest(TestCase):
 
     def test_all_cats(self):
         # add a score in for the other category
-        HighScore(user=self.u,category=self.c,highest_score=1000).save()
-        HighScore(user=self.u,category=self.c1,highest_score=1000).save()
+        for cat in Category.objects.all():
+            HighScore(user=self.u,category=cat ,highest_score=1000).save()
+
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
         # the All Cats achievement is triggered
