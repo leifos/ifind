@@ -104,6 +104,8 @@ class GameMechanicTest(TestCase):
         self.logger = create_ifind_logger("game_mechanic_test.log")
         print "Setting up Game Mechanic Test"
         User.objects.get_or_create(username='testy', password='test')
+        self.u = User.objects.get(username='testy')
+        UserProfile.objects.create(user=self.u)
         Category.objects.get_or_create(
             name='Numbers', desc='Looking for sites that around about numbers')
 
@@ -160,6 +162,10 @@ class GameAchievementTest(TestCase):
         self.c1 = Category.objects.get(name='Letters')
         self.assertEquals(len(Category.objects.all()), 2)
 
+        #------------
+        for name in ['1', '2', '3', '4', '5', '6']:
+            Category.objects.get_or_create(name=name, desc='Looking for sites that  about {0}'.format(name))
+
         Achievement.objects.get_or_create(name="HighScorer", desc='',xp_earned=10000, achievement_class='HighScorer')
         self.allcat = Achievement.objects.get_or_create(name="AllCat", desc='', xp_earned=500, achievement_class='AllCat')
         Achievement.objects.get_or_create(name="FivePagesInAGame", desc='', xp_earned=7, achievement_class='FivePagesInAGame')
@@ -180,7 +186,7 @@ class GameAchievementTest(TestCase):
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # check that no achievements are awarded
         self.assertEquals(len(new_achievements_list),0)
-        HighScore(user=self.u,category=self.c,highest_score=5000).save()
+        HighScore(user=self.u,category=self.c,highest_score=2900).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         # still no achievements should be awarded yet
@@ -188,8 +194,9 @@ class GameAchievementTest(TestCase):
 
     def test_all_cats(self):
         # add a score in for the other category
-        HighScore(user=self.u,category=self.c,highest_score=1000).save()
-        HighScore(user=self.u,category=self.c1,highest_score=1000).save()
+        for cat in Category.objects.all():
+            HighScore(user=self.u,category=cat ,highest_score=1000).save()
+
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
         # the All Cats achievement is triggered
@@ -198,9 +205,13 @@ class GameAchievementTest(TestCase):
     def test_highscorer(self):
         HighScore(user=self.u,category=self.c,highest_score=9000).save()
         hs = HighScore.objects.filter(user=self.u)
+        total =0
+        for h in hs:
+            total += hs[0].highest_score
+        print("testing highscorer\nTotal score:{0}".format(total))
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up, hs,self.cg)
-        # The high scorer achievement is triggered
-        self.assertEquals(len(new_achievements_list), 0)
+        # The Ubersearcher achievement is triggered
+        self.assertEquals(len(new_achievements_list), 1)
         # the high scores were increased
         hs = HighScore.objects.filter(user=self.u)
         for s in hs:
@@ -224,7 +235,7 @@ class GameAchievementTest(TestCase):
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         #should trigger FivePagesInAGame achievement
-        self.assertEquals(len(new_achievements_list),2) #1
+        self.assertEquals(len(new_achievements_list),1)
 
     def test_ten_games_played(self):
         #Test TenGamesPlayed
@@ -247,17 +258,17 @@ class GameAchievementTest(TestCase):
     def test_uber_searcher(self):
         #Test UberSearcher
         # add a score in for the other category
-        HighScore(user=self.u,category=self.c, highest_score=3000).save()
+        HighScore(user=self.u,category=self.c, highest_score=2000).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
         #should not trigger achievement
         self.assertEquals(len(new_achievements_list),0)
 
         # add a score in for the other category
-        HighScore(user=self.u,category=self.c, highest_score=50000).save()
+        HighScore(user=self.u,category=self.c, highest_score=3000).save()
         hs = HighScore.objects.filter(user=self.u)
         new_achievements_list = self.gac.check_and_set_new_achievements(self.up,hs,self.cg)
-        self.assertEquals(len(new_achievements_list),3)#1
+        self.assertEquals(len(new_achievements_list),1)
 
 
 

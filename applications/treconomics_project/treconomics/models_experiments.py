@@ -117,7 +117,7 @@ def clean_nasa_data(self):
         cleaned_data["nasa_performance"] = 0
     if not cleaned_data.get("nasa_effort"):
         cleaned_data["nasa_effort"] = 0
-    if not cleaned_data.get("nasa_frusration"):
+    if not cleaned_data.get("nasa_frustration"):
         cleaned_data["nasa_frustration"] = 0
     return cleaned_data
 

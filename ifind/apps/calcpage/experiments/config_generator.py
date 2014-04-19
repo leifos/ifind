@@ -24,7 +24,7 @@ import ConfigParser
 #parts = ["all","main"]
 portions = ['100','75','50','25']
 rankings = ["ranked","position_ranked","position","default"]
-max_queries = ['25','50','75','all']
+max_queries = ['100','150','200']
 engines = ["govuk","sitebing"]
 bing_key = "" #have a file called personal_bin_key.txt in this directory which contains your bing key
 #todo domain should be appropriate e.g. gov.uk or  gla.ac.uk

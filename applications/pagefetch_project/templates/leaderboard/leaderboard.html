@@ -1,6 +1,6 @@
 {% extends 'pagefetch/base.html' %}
 {% block title %}
-        Leader board!
+        Leaderboard
 {% endblock %}
 {% block container %}
    <div class="well">
@@ -65,13 +65,13 @@
 -->
 
 
-        <h3 class="text-success">High Scores by Gender</h3>
+        <h3 class="text-success">High Score Average by Gender</h3>
         {% if gender_scores %}
             <table class="table table-hover table-bordered">
             {% for item in gender_scores  %}
               <tr class="success">
                   <td> <strong>{{item.rank}}</strong></td>
-                  <td><a href='/profile/{{item.username}}'>{{item.username}}</a></td>
+                  <td><a href=''>{{item.username}}</a></td>
                   <td><strong>{{item.score}}</strong></td>
               </tr>
             {%endfor%}

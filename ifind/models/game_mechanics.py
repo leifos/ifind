@@ -221,7 +221,7 @@ class GameMechanic(object):
             self.game.current_page = self.pages.get(id=page_id)
             self.game.current_page.no_times_shown += 1
             self.game.current_page.save()
-            round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, r)
+            round_log = '%s %d' % (self.game.current_page.url, r)
             s = 'event:page_shown %s %s' % (self.game , round_log)
             self.logger.info(s)
             return True
@@ -231,11 +231,11 @@ class GameMechanic(object):
 
     def take_points(self):
         success = False
-        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
+        round_log = 'page_url: %s %d' % (self.game.current_page.url, self.game.no_rounds)
         if self.game.last_query_score > 0:
             self._increment_score(self.game.last_query_score)
             success = True
-            s = 'event:points_taken %s %s score: %d' % (self.game , round_log , self.game.last_query_score)
+            s = 'event:points_taken %s %s %d' % (self.game , round_log , self.game.last_query_score)
             self.logger.info(s)
         else:
             s = 'event:page_skipped %s %s' % (self.game , round_log)
@@ -270,9 +270,9 @@ class GameMechanic(object):
         #query_len = self.query_char_len(query)
         score = self._score_rank(rank, self.game.bonus, query_len)
         common_log = 'event: issue_query %s' % (self.game)
-        round_log = 'page_url: %s  round_no: %d ' % (self.game.current_page.url, self.game.no_rounds)
-        info_log = 'score: %d rank: %d query: %s ' % (score, rank, query)
-        log = '%s %s %s ' % (common_log, round_log, info_log)
+        round_log = '%s %d' % (self.game.current_page.url, self.game.no_rounds)
+        info_log = '%d %d %s' % (score, rank, query)
+        log = '%s %s %s' % (common_log, round_log, info_log)
         self.logger.info(log)
 
         return score
@@ -375,7 +375,7 @@ class GameMechanic(object):
 
 
     def handle_game_over(self):
-        s = "event: game_over  %s " % (self.game)
+        s = "event: game_over  %s" % (self.game)
         self.logger.info(s)
         if self.game.user.username != "anon":
             #HighScore.objects.all().delete()
@@ -392,7 +392,7 @@ class GameMechanic(object):
             all_hs = HighScore.objects.filter(user=self.game.user)
             gac = game_achievements.GameAchievementChecker(self.game.user)
             up = UserProfile.objects.get(user=self.game.user)
-            gac.check_and_set_new_achievements(up,all_hs,self.game)
+            return gac.check_and_set_new_achievements(up,all_hs,self.game)
 
 
     def get_last_query_score(self):

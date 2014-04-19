@@ -103,7 +103,7 @@ def graphs(request, username):
 
 def get_progress(user,profile):
     progress = 0
-    factor = 16.7 #TODO(mtbvc): don't hardcode this
+    factor = 20 #TODO(mtbvc): don't hardcode this
     #profile_form = ProfileForm(instance=profile)
     #for item in profile_form:
     #    print item
@@ -115,8 +115,6 @@ def get_progress(user,profile):
     if profile.age:
         progress += factor
     if profile.gender:
-        progress += factor
-    if profile.school:
         progress += factor
     if profile.country:
         progress += factor
