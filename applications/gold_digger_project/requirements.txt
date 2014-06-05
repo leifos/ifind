@@ -1,0 +1,7 @@
+Django==1.5.4
+Pillow==2.4.0
+distribute==0.7.3
+stevedore==0.14.1
+virtualenv==1.11.2
+virtualenvwrapper==4.2
+wsgiref==0.1.2
