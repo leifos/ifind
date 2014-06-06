@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+    <head>
+        <title>Slowsearch</title>
+    </head>
+
+    <body>
+        <h1>Welcome to slowsearch</h1>
+        {% if user.is_authenticated %}
+        <h1>hello {{ user.username }}!</h1>
+        <a href="/slowsearch/logout/">Logout</a><br />
+        {% else %}
+        <h1>hello world!</h1>
+        <a href="/slowsearch/login/">Login</a> <br>
+        <a href="/slowsearch/register/">Register Here</a> <br>
+{% endif %}
+
+        <a href="/slowsearch/about">About</a><br />
+    </body>
+
+</html>
