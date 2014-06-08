@@ -5,8 +5,24 @@
     <title>Register</title>
 </head>
 <body>
-<h1>Register</h1></br>
-Here you can register to play Gold Digger!</br>
+{% if registered %}
+        Fully Registered: <strong>start diggin'!</strong>
+        <a href="/gold_digger/">Return to the homepage.</a><br />
+        {% else %}
+       <strong>Register here!</strong><br />
+
+        <form id="user_form" method="post" action="/gold_digger/register"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Register" />
+        </form>
+        {% endif %}
+
 <a href = "/gold_digger/" >Back to Main</a>
 </body>
 </html>
