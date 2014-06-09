@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from slowsearch.forms import UserForm
+from slowsearch.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -19,6 +20,18 @@ def index(request):
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
     return render_to_response('slowsearch/index.html', context_dict, context)
+
+
+def profile(request, username):
+    # Get the context from the request.
+    context = RequestContext(request)
+
+    user_name = request.user
+
+    # Create a context dictionary which we can pass to the template rendering engine.
+    context_dict = {'user_name': user_name}
+
+    return render_to_response('slowsearch/profile.html', context_dict, context)
 
 
 def about(request):

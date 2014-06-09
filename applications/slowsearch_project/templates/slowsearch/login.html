@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Slowsearch</title>
-    </head>
+{% extends 'slowsearch/base.html' %}
 
-    <body>
-        <h1>Login to Slowsearch</h1>
+{% block body_block %}
+        <h2>Login</h2>
 
         <form id="login_form" method="post" action="/slowsearch/login/">
             {% csrf_token %}
@@ -18,5 +13,4 @@
             <input type="submit" value="submit" />
         </form>
 
-    </body>
-</html>
+{% endblock %}
