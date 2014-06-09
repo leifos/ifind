@@ -7,9 +7,9 @@
 <body>
 {% if registered %}
         Fully Registered: <strong>start diggin'!</strong>
-        <a href="/gold_digger/">Return to the homepage.</a><br />
+        <a href="/gold_digger/">Return to the homepage.</a><br>
         {% else %}
-       <strong>Register here!</strong><br />
+       <h1>Register here!</h1><br>
 
         <form id="user_form" method="post" action="/gold_digger/register"
                 enctype="multipart/form-data">
@@ -21,8 +21,9 @@
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
         </form>
-        {% endif %}
+        <br>
+{% endif %}
 
-<a href = "/gold_digger/" >Back to Main</a>
+<a href = "/gold_digger/" >Home</a>
 </body>
 </html>
