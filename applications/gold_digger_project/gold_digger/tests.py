@@ -1,60 +1,48 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
 
-Replace this with more appropriate tests for your application.
-"""
 
 from django.contrib.auth.models import User
 from django.test import TestCase
-
-from gold_digger import forms
-
-
-class RegistrationFormTests(TestCase):
-    """
-    Test the default registration forms.
-    """
-    def test_registration_form(self):
-        """
-        Test that ``RegistrationForm`` enforces username constraints
-        and matching passwords.
-
-        """
-        # Create a user so we can verify that duplicate usernames aren't
-        # permitted.
-        User.objects.create_user('alice', 'alice@example.com', 'secret')
-
-        invalid_data_dicts = [
-            # Non-alphanumeric username.
-            {'data': {'username': 'foobar',
-                      'email': 'foo@example.com',
-                      'password1': 'foo'},
-            'error': ('username', [u"This value must contain only letters, numbers and underscores."])},
-            # Already-existing username.
-            {'data': {'username': 'alice',
-                      'email': 'alice@example.com',
-                      'password1': 'secret'},
-            'error': ('username', [u"A user with that username already exists."])},
-            ]
-
-        for invalid_dict in invalid_data_dicts:
-            form = forms.UserForm(data=invalid_dict['data'])
-            self.failIf(form.is_valid())
-            #self.assertEqual(form.errors[invalid_dict['error'][0]],
-            #                 invalid_dict['error'][1])
-
-        #form = forms.UserForm(data={'username': 'foo',
-        #                                    'email': 'foo@example.com',
-        #                                    'password1': 'foo',
-        #                                    'password2': 'foo'})
-        #self.failUnless(form.is_valid())
+from django.core.files import File
+from gold_digger.models import UserProfile
 
 
+class ModelTest(TestCase):
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+    user_info = {'username': 'guybrush',
+                 'email': 'guy@monkey.island',
+                 'password': 'secret'}
+
+    def test_user_profile(self):
+
+        # Check if UserProfile object is created with appropriate data
+
+        new_user = User.objects.create_user(**self.user_info)
+        user_profile = UserProfile.objects.create(user=new_user, picture='something.gif', location='Here')
+
+        self.assertEquals(user_profile.id, new_user.id)
+
+    def test_user_profile_data(self):
+
+        # Test if user is active
+
+        new_user = User.objects.create_user(**self.user_info)
+
+        self.assertEqual(new_user.username, 'guybrush')
+        self.assertEqual(new_user.email, 'guy@monkey.island')
+        self.failUnless(new_user.check_password('secret'))
+        self.failIf(not new_user.is_active)
+
+    def test_image_addition(self):
+
+        new_user = User.objects.create_user(**self.user_info)
+
+        user_profile = UserProfile()
+        user_profile.user = new_user
+        user_profile.picture = File(open("static/glasgow.gif"))
+        user_profile.location = "NYC"
+        user_profile.save()
+
+        p = UserProfile.objects.get(id=1).picture.path
+
+        self.failUnless(open(p), 'file not found')
+
