@@ -11,13 +11,9 @@ from django.test import TestCase
 from gold_digger import forms
 
 
-def create_user(username, email, password):
-    return U
-
 class RegistrationFormTests(TestCase):
     """
     Test the default registration forms.
-
     """
     def test_registration_form(self):
         """
@@ -31,7 +27,7 @@ class RegistrationFormTests(TestCase):
 
         invalid_data_dicts = [
             # Non-alphanumeric username.
-            {'data': {'username': 'foo/bar',
+            {'data': {'username': 'foobar',
                       'email': 'foo@example.com',
                       'password1': 'foo',
                       'password2': 'foo'},
