@@ -1,0 +1,16 @@
+{% extends 'badsearch/base.html' %}
+
+{% block body_block %}
+
+    <{% if user.is_authenticated %}
+        <h1>Here is your Badsearch profile, {{ user.username }}!</h1>
+        <a href="/badsearch/"> Return to the homepage</a><br />
+        {% else %}
+        <h1>You are not logged in! Please login or register to access your profile.</h1>
+        <a href="/badsearch/register/">Register Here</a><br />
+        <a href="/badsearch/login/">Login</a><br />
+        <a href="/badsearch/"> Return to the homepage</a><br />
+        {% endif %}
+        <a href="/badsearch/about/">About</a><br />
+
+{% endblock %}
