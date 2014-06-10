@@ -39,6 +39,7 @@ def register(request):
             user = user_form.save()
 
             user.set_password(user.password)
+            print()
             user.save()
 
             profile = profile_form.save(commit=False)
