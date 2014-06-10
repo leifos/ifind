@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+{% if registered %}
+        Fully Registered: <strong>start diggin'!</strong>
+        <a href="/gold_digger/">Return to the homepage.</a><br>
+        {% else %}
+       <h1>Register here!</h1><br>
+
+        <form id="user_form" method="post" action="/gold_digger/register/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Register" />
+        </form>
+        <br>
+{% endif %}
+
+<a href = "/gold_digger/" >Home</a>
+</body>
+</html>

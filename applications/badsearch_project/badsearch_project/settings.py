@@ -1,19 +1,13 @@
-# Django settings for gold_digger_project project.
+# Django settings for badsearch_project project.
+
 import os
-
 SETTINGS_DIR = os.path.dirname(__file__)
-
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
-
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
-STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
-DATABASE_PATH = os.path.join(PROJECT_PATH, 'gold.db')
-
-print PROJECT_PATH
-print TEMPLATE_PATH
-print STATIC_PATH
-
+DATABASE_PATH = os.path.join(PROJECT_PATH, 'badsearch.db')
+STATIC_PATH = os.path.join(PROJECT_PATH,'static')
+LOGIN_URL = '/badsearch/login/'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -28,11 +22,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': DATABASE_PATH,                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
     }
 }
 
@@ -44,7 +33,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -99,7 +88,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'dqt$i)o7e*nvld7@ig(v=w6*_gu9j79s8(1rnld=o(ym(=1)-$'
+SECRET_KEY = 'd0ov9@ll4jr2)j3we!cp=7ajt&fkb##ti%10a@k*2x9t3qz)ka'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -118,10 +107,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'gold_digger_project.urls'
+ROOT_URLCONF = 'badsearch_project.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'gold_digger_project.wsgi.application'
+WSGI_APPLICATION = 'badsearch_project.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -141,7 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'gold_digger',
+    'badsearch',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

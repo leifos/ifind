@@ -1,19 +1,12 @@
-# Django settings for gold_digger_project project.
+# Django settings for slowsearch_project project.
+
 import os
-
 SETTINGS_DIR = os.path.dirname(__file__)
-
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
-
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
-DATABASE_PATH = os.path.join(PROJECT_PATH, 'gold.db')
-
-print PROJECT_PATH
-print TEMPLATE_PATH
-print STATIC_PATH
-
+DATABASE_PATH = os.path.join(PROJECT_PATH, 'slowsearch.db')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -44,7 +37,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -65,12 +58,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = '/media/'
+MEDIA_URL = ''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -95,17 +88,17 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'dqt$i)o7e*nvld7@ig(v=w6*_gu9j79s8(1rnld=o(ym(=1)-$'
+SECRET_KEY = 'yw!&79v3)2one)$3v1ua3p^bw(3q@^c_gk-6wko)b6u8iu-a&%'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -118,10 +111,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'gold_digger_project.urls'
+ROOT_URLCONF = 'slowsearch_project.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'gold_digger_project.wsgi.application'
+WSGI_APPLICATION = 'slowsearch_project.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -141,7 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'gold_digger',
+    'slowsearch'
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

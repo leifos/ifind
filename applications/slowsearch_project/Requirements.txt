@@ -1,0 +1,5 @@
+Django==1.5.4
+Pillow ==2.3.0
+pip==1.5
+setuptools==2.1
+six==1.6.1
