@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Badsearch</title>
-    </head>
+{% extends 'badsearch/base.html' %}
 
-    <body>
-        <h1>Login to Badsearch</h1>
+{% block body_block %}
 
         <form id="login_form" method="post" action="/badsearch/login/">
             {% csrf_token %}
@@ -17,5 +12,4 @@
             <input type="submit" value="submit" />
         </form>
 
-    </body>
-</html>
+{% endblock %}
