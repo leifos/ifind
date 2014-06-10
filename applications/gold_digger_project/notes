@@ -8,15 +8,32 @@ Add the assignment of username and password as well as authenticate() and login(
 Population Script
 ------------------
 
-    - Write it
+    - Write it ---> DONE
 
 Problems
 ---------
 
     - Users can upload images as well as other files
     - Two users can have the same email
+    - Wrong details page / message
 
 Testing
 --------
 
     - Why the hell does it create a new image every time?
+
+#########################################################################################################################
+
+DONE
+---------
+
+    - Population script works
+        ~ Remember to use create_user() when creating a Django user or the password won't be hashed
+
+#########################################################################################################################
+
+GENERAL REMINDERS
+-------------------
+
+    - Import the models and forms you want to use or modify before calling them in shell
+    -
