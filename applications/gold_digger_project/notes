@@ -16,11 +16,16 @@ Problems
     - Users can upload images as well as other files
     - Two users can have the same email
     - Wrong details page / message
+    - If bad login details, display a message underneath the login fields, not an entirely different page
+        ~ Can it be done with errors.()
 
 Testing
 --------
 
     - Why the hell does it create a new image every time?
+    - Write test for:
+        ~ Correct email
+        ~ Correct password (?)
 
 #########################################################################################################################
 

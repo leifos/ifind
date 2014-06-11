@@ -7,9 +7,9 @@ def populate():
     john = add_user('John', 'john@gmail.com', 'john')
     jess = add_user('Jess', 'jess@gmail.com', 'jess')
 
-    add_user_profile(jill, 'media/profile_pictures/FOW.jpg', 'Jesrsey')
-    add_user_profile(john, 'media/profile_pictures/duck.jpg', 'NYC')
-    add_user_profile(jess, 'media/profile_pictures/penguinwhale.jpg', 'Detroit')
+    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey')
+    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC')
+    add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit')
 
     for u in UserProfile.objects.all():
         print u
