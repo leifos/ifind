@@ -5,7 +5,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User)
 
-    picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    picture = models.ImageField(upload_to='profile_pictures', blank=True, default='profile_pictures/default_profile.jpg')
     location = models.CharField(max_length = 100)
 
     def image_tag(self):

@@ -87,8 +87,11 @@ def user_login(request):
             else:
                 return HttpResponse("Your Rango account is disabled.")
         else:
+
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            bad_details = {'bad_details': " -=: Invalid login details supplied. :=-"}
+            return render_to_response('gold_digger/home.html', bad_details, context)
+
 
     else:
 
