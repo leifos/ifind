@@ -3,7 +3,7 @@ from gold_digger.models import UserProfile
 from django.contrib.auth.models import User
 
 class UserAdmin2 (admin.ModelAdmin):
-    list_display = ('email', 'first_name')
+    list_display = ('username', 'email', 'date_joined')
 
 class GoldAdmin(admin.ModelAdmin):
 
