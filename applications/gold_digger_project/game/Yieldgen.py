@@ -1,6 +1,11 @@
 __author__ = 'gabriele'
+import random
 
-class Yield(object):
+def random_yield():
+    gold = random.randint(1, 10)
+    return gold
 
-    yields = []
+
+
+
 
