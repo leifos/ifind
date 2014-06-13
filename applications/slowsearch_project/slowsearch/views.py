@@ -193,7 +193,7 @@ def search(request):
 
 #run a search query on wikipedia using the query string passed
 def run_query(query):
-    q = Query(query, top=5)
+    q = Query(query, top=10)
     e = EngineFactory("Wikipedia")
 
     response = e.search(q)
