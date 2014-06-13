@@ -1,5 +1,6 @@
 __author__ = 'Craig'
 from django.contrib.auth.models import User
+from slowsearch.models import UKDemographicsSurvey
 from django import forms
 
 
@@ -9,3 +10,41 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
+
+
+SEX_CHOICES = (('N', 'Not Indicated'),
+              ('M', 'Male'), ('F', 'Female'))
+
+YES_CHOICES = (('', 'Not Specified'),
+              ('Y', 'Yes'), ('N', 'No'))
+
+YES_NO_CHOICES = (
+    ('Y', 'Yes'), ('N', 'No'))
+
+YEAR_CHOICES = (('', 'Not Specified'),
+               ('1', 'First Year'), ('2', 'Second Year'), ('3', 'Third Year'), ('4', 'Fourth Year'),
+               ('5', 'Fifth Year'), ('6', 'Completed'))
+
+
+class UKDemographicsSurveyForm(forms.ModelForm):
+    age = forms.IntegerField(label="Please provide your age (in years).", max_value=100, min_value=0, required=False)
+    sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.",
+                          required=False)
+    education_undergrad = forms.CharField(widget=forms.Select(choices=YES_CHOICES),
+                                          label="Are you undertaking, or have you obtained, an undergraduate degree?",
+                                          required=False)
+    education_undergrad_major = forms.CharField(widget=forms.TextInput(attrs={'size': '60', 'class': 'inputText'}),
+                                                label="If yes, what is/was your subject area?", required=False)
+    education_undergrad_year = forms.CharField(widget=forms.Select(choices=YEAR_CHOICES),
+                                               label="What year are you in?", required=False)
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if not cleaned_data.get("age"):
+            cleaned_data["age"] = 0
+            print "clean age"
+        return cleaned_data
+
+    class Meta:
+        model = UKDemographicsSurvey
+        exclude = ('user',)

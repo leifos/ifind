@@ -10,7 +10,7 @@
         {% else %}
        <strong>Register here!</strong><br />
 
-        <form id="user_form" method="post" action="/slowsearch/register/"
+        <form id="reg_form" method="post" action="/slowsearch/register/"
                 enctype="multipart/form-data">
 
             {% csrf_token %}
@@ -19,6 +19,7 @@
                  (<p>) element. This ensures each element appears on a new line,
                  making everything look neater. -->
             {{ user_form.as_p }}
+            {{ demog_form.as_p }}
 
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
