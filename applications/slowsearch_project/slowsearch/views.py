@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from slowsearch.forms import UserForm, UKDemographicsSurveyForm
+from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation
 from slowsearch.models import User, UKDemographicsSurvey
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -94,9 +94,10 @@ def register(request):
         # Note that we make use of both UserForm and UKDemographicsSurveyForm
         user_form = UserForm(data=request.POST)
         demog_form = UKDemographicsSurveyForm(data=request.POST)
+        validation_form = RegValidation(data=request.POST)
 
         # If the two forms are valid...
-        if user_form.is_valid() and demog_form.is_valid():
+        if user_form.is_valid() and demog_form.is_valid() and validation_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -117,18 +118,20 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, demog_form.errors
+            print user_form.errors, demog_form.errors, validation_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
         demog_form = UKDemographicsSurveyForm()
+        validation_form = RegValidation()
 
     # Render the template depending on the context.
     return render_to_response(
             'slowsearch/register.html',
-            {'user_form': user_form, 'demog_form': demog_form, 'registered': registered},
+            {'user_form': user_form, 'demog_form': demog_form, 'validation_form': validation_form,
+             'registered': registered},
             context)
 
 

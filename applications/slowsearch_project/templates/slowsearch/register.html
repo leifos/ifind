@@ -21,6 +21,21 @@
             {{ user_form.as_p }}
             {{ demog_form.as_p }}
 
+        Thank you for agreeing to participate in this experiment. For the duration of the experimental period,
+        please use this site in place of your go-to search engine. All searches are confidential and data related
+        to queries entered and websites visited will not be recorded by this site and is visible to nobody.
+        To this end, it is recommended that you do NOT use your real name as a username.
+        <br>
+        <br>
+        The search engine functions like any other and is powered by Microsoft Bing. Before you begin searching, please
+        create your account below and fill in the optional short questionnaire.
+        <br>
+        <br>
+        Don't forget to tick the box to indicate you understand these terms and conditions!
+        <br>
+        <br>
+            {{ validation_form.as_p }}
+
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
         </form>
