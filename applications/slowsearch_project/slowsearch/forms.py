@@ -48,3 +48,10 @@ class UKDemographicsSurveyForm(forms.ModelForm):
     class Meta:
         model = UKDemographicsSurvey
         exclude = ('user',)
+
+
+# checkbox for user validation
+class RegValidation(forms.Form):
+    terms = forms.BooleanField(required=True, initial=False,
+                               label="I have read and agree to the above terms and conditions",
+                               error_messages={'required': 'You must accept the terms and conditions'},)
