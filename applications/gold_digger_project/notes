@@ -27,6 +27,15 @@ Testing
         ~ Correct email
         ~ Correct password (?)
 
+Python
+-------
+
+- Is this not correct? Why?
+    ~ linear_yield_array[index] = something NO
+    ~ linear_yield_array.append(something)  YES
+- Mine.Mine(), is it OK?
+- Is it better to call a variable like Yieldgen.x or to store it and the use it
+
 #########################################################################################################################
 
 DONE
