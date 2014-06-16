@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from badsearch.forms import UserForm, UserProfileForm
+from badsearch.forms import UserForm, UserProfileForm, DemographicsForm, ValidationForm
 from django.contrib.auth.decorators import login_required
 from badsearch import practice
 
@@ -37,12 +37,18 @@ def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
+        demographics_form = DemographicsForm(data=request.POST)
+        validation_form = ValidationForm(data=request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid() and demographics_form.is_valid() and validation_form.is_valid():
             user = user_form.save()
 
             user.set_password(user.password)
             user.save()
+
+            demographics = demographics_form.save(commit=False)
+            demographics.user = user
+            demographics.save()
 
             profile = profile_form.save(commit=False)
             profile.user = user
@@ -54,15 +60,17 @@ def register(request):
             registered = True
 
         else:
-            print user_form.errors, profile_form.errors
+            print user_form.errors, profile_form.errors, demographics_form.errors, validation_form.errors
 
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
+        demographics_form = DemographicsForm()
+        validation_form = ValidationForm()
 
     return render_to_response(
             'badsearch/register.html',
-            {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
+            {'user_form': user_form, 'profile_form': profile_form, 'demographics_form': demographics_form, 'validation_form': validation_form, 'registered': registered},
             context)
 
 def user_login(request):
