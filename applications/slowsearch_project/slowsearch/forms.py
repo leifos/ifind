@@ -1,6 +1,6 @@
 __author__ = 'Craig'
 from django.contrib.auth.models import User
-from slowsearch.models import UKDemographicsSurvey
+from slowsearch.models import UKDemographicsSurvey, Experience
 from django import forms
 
 
@@ -24,6 +24,8 @@ YES_NO_CHOICES = (
 YEAR_CHOICES = (('', 'Not Specified'),
                ('1', 'First Year'), ('2', 'Second Year'), ('3', 'Third Year'), ('4', 'Fourth Year'),
                ('5', 'Fifth Year'), ('6', 'Completed'))
+
+EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
 class UKDemographicsSurveyForm(forms.ModelForm):
@@ -55,3 +57,49 @@ class RegValidation(forms.Form):
     terms = forms.BooleanField(required=True, initial=False,
                                label="I have read and agree to the above terms and conditions",
                                error_messages={'required': 'You must accept the terms and conditions'},)
+
+
+class FinalQuestionnaireForm(forms.ModelForm):
+    # level of ease of use of AB Search App
+    ease = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='The search engine was '
+                                                                                           'easy to use:')
+
+    # level of boredom experienced by user when using AB Search App
+    boredom = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I quickly became bored '
+                                                                                              'while using the search '
+                                                                                              'engine:')
+
+    # level of rage experienced by user when using AB Search App
+    rage = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was enraged by the search'
+                                                                                           'engine:')
+
+    # level of frustration experienced by user when using AB Search App
+    frustration = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was frustrated by '
+                                                                                                  'the search engine:')
+
+    # level of excitement experienced by user when using AB Search App
+    excitement = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was excited while'
+                                                                                                 'using the search'
+                                                                                                 'engine:')
+
+    # level of indifference experienced by user when using AB Search App
+    indifference = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was indifferent '
+                                                                                                   'to the search '
+                                                                                                   'engine:')
+
+   # level of confusion experienced by user when using AB Search App
+    confusion = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was confused by the'
+                                                                                                'search engine:')
+
+    # level of anxiety experienced by user when using AB Search App
+    anxiety = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was anxious when '
+                                                                                              'using the search '
+                                                                                              'engine:')
+
+    # any additional comments the user wishes to add about their experience of the AB Search App
+    comment = forms.CharField(widget=forms.Textarea, label='Please add any other comments you may have about '
+                                                           'Slowsearch:')
+
+    class Meta:
+        model = Experience
+        exclude= ('user',)

@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation
-from slowsearch.models import User, UKDemographicsSurvey
+from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, FinalQuestionnaireForm
+from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from ifind.search import Query, EngineFactory
@@ -133,6 +133,32 @@ def register(request):
             {'user_form': user_form, 'demog_form': demog_form, 'validation_form': validation_form,
              'registered': registered},
             context)
+
+@login_required()
+def final_survey(request):
+    context = RequestContext(request)
+
+    completed = False
+
+    if request.method == 'POST':
+        q_form = FinalQuestionnaireForm(data=request.POST)
+
+        if q_form.is_valid():
+            answers = q_form.save(commit=False)
+            answers.user = request.user
+            answers.save()
+
+            completed = True
+
+        else:
+            print q_form.errors
+
+    else:
+        q_form = FinalQuestionnaireForm()
+
+     # Render the template depending on the context.
+    return render_to_response(
+        'slowsearch/finalsurvey.html', {'q_form': q_form, 'completed': completed}, context)
 
 
 def user_login(request):
