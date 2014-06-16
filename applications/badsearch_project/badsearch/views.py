@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from badsearch.forms import UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
+from badsearch import practice
 
 def index(request):
     context = RequestContext(request)
@@ -92,4 +93,13 @@ def user_logout(request):
 
 @login_required
 def search(request):
-    return HttpResponse("Placeholder for search page")
+    context = RequestContext(request)
+    result_list = []
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            result_list = practice.run_query(query)
+
+    return render_to_response('badsearch/search.html', {'result_list': result_list}, context)
