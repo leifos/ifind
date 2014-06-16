@@ -9,7 +9,7 @@ class Mine(object):
         self.blocks = []
         self.depth = depth
         self.mine_type = mine_type
-        self.scan= scan
+        self.scan = scan
 
         if mine_type == 'random':
             make_random_mine(self)
@@ -28,12 +28,13 @@ def make_random_mine(self):
     :return:
     """
 
-    yield_array = Yieldgen.random_yield(self.depth)     # Generate the array of yield values
-    cue_array = Cuegen.make_cue(yield_array, self.scan)
+    yield_array = Yieldgen.random_yield(self.depth)      # Generate the array of yield values
+    cue_array = Cuegen.make_cue(yield_array, self.scan)  # Generate the array of cue values;
+                                                            # based on yield and scanning equipment
 
-    for index in range(len(yield_array)):               # For every value in the array
-        b = Block.Block(index, yield_array[index], cue_array[index])   # Make a block with the matching yield and number
-        self.blocks.append(b)                           # Add the block to the Mine
+    for index in range(len(yield_array)):                              # For every value in the array
+        b = Block.Block(index, yield_array[index], cue_array[index])   # Make a block with  yield and cue values
+        self.blocks.append(b)                                          # Add the block to the Mine
 
     return self
 
@@ -43,13 +44,14 @@ def make_constant_mine(self):
 
     :return:
     """
-    yield_array = Yieldgen.constant_yield(self.depth)
-    cue_array = Cuegen.make_cue(yield_array, self.scan)
+    yield_array = Yieldgen.constant_yield(self.depth)    # Generate the array of yield values
+    cue_array = Cuegen.make_cue(yield_array, self.scan)  # Generate the array of cue values,
+                                                            # based on yield and scanning equipment
 
-    for index in range(len(yield_array)):
 
-        b = Block.Block(index, yield_array[index], cue_array[index])
-        self.blocks.append(b)
+    for index in range(len(yield_array)):                               # For every value in the array
+        b = Block.Block(index, yield_array[index], cue_array[index])    # Make a block with  yield and cue values
+        self.blocks.append(b)                                           # Add the block to the Mine
 
     return self
 
@@ -59,10 +61,12 @@ def make_linear_mine(self):
 
     :return:
     """
-    yield_array = Yieldgen.linear_yield(self.depth)
-    cue_array = Cuegen.make_cue(yield_array, self.scan)
-    for index in range(len(yield_array)):
-        b = Block.Block(index, yield_array[index], cue_array[index])
-        self.blocks.append(b)
+    yield_array = Yieldgen.linear_yield(self.depth)      # Generate the array of yield values
+    cue_array = Cuegen.make_cue(yield_array, self.scan)  # Generate the array of cue values
+                                                            # based on yield and scanning equipment
+
+    for index in range(len(yield_array)):                                # For every value in the array
+        b = Block.Block(index, yield_array[index], cue_array[index])     # Make a block with  yield and cue values
+        self.blocks.append(b)                                            # Add the block to the Mine
 
     return self
