@@ -1,6 +1,25 @@
 {% extends 'slowsearch/base.html' %}
 
 {% block body_block %}
-Placeholder for the search results page <br>
+
+    <form id="search" action="/slowsearch/search/" method="post">
+        {% csrf_token %}
+            <input type=text name=query>
+
+            <input type=submit value="Search">
+
+        </form> <br><br>
+
+    {% if result_list %}
+         {% for result in result_list %}
+                <li>
+                    <strong><a href="{{ result.url }}">{{ result.title }}</a></strong><br />
+                    <em>{{ result.summary }}</em>
+                </li> <br>
+            {% endfor %}
+            </ol>
+    {% endif %}
+
+    <br>
 <a href="/slowsearch/">Return to the homepage</a>
 {% endblock %}

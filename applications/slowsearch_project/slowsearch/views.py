@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from slowsearch.forms import UserForm
-from slowsearch.models import User
+from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, FinalQuestionnaireForm
+from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from ifind.search import Query, EngineFactory
 
 
 def index(request):
@@ -90,11 +91,13 @@ def register(request):
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
+        # Note that we make use of both UserForm and UKDemographicsSurveyForm
         user_form = UserForm(data=request.POST)
+        demog_form = UKDemographicsSurveyForm(data=request.POST)
+        validation_form = RegValidation(data=request.POST)
 
         # If the two forms are valid...
-        if user_form.is_valid():
+        if user_form.is_valid() and demog_form.is_valid() and validation_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -103,6 +106,11 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
+            demog = demog_form.save(commit=False)
+            demog.user = user
+
+            demog.save()
+
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -110,18 +118,47 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors
+            print user_form.errors, demog_form.errors, validation_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
+        demog_form = UKDemographicsSurveyForm()
+        validation_form = RegValidation()
 
     # Render the template depending on the context.
     return render_to_response(
             'slowsearch/register.html',
-            {'user_form': user_form, 'registered': registered},
+            {'user_form': user_form, 'demog_form': demog_form, 'validation_form': validation_form,
+             'registered': registered},
             context)
+
+@login_required()
+def final_survey(request):
+    context = RequestContext(request)
+
+    completed = False
+
+    if request.method == 'POST':
+        q_form = FinalQuestionnaireForm(data=request.POST)
+
+        if q_form.is_valid():
+            answers = q_form.save(commit=False)
+            answers.user = request.user
+            answers.save()
+
+            completed = True
+
+        else:
+            print q_form.errors
+
+    else:
+        q_form = FinalQuestionnaireForm()
+
+     # Render the template depending on the context.
+    return render_to_response(
+        'slowsearch/finalsurvey.html', {'q_form': q_form, 'completed': completed}, context)
 
 
 def user_login(request):
@@ -173,3 +210,28 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/slowsearch/')
+
+
+# perform a basic search using the query entered by the user
+def search(request):
+    context = RequestContext(request)
+    result_list = []
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            # Run our Bing function to get the results list!
+            result_list = run_query(query)
+
+    return render_to_response('slowsearch/results.html', {'result_list': result_list}, context)
+
+
+# run a search query on wikipedia using the query string passed
+def run_query(query):
+    q = Query(query, top=10)
+    e = EngineFactory("Wikipedia")
+
+    response = e.search(q)
+
+    return response

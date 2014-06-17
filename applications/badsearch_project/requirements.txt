@@ -1,8 +1,6 @@
 Django==1.5.4
+PIL==1.1.7
 jsonpickle==0.7.1
-Pillow==2.3.0
-pip==1.5
 redis==2.10.1
 requests==2.3.0
-setuptools==2.1
-six==1.6.1
+wsgiref==0.1.2

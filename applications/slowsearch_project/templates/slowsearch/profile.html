@@ -2,7 +2,7 @@
 
 {% block body_block %}
     {% if user.is_authenticated %}
-        <h1>hello {{ user_name }}, welcome to your profile!</h1>
+        <h2>hello {{ user_name }}, welcome to your profile!</h2>
         <a href="/slowsearch/logout/">Logout</a><br />
         <a href="/slowsearch/">Return to the homepage</a><br />
         {% else %}

@@ -6,7 +6,12 @@
         <strong>thank you for registering!</strong>
         <a href="/badsearch/">Return to the homepage.</a><br />
         {% else %}
-        <strong>register here!</strong><br />
+        <strong>Register here!</strong><br />
+        Thank you for your interest in participating in this experiment.<br />
+        This search engine is powered by Microsoft Bing, please use this search engine
+        in place of your favourite search engine for the duration of this experiment.<br />
+
+        Please fill in your details below and agree to the terms and conditions to begin searching.
 
         <form id="user_form" method="post" action="/badsearch/register/"
                 enctype="multipart/form-data">
@@ -14,6 +19,14 @@
             {% csrf_token %}
             {{ user_form.as_p }}
             {{ profile_form.as_p }}
+            {{ demographics_form.as_p }}
+
+        The time you spend on each query will be recorded for purposes of this experiment. Your specific queries will not be saved,
+        nor will any URLs visited using this application.<br />
+        Please tick the box below to confirm you understand and agree to the terms and conditions of this application.
+
+            {{ validation_form.as_p }}
+
 
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
