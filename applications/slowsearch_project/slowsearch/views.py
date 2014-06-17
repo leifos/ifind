@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from ifind.search import Query, EngineFactory
 
+BING_API_KEY = 'c6xqR9HixLHQ63Avv4cu1aNwvIaY7cqgvY2prIH/vOA'
+
 
 def index(request):
     # Request the context of the request.
@@ -216,6 +218,7 @@ def user_logout(request):
 def search(request):
     context = RequestContext(request)
     result_list = []
+    root_url = 'https://api.datamarket.azure.com/Bing/Search/'
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
@@ -230,7 +233,7 @@ def search(request):
 # run a search query on wikipedia using the query string passed
 def run_query(query):
     q = Query(query, top=10)
-    e = EngineFactory("Wikipedia")
+    e = EngineFactory("Bing", api_key=BING_API_KEY)
 
     response = e.search(q)
 
