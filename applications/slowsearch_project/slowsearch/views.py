@@ -31,8 +31,10 @@ def profile(request, username):
 
     user_name = request.user
 
+    demographics = UKDemographicsSurvey.objects.get(user=user_name)
+
     # Create a context dictionary which we can pass to the template rendering engine.
-    context_dict = {'user_name': user_name}
+    context_dict = {'user_name': user_name, 'demographics': demographics}
 
     return render_to_response('slowsearch/profile.html', context_dict, context)
 
