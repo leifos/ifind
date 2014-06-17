@@ -8,7 +8,7 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
     def __unicode__(self):
-        return self.user.username
+        return self.user
 
 class Demographics(models.Model):
     user = models.ForeignKey(User)
@@ -19,4 +19,4 @@ class Demographics(models.Model):
     education_undergrad_year = models.CharField(max_length=1, default="")
 
     def __unicode__(self):
-        return self.user.username
+        return self.user

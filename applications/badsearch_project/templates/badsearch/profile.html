@@ -2,8 +2,23 @@
 
 {% block body_block %}
 
-    <{% if user.is_authenticated %}
+    {% if user.is_authenticated %}
         <h1>Here is your Badsearch profile, {{ user.username }}!</h1>
+
+        <body>
+        Email Address: {{ user.username }}<br>
+        Picture: {{ profile.picture }}<br>
+        Age: {{ demographics.age }}<br>
+        Gender: {{ demographics.sex }}<br>
+        Education Level: {{ demographics.education_undergrad }}<br>
+        Major: {{ demographics.education_undergrad_major }}<br>
+        Year: {{ demographics.education_undergrad_year }}<br><br>
+        User Since: <br>
+        Number of Queries: <br>
+        Time Remaining of Experiment: <br><br>
+
+        </body>
+
         <a href="/badsearch/"> Return to the homepage</a><br />
         {% else %}
         <h1>You are not logged in! Please login or register to access your profile.</h1>
