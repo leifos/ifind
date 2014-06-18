@@ -6,8 +6,7 @@ from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from ifind.search import Query, EngineFactory
-
-BING_API_KEY = 'c6xqR9HixLHQ63Avv4cu1aNwvIaY7cqgvY2prIH/vOA'
+from keys import BING_API_KEY
 
 
 def index(request):
