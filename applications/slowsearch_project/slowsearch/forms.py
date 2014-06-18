@@ -79,7 +79,7 @@ class FinalQuestionnaireForm(forms.ModelForm):
 
     # level of excitement experienced by user when using AB Search App
     excitement = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was excited while'
-                                                                                                 'using the search'
+                                                                                                 ' using the search'
                                                                                                  ' engine:')
 
     # level of indifference experienced by user when using AB Search App

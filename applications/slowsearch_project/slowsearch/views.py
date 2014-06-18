@@ -5,8 +5,7 @@ from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, 
 from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from ifind.search import Query, EngineFactory
-from keys import BING_API_KEY
+from utils import run_query
 
 
 def index(request):
@@ -231,11 +230,3 @@ def search(request):
     return render_to_response('slowsearch/results.html', {'result_list': result_list}, context)
 
 
-# run a search query on wikipedia using the query string passed
-def run_query(query):
-    q = Query(query, top=10)
-    e = EngineFactory("Bing", api_key=BING_API_KEY)
-
-    response = e.search(q)
-
-    return response
