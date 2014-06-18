@@ -71,7 +71,7 @@ class FinalQuestionnaireForm(forms.ModelForm):
 
     # level of rage experienced by user when using AB Search App
     rage = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was enraged by the search'
-                                                                                           'engine:')
+                                                                                           ' engine:')
 
     # level of frustration experienced by user when using AB Search App
     frustration = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was frustrated by '
@@ -79,8 +79,8 @@ class FinalQuestionnaireForm(forms.ModelForm):
 
     # level of excitement experienced by user when using AB Search App
     excitement = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was excited while'
-                                                                                                 'using the search'
-                                                                                                 'engine:')
+                                                                                                 ' using the search'
+                                                                                                 ' engine:')
 
     # level of indifference experienced by user when using AB Search App
     indifference = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was indifferent '
@@ -89,7 +89,7 @@ class FinalQuestionnaireForm(forms.ModelForm):
 
    # level of confusion experienced by user when using AB Search App
     confusion = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was confused by the'
-                                                                                                'search engine:')
+                                                                                                ' search engine:')
 
     # level of anxiety experienced by user when using AB Search App
     anxiety = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was anxious when '

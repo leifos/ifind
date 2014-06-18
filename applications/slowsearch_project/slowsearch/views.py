@@ -5,7 +5,7 @@ from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, 
 from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from ifind.search import Query, EngineFactory
+from utils import run_query
 
 
 def index(request):
@@ -29,8 +29,10 @@ def profile(request, username):
 
     user_name = request.user
 
+    demographics = UKDemographicsSurvey.objects.get(user=user_name)
+
     # Create a context dictionary which we can pass to the template rendering engine.
-    context_dict = {'user_name': user_name}
+    context_dict = {'user_name': user_name, 'demographics': demographics}
 
     return render_to_response('slowsearch/profile.html', context_dict, context)
 
@@ -216,6 +218,7 @@ def user_logout(request):
 def search(request):
     context = RequestContext(request)
     result_list = []
+    root_url = 'https://api.datamarket.azure.com/Bing/Search/'
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
@@ -227,11 +230,3 @@ def search(request):
     return render_to_response('slowsearch/results.html', {'result_list': result_list}, context)
 
 
-# run a search query on wikipedia using the query string passed
-def run_query(query):
-    q = Query(query, top=10)
-    e = EngineFactory("Wikipedia")
-
-    response = e.search(q)
-
-    return response

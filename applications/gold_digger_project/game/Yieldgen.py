@@ -4,17 +4,31 @@ import random
 m = -4  # m is the slope of the linear function
 b = 42  # b is the y intersect of the function (the maximum number of gold)
 
+class YieldGenerator(object):
+    def __init__(self, depth=10, max=5, min=0):
+        self.depth = depth
+        self.max = max
+        self.min = min
 
-def random_yield(depth):
-    """
-    Returns an array of length (depth) of random values in a range
 
-    """
-    random_yield_array = []
-    for index in range(depth):
-        random_yield_array.append(random.randint(0, b))
+    def make_yields(self):
+        pass
 
-    return random_yield_array
+
+class RandomYieldGenerator(YieldGenerator):
+
+    def make_yields(self):
+        """ return a list of Blocks with random yeilds,
+         of length equal to depth
+        """
+        random_yield_array = []
+        for index in range(self.depth):
+            random_yield_array.append(random.randint(self.min, self.max))
+
+        return random_yield_array
+
+
+
 
 
 def constant_yield(depth):

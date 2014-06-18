@@ -3,8 +3,20 @@
 {% block body_block %}
     {% if user.is_authenticated %}
         <h2>hello {{ user_name }}, welcome to your profile!</h2>
+
+        Age: {{ demographics.age }}<br>
+        Gender: {{ demographics.sex }}<br>
+        University Education: {{ demographics.education_undergrad }}<br>
+        Major: {{ demographics.education_undergrad_major }}<br>
+        Year: {{ demographics.education_undergrad_year }}<br><br>
+        User Since: <br>
+        Number of Queries: <br>
+        Time Remaining in Experiment: <br><br>
+
         <a href="/slowsearch/logout/">Logout</a><br />
         <a href="/slowsearch/">Return to the homepage</a><br />
+
+
         {% else %}
         <h2>You're not logged in!</h2>
         <a href="/slowsearch/login/">Login</a> <br>

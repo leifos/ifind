@@ -1,4 +1,23 @@
-from game import Cuegen
+from Yieldgen import RandomYieldGenerator
+from Mine import Mine
+
+ryg = RandomYieldGenerator(depth=4,max=3,min=1)
+
+l = ryg.make_yields()
+print l
+l = ryg.make_yields()
+print l
+
+
+ryg = RandomYieldGenerator(depth=10,max=5,min=0)
+
+l = ryg.make_yields()
+print l
+
+m = Mine(10,ryg,1)
+
+m.show_mine()
+
 
 __author__ = 'gabriele'
 # import random
@@ -59,11 +78,11 @@ __author__ = 'gabriele'
 #     print lower_limit
 
 
-array = [25, 25, 25, 25, 25, 25, 25, 25]
-c = Cuegen.make_cue(array, 0.9)
-print c
+#array = [25, 25, 25, 25, 25, 25, 25, 25]
+#c = Cuegen.make_cue(array, 0.9)
+#print c
 
 
-max = 10
-for d in range(max, 0):
-    print d
+#max = 10
+#for d in range(max, 0):
+#    print d
