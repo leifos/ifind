@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from badsearch.forms import UserForm, UserProfileForm, DemographicsForm, ValidationForm
 from django.contrib.auth.decorators import login_required
 from badsearch import practice
+from badsearch.models import UserProfile, Demographics
 
 def index(request):
     context = RequestContext(request)
@@ -16,9 +17,15 @@ def about(request):
     context = RequestContext(request)
     return render_to_response('badsearch/about.html', {}, context)
 
+@login_required
 def profile(request):
     context = RequestContext(request)
-    return render_to_response('badsearch/profile.html', {}, context)
+    user = request.user
+    print user
+    profile = UserProfile.objects.get(user=user)
+    demographics = Demographics.objects.get(user=user)
+
+    return render_to_response('badsearch/profile.html', {'profile':profile, 'demographics':demographics}, context)
 
 def endexperiment(request):
     context = RequestContext(request)

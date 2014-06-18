@@ -1,16 +1,20 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from django.core.files import File
 from django.test import TestCase
+from django.contrib.auth.models import User
+
+inappropriate_names = ['fuck', 'tits', 'ass']
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class UserRegTests(TestCase):
+
+    def test_for_inappropriate_language(self):
+        new_user = User.objects.create_user(username='fuckwit', email='test@test.com', password='test')
+
+        inappropriate = False
+
+        for n in inappropriate_names:
+            if n in new_user.username:
+                inappropriate = True
+                break
+
+        self.assertFalse(inappropriate)

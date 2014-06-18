@@ -1,9 +1,23 @@
 {% extends 'badsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
 
-    <h1>Placeholder for about page</h1>
+    <h1>About Badsearch</h1>
+    <img src="{% static "glasgow.jpg" %}" alt="Glasgow University School of Computing Science" /><br />
     <body>
+    Badsearch is a search application developed by Iain Hendry, an MSc IT student at the University of Glasgow,
+    as part of a research project.<br />
+    <br />
+    The application is powered by Microsoft Bing, and is intended for to be used in place of your favourite
+    search engine for the duration of the experiment. If you would like to participate, please create an account
+    below to begin searching. <br />
+    <br />
+    If you have any questions or problems regarding Badsearch please contact Iain at:
+    <a href ="mailto:0900282h@student.glasgow.ac.uk"> 0900282h@student.glasgow.ac.uk</a>
+    or the project supervisor, Dr. Leif Azzopardi, at: <a href ="mailto:Leif.Azzopardi@glasgow.ac.uk">
+                                                 Leif.Azzopardi@glasgow.ac.uk</a> <br /><br />
+    <a href="/badsearch/register/"> Register here</a><br />
     <a href="/badsearch/"> Return to the homepage</a><br />
     </body>
 
