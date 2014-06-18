@@ -19,9 +19,9 @@ print l
 
 
 
-m = Mine(ryg,1)
-m2= Mine(cyg,1)
-m3= Mine(lyg,1)
+m = Mine(ryg, 1)
+m2 = Mine(cyg, 1)
+m3 = Mine(lyg, 1)
 
 m.show_mine()
 m2.show_mine()
@@ -95,3 +95,39 @@ __author__ = 'gabriele'
 #max = 10
 #for d in range(max, 0):
 #    print d
+
+
+### CUETEST #####################################
+
+# max = yieldgen.b
+# rangecue = int(float(round(cuegen.cue_range)))
+# patterns = cuegen.cue_patterns
+#
+# array_list = []
+#
+# count = 1
+#
+#
+#
+# for r in range(rangecue):
+#     cue_list = []
+#     array_list.append(cue_list)
+#     if len(array_list) <= rangecue:
+#         for x in range(max, 0, -1):
+#             cue_list.append(x)
+#
+#             if count == rangecue:
+#                 count = 1
+#                 max -= rangecue
+#                 break
+#             else:
+#                 count += 1
+#
+# print rangecue
+#
+# array_list.remove([])
+# a = array_list[patterns-1]
+# a.append(0)
+# print a
+# print array_list
+#
