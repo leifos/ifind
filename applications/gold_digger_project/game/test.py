@@ -29,7 +29,7 @@ m3.show_mine()
 
 
 __author__ = 'gabriele'
-# import random
+# import random lalala
 # a =26
 # b =34
 # c = 6
