@@ -16,6 +16,7 @@ YEAR_CHOICES = (('', 'Not Specified'),
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
@@ -42,7 +43,7 @@ class DemographicsForm(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
         if not cleaned_data.get("age"):
-            cleaned_data["age"] = 0
+            cleaned_data["age"] = 18
             print "clean age"
         return cleaned_data
 
