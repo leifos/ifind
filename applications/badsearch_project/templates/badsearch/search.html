@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <form class="form-signin span8" id="user_form" method="post" action="/badsearch/search/">
             {% csrf_token %}
-            <input type="text" size="50" name="query" value="" id="query" />
+            <input type="text" size="50" name="query" value= "{{ query }}"  id="query" />
             <input class="btn btn-primary" type="submit" name="submit" value="Search" />
             <br />
         </form>
