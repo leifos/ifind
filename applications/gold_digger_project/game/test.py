@@ -1,35 +1,29 @@
-from Yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator
-from Mine import Mine
+from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator
+from mine import Mine
 
 
 
 
-ryg = RandomYieldGenerator(depth=10,max=5,min=0)
-cyg = ConstantYieldGenerator(depth=10, max=5, min=0)
-lyg = LinearYieldGenerator(depth=10, max=5, min=0)
+ryg = RandomYieldGenerator(depth=10, max=42, min=0)
+cyg = ConstantYieldGenerator(depth=10, max=42, min=0)
+lyg = LinearYieldGenerator(depth=10, max=42, min=0)
 
-r = ryg.make_yields()
-print r
+m = Mine(ryg, 0.8)
+m2 = Mine(cyg, 0.8)
+m3 = Mine(lyg, 0.8)
 
-c = cyg.make_yields()
-print c
-
-l = lyg.make_yields()
-print l
-
-
-
-m = Mine(ryg, 1)
-m2 = Mine(cyg, 1)
-m3 = Mine(lyg, 1)
-
+print '\n' + "### Random yield ###" + '\n'
 m.show_mine()
+
+print '\n' + "### Constant yield ###" + '\n'
 m2.show_mine()
+
+print '\n' + "### Linear Yield ###" + '\n'
 m3.show_mine()
 
 
 __author__ = 'gabriele'
-# import random lalala
+# import random
 # a =26
 # b =34
 # c = 6

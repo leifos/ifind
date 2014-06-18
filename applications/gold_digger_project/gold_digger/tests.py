@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core.files import File
 from gold_digger.models import UserProfile
 from gold_digger.forms import UserForm, UserProfileForm
-from game import Yieldgen, Cuegen
+from game import yieldgen, cuegen
 
 
 class ModelTest(TestCase):
@@ -71,7 +71,7 @@ class GameTest(TestCase):
         """
 
         depth = 10
-        r = Yieldgen.random_yield(depth)
+        r = yieldgen.random_yield(depth)
         count = 0
 
         for y in r:
@@ -86,7 +86,7 @@ class GameTest(TestCase):
         """
 
         depth = 10
-        c = Yieldgen.constant_yield(depth)
+        c = yieldgen.constant_yield(depth)
         count = 0
         comp = c[0]
 
@@ -102,11 +102,11 @@ class GameTest(TestCase):
         and that the values are appropriately produced according to the linear function devised.
         """
 
-        b = Yieldgen.b
-        m = Yieldgen.m
+        b = yieldgen.b
+        m = yieldgen.m
 
         depth = 10
-        c = Yieldgen.linear_yield(depth)
+        c = yieldgen.linear_yield(depth)
         count = 0
 
         for y in c:

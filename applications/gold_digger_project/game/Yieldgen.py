@@ -2,7 +2,6 @@ __author__ = 'gabriele'
 import random
 
 m = -4  # m is the slope of the linear function
-b = 42  # b is the y intersect of the function (the maximum number of gold)
 
 class YieldGenerator(object):
     def __init__(self, depth, max=50, min=0):
@@ -53,12 +52,12 @@ class LinearYieldGenerator(YieldGenerator):
         linear_yield_array = []
 
         for index in range(self.depth):
-            linear_yield_array.append(LinearYieldGenerator.linear_function(index))
+            linear_yield_array.append(LinearYieldGenerator.linear_function(index, self.max))
 
         return linear_yield_array
 
     @staticmethod
-    def linear_function(x):
+    def linear_function(x, b):
         y = (m*x) + b  # This is the linear yield function
 
         return y

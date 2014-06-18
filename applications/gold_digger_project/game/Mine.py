@@ -1,4 +1,5 @@
-from Block import Block
+from block import Block
+import cuegen
 
 __author__ = 'gabriele'
 
@@ -8,26 +9,24 @@ class Mine(object):
         self.blocks = []
         self.yield_generator = yield_generator
         self.depth = self.yield_generator.depth
-        #self.mine_type = mine_type
         self.scan = scan
         self.make_mine()
 
     def make_mine(self):
         """
-        Generates a Mine with Blocks containing random quantities of gold in a range
-        of 1 to 10.
+        Generates a Mine with Blocks containing random
 
         :return: none
         """
         self.blocks = []
 
         yield_array = self.yield_generator.make_yields()
-
-        #cue_array = Cuegen.make_cue(yield_array, self.scan)  # Generate the array of cue values;
-                                                            # based on yield and scanning equipment
+        print "Yield array:", yield_array
+        cue_array = cuegen.make_cue(yield_array, self.scan, self.yield_generator.max)  # Generate the array of cue values;
+        print "Cue array:", cue_array                                                    # based on yield and scanning equipment
 
         for index in range(self.depth):                              # For every value in the array
-            b = Block(index, yield_array[index], 0)   # Make a block with  yield and cue values
+            b = Block(index, yield_array[index], cue_array[index])   # Make a block with  yield and cue values
             self.blocks.append(b)                                          # Add the block to the Mine
 
 
