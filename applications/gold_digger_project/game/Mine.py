@@ -4,13 +4,12 @@ __author__ = 'gabriele'
 
 class Mine(object):
 
-    def __init__(self, depth, yield_generator, scan):
+    def __init__(self, yield_generator, scan):
         self.blocks = []
-        self.depth = depth
+        self.yield_generator = yield_generator
+        self.depth = self.yield_generator.depth
         #self.mine_type = mine_type
         self.scan = scan
-        self.yield_generator = yield_generator
-        self.yield_generator.depth = depth
         self.make_mine()
 
     def make_mine(self):
