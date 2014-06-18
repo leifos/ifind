@@ -41,11 +41,10 @@ class DemographicsForm(forms.ModelForm):
                                                label="What year are you in?", required=False)
 
     def clean(self):
-        cleaned_data = self.cleaned_data
-        if not cleaned_data.get("age"):
-            cleaned_data["age"] = 18
-            print "clean age"
-        return cleaned_data
+        age = self.cleaned_data['age']
+        if age < 18:
+            raise forms.ValidationError('Must be at least 18 years old to register')
+        return self.cleaned_data
 
     class Meta:
         model = Demographics
