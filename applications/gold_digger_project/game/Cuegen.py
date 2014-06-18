@@ -1,47 +1,49 @@
-from game import Yieldgen
+from game import yieldgen
 import random
 
 
-cue_patterns = 6                                # The number of possible cue patterns
-max_gold_yield = Yieldgen.b                     # The maximum number of gold you can get
-cue_range = round(max_gold_yield/cue_patterns)  # The range of gold represented by a cue
+cue_patterns = 6
 
 
+def make_cue(yield_array, scan, max_gold):
 
-def make_cue(yield_array, scan):
-
+    cue_range = round(max_gold/cue_patterns)
     cue_array = []
-    span = cue_function(scan)
+    span = cue_function(scan, max_gold)
 
     for index in range(len(yield_array)):
 
-        max_gold = max_gold_yield
+        max_gold_yield = max_gold
+
         gold = yield_array[index]
+
         upper_limit = gold+span
         lower_limit = gold-span
+
         cue = random.randint(lower_limit, upper_limit)
 
         cueno = cue_patterns - 1
 
-        for x in range(cue_patterns):
-            if cue < 0:
+        while max_gold_yield >= 0:
+            if cue <= 0:
                 cue_array.append(0)
                 break
-            elif (max_gold+span) >= cue >= max_gold:
+            elif (max_gold_yield+span) >= cue >= max_gold_yield and cueno > 0:
                 cue_array.append(cueno)
                 break
-            elif max_gold >= cue >= max_gold-cue_range:
+            elif max_gold_yield >= cue >= max_gold_yield-cue_range  and cueno > 0:
                 cue_array.append(cueno)
                 break
-            elif max_gold < 0:
+            elif max_gold_yield <= 0 or cueno == 0:
                 cue_array.append(0)
+                break
             else:
-                max_gold = (max_gold - cue_range)
+                max_gold_yield = (max_gold_yield - cue_range)
                 cueno -= 1
 
     return cue_array
 
-def cue_function(scan):
+def cue_function(scan, max_gold_yield):
     """
     Computes the range in which the cue can be displayed. It is a function of the maximum amount of point
     and the accuracy of the scanning tools.

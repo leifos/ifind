@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core.files import File
 from gold_digger.models import UserProfile
 from gold_digger.forms import UserForm, UserProfileForm
-from game import Yieldgen, Cuegen
+from game import yieldgen, cuegen
 
 
 class ModelTest(TestCase):
@@ -71,7 +71,7 @@ class GameTest(TestCase):
         """
 
         depth = 10
-        r = Yieldgen.random_yield(depth)
+        r = yieldgen.random_yield(depth)
         count = 0
 
         for y in r:
@@ -86,7 +86,7 @@ class GameTest(TestCase):
         """
 
         depth = 10
-        c = Yieldgen.constant_yield(depth)
+        c = yieldgen.constant_yield(depth)
         count = 0
         comp = c[0]
 
@@ -102,11 +102,11 @@ class GameTest(TestCase):
         and that the values are appropriately produced according to the linear function devised.
         """
 
-        b = Yieldgen.b
-        m = Yieldgen.m
+        b = yieldgen.b
+        m = yieldgen.m
 
         depth = 10
-        c = Yieldgen.linear_yield(depth)
+        c = yieldgen.linear_yield(depth)
         count = 0
 
         for y in c:
@@ -117,24 +117,51 @@ class GameTest(TestCase):
 
         self.assertEqual(count, depth)
 
+    def test_cue_span(self):
+            """
+            Test if Cuegen assigns the appropriate due to the yield values
+            """
 
-    # def test_cue_span(self):
-    #     gold = Yieldgen.random_yield(10)
-    #     accuracy = [0.8, 0.6, 0.4, 0.3, 0.2]
-    #
-    #     for a in accuracy:
-    #         span = Cuegen.cue_function(a)
-    #         upper_limit = gold+span
-    #         lower_limit = gold-span
-    #         cue_array = Cuegen.make_cue(gold,a)
-    #
-    #         for c in cue_array:
-    #
-    #
-    #
-    #         print upper_limit
-    #         print lower_limit
-    #
-    #     c = Cuegen.make_cue(yield_array, accuracy)
-    #
+            max = yieldgen.b
+            rangecue = cuegen.cue_range
+
+            array_list = []
+
+            count = 0
+
+            for r in rangecue:
+                cue_list = []
+                for x in range(max, 0, -1):
+
+                    cue_list.append(x)
+                    if x == rangecue:
+                        count = 0
+                        array_list.append(cue_list)
+                        break
+                    else:
+                        count += 1
+
+
+
+
+
+
+        # cue_patterns = cuegen.cue_patterns
+        #
+        # span = cuegen.cue_function(accuracy)
+        # upper_limit = yield_array[0] + span
+        # lower_limit = yield_array[0] - span
+        #
+        # cue = random.randint(lower_limit, upper_limit)
+        # x = cuegen.cue_range
+        #
+        # max = yieldgen.b
+        #
+        # index = 0
+        # countcue = 5
+        #
+        # array = []
+        # for d in range(max, 0, -1):
+        #     array.append(d)
+
 

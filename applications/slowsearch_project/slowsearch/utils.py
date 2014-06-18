@@ -4,6 +4,8 @@ import time
 from ifind.search import Query, EngineFactory
 from keys import BING_API_KEY
 
+e = EngineFactory("Bing", api_key=BING_API_KEY)
+
 
 def mod_normal(results):
     return results
@@ -18,16 +20,15 @@ def mod_bad(results):
     return results
 
 conditions = {
-    '1': mod_normal,
-    '2': mod_slow,
-    '3': mod_bad
+    1: mod_normal,
+    2: mod_slow,
+    3: mod_bad
 }
 
 
 # run a search query on Bing using the query string passed
-def run_query(query, condition='2'):
+def run_query(query, condition=2):
     q = Query(query, top=10)
-    e = EngineFactory("Bing", api_key=BING_API_KEY)
 
     response = e.search(q)
 

@@ -1,22 +1,25 @@
-from Yieldgen import RandomYieldGenerator
-from Mine import Mine
-
-ryg = RandomYieldGenerator(depth=4,max=3,min=1)
-
-l = ryg.make_yields()
-print l
-l = ryg.make_yields()
-print l
+from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator
+from mine import Mine
 
 
-ryg = RandomYieldGenerator(depth=10,max=5,min=0)
 
-l = ryg.make_yields()
-print l
 
-m = Mine(10,ryg,1)
+ryg = RandomYieldGenerator(depth=10, max=42, min=0)
+cyg = ConstantYieldGenerator(depth=10, max=42, min=0)
+lyg = LinearYieldGenerator(depth=10, max=42, min=0)
 
+m = Mine(ryg, 0.8)
+m2 = Mine(cyg, 0.8)
+m3 = Mine(lyg, 0.8)
+
+print '\n' + "### Random yield ###" + '\n'
 m.show_mine()
+
+print '\n' + "### Constant yield ###" + '\n'
+m2.show_mine()
+
+print '\n' + "### Linear Yield ###" + '\n'
+m3.show_mine()
 
 
 __author__ = 'gabriele'
@@ -86,3 +89,39 @@ __author__ = 'gabriele'
 #max = 10
 #for d in range(max, 0):
 #    print d
+
+
+### CUETEST #####################################
+
+# max = yieldgen.b
+# rangecue = int(float(round(cuegen.cue_range)))
+# patterns = cuegen.cue_patterns
+#
+# array_list = []
+#
+# count = 1
+#
+#
+#
+# for r in range(rangecue):
+#     cue_list = []
+#     array_list.append(cue_list)
+#     if len(array_list) <= rangecue:
+#         for x in range(max, 0, -1):
+#             cue_list.append(x)
+#
+#             if count == rangecue:
+#                 count = 1
+#                 max -= rangecue
+#                 break
+#             else:
+#                 count += 1
+#
+# print rangecue
+#
+# array_list.remove([])
+# a = array_list[patterns-1]
+# a.append(0)
+# print a
+# print array_list
+#
