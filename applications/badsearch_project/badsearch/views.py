@@ -110,6 +110,7 @@ def user_logout(request):
 def search(request):
     context = RequestContext(request)
     result_list = []
+    query = ""
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
@@ -117,4 +118,4 @@ def search(request):
         if query:
             result_list = utils.run_query(query)
 
-    return render_to_response('badsearch/search.html', {'result_list': result_list}, context)
+    return render_to_response('badsearch/search.html', {'result_list': result_list, 'query': query}, context)

@@ -3,13 +3,8 @@
 {% block body_block %}
         {% if user.is_authenticated %}
         <h1>Welcome to Badsearch, {{ user.username }}!</h1>
-        <a href="/badsearch/search/">Begin Searching!</a><br />
-        <a href="/badsearch/profile/">View your profile</a><br />
-        <a href="/badsearch/logout/">Logout</a><br />
         {% else %}
         <h1>Welcome to Badsearch!</h1>
-        <a href="/badsearch/register/">Register Here</a><br />
-        <a href="/badsearch/login/">Login</a><br />
         {% endif %}
-        <a href="/badsearch/about/">About</a><br />
+
 {% endblock %}
