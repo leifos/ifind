@@ -12,7 +12,7 @@ def mod_normal(results):
 
 
 def mod_slow(results):
-    time.sleep(5)
+    time.sleep(0)
     return results
 
 
@@ -32,7 +32,6 @@ def run_query(query, condition=2):
 
     response = e.search(q)
 
-    print 'modding results'
     mod = conditions[condition]
     mod_results = mod(response)
 

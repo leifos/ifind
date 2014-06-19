@@ -218,7 +218,7 @@ def user_logout(request):
 def search(request):
     context = RequestContext(request)
     result_list = []
-    root_url = 'https://api.datamarket.azure.com/Bing/Search/'
+    query = ""
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
@@ -227,6 +227,6 @@ def search(request):
             # Run our Bing function to get the results list!
             result_list = run_query(query)
 
-    return render_to_response('slowsearch/results.html', {'result_list': result_list}, context)
+    return render_to_response('slowsearch/results.html', {'result_list': result_list, 'query': query}, context)
 
 
