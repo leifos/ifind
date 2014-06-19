@@ -23,12 +23,11 @@ class Mine(object):
         yield_array = self.yield_generator.make_yields()
         print "Yield array:", yield_array
         cue_array = cuegen.make_cue(yield_array, self.scan, self.yield_generator.max)  # Generate the array of cue values;
-        print "Cue array:", cue_array                                                    # based on yield and scanning equipment
+        print "Cue array:", cue_array                                                  # based on yield and scanning equipment
 
         for index in range(self.depth):                              # For every value in the array
             b = Block(index, yield_array[index], cue_array[index])   # Make a block with  yield and cue values
-            self.blocks.append(b)                                          # Add the block to the Mine
-
+            self.blocks.append(b)                                    # Add the block to the Mine
 
     def show_mine(self):
         for b in self.blocks:

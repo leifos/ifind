@@ -1,4 +1,6 @@
 __author__ = 'gabriele'
+
+
 class Block (object):
 
     def __init__(self, position, gold, cue):
@@ -6,7 +8,6 @@ class Block (object):
         self.gold = gold
         self.cue = cue
         self.dug = False
-
 
     def __str__(self):
         return 'Block pos: {pos},   gold: {gold},   cue: {cue},    dug: {dug}'.format\

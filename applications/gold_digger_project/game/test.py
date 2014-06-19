@@ -2,27 +2,6 @@ from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGe
 from mine import Mine
 
 
-
-
-ryg = RandomYieldGenerator(depth=10, max=42, min=0)
-cyg = ConstantYieldGenerator(depth=10, max=42, min=0)
-lyg = LinearYieldGenerator(depth=10, max=42, min=0)
-
-m = Mine(ryg, 0.8)
-m2 = Mine(cyg, 0.8)
-m3 = Mine(lyg, 0.8)
-
-print '\n' + "### Random yield ###" + '\n'
-m.show_mine()
-
-print '\n' + "### Constant yield ###" + '\n'
-m2.show_mine()
-
-print '\n' + "### Linear Yield ###" + '\n'
-m3.show_mine()
-
-
-__author__ = 'gabriele'
 # import random
 # a =26
 # b =34

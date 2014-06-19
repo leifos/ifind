@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Gold Digger</title>
+</head>
+<body>
+<h1> Gold Digger</h1>
+{% if blocks %}
+    {% for block in blocks %}
+        <ul>{{ block.cue }}  <input type="submit" value="dig"></ul>
+    {% endfor %}
+{% endif %}
+</body>
+</html>

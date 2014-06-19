@@ -1,7 +1,9 @@
 __author__ = 'gabriele'
 import random
+import math
 
-m = -4  # m is the slope of the linear function
+m = -6  # m is the slope of the linear function
+
 
 class YieldGenerator(object):
     def __init__(self, depth, max=50, min=0):
@@ -35,7 +37,7 @@ class ConstantYieldGenerator(YieldGenerator):
 
         """
         constant_yield_array = []
-        yield_constant = random.randint(self.min, self.max)   # Randomly chosen constant in range (0, b)
+        yield_constant = random.randint(self.min, self.max)
 
         for index in range(self.depth):
             constant_yield_array.append(yield_constant)
@@ -59,5 +61,78 @@ class LinearYieldGenerator(YieldGenerator):
     @staticmethod
     def linear_function(x, b):
         y = (m*x) + b  # This is the linear yield function
+
+        return y
+
+
+class QuadraticYieldGenerator(YieldGenerator):
+
+    def make_yields(self):
+        """
+        Returns an array of length (depth) ov values according to a quadratic function
+        (quadratic_function(x, depth))
+        """
+        quadratic_yield_array = []
+
+        for index in range(self.depth):
+            quadratic_yield_array.append(QuadraticYieldGenerator.quadratic_function(index, self.depth))
+
+        return quadratic_yield_array
+
+    @staticmethod
+    def quadratic_function(x, x2):
+        a = -1.8 # The steepness of the curve
+        x1 = 0
+        y = a*(x - x1)*(x-x2)
+
+        rounded = int(round(y))
+        return rounded
+
+
+class ExponentialYieldGenerator(YieldGenerator):
+
+    def make_yields(self):
+        """
+        Returns an array of length (depth) ov values according to an exponential function
+        (exponential_function(x, a))
+        """
+
+        exponential_yield_array = []
+
+        for index in range(self.depth):
+            exponential_yield_array.append(ExponentialYieldGenerator.exponential_function(index, self.max))
+
+        return exponential_yield_array
+
+    @staticmethod
+    def exponential_function(x, a):
+
+        if x == 0:
+            y = 0
+        else:
+            y = a/x
+
+        return y
+
+class CubicYieldGenerator(YieldGenerator):
+
+    def make_yields(self):
+        """
+        Returns an array of length (depth) ov values according to a cubic function
+        (cubic_function(x))
+        """
+
+        cubic_yield_array = []
+
+        for index in range(self.depth):
+            cubic_yield_array.append(CubicYieldGenerator.cubic_function(index))
+
+        return cubic_yield_array
+
+    @staticmethod
+    def cubic_function(x):
+        a = 0.5
+        c = 0
+        y = int(round(pow((a*x), 3) + c*x))
 
         return y
