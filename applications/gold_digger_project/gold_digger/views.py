@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from game import yieldgen, mine
+from gold_digger.models import UserProfile
 
 def home(request):
 
@@ -108,11 +109,19 @@ def user_logout(request):
 def game(request):
 
     context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
 
     cyg = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
     m = mine.Mine(cyg, 0.8)
     blocks = m.blocks
 
 
+    return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
 
-    return render_to_response('gold_digger/game.html', {'blocks': blocks}, context)
+@login_required
+def game_choice(request):
+    context = RequestContext(request)
+
+    return render_to_response('gold_digger/game_choice.html', {}, context)
+
+

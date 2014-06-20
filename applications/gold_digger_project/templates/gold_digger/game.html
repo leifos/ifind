@@ -6,10 +6,12 @@
 </head>
 <body>
 <h1> Gold Digger</h1>
+<p>Equipment: {{ user.equipment }}<br>Vehicle: {{ user.vehicle }}<br>Gold: {{ user.gold }}</p>
 {% if blocks %}
     {% for block in blocks %}
         <ul>{{ block.cue }}  <input type="submit" value="dig"></ul>
     {% endfor %}
 {% endif %}
+<a href = "/gold_digger/" >Back to Main</a>
 </body>
 </html>
