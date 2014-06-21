@@ -110,9 +110,33 @@ def game(request):
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    print user.equipment, "EQUIPMENT"
 
-    cyg = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
-    m = mine.Mine(cyg, 0.8)
+    if 'constant' in request.GET:
+        print "constant"
+        cyg = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
+        accuracy = user.equipment
+        m = mine.Mine(cyg, accuracy)
+    elif 'linear' in request.GET:
+        print "linear"
+        lyg = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+        accuracy = user.equipment
+        m = mine.Mine(lyg, accuracy)
+    elif 'random' in request.GET:
+        print "random"
+
+    elif 'quadratic' in request.GET:
+        print "quadratic"
+
+    elif 'exponential' in request.GET:
+        print "exponential"
+
+    elif 'cubic' in request.GET:
+        print "cubic"
+
+
+
+
     blocks = m.blocks
 
 
