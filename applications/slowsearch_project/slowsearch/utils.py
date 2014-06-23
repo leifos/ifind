@@ -30,7 +30,7 @@ conditions = {
 
 
 # run a search query on Bing using the query string passed
-def run_query(query, condition=1):
+def run_query(query, condition):
     q = Query(query, top=100)
 
     response = e.search(q)
@@ -42,12 +42,14 @@ def run_query(query, condition=1):
 
 
 def paginated_search(request, query):
+    cnd = get_condition(request)
     if query:
             # Run our Bing function to get the results list!
-            result_list = run_query(query)
+            result_list = run_query(query, cnd)
 
             paginator = Paginator(result_list.results, 10)  # show 10 results per page
 
+            #get the page number required from the request
             page = request.REQUEST.get('page')
 
             try:
@@ -60,5 +62,20 @@ def paginated_search(request, query):
                 contacts = paginator.page(paginator.num_pages)
 
             return contacts
+
+
+def get_condition(request):
+    user = request.user
+    user_id = user.id
+    cnd = 1
+
+    if user_id % 2 is 0:
+        cnd = 1
+
+    elif user_id % 2 is not 0:
+        cnd = 2
+
+    return cnd
+
 
 
