@@ -1,0 +1,744 @@
+/* custom CSS */
+
+.dig_view {
+ padding-top: 50px;
+ background: url(../media/dirt2pixel.png) repeat-y;
+}
+
+.map_view {
+ padding-top: 50px;
+ background: #eacc99;
+}
+
+.store_view {
+ padding-top: 50px;
+ background: url(../media/wood_texture.jpg) repeat;
+}
+
+.landscape_container {
+	min-width: 100% !important;
+}
+
+.col-centered {
+    margin: 0 auto;
+}
+
+
+.landscape_1 {
+ 		background: url(../media/landscape_1.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_2 {
+ 		background: url(../media/landscape_2.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_3 {
+ 		background: url(../media/landscape_3.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_4 {
+ 		background: url(../media/landscape_4pixel.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_5 {
+ 		background: url(../media/landscape_5.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_6 {
+ 		background: url(../media/landscape_6.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_7 {
+ 		background: url(../media/landscape_7.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_8 {
+ 		background: url(../media/landscape_8.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_9 {
+ 		background: url(../media/landscape_9.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.landscape_10 {
+ 		background: url(../media/landscape_10.png) no-repeat center top;
+ 		background-size: cover;
+}
+
+.extraction_technology_1 {
+ 	background: url(../media/extraction_technology_1.png) no-repeat center bottom;
+ 	background-size: contain;
+}
+
+.extraction_technology_2 {
+ 	background: url(../media/extraction_technology_2.png) no-repeat center bottom;
+ 	background-size: contain;
+ 	}
+
+.extraction_technology_3 {
+ 	background: url(../media/extraction_technology_3.png) no-repeat center bottom;
+ 	background-size: contain;
+ 	}
+
+.extraction_technology_4 {
+ 	background: url(../media/extraction_technology_4pixel.png) no-repeat center bottom;
+ 	background-size: contain;
+ 	}
+
+.shaft_shack {
+ 	background: url(../media/shaft_shack.png) no-repeat right -11px bottom;
+ 	background-size: 15%;
+}
+
+.total {
+ 	background: url(../media/total.png) no-repeat center bottom;
+ 	margin-top: 20px;
+}
+
+.map_button {
+ 	background: url(../media/map_button.png) no-repeat center top;
+ 	background-size: 90%;
+ 	height: 80%;
+}
+
+.map_button:hover {
+ 	background: url(../media/map_button_hover.png) no-repeat center top;
+ 	background-size: 90%;
+ 	height: 80%;
+}
+
+.mine > div > div {
+	position: relative;
+}
+
+.button_icon {
+ 	float: left;
+	border-radius: 10px;
+ 	width: 30px;
+ 	height: 30px;	
+ 	margin: 0px 10px 0px 0px;
+  	opacity: 0.7;
+}
+
+.icon_dig_1 {
+ 	background: #990000 url(../media/icon_dig_1.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_dig_2 {
+ 	background: #990000 url(../media/icon_dig_2.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_dig_3 {
+ 	background: #990000 url(../media/icon_dig_3.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_dig_4 {
+ 	background: #990000 url(../media/icon_dig_4.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_move_1 {
+ 	background: #009900 url(../media/icon_move_1.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_move_2 {
+ 	background: #009900 url(../media/icon_move_2.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_move_3 {
+ 	background: #009900 url(../media/icon_move_3.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.icon_move_4 {
+ 	background: #009900 url(../media/icon_move_4.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.button {
+ 	background: #000;
+	border-radius: 10px;
+ 	padding: 10px;
+}
+
+.button:hover {
+	color: #fff;
+	text-decoration: none;
+ 	box-shadow: 0px 0px 10px #fff;
+}
+
+.dig_button {
+	position: absolute;
+	top: 20%;
+	right: 5px;
+}
+
+
+.move_button {
+	position: absolute;
+	bottom: 20px;
+	right: 30px;
+}
+
+
+.button:hover > .button_icon {
+	opacity: 1.0;
+}
+
+.button_text {
+	float: right;
+	text-decoration: none;
+	color: #cccccc;
+	text-align: center;
+	text-transform: uppercase;
+	padding: 5px 0px;
+}
+
+.map_button:hover {
+ 	background: url(../media/map_button_hover.png) no-repeat center top;
+ 	background-size: 90%;
+ 	height: 80%;
+}
+
+.score_1 {
+ 	background: url(../media/score_nuggets_1.png) no-repeat center top;
+ 	background-size: contain;
+}
+
+.score_2 {
+ 	background: url(../media/score_nuggets_2.png) no-repeat center top;
+ 	background-size: contain;
+}
+
+.score_3 {
+ 	background: url(../media/score_nuggets_3.png) no-repeat center top;
+ 	background-size: contain;
+}
+
+.score_4 {
+ 	background: url(../media/score_nuggets_4.png) no-repeat center top;
+ 	background-size: contain;
+}
+
+.nuggets_1 {
+ 	background: url(../media/main_nuggets_1.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_2 {
+ 	background: url(../media/main_nuggets_2.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_3 {
+ 	background: url(../media/main_nuggets_3.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_4 {
+ 	background: url(../media/main_nuggets_4.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_5 {
+ 	background: url(../media/main_nuggets_5.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_6 {
+ 	background: url(../media/main_nuggets_6.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.flecks_1 {
+ 	background: url(../media/flecks_1.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.flecks_2 {
+ 	background: url(../media/flecks_2.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.flecks_3 {
+ 	background: url(../media/flecks_3.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.flecks_4 {
+ 	background: url(../media/flecks_4.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.flecks_5 {
+ 	background: url(../media/flecks_5.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.flecks_6 {
+ 	background: url(../media/flecks_6.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.scaffold_1 {
+ 	background: url(../media/scaffold_1pixel.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+ 	
+.scaffold_1_shaded {
+ 	background: url(../media/scaffold_1_shaded.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+
+.scaffold_2 {
+ 	background: url(../media/scaffold_2pixel.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+
+.scaffold_2_shaded {
+ 	background: url(../media/scaffold_2_shaded.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+
+.scaffold_3 {
+ 	background: url(../media/scaffold_3pixel.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+ 	
+.scaffold_3_shaded {
+ 	background: url(../media/scaffold_3_shaded.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+ 	
+.scaffold_shaft {
+ 	background: url(../media/scaffold_shaft.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+ 	
+.scaffold_shaft_shaded {
+ 	background: url(../media/scaffold_shaft_shaded.png) no-repeat center top;
+ 	background-size: 100% 100%;
+ 	}
+
+.mine, .shaft {
+	background: rgba(0,0,0,0.3);
+}
+
+.map_1 {
+ 	background: url(../media/map_01.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+ 
+.map_2 {
+ 	background: url(../media/map_02.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.map_3 {
+ 	background: url(../media/map_03.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.map_4 {
+ 	background: url(../media/map_04.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.map_5 {
+ 	background: url(../media/map_05.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.map_6 {
+ 	background: url(../media/map_06.png) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.map .row:hover .move_1 {
+ 	background: url(../media/move_1.png) no-repeat center;
+ 	background-size: 60%;
+ 	height: 100%;
+}
+
+.map .row:hover .move_2 {
+ 	background: url(../media/move_2.png) no-repeat center;
+ 	background-size: 60%;
+ 	height: 100%;
+}
+
+.map .row:hover .move_3 {
+ 	background: url(../media/move_3.png) no-repeat center;
+ 	background-size: 60%;
+ 	height: 100%;
+}
+.map .row:hover .move_4 {
+ 	background: url(../media/move_4.png) no-repeat center;
+ 	background-size: 60%;
+ 	height: 100%;
+}
+
+.map .row:hover .buy_stuff {
+ 	background: url(../media/buy_stuff.png) no-repeat center;
+ 	background-size: 60%;
+ 	height: 100%;
+}
+
+.store_sign {
+ 		background: url(../media/store_sign.png) no-repeat center top;
+ 		background-size: contain;
+ 		margin-top: 50px;
+}
+
+.left .row {
+ 	background: url(../media/shelf_cubes_left.jpg) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+ 	
+.right .row {
+ 	background: url(../media/shelf_cubes_right.jpg) no-repeat center top;
+ 	background-size: 100% 100%;
+}
+
+.row:hover > div > .buy_1 {
+ 	background: url(../media/buy_1.png) no-repeat center bottom;
+ 	background-size: 100%;
+ 	height: 100%;
+}
+
+.row:hover > div > .buy_2 {
+ 	background: url(../media/buy_2.png) no-repeat center bottom;
+ 	background-size: 100%;
+ 	height: 100%;
+}
+
+.row:hover > div > .buy_3 {
+ 	background: url(../media/buy_3.png) no-repeat center bottom;
+ 	background-size: 100%;
+ 	height: 100%;
+}
+
+.row:hover > div > .buy_4 {
+ 	background: url(../media/buy_4.png) no-repeat center bottom;
+ 	background-size: 100%;
+ 	height: 100%;
+}
+
+.digging_1 {
+ 	background: url(../media/store_digging_1.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_1:hover {
+ 	background: url(../media/store_digging_1_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_2 {
+ 	background: url(../media/store_digging_2.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_2:hover {
+ 	background: url(../media/store_digging_2_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_3 {
+ 	background: url(../media/store_digging_3.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_3:hover {
+ 	background: url(../media/store_digging_3_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_4 {
+ 	background: url(../media/store_digging_4.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.digging_4:hover {
+ 	background: url(../media/store_digging_4_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_1 {
+ 	background: url(../media/store_extraction_1.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_1:hover {
+ 	background: url(../media/store_extraction_1_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_2 {
+ 	background: url(../media/store_extraction_2.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_2:hover {
+ 	background: url(../media/store_extraction_2_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_3 {
+ 	background: url(../media/store_extraction_3.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_3:hover {
+ 	background: url(../media/store_extraction_3_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_4 {
+ 	background: url(../media/store_extraction_4.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.extraction_4:hover {
+ 	background: url(../media/store_extraction_4_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_1 {
+ 	background: url(../media/store_scanning_1.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_1:hover {
+ 	background: url(../media/store_scanning_1_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_2 {
+ 	background: url(../media/store_scanning_2.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_2:hover {
+ 	background: url(../media/store_scanning_2_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_3 {
+ 	background: url(../media/store_scanning_3.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_3:hover {
+ 	background: url(../media/store_scanning_3_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_4 {
+ 	background: url(../media/store_scanning_4.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.scanning_4:hover {
+ 	background: url(../media/store_scanning_4_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_1 {
+ 	background: url(../media/store_moving_1.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_1:hover {
+ 	background: url(../media/store_moving_1_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_2 {
+ 	background: url(../media/store_moving_2.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_2:hover {
+ 	background: url(../media/store_moving_2_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_3 {
+ 	background: url(../media/store_moving_3.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_3:hover {
+ 	background: url(../media/store_moving_3_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_4 {
+ 	background: url(../media/store_moving_4.png) no-repeat center;
+ 	background-size: contain;
+}
+
+.moving_4:hover {
+ 	background: url(../media/store_moving_4_hover.png) no-repeat center;
+ 	background-size: contain;
+}
+ 
+
+@media (min-width: 0px) {
+
+	.store_sign_area .row {
+		height: 50px;
+	}
+
+	.store .row, .store .row > div {
+		height: 100px;
+	}
+
+	.map .row {
+		height: 150px;
+	}
+	
+	.landscape .row, .landscape .row > div {
+		height: 100px;
+	}
+	
+	.shaft .row, .mine .row, .score .row, .mine .row > div {
+		height: 60px;
+	}
+	
+.shaft, .shaft:hover {
+ 	background-size: contain;
+}
+
+
+}
+
+@media (min-width: 500px) {
+
+	.store_sign_area .row {
+		height: 100px;
+	}
+
+	.store .row, .store .row > div {
+		height: 200px;
+	}
+
+.map .row {
+	height: 250px;
+}
+
+
+	
+	.landscape .row, .landscape .row > div {
+		height: 175px;
+	}
+	
+	.shaft .row, .mine .row, .score .row, .mine .row > div {
+		height: 90px;
+	}
+
+
+}
+
+
+@media (min-width: 768px) {
+	.store_sign_area .row {
+		height: 150px;
+	}
+
+	.store .row, .store .row > div {
+		height: 200px;
+	}
+
+.map .row {
+	height: 300px;
+}
+	
+.landscape .row, .landscape .row > div {
+	height: 200px;
+}
+	
+.shaft .row, .mine .row, .score .row, .mine .row > div {
+		height: 90px;
+}
+	
+.shaft, .shaft:hover {
+ 	background-size: 70%;
+}
+	
+}
+
+@media (min-width: 992px) {
+
+	.store .row, .store .row > div {
+		height: 250px;
+	}
+
+.map .row {
+	height: 375px;
+}
+	
+.landscape .row, .landscape .row > div {
+	height: 260px;
+}
+	
+.shaft .row, .mine .row, .score .row, .mine .row > div {
+	height: 110px;
+}
+	
+	
+}
+
+@media (min-width: 1200px) {
+
+	.store .row, .store .row > div {
+		height: 300px;
+	}
+
+	.map .row {
+		height: 400px;
+	}
+
+	.landscape .row, .landscape .row > div {
+		height: 330px;
+	}
+	.shaft .row, .mine .row, .score .row, .mine .row > div {
+		height: 130px;
+	}
+}
+
+.navbar-inverse .navbar-toggle {
+	color: #fff;	
+}
+
+.navbar-inverse .navbar-toggle:hover {
+	background-color: #ddd;
+	color: #333;
+}
+
+.navbar-inverse {
+background: #393836; /* Old browsers */
+background: -moz-linear-gradient(top, #393836 0%, #181b22 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#393836), color-stop(100%,#181b22)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #393836 0%,#181b22 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #393836 0%,#181b22 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #393836 0%,#181b22 100%); /* IE10+ */
+background: linear-gradient(to bottom, #393836 0%,#181b22 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#393836', endColorstr='#181b22',GradientType=0 ); /* IE6-9 */
+}
+
+

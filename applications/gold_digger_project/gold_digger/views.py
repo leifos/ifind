@@ -111,36 +111,38 @@ def game(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
     print user.equipment, "EQUIPMENT"
+    gen = yieldgen.YieldGenerator
 
     if 'constant' in request.GET:
         print "constant"
-        cyg = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
-        accuracy = user.equipment
-        m = mine.Mine(cyg, accuracy)
+        gen = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
+
     elif 'linear' in request.GET:
         print "linear"
-        lyg = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
-        accuracy = user.equipment
-        m = mine.Mine(lyg, accuracy)
+        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+
     elif 'random' in request.GET:
         print "random"
+        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
     elif 'quadratic' in request.GET:
         print "quadratic"
+        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
     elif 'exponential' in request.GET:
         print "exponential"
+        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
     elif 'cubic' in request.GET:
         print "cubic"
+        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
-
-
-
+    accuracy = float(user.equipment)
+    m = mine.Mine(gen, accuracy)
     blocks = m.blocks
 
-
     return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
+
 
 @login_required
 def game_choice(request):
@@ -148,4 +150,24 @@ def game_choice(request):
 
     return render_to_response('gold_digger/game_choice.html', {}, context)
 
+@login_required
+def dig(request):
 
+    context = RequestContext(request)
+    demo_id = None
+
+    if request.method == 'GET':
+
+        print request.GET
+        demo_id = request.GET['demo_id']
+        print demo_id
+
+    likes = 0
+    if demo_id:
+        demo = Demo.objects.get(id=int(demo_id))
+        if demo:
+            likes = demo.up + 1
+            demo.up = likes
+            demo.save()
+
+    return HttpResponse(likes)

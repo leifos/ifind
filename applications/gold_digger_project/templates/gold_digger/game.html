@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <title>Gold Digger</title>
 </head>
+<style>
+ th
+{
+text-align:left;
+}
+</style>
 <body>
 <h1> Gold Digger</h1>
 <p>Equipment: {{ user.equipment }}<br>Vehicle: {{ user.vehicle }}<br>Gold: {{ user.gold }}</p>
+<table style="width:300px;  height:50px">
+<tr>
+  <th></th>
+  <th>Depth</th>
+  <th>Cue</th>
+</tr>
 {% if blocks %}
     {% for block in blocks %}
-        <ul>{{ block.cue }}  <input type="submit" value="dig"></ul>
+            <tr>
+              <td></td>
+              <td>{{ block.pos }}<br></td>
+              <td>{{ block.cue }}<br></td>
+              <td><form action="/gold_digger/game/"><button type="submit" value="dig" name="dig">dig</button></form></td>
+            </tr>
     {% endfor %}
+        </table>
 {% endif %}
 <a href = "/gold_digger/" >Back to Main</a>
 </body>
