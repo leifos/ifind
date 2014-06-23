@@ -64,6 +64,12 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
 
+            user_id = user.id
+            if user_id % 2 is 0:
+                profile.condition=1
+            elif user_id % 2 is not 0:
+                profile.condition=2
+
             profile.save()
             registered = True
 

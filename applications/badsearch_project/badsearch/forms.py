@@ -15,6 +15,16 @@ YEAR_CHOICES = (('', 'Not Specified'),
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password')
+
+    def clean(self):
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+
+        if password and password != password2:
+            raise forms.ValidationError("Passwords don't match")
+
+        return self.cleaned_data
 
 
     class Meta:
