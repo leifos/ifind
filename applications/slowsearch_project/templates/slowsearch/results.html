@@ -10,16 +10,27 @@
 
         </form> <br><br>
 
-    {% if result_list %}
-         {% for result in result_list %}
+    {% if contacts %}
+         {% for contact in contacts %}
                 <li>
-                    <strong><a href="{{ result.url }}">{{ result.title }}</a></strong><br />
-                    <em>{{ result.summary }}</em>
+                    <strong><a href="{{ contact.url }}">{{ contact.title }}</a></strong><br />
+                    {{ contact.url }}<br>
+                    <em>{{ contact.summary }}</em>
                 </li> <br>
             {% endfor %}
             </ol>
     {% endif %}
-
     <br>
+
+    {% if contacts.has_previous %}
+            <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+
+        {% if contacts.has_next %}
+            <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
+        {% endif %}
+
 <a href="/slowsearch/">Return to the homepage</a>
 {% endblock %}
