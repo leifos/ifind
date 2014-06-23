@@ -5,7 +5,8 @@ from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, 
 from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from utils import run_query
+from utils import run_query, paginated_search
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
@@ -215,18 +216,22 @@ def user_logout(request):
 
 
 # perform a basic search using the query entered by the user
+
 def search(request):
     context = RequestContext(request)
-    result_list = []
-    root_url = 'https://api.datamarket.azure.com/Bing/Search/'
+    query = ""
+    contacts = ""
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
+        request.session['session_query'] = query
 
-        if query:
-            # Run our Bing function to get the results list!
-            result_list = run_query(query)
+        contacts = paginated_search(request, query)
 
-    return render_to_response('slowsearch/results.html', {'result_list': result_list}, context)
+    elif request.method == 'GET':
+        query = request.session['session_query']
+        contacts = paginated_search(request, query)
+
+    return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query}, context)
 
 
