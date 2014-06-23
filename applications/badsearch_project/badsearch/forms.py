@@ -53,5 +53,20 @@ class DemographicsForm(forms.ModelForm):
 
 class ValidationForm(forms.Form):
     terms = forms.BooleanField(required=True, initial=False,
-                               label="I have read and agree to the above terms and conditions",
+                               label="I have read and agree to the above Study Information and I have had the opportunity to ask any questions",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    questions = forms.BooleanField(required=True, initial=False,
+                               label="I understand that I am able to ask questions about this study at any time",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    name = forms.BooleanField(required=True, initial=False,
+                               label="I understand that my name will not appear in any published document relating to research conducted as part of this study.",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    info = forms.BooleanField(required=True, initial=False,
+                               label="I am willing for anonymous data from my search sessions and questionnaires that I have submitted may be quoted in papers, journal articles and books that may be written by the researchers.",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    agree = forms.BooleanField(required=True, initial=False,
+                               label="I agree to take part in this study",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    notify = forms.BooleanField(required=False, initial=False,
+                               label="I would like to be notified by email of the outcome of this experiment",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
