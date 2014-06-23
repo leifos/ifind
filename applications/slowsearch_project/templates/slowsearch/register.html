@@ -14,28 +14,39 @@
                 enctype="multipart/form-data">
 
             {% csrf_token %}
-
-            <!-- Display each form. The as_p method wraps each element in a paragraph
-                 (<p>) element. This ensures each element appears on a new line,
-                 making everything look neater. -->
             {{ user_form.as_p }}
-            {{ demog_form.as_p }}
+
 
         <strong>Thank you for agreeing to participate in this experiment. For the duration of the experimental period,
         please use this site in place of your go-to search engine. All searches are confidential and data related
         to queries entered and websites visited will not be recorded by this site and is visible to nobody.
-        To this end, it is recommended that you do NOT use your real name as a username.
         <br>
         <br>
         The search engine functions like any other and is powered by Microsoft Bing. Before you begin searching, please
         create your account below and fill in the optional short questionnaire.
         <br>
         <br>
-        Don't forget to tick the box to indicate you understand these terms and conditions!</strong>
-        <br>
-        <br>
-            {{ validation_form.as_p }}
+        Please read the Study Information below and tick the boxes to agree to the terms
+        of this study.<br>
+        <ul>
+            <li> The application is powered by Microsoft Bing, and is intended for to be used in place of your favourite
+            search engine for the duration of the experiment.</li>
+            <li>As part of the study you will be asked to complete some optional questionnaires regarding your
+            demographics and experience with the application.</li>
+            <li>The experiment will last for X days, beginning on X July, 2014.</li>
+            <li>Participation in this study is voluntary, and you may withdraw consent to use the information you
+                provided at any time before the X of August, 2014.</li>
+            <li>Your name will not appear on any published document in relation to this study.</li>
+            <li>The time you spend on each query will be recorded for purposes of this experiment. Your search
+                queries will be converted to hashes so that they cannot be read and will not be recorded, nor will any
+                URLs visited using this application.</li>
+            <li>You are able to ask questions at any time before, during or after the experiment using the contact
+            details available on the <a href="/slowsearch/about">About</a> page.</li>
 
+        </ul>
+
+             {{ validation_form.as_p }}
+             {{ demog_form.as_p }}
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
         </form>

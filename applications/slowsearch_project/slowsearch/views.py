@@ -19,7 +19,8 @@ def index(request):
     return render_to_response('slowsearch/index.html', context)
 
 
-def profile(request):
+@login_required()
+def profile(request, *args, **kwargs):
     # Get the context from the request.
     context = RequestContext(request)
 

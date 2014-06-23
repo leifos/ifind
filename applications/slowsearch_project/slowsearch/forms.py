@@ -5,7 +5,17 @@ from django import forms
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(), label='Password')
+    password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password')
+
+    def clean(self):
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+
+        if password and password != password2:
+            raise forms.ValidationError("Passwords don't match")
+
+        return self.cleaned_data
 
     class Meta:
         model = User
@@ -54,9 +64,27 @@ class UKDemographicsSurveyForm(forms.ModelForm):
 
 # checkbox for user validation
 class RegValidation(forms.Form):
-    terms = forms.BooleanField(required=True, initial=False,
-                               label="I have read and agree to the above terms and conditions",
-                               error_messages={'required': 'You must accept the terms and conditions'},)
+    terms = forms.BooleanField(label="I have read and agree to the above Study Information and I have had the "
+                               "opportunity to ask any questions",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    questions = forms.BooleanField(required=True, initial=False,
+                                   label="I understand that I am able to ask questions about this study at any time",
+                                   error_messages={'required': 'You must accept the terms and conditions'}, )
+    name = forms.BooleanField(required=True, initial=False,
+                              label="I understand that my name will not appear in any published document relating"
+                              " to research conducted as part of this study.",
+                              error_messages={'required': 'You must accept the terms and conditions'}, )
+    info = forms.BooleanField(required=True, initial=False,
+                              label="I am willing for anonymous data from my search sessions and questionnaires that "
+                                    "I have submitted may be quoted in papers, journal articles and books that may be "
+                                    "written by the researchers.",
+                              error_messages={'required': 'You must accept the terms and conditions'}, )
+    agree = forms.BooleanField(required=True, initial=False,
+                               label="I agree to take part in this study",
+                               error_messages={'required': 'You must accept the terms and conditions'}, )
+    notify = forms.BooleanField(required=False, initial=False,
+                                label="I would like to be notified by email of the outcome of this experiment",
+                                error_messages={'required': 'You must accept the terms and conditions'}, )
 
 
 class FinalQuestionnaireForm(forms.ModelForm):
