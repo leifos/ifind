@@ -28,6 +28,21 @@
             {% endfor %}
             </ol>
         </div>
+        <div class="pagination">
+    <span class="step-links">
+        {% if results_list.has_previous %}
+            <a href="?page={{ result_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ result_list.number }} of {{ result_list.paginator.num_pages }}.
+        </span>
+
+        {% if result_list.has_next %}
+            <a href="?page={{ result_list.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    </div>
         {% endif %}
     </div>
 </div>

@@ -6,6 +6,7 @@ from badsearch.forms import UserForm, UserProfileForm, DemographicsForm, Validat
 from django.contrib.auth.decorators import login_required
 from badsearch import utils
 from badsearch.models import UserProfile, Demographics
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
     context = RequestContext(request)
@@ -117,5 +118,15 @@ def search(request):
 
         if query:
             result_list = utils.run_query(query)
+            #paginator = Paginator(result_list, 10)
+            #page = request.GET.get('page')
+            #try:
+             #   result_list = paginator.page(page)
+            #except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+             #   result_list = paginator.page(1)
+            #except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+             #   result_list = paginator.page(paginator.num_pages)
 
     return render_to_response('badsearch/search.html', {'result_list': result_list, 'query': query}, context)
