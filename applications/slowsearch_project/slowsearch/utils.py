@@ -69,7 +69,11 @@ def get_condition(request):
     user_id = user.id
     cnd = 1
 
-    if user_id % 2 is 0:
+    # if the user has already searched and is now paginating
+    if request.method == 'GET':
+        cnd = 1
+
+    elif user_id % 2 is 0:
         cnd = 1
 
     elif user_id % 2 is not 0:

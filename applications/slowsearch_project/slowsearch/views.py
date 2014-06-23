@@ -5,8 +5,7 @@ from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, 
 from slowsearch.models import User, UKDemographicsSurvey, Experience
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from utils import run_query, paginated_search
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from utils import paginated_search
 
 
 def index(request):
@@ -14,17 +13,13 @@ def index(request):
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
 
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
-
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
-    return render_to_response('slowsearch/index.html', context_dict, context)
+    return render_to_response('slowsearch/index.html', context)
 
 
-def profile(request, username):
+def profile(request):
     # Get the context from the request.
     context = RequestContext(request)
 
@@ -43,14 +38,10 @@ def about(request):
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
 
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
-
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
-    return render_to_response('slowsearch/about.html', context_dict, context)
+    return render_to_response('slowsearch/about.html', context)
 
 
 def results(request):
@@ -58,14 +49,10 @@ def results(request):
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
 
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
-
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
-    return render_to_response('slowsearch/results.html', context_dict, context)
+    return render_to_response('slowsearch/results.html', context)
 
 
 def endexperiment(request):
@@ -225,7 +212,6 @@ def search(request):
     if request.method == 'POST':
         query = request.POST['query'].strip()
         request.session['session_query'] = query
-
         contacts = paginated_search(request, query)
 
     elif request.method == 'GET':

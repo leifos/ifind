@@ -7,9 +7,7 @@
         <form id="search" action="/slowsearch/search/" method="post">
         {% csrf_token %}
             <input type=text name=query>
-
             <input type=submit value="Search">
-
         </form>
 
         <a href="/slowsearch/profile/{{ user.username }}/">Your Profile</a><br />
@@ -20,6 +18,6 @@
         <a href="/slowsearch/register/">Register Here</a> <br>
 {% endif %}
 
-        <a href="/slowsearch/about">About</a><br />
+
 
 {% endblock %}
