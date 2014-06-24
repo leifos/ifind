@@ -1,5 +1,3 @@
-__author__ = 'gabriele'
-
 
 class Block (object):
 

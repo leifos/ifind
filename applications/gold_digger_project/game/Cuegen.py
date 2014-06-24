@@ -1,4 +1,4 @@
-from game import yieldgen
+
 import random
 
 

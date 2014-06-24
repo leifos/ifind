@@ -1,5 +1,5 @@
 from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator
-from mine import Mine
+
 
 
 # import random
