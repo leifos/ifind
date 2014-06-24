@@ -5,23 +5,46 @@ from ifind.search import Query, EngineFactory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from keys import BING_API_KEY
 
-e = EngineFactory("Bing", api_key=BING_API_KEY)
+e = EngineFactory("Bing", api_key=BING_API_KEY)  # create Bing search engine object using api key
 
-delay_time = 5
+
+delay_time = 5  # length of delay for mod_slow in seconds
 
 
 def mod_normal(results):
+    """
+    a normal search, no modifications are made
+
+    :param results: the results from the previouly performed search
+    :return: (Response)the unchanged results
+    """
     return results
 
 
 def mod_slow(results, delay=delay_time):
+    """
+    delays the search but leaves the results unchanged
+
+    :param results: the results from the previously performed search
+    :param delay: the length of the delay in seconds
+    :return: (Response)the unchanged results
+    """
     time.sleep(delay)
     return results
 
 
+# returns 'bad' results
 def mod_bad(results):
+    """
+    does not delay the search, but modifies the results so as to make them worse
+
+    :param results: the results from the previously performed search
+    :return: (Response)the results modified to make them 'bad'
+    """
     return results
 
+
+# dictionary of modifier functions
 conditions = {
     1: mod_normal,
     2: mod_slow,
@@ -29,8 +52,15 @@ conditions = {
 }
 
 
-# run a search query on Bing using the query string passed
 def run_query(query, condition):
+    """
+    runs a search query on Bing using the query string passed,
+    applies the relevant modifier function and returns the results
+
+    :param query: (str)the query input by the user
+    :param condition: (int)the interface condition applied to the user's profile
+    :return: (Response)the results of the search after applying the correct modifier function
+    """
     q = Query(query, top=100)
 
     response = e.search(q)
@@ -41,7 +71,38 @@ def run_query(query, condition):
     return mod_results
 
 
+def get_condition(request):
+    """
+    works out the user's condition from their user id
+
+    :param request: (HttpResponse)metadata about the request
+    :return: (int)the condition applied to the user account based on their user_id
+    """
+    user = request.user
+    user_id = user.id
+    cnd = 1
+
+    # if the user has already searched and is now paginating
+    if request.method == 'GET':
+        cnd = 1
+
+    elif user_id % 2 == 0:
+        cnd = 1
+
+    elif user_id % 2 != 0:
+        cnd = 2
+
+    return cnd
+
+
 def paginated_search(request, query):
+    """
+    performs a paginated search based on a given query
+
+    :param request: (HttpRequest)the metadata about the request
+    :param query: (str)the search query input by the user
+    :return: (paginator.Page)paginated results of the search
+    """
     cnd = get_condition(request)
     if query:
             # Run our Bing function to get the results list!
@@ -64,22 +125,7 @@ def paginated_search(request, query):
             return contacts
 
 
-def get_condition(request):
-    user = request.user
-    user_id = user.id
-    cnd = 1
 
-    # if the user has already searched and is now paginating
-    if request.method == 'GET':
-        cnd = 1
-
-    elif user_id % 2 is 0:
-        cnd = 1
-
-    elif user_id % 2 is not 0:
-        cnd = 2
-
-    return cnd
 
 
 
