@@ -2,6 +2,7 @@ __author__ = 'Craig'
 
 import time
 from ifind.search import Query, EngineFactory
+from logger_practice import event_logger
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from keys import BING_API_KEY
 
@@ -105,6 +106,10 @@ def paginated_search(request, query):
     """
     cnd = get_condition(request)
     if query:
+
+            event_logger.info('query issued by [' + str(request.user.username)
+                              + '], [' + str(len(query)) + '] chars long')
+
             # Run our Bing function to get the results list!
             result_list = run_query(query, cnd)
 
