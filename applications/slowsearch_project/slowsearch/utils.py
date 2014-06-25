@@ -65,6 +65,8 @@ def run_query(query, condition):
     q = Query(query, top=100)
 
     # TODO(leifos): Add some form of caching here
+    # if q is in the cache, return the response
+    # else, send the query to the search engine
     response = e.search(q)
 
     mod = conditions[condition]
