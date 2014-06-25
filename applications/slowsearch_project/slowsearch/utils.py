@@ -64,6 +64,7 @@ def run_query(query, condition):
     """
     q = Query(query, top=100)
 
+    # TODO(leifos): Add some form of caching here
     response = e.search(q)
 
     mod = conditions[condition]
