@@ -1,0 +1,49 @@
+{% extends 'badsearch/base.html' %}
+
+{% load static %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_block %}
+<div class="hero-unit">
+    <h1>Search with BadSearch</h1>
+    <br/>
+
+    <div class="container-fluid">
+        <form class="form-signin span8" id="user_form" method="post" action="/badsearch/search/">
+            {% csrf_token %}
+            <input type="text" size="50" name="query" value= "{{ query }}"  id="query" />
+            <input class="btn btn-primary" type="submit" name="submit" value="Search" />
+            <br />
+        </form>
+
+        {% if result_list %}
+        <div style="clear: both;">
+            <ul>
+            {% for result in result_list %}
+                <li>
+                    <strong><a href="{{ result.url }}">{{ result.title }}</a></strong><br />
+                    <em>{{ result.summary }}</em>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="pagination">
+        <span class="step-links">
+        {% if results_list.has_previous %}
+            <a href="?page={{ result_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ result_list.number }} of {{ result_list.paginator.num_pages }}.
+        </span>
+
+        {% if result_list.has_next %}
+            <a href="?page={{ result_list.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

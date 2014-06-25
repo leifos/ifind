@@ -3,6 +3,11 @@
 {% block body_block %}
         {% if user.is_authenticated %}
         <h1>Welcome to Badsearch, {{ user.username }}!</h1>
+        <form id="search" action="/badsearch/search/" method="post">
+        {% csrf_token %}
+            <input type=text name=query>
+            <input type=submit value="Search">
+        </form>
         {% else %}
         <h1>Welcome to Badsearch!</h1>
         {% endif %}

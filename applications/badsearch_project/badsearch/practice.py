@@ -8,3 +8,13 @@ def run_query(query):
     response = e.search(q)
 
     return response
+
+
+
+
+res = run_query(u"test")
+for r in res:
+    print r.url
+    print r.rank
+    print r.title
+    print r.summary
