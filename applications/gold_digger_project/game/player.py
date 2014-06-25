@@ -1,4 +1,3 @@
-__author__ = '2108535R'
 
 class Player (object):
 

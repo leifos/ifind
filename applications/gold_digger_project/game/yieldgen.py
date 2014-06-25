@@ -1,4 +1,3 @@
-__author__ = 'gabriele'
 import random
 import math
 

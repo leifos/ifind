@@ -1,8 +1,6 @@
 from block import Block
 import cuegen
 
-__author__ = 'gabriele'
-
 class Mine(object):
 
     def __init__(self, yield_generator, scan):

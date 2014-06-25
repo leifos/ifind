@@ -2,10 +2,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, FinalQuestionnaireForm
-from slowsearch.models import User, UKDemographicsSurvey, Experience
+from slowsearch.models import User, UKDemographicsSurvey, Experience, QueryTime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from utils import paginated_search
+import datetime
+from datetime import timedelta
+from logger_practice import event_logger
 
 
 def index(request):
@@ -30,45 +33,22 @@ def profile(request, *args, **kwargs):
 
     # Create a context dictionary which we can pass to the template rendering engine.
     context_dict = {'user_name': user_name, 'demographics': demographics}
-
     return render_to_response('slowsearch/profile.html', context_dict, context)
 
 
 def about(request):
-     # Request the context of the request.
-    # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
-
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
     return render_to_response('slowsearch/about.html', context)
 
 
 def results(request):
-     # Request the context of the request.
-    # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
-
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
     return render_to_response('slowsearch/results.html', context)
 
 
 def endexperiment(request):
-     # Request the context of the request.
-    # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
-
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
-
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
-    return render_to_response('slowsearch/endexperiment.html', context_dict, context)
+    return render_to_response('slowsearch/endexperiment.html', context)
 
 
 def register(request):
@@ -204,11 +184,43 @@ def user_logout(request):
 
 
 # perform a basic search using the query entered by the user
-
+# logs the time spent on the results page, provided it is less than an hour
+@login_required()
 def search(request):
     context = RequestContext(request)
     query = ""
     contacts = ""
+
+    user = request.user
+    now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
+
+    try:
+        qt_obj = QueryTime.objects.get(user=user)
+    except QueryTime.DoesNotExist:
+        qt_obj = QueryTime.objects.create(user=user, last_query_time=now)
+
+    last_query = QueryTime.objects.get(user=user).last_query_time.replace(tzinfo=None, microsecond=0)
+
+    time = now - last_query - timedelta(hours=1)
+
+    qt_obj.last_query_time = now
+    qt_obj.save()
+
+    # if the user spends > 10 min on a results page, assume they have wandered off
+    # if it's been over an hour
+    un = str(user.username)
+    if time <= timedelta(seconds=0):
+        event_logger.info('new user [' + un + '] just made their first ever slowsearch query!')
+
+    elif time < timedelta(minutes=10):
+        event_logger.info('user [' + un + '] spent [' + str(time) +
+                          '] on the results page of their last query')
+
+    elif time < timedelta(hours=1):
+        event_logger.info('user [' + un + '] spent too long on the results page, this is a timeout message')
+
+    else:
+        event_logger.info('It is assumed that this is [' + un + "] 's first search of the session")
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
@@ -220,5 +232,3 @@ def search(request):
         contacts = paginated_search(request, query)
 
     return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query}, context)
-
-
