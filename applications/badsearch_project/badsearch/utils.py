@@ -8,14 +8,16 @@ bing_engine = EngineFactory("Bing", api_key=bing_api_key)
 def mod_normal(results):
     return results
 
-def mod_slow(results):
-    return results
+def mod_slow(response):
+    return response
 
-def mod_bad(results):
+def mod_bad(response):
     #returns results in reverse order
+    results = response.results
     r = list(results)
     mod_r = r[::-1]
-    return mod_r
+    response.results = mod_r
+    return response
 
 conditions = {
     1: mod_normal,
@@ -24,37 +26,35 @@ conditions = {
 }
 
 def get_user_condition(request):
-    user = request.user
-    profile = UserProfile.objects.get(user)
-    condition = profile.condition
-
-
+    #user = request.user.id
+    #profile = UserProfile.objects.get(user)
+    #condition = profile.condition
+    user_id = request.user.id
+    if user_id % 2 is 0:
+        condition=1
+    elif user_id % 2 is not 0:
+        condition=2
+    print condition
     return condition
 
-def run_query(query, condition=1):
+def run_query(query, condition):
     q = Query(query, top=50)
-    print query, q
-    print bing_engine
 
     # check cache, if query is there, return results
     # else send query to bing, and store the results in the cache
     response = bing_engine.search(q)
-    print response
     mod = conditions[condition]
-    mod_results = mod(response)
-    #for r in mod_results:
-      #  print r
+    mod_response = mod(response)
 
-    return mod_results
+    return mod_response
 
 def paginated_search(request, query):
-    #condition = get_user_condition(request)
-    #print condition
+    condition = get_user_condition(request)
 
     if query:
-            result_list = run_query(query)
+            response = run_query(query, condition)
 
-            paginator = Paginator(result_list.results, 10)
+            paginator = Paginator(response.results, 10)
             page = request.REQUEST.get('page')
 
             try:

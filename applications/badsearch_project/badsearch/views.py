@@ -118,18 +118,18 @@ def user_logout(request):
 def search(request):
     context = RequestContext(request)
     query = ""
-    results = ""
+    response = ""
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
         request.session['session_query'] = query
-        results = run_query(query)
+        response = paginated_search(request, query)
 
     elif request.method == 'GET':
         query = request.session['session_query']
-        results = run_query( query)
+        response = paginated_search(request, query)
 
-    return render_to_response('badsearch/results.html', {'results': results, 'query': query}, context)
+    return render_to_response('badsearch/results.html', {'result_list': response, 'query': query}, context)
 
 def results(request):
     context = RequestContext(request)
