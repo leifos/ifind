@@ -196,7 +196,13 @@ class Result(object):
             print result
 
         """
-        return "\n".join("{0}: {1}".format(key, value) for key, value in self.__dict__.items())
+        result = "\n"
+        for key, value in self.__dict__.items():
+            if isinstance(value,unicode):
+                value = value.encode('ascii','ignore')
+
+            result = result + "{0}: {1}\n".format(key, value)
+        return result
 
     def __eq__(self, other):
         """
