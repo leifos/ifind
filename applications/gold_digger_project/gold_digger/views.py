@@ -141,6 +141,11 @@ def game(request):
     m = mine.Mine(gen, accuracy)
     blocks = m.blocks
 
+    print "EQP PRINTS"
+    print user.get_equipment_display()
+    print user.equipment
+
+
     return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
 
 
