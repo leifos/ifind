@@ -208,19 +208,18 @@ def search(request):
 
     # if the user spends > 10 min on a results page, assume they have wandered off
     # if it's been over an hour
-    un = str(user.username)
+    u_ID = str(user.id)
     if time <= timedelta(seconds=0):
-        event_logger.info('new user [' + un + '] just made their first ever slowsearch query!')
+        event_logger.info(u_ID + ' 1Q')
 
     elif time < timedelta(minutes=10):
-        event_logger.info('user [' + un + '] spent [' + str(time) +
-                          '] on the results page of their last query')
+        event_logger.info(u_ID + ' RP ' + str(time))
 
     elif time < timedelta(hours=1):
-        event_logger.info('user [' + un + '] spent too long on the results page, this is a timeout message')
+        event_logger.info(u_ID + ' TO')
 
     else:
-        event_logger.info('It is assumed that this is [' + un + "] 's first search of the session")
+        event_logger.info(u_ID + ' S1')
 
     if request.method == 'POST':
         query = request.POST['query'].strip()

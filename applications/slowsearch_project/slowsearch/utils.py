@@ -1,12 +1,18 @@
 __author__ = 'Craig'
 
-import time
+__author__ = 'Craig'
+
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "slowsearch_project.settings")
+from django.core.cache import cache, get_cache
+import time, datetime
 from ifind.search import Query, EngineFactory
 from logger_practice import event_logger
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from keys import BING_API_KEY
 
 e = EngineFactory("Bing", api_key=BING_API_KEY)  # create Bing search engine object using api key
+response_cache = get_cache('default')
 
 
 delay_time = 5  # length of delay for mod_slow in seconds
@@ -108,13 +114,19 @@ def paginated_search(request, query):
     :return: (paginator.Page)paginated results of the search
     """
     cnd = get_condition(request)
+    u_ID = str(request.user.id)
+    q_len = str(len(query))
+
     if query:
-
-            event_logger.info('query issued by [' + str(request.user.username)
-                              + '], [' + str(len(query)) + '] chars long')
-
             # Run our Bing function to get the results list!
-            result_list = run_query(query, cnd)
+            if not response_cache.get(query):
+                result_list = run_query(query, cnd)
+                response_cache.set(query, result_list)
+                event_logger.info(u_ID + ' QL ' + q_len + ' CA ')
+
+            else:
+                result_list = response_cache.get(query)
+                event_logger.info(u_ID + ' PA ' + 'RR')
 
             paginator = Paginator(result_list.results, 10)  # show 10 results per page
 
@@ -131,6 +143,8 @@ def paginated_search(request, query):
                 contacts = paginator.page(paginator.num_pages)
 
             return contacts
+
+
 
 
 
