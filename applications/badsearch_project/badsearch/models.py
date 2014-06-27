@@ -21,3 +21,13 @@ class Demographics(models.Model):
 
     def __unicode__(self):
         return self.user.username
+
+class QueryTime(models.Model):
+    user = models.OneToOneField(User)
+    last_query_time = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __get_last__(self):
+        return self.last_query_time

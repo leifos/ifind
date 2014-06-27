@@ -2,39 +2,70 @@ from ifind.search import Query, EngineFactory
 from keys import bing_api_key
 from models import UserProfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "badsearch_project.settings")
+from django.core.cache import cache, get_cache
+import time, datetime
 
 bing_engine = EngineFactory("Bing", api_key=bing_api_key)
+response_cache = get_cache('default')
 
-def mod_normal(results):
-    return results
-
-def mod_slow(response):
+def mod_normal(response):
     return response
 
-def mod_bad(response):
-    #returns results in reverse order
+def mod_interleave(response):
+    #interleaves top 20 results, returns in sequence 11, 1, 12, 3, 13, 4 etc.
+    #results 21-50 are returned in original order
     results = response.results
     r = list(results)
-    mod_r = r[::-1]
-    response.results = mod_r
+    slice_a = slice(0,10)
+    list_a = r[slice_a]
+    slice_b = slice(10,20)
+    list_b = r[slice_b]
+    slice_c = slice(20,50)
+    list_c = r[slice_c]
+    list_d = []
+    it=iter(list_a)
+
+    for result in list_b:
+        list_d.append(result)
+        try:
+            a = it.next()
+            print a
+            list_d.append(a)
+        except StopIteration:
+            break
+        except Exception as e:
+            raise e
+
+    response.results = list_d + list_c
+    return response
+
+def mod_reverse(response):
+    #returns results with top 20 results reversed
+    results = response.results
+    r = list(results)
+    slice_a = slice(0,20)
+    list_a = r[slice_a]
+    mod_list_a = list_a[::-1]
+    slice_b = slice(20,50)
+    list_b = r[slice_b]
+    response.results = mod_list_a + list_b
+
     return response
 
 conditions = {
     1: mod_normal,
-    2: mod_bad,
-    3: mod_slow
+    2: mod_reverse,
+    3: mod_interleave
 }
 
 def get_user_condition(request):
-    #user = request.user.id
-    #profile = UserProfile.objects.get(user)
-    #condition = profile.condition
     user_id = request.user.id
     if user_id % 2 is 0:
         condition=1
     elif user_id % 2 is not 0:
         condition=2
-    print condition
     return condition
 
 def run_query(query, condition):
@@ -52,7 +83,14 @@ def paginated_search(request, query):
     condition = get_user_condition(request)
 
     if query:
-            response = run_query(query, condition)
+
+            if not response_cache.get(query):
+                response = run_query(query, condition=3)
+                response_cache.set(query, response)
+
+            else:
+                response = response_cache.get(query)
+                print "cached query present"
 
             paginator = Paginator(response.results, 10)
             page = request.REQUEST.get('page')
