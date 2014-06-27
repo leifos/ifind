@@ -5,9 +5,11 @@ __author__ = 'Craig'
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "slowsearch_project.settings")
 from django.core.cache import cache, get_cache
-import time, datetime
+import time
+from datetime import timedelta
 from ifind.search import Query, EngineFactory
 from logger_practice import event_logger
+from slowsearch.models import QueryTime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from keys import BING_API_KEY
 
@@ -113,14 +115,12 @@ def paginated_search(query, condition, u_ID, page):
     :param condition: (int)the condition assigned to the user
     :param u_ID: (int)the user id
     :param page: (unicode)the page number of results to be displayed
-    :return: (paginator.Page)paginated results of the search
+    :return: (paginator.Page(page))paginated results of the search
     """
 
     q_len = str(len(query))
     cnd = condition
     str_u_ID = str(u_ID)
-
-    print type(page)
 
     if query:
             # Run our Bing function to get the results list!
@@ -147,9 +147,39 @@ def paginated_search(query, condition, u_ID, page):
             return contacts
 
 
+def record_query(user, now):
+    """
+    records details of user activity in log file
 
+    :param user:(User)the user instance
+    :param now: (time)the current time
+    :return:None
+    """
+    user = user
+    str_u_ID = str(user.id)
 
+    try:
+        qt_obj = QueryTime.objects.get(user=user)
+    except QueryTime.DoesNotExist:
+        qt_obj = QueryTime.objects.create(user=user, last_query_time=now)
 
+    last_query = QueryTime.objects.get(user=user).last_query_time.replace(tzinfo=None, microsecond=0)
 
+    time = now - last_query - timedelta(hours=1)
+
+    qt_obj.last_query_time = now
+    qt_obj.save()
+
+    if time <= timedelta(seconds=0):
+        event_logger.info(str_u_ID + ' 1Q')
+
+    elif time < timedelta(minutes=10):
+        event_logger.info(str_u_ID + ' RP ' + str(time))
+
+    elif time < timedelta(hours=1):
+        event_logger.info(str_u_ID + ' TO')
+
+    else:
+        event_logger.info(str_u_ID + ' S1')
 
 

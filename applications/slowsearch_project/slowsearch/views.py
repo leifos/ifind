@@ -5,7 +5,7 @@ from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, 
 from slowsearch.models import User, UKDemographicsSurvey, Experience, QueryTime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from utils import paginated_search, get_condition
+from utils import paginated_search, get_condition, record_query
 import datetime
 from datetime import timedelta
 from logger_practice import event_logger
@@ -196,34 +196,12 @@ def search(request):
     page = request.REQUEST.get('page')
     cnd = get_condition(request)
 
-    try:
-        qt_obj = QueryTime.objects.get(user=user)
-    except QueryTime.DoesNotExist:
-        qt_obj = QueryTime.objects.create(user=user, last_query_time=now)
-
-    last_query = QueryTime.objects.get(user=user).last_query_time.replace(tzinfo=None, microsecond=0)
-
-    time = now - last_query - timedelta(hours=1)
-
-    qt_obj.last_query_time = now
-    qt_obj.save()
-
     # if the user spends > 10 min on a results page, assume they have wandered off
     # if it's been over an hour
     u_ID = (user.id)
     str_u_ID = str(u_ID)
 
-    if time <= timedelta(seconds=0):
-        event_logger.info(str_u_ID + ' 1Q')
-
-    elif time < timedelta(minutes=10):
-        event_logger.info(str_u_ID + ' RP ' + str(time))
-
-    elif time < timedelta(hours=1):
-        event_logger.info(str_u_ID + ' TO')
-
-    else:
-        event_logger.info(str_u_ID + ' S1')
+    record_query(user, now)
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
