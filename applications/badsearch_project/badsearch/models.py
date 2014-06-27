@@ -31,3 +31,13 @@ class QueryTime(models.Model):
 
     def __get_last__(self):
         return self.last_query_time
+
+class LinkTime(models.Model):
+    user = models.OneToOneField(User)
+    last_link_time = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __get_last__(self):
+        return self.last_link_time

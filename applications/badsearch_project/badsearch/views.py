@@ -4,10 +4,10 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from badsearch.forms import UserForm, UserProfileForm, DemographicsForm, ValidationForm
 from django.contrib.auth.decorators import login_required
-from badsearch import utils
 from badsearch.models import UserProfile, Demographics
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from utils import paginated_search, run_query
+from utils import paginated_search, run_query, record_query, record_link
+import datetime
 
 def index(request):
     context = RequestContext(request)
@@ -119,15 +119,19 @@ def search(request):
     context = RequestContext(request)
     query = ""
     response = ""
+    now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
+    user = request.user
+
+    record_query(user, now)
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
         request.session['session_query'] = query
-        response = paginated_search(request, query)
+        response = paginated_search(request, query, user)
 
     elif request.method == 'GET':
         query = request.session['session_query']
-        response = paginated_search(request, query)
+        response = paginated_search(request, query, user)
 
     return render_to_response('badsearch/results.html', {'result_list': response, 'query': query}, context)
 
@@ -135,3 +139,11 @@ def results(request):
     context = RequestContext(request)
 
     return render_to_response('badsearch/results.html', context)
+
+def goto(request, url):
+    user=request.user
+    now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
+    url_visited = url
+    record_link(user, now, url_visited)
+
+    return HttpResponseRedirect(url)

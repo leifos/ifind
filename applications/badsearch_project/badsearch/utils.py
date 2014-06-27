@@ -6,6 +6,10 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "badsearch_project.settings")
 from django.core.cache import cache, get_cache
 import time, datetime
+from logger_practice import event_logger
+from models import QueryTime, LinkTime
+from datetime import timedelta
+import hashlib
 
 bing_engine = EngineFactory("Bing", api_key=bing_api_key)
 response_cache = get_cache('default')
@@ -68,6 +72,10 @@ def get_user_condition(request):
         condition=2
     return condition
 
+def get_user_id(request):
+    user_id = request.user.id
+    return user_id
+
 def run_query(query, condition):
     q = Query(query, top=50)
 
@@ -79,21 +87,26 @@ def run_query(query, condition):
 
     return mod_response
 
-def paginated_search(request, query):
+def paginated_search(request, query, user):
     condition = get_user_condition(request)
+    user_id = str(user.id)
+    q_len = str(len(query))
+    page = request.REQUEST.get('page')
+    hq = hashlib.sha1(query)
+    hash_q = hq.hexdigest()
 
     if query:
 
             if not response_cache.get(query):
-                response = run_query(query, condition=3)
-                response_cache.set(query, response)
+                response = run_query(query, condition)
+                response_cache.set(query, response, 600)
+                event_logger.info(user_id + ' QL ' + q_len + ' HQ ' + hash_q + ' CA ')
 
             else:
                 response = response_cache.get(query)
-                print "cached query present"
+                event_logger.info(user_id + ' HQ ' + hash_q + ' PA ' + str(page) + ' RR')
 
             paginator = Paginator(response.results, 10)
-            page = request.REQUEST.get('page')
 
             try:
                 results = paginator.page(page)
@@ -106,3 +119,62 @@ def paginated_search(request, query):
 
             return results
 
+def record_query(user, now):
+
+    user = user
+    str_u_ID = str(user.id)
+
+    try:
+        qt_obj = QueryTime.objects.get(user=user)
+    except QueryTime.DoesNotExist:
+        qt_obj = QueryTime.objects.create(user=user, last_query_time=now)
+
+    last_query = QueryTime.objects.get(user=user).last_query_time.replace(tzinfo=None, microsecond=0)
+
+    time = now - last_query - timedelta(hours=1)
+
+    qt_obj.last_query_time = now
+    qt_obj.save()
+
+    if time <= timedelta(seconds=0):
+        event_logger.info(str_u_ID + ' 1Q')
+
+    elif time < timedelta(minutes=10):
+        event_logger.info(str_u_ID + ' RP ' + str(time))
+
+    elif time < timedelta(hours=1):
+        event_logger.info(str_u_ID + ' TO')
+
+    else:
+        event_logger.info(str_u_ID + ' S1')
+
+def record_link(user, now, url):
+
+    user = user
+    str_u_ID = str(user.id)
+    hl = hashlib.sha1(url)
+    url_visited = hl.hexdigest()
+
+    try:
+        lt_obj = LinkTime.objects.get(user=user)
+    except LinkTime.DoesNotExist:
+        lt_obj = LinkTime.objects.create(user=user, last_link_time=now)
+
+    last_link = LinkTime.objects.get(user=user).last_link_time.replace(tzinfo=None, microsecond=0)
+
+    time = now - last_link - timedelta(hours=1)
+
+    lt_obj.last_link_time = now
+    lt_obj.save()
+
+    if time <= timedelta(seconds=0):
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' 1L')
+
+    elif time < timedelta(minutes=10):
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' LT ' + str(time))
+
+    elif time < timedelta(hours=1):
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' TO')
+
+    else:
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' S1')
