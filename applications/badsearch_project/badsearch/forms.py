@@ -2,15 +2,15 @@ from django import forms
 from badsearch.models import UserProfile, Demographics, Experience
 from django.contrib.auth.models import User
 
-GENDER_CHOICES = (('N', 'Not Indicated'),
-                  ('M', 'Male'), ('F', 'Female'))
+GENDER_CHOICES = (('Not Indicated', 'Not Indicated'),
+                  ('Male', 'Male'), ('Female', 'Female'))
 
-YES_CHOICES = (('', 'Not Indicated'),
-               ('Y', 'Yes'), ('N', 'No'))
+YES_CHOICES = (('Not Indicated', 'Not Indicated'),
+               ('Yes', 'Yes'), ('No', 'No'))
 
-YEAR_CHOICES = (('', 'Not Specified'),
-                ('1', 'First Year'), ('2', 'Second Year'), ('3', 'Third Year'), ('4', 'Fourth Year'),
-                ('5', 'Fifth Year'), ('6', 'Completed'))
+YEAR_CHOICES = (('Not Specified', 'Not Specified'),
+                ('First Year', 'First Year'), ('Second Year', 'Second Year'), ('Third Year', 'Third Year'),
+                ('Fourth Year', 'Fourth Year'), ('Fifth Year', 'Fifth Year'), ('Completed', 'Completed'))
 
 
 EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
@@ -43,7 +43,7 @@ class UserProfileForm(forms.ModelForm):
 
 class DemographicsForm(forms.ModelForm):
     age = forms.IntegerField(label="Please provide your age (in years).", max_value=100, min_value=0, required=False)
-    sex = forms.CharField(max_length=1, widget=forms.Select(choices=GENDER_CHOICES), label="Please indicate your sex.",
+    sex = forms.CharField(max_length=20, widget=forms.Select(choices=GENDER_CHOICES), label="Please indicate your sex.",
                           required=False)
     education_undergrad = forms.CharField(widget=forms.Select(choices=YES_CHOICES),
                                           label="Are you undertaking, or have you obtained, an undergraduate degree?",

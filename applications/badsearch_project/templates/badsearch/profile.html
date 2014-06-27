@@ -1,4 +1,5 @@
 {% extends 'badsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
 
@@ -7,14 +8,15 @@
 
         <body>
         Username: {{ user.username }}<br>
-        Picture: {{ profile.picture }}<br>
+        Picture: <img src="path/to/images/{{ profile.picture }}" alt="Profile picture unavailable" /><br>
         Age: {{ demographics.age }}<br>
         Gender: {{ demographics.sex }}<br>
-        Education Level: {{ demographics.education_undergrad }}<br>
+        Undergraduate Degree: {{ demographics.education_undergrad }}<br>
         Major: {{ demographics.education_undergrad_major }}<br>
         Year: {{ demographics.education_undergrad_year }}<br><br>
-        User Since: <br>
-        Number of Queries: <br>
+        User Since: {{ profile.user_since }}<br>
+        Number of Queries: {{ profile.num_query }} <br>
+        Number of URLs Visited: {{ profile.num_links }} <br>
         Time Remaining of Experiment: <br><br>
 
         </body>

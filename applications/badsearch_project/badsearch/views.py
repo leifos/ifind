@@ -23,7 +23,6 @@ def about(request):
 def profile(request):
     context = RequestContext(request)
     user = request.user
-    print user
     profile = UserProfile.objects.get(user=user)
     demographics = Demographics.objects.get(user=user)
 
@@ -88,6 +87,8 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
+            now = datetime.datetime.now().date()
+            profile.user_since = now
 
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']

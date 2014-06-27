@@ -100,6 +100,10 @@ def paginated_search(request, query, user):
             if not response_cache.get(query):
                 response = run_query(query, condition)
                 response_cache.set(query, response, 600)
+                profile = UserProfile.objects.get(user=user)
+                query_num = int(profile.num_query)
+                profile.num_query = query_num + 1
+                profile.save()
                 event_logger.info(user_id + ' QL ' + q_len + ' HQ ' + hash_q + ' CA ')
 
             else:
@@ -155,6 +159,11 @@ def record_link(user, now, url, rank):
     hl = hashlib.sha1(url)
     url_visited = hl.hexdigest()
     url_rank = str(rank)
+
+    profile = UserProfile.objects.get(user=user)
+    link_num = int(profile.num_links)
+    profile.num_links = link_num + 1
+    profile.save()
 
     try:
         lt_obj = LinkTime.objects.get(user=user)

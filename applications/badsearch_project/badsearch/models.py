@@ -7,6 +7,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     condition = models.IntegerField(max_length=2)
+    user_since = models.CharField(max_length=20)
+    num_query = models.IntegerField(default=0)
+    num_links = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.user.username
@@ -14,10 +17,10 @@ class UserProfile(models.Model):
 class Demographics(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0, help_text="Please provide your age (in years).")
-    sex = models.CharField(max_length=1, help_text="Please indicate your sex.")
-    education_undergrad = models.CharField(max_length=1, default="N")
+    sex = models.CharField(max_length=20, help_text="Please indicate your sex.")
+    education_undergrad = models.CharField(max_length=20, default="N")
     education_undergrad_major = models.CharField(max_length=100, default="")
-    education_undergrad_year = models.CharField(max_length=1, default="")
+    education_undergrad_year = models.CharField(max_length=20, default="")
 
     def __unicode__(self):
         return self.user.username
