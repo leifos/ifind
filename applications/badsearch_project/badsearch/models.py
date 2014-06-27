@@ -22,6 +22,22 @@ class Demographics(models.Model):
     def __unicode__(self):
         return self.user.username
 
+class Experience(models.Model):
+    user = models.OneToOneField(User)
+    ease = models.CharField(max_length=1, default="")
+    boredom = models.CharField(max_length=1, default="")
+    rage = models.CharField(max_length=1, default="")
+    frustration = models.CharField(max_length=1, default="")
+    excitement = models.CharField(max_length=1, default="")
+    indifference = models.CharField(max_length=1, default="")
+    confusion = models.CharField(max_length=1, default="")
+    anxiety = models.CharField(max_length=1, default="")
+    comment = models.CharField(max_length=200, default="")
+
+    def __unicode__(self):
+        return self.user.username
+
+
 class QueryTime(models.Model):
     user = models.OneToOneField(User)
     last_query_time = models.DateTimeField()

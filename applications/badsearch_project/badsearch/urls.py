@@ -10,6 +10,7 @@ urlpatterns = patterns('',
         url(r'^results/(?P<page>\d+)/$', views.results, name='results'),
         url(r'^logout/$', views.user_logout, name='logout'),
         url(r'^profile/$', views.profile, name='profile'),
+        url(r'^finalsurvey/$', views.final_survey, name='finalsurvey'),
         url(r'^endexperiment/$', views.endexperiment, name='endexperiment'),
         url(r'^goto/(.*)/(.*)/$', views.goto, name='goto'),
         )

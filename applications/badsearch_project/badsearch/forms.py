@@ -1,5 +1,5 @@
 from django import forms
-from badsearch.models import UserProfile, Demographics
+from badsearch.models import UserProfile, Demographics, Experience
 from django.contrib.auth.models import User
 
 GENDER_CHOICES = (('N', 'Not Indicated'),
@@ -11,6 +11,9 @@ YES_CHOICES = (('', 'Not Indicated'),
 YEAR_CHOICES = (('', 'Not Specified'),
                 ('1', 'First Year'), ('2', 'Second Year'), ('3', 'Third Year'), ('4', 'Fourth Year'),
                 ('5', 'Fifth Year'), ('6', 'Completed'))
+
+
+EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
 class UserForm(forms.ModelForm):
@@ -80,3 +83,31 @@ class ValidationForm(forms.Form):
     notify = forms.BooleanField(required=False, initial=False,
                                label="I would like to be notified by email of the outcome of this experiment",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
+
+class FinalQuestionnaireForm(forms.ModelForm):
+    ease = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='The search engine was '
+                                                                                           'easy to use:')
+    boredom = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I quickly became bored '
+                                                                                              'while using the search '
+                                                                                              'engine:')
+    rage = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was enraged by the search'
+                                                                                           ' engine:')
+    frustration = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was frustrated by '
+                                                                                                  'the search engine:')
+    excitement = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was excited while'
+                                                                                                 ' using the search'
+                                                                                                 ' engine:')
+    indifference = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was indifferent '
+                                                                                                   'to the search '
+                                                                                                   'engine:')
+    confusion = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was confused by the'
+                                                                                                ' search engine:')
+    anxiety = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was anxious when '
+                                                                                              'using the search '
+                                                                                              'engine:')
+    comment = forms.CharField(widget=forms.Textarea, label='Please add any other comments you may have about '
+                                                           'Slowsearch:')
+
+    class Meta:
+        model = Experience
+        exclude= ('user',)

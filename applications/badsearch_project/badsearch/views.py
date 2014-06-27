@@ -2,9 +2,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from badsearch.forms import UserForm, UserProfileForm, DemographicsForm, ValidationForm
+from forms import UserForm, UserProfileForm, DemographicsForm, ValidationForm, FinalQuestionnaireForm
 from django.contrib.auth.decorators import login_required
-from badsearch.models import UserProfile, Demographics
+from models import UserProfile, Demographics
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from utils import paginated_search, run_query, record_query, record_link
 import datetime
@@ -28,6 +28,33 @@ def profile(request):
     demographics = Demographics.objects.get(user=user)
 
     return render_to_response('badsearch/profile.html', {'profile':profile, 'demographics':demographics}, context)
+
+@login_required()
+def final_survey(request):
+    context = RequestContext(request)
+
+    completed = False
+
+    if request.method == 'POST':
+        q_form = FinalQuestionnaireForm(data=request.POST)
+
+        if q_form.is_valid():
+            answers = q_form.save(commit=False)
+            answers.user = request.user
+            answers.save()
+
+            completed = True
+
+        else:
+            print q_form.errors
+
+    else:
+        q_form = FinalQuestionnaireForm()
+
+     # Render the template depending on the context.
+    return render_to_response(
+        'badsearch/finalsurvey.html', {'q_form': q_form, 'completed': completed}, context)
+
 
 def endexperiment(request):
     context = RequestContext(request)
