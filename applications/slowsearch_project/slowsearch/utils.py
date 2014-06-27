@@ -1,12 +1,18 @@
 __author__ = 'Craig'
 
-import time
+__author__ = 'Craig'
+
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "slowsearch_project.settings")
+from django.core.cache import cache, get_cache
+import time, datetime
 from ifind.search import Query, EngineFactory
 from logger_practice import event_logger
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from keys import BING_API_KEY
 
 e = EngineFactory("Bing", api_key=BING_API_KEY)  # create Bing search engine object using api key
+response_cache = get_cache('default')
 
 
 delay_time = 5  # length of delay for mod_slow in seconds
@@ -99,27 +105,35 @@ def get_condition(request):
     return cnd
 
 
-def paginated_search(request, query):
+def paginated_search(query, condition, u_ID, page):
     """
     performs a paginated search based on a given query
 
-    :param request: (HttpRequest)the metadata about the request
     :param query: (str)the search query input by the user
+    :param condition: (int)the condition assigned to the user
+    :param u_ID: (int)the user id
+    :param page: (unicode)the page number of results to be displayed
     :return: (paginator.Page)paginated results of the search
     """
-    cnd = get_condition(request)
+
+    q_len = str(len(query))
+    cnd = condition
+    str_u_ID = str(u_ID)
+
+    print type(page)
+
     if query:
-
-            event_logger.info('query issued by [' + str(request.user.username)
-                              + '], [' + str(len(query)) + '] chars long')
-
             # Run our Bing function to get the results list!
-            result_list = run_query(query, cnd)
+            if not response_cache.get(query):
+                result_list = run_query(query, cnd)
+                response_cache.set(query, result_list, 300)
+                event_logger.info(str_u_ID + ' QL ' + q_len + ' CA ')
+
+            else:
+                result_list = response_cache.get(query)
+                event_logger.info(str_u_ID + ' PA' + str(page) + ' RR')
 
             paginator = Paginator(result_list.results, 10)  # show 10 results per page
-
-            #get the page number required from the request
-            page = request.REQUEST.get('page')
 
             try:
                 contacts = paginator.page(page)
@@ -131,6 +145,8 @@ def paginated_search(request, query):
                 contacts = paginator.page(paginator.num_pages)
 
             return contacts
+
+
 
 
 

@@ -1,0 +1,8 @@
+key for acronyms used in log file
+
+QL: Query Logged
+PAX: Paginated to page X
+CA: Response Cached
+RR Response Retreived (from cache)
+RP: Time spent on results pags
+TO: User left results page open for over an hour (timeout)

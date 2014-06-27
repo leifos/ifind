@@ -5,7 +5,7 @@ from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, 
 from slowsearch.models import User, UKDemographicsSurvey, Experience, QueryTime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from utils import paginated_search
+from utils import paginated_search, get_condition
 import datetime
 from datetime import timedelta
 from logger_practice import event_logger
@@ -193,6 +193,8 @@ def search(request):
 
     user = request.user
     now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
+    page = request.REQUEST.get('page')
+    cnd = get_condition(request)
 
     try:
         qt_obj = QueryTime.objects.get(user=user)
@@ -208,27 +210,28 @@ def search(request):
 
     # if the user spends > 10 min on a results page, assume they have wandered off
     # if it's been over an hour
-    un = str(user.username)
+    u_ID = (user.id)
+    str_u_ID = str(u_ID)
+
     if time <= timedelta(seconds=0):
-        event_logger.info('new user [' + un + '] just made their first ever slowsearch query!')
+        event_logger.info(str_u_ID + ' 1Q')
 
     elif time < timedelta(minutes=10):
-        event_logger.info('user [' + un + '] spent [' + str(time) +
-                          '] on the results page of their last query')
+        event_logger.info(str_u_ID + ' RP ' + str(time))
 
     elif time < timedelta(hours=1):
-        event_logger.info('user [' + un + '] spent too long on the results page, this is a timeout message')
+        event_logger.info(str_u_ID + ' TO')
 
     else:
-        event_logger.info('It is assumed that this is [' + un + "] 's first search of the session")
+        event_logger.info(str_u_ID + ' S1')
 
     if request.method == 'POST':
         query = request.POST['query'].strip()
         request.session['session_query'] = query
-        contacts = paginated_search(request, query)
+        contacts = paginated_search(query, cnd, u_ID, page)
 
     elif request.method == 'GET':
         query = request.session['session_query']
-        contacts = paginated_search(request, query)
+        contacts = paginated_search(query, cnd, u_ID, page)
 
     return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query}, context)
