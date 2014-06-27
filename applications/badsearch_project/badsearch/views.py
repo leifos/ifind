@@ -140,10 +140,11 @@ def results(request):
 
     return render_to_response('badsearch/results.html', context)
 
-def goto(request, url):
+def goto(request, url, rank):
     user=request.user
     now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
     url_visited = url
-    record_link(user, now, url_visited)
+    url_rank = rank
+    record_link(user, now, url_visited, url_rank)
 
     return HttpResponseRedirect(url)

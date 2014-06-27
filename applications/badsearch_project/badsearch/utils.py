@@ -148,12 +148,13 @@ def record_query(user, now):
     else:
         event_logger.info(str_u_ID + ' S1')
 
-def record_link(user, now, url):
+def record_link(user, now, url, rank):
 
     user = user
     str_u_ID = str(user.id)
     hl = hashlib.sha1(url)
     url_visited = hl.hexdigest()
+    url_rank = str(rank)
 
     try:
         lt_obj = LinkTime.objects.get(user=user)
@@ -168,13 +169,13 @@ def record_link(user, now, url):
     lt_obj.save()
 
     if time <= timedelta(seconds=0):
-        event_logger.info(str_u_ID + ' LV ' + url_visited + ' 1L')
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' LR ' + url_rank + ' 1L')
 
     elif time < timedelta(minutes=10):
-        event_logger.info(str_u_ID + ' LV ' + url_visited + ' LT ' + str(time))
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' LR ' + url_rank + ' LT ' + str(time))
 
     elif time < timedelta(hours=1):
-        event_logger.info(str_u_ID + ' LV ' + url_visited + ' TO')
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' LR ' + url_rank + ' TO')
 
     else:
-        event_logger.info(str_u_ID + ' LV ' + url_visited + ' S1')
+        event_logger.info(str_u_ID + ' LV ' + url_visited + ' LR ' + url_rank + ' S1')

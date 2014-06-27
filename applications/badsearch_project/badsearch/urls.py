@@ -11,5 +11,5 @@ urlpatterns = patterns('',
         url(r'^logout/$', views.user_logout, name='logout'),
         url(r'^profile/$', views.profile, name='profile'),
         url(r'^endexperiment/$', views.endexperiment, name='endexperiment'),
-        url(r'^goto/(.*)/$', views.goto, name='goto'),
+        url(r'^goto/(.*)/(.*)/$', views.goto, name='goto'),
         )

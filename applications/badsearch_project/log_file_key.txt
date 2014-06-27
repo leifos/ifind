@@ -9,3 +9,4 @@ TO: User left results page open for over an hour (timeout)
 HQ: Hashed query string
 LT: Time spent on link
 LV: Link visited
+LR: Rank of link

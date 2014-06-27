@@ -22,7 +22,7 @@
             <ul>
             {% for result in result_list %}
                 <li>
-                    <strong><a href="/badsearch/goto/{{ result.url }}">{{ result.title }}</a></strong><br />
+                    <strong><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></strong><br />
                     {{ result.url }} <br>
                     <em>{{ result.summary }}</em>
                 </li>
