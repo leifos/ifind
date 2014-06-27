@@ -1,7 +1,7 @@
 key for acronyms used in log file
 
 QL: Query Logged
-PA: Paginated
+PAX: Paginated to page X
 CA: Response Cached
 RR Response Retreived (from cache)
 RP: Time spent on results pags

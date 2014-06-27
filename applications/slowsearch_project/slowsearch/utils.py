@@ -105,33 +105,35 @@ def get_condition(request):
     return cnd
 
 
-def paginated_search(request, query):
+def paginated_search(query, condition, u_ID, page):
     """
     performs a paginated search based on a given query
 
-    :param request: (HttpRequest)the metadata about the request
     :param query: (str)the search query input by the user
+    :param condition: (int)the condition assigned to the user
+    :param u_ID: (int)the user id
+    :param page: (unicode)the page number of results to be displayed
     :return: (paginator.Page)paginated results of the search
     """
-    cnd = get_condition(request)
-    u_ID = str(request.user.id)
+
     q_len = str(len(query))
+    cnd = condition
+    str_u_ID = str(u_ID)
+
+    print type(page)
 
     if query:
             # Run our Bing function to get the results list!
             if not response_cache.get(query):
                 result_list = run_query(query, cnd)
-                response_cache.set(query, result_list)
-                event_logger.info(u_ID + ' QL ' + q_len + ' CA ')
+                response_cache.set(query, result_list, 300)
+                event_logger.info(str_u_ID + ' QL ' + q_len + ' CA ')
 
             else:
                 result_list = response_cache.get(query)
-                event_logger.info(u_ID + ' PA ' + 'RR')
+                event_logger.info(str_u_ID + ' PA' + str(page) + ' RR')
 
             paginator = Paginator(result_list.results, 10)  # show 10 results per page
-
-            #get the page number required from the request
-            page = request.REQUEST.get('page')
 
             try:
                 contacts = paginator.page(page)
