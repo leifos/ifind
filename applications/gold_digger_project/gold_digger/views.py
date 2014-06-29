@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from game import yieldgen, mine
 from gold_digger.models import UserProfile
+import pickle
 
 def home(request):
 
@@ -108,71 +109,98 @@ def user_logout(request):
 @login_required
 def game(request):
 
+
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
     print user.equipment, "EQUIPMENT"
-    gen = yieldgen.YieldGenerator
-
-    if 'constant' in request.GET:
-        print "constant"
-        gen = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
-
-    elif 'linear' in request.GET:
-        print "linear"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
-
-    elif 'random' in request.GET:
-        print "random"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
-
-    elif 'quadratic' in request.GET:
-        print "quadratic"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
-
-    elif 'exponential' in request.GET:
-        print "exponential"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
-
-    elif 'cubic' in request.GET:
-        print "cubic"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
-
-    accuracy = float(user.equipment)
-    m = mine.Mine(gen, accuracy)
-    blocks = m.blocks
-
-    print "EQP PRINTS"
-    print user.get_equipment_display()
-    print user.equipment
+    print request.session.items()
+    myne_type = request.GET['mine type']
 
 
-    return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
+    if request.session['has_mine'] == False:
 
+        gen = yieldgen.YieldGenerator
+
+        if myne_type == 'constant':
+            print "constant"
+            request.session['mine_type'] = 'constant'
+            gen = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
+
+        elif myne_type == 'linear':
+            print "linear"
+            request.session['mine_type'] = "linear"
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+
+        elif myne_type == 'random':
+            print "random"
+            request.session['mine_type'] = 'random'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+
+        elif myne_type == 'quadratic':
+            print "quadratic"
+            request.session['mine_type'] = 'quadratic'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+
+        elif myne_type == 'exponential':
+            print "exponential"
+            request.session['mine_type'] = 'exponential'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+
+        elif myne_type == 'cubic':
+            print "cubic"
+            request.session['mine_type'] = 'cubic'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+
+        accuracy = float(user.equipment)
+        m = mine.Mine(gen, accuracy)
+        blocks = m.blocks
+        request.session['has_mine'] = True
+
+        # Pickling
+        file_name = "testfile"
+        fileobject = open(file_name, 'wb')
+        pickle.dump(blocks, fileobject)
+        fileobject.close()
+        request.session['pickle'] = file_name
+
+
+        return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
+
+    else:
+
+        file_name = request.session['pickle']
+        fileobject = open(file_name, 'r')
+        blocks = pickle.load(fileobject)
+
+        return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
 
 @login_required
 def game_choice(request):
+    print "GOT HERE"
     context = RequestContext(request)
-
+    request.session['has_mine'] = False
+    request.session['mine_type'] = ''
+    print request.session['has_mine'], "   This is the has_mine"
     return render_to_response('gold_digger/game_choice.html', {}, context)
 
-@login_required
-def dig(request):
-
-    context = RequestContext(request)
-    demo_id = None
-
-    if request.method == 'GET':
-
-        print request.GET
-        demo_id = request.GET['demo_id']
-        print demo_id
-
-    likes = 0
-    if demo_id:
-        demo = Demo.objects.get(id=int(demo_id))
-        if demo:
-            likes = demo.up + 1
-            demo.up = likes
-            demo.save()
-
-    return HttpResponse(likes)
+# @login_required
+# def dig(request):
+#
+#     context = RequestContext(request)
+#     demo_id = None
+#
+#     if request.method == 'GET':
+#
+#         print request.GET
+#         demo_id = request.GET['demo_id']
+#         print demo_id
+#
+#     likes = 0
+#     if demo_id:
+#         demo = Demo.objects.get(id=int(demo_id))
+#         if demo:
+#             likes = demo.up + 1
+#             demo.up = likes
+#             demo.save()
+#
+#     return HttpResponse(likes)

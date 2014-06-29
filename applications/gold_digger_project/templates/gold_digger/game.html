@@ -21,12 +21,20 @@ text-align:left;
 </tr>
 {% if blocks %}
     {% for block in blocks %}
+        {% if block.dug == False %}
             <tr>
               <td></td>
               <td>{{ block.pos }}<br></td>
               <td>{{ block.cue }}<br></td>
               <td><form action="/gold_digger/game/"><button type="submit" value="dig" name="dig">dig</button></form></td>
             </tr>
+        {% else %}
+            <tr>
+              <td></td>
+              <td>xxxxxxxxxx<br></td>
+              <td>xxxxxxxxxx<br></td>
+            </tr>
+        {% endif %}
     {% endfor %}
         </table>
 {% endif %}
