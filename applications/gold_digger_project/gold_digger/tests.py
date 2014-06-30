@@ -6,6 +6,7 @@ from django.core.files import File
 from gold_digger.models import UserProfile
 from gold_digger.forms import UserForm, UserProfileForm
 from game import yieldgen, cuegen
+import collections
 
 
 class ModelTest(TestCase):
@@ -71,10 +72,11 @@ class GameTest(TestCase):
         """
 
         depth = 10
-        r = yieldgen.random_yield(depth)
+        r = yieldgen.RandomYieldGenerator(depth)
+        yield_array = r.make_yields()
         count = 0
 
-        for y in r:
+        for y in yield_array:
             count += 1
 
         self.assertEqual(count, depth)
@@ -86,11 +88,12 @@ class GameTest(TestCase):
         """
 
         depth = 10
-        c = yieldgen.constant_yield(depth)
+        c = yieldgen.ConstantYieldGenerator(depth)
+        yield_array = c.make_yields()
         count = 0
-        comp = c[0]
+        comp = yield_array[0]
 
-        for y in c:
+        for y in yield_array:
             count += 1
             self.failIf(comp != y)
 
@@ -102,14 +105,15 @@ class GameTest(TestCase):
         and that the values are appropriately produced according to the linear function devised.
         """
 
-        b = yieldgen.b
-        m = yieldgen.m
-
         depth = 10
-        c = yieldgen.linear_yield(depth)
+        l = yieldgen.LinearYieldGenerator(depth)
+        yield_array = l.make_yields()
         count = 0
 
-        for y in c:
+        b = l.max
+        m = yieldgen.m
+
+        for y in yield_array:
 
             x = (y-b)/m
             self.assertEqual(x, count)
@@ -117,51 +121,66 @@ class GameTest(TestCase):
 
         self.assertEqual(count, depth)
 
-    def test_cue_span(self):
-            """
-            Test if Cuegen assigns the appropriate due to the yield values
-            """
+    def test_quadratic_yield(self):
+        """
+        Test if QuadraticYieldGenerator(depth) return an appropriate array of yields
+        """
+        test_array = []
+        depth = 10
 
-            max = yieldgen.b
-            rangecue = cuegen.cue_range
-
-            array_list = []
-
-            count = 0
-
-            for r in rangecue:
-                cue_list = []
-                for x in range(max, 0, -1):
-
-                    cue_list.append(x)
-                    if x == rangecue:
-                        count = 0
-                        array_list.append(cue_list)
-                        break
-                    else:
-                        count += 1
+        for x in range(depth):
+            a = -1.8    # The steepness of the curve
+            x1 = 0      # The gold is never negative
+            x2 = depth
+            y = a*(x - x1)*(x-x2)
+            rounded = int(round(y))
+            test_array.append(rounded)
 
 
+        q = yieldgen.QuadraticYieldGenerator(depth)
+        yield_array = q.make_yields()
 
+        compare = lambda xc, yc: collections.Counter(xc) == collections.Counter(yc)
+        same = compare(test_array, yield_array)
+        self.assertEqual(same, True)
 
+    def test_exponential_yield(self):
+        """
+        Test if the ExponentialYieldGenerator(depth) method returns an array of (depth) values,
+        and that:
+        - The first value of the array is 0
+        - The second value is the maximum amount of gold
+        """
 
+        depth = 10
+        r = yieldgen.ExponentialYieldGenerator(depth)
+        yield_array = r.make_yields()
+        count = 0
+        max = r.max
 
-        # cue_patterns = cuegen.cue_patterns
-        #
-        # span = cuegen.cue_function(accuracy)
-        # upper_limit = yield_array[0] + span
-        # lower_limit = yield_array[0] - span
-        #
-        # cue = random.randint(lower_limit, upper_limit)
-        # x = cuegen.cue_range
-        #
-        # max = yieldgen.b
-        #
-        # index = 0
-        # countcue = 5
-        #
-        # array = []
-        # for d in range(max, 0, -1):
-        #     array.append(d)
+        for y in yield_array:
+            count += 1
 
+        self.assertEqual(count, depth)
+        self.assertEqual(0, yield_array[0])
+        self.assertEqual(max, yield_array[1])
 
+    def test_cubic_yield(self):
+        """
+        Test if CubicYieldGenerator(depth) returns an appropriate array of yields
+        """
+        test_array = []
+        depth = 10
+
+        for x in range(depth):
+            a = 0.5
+            c = 0
+            y = int(round(pow((a*x), 3) + c*x))
+            test_array.append(y)
+
+        c = yieldgen.CubicYieldGenerator(depth)
+        yield_array = c.make_yields()
+
+        compare = lambda xc, yc: collections.Counter(xc) == collections.Counter(yc)
+        same = compare(test_array, yield_array)
+        self.assertEqual(same, True)

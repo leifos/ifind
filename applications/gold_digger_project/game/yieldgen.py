@@ -80,7 +80,7 @@ class QuadraticYieldGenerator(YieldGenerator):
 
     @staticmethod
     def quadratic_function(x, x2):
-        a = -1.8 # The steepness of the curve
+        a = -1.8  # The steepness of the curve
         x1 = 0
         y = a*(x - x1)*(x-x2)
 

@@ -8,7 +8,7 @@ class UserProfile(models.Model):
     MAP = 0.3
     OIL_LAMP = 0.2
 
-    EQUIPMENT =(
+    EQUIPMENT = (
         (SPELL, 'Spell'),
         (GOBLIN, 'Goblin'),
         (SONAR, 'Sonar'),

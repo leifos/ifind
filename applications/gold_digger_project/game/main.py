@@ -39,7 +39,7 @@ qyg = QuadraticYieldGenerator(depth=10, max=maxgold, min=0)
 eyg = ExponentialYieldGenerator(depth=10, max=maxgold, min=0)
 cuyg = CubicYieldGenerator(depth=10, max=maxgold, min=0)
 
-event_logger.info("an info message")
+logger.event_logger.info("Yield Generators created")
 
 mryg = Mine(ryg, 0.8)
 mcyg = Mine(cyg, 0.8)
