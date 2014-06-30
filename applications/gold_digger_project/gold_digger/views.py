@@ -114,39 +114,39 @@ def game(request):
     user = UserProfile.objects.get(user=request.user)
     print user.equipment, "EQUIPMENT"
     print request.session.items()
-    myne_type = request.GET['mine type']
+    mine_type = request.GET['mine type']
 
 
     if request.session['has_mine'] == False:
 
         gen = yieldgen.YieldGenerator
 
-        if myne_type == 'constant':
+        if mine_type == 'constant':
             print "constant"
             request.session['mine_type'] = 'constant'
             gen = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
 
-        elif myne_type == 'linear':
+        elif mine_type == 'linear':
             print "linear"
             request.session['mine_type'] = "linear"
             gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
-        elif myne_type == 'random':
+        elif mine_type == 'random':
             print "random"
             request.session['mine_type'] = 'random'
             gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
-        elif myne_type == 'quadratic':
+        elif mine_type == 'quadratic':
             print "quadratic"
             request.session['mine_type'] = 'quadratic'
             gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
-        elif myne_type == 'exponential':
+        elif mine_type == 'exponential':
             print "exponential"
             request.session['mine_type'] = 'exponential'
             gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
 
-        elif myne_type == 'cubic':
+        elif mine_type == 'cubic':
             print "cubic"
             request.session['mine_type'] = 'cubic'
             gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
@@ -157,7 +157,7 @@ def game(request):
         request.session['has_mine'] = True
 
         # Pickling
-        file_name = "testfile"
+        file_name = "pickle"
         fileobject = open(file_name, 'wb')
         pickle.dump(blocks, fileobject)
         fileobject.close()
@@ -168,6 +168,7 @@ def game(request):
 
     else:
 
+        # Unpickling
         file_name = request.session['pickle']
         fileobject = open(file_name, 'r')
         blocks = pickle.load(fileobject)
