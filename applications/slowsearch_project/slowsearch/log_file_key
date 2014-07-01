@@ -1,5 +1,7 @@
 key for acronyms used in log file
 
+1Q: This user's first ever query
+S1: User has began a new search session
 QL: Query Logged
 PAX: Paginated to page X (None if first page pulled from cache)
 CA: Response Cached

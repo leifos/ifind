@@ -14,6 +14,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from keys import BING_API_KEY
 import hashlib
 from models import UserProfile, LinkTime
+import pickle
 
 e = EngineFactory("Bing", api_key=BING_API_KEY)  # create Bing search engine object using api key
 response_cache = get_cache('default')
@@ -116,18 +117,17 @@ def paginated_search(query, condition, u_ID, page, user):
     profile = UserProfile.objects.get(user=user)
     queries = int(profile.queries_submitted)
 
-
     if query:
             # Run our Bing function to get the results list!
             if not response_cache.get(query):
                 result_list = run_query(query, cnd)
-                response_cache.set(query, result_list, 300)
+                response_cache.set(query, pickle.dumps(result_list), 300)
                 event_logger.info(str_u_ID + ' QL ' + 'HQ: ' + q_hash + ' ' + q_len + ' CA ')
                 profile.queries_submitted = queries + 1
                 profile.save()
 
             elif page is None:  # a new query has been submitted
-                result_list = response_cache.get(query)
+                result_list = pickle.loads(response_cache.get(query))
                 mod = conditions[condition]
                 result_list = mod(result_list)
                 event_logger.info(str_u_ID + ' RR ' + 'HQ: ' + q_hash + ' ' + q_len)
@@ -135,7 +135,7 @@ def paginated_search(query, condition, u_ID, page, user):
                 profile.save()
 
             else:
-                result_list = response_cache.get(query)
+                result_list = pickle.loads(response_cache.get(query))
                 event_logger.info(str_u_ID + ' PA' + str(page) + ' RR')
 
             paginator = Paginator(result_list.results, 10)  # show 10 results per page
