@@ -1,12 +1,12 @@
 __author__ = 'Craig'
 from django.contrib.auth.models import User
-from slowsearch.models import UKDemographicsSurvey, Experience
+from slowsearch.models import UKDemographicsSurvey, Experience, UserProfile
 from django import forms
 
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label='Password')
-    password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password')
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Repeat Password')
 
     def clean(self):
         password = self.cleaned_data.get('password')
@@ -21,6 +21,11 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password')
 
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ('user', 'condition', 'user_since', 'queries_submitted', 'links_visited')
 
 SEX_CHOICES = (('N', 'Not Indicated'),
               ('M', 'Male'), ('F', 'Female'))

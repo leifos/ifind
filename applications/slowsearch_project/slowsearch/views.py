@@ -1,11 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, FinalQuestionnaireForm
-from slowsearch.models import User, UKDemographicsSurvey, Experience, QueryTime
+from slowsearch.forms import UserForm, UKDemographicsSurveyForm, RegValidation, FinalQuestionnaireForm, UserProfileForm
+from slowsearch.models import User, UKDemographicsSurvey, Experience, QueryTime, UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from utils import paginated_search, get_condition, record_query
+from utils import paginated_search, get_condition, record_query, record_link
 import datetime
 from datetime import timedelta
 from logger_practice import event_logger
@@ -28,11 +28,11 @@ def profile(request, *args, **kwargs):
     context = RequestContext(request)
 
     user_name = request.user
-
     demographics = UKDemographicsSurvey.objects.get(user=user_name)
+    profile = UserProfile.objects.get(user=user_name)
 
     # Create a context dictionary which we can pass to the template rendering engine.
-    context_dict = {'user_name': user_name, 'demographics': demographics}
+    context_dict = {'user_name': user_name, 'demographics': demographics, 'profile':profile}
     return render_to_response('slowsearch/profile.html', context_dict, context)
 
 
@@ -66,9 +66,10 @@ def register(request):
         user_form = UserForm(data=request.POST)
         demog_form = UKDemographicsSurveyForm(data=request.POST)
         validation_form = RegValidation(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
 
-        # If the two forms are valid...
-        if user_form.is_valid() and demog_form.is_valid() and validation_form.is_valid():
+        # If the forms are valid...
+        if user_form.is_valid() and demog_form.is_valid() and validation_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -82,6 +83,18 @@ def register(request):
 
             demog.save()
 
+            user_profile = profile_form.save(commit=False)
+            user_profile.user = user
+
+            if user.id % 2 == 0:
+                user_profile.condition = 1
+
+            elif user.id % 2 != 0:
+                user_profile.condition = 2
+
+            user_profile.user_since = datetime.datetime.today()
+            user_profile.save()
+
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -89,7 +102,7 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, demog_form.errors, validation_form.errors
+            print user_form.errors, demog_form.errors, validation_form.errors, profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
@@ -97,11 +110,13 @@ def register(request):
         user_form = UserForm()
         demog_form = UKDemographicsSurveyForm()
         validation_form = RegValidation()
+        profile_form = UserProfileForm()
 
     # Render the template depending on the context.
     return render_to_response(
             'slowsearch/register.html',
             {'user_form': user_form, 'demog_form': demog_form, 'validation_form': validation_form,
+             'profile_form': profile_form,
              'registered': registered},
             context)
 
@@ -196,8 +211,6 @@ def search(request):
     page = request.REQUEST.get('page')
     cnd = get_condition(request)
 
-    # if the user spends > 10 min on a results page, assume they have wandered off
-    # if it's been over an hour
     u_ID = (user.id)
     str_u_ID = str(u_ID)
 
@@ -206,10 +219,20 @@ def search(request):
     if request.method == 'POST':
         query = request.POST['query'].strip()
         request.session['session_query'] = query
-        contacts = paginated_search(query, cnd, u_ID, page)
+        contacts = paginated_search(query, cnd, u_ID, page, user)
 
     elif request.method == 'GET':
         query = request.session['session_query']
-        contacts = paginated_search(query, cnd, u_ID, page)
+        contacts = paginated_search(query, cnd, u_ID, page, user)
 
     return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query}, context)
+
+
+def goto(request, url, rank):
+    user = request.user
+    now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
+    url_visited = url
+    url_rank = rank
+    record_link(user, now, url_visited, url_rank)
+
+    return HttpResponseRedirect(url)

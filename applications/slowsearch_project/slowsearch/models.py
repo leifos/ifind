@@ -10,6 +10,14 @@ SEX_CHOICES = (('N', 'Not Indicated'),
 EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    condition = models.IntegerField(max_length=2)
+    user_since = models.DateField()
+    queries_submitted = models.IntegerField(default=0)
+    links_visited = models.IntegerField(default=0)
+
+
 class UKDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0, help_text="Please provide your age (in years).")
@@ -66,6 +74,17 @@ class QueryTime(models.Model):
 
     def __get_last__(self):
         return self.last_query_time
+
+
+class LinkTime(models.Model):
+    user = models.OneToOneField(User)
+    last_link_time = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __get_last__(self):
+        return self.last_link_time
 
 
 

@@ -1,13 +1,19 @@
 __author__ = 'Craig'
 
 import os
+import datetime
+
+now = datetime.datetime.today()
 
 
 def populate():
     # add the users for testing
     dave = User.objects.create_user('dave', 'dave@dave.com', 'dave')
+    dave_profile = add_profile(dave, now, 1)
     john = User.objects.create_user('john', 'john@john.com', 'john')
+    john_profile = add_profile(john, now, 2)
     stan = User.objects.create_user('stan', 'stan@stan.com', 'stan')
+    stan_profile = add_profile(stan, now, 3)
 
     dave_demog = add_demog(dave, 25, 'M', 'Yes', 'Biology', 'Completed')
     john_demog = add_demog(john, 30, 'M', 'No', '', '')
@@ -32,10 +38,15 @@ def add_experience(user, ease, boredom, rage, frustration, excitement, indiffere
     return e
 
 
+def add_profile(user, user_since, condition):
+    p = UserProfile.objects.get_or_create(user=user, user_since=user_since, condition=condition)
+    return p
+
+
 if __name__ == '__main__':
     print "Starting slowsearch population script..."
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'slowsearch_project.settings')
-    from slowsearch.models import User, UKDemographicsSurvey, Experience
+    from slowsearch.models import User, UKDemographicsSurvey, Experience, UserProfile
     populate()
 
 
