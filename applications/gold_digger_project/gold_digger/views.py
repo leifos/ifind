@@ -215,16 +215,6 @@ def dig(request):
         request.session['has_mine'] = False
         return HttpResponseRedirect(reverse('game'))
 
-# last_block = len(blocks) - 1
-#
-#
-#     if blocks[last_block].dug == True:
-#         print "GAME OVER", blocks[last_block].dug
-#         print request.session['has_mine']
-#         request.session['has_mine'] = False
-#         print request.session['mine_type']
-#         return HttpResponseRedirect(reverse('game'))
-#
 
     gold = int(request.GET['dig'])
     pos = int(request.GET['block'])
@@ -243,7 +233,7 @@ def dig(request):
     request.session['pickle'] = file_name
 
 
-    return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
+    return HttpResponseRedirect(reverse('game'), context)
 
 @login_required
 def move(request):
