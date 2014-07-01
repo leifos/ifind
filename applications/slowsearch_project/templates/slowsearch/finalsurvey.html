@@ -3,14 +3,14 @@
 {% block body_block %}
     {% if user.is_authenticated %}
         {% if completed %}
-        <h3> The experimental period is now over</h3><br>
-                Thank you for your participation
+            <h3> The experimental period is now over</h3><br>
+            Thank you for your participation
 
         {% else %}
-      <strong>Please indicate whether you agree, disagree or are unsure of<br>
-          each of the following statements while using Slowsearch:</strong>
-        <form id="final_survey_form" method="post" action="/slowsearch/finalsurvey/"
-                    enctype="multipart/form-data">
+            <strong>Please indicate whether you agree, disagree or are unsure of<br>
+            each of the following statements while using Slowsearch:</strong>
+            <form id="final_survey_form" method="post" action="/slowsearch/finalsurvey/"
+            enctype="multipart/form-data">
 
             {% csrf_token %}
 
@@ -19,12 +19,8 @@
                  making everything look neater. -->
             {{ q_form.as_p }}
 
-                 <input type="submit" name="submit" value="Submit" />
-        </form> <br>
-            {% endif %}
-    {% else %}
-            You are not logged in! <br>
+            <input type="submit" name="submit" value="Submit" />
+            </form> <br>
+        {% endif %}
     {% endif %}
-
-
 {% endblock %}

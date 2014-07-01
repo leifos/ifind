@@ -7,7 +7,17 @@
 <h1> Welcome to slowsearch</h1>
     {% block body_block %}
     {% endblock %}
+
+{% if user.is_authenticated %}
+    Hi, {{ user }}! <br>
+    If you're not {{ user }}, <a href="/slowsearch/logout/">Logout</a><br />
+{% else %}
+    <h2>You're not logged in!</h2>
+    <a href="/slowsearch/login/">Login</a> <br>
+    <a href="/slowsearch/register/">Register Here</a> <br>
+{% endif %}
 <a href="/slowsearch/about">About</a><br />
+<a href="/slowsearch/profile/{{ user.username }}/">Your Profile</a><br />
 <a href="/slowsearch/">Return to the homepage</a>
 
 </body>
