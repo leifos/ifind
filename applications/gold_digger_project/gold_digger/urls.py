@@ -11,6 +11,7 @@ urlpatterns = patterns('',
         url(r'^game/$', views.game, name='game'),
         url(r'^game_choice/$', views.game_choice, name='gamechoice'),
         url(r'^dig/$', views.dig, name='dig'),
-        url(r'^move/$', views.move, name='move')
+        url(r'^move/$', views.move, name='move'),
+        url(r'^game_over/$', views.game_over, name='game_over')
 
 )

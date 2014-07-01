@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    SPELL = 0.8
-    GOBLIN = 0.6
-    SONAR = 0.5
-    MAP = 0.3
-    OIL_LAMP = 0.2
+    SPELL = 'Spell'
+    GOBLIN = 'Goblin'
+    SONAR = 'Sonar'
+    MAP = 'Map'
+    OIL_LAMP = 'Oil lamp'
 
     EQUIPMENT = (
         (SPELL, 'Spell'),

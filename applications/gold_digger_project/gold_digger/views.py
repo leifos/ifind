@@ -11,6 +11,14 @@ import pickle
 from django.core.urlresolvers import reverse
 import random
 
+scan_dict = {
+    'Oil lamp' : 0.2,
+    'Map' : 0.3 ,
+    'Sonar' : 0.5,
+    'Goblin' : 0.6 ,
+    'Spell' : 0.8
+}
+
 def home(request):
 
     context = RequestContext(request)
@@ -124,7 +132,7 @@ def game(request):
     print request.session.items()
 
     if request.session['has_mine'] == False:
-
+        print "GOT HERE"
         gen = yieldgen.YieldGenerator
         up_boundary = 50
         down_boundary = 10
@@ -161,8 +169,9 @@ def game(request):
             request.session['mine_type'] = 'cubic'
             gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-        accuracy = float(user.equipment)
+        accuracy = scan_dict[user.equipment]
         m = mine.Mine(gen, accuracy)
+
         blocks = m.blocks
         request.session['has_mine'] = True
         pointer = 0
@@ -175,6 +184,8 @@ def game(request):
         fileobject.close()
         request.session['pickle'] = file_name
 
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
 
         return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
 
@@ -187,6 +198,10 @@ def game(request):
         pointer = request.session['pointer']
         time_remaining = request.session['time_remaining']
         print "Blocks Length", len(blocks)
+
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
+
         return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
 
 @login_required
@@ -205,6 +220,7 @@ def game_choice(request):
 @login_required
 def dig(request):
 
+
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
     file_name = request.session['pickle']
@@ -220,8 +236,8 @@ def dig(request):
     pos = int(request.GET['block'])
     request.session['pointer'] += 1
     request.session['time_remaining'] -= 3
-    pointer = request.session['pointer']
-    time_remaining = request.session['time_remaining']
+
+
     user.gold += gold
     user.save()
     blocks[pos].dug = True
@@ -231,6 +247,7 @@ def dig(request):
     pickle.dump(blocks, fileobject)
     fileobject.close()
     request.session['pickle'] = file_name
+    print "Time remaining", request.session['time_remaining']
 
 
     return HttpResponseRedirect(reverse('game'), context)
@@ -241,3 +258,9 @@ def move(request):
     request.session['has_mine'] = False
     request.session['time_remaining'] -= 5
     return HttpResponseRedirect(reverse('game'), context)
+
+@login_required
+def game_over(request):
+    context = RequestContext(request)
+    return render_to_response('gold_digger/game_over.html', {}, context)
+
