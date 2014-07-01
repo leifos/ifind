@@ -40,23 +40,17 @@ class Experience(models.Model):
     # level of boredom experienced by user when using AB Search App
     boredom = models.CharField(max_length=1, default="")
 
-    # level of rage experienced by user when using AB Search App
-    rage = models.CharField(max_length=1, default="")
-
     # level of frustration experienced by user when using AB Search App
     frustration = models.CharField(max_length=1, default="")
 
     # level of excitement experienced by user when using AB Search App
-    excitement = models.CharField(max_length=1, default="")
+    visuals = models.CharField(max_length=1, default="")
 
     # level of indifference experienced by user when using AB Search App
     indifference = models.CharField(max_length=1, default="")
 
    # level of confusion experienced by user when using AB Search App
     confusion = models.CharField(max_length=1, default="")
-
-    # level of anxiety experienced by user when using AB Search App
-    anxiety = models.CharField(max_length=1, default="")
 
     # any additional comments the user wishes to add about their experience of the AB Search App
     comment = models.CharField(max_length=200, default="")
