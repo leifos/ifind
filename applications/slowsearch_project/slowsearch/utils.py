@@ -74,9 +74,6 @@ def run_query(query, condition):
     """
     q = Query(query, top=100)
 
-    # TODO(leifos): Add some form of caching here
-    # if q is in the cache, return the response
-    # else, send the query to the search engine
     response = e.search(q)
 
     mod = conditions[condition]
@@ -93,18 +90,8 @@ def get_condition(request):
     :return: (int)the condition applied to the user account based on their user_id
     """
     user = request.user
-    user_id = user.id
-    cnd = 1
-
-    # if the user has already searched and is now paginating
-    if request.method == 'GET':
-        cnd = 1
-
-    elif user_id % 2 == 0:
-        cnd = 1
-
-    elif user_id % 2 != 0:
-        cnd = 2
+    profile = UserProfile.objects.get(user=user)
+    cnd = profile.condition
 
     return cnd
 
@@ -139,8 +126,10 @@ def paginated_search(query, condition, u_ID, page, user):
                 profile.queries_submitted = queries + 1
                 profile.save()
 
-            elif page is None:
+            elif page is None:  # a new query has been submitted
                 result_list = response_cache.get(query)
+                mod = conditions[condition]
+                result_list = mod(result_list)
                 event_logger.info(str_u_ID + ' RR ' + 'HQ: ' + q_hash + ' ' + q_len)
                 profile.queries_submitted = queries + 1
                 profile.save()
