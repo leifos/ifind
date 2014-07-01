@@ -10,5 +10,7 @@ urlpatterns = patterns('',
         url(r'^logout/$', views.user_logout, name='logout'),
         url(r'^game/$', views.game, name='game'),
         url(r'^game_choice/$', views.game_choice, name='gamechoice'),
+        url(r'^dig/$', views.dig, name='dig'),
+        url(r'^move/$', views.move, name='move')
 
 )
