@@ -11,6 +11,7 @@ import pickle
 from django.core.urlresolvers import reverse
 import random
 
+
 scan_dict = {
     'Oil lamp' : 0.2,
     'Map' : 0.3 ,
@@ -131,7 +132,7 @@ def game(request):
     print user.equipment, "EQUIPMENT"
     print request.session.items()
 
-    if request.session['has_mine'] == False:
+    if not request.session['has_mine']:
         print "GOT HERE"
         gen = yieldgen.YieldGenerator
         up_boundary = 50
@@ -187,7 +188,12 @@ def game(request):
         if time_remaining < 0:
             return HttpResponseRedirect(reverse('game_over'), context)
 
-        return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
+        return render_to_response('gold_digger/game.html',
+                                  {'blocks': blocks,
+                                   'user': user,
+                                   'pointer': pointer,
+                                   'time_remaining': time_remaining},
+                                  context)
 
     else:
 
