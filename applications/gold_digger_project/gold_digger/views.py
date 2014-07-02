@@ -208,9 +208,11 @@ def game(request):
 def game_choice(request):
 
     context = RequestContext(request)
+
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
     request.session['time_remaining'] = 100
+
     user = UserProfile.objects.get(user=request.user)
     user.gold = 0
     user.save()
@@ -219,7 +221,6 @@ def game_choice(request):
 
 @login_required
 def dig(request):
-
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
