@@ -1,7 +1,6 @@
 # Misc
 *.keys
 *.db
-*.png
 *.log
 
 keys.py
