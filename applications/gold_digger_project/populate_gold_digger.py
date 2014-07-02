@@ -7,8 +7,8 @@ def populate():
     john = add_user('John', 'john@gmail.com', 'john')
     jess = add_user('Jess', 'jess@gmail.com', 'jess')
 
-    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', '')
-    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', '')
+    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', 'Spell')
+    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', 'Oil lamp')
     add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', 'Goblin')
 
 
