@@ -17,6 +17,8 @@ EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
 class UserForm(forms.ModelForm):
+    username = forms.CharField(help_text="Please enter a username.")
+    email = forms.CharField(help_text="Please enter your email.")
     password = forms.CharField(widget=forms.PasswordInput())
     password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password')
 

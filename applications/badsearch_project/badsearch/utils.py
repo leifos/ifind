@@ -70,6 +70,7 @@ def get_user_condition(request):
         condition=1
     elif user_id % 2 is not 0:
         condition=2
+    print condition
     return condition
 
 def get_user_id(request):

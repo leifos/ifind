@@ -23,8 +23,8 @@
             {% for result in result_list %}
                 <li>
                     <strong><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></strong><br />
-                    {{ result.url }} <br>
-                    <em>{{ result.summary }}</em>
+                    <div style="font-size: smaller; color: green">{{ result.url }}</div>
+                    <em>{{ result.summary }}</em><br>
                 </li>
             {% endfor %}
             </ul>

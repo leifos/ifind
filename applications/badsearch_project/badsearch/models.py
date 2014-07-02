@@ -18,7 +18,7 @@ class Demographics(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0, help_text="Please provide your age (in years).")
     sex = models.CharField(max_length=20, help_text="Please indicate your sex.")
-    education_undergrad = models.CharField(max_length=20, default="N")
+    education_undergrad = models.CharField(max_length=20, default="No")
     education_undergrad_major = models.CharField(max_length=100, default="")
     education_undergrad_year = models.CharField(max_length=20, default="")
 
