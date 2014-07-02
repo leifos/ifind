@@ -98,7 +98,7 @@ def user_login(request):
                 login(request, user)
                 return HttpResponseRedirect('/gold_digger/')
             else:
-                return HttpResponse("Your Rango account is disabled.")
+                return HttpResponse("Your Gold Digger account is disabled.")
         else:
 
             print "Invalid login details: {0}, {1}".format(username, password)
@@ -183,13 +183,15 @@ def game(request):
         pickled_blocks = pickle.dumps(blocks)
         request.session['pickle'] = pickled_blocks
 
+
         if time_remaining < 0:
             return HttpResponseRedirect(reverse('game_over'), context)
 
         return render_to_response('gold_digger/game.html', {'blocks': blocks,
                                                             'user': user,
                                                             'pointer': pointer,
-                                                            'time_remaining': time_remaining},
+                                                            'time_remaining': time_remaining
+                                                            },
                                     context)
 
     else:
@@ -199,6 +201,7 @@ def game(request):
         blocks = pickle.loads(pickled_blocks)
         pointer = request.session['pointer']
         time_remaining = request.session['time_remaining']
+
         print "Blocks Length", len(blocks)
 
         if time_remaining < 0:
@@ -207,22 +210,22 @@ def game(request):
         return render_to_response('gold_digger/game.html', {'blocks': blocks,
                                                             'user': user,
                                                             'pointer': pointer,
-                                                            'time_remaining': time_remaining},
+                                                            'time_remaining': time_remaining
+                                                            },
                                   context)
 
 @login_required
 def game_choice(request):
 
-    context = RequestContext(request)
 
+
+
+    context = RequestContext(request)
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
     request.session['time_remaining'] = 100
     request.session['game_gold'] = 0
-
-    user = UserProfile.objects.get(user=request.user)
-    user.gold = 0
-    user.save()
+    request.session['game started'] = True
 
     return render_to_response('gold_digger/game_choice.html', {}, context)
 
@@ -231,6 +234,8 @@ def dig(request):
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    request.session['game_started'] = True
+
     pickled_blocks = request.session['pickle']
     blocks = pickle.loads(pickled_blocks)
 
@@ -239,13 +244,15 @@ def dig(request):
         return HttpResponseRedirect(reverse('game'))
 
 
-    gold = int(request.GET['dig'])
+    gold_dug = int(request.GET['dig'])
     pos = int(request.GET['block'])
     request.session['pointer'] += 1
     request.session['time_remaining'] -= 3
 
-    user.gold += gold
+
+    user.gold += gold_dug
     user.save()
+
     blocks[pos].dug = True
 
     pickled_blocks = pickle.dumps(blocks)
@@ -266,4 +273,13 @@ def move(request):
 def game_over(request):
     context = RequestContext(request)
     return render_to_response('gold_digger/game_over.html', {}, context)
+
+@login_required
+def store_gold(request):
+    context = RequestContext(request)
+
+    user = UserProfile.objects.get(user=request.user)
+    user.gold = int(request.session['game_gold'])
+    user.save()
+    return HttpResponseRedirect(reverse('game_choice'), context)
 
