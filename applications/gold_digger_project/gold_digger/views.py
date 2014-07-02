@@ -179,28 +179,24 @@ def game(request):
         request.session['pointer'] = pointer
 
         # Pickling
-        file_name = "pickle"
-        fileobject = open(file_name, 'wb')
-        pickle.dump(blocks, fileobject)
-        fileobject.close()
-        request.session['pickle'] = file_name
+
+        pickled_blocks = pickle.dumps(blocks)
+        request.session['pickle'] = pickled_blocks
 
         if time_remaining < 0:
             return HttpResponseRedirect(reverse('game_over'), context)
 
-        return render_to_response('gold_digger/game.html',
-                                  {'blocks': blocks,
-                                   'user': user,
-                                   'pointer': pointer,
-                                   'time_remaining': time_remaining},
-                                  context)
+        return render_to_response('gold_digger/game.html', {'blocks': blocks,
+                                                            'user': user,
+                                                            'pointer': pointer,
+                                                            'time_remaining': time_remaining},
+                                    context)
 
     else:
 
         # Unpickling
-        file_name = request.session['pickle']
-        fileobject = open(file_name, 'r')
-        blocks = pickle.load(fileobject)
+        pickled_blocks = request.session['pickle']
+        blocks = pickle.loads(pickled_blocks)
         pointer = request.session['pointer']
         time_remaining = request.session['time_remaining']
         print "Blocks Length", len(blocks)
@@ -208,7 +204,11 @@ def game(request):
         if time_remaining < 0:
             return HttpResponseRedirect(reverse('game_over'), context)
 
-        return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
+        return render_to_response('gold_digger/game.html', {'blocks': blocks,
+                                                            'user': user,
+                                                            'pointer': pointer,
+                                                            'time_remaining': time_remaining},
+                                  context)
 
 @login_required
 def game_choice(request):
@@ -218,6 +218,7 @@ def game_choice(request):
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
     request.session['time_remaining'] = 100
+    request.session['game_gold'] = 0
 
     user = UserProfile.objects.get(user=request.user)
     user.gold = 0
@@ -230,9 +231,8 @@ def dig(request):
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    file_name = request.session['pickle']
-    fileobject = open(file_name, 'r')
-    blocks = pickle.load(fileobject)
+    pickled_blocks = request.session['pickle']
+    blocks = pickle.loads(pickled_blocks)
 
     if request.session['pointer'] == len(blocks):
         request.session['has_mine'] = False
@@ -244,16 +244,12 @@ def dig(request):
     request.session['pointer'] += 1
     request.session['time_remaining'] -= 3
 
-
     user.gold += gold
     user.save()
     blocks[pos].dug = True
 
-
-    fileobject = open(file_name, 'wb')
-    pickle.dump(blocks, fileobject)
-    fileobject.close()
-    request.session['pickle'] = file_name
+    pickled_blocks = pickle.dumps(blocks)
+    request.session['pickle'] = pickled_blocks
     print "Time remaining", request.session['time_remaining']
 
 

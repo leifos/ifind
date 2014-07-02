@@ -38,6 +38,8 @@ class UserProfile(models.Model):
     equipment = models.CharField(max_length=10, choices=EQUIPMENT, default=OIL_LAMP)
     vehicle = models.CharField(max_length=15, choices=VEHICLE, default=WHEELBARREL)
     gold = models.IntegerField(default=0)
+    all_time_max_gold = models.IntegerField(default=0)
+    games_played = models.IntegerField(default=0)
 
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.picture.url)
