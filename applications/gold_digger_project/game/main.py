@@ -1,6 +1,7 @@
 from game import cuegen
 from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator, QuadraticYieldGenerator,ExponentialYieldGenerator, CubicYieldGenerator
 from mine import Mine
+from gold_digger import logger
 
 
 
@@ -38,6 +39,7 @@ qyg = QuadraticYieldGenerator(depth=10, max=maxgold, min=0)
 eyg = ExponentialYieldGenerator(depth=10, max=maxgold, min=0)
 cuyg = CubicYieldGenerator(depth=10, max=maxgold, min=0)
 
+logger.event_logger.info("Yield Generators created")
 
 mryg = Mine(ryg, 0.8)
 mcyg = Mine(cyg, 0.8)

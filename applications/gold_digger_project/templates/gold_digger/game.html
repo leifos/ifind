@@ -12,8 +12,35 @@ text-align:left;
 </style>
 <body>
 <h1> Gold Digger</h1>
-<p>Equipment: {{ user.equipment }}<br>Vehicle: {{ user.vehicle }}<br>Gold: {{ user.gold }}</p>
+
+<table style="width:50px;  height:100px">
+    <tr>
+        <td>Equipment:
+        <td><img src="/static/icons/{{ user.equipment }}.png" height="50px"></td>
+    </tr>
+    <tr>
+        <td>Vehicle:</td>
+        <td><img src="/static/icons/{{ user.vehicle }}.png" height="50px"></td>
+    </tr>
+    <tr>
+        <td>Gold:  {{ user.gold }}</td>
+        <td><img src="/static/icons/gold.gif"></td>
+    </tr>
+    <tr>
+        <td><strong>Time remaining:</strong></td>
+        <td></td>
+        <td> {{ time_remaining }} </td>
+    </tr>
+</table>
+
+<br>
+
+<a href = "/gold_digger/move/" >Go to new mine</a>
+
+<br>
+<br>
 <table style="width:300px;  height:50px">
+
 <tr>
   <th></th>
   <th>Depth</th>
@@ -21,15 +48,33 @@ text-align:left;
 </tr>
 {% if blocks %}
     {% for block in blocks %}
+        {% if block.dug == False %}
             <tr>
               <td></td>
               <td>{{ block.pos }}<br></td>
               <td>{{ block.cue }}<br></td>
-              <td><form action="/gold_digger/game/"><button type="submit" value="dig" name="dig">dig</button></form></td>
+                {% if pointer == block.pos %}
+              <td><form action="/gold_digger/dig/">
+                  <button type="submit" value="{{ block.gold }}" name="dig">dig</button>
+                  <input type="hidden" value="{{ block.pos }}" name="block">
+              </form></td>
+                    {% endif %}
             </tr>
+        {% else %}
+            <tr>
+              <td></td>
+              <td>xxxxxxxxxx<br></td>
+              <td>xxxxxxxxxx<br></td>
+              <td>{{ block.gold }}</td>
+            </tr>
+        {% endif %}
     {% endfor %}
         </table>
 {% endif %}
-<a href = "/gold_digger/" >Back to Main</a>
+{% if pointer == blocks|length %}
+    <a href = "/gold_digger/dig/" >Next mine?</a><br>
+{% endif %}
+<a href = "/gold_digger/" >Back to Main</a><br>
+<a href = "/gold_digger/game_choice/" >Back to choose game</a>
 </body>
 </html>

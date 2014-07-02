@@ -13,12 +13,12 @@
     {% if contacts %}
          {% for contact in contacts %}
                 <li>
-                    <strong><a href="{{ contact.url }}">{{ contact.title }}</a></strong><br />
+                    <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
                     {{ contact.url }}<br>
                     <em>{{ contact.summary }}</em>
                 </li> <br>
             {% endfor %}
-            </ol>
+
     {% endif %}
     <br>
 

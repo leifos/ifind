@@ -7,6 +7,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from game import yieldgen, mine
 from gold_digger.models import UserProfile
+import pickle
+from django.core.urlresolvers import reverse
+import random
+
+scan_dict = {
+    'Oil lamp' : 0.2,
+    'Map' : 0.3 ,
+    'Sonar' : 0.5,
+    'Goblin' : 0.6 ,
+    'Spell' : 0.8
+}
 
 def home(request):
 
@@ -110,69 +121,146 @@ def game(request):
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+
+    if request.session['mine_type'] == '':
+        mine_type = request.GET['mine type']
+
+    else:
+        mine_type = request.session['mine_type']
+
     print user.equipment, "EQUIPMENT"
-    gen = yieldgen.YieldGenerator
+    print request.session.items()
 
-    if 'constant' in request.GET:
-        print "constant"
-        gen = yieldgen.ConstantYieldGenerator(depth=10, max=42, min=0)
+    if request.session['has_mine'] == False:
+        print "GOT HERE"
+        gen = yieldgen.YieldGenerator
+        up_boundary = 50
+        down_boundary = 10
+        max_gold = random.randint(down_boundary, up_boundary)
+        time_remaining = request.session['time_remaining']
 
-    elif 'linear' in request.GET:
-        print "linear"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+        if mine_type == 'constant':
+            print "constant"
+            request.session['mine_type'] = 'constant'
+            gen = yieldgen.ConstantYieldGenerator(depth=10, max=max_gold, min=0)
 
-    elif 'random' in request.GET:
-        print "random"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+        elif mine_type == 'linear':
+            print "linear"
+            request.session['mine_type'] = "linear"
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-    elif 'quadratic' in request.GET:
-        print "quadratic"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+        elif mine_type == 'random':
+            print "random"
+            request.session['mine_type'] = 'random'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-    elif 'exponential' in request.GET:
-        print "exponential"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+        elif mine_type == 'quadratic':
+            print "quadratic"
+            request.session['mine_type'] = 'quadratic'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-    elif 'cubic' in request.GET:
-        print "cubic"
-        gen = yieldgen.LinearYieldGenerator(depth=10, max=42, min=0)
+        elif mine_type == 'exponential':
+            print "exponential"
+            request.session['mine_type'] = 'exponential'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-    accuracy = float(user.equipment)
-    m = mine.Mine(gen, accuracy)
-    blocks = m.blocks
+        elif mine_type == 'cubic':
+            print "cubic"
+            request.session['mine_type'] = 'cubic'
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-    print "EQP PRINTS"
-    print user.get_equipment_display()
-    print user.equipment
+        accuracy = scan_dict[user.equipment]
+        m = mine.Mine(gen, accuracy)
 
+        blocks = m.blocks
+        request.session['has_mine'] = True
+        pointer = 0
+        request.session['pointer'] = pointer
 
-    return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user}, context)
+        # Pickling
+        file_name = "pickle"
+        fileobject = open(file_name, 'wb')
+        pickle.dump(blocks, fileobject)
+        fileobject.close()
+        request.session['pickle'] = file_name
 
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
+
+        return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
+
+    else:
+
+        # Unpickling
+        file_name = request.session['pickle']
+        fileobject = open(file_name, 'r')
+        blocks = pickle.load(fileobject)
+        pointer = request.session['pointer']
+        time_remaining = request.session['time_remaining']
+        print "Blocks Length", len(blocks)
+
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
+
+        return render_to_response('gold_digger/game.html', {'blocks': blocks, 'user': user, 'pointer': pointer, 'time_remaining': time_remaining}, context)
 
 @login_required
 def game_choice(request):
+
     context = RequestContext(request)
+    request.session['has_mine'] = False
+    request.session['mine_type'] = ''
+    request.session['time_remaining'] = 100
+    user = UserProfile.objects.get(user=request.user)
+    user.gold = 0
+    user.save()
 
     return render_to_response('gold_digger/game_choice.html', {}, context)
 
 @login_required
 def dig(request):
 
+
     context = RequestContext(request)
-    demo_id = None
+    user = UserProfile.objects.get(user=request.user)
+    file_name = request.session['pickle']
+    fileobject = open(file_name, 'r')
+    blocks = pickle.load(fileobject)
 
-    if request.method == 'GET':
+    if request.session['pointer'] == len(blocks):
+        request.session['has_mine'] = False
+        return HttpResponseRedirect(reverse('game'))
 
-        print request.GET
-        demo_id = request.GET['demo_id']
-        print demo_id
 
-    likes = 0
-    if demo_id:
-        demo = Demo.objects.get(id=int(demo_id))
-        if demo:
-            likes = demo.up + 1
-            demo.up = likes
-            demo.save()
+    gold = int(request.GET['dig'])
+    pos = int(request.GET['block'])
+    request.session['pointer'] += 1
+    request.session['time_remaining'] -= 3
 
-    return HttpResponse(likes)
+
+    user.gold += gold
+    user.save()
+    blocks[pos].dug = True
+
+
+    fileobject = open(file_name, 'wb')
+    pickle.dump(blocks, fileobject)
+    fileobject.close()
+    request.session['pickle'] = file_name
+    print "Time remaining", request.session['time_remaining']
+
+
+    return HttpResponseRedirect(reverse('game'), context)
+
+@login_required
+def move(request):
+    context = RequestContext(request)
+    request.session['has_mine'] = False
+    request.session['time_remaining'] -= 5
+    return HttpResponseRedirect(reverse('game'), context)
+
+@login_required
+def game_over(request):
+    context = RequestContext(request)
+    return render_to_response('gold_digger/game_over.html', {}, context)
+

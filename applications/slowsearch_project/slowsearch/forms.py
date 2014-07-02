@@ -1,12 +1,12 @@
 __author__ = 'Craig'
 from django.contrib.auth.models import User
-from slowsearch.models import UKDemographicsSurvey, Experience
+from slowsearch.models import UKDemographicsSurvey, Experience, UserProfile
 from django import forms
 
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label='Password')
-    password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password')
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Repeat Password')
 
     def clean(self):
         password = self.cleaned_data.get('password')
@@ -22,6 +22,11 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password')
 
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ('user', 'condition', 'user_since', 'queries_submitted', 'links_visited')
+
 SEX_CHOICES = (('N', 'Not Indicated'),
               ('M', 'Male'), ('F', 'Female'))
 
@@ -33,7 +38,7 @@ YES_NO_CHOICES = (
 
 YEAR_CHOICES = (('', 'Not Specified'),
                ('1', 'First Year'), ('2', 'Second Year'), ('3', 'Third Year'), ('4', 'Fourth Year'),
-               ('5', 'Fifth Year'), ('6', 'Completed'))
+               ('5', 'Fifth Year'), ('6', 'Completed'), ('7', 'Postgraduate'))
 
 EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
@@ -89,44 +94,44 @@ class RegValidation(forms.Form):
 
 class FinalQuestionnaireForm(forms.ModelForm):
     # level of ease of use of AB Search App
-    ease = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='The search engine was '
-                                                                                           'easy to use:')
+    ease = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I found that I could easily'
+                                                                                           ' find what I was looking for'
+                                                                                           ' with the search engine')
 
     # level of boredom experienced by user when using AB Search App
-    boredom = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I quickly became bored '
-                                                                                              'while using the search '
-                                                                                              'engine:')
+    boredom = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I found that it took an '
+                                                                                              'overly long time for the '
+                                                                                              'search engine to show me '
+                                                                                              'my results ')
 
     # level of rage experienced by user when using AB Search App
-    rage = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was enraged by the search'
-                                                                                           ' engine:')
+    frustration = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='Navigating with the '
+                                                                                                  'interface on the '
+                                                                                                  'search engine '
+                                                                                                  'frustrated me')
 
-    # level of frustration experienced by user when using AB Search App
-    frustration = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was frustrated by '
-                                                                                                  'the search engine:')
-
-    # level of excitement experienced by user when using AB Search App
-    excitement = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was excited while'
-                                                                                                 ' using the search'
-                                                                                                 ' engine:')
+    # level of visual pleasantry
+    visuals = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='The search engine '
+                                                                                                 'displayed my results '
+                                                                                                 'in a manner pleasing '
+                                                                                                 'to the eye ')
 
     # level of indifference experienced by user when using AB Search App
-    indifference = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was indifferent '
-                                                                                                   'to the search '
-                                                                                                   'engine:')
+    indifference = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I found the search '
+                                                                                                   'engine no different '
+                                                                                                   'to any other search'
+                                                                                                   ' engine I have '
+                                                                                                   'used ')
 
    # level of confusion experienced by user when using AB Search App
-    confusion = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was confused by the'
-                                                                                                ' search engine:')
-
-    # level of anxiety experienced by user when using AB Search App
-    anxiety = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I was anxious when '
-                                                                                              'using the search '
-                                                                                              'engine:')
+    confusion = forms.ChoiceField(widget=forms.RadioSelect(), choices=EXPERIENCE_CHOICES, label='I found it difficult '
+                                                                                                'to work out how to '
+                                                                                                'use the search engine'
+                                                                                                ' interface ')
 
     # any additional comments the user wishes to add about their experience of the AB Search App
     comment = forms.CharField(widget=forms.Textarea, label='Please add any other comments you may have about '
-                                                           'Slowsearch:')
+                                                           'the search engine:')
 
     class Meta:
         model = Experience

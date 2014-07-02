@@ -1,7 +1,38 @@
 from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator
+from mine import Mine
+import pickle
+
+gen = ConstantYieldGenerator(depth=10, max=42, min=0)
+m = Mine(gen, 0.8)
+
+a = m.blocks
+
+for al in a:
+    print al
 
 
+file_Name = "testfile"
+# open the file for writing
+fileObject = open(file_Name, 'wb')
 
+# this writes the object a to the
+# file named 'testfile'
+pickle.dump(a, fileObject)
+
+# here we close the fileObject
+fileObject.close()
+# we open the file for reading
+fileObject = open(file_Name, 'r')
+# load the object from the file into var b
+b = pickle.load(fileObject)
+print "------------------"
+for bl in b:
+    print bl
+
+if a == b:
+    print "a and b are equal"
+else:
+    print "a and b are different"
 # import random
 # a =26
 # b =34

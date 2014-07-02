@@ -1,7 +1,7 @@
 {% extends 'slowsearch/base.html' %}
 
 {% block body_block %}
-        {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
         <h3>hello {{ user.username }}!</h3> <br>
 
         <form id="search" action="/slowsearch/search/" method="post">
@@ -9,15 +9,5 @@
             <input type=text name=query>
             <input type=submit value="Search">
         </form>
-
-        <a href="/slowsearch/profile/{{ user.username }}/">Your Profile</a><br />
-        <a href="/slowsearch/logout/">Logout</a><br />
-        {% else %}
-        <h2>hello world!</h2>
-        <a href="/slowsearch/login/">Login</a> <br>
-        <a href="/slowsearch/register/">Register Here</a> <br>
-{% endif %}
-
-
-
+    {% endif %}
 {% endblock %}

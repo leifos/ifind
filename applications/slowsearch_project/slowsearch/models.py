@@ -10,6 +10,14 @@ SEX_CHOICES = (('N', 'Not Indicated'),
 EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    condition = models.IntegerField(max_length=2)
+    user_since = models.DateField()
+    queries_submitted = models.IntegerField(default=0)
+    links_visited = models.IntegerField(default=0)
+
+
 class UKDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0, help_text="Please provide your age (in years).")
@@ -32,23 +40,17 @@ class Experience(models.Model):
     # level of boredom experienced by user when using AB Search App
     boredom = models.CharField(max_length=1, default="")
 
-    # level of rage experienced by user when using AB Search App
-    rage = models.CharField(max_length=1, default="")
-
     # level of frustration experienced by user when using AB Search App
     frustration = models.CharField(max_length=1, default="")
 
     # level of excitement experienced by user when using AB Search App
-    excitement = models.CharField(max_length=1, default="")
+    visuals = models.CharField(max_length=1, default="")
 
     # level of indifference experienced by user when using AB Search App
     indifference = models.CharField(max_length=1, default="")
 
    # level of confusion experienced by user when using AB Search App
     confusion = models.CharField(max_length=1, default="")
-
-    # level of anxiety experienced by user when using AB Search App
-    anxiety = models.CharField(max_length=1, default="")
 
     # any additional comments the user wishes to add about their experience of the AB Search App
     comment = models.CharField(max_length=200, default="")
@@ -66,6 +68,17 @@ class QueryTime(models.Model):
 
     def __get_last__(self):
         return self.last_query_time
+
+
+class LinkTime(models.Model):
+    user = models.OneToOneField(User)
+    last_link_time = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __get_last__(self):
+        return self.last_link_time
 
 
 
