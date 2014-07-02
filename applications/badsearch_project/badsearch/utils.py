@@ -1,5 +1,5 @@
 from ifind.search import Query, EngineFactory
-from keys import bing_api_key
+from keys import BING_API_KEY
 from models import UserProfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import os
@@ -11,7 +11,7 @@ from models import QueryTime, LinkTime
 from datetime import timedelta
 import hashlib
 
-bing_engine = EngineFactory("Bing", api_key=bing_api_key)
+bing_engine = EngineFactory("Bing", api_key=BING_API_KEY)
 response_cache = get_cache('default')
 
 def mod_normal(response):
