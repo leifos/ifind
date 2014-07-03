@@ -87,8 +87,7 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
-            now = datetime.datetime.now().date()
-            profile.user_since = now
+            profile.user_since = datetime.datetime.today()
 
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
@@ -101,6 +100,9 @@ def register(request):
 
             profile.save()
             registered = True
+            new_user = authenticate(username=request.POST['username'],
+                                    password=request.POST['password'])
+            login(request, new_user)
 
         else:
             print user_form.errors, profile_form.errors, demographics_form.errors, validation_form.errors

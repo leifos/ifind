@@ -8,7 +8,7 @@
 
         <body>
         Username: {{ user.username }}<br>
-        Picture: <img src="path/to/images/{{ profile.picture }}" alt="Profile picture unavailable" /><br>
+        {% if profile.picture %}Picture: <img src="/media/{{ profile.picture }}" alt="Profile picture unavailable" /> <br>{% endif %}
         Age: {{ demographics.age }}<br>
         Gender: {{ demographics.sex }}<br>
         Undergraduate Degree: {{ demographics.education_undergrad }}<br>

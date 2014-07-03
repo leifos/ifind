@@ -21,11 +21,10 @@
         <div style="clear: both;">
             <ul>
             {% for result in result_list %}
-                <li>
                     <strong><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></strong><br />
                     <div style="font-size: smaller; color: green">{{ result.url }}</div>
                     <em>{{ result.summary }}</em><br>
-                </li>
+                <hr>
             {% endfor %}
             </ul>
         </div>
@@ -36,7 +35,7 @@
         {% endif %}
 
         <span class="current">
-            Page {{ result_list.number }} of {{ result_list.paginator.num_pages }}.
+            Page {{ result_list.number }} of {{ result_list.paginator.num_pages }}
         </span>
 
         {% if result_list.has_next %}

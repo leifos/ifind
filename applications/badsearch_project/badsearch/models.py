@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     condition = models.IntegerField(max_length=2)
-    user_since = models.CharField(max_length=20)
+    user_since = models.DateField()
     num_query = models.IntegerField(default=0)
     num_links = models.IntegerField(default=0)
 

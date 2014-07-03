@@ -9,7 +9,7 @@
         {% if registered %}
         <p>Thank you for registering.</p>
 
-        <p><a href="/badsearch/login/">Login</a> when you are ready to search.</p>
+        <p>You are now logged in, please click <a href="/badsearch/">here</a> to begin searching.</p>
         {% else %}
         <form class="form-signin span8" id="user_form" method="post" action="/badsearch/register/"
               enctype="multipart/form-data">
@@ -18,7 +18,7 @@
             <!-- Display each form here -->
 
             Thank you for your interest in participating in this experiment.<br />
-        This search engine is powered by Microsoft Bing, please use this application
+        This search engine is powered by a popular search engine please use this application
         in place of your favourite search engine for the duration of this experiment.<br />
 
         Please fill in your details below and agree to the terms and conditions to begin searching.<br><br>
@@ -33,7 +33,7 @@
         as part of a research project. Please read the Study Information below and tick the boxes to agree to the terms
         of this study.<br><br>
         <ul>
-            <li> The application is powered by Microsoft Bing, and is intended for to be used in place of your favourite
+            <li> The application is powered by a popular search engine, and is intended for to be used in place of your favourite
             search engine for the duration of the experiment.</li>
             <li>As part of the study you will be asked to complete some optional questionnaires regarding your
             demographics and experience with the application.</li>
@@ -46,14 +46,13 @@
             <li>Your details will not be used for any purposes other than this experiment, and will not be passed on to
             any third party.</li>
             <li>You are able to ask questions at any time before, during or after the experiment using the contact
-            details available on the <a href="/badsearch/about">About</a> page.</li>
+            details available on the <a target=_blank href="/badsearch/about">About</a> page.</li>
 
         </ul>
 
             {{ validation_form.as_p }}
 
             <br />
-            <!-- Provide a button to click to submit the form. -->
             <input class="btn btn-primary" type="submit" name="submit" value="Register"/>
         </form>
         {% endif %}
