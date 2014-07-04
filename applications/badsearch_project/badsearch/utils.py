@@ -10,6 +10,7 @@ from logger_practice import event_logger
 from models import QueryTime, LinkTime
 from datetime import timedelta
 import hashlib
+import pickle
 
 bing_engine = EngineFactory("Bing", api_key=BING_API_KEY)
 response_cache = get_cache('default')
@@ -100,7 +101,7 @@ def paginated_search(request, query, user):
 
             if not response_cache.get(query):
                 response = run_query(query, condition)
-                response_cache.set(query, response, 600)
+                response_cache.set(query, pickle.dumps(response), 600)
                 profile = UserProfile.objects.get(user=user)
                 query_num = int(profile.num_query)
                 profile.num_query = query_num + 1
@@ -108,7 +109,7 @@ def paginated_search(request, query, user):
                 event_logger.info(user_id + ' QL ' + q_len + ' HQ ' + hash_q + ' CA ')
 
             else:
-                response = response_cache.get(query)
+                response = pickle.loads(response_cache.get(query))
                 event_logger.info(user_id + ' HQ ' + hash_q + ' PA ' + str(page) + ' RR')
 
             paginator = Paginator(response.results, 10)
