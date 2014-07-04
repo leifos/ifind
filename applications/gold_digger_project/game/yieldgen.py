@@ -134,4 +134,9 @@ class CubicYieldGenerator(YieldGenerator):
         c = 0
         y = int(round(pow((a*x), 3) + c*x))
 
-        return y
+        if y < 0:
+            f = 0
+            return f
+
+        else:
+            return y

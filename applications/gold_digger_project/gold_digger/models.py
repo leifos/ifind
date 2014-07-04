@@ -48,3 +48,17 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return self.user.username
+
+
+class ScanningEqipment(models.Model):
+    name = models.CharField(max_length=100)
+    modifier = models.FloatField(default=0.2)
+    image = models.ImageField(upload_to='icons')
+
+    def image_tag(self):
+        return u'<img src="%s" height = 100 />' % (self.image.url)
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
+
+    def __unicode__(self):
+        return self.name

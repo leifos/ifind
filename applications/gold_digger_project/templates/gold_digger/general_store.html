@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>General Store</title>
+</head>
+<body>
+<h1>General store</h1>
+<table>
+<tr>
+    <td>Scanning equipment</td>
+</tr>
+<tr>
+    {% for eq in equipment %}
+        <td>{{ equipment.name }}</td>
+    {% endfor %}
+</tr>
+<tr>
+    {% for eq in equipment %}
+        <td>{{ equipment.image }}</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td></td>
+     <td>Vehicles</td>
+    <td>Digging equipment</td>
+</tr>
+</table>
+</body>
+</html>

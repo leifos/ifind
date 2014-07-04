@@ -6,23 +6,25 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from game import yieldgen, mine
-from gold_digger.models import UserProfile
+from gold_digger.models import UserProfile, ScanningEqipment
 import pickle
 from django.core.urlresolvers import reverse
 import random
 
 
 scan_dict = {
-    'Oil lamp' : 0.2,
-    'Map' : 0.3 ,
-    'Sonar' : 0.5,
-    'Goblin' : 0.6 ,
-    'Spell' : 0.8
+    'Oil lamp': 0.2,
+    'Map': 0.3,
+    'Sonar': 0.5,
+    'Goblin': 0.6,
+    'Spell': 0.8
 }
 
 def home(request):
 
     context = RequestContext(request)
+    request.session['time_remaining'] = 100
+    request.session['gold'] = 0
     return render_to_response('gold_digger/home.html', context)
 
 def about(request):
@@ -96,6 +98,8 @@ def user_login(request):
             if user.is_active:
 
                 login(request, user)
+                request.session['time_remaining'] = 100
+                request.session['gold'] = 0
                 return HttpResponseRedirect('/gold_digger/')
             else:
                 return HttpResponse("Your Gold Digger account is disabled.")
@@ -136,7 +140,7 @@ def game(request):
         print "GOT HERE"
         gen = yieldgen.YieldGenerator
         up_boundary = 50
-        down_boundary = 10
+        down_boundary = 40
         max_gold = random.randint(down_boundary, up_boundary)
         time_remaining = request.session['time_remaining']
 
@@ -153,22 +157,22 @@ def game(request):
         elif mine_type == 'random':
             print "random"
             request.session['mine_type'] = 'random'
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.RandomYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'quadratic':
             print "quadratic"
             request.session['mine_type'] = 'quadratic'
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.QuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'exponential':
             print "exponential"
             request.session['mine_type'] = 'exponential'
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.ExponentialYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'cubic':
             print "cubic"
             request.session['mine_type'] = 'cubic'
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
 
         accuracy = scan_dict[user.equipment]
         m = mine.Mine(gen, accuracy)
@@ -201,7 +205,7 @@ def game(request):
         blocks = pickle.loads(pickled_blocks)
         pointer = request.session['pointer']
         time_remaining = request.session['time_remaining']
-
+        session_gold = request.session['gold']
         print "Blocks Length", len(blocks)
 
         if time_remaining < 0:
@@ -210,22 +214,17 @@ def game(request):
         return render_to_response('gold_digger/game.html', {'blocks': blocks,
                                                             'user': user,
                                                             'pointer': pointer,
-                                                            'time_remaining': time_remaining
+                                                            'time_remaining': time_remaining,
+                                                            'gold': session_gold,
                                                             },
                                   context)
 
 @login_required
 def game_choice(request):
 
-
-
-
     context = RequestContext(request)
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
-    request.session['time_remaining'] = 100
-    request.session['game_gold'] = 0
-    request.session['game started'] = True
 
     return render_to_response('gold_digger/game_choice.html', {}, context)
 
@@ -249,7 +248,7 @@ def dig(request):
     request.session['pointer'] += 1
     request.session['time_remaining'] -= 3
 
-
+    request.session['gold'] += gold_dug
     user.gold += gold_dug
     user.save()
 
@@ -264,22 +263,44 @@ def dig(request):
 
 @login_required
 def move(request):
+    print request.GET['move']
+    if request.GET['move'] == "move mine":
+        context = RequestContext(request)
+        request.session['has_mine'] = False
+        request.session['time_remaining'] -= 5
+        return HttpResponseRedirect(reverse('game'), context)
+
+    elif request.GET['move'] == "choose mine":
+        context = RequestContext(request)
+        request.session['has_mine'] = False
+        request.session['time_remaining'] -= 5
+        return HttpResponseRedirect(reverse('gamechoice'), context)
+
+@login_required
+def back_to_main(request):
+
     context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
     request.session['has_mine'] = False
-    request.session['time_remaining'] -= 5
-    return HttpResponseRedirect(reverse('game'), context)
+    request.session['time_remaining'] = 0
+    user.gold -= request.session['gold']
+    user.save()
+
+    return HttpResponseRedirect(reverse('home'), context)
+
 
 @login_required
 def game_over(request):
     context = RequestContext(request)
+    request.session['has_mine'] = False
+    request.session['time_remaining'] = 100
     return render_to_response('gold_digger/game_over.html', {}, context)
 
 @login_required
-def store_gold(request):
+def shop(request):
     context = RequestContext(request)
+    equipment = ScanningEqipment.objects.get()
+    print equipment
+    return render_to_response('gold_digger/general_store.html', {'equipment': equipment}, context)
 
-    user = UserProfile.objects.get(user=request.user)
-    user.gold = int(request.session['game_gold'])
-    user.save()
-    return HttpResponseRedirect(reverse('game_choice'), context)
 
