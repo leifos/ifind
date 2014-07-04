@@ -1,25 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+
     <title>slowsearch</title>
 </head>
 <body>
-<h1> Welcome to slowsearch</h1>
-    {% block body_block %}
-    {% endblock %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+           <div class="container">
+               <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+               </button>
+               <a class="brand" href="/slowsearch/">Slowsearch</a>
 
-{% if user.is_authenticated %}
-    Hi, {{ user }}! <br>
-    <a href="/slowsearch/profile/{{ user.username }}/">Your Profile</a><br />
-    If you're not {{ user }}, <a href="/slowsearch/logout/">Logout</a><br />
+               <div class="nav-collapse collapse">
+                   <ul class="nav pull-right">
+                       {% if user.is_authenticated %}
+                        <li class="navbar-text">Welcome, {{ user.username }}!</li>
+                        <li><a href="/slowsearch/logout/">Logout</a></li>
+                       {% else %}
+                        <li><a href="/slowsearch/register/">Register</a></li>
+                        <li><a href="/slowsearch/login/">Login</a></li>
+                       {% endif %}
+                        <li><a href="/slowsearch/about">About</a> </li>
+                        <li><a href="/slowsearch/">Home</a></li>
+                   </ul>
+               </div>
+           </div>
+        </div>
+    </div>
 
-{% else %}
-    <h2>You're not logged in!</h2>
-    <a href="/slowsearch/login/">Login</a> <br>
-    <a href="/slowsearch/register/">Register Here</a> <br>
-{% endif %}
-<a href="/slowsearch/about">About</a><br />
-<a href="/slowsearch/">Return to the homepage</a>
+
+    <h1> Welcome to slowsearch</h1>
+        {% block body_block %}
+        {% endblock %}
+    <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>

@@ -96,6 +96,9 @@ def register(request):
             user_profile.user_since = datetime.datetime.today()
             user_profile.save()
 
+            user = authenticate(username=request.POST['username'], password=request.POST['password'])
+            login(request, user)
+
             # Update our variable to tell the template registration was successful.
             registered = True
 

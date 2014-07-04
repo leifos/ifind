@@ -4,32 +4,27 @@
 
     <form id="search" action="/slowsearch/search/" method="post">
         {% csrf_token %}
-            <input type=text name=query value="{{ query }}">
-
-            <input type=submit value="Search">
-
-        </form> <br><br>
+        <input type=text name=query value="{{ query }}">
+        <input type=submit value="Search">
+    </form> <br><br>
 
     {% if contacts %}
          {% for contact in contacts %}
-                <li>
-                    <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
-                    {{ contact.url }}<br>
-                    <em>{{ contact.summary }}</em>
-                </li> <br>
-            {% endfor %}
+            <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
+            <div style="font-size: smaller; color: green">{{ contact.url }}</div>
+            <em>{{ contact.summary }}</em>
+            <br>
+            <br>
+         {% endfor %}
 
     {% endif %}
     <br>
-
     {% if contacts.has_previous %}
-            <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
-        {% endif %}
+         <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
+    {% endif %}
+         Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
 
-            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
-
-        {% if contacts.has_next %}
-            <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
-        {% endif %}
-
+    {% if contacts.has_next %}
+        <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
+    {% endif %}
 {% endblock %}
