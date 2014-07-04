@@ -34,11 +34,16 @@ text-align:left;
 </table>
 
 <br>
-
-<a href = "/gold_digger/move/" >Go to new mine</a>
-
+<form action="/gold_digger/move/">
+<button type="submit" value="move mine" name="move">New mine</button>
+</form>
 <br>
 <br>
+
+Current gold: {{ gold }}
+<br>
+<br>
+
 <table style="width:300px;  height:50px">
 
 <tr>
@@ -70,11 +75,23 @@ text-align:left;
         {% endif %}
     {% endfor %}
         </table>
+
 {% endif %}
 {% if pointer == blocks|length %}
     <a href = "/gold_digger/dig/" >Next mine?</a><br>
+
 {% endif %}
-<a href = "/gold_digger/" >Back to Main</a><br>
-<a href = "/gold_digger/game_choice/" >Back to choose game</a>
+<form action="/gold_digger/back_to_main/">
+    <button type="submit" onclick="myFunction()" value="Back to main">Back to main</button><br>
+</form>
+
+<script>
+function myFunction() {
+    alert("You will lose {{ gold }} gold!");
+}
+</script>
+<form action="/gold_digger/move/">
+<button type="submit" value="choose mine" name="move">Choose mine</button>
+</form>
 </body>
 </html>
