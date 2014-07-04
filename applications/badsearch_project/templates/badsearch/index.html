@@ -1,15 +1,15 @@
 {% extends 'badsearch/base.html' %}
 {% load static %}
-<link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
 
 {% block body_block %}
 <div class="hero-unit">
         {% if user.is_authenticated %}
         <div align="center">
-        <h1>Welcome to Badsearch, {{ user.username }}!<br><br></h1>
+        <h1>Welcome to Badsearch, {{ user.username }}!<br></h1>
+        Begin searching below:<br><br><br><br>
         <form id="search" action="/badsearch/search/" method="post">
         {% csrf_token %}
-            <input type="text" class=".resizedTextbox" name="query" value= "{{ query }}"  id="query" />
+            <input type="text" size="60" name="query" value= "{{ query }}"  id="query" />
             <input class="btn btn-primary" type="submit" name="submit" value="Search" />
         </form>
         </div>

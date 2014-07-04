@@ -6,22 +6,23 @@
 
 {% block body_block %}
 <div class="hero-unit">
-    <h1>Search with BadSearch</h1>
+    <h3>Your results from BadSearch</h3>
     <br/>
 
-    <div class="container-fluid">
+    <div class="hero-unit">
         <form class="form-signin span8" id="user_form" method="post" action="/badsearch/search/">
             {% csrf_token %}
             <input type="text" size="50" name="query" value= "{{ query }}"  id="query" />
             <input class="btn btn-primary" type="submit" name="submit" value="Search" />
-            <br />
+            <br /><br><br>
         </form>
-
+    </div>
+</div>
         {% if result_list %}
-        <div style="clear: both;">
+        <div align="left" style="clear: both;">
             <ul>
             {% for result in result_list %}
-                    <strong><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></strong><br />
+                    <strong><u><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></u></strong><br />
                     <div style="font-size: smaller; color: green">{{ result.url }}</div>
                     <em>{{ result.summary }}</em><br>
                 <hr>

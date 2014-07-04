@@ -3,11 +3,10 @@
 
 {% block body_block %}
 <div class="hero-unit">
-    <h1>Login to Badsearch</h1>
 
-    <div class="container">
-    <form class="form-signin span4" id="login_form" method="post" action="/badsearch/login/">
-        <h2 class="form-signin-heading">Please sign in</h2>
+    <div align="center" class="container">
+    <form id="login_form" method="post" action="/badsearch/login/">
+       <br> <h2 class="form-signin-heading">Sign in to Badsearch</h2> <br><br>
         {% csrf_token %}
 
         {% if bad_details %}
@@ -15,15 +14,22 @@
         {% elif disabled_account %}
         <p><strong>Your Badsearch account is currently disabled; we can't log you in!</strong></p>
         {% endif %}
-
-        Username: <input type="text" class="input-block-level" placeholder="Username" name="username" value="" size="50" />
+        <fieldset></fieldset>
+        <div class="form-group">
+        <label for="username" class="col-lg-2 control-label">User Name</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" value="" size="50" />
         <br />
-        Password: <input type="password" class="input-block-level" placeholder="Password" name="password" value="" size="50" />
+
+        <label for="password" class="col-lg-2 control-label">Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" value="" size="50" />
         <br />
         <button class="btn btn-primary" type="submit">Sign in</button>
+         </div>
+    </fieldset>
     </form>
 
     </div>
     <!-- /container -->
 </div>
 {% endblock %}
+

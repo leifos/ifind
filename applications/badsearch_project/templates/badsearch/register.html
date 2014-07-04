@@ -1,11 +1,8 @@
 {% extends 'badsearch/base.html' %}
 
 {% block body_block %}
-<div class="hero-unit">
-    <h1>Register with Badsearch</h1>
-    <br />
 
-    <div class="container">
+        <div align="left">
         {% if registered %}
         <p>Thank you for registering.</p>
 
@@ -18,16 +15,17 @@
             <!-- Display each form here -->
 
             Thank you for your interest in participating in this experiment.<br />
-        This search engine is powered by a popular search engine please use this application
+        This application is powered by a popular search engine, please use this application
         in place of your favourite search engine for the duration of this experiment.<br />
 
         Please fill in your details below and agree to the terms and conditions to begin searching.<br><br>
-
+            <table>
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            {{ demographics_form.as_p }}
-
+            {{ user_form.as_table }}
+            {{ profile_form.as_table }}
+            {{ demographics_form.as_table }}
+</table>
+            <br><br>
         <strong>Study Information:</strong><br>
         Badsearch is a search application developed by Iain Hendry, an MSc IT student at the University of Glasgow,
         as part of a research project. Please read the Study Information below and tick the boxes to agree to the terms

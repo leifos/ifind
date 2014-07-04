@@ -4,54 +4,73 @@
 
 <html>
     <head>
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
+      <script src="../bower_components/respond/dest/respond.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
-    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css'%} " rel="stylesheet" media="screen">
 
 
-        <title>Badsearch</title>
+        <title>Badsearch! {% block title %}{% endblock %}</title>
     </head>
 
     <body>
 
-         <div class="navbar navbar-inverse navbar-fixed-top">
-   <div class="navbar-inner">
-       <div class="container">
-           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-           </button>
-           <a class="brand" href="/badsearch/">Badsearch!</a>
 
-           <div class="nav-collapse collapse">
-               <ul class="nav pull-right">
-                   {% if user.is_authenticated %}
-                    <li class="navbar-text">Welcome, {{ user.username }}!</li>
-                    <li><a href="/badsearch/logout/">Logout</a></li>
-                   {% else %}
-                    <li><a href="/badsearch/register/">Register</a></li>
-                    <li><a href="/badsearch/login/">Login</a></li>
-                   {% endif %}
-               </ul>
-               <ul class="nav">
-                   <li><a href="/badsearch/">Search</a></li>
-                   {% if user.is_authenticated %}
-                    <li><a href="/badsearch/profile/">Profile</a></li>
-                   {% endif %}
-                   <li><a href="/badsearch/about/">About</a></li>
-               </ul>
-           </div>
-           <!--/.nav-collapse -->
-       </div>
-   </div>
-</div>
-         <div class="container-fluid">
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/badsearch/">Badsearch!</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+              <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+
+
+            {% if user.is_authenticated %}
+                 <ul class="nav navbar-nav">
+                <li class="navbar-brand"> Welcome {{ user.username}}! </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+             <li><a href="/badsearch/">Search</a></li>
+             <li><a href="/badsearch/profile">Profile</a></li>
+            <li><a href="/badsearch/about">About</a></li>
+            <li><a href="/badsearch/logout">Sign Out</a></li>
+                </ul>
+
+        {% else %}
+                <ul class="nav navbar-nav">
+                <li class="navbar-brand">Welcome Stranger!</li>
+                </ul>
+
+             <ul class="nav navbar-nav navbar-right">
+             <li ><a href="/badsearch">Search</a></li>
+             <li ><a href="/badsearch/about">About</a></li>
+             <li ><a href="/badsearch/register">Register</a></li>
+             <li ><a href="/badsearch/login">Sign In</a></li>
+             </ul>
+        {% endif %}
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+        <center>
+
+    <div class="container">
+
+      <div class="page-header" id="banner">
+
+         <div class="container-fluid" style="max-width:800px">
     <div class="row-fluid">
-        <!--/span-->
-        <div class="span9">
+
+        <div class="span8">
             {% block body_block %}
             {% endblock %}
         </div>
@@ -63,13 +82,10 @@
 
 <hr>
 
-<footer>
-    <div class="container">
-        <p>&copy; Badsearch 2013</p>
-    </div>
-</footer>
 
-    <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootswatch.js' %}"></script>
     </body>
 </html>
