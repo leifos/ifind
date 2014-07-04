@@ -24,22 +24,39 @@
                <div class="nav-collapse collapse">
                    <ul class="nav pull-right">
                        {% if user.is_authenticated %}
-                        <li class="navbar-text">Welcome, {{ user.username }}!</li>
-                        <li><a href="/slowsearch/logout/">Logout</a></li>
-                       {% else %}
-                        <li><a href="/slowsearch/register/">Register</a></li>
-                        <li><a href="/slowsearch/login/">Login</a></li>
-                       {% endif %}
-                        <li><a href="/slowsearch/about">About</a> </li>
-                        <li><a href="/slowsearch/">Home</a></li>
+                            <li class="navbar-text">Welcome, {{ user.username }}!</li>
+                           {% if 'profile' not in request.get_full_path %}
+                            <li><a href="/slowsearch/profile/{{ user.username }}">Profile</a> </li>
+                           {% endif %}
+
+                            <li><a href="/slowsearch/logout/">Logout</a></li>
+                        {% else %}
+                            {% if request.get_full_path != "/slowsearch/register/" %}
+                               <li><a href="/slowsearch/register/">Register</a></li>
+                            {% endif %}
+                            {% if request.get_full_path != "/slowsearch/login/" %}
+                            <li><a href="/slowsearch/login/">Login</a></li>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if request.get_full_path != "/slowsearch/" %}
+                            <li><a href="/slowsearch/">Home</a></li>
+                        {% endif %}
+
+                        {% if request.get_full_path != "/slowsearch/about/" %}
+                            <li><a href="/slowsearch/about">About</a> </li>
+                        {% endif %}
+
+
+
+
                    </ul>
                </div>
            </div>
         </div>
     </div>
+    <h1> Welcome to slowsearch </h1>
 
-
-    <h1> Welcome to slowsearch</h1>
         {% block body_block %}
         {% endblock %}
     <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>

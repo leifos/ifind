@@ -1,20 +1,21 @@
 {% extends 'slowsearch/base.html' %}
 
 {% block body_block %}
-
-        <h2>Register</h2>
-
-        {% if registered %}
+    {% if registered %}
        <strong>Thank you for registering!</strong>
 
-        {% else %}
-       <strong>Register here!</strong><br />
+    {% else %}
+        <strong>Register here!</strong><br />
 
-        <form id="reg_form" method="post" action="/slowsearch/register/"
-                enctype="multipart/form-data">
+    <form id="reg_form" method="post" action="/slowsearch/register/"
+            enctype="multipart/form-data">
 
-            {% csrf_token %}
-            {{ user_form.as_p }}
+        {% csrf_token %}
+        {% for field in user_form %}
+            {{ field.label }}:
+            {{ field }}<br>
+        {% endfor %}
+
 
 
         <strong>Thank you for agreeing to participate in this experiment. For the duration of the experimental period,
@@ -45,12 +46,43 @@
 
         </ul>
 
-             {{ validation_form.as_p }}
-             {{ demog_form.as_p }}
-            <!-- Provide a button to click to submit the form. -->
-            <input type="submit" name="submit" value="Register" />
-        </form>
+             {% for field in validation_form %}
+                {{ field.label }}
+                {{ field }}<br><br>
+            {% endfor %}<br>
+
+
+             {% for field in demog_form %}
+                {{ field.label }}
+                {{ field }}<br>
+            {% endfor %}
+
+        {% if user_form.errors or demog_form.errors or validation_form.errors %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">Close</button>
+
+                {% for field in user_form %}
+                    {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in validation_form %}
+                    {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in demog_form %}
+                    {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endif %}
+        <input type="submit" name="submit" value="Register" />
+        </form>
+{% endif %}
 
 
 {% endblock %}

@@ -52,7 +52,7 @@ EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
 class UKDemographicsSurveyForm(forms.ModelForm):
-    age = forms.IntegerField(label="Please provide your age (in years).", max_value=100, min_value=0, required=False)
+    age = forms.IntegerField(label="Please provide your age (in years).", max_value=100, min_value=18, required=False)
     sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.",
                           required=False)
     education_undergrad = forms.CharField(widget=forms.Select(choices=YES_CHOICES),
