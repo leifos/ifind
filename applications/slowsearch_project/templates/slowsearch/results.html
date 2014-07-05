@@ -11,7 +11,8 @@
     {% if contacts %}
          {% for contact in contacts %}
             <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
-            <div style="font-size: smaller; color: green">{{ contact.url }}</div>
+            <div style="font-size: smaller; color: green">{% if contact.url|length > 70 %}{{ contact.url|slice:"70" }}...
+            {% else %}{{ contact.url }}{% endif %}</div>
             <em>{{ contact.summary }}</em>
             <br>
             <br>
