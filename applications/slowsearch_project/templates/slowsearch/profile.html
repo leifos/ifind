@@ -6,9 +6,11 @@
 
         Age: {{ demographics.age }}<br>
         Gender: {{ demographics.sex }}<br>
-        University Education: {{ demographics.education_undergrad }}<br>
-        Major: {{ demographics.education_undergrad_major }}<br>
-        Year: {{ demographics.education_undergrad_year }}<br><br>
+        {% if demographics.education_undergrad == "Yes" %}
+            University Education: {{ demographics.education_undergrad }}<br>
+            Major: {{ demographics.education_undergrad_major }}<br>
+            Year: {{ demographics.education_undergrad_year }}<br><br>
+        {% endif %}
         User Since: {{ profile.user_since }}<br>
         Number of Queries: {{ profile.queries_submitted }} <br>
         Number of URLs Visited: {{ profile.links_visited }} <br>

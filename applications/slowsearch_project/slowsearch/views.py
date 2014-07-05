@@ -65,11 +65,12 @@ def register(request):
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UKDemographicsSurveyForm
         user_form = UserForm(data=request.POST)
+        demog_form = UKDemographicsSurveyForm(data=request.POST)
         validation_form = RegValidation(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
         # If the forms are valid...
-        if user_form.is_valid() and validation_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and demog_form.is_valid() and validation_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -216,14 +217,9 @@ def user_login(request):
         return render_to_response('slowsearch/login.html', {}, context)
 
 
-# Use the login_required() decorator to ensure only those logged in can access the view.
-@login_required
 def user_logout(request):
-    # Since we know the user is logged in, we can now just log them out.
-    logout(request)
 
-    # Take the user back to the homepage.
-    return HttpResponseRedirect('/slowsearch/')
+    return render_to_response('/slowsearch/logged_out.html')
 
 
 # perform a basic search using the query entered by the user

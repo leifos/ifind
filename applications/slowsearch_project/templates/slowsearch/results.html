@@ -6,7 +6,7 @@
         {% csrf_token %}
         <input type=text name=query value="{{ query }}">
         <input type=submit value="Search">
-    </form> <br><br>
+    </form>
 
     {% if contacts %}
          {% for contact in contacts %}
