@@ -15,6 +15,7 @@ urlpatterns = patterns('',
         url(r'^game_over/$', views.game_over, name='game_over'),
         url(r'^back_to_main/$', views.back_to_main, name='back_to_main'),
         url(r'^shop/$', views.shop, name='shop'),
+        url(r'^buy/$', views.buy, name='buy'),
 
 
 )

@@ -12,13 +12,13 @@ from django.core.urlresolvers import reverse
 import random
 
 
-scan_dict = {
-    'Oil lamp': 0.2,
-    'Map': 0.3,
-    'Sonar': 0.5,
-    'Goblin': 0.6,
-    'Spell': 0.8
-}
+# scan_dict = {
+#     'Oil lamp': 0.2,
+#     'Map': 0.3,
+#     'Sonar': 0.5,
+#     'Guide Dwarf': 0.6,
+#     'Spell': 0.8
+# }
 
 def home(request):
 
@@ -174,7 +174,7 @@ def game(request):
             request.session['mine_type'] = 'cubic'
             gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
 
-        accuracy = scan_dict[user.equipment]
+        accuracy = user.equipment.modifier
         m = mine.Mine(gen, accuracy)
 
         blocks = m.blocks
@@ -299,8 +299,27 @@ def game_over(request):
 @login_required
 def shop(request):
     context = RequestContext(request)
-    equipment = ScanningEqipment.objects.get()
+    equipment = ScanningEqipment.objects.all()
     print equipment
     return render_to_response('gold_digger/general_store.html', {'equipment': equipment}, context)
+
+def buy(request):
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+    item = request.GET['buy']
+    print item
+    object_item = ScanningEqipment.objects.get(name=item)
+    print object_item
+    item_price = object_item.price
+    if user.gold >= item_price:
+        user.equipment = object_item
+        user.save()
+        print user.equipment
+        return HttpResponse("Item purchased")
+    else:
+        return HttpResponse("You don't have enough gold to buy this item!")
+
+
+
 
 

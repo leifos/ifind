@@ -1,6 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+class ScanningEqipment(models.Model):
+    name = models.CharField(max_length=100)
+    modifier = models.FloatField(default=0.2)
+    image = models.ImageField(upload_to='icons')
+    price = models.IntegerField(default=0)
+
+    def image_tag(self):
+        return u'<img src="%s" height = 100 />' % (self.image.url)
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
+
+    def __unicode__(self):
+        return self.name
+
+
 class UserProfile(models.Model):
     SPELL = 'Spell'
     GOBLIN = 'Goblin'
@@ -35,7 +51,7 @@ class UserProfile(models.Model):
 
     picture = models.ImageField(upload_to='profile_pictures', blank=True, default='profile_pictures/default_profile.jpg')
     location = models.CharField(max_length = 100)
-    equipment = models.CharField(max_length=10, choices=EQUIPMENT, default=OIL_LAMP)
+    equipment = models.ForeignKey(ScanningEqipment)
     vehicle = models.CharField(max_length=15, choices=VEHICLE, default=WHEELBARREL)
     gold = models.IntegerField(default=0)
     all_time_max_gold = models.IntegerField(default=0)
@@ -50,15 +66,3 @@ class UserProfile(models.Model):
         return self.user.username
 
 
-class ScanningEqipment(models.Model):
-    name = models.CharField(max_length=100)
-    modifier = models.FloatField(default=0.2)
-    image = models.ImageField(upload_to='icons')
-
-    def image_tag(self):
-        return u'<img src="%s" height = 100 />' % (self.image.url)
-    image_tag.short_description = 'Image'
-    image_tag.allow_tags = True
-
-    def __unicode__(self):
-        return self.name

@@ -3,27 +3,37 @@
 <head>
     <title>General Store</title>
 </head>
+<style>
+table,tr,td
+{
+border:1px solid black;
+}
+</style>
 <body>
 <h1>General store</h1>
-<table>
+<h3>Scanning Equipment</h3>
+Use these items to view more accurate cues!
+<br>
+<br>
+<table style="width:150px;  height:100px">
+
 <tr>
-    <td>Scanning equipment</td>
+    <th>Object</th>
+    <th></th>
+    <th>Modifier</th>
+    <th>Price</th>
+    <th></th>
 </tr>
+{% for eq in equipment %}
 <tr>
-    {% for eq in equipment %}
-        <td>{{ equipment.name }}</td>
-    {% endfor %}
+
+    <td>{{ eq.name }}</td>
+    <td><img src ="media/{{ eq.image }}" title = "{{ eq.name }}, modifier: {{ eq.modifier }}" height = "50px"></td>
+    <td>{{ eq.price }}</td>
+    <td><form action="/gold_digger/buy/"><button type="submit" value="{{ eq.name }}" name="buy">Buy</button></form></td>
+
 </tr>
-<tr>
-    {% for eq in equipment %}
-        <td>{{ equipment.image }}</td>
-    {% endfor %}
-</tr>
-<tr>
-    <td></td>
-     <td>Vehicles</td>
-    <td>Digging equipment</td>
-</tr>
+{% endfor %}
 </table>
 </body>
 </html>

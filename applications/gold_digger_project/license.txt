@@ -1,0 +1,71 @@
+Licences
+
+Scanning
+--------------
+
+
+SPELL
+
+location: laptop
+license: freeware
+
+GOBLIN / DWARF
+
+loaction: laptop
+license: ?
+
+SONAR
+
+location: laptop
+license: freeware
+
+MAP
+
+location: toy box
+license: freeware
+
+OIL LAMP 
+
+location: laptop
+license: ?
+
+
+Vehicle
+-----------
+
+WHEELBARROW
+
+location: laptop
+license: ?
+
+MULE
+
+location: toy box
+license: freeware (morgan3d)
+
+CART
+
+location:
+license:
+
+TRUCK
+
+location:
+license:
+
+MECHA
+
+location:
+license:
+
+
+
+
+Military Icons Set
+
+141 Military Icons Set by AngryMeteor.com under 
+CC-BY 3.0 license - http://opengameart.org/content/141-military-icons-set
+
+Other military Icons
+
+Credit to Stephen "Redshrike" Challener, and a link back to www.OpenGameArt.org
