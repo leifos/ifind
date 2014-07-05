@@ -65,12 +65,11 @@ def register(request):
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UKDemographicsSurveyForm
         user_form = UserForm(data=request.POST)
-        demog_form = UKDemographicsSurveyForm(data=request.POST)
         validation_form = RegValidation(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
         # If the forms are valid...
-        if user_form.is_valid() and demog_form.is_valid() and validation_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and validation_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -78,11 +77,6 @@ def register(request):
             # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
-
-            demog = demog_form.save(commit=False)
-            demog.user = user
-
-            demog.save()
 
             user_profile = profile_form.save(commit=False)
             user_profile.user = user
@@ -106,23 +100,53 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, demog_form.errors, validation_form.errors, profile_form.errors
+            print user_form.errors, validation_form.errors, profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        demog_form = UKDemographicsSurveyForm()
         validation_form = RegValidation()
         profile_form = UserProfileForm()
 
     # Render the template depending on the context.
     return render_to_response(
             'slowsearch/register.html',
-            {'user_form': user_form, 'demog_form': demog_form, 'validation_form': validation_form,
+            {'user_form': user_form, 'validation_form': validation_form,
              'profile_form': profile_form,
              'registered': registered},
             context)
+
+
+def demographic(request):
+    # Like before, get the request's context.
+    context = RequestContext(request)
+
+    # A boolean value for telling the template whether the registration was successful.
+    # Set to False initially. Code changes value to True when registration succeeds.
+    completed = False
+    user = request.user
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        demog_form = UKDemographicsSurveyForm(data=request.POST)
+
+        if demog_form.is_valid():
+            demog = demog_form.save(commit=False)
+            demog.user = user
+
+            demog.save()
+
+            completed = True
+
+        else:
+            print demog_form.errors
+
+    else:
+        demog_form = UKDemographicsSurveyForm
+
+    return render_to_response('slowsearch/demographic.html', {'demog_form': demog_form, 'completed': completed},
+                              context)
+
 
 @login_required()
 def final_survey(request):

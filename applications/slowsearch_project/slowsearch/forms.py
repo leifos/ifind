@@ -5,17 +5,18 @@ from django import forms
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(), label='Password')
+    password = forms.CharField(widget=forms.PasswordInput(), label='Password', required=True)
     password2 = forms.CharField(widget=forms.PasswordInput(), label='Repeat Password')
 
-    def clean(self):
+    def clean_password2(self):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
 
-        if password and password != password2:
-            raise forms.ValidationError("Passwords don't match")
-
-        return self.cleaned_data
+        if not password2:
+            raise forms.ValidationError("You must confirm your password")
+        if password != password2:
+            raise forms.ValidationError("Your passwords do not match")
+        return password2
 
     def clean_username(self):
         username = self.cleaned_data['username']

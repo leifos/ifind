@@ -1,0 +1,33 @@
+{% extends 'slowsearch/base.html' %}
+
+{% block body_block %}
+    {% if completed %}
+    Thank you for completing the survey! <a href = "/slowsearch/">Start Searching</a>
+
+    {% else %}
+
+         <form id="reg_form" method="post" action="/slowsearch/demographic/"
+                enctype="multipart/form-data">
+
+         {% csrf_token %}
+
+        {% for field in demog_form %}
+            {{ field.label }}
+            {{ field }}<br>
+        {% endfor %}
+
+         {% if demog_form.errors %}
+             <div class="alert alert-error">
+             <button type="button" class="close" data-dismiss="alert">Close</button>
+
+             {% for field in demog_form %}
+                {% if field.errors %}
+                <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %}
+             </div>
+         {% endif %}
+              <input type="submit" name="submit" value="Register" />
+        </form>
+    {% endif %}
+{% endblock %}

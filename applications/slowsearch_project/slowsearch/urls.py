@@ -14,5 +14,6 @@ urlpatterns = patterns('',
         # url(r'^survey/(<?P<surveyid>\w+)/$', views.survey, name='survey'),
         url(r'^search/$', views.search, name='search'),
         url(r'^finalsurvey/$', views.final_survey, name='finalsurvey'),
+        url(r'^demographic/$', views.demographic, name='demographic'),
         url(r'^goto/(.*)/(.*)/$', views.goto, name='goto'),
         )
