@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from game import yieldgen, mine
-from gold_digger.models import UserProfile, ScanningEqipment
+from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle
 import pickle
 from django.core.urlresolvers import reverse
 import random
@@ -225,7 +225,7 @@ def game_choice(request):
     context = RequestContext(request)
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
-
+    request.session['purchase'] = False
     return render_to_response('gold_digger/game_choice.html', {}, context)
 
 @login_required
@@ -299,25 +299,61 @@ def game_over(request):
 @login_required
 def shop(request):
     context = RequestContext(request)
-    equipment = ScanningEqipment.objects.all()
+    equipment = ScanningEquipment.objects.all()
+    vehicles = Vehicle.objects.all()
+    tools = DiggingEquipment.objects.all()
+
     print equipment
-    return render_to_response('gold_digger/general_store.html', {'equipment': equipment}, context)
+    return render_to_response('gold_digger/general_store.html', {'equipment': equipment,
+                                                                 'vehicles': vehicles,
+                                                                 'tools': tools
+                                                                 },
+                              context)
 
 def buy(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    item = request.GET['buy']
-    print item
-    object_item = ScanningEqipment.objects.get(name=item)
-    print object_item
-    item_price = object_item.price
-    if user.gold >= item_price:
-        user.equipment = object_item
-        user.save()
-        print user.equipment
-        return HttpResponse("Item purchased")
-    else:
-        return HttpResponse("You don't have enough gold to buy this item!")
+
+    print request.POST
+
+    if 'buy equipment' in request.POST:
+        item = request.POST['buy equipment']
+        print type(user.gold)
+        if user.gold >= item.price:
+            user.equipment = item
+            user.save()
+            request.session['purchase'] = True
+            return HttpResponseRedirect(reverse('shop'), context)
+
+        else:
+            request.session['purchase'] = False
+            return HttpResponseRedirect(reverse('shop'), context)
+
+    if 'buy tool' in request.POST:
+        item = request.POST['buy tool']
+        print item
+        if user.gold >= item.price:
+            user.tool = item
+            user.save()
+            request.session['purchase'] = True
+            return HttpResponseRedirect(reverse('shop'), context)
+
+        else:
+            request.session['purchase'] = False
+            return HttpResponseRedirect(reverse('shop'), context)
+
+    if 'buy vehicle' in request.POST:
+        item = request.POST['buy vehicle']
+        print item
+        if user.gold >= item.price:
+            user.vehicle = item
+            user.save()
+            request.session['purchase'] = True
+            return HttpResponseRedirect(reverse('shop'), context)
+
+        else:
+            request.session['purchase'] = False
+            return HttpResponseRedirect(reverse('shop'), context)
 
 
 

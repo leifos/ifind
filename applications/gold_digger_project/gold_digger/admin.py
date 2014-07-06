@@ -1,5 +1,5 @@
 from django.contrib import admin
-from gold_digger.models import UserProfile, ScanningEqipment
+from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle
 from django.contrib.auth.models import User
 
 class UserAdmin2 (admin.ModelAdmin):
@@ -10,13 +10,26 @@ class GoldAdmin(admin.ModelAdmin):
     list_display = ('user', 'picture', 'location')
     readonly_fields = ('image_tag',)
 
-class ScanAdmin (admin.ModelAdmin):
-    list_display = ('name', 'modifier')
+class ScanAdmin(admin.ModelAdmin):
+    list_display = ('name', 'modifier', 'price')
+    readonly_fields = ('image_tag',)
+
+class ToolAdmin(admin.ModelAdmin):
+    list_display = ('name', 'modifier', 'price')
+    readonly_fields = ('image_tag',)
+
+class VehicleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'modifier', 'price')
     readonly_fields = ('image_tag',)
 
 
 admin.site.register(UserProfile, GoldAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin2)
-admin.site.register(ScanningEqipment, ScanAdmin)
+admin.site.register(ScanningEquipment, ScanAdmin)
+admin.site.register(Vehicle, VehicleAdmin)
+admin.site.register(DiggingEquipment, ToolAdmin)
+
+
+
 

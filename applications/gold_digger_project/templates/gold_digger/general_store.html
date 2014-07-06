@@ -11,6 +11,9 @@ border:1px solid black;
 </style>
 <body>
 <h1>General store</h1>
+{% if purchase == True %}
+    Item Purchased!
+{% endif %}
 <h3>Scanning Equipment</h3>
 Use these items to view more accurate cues!
 <br>
@@ -29,11 +32,67 @@ Use these items to view more accurate cues!
 
     <td>{{ eq.name }}</td>
     <td><img src ="media/{{ eq.image }}" title = "{{ eq.name }}, modifier: {{ eq.modifier }}" height = "50px"></td>
+    <td>{{ eq.modifier }}</td>
     <td>{{ eq.price }}</td>
-    <td><form action="/gold_digger/buy/"><button type="submit" value="{{ eq.name }}" name="buy">Buy</button></form></td>
+    <td><form method="post" action="/gold_digger/buy/">{% csrf_token %}<button type="submit" value="{{ eq.name }}" name="buy equipment">Buy</button></form></td>
 
 </tr>
 {% endfor %}
 </table>
+<h3>Vehicles</h3>
+Buy a vehicle to spend less gold moving to a new mine!
+<br>
+<br>
+<table style="width:150px;  height:100px">
+    <tr>
+        <th>Vehicle</th>
+        <th></th>
+        <th>Modifier</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    {% for v in vehicles %}
+    <tr>
+
+        <td>{{ v.name }}</td>
+        <td><img src ="media/{{ v.image }}" title = "{{ v.name }}, modifier: {{ v.modifier }}" height = "50px"></td>
+        <td>{{ v.modifier }}</td>
+        <td>{{ v.price }}</td>
+        <td><form method="post" action="/gold_digger/buy/">{% csrf_token %}<button type="submit" value="{{ v.name }}" name="buy vehicle">Buy</button></form></td>
+
+    </tr>
+{% endfor %}
+</table>
+
+<h3>Tools</h3>
+Buy new tools to get more gold from each dig!
+<br>
+<br>
+<table style="width:150px;  height:100px">
+    <tr>
+        <th>Tool</th>
+        <th></th>
+        <th>Modifier</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    {% for t in tools %}
+    <tr>
+
+        <td>{{ t.name }}</td>
+        <td><img src ="media/{{ t.image }}" title = "{{ t.name }}, modifier: {{ t.modifier }}" height = "50px"></td>
+        <td>{{ t.modifier }}</td>
+        <td>{{ t.price }}</td>
+        <td><form method="post" action="/gold_digger/buy/">{% csrf_token %}<button type="submit" value="{{ t.name }}" name="buy tool">Buy</button></form></td>
+
+    </tr>
+{% endfor %}
+</table>
+<br>
+<br>
+
+<a href="/gold_digger/game_choice/">Game choice</a><br>
+<a href = "/gold_digger/" >Back to Main</a>
+
 </body>
 </html>

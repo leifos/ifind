@@ -16,15 +16,19 @@ text-align:left;
 <table style="width:50px;  height:100px">
     <tr>
         <td>Equipment:
-        <td><img src="{{ user.equipment.image.url}}" height="50px"></td>
+        <td><img src="{{ user.equipment.image.url}}" height="75px"></td>
     </tr>
     <tr>
         <td>Vehicle:</td>
-        <td>{{ user.vehicle }}</td>
+        <td><img src="{{ user.vehicle.image.url }}" height="75px"></td>
+    </tr>
+    <tr>
+        <td>Tool:</td>
+        <td><img src="{{ user.tool.image.url }}" height="75px"></td>
     </tr>
     <tr>
         <td>Total:  {{user.gold }}</td>
-        <td><img src="/media/Chest.png"></td>
+        <td><img src="/media/icons/Items/Chest.png"></td>
     </tr>
     <tr>
         <td><strong>Time remaining:</strong></td>
@@ -40,7 +44,7 @@ text-align:left;
 <br>
 <br>
 
-Current gold: {{ gold }} <img src="/media/Gold.png">
+Current gold: {{ gold }} <img src="/media/icons/Items/Gold.png">
 <br>
 <br>
 
