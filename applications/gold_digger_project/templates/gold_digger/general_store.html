@@ -12,8 +12,14 @@ border:1px solid black;
 <body>
 <h1>General store</h1>
 {% if purchase == True %}
-    Item Purchased!
+    <h2>Item Purchased!</h2>
 {% endif %}
+<table>
+<tr>
+    <td><img src ="media/Icons/Items/Chest.png" title = "gold" height = "50px"></td>
+    <td>Current Gold:{{ gold }}</td>
+</tr>
+</table>
 <h3>Scanning Equipment</h3>
 Use these items to view more accurate cues!
 <br>

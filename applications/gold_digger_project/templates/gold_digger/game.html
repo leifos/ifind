@@ -12,28 +12,30 @@ text-align:left;
 </style>
 <body>
 <h1> Gold Digger</h1>
-
+<h2>{{ mine_type }} mine</h2>
 <table style="width:50px;  height:100px">
     <tr>
         <td>Equipment:
-        <td><img src="{{ user.equipment.image.url}}" height="75px"></td>
+        <td><img src="{{ user.equipment.image.url}}"  title = "{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}" height="75px"></td>
     </tr>
     <tr>
         <td>Vehicle:</td>
-        <td><img src="{{ user.vehicle.image.url }}" height="75px"></td>
+        <td><img src="{{ user.vehicle.image.url }}" title = "{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}" height="75px"></td>
     </tr>
     <tr>
         <td>Tool:</td>
-        <td><img src="{{ user.tool.image.url }}" height="75px"></td>
+        <td><img src="{{ user.tool.image.url }}" title = "{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" height="75px"></td>
     </tr>
     <tr>
+        <td><img src="/media/icons/Items/Chest.png" height="50px"></td>
         <td>Total:  {{user.gold }}</td>
-        <td><img src="/media/icons/Items/Chest.png"></td>
+
     </tr>
     <tr>
         <td><strong>Time remaining:</strong></td>
-        <td></td>
-        <td> {{ time_remaining }} </td>
+
+        <td><progress value="{{ time_remaining }}" max="100"></progress></td>
+        <td>{{ time_remaining }}</td>
     </tr>
 </table>
 
@@ -44,7 +46,7 @@ text-align:left;
 <br>
 <br>
 
-Current gold: {{ gold }} <img src="/media/icons/Items/Gold.png">
+<img src="/media/icons/Items/Gold.png"> Current gold: {{ gold }}
 <br>
 <br>
 
