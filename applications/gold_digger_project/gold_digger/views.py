@@ -123,6 +123,13 @@ def user_logout(request):
 
 
 @login_required
+def user_profile(request):
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+
+    return render_to_response('gold_digger/profile.html', {'user': user}, context)
+
+@login_required
 def game(request):
 
     context = RequestContext(request)
@@ -205,6 +212,8 @@ def game(request):
         time_remaining = request.session['time_remaining']
         session_gold = request.session['gold']
         mine_type = request.session['mine_type']
+        gold_extracted = request.session['gold_extracted']
+
         print "Blocks Length", len(blocks)
 
         if time_remaining < 0:
@@ -215,7 +224,8 @@ def game(request):
                                                             'pointer': pointer,
                                                             'time_remaining': time_remaining,
                                                             'gold': session_gold,
-                                                            'mine_type': mine_type}, context)
+                                                            'mine_type': mine_type,
+                                                            'gold_extracted': gold_extracted}, context)
 
 
 @login_required
@@ -253,6 +263,7 @@ def dig(request):
     user.save()
 
     blocks[pos].dug = True
+    blocks[pos].gold_extracted = gold_extracted
 
     pickled_blocks = pickle.dumps(blocks)
     request.session['pickle'] = pickled_blocks
@@ -382,7 +393,7 @@ def buy(request):
             return HttpResponseRedirect(reverse('shop'), context)
 
 
-@login_required
+
 def leaderboards(request):
     context = RequestContext(request)
     order = request.session['order']

@@ -1,44 +1,81 @@
+{% extends "gold_digger/base.html" %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+
     <title>Gold Digger</title>
+
 </head>
 <body>
-<h1>Gold Digger</h1><br>
-{% if user.is_authenticated %}
-I ain't sayin' she a GOLD DIGGER... {{ user.username }}!<br>
+{% block body_block %}
+<div class="jumbotron">
+<h1>Gold Digger</h1>
+</div>
+<hr>
+
+
+
+  <div class="container-fluid">
+
+      <div class="col-xs-6 col-md-9">
+
+            <ul class="nav nav-pills nav-stacked">
+
+                {% if user.is_authenticated %}
+                    <li class="active"><a href = "/gold_digger/game_choice/">Play!</a></li>
+                    <li><a href = "/gold_digger/profile/">Your profile</a></li>
+                {% endif %}
+                    <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href = "/gold_digger/register/">Register</a></li>
+
+            </ul>
+      </div>
+
+      <div class="col-xs-6 col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-horizontal" action="/gold_digger/user_login/" method="post">
+                {% csrf_token %}
+              <fieldset>
+                <legend>Login</legend>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label">Username</label>
+                  <div class="col-lg-10">
+                    <input type="text" name="username" class="form-control" id="inputEmail" placeholder="Email">
+                  </div>
+                </div>
+                  <div class="form-group">
+                  <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                  <div class="col-lg-10">
+                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                  </div>
+                  </div>
+                   <input type="submit" value="submit" />
+               </fieldset>
+            </form>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+
 
 
 <form action="/gold_digger/logout/">
     <input type="submit" value="logout">
 </form>
-<a href = "/gold_digger/game_choice/">Play!</a><br>
-{% else %}
-I ain't sayin' she a GOLD DIGGER...<br>
 
-<br>
-<form id="login_form" method="post" action="/gold_digger/user_login/">
-    {% csrf_token %}
-        Username: <input type="text" name="username" value="" size="50" />
-            <br>
-        Password: <input type="password" name="password" value="" size="50" />
-            <br>
-    <input type="submit" value="submit" />
 
-</form>
+
 <br>
 {{ bad_details }}
 <br>
 <br>
 
-{% endif %}
 
-<a href = "/gold_digger/about/">About Gold Digger</a><br>
-<a href = "/gold_digger/leaderboards/">Leaderboards</a><br>
-<a href = "/gold_digger/register/">Register</a><br>
-<br>
-
-
+{% endblock %}
 </body>
 </html>

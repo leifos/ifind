@@ -1,3 +1,4 @@
+{% extends "gold_digger/base.html" %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -5,6 +6,8 @@
     <title>Leaderboards</title>
 </head>
 <body>
+{% block body_block %}
+
 <h1>Leaderboards</h1><br>
 
 This is where users will be able to check their scores...<br>
@@ -14,35 +17,39 @@ This is where users will be able to check their scores...<br>
     {% csrf_token %}
 <select name="rank">
   <option value="average">By highest average</option>
-  <option value="gold">By max gold</option>
-  <option value="played">By games played</option>
+  <option value="all_time_max_gold">By max gold</option>
+  <option value="games_played">By games played</option>
   <input type="submit" value="Submit">
 </select>
 </form>
-<table style="width:500px;  height:100px">
+<br>
+
+<table class="table table-striped">
     <tr>
+        <th>Rank</th>
         <th>Thumbnail</th>
         <th>Username</th>
         <th>Max gold</th>
         <th>Games Played</th>
         <th>Average</th>
-        <th>Rank</th>
     </tr>
 
     {% for user in users %}
 
     <tr>
+        <td>{{ forloop.counter }}</td>
         <td><img src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px"></td>
         <td>{{ user.user.username }}</td>
         <td>{{ user.all_time_max_gold}}</td>
         <td>{{ user.games_played }}</td>
         <td>{{ user.average}}</td>
-        <td>{{ forloop.counter }}</td>
+
     </tr>
 
     {% endfor %}
 </table>
-
+<br>
 <a href = "/gold_digger/" >Back to Main</a>
+{% endblock %}
 </body>
 </html>

@@ -4,6 +4,7 @@ class Block (object):
     def __init__(self, position, gold, cue):
         self.pos = position
         self.gold = gold
+        self.gold_extracted = 0
         self.cue = cue
         self.dug = False
 

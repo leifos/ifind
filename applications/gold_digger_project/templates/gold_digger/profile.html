@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<h1>User Profile</h1>
+{% if user %}
+<h2>{{ user.user.username }}</h2>
+<br>
+<img src="{{ user.picture.url }}" height="70px" alt="{{ user.user.username }}">
+<h4>Equipment</h4>
+Scanning:<img src="{{ user.equipment.image.url }}" height="70px" alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}"><br>
+Digging:<img src="{{ user.tool.image.url }}" height="70px" alt="{{ user.tool.name }}, {{ user.tool.modifier }}"><br>
+Moving:<img src="{{ user.vehicle.image.url }}" height="70px" alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}"><br><br>
+<h4>Game stats</h4>
+Current gold: {{ user.gold }} gold<br>
+Max gold dug: {{ user.all_time_max_gold }} gold<br>
+Average: {{ user.average }} gold per game<br>
+Games played: {{ user.games_played }}<br><br>
+{% endif %}
+Location: {{ user.location }}<br>
+Email: {{ user.user.email }}
+</body>
+</html>
