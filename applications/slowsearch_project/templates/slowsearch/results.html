@@ -1,31 +1,60 @@
 {% extends 'slowsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
+
+
+<script>
+    function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+    function showThrobber() {
+         document.getElementById('progress').style.visibility='visible';
+         sleep(5000)
+         document.getElementById('progress').style.visibility='hidden'
+}
+</script>
+
 
     <form id="search" action="/slowsearch/search/" method="post">
         {% csrf_token %}
         <input type=text name=query value="{{ query }}">
-        <input type=submit value="Search">
+        {% if request.user.id != 1 %}
+             <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+        {% else %}
+            <input type=submit value="Search">
+        {% endif %}
     </form>
+    <div id="progress" style="visibility: hidden">
+         <img src="{% static "throbber.gif" %}" alt="Progress Spinner" height="42" width="42"/>
+    </div>
 
-    {% if contacts %}
-         {% for contact in contacts %}
-            <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
-            <div style="font-size: smaller; color: green">{% if contact.url|length > 70 %}{{ contact.url|slice:"70" }}...
-            {% else %}{{ contact.url }}{% endif %}</div>
-            <em>{{ contact.summary }}</em>
-            <br>
-            <br>
-         {% endfor %}
+    <div id="results">
+        {% if contacts %}
+             {% for contact in contacts %}
+                <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
+                <div style="font-size: smaller; color: green">{% if contact.url|length > 70 %}{{ contact.url|slice:"70" }}...
+                {% else %}{{ contact.url }}{% endif %}</div>
+                <em>{{ contact.summary }}</em>
+                <br>
+                <br>
+             {% endfor %}
 
-    {% endif %}
-    <br>
-    {% if contacts.has_previous %}
-         <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
-    {% endif %}
-         Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        {% endif %}
+        <br>
+        {% if contacts.has_previous %}
+             <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+             Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
 
-    {% if contacts.has_next %}
-        <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
-    {% endif %}
+        {% if contacts.has_next %}
+            <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
+        {% endif %}
+    </div>
+
 {% endblock %}
