@@ -1,14 +1,32 @@
 {% extends 'slowsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
+
+<script>
+    function showThrobber() {
+         document.getElementById('progress').style.visibility='visible';
+         setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
+}
+</script>
+
+
     {% if user.is_authenticated %}
         <h3>hello {{ user.username }}!</h3> <br>
 
         <form id="search" action="/slowsearch/search/" method="post">
         {% csrf_token %}
-            <input type=text name=query>
+        <input type=text name=query value="{{ query }}">
+        {% if request.user.id != 1 %}
+             <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+        {% else %}
             <input type=submit value="Search">
-        </form>
+        {% endif %}
+    </form>
+    <div id="progress" style="visibility: hidden">
+         <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="42" width="42"/>
+    </div>
+
 
     {% else %}
         Please use the links in the navbar above to create an account or log in

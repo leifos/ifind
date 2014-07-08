@@ -3,36 +3,25 @@
 
 {% block body_block %}
 
-
 <script>
-    function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
     function showThrobber() {
          document.getElementById('progress').style.visibility='visible';
-         sleep(5000)
-         document.getElementById('progress').style.visibility='hidden'
+         setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
 }
 </script>
 
-
-    <form id="search" action="/slowsearch/search/" method="post">
-        {% csrf_token %}
-        <input type=text name=query value="{{ query }}">
-        {% if request.user.id != 1 %}
-             <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
-        {% else %}
-            <input type=submit value="Search">
-        {% endif %}
-    </form>
-    <div id="progress" style="visibility: hidden">
-         <img src="{% static "throbber.gif" %}" alt="Progress Spinner" height="42" width="42"/>
-    </div>
+<form id="search" action="/slowsearch/search/" method="post">
+    {% csrf_token %}
+    <input type=text name=query value="{{ query }}">
+    {% if request.user.id != 1 %}
+         <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+    {% else %}
+        <input type=submit value="Search">
+    {% endif %}
+</form>
+<div id="progress" style="visibility: hidden">
+     <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="42" width="42"/>
+</div>
 
     <div id="results">
         {% if contacts %}
