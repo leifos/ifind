@@ -89,7 +89,7 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render_to_response('gold_digger/register.html',
+    return render_to_response('gold_digger/home.html',
                               {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}, context)
 
 

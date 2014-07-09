@@ -87,10 +87,10 @@
 
 
 
-
+         {% if user_form and profile_form %}
             {{ user_form| bootstrap_horizontal:'col-lg-3'}}
             {{ profile_form | bootstrap_horizontal:'col-lg-3'}}
-
+         {% endif %}
 
 
         <br>
@@ -104,13 +104,15 @@
   </div>
 </div>
 
+    {% if bad_details %}
+<div class="alert alert-dismissable alert-danger">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <strong>{{ bad_details }}</strong>
+</div>
+    {% endif %}
 
 
 
-<br>
-{{ bad_details }}
-<br>
-<br>
 
 
 {% endblock %}
