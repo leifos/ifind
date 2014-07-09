@@ -212,7 +212,6 @@ def game(request):
         time_remaining = request.session['time_remaining']
         session_gold = request.session['gold']
         mine_type = request.session['mine_type']
-        gold_extracted = request.session['gold_extracted']
 
         print "Blocks Length", len(blocks)
 
@@ -224,8 +223,7 @@ def game(request):
                                                             'pointer': pointer,
                                                             'time_remaining': time_remaining,
                                                             'gold': session_gold,
-                                                            'mine_type': mine_type,
-                                                            'gold_extracted': gold_extracted}, context)
+                                                            'mine_type': mine_type,}, context)
 
 
 @login_required
