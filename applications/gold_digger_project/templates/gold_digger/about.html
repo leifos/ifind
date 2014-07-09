@@ -1,3 +1,4 @@
+{% extends "gold_digger/base.html" %}
 <!DOCTYPE html>
 
 {% load static %}
@@ -7,11 +8,21 @@
     <meta charset="UTF-8">
     <title>About Gold Digger</title>
 </head>
+
 <body>
+
+{% block body_block %}
+<div class="jumbotron" id="about">
+
 <h1>About Gold Digger</h1><br>
+
+    </div>
+ <hr>
 Gold Digger is a project by the University of Glasgow developed by Gabriele Rossi<br>
 <a href ="mailto:2108535r@student.glasgow.ac.uk">2108535r@student.glasgow.ac.uk</a><br>
 <img src = "{% static "glasgow.gif" %}" alt = "Uni logo" width = 50%><br>
 <a href = "/gold_digger/" >Back to Main</a>
+
+{% endblock %}
 </body>
 </html>

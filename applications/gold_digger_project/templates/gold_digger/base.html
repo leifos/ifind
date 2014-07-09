@@ -15,6 +15,11 @@
  {% block nav %}
 	<div class="row">
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        {% if user.is_authenticated %}
+        <div class="notices pull-right">
+                <p class="navbar-text">{{ user.username }} / <a href="/gold_digger/logout/">Logout</a></p>
+            </div>
+        {% endif %}
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
 					<span class="sr-only">Toggle navigation</span>
@@ -23,6 +28,7 @@
 				</button>
 				 <a href="/gold_digger/" class="navbar-brand">Gold Digger</a>
 			</div>
+
 			<div class="collapse navbar-collapse" id="collapse">
 				<ul class="nav navbar-nav">
                     {% if user.is_authenticated %}
@@ -32,6 +38,7 @@
 					<li><a href="/gold_digger/about/">About</a></li>
 					<li><a href="how_to_play.html">How to Play</a></li>
 				</ul>
+
 			</div>
 		</nav>
 	</div>
@@ -40,3 +47,4 @@
 {% endblock %}
 </body>
 </html>
+

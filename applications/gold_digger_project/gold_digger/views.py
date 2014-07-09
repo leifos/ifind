@@ -25,7 +25,9 @@ def home(request):
     context = RequestContext(request)
     request.session['time_remaining'] = 100
     request.session['gold'] = 0
-    return render_to_response('gold_digger/home.html', context)
+    user_form = UserForm()
+    profile_form = UserProfileForm()
+    return render_to_response('gold_digger/home.html', {'user_form': user_form, 'profile_form': profile_form}, context)
 
 
 def about(request):
@@ -47,24 +49,35 @@ def register(request):
     registered = False
 
     if request.method == 'POST':
+        print "KABLAMO"
+        print "BHOOOO"
+        scan = ScanningEquipment.objects.get(pk=1)
+        dig_eq = DiggingEquipment.objects.get(pk=1)
+        vehicle = Vehicle.objects.get(pk=1)
 
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST) #initial={'equipment': scan.pk, 'vehicle': vehicle, 'tool': dig_eq.pk})
+
 
         if user_form.is_valid() and profile_form.is_valid():
 
             user = user_form.save()
 
             user.set_password(user.password)
-            print()
+            print"KABBLAMMMMOOO"
             user.save()
 
             profile = profile_form.save(commit=False)
             profile.user = user
 
+
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
 
+            print "SHAZAM!"
+            profile.equipment = ScanningEquipment.objects.get(pk=1)
+            profile.vehicle = Vehicle.objects.get(pk=1)
+            profile.tool = DiggingEquipment.objects.get(pk=1)
             profile.save()
 
             registered = True
