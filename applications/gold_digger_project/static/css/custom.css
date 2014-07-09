@@ -1,15 +1,17 @@
 /* custom CSS */
 .jumbotron{
-    padding-top: 70px;
-    margin-bottom: 260px;
+    padding-top: 5%;
+    padding-bottom: 20%;
+    margin-bottom: 0;
+    background-position: 25%;
+    background-image: url(/static/Wild%20West%20Background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgb(51, 51, 51);
+    text-shadow: 2px 2px 25px #777777;
 
 }
 
-.jumbotron{
-    padding-top: 70px;
-    margin-bottom: 260px;
-
-}
 
 .dig_view {
  padding-top: 50px;
