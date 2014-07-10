@@ -36,12 +36,6 @@ def about(request):
     return render_to_response('gold_digger/about.html', context)
 
 
-def leaderboards(request):
-
-    context = RequestContext(request)
-    return render_to_response('gold_digger/leaderboards.html', context)
-
-
 def register(request):
 
     context = RequestContext(request)
@@ -117,7 +111,7 @@ def user_login(request):
                 login(request, user)
                 request.session['time_remaining'] = 100
                 request.session['gold'] = 0
-                request.session['order'] = 'average'
+
                 return HttpResponseRedirect('/gold_digger/')
             else:
                 return HttpResponse("Your Gold Digger account is disabled.")
@@ -412,18 +406,13 @@ def buy(request):
 
 
 
+
+
 def leaderboards(request):
     context = RequestContext(request)
-    order = request.session['order']
-    users = UserProfile.objects.order_by('-'+order)
+    users_avg = UserProfile.objects.order_by('-average')
+    users_gold = UserProfile.objects.order_by('-all_time_max_gold')
+    users_games = UserProfile.objects.order_by('-games_played')
 
-    return render_to_response('gold_digger/leaderboards.html', {'users': users}, context)
+    return render_to_response('gold_digger/leaderboards.html', {'users_avg': users_avg, 'users_gold':users_gold, 'users_games': users_games}, context)
 
-
-@login_required
-def change_order(request):
-    context = RequestContext(request)
-    order = request.POST['rank']
-    request.session['order'] = order
-
-    return HttpResponseRedirect(reverse('leaderboards'), context)

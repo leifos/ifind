@@ -60,6 +60,7 @@
                         <label for="inputError" class="col-lg-3 control-label">Username</label>
                         <div class="col-lg-8">
                         <input type="text" name="username" class="form-control" id="inputError" placeholder="Username">
+                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                         </div>
                     </div>
                     <div class="form-group has-error">
@@ -74,6 +75,7 @@
                       <label for="inputEmail" class="col-lg-3 control-label">Username</label>
                       <div class="col-lg-8">
                         <input type="text" name="username" class="form-control" id="inputEmail" placeholder="Username">
+
                       </div>
                   </div>
                     <div class="form-group">
@@ -89,6 +91,12 @@
             </form>
           </div>
         </div>
+          {% if bad_details %}
+            <div class="alert alert-dismissable alert-danger">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                 <strong>Invalid login details supplied</strong>
+                </div>
+          {% endif %}
     </div>
 {% endif %}
   </div>
@@ -109,10 +117,6 @@
       </div>
       <div class="modal-body" style="padding-right: 60px;">
 
-
-
-
-
          {% if user_form and profile_form %}
             {{ user_form| bootstrap_horizontal:'col-lg-3'}}
             {{ profile_form | bootstrap_horizontal:'col-lg-3'}}
@@ -130,12 +134,7 @@
   </div>
 </div>
 
-    {% if bad_details %}
-<div class="alert alert-dismissable alert-danger">
-  <button type="button" class="close" data-dismiss="alert">×</button>
-  <strong>{{ bad_details }}</strong>
-</div>
-    {% endif %}
+
 
 
 

@@ -7,49 +7,137 @@
 </head>
 <body>
 {% block body_block %}
-
+<<div class="jumbotron" id="about">
 <h1>Leaderboards</h1><br>
+</div>
+    <hr>
+ <div class="container-fluid">
 
-This is where users will be able to check their scores...<br>
-<br>
-<br>
-<form id="select" action="/gold_digger/change_order/" method="post" name="rank">
-    {% csrf_token %}
-<select name="rank">
-  <option value="average">By highest average</option>
-  <option value="all_time_max_gold">By max gold</option>
-  <option value="games_played">By games played</option>
-  <input type="submit" value="Submit">
-</select>
-</form>
-<br>
 
-<table class="table table-striped">
+ <div class="col-xs-6 col-md-2">
+
+            <ul class="nav nav-pills nav-stacked">
+
+                {% if user.is_authenticated %}
+                    <li ><a href = "/gold_digger/game_choice/">Play!</a></li>
+                    <li><a href = "/gold_digger/profile/">Your profile</a></li>
+                {% endif %}
+                    <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
+                    <li class="active"><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href = "/gold_digger/" >Back to Main</a></li>
+            </ul>
+ </div>
+ <div class="col-xs-6 col-md-8">
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#avg" role="tab" data-toggle="tab">Average</a></li>
+  <li><a href="#max_gold" role="tab" data-toggle="tab">Max Gold</a></li>
+  <li><a href="#games" role="tab" data-toggle="tab">Games Played</a></li>
+
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="avg">
+      <table class="table table-striped">
+        <tr>
+            <th>Rank</th>
+            <th  id="thumb">Thumbnail</th>
+            <th>Username</th>
+            <th id="right">Average</th>
+            <th id="right">Max gold</th>
+            <th id="right">Games Played</th>
+        </tr>
+
+    {% for user in users_avg %}
+
     <tr>
-        <th>Rank</th>
-        <th>Thumbnail</th>
-        <th>Username</th>
-        <th>Max gold</th>
-        <th>Games Played</th>
-        <th>Average</th>
-    </tr>
+        <td id="rank">{{ forloop.counter }}</td>
 
-    {% for user in users %}
+        <td id="thumb">
+        <img class="thumbnail" src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px">
+        </td>
 
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td><img src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px"></td>
         <td>{{ user.user.username }}</td>
-        <td>{{ user.all_time_max_gold}}</td>
-        <td>{{ user.games_played }}</td>
-        <td>{{ user.average}}</td>
+        <td id="right">{{ user.average}}</td>
+        <td id="right">{{ user.all_time_max_gold}}</td>
+        <td id="right">{{ user.games_played }}</td>
+
 
     </tr>
 
     {% endfor %}
 </table>
-<br>
-<a href = "/gold_digger/" >Back to Main</a>
+
+  </div>
+  <div class="tab-pane" id="max_gold">
+      <table class="table table-striped">
+    <tr>
+        <th>Rank</th>
+        <th id="thumb">Thumbnail</th>
+        <th>Username</th>
+        <th id="right">Max gold</th>
+        <th id="right">Games Played</th>
+        <th id="right">Average</th>
+    </tr>
+
+    {% for user in users_gold %}
+
+    <tr>
+        <td id="rank">{{ forloop.counter }}</td>
+
+        <td id="thumb">
+        <img class="thumbnail" src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px">
+        </td>
+
+        <td>{{ user.user.username }}</td>
+        <td id="right">{{ user.all_time_max_gold}}</td>
+        <td id="right">{{ user.games_played }}</td>
+        <td id="right">{{ user.average}}</td>
+
+    </tr>
+
+    {% endfor %}
+</table>
+
+  </div>
+  <div class="tab-pane" id="games">
+
+      <table class="table table-striped">
+    <tr>
+        <th>Rank</th>
+        <th  id="thumb">Thumbnail</th>
+        <th>Username</th>
+        <th id="right">Games Played</th>
+        <th id="right">Max gold</th>
+        <th id="right">Average</th>
+    </tr>
+
+    {% for user in users_games %}
+
+    <tr>
+        <td id="rank">{{ forloop.counter }}</td>
+
+        <td id="thumb">
+        <img class="thumbnail" src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px">
+        </td>
+
+        <td>{{ user.user.username }}</td>
+        <td id="right">{{ user.games_played }}</td>
+        <td id="right">{{ user.all_time_max_gold}}</td>
+        <td id="right">{{ user.average}}</td>
+
+    </tr>
+
+    {% endfor %}
+</table>
+  </div>
+  </div>
+</div>
+
+
+
 {% endblock %}
+</div>
 </body>
 </html>

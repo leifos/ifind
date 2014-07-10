@@ -23,16 +23,40 @@
     margin-bottom: 0;
 }
 
+#right{
+    text-align: right;
+    width: 10%;
+}
+
+#thumb{
+    text-align: center;
+    width: 10%;
+}
+
+#rank{
+    width: 6%;
+}
 .jumbotron{
     color: rgb(51, 51, 51);
     /*text-shadow: 2px 2px 25px #777777;*/
 
 }
 
-
-
 body{
+    color: black;
 }
+
+table{
+    background-color: #acacac;
+}
+
+
+img.thumbnail{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
 .dig_view {
  padding-top: 50px;
  background: url(../media/dirt2pixel.png) repeat-y;
