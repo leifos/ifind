@@ -124,8 +124,8 @@ def user_login(request):
             return render_to_response('gold_digger/home.html', {'user_form': user_form, 'profile_form': profile_form, 'bad_details': bad_details}, context)
 
     else:
-
-        return render_to_response('gold_digger/home.html', {}, context)
+        current_user = UserProfile.objects.get(user=request.user)
+        return render_to_response('gold_digger/home.html', {'current_user': current_user}, context)
 
 
 @login_required

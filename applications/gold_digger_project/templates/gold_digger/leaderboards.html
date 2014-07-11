@@ -7,11 +7,12 @@
 </head>
 <body>
 {% block body_block %}
-<<div class="jumbotron" id="about">
+<div class="jumbotron" id="about">
 <h1>Leaderboards</h1><br>
 </div>
-    <hr>
- <div class="container-fluid">
+<hr>
+
+<div class="container-fluid">
 
 
  <div class="col-xs-6 col-md-2">
@@ -28,13 +29,13 @@
             </ul>
  </div>
  <div class="col-xs-6 col-md-8">
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#avg" role="tab" data-toggle="tab">Average</a></li>
-  <li><a href="#max_gold" role="tab" data-toggle="tab">Max Gold</a></li>
-  <li><a href="#games" role="tab" data-toggle="tab">Games Played</a></li>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active"><a href="#avg" role="tab" data-toggle="tab">Average</a></li>
+          <li><a href="#max_gold" role="tab" data-toggle="tab">Max Gold</a></li>
+          <li><a href="#games" role="tab" data-toggle="tab">Games Played</a></li>
 
-</ul>
+        </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
@@ -62,8 +63,6 @@
         <td id="right">{{ user.average}}</td>
         <td id="right">{{ user.all_time_max_gold}}</td>
         <td id="right">{{ user.games_played }}</td>
-
-
     </tr>
 
     {% endfor %}

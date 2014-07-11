@@ -24,7 +24,6 @@
             <ul class="nav nav-pills nav-stacked">
 
                 {% if user.is_authenticated %}
-                    <li class="active"><a href = "/gold_digger/game_choice/">Play!</a></li>
                     <li><a href = "/gold_digger/profile/">Your profile</a></li>
                 {% endif %}
                     <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
@@ -42,6 +41,11 @@
             {% endif %}
             <h2>Welcome</h2>
             Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
+            {% if user.is_authenticated %}
+                <br> <br><a class="btn btn-primary btn-lg btn-success" href="/gold_digger/game_choice/">Play!</a>
+
+
+            {% endif %}
         </div>
   {% if not user.is_authenticated %}
       <div class="col-xs-6 col-md-3">
