@@ -6,8 +6,8 @@
 
         Age: {{ demographics.age }}<br>
         Gender: {{ demographics.sex }}<br>
-        {% if demographics.education_undergrad == "Yes" %}
-            University Education: {{ demographics.education_undergrad }}<br>
+        {% if demographics.education_undergrad == "Y" %}
+            University Education: Yes<br>
             Major: {{ demographics.education_undergrad_major }}<br>
             Year: {{ demographics.education_undergrad_year }}<br><br>
         {% endif %}

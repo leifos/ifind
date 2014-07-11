@@ -1,29 +1,34 @@
 {% extends 'slowsearch/base.html' %}
 {% load static %}
 
+
 {% block body_block %}
 
-<script>
+<script type="text/javascript">
     function showThrobber() {
          document.getElementById('progress').style.visibility='visible';
+         document.getElementById('results').style.opacity='0.5';
          setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
-}
+         setTimeout("document.getElementById('results').style.opacity='1'", 5000);
+    }
 </script>
 
-<form id="search" action="/slowsearch/search/" method="post">
-    {% csrf_token %}
-    <input type=text name=query value="{{ query }}">
-    {% if request.user.id != 1 %}
-         <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
-    {% else %}
-        <input type=submit value="Search">
-    {% endif %}
-</form>
-<div id="progress" style="visibility: hidden">
-     <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="42" width="42"/>
-</div>
+      <div class="modal" id="progress" style="visibility: hidden">
+                 <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
+            </div>
 
     <div id="results">
+
+            <form id="search" action="/slowsearch/search/" method="post">
+                {% csrf_token %}
+                <input type=text name=query value="{{ query }}">
+                {% if request.user.id != 1 %}
+                     <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+                {% else %}
+                    <input type=submit value="Search">
+                {% endif %}
+            </form>
+
         {% if contacts %}
              {% for contact in contacts %}
                 <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />

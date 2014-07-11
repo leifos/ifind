@@ -1,17 +1,33 @@
 {% extends 'slowsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
+<script type="text/javascript">
+    function showThrobber() {
+         document.getElementById('progress').style.visibility='visible';
+         document.getElementById('results').style.opacity='0.5';
+         setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
+         setTimeout("document.getElementById('results').style.opacity='1'", 5000);
+    }
+</script>
+
         {% if user.is_authenticated %}
-        <h1>hello {{ user.username }}!</h1> <br> <br>
 
-        <form id="search" action="/slowsearch/search/" method="post">
-        {% csrf_token %}
-            <input type=text name=query>
+      <div class="modal" id="progress" style="visibility: hidden">
+                 <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
+            </div>
 
-            <input type=submit>
+    <div id="results">
 
-        </form>
+            <form id="search" action="/slowsearch/search/" method="post">
+                {% csrf_token %}
+                <input type=text name=query value="{{ query }}">
+                {% if request.user.id != 1 %}
+                     <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+                {% else %}
+                    <input type=submit value="Search">
+                {% endif %}
+            </form>
+    {% endif %}
 
-
-{% endif %}
 {% endblock %}
