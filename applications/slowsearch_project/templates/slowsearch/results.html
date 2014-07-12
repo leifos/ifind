@@ -8,8 +8,10 @@
     function showThrobber() {
          document.getElementById('progress').style.visibility='visible';
          document.getElementById('results').style.opacity='0.5';
+         document.getElementById('results').style.pointerEvents="none";
          setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
          setTimeout("document.getElementById('results').style.opacity='1'", 5000);
+         setTimeout("document.getElementById('results').style.pointerEvents='auto'", 5000);
     }
 </script>
 
