@@ -1,0 +1,169 @@
+{% extends "gold_digger/base.html" %}
+
+<!DOCTYPE html>
+
+<html>
+{% load static %}
+<head>
+    <title>Mine selection</title>
+
+</head>
+<body>
+{% block body_block %}
+<div class="jumbotron" id="about">
+<h1>Choose mine</h1>
+</div>
+<hr>
+<!-- California Modal -->
+<div class="modal fade" id="California" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">California</h4>
+      </div>
+      <div class="modal-body">
+        California man! C'mon!!
+      </div>
+      <div class="modal-footer">
+        <form action="/gold_digger/game/">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" value="constant" name="mine type">Go to mine</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Yukon Modal -->
+<div class="modal fade" id="Yukon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Yukon</h4>
+      </div>
+      <div class="modal-body">
+        California man! C'mon!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Go to mine</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Brazil Modal -->
+<div class="modal fade" id="Brazil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Brazil</h4>
+      </div>
+      <div class="modal-body">
+        California man! C'mon!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Go to mine</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- South Africa Modal -->
+<div class="modal fade" id="South_Africa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">South Africa</h4>
+      </div>
+      <div class="modal-body">
+        California man! C'mon!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Go to mine</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+
+<!-- Scotland Modal -->
+<div class="modal fade" id="Scotland" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Scotland - Kildonan</h4>
+      </div>
+      <div class="modal-body">
+        Betcha didn't know <strong><a href="http://www.helmsdale.org/gold-rush.php">Scotland had its own gold rush!</a></strong><br><br>
+        <p>The history of <strong>Kildonan's gold</strong> started in 1818, when a solitary nugget of gold weighing about ten pennyweights was found in the
+        <strong>River Helmsdale.</strong> It is claimed a ring was made out of this and is in the possession of the Sutherland family.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Go to mine</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Victoria Modal -->
+<div class="modal fade" id="Victoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">California</h4>
+      </div>
+      <div class="modal-body">
+        California man! C'mon!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Go to mine</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+    <div class="col-xs-6 col-md-1">
+
+            <ul class="nav nav-pills nav-stacked">
+
+                {% if user.is_authenticated %}
+                    <li><a href = "/gold_digger/profile/">Your profile</a></li>
+                {% endif %}
+                    <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
+
+
+            </ul>
+      </div>
+<div class="col-xs-6 col-md-11">
+<!-- Map -->
+    <img id="img_ID" src="/static/map_locations.png" usemap="#map" border="0" width="100%" alt="" />
+</div>
+<map id="map_ID" name="map">
+<area shape="rect" coords="79,212,249,264" href="#" data-toggle="modal" data-target="#California" alt="California" title="California" />
+<area shape="rect" coords="258,62,378,109" href="#" data-toggle="modal" data-target="#Yukon" alt="Yukon" title="Yukon" />
+<area shape="rect" coords="583,613,715,643" href="#" data-toggle="modal" data-target="#Brazil" alt="Brazil" title="Brazil" />
+<area shape="rect" coords="995,576,1234,624" href="#" data-toggle="modal" data-target="#South_Africa" alt="South Africa" title="South Africa" />
+<area shape="rect" coords="657,37,815,81" href="#" data-toggle="modal" data-target="#Scotland" alt="Scotland" title="Scotland" />
+<area shape="rect" coords="1500,693,1640,737" href="#" data-toggle="modal" data-target="#Victoria" alt="Victoria" title="Victoria" />
+
+</map>
+</div>
+</div>
+<hr>
+<script type="text/javascript" src="/static/js/map_javascript.js"></script>
+
+{% endblock %}
+</body>
+</html>

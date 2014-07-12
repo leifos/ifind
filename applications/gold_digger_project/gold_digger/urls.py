@@ -16,10 +16,9 @@ urlpatterns = patterns('',
         url(r'^back_to_main/$', views.back_to_main, name='back_to_main'),
         url(r'^shop/$', views.shop, name='shop'),
         url(r'^buy/$', views.buy, name='buy'),
-        # url(r'^change_order/$', views.change_order, name='change_order'),
+        url(r'^game_choice2/$', views.game_choice2, name='game_choice2'),
         url(r'^profile/$', views.user_profile, name='profile')
-        # url(r'^leaderboards_gold/$', views.leaderboards_gold, name='gold'),
-        # url(r'^leaderboards_games/$', views.leaderboards_games, name='games'),
+
 
 
 

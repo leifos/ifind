@@ -405,9 +405,6 @@ def buy(request):
             return HttpResponseRedirect(reverse('shop'), context)
 
 
-
-
-
 def leaderboards(request):
     context = RequestContext(request)
     users_avg = UserProfile.objects.order_by('-average')
@@ -416,3 +413,6 @@ def leaderboards(request):
 
     return render_to_response('gold_digger/leaderboards.html', {'users_avg': users_avg, 'users_gold':users_gold, 'users_games': users_games}, context)
 
+def game_choice2(request):
+    context = RequestContext(request)
+    return render_to_response('gold_digger/game_choice2.html', {}, context)

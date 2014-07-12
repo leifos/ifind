@@ -25,11 +25,13 @@
 
                 {% if user.is_authenticated %}
                     <li><a href = "/gold_digger/profile/">Your profile</a></li>
-                {% endif %}
+                    <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
+                {% else %}
                     <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
                     <li><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
-
+                {% endif %}
             </ul>
       </div>
         <div class="col-xs-6 col-md-7">
@@ -42,7 +44,7 @@
             <h2>Welcome</h2>
             Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
             {% if user.is_authenticated %}
-                <br> <br><a class="btn btn-primary btn-lg btn-success" href="/gold_digger/game_choice/">Play!</a>
+                <br> <br><a class="btn btn-primary btn-lg btn-success" href="/gold_digger/game_choice2/">Play!</a>
 
 
             {% endif %}

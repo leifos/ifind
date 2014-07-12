@@ -1,11 +1,13 @@
+{% extends "gold_digger/base.html" %}
 <!DOCTYPE html>
 <html>
+{% load static %}
 <head lang="en">
     <meta charset="UTF-8">
     <title>Gold Digger</title>
 
 </head>
-<style>
+<!-- <style>
  th
 {
 text-align:left;
@@ -13,8 +15,9 @@ text-align:left;
 progress{
     background-color: darkgreen;
 }
-</style>
+</style> -->
 <body>
+{% block body_block %}
 <h1> Gold Digger</h1>
 <h2>{{ mine_type }} mine</h2>
 <table style="width:50px;  height:100px">
@@ -54,7 +57,14 @@ progress{
 <br>
 <br>
 
-<table style="width:300px;  height:50px">
+<!-- Digging -->
+<div class="container-fluid" id="mine">
+        <div class="col-xs-6 col-md-2">
+        </div>
+      <div class="col-xs-6 col-md-6">
+
+
+<table class="table table-striped">
 
 <tr>
   <th></th>
@@ -104,5 +114,8 @@ function myFunction() {
 <form action="/gold_digger/move/">
 <button type="submit" value="choose mine" name="move">Choose mine</button>
 </form>
+</div>
+</div>
+{% endblock %}
 </body>
 </html>
