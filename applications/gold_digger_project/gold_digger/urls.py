@@ -17,7 +17,8 @@ urlpatterns = patterns('',
         url(r'^shop/$', views.shop, name='shop'),
         url(r'^buy/$', views.buy, name='buy'),
         url(r'^game_choice2/$', views.game_choice2, name='game_choice2'),
-        url(r'^profile/$', views.user_profile, name='profile')
+        url(r'^profile/$', views.user_profile, name='profile'),
+         url(r'^game2/$', views.game2, name='game2'),
 
 
 

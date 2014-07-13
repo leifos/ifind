@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>Search Abstraction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/custom.css" %}" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src={% static "js/respond.min.js" %}></script>
+    <script src={% static "js/bootstrap.min.js" %}></script>
+</head>
+<body class="dig_view">
+
+
+<!-- row 2: header -->
+
+<div class="landscape_container">
+    <div class="row landscape landscape_5"><!-- change increment (1-10) to show different landscapes -->
+        <div class="col-xs-2">
+            <div class="row"><a href="map_view.html">
+                <div class="map_button"></div>
+            </a></div>
+        </div>
+        <div class="col-xs-8">
+            <div class="row shaft_shack">
+                <!-- get rid of the 'shaft_shack' class until you're ready to show the mining shaft -->
+                <div class="extraction_technology_4"></div>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="row"><a href="#" class="button move_button">
+                <div class="button_icon icon_move_1">
+                    <!-- change the increments to show improved move technology tools (1-4) --></div>
+                <div class="button_text">move</div>
+            </a></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- a few empty columns on the left. -->
+        <div class="col-xs-3"></div>
+
+
+            {% if blocks %}
+                <div class="col-xs-6 mine">
+                {% for block in blocks %}
+                    {% if block.dug == False %}
+                        <div class="row flecks_{{ block.cue }}">
+                            <div class="scaffold_1_shaded">
+                            </div>
+                        </div>
+                    {% else %}
+                        {% if  block.gold  > 0 %}
+                            <div class="row nuggets_2">
+                            <div class="scaffold_1">
+                            </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+                 <div class="col-xs-2">
+                {% for block in blocks %}
+                    {% if pointer == block.pos %}
+                        <form action="/gold_digger/dig/">
+                            <button type="submit" value="{{ block.gold }}" name="dig">dig</button>
+                            <input type="hidden" value="{{ block.pos }}" name="block">
+                        </form>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
+
+
+
+    </div>
+</div>
+
+
+</body>
+</html>

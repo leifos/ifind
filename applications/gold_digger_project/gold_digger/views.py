@@ -281,7 +281,7 @@ def dig(request):
     request.session['pickle'] = pickled_blocks
     print "Time remaining", request.session['time_remaining']
 
-    return HttpResponseRedirect(reverse('game'), context)
+    return HttpResponseRedirect(reverse('game2'), context)
 
 
 @login_required
@@ -415,4 +415,101 @@ def leaderboards(request):
 
 def game_choice2(request):
     context = RequestContext(request)
+    request.session['has_mine'] = False
+    request.session['mine_type'] = ''
+    request.session['purchase'] = False
     return render_to_response('gold_digger/game_choice2.html', {}, context)
+
+def game2(request):
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+
+    if request.session['mine_type'] == '':
+        mine_type = request.GET['mine type']
+
+    else:
+        mine_type = request.session['mine_type']
+
+    print user.equipment, "EQUIPMENT"
+    print request.session.items()
+
+    if not request.session['has_mine']:
+        print "GOT HERE"
+        gen = yieldgen.YieldGenerator
+        up_boundary = 50
+        down_boundary = 40
+        max_gold = random.randint(down_boundary, up_boundary)
+        time_remaining = request.session['time_remaining']
+
+        if mine_type == 'constant':
+            print "constant"
+            request.session['mine_type'] = 'constant'
+            gen = yieldgen.ConstantYieldGenerator(depth=10, max=max_gold, min=0)
+
+        elif mine_type == 'linear':
+            print "linear"
+            request.session['mine_type'] = "linear"
+            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+
+        elif mine_type == 'random':
+            print "random"
+            request.session['mine_type'] = 'random'
+            gen = yieldgen.RandomYieldGenerator(depth=10, max=max_gold, min=0)
+
+        elif mine_type == 'quadratic':
+            print "quadratic"
+            request.session['mine_type'] = 'quadratic'
+            gen = yieldgen.QuadraticYieldGenerator(depth=10, max=max_gold, min=0)
+
+        elif mine_type == 'exponential':
+            print "exponential"
+            request.session['mine_type'] = 'exponential'
+            gen = yieldgen.ExponentialYieldGenerator(depth=10, max=max_gold, min=0)
+
+        elif mine_type == 'cubic':
+            print "cubic"
+            request.session['mine_type'] = 'cubic'
+            gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
+
+        accuracy = user.equipment.modifier
+        m = mine.Mine(gen, accuracy)
+
+        blocks = m.blocks
+        request.session['has_mine'] = True
+        pointer = 0
+        request.session['pointer'] = pointer
+        mine_type = request.session['mine_type']
+
+        # Pickling
+        pickled_blocks = pickle.dumps(blocks)
+        request.session['pickle'] = pickled_blocks
+
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
+
+        return render_to_response('gold_digger/game2.html', {'blocks': blocks,
+                                                            'user': user,
+                                                            'pointer': pointer,
+                                                            'time_remaining': time_remaining,
+                                                            'mine_type': mine_type}, context)
+    else:
+
+        # Unpickling
+        pickled_blocks = request.session['pickle']
+        blocks = pickle.loads(pickled_blocks)
+        pointer = request.session['pointer']
+        time_remaining = request.session['time_remaining']
+        session_gold = request.session['gold']
+        mine_type = request.session['mine_type']
+
+        print "Blocks Length", len(blocks)
+
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
+
+        return render_to_response('gold_digger/game2.html', {'blocks': blocks,
+                                                            'user': user,
+                                                            'pointer': pointer,
+                                                            'time_remaining': time_remaining,
+                                                            'gold': session_gold,
+                                                            'mine_type': mine_type,}, context)
