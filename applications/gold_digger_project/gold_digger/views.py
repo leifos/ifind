@@ -164,6 +164,7 @@ def game(request):
         up_boundary = 50
         down_boundary = 40
         max_gold = random.randint(down_boundary, up_boundary)
+        request.session['max_gold'] = max_gold
         time_remaining = request.session['time_remaining']
 
         if mine_type == 'constant':
@@ -203,6 +204,7 @@ def game(request):
         request.session['has_mine'] = True
         pointer = 0
         request.session['pointer'] = pointer
+        print request.session['pointer'], "POINTER!"
         mine_type = request.session['mine_type']
 
         # Pickling
@@ -262,12 +264,13 @@ def dig(request):
 
     if request.session['pointer'] == len(blocks):
         request.session['has_mine'] = False
-        return HttpResponseRedirect(reverse('game'))
+        return HttpResponseRedirect(reverse('game2'))
 
     gold_dug = int(request.GET['dig'])
     gold_extracted = int(round(gold_dug*user.tool.modifier))
     pos = int(request.GET['block'])
     request.session['pointer'] += 1
+    print request.session['pointer']
     request.session['time_remaining'] -= 3
 
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
@@ -439,6 +442,7 @@ def game2(request):
         up_boundary = 50
         down_boundary = 40
         max_gold = random.randint(down_boundary, up_boundary)
+        limits = divide(max_gold)
         time_remaining = request.session['time_remaining']
 
         if mine_type == 'constant':
@@ -477,6 +481,7 @@ def game2(request):
         blocks = m.blocks
         request.session['has_mine'] = True
         pointer = 0
+        print request.session['pointer'], "POINTER!"
         request.session['pointer'] = pointer
         mine_type = request.session['mine_type']
 
@@ -491,7 +496,8 @@ def game2(request):
                                                             'user': user,
                                                             'pointer': pointer,
                                                             'time_remaining': time_remaining,
-                                                            'mine_type': mine_type}, context)
+                                                            'mine_type': mine_type,
+                                                            'limits': limits}, context)
     else:
 
         # Unpickling
@@ -513,3 +519,17 @@ def game2(request):
                                                             'time_remaining': time_remaining,
                                                             'gold': session_gold,
                                                             'mine_type': mine_type,}, context)
+
+def divide(max_gold):
+
+    limits = []
+    span = max_gold / 6
+    for x in range(6):
+
+        max_gold -= span
+
+        print max_gold
+
+        limits.append(max_gold)
+
+    return limits

@@ -1,4 +1,6 @@
 /* custom CSS */
+
+
 #home{
     background-position: 25%;
 
@@ -42,6 +44,22 @@
     background-repeat: repeat;
 }
 
+#stats{
+    font-family: pixelfont;
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.17);
+    padding-left: 3%;
+    padding-right: 2%;
+
+}
+
+#statsright{
+    font-family: pixelfont;
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.17);
+    padding-left: 1.5%
+}
+
 .jumbotron{
     color: rgb(51, 51, 51);
     /*text-shadow: 2px 2px 25px #777777;*/
@@ -52,7 +70,7 @@ body{
     color: black;
 }
 
-table{
+#leaderboards{
     background-color: #acacac;
 }
 
@@ -61,6 +79,11 @@ img.thumbnail{
     display: block;
     margin-left: auto;
     margin-right: auto
+}
+
+@font-face {
+    font-family: pixelfont;
+    src: url(/static/fonts/Pixelate.ttf);
 }
 
 .dig_view {
@@ -108,8 +131,9 @@ img.thumbnail{
 }
 
 .landscape_5 {
- 		background: url(../media/landscape_5.png) no-repeat center top;
- 		background-size: cover;
+ 		background: url(/static/Wild%20West%20Background.png) no-repeat center bottom;
+ 		background-size: 100%;
+
 }
 
 .landscape_6 {
@@ -298,32 +322,32 @@ img.thumbnail{
 }
 
 .nuggets_1 {
- 	background: url(/media/mine/main_nuggets_1.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_1pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
 .nuggets_2 {
- 	background: url(/media/mine/main_nuggets_2.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_2pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
 .nuggets_3 {
- 	background: url(/media/mine/main_nuggets_3.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_3pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
 .nuggets_4 {
- 	background: url(/media/mine/main_nuggets_4.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_4pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
 .nuggets_5 {
- 	background: url(/media/mine/main_nuggets_5.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_5pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
 .nuggets_6 {
- 	background: url(/media/mine/main_nuggets_6.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_6pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 

@@ -15,6 +15,7 @@
 <body class="dig_view">
 
 
+
 <!-- row 2: header -->
 
 <div class="landscape_container">
@@ -38,47 +39,112 @@
             </a></div>
         </div>
     </div>
+</div>
+<hr>
+<div class="row">
+    <!-- a few empty columns on the left. -->
+    <div class="col-xs-1 mine"></div>
+    <div class="col-xs-3 mine" id="stats">
+        <!-- Player stats -->
 
-    <div class="row">
-        <!-- a few empty columns on the left. -->
-        <div class="col-xs-3"></div>
+        <table>
+            <tr>
+                <td>Equipment:
+                <td><img src="{{ user.equipment.image.url }}"
+                         title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}" height="75px">
+                </td>
+            </tr>
+            <tr>
+                <td>Vehicle:</td>
+                <td><img src="{{ user.vehicle.image.url }}"
+                         title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}" height="75px"></td>
+            </tr>
+            <tr>
+                <td>Tool:</td>
+                <td><img src="{{ user.tool.image.url }}"
+                         title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" height="75px"></td>
+            </tr>
+
+            <tr>
+                <td><img src="/media/icons/Items/Chest.png" height="50px"></td>
+                <td>Total: {{ user.gold }}</td>
+
+            </tr>
+            <tr>
+                <td><strong>Daylight remaining:</strong></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                             aria-valuemin="0" aria-valuemax="100" style="width: {{ time_remaining }}%">
+                            <span class="sr-only">20% Complete</span>
+                        </div>
+                    </div>
+
+                </td>
+                <td>{{ time_remaining }}</td>
+                <td>{% if pointer == blocks|length %}
+                    <a href="/gold_digger/dig/">Next mine?</a><br>
+
+                {% endif %}
+                </td>
+            </tr>
+        </table>
+
+    </div>
 
 
-            {% if blocks %}
-                <div class="col-xs-6 mine">
-                {% for block in blocks %}
-                    {% if block.dug == False %}
-                        <div class="row flecks_{{ block.cue }}">
-                            <div class="scaffold_1_shaded">
+    {% if blocks %}
+        <div class="col-xs-5 mine">
+            {% for block in blocks %}
+
+                {% if block.dug == False %}
+                    <div class="row flecks_{{ block.cue }}">
+                        <div class="scaffold_1_shaded">
+                        </div>
+                    </div>
+                {% else %}
+                    {% if  block.gold  > 0 %}
+                        <div class="row nuggets_6">
+                            <div class="scaffold_1">
+
                             </div>
                         </div>
-                    {% else %}
-                        {% if  block.gold  > 0 %}
-                            <div class="row nuggets_2">
-                            <div class="scaffold_1">
-                            </div>
-                            </div>
-                        {% endif %}
                     {% endif %}
-                {% endfor %}
-                </div>
-                 <div class="col-xs-2">
-                {% for block in blocks %}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+        <div class="col-xs-2 mine" id="statsright">
+            {% for block in blocks %}
+
+                <div class="row">
+                    {% if block.dug == True %}
+                        {{ block.gold }} <img src="/media/icons/items/Gold.png">
+                        ({{ block.gold_extracted }}) <img src="/media/icons/items/Chest.png">
+
+                    {% endif %}
                     {% if pointer == block.pos %}
                         <form action="/gold_digger/dig/">
                             <button type="submit" value="{{ block.gold }}" name="dig">dig</button>
                             <input type="hidden" value="{{ block.pos }}" name="block">
                         </form>
+                        {% if pointer == blocks|length %}
+                            <a href="/gold_digger/dig/">Next mine?</a><br>
+
+                        {% endif %}
+
                     {% endif %}
-                {% endfor %}
+
+
                 </div>
-            {% endif %}
+            {% endfor %}
+        </div>
 
+    {% endif %}
 
-
-    </div>
 </div>
-
 
 </body>
 </html>
