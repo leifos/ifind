@@ -1,4 +1,5 @@
 {% extends 'slowsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
         <h2>Login</h2>
@@ -16,4 +17,5 @@
     {% if error %}
     <p class="text-error">{{ error }}</p>
     {% endif %}
+    <img src="{% static "SOCS Logo.jpg"%}">
 {% endblock %}

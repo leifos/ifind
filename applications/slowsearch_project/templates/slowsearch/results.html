@@ -48,10 +48,10 @@
              {% endfor %}
          {% endif %}
         {% else %}
-            <p class="alert">No results found. Please try a different query.</p>
+        <p class="alert">No results found. Please try a different query.</p>
         {% endif %}
         <br>
-        {% if not "Unable to connect" in contacts %}
+        {% if not "Unable to connect" in contacts and contacts %}
             {% if contacts.has_previous %}
                  <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
             {% endif %}

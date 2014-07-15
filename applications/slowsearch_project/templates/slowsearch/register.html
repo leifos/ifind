@@ -54,7 +54,7 @@
 
         {% if user_form.errors or validation_form.errors %}
             <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">Close</button>
+                <button type="button" class="close" data-dismiss="alert" onclick="parentNode.style.display = 'none'">Close</button>
 
                 {% for field in user_form %}
                     {% if field.errors %}
