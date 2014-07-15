@@ -4,12 +4,16 @@
     {% if user.is_authenticated %}
         <h2>hello {{ user_name }}, welcome to your profile!</h2>
 
-        Age: {{ demographics.age }}<br>
-        Gender: {{ demographics.sex }}<br>
-        {% if demographics.education_undergrad == "Y" %}
-            University Education: Yes<br>
-            Major: {{ demographics.education_undergrad_major }}<br>
-            Year: {{ demographics.education_undergrad_year }}<br><br>
+        {% if demographics %}
+            Age: {{ demographics.age }}<br>
+            Gender: {{ demographics.sex }}<br>
+            {% if demographics.education_undergrad == "Y" %}
+                University Education: Yes<br>
+                Major: {{ demographics.education_undergrad_major }}<br>
+                Year: {{ demographics.education_undergrad_year }}<br><br>
+            {% endif %}
+            {% else %}
+                You haven't completed the demographic form yet! <a href = "/slowsearch/demographic/">Do it now!</a><br>
         {% endif %}
         User Since: {{ profile.user_since }}<br>
         Number of Queries: {{ profile.queries_submitted }} <br>

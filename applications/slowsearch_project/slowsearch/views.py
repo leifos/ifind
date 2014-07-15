@@ -27,13 +27,15 @@ def index(request):
 def profile(request, *args, **kwargs):
     # Get the context from the request.
     context = RequestContext(request)
-
+    demographics = ""
     user_name = request.user
-    demographics = UKDemographicsSurvey.objects.get(user=user_name)
+
+    if UKDemographicsSurvey.objects.filter(user=user_name):
+        demographics = UKDemographicsSurvey.objects.get(user=user_name)
     profile = UserProfile.objects.get(user=user_name)
 
     # Create a context dictionary which we can pass to the template rendering engine.
-    context_dict = {'user_name': user_name, 'demographics': demographics, 'profile':profile}
+    context_dict = {'user_name': user_name, 'demographics': demographics, 'profile': profile}
     return render_to_response('slowsearch/profile.html', context_dict, context)
 
 
