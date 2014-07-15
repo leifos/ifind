@@ -18,6 +18,7 @@
             </div>
 
     <div id="results">
+            {{ request.user.id }}
 
             <form id="search" action="/slowsearch/search/" method="post">
                 {% csrf_token %}

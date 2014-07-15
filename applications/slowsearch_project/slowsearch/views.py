@@ -8,9 +8,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from utils import paginated_search, get_condition, record_query, record_link
 import datetime
-from datetime import timedelta
-from logger_practice import event_logger
-
 
 def index(request):
     # Request the context of the request.
@@ -237,8 +234,7 @@ def search(request):
     page = request.REQUEST.get('page')
     cnd = get_condition(request)
 
-    u_ID = (user.id)
-    str_u_ID = str(u_ID)
+    u_ID = user.id
 
     record_query(user, now)
 

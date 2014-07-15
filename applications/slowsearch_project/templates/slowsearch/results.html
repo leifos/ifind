@@ -19,7 +19,7 @@
                  <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
             </div>
 
-    <div id="results">
+    <div id="results" style="margin: 2%">
 
             <form id="search" action="/slowsearch/search/" method="post">
                 {% csrf_token %}
@@ -32,24 +32,33 @@
             </form>
 
         {% if contacts %}
+            {% if "Unable to connect" in contacts %}
+            <p class="text-error">{{ contacts }}</p>
+             {% else %}
              {% for contact in contacts %}
-                <strong><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
+                {% if contact.url %}
+                <div>
+                <strong style="font-size: 13pt"><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
                 <div style="font-size: smaller; color: green">{% if contact.url|length > 70 %}{{ contact.url|slice:"70" }}...
                 {% else %}{{ contact.url }}{% endif %}</div>
                 <em>{{ contact.summary }}</em>
-                <br>
-                <br>
-             {% endfor %}
+                <br><br>
+                </div>
+                {% endif %}
 
+             {% endfor %}
+        {% endif %}
         {% endif %}
         <br>
-        {% if contacts.has_previous %}
-             <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
-        {% endif %}
-             Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        {% if not "Unable to connect" in contacts %}
+            {% if contacts.has_previous %}
+                 <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">previous</a>
+            {% endif %}
+                 Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
 
-        {% if contacts.has_next %}
-            <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
+            {% if contacts.has_next %}
+                <a href="?query={{ query }}&page={{ contacts.next_page_number }}">next</a><br>
+            {% endif %}
         {% endif %}
     </div>
 

@@ -1,13 +1,11 @@
 __author__ = 'Craig'
 
-__author__ = 'Craig'
-
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "slowsearch_project.settings")
 from django.core.cache import cache, get_cache
 import time
 from datetime import timedelta
-from ifind.search import Query, EngineFactory
+from ifind.search import Query, EngineFactory, exceptions
 from logger_practice import event_logger
 from slowsearch.models import QueryTime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -120,8 +118,11 @@ def paginated_search(query, condition, u_ID, page, user):
     if query:
             # Run our Bing function to get the results list!
         if not (response_cache.get(query)):
-            result_list = run_query(query, cnd)
-            response_cache.set(query, pickle.dumps(result_list), 300)
+            try:
+                result_list = run_query(query, cnd)
+                response_cache.set(query, pickle.dumps(result_list), 300)
+            except exceptions.EngineConnectionException:
+                result_list = 'Unable to connect to the search engine at this time. Please try again later.'
             event_logger.info(str_u_ID + ' QL ' + 'HQ: ' + q_hash + ' ' + q_len + ' CA ')
             profile.queries_submitted = queries + 1
             profile.save()
@@ -138,16 +139,19 @@ def paginated_search(query, condition, u_ID, page, user):
             result_list = pickle.loads(response_cache.get(query))
             event_logger.info(str_u_ID + ' PA' + str(page) + ' RR')
 
-        paginator = Paginator(result_list.results, 10)  # show 10 results per page
+        if type(result_list) == str:
+            contacts = result_list
+        else:
+            paginator = Paginator(result_list.results, 10)  # show 10 results per page
 
-        try:
-            contacts = paginator.page(page)
-        except PageNotAnInteger:
-            # if page not an integer, deliver first page
-            contacts = paginator.page(1)
-        except EmptyPage:
-            # if page out of range, deliver last page of results
-            contacts = paginator.page(paginator.num_pages)
+            try:
+                contacts = paginator.page(page)
+            except PageNotAnInteger:
+                # if page not an integer, deliver first page
+                contacts = paginator.page(1)
+            except EmptyPage:
+                # if page out of range, deliver last page of results
+                contacts = paginator.page(paginator.num_pages)
 
         return contacts
 
