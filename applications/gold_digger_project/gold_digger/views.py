@@ -239,7 +239,7 @@ def game(request):
                                                             'pointer': pointer,
                                                             'time_remaining': time_remaining,
                                                             'gold': session_gold,
-                                                            'mine_type': mine_type,}, context)
+                                                            'mine_type': mine_type}, context)
 
 
 @login_required
@@ -284,6 +284,7 @@ def dig(request):
     request.session['pickle'] = pickled_blocks
     print "Time remaining", request.session['time_remaining']
 
+    print "DUGGGG!"
     return HttpResponseRedirect(reverse('game2'), context)
 
 
@@ -294,7 +295,7 @@ def move(request):
         context = RequestContext(request)
         request.session['has_mine'] = False
         request.session['time_remaining'] -= 5
-        return HttpResponseRedirect(reverse('game'), context)
+        return HttpResponseRedirect(reverse('game2'), context)
 
     elif request.GET['move'] == "choose mine":
         context = RequestContext(request)
@@ -414,8 +415,9 @@ def leaderboards(request):
     users_gold = UserProfile.objects.order_by('-all_time_max_gold')
     users_games = UserProfile.objects.order_by('-games_played')
 
-    return render_to_response('gold_digger/leaderboards.html', {'users_avg': users_avg, 'users_gold':users_gold, 'users_games': users_games}, context)
+    return render_to_response('gold_digger/leaderboards.html', {'users_avg': users_avg, 'users_gold': users_gold, 'users_games': users_games}, context)
 
+@login_required
 def game_choice2(request):
     context = RequestContext(request)
     request.session['has_mine'] = False
@@ -423,6 +425,7 @@ def game_choice2(request):
     request.session['purchase'] = False
     return render_to_response('gold_digger/game_choice2.html', {}, context)
 
+@login_required
 def game2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)

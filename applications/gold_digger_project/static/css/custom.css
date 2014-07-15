@@ -48,9 +48,9 @@
     font-family: pixelfont;
     font-size: 25px;
     background-color: rgba(255, 255, 255, 0.17);
-    padding-left: 3%;
-    padding-right: 2%;
     position: fixed;
+    border-radius: 4px;
+
 }
 
 #statsright{
@@ -60,10 +60,29 @@
     padding-left: 1.5%
 }
 
+#statsicon {
+    border-radius: 4px;
+    border-width: medium;
+    border-color: #000000;
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+#side {
+    height: 1000px;
+}
+
+#controls {
+    margin-right: 5%;
+}
 .jumbotron{
     color: rgb(51, 51, 51);
     /*text-shadow: 2px 2px 25px #777777;*/
 
+}
+
+hr {
+    border-top: 2px groove rgba(0, 0, 0, 0.59);
+    background-color: rgba(255, 255, 255, 0);
 }
 
 body{
@@ -75,19 +94,43 @@ body{
 }
 
 
-img.thumbnail{
-    display: block;
-    margin-left: auto;
-    margin-right: auto
-}
 
 @font-face {
     font-family: pixelfont;
     src: url(/static/fonts/Pixelate.ttf);
 }
 
+.equipment {
+    align-items: center;
+    font-family: pixelfont;
+    margin-right: 20px ;
+    background-color: rgba(255, 255, 255, 0.10);
+    font-size: 25px;
+    border-radius: 4px;
+    position: fixed;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-left: 2%
+}
+
+.well {
+    border-color: rgb(0, 0, 0);
+    border-style: inset;
+    border-width: 3px;
+}
+
+.progress-bar {
+    background-color: #ffb200;
+    border-width: 2px;
+}
+
+.progress {
+    background-color: rgba(255, 255, 255, 0.16);
+
+}
+
 .dig_view {
- padding-top: 50px;
+ padding-top: 0;
  background: url(/static/ground.jpg);
 }
 
@@ -257,13 +300,14 @@ img.thumbnail{
 }
 
 .button {
- 	background: #000;
-	border-radius: 10px;
- 	padding: 10px;
+ 	background: #dfdfdf;
+	margin-top: 13%;
+    margin-left: 4%;
+    float: left;
+    vertical-align: top;
 }
 
 .button:hover {
-	color: #fff;
 	text-decoration: none;
  	box-shadow: 0px 0px 10px #fff;
 }
@@ -698,15 +742,15 @@ img.thumbnail{
 	.map .row {
 		height: 150px;
 	}
-	
+
 	.landscape .row, .landscape .row > div {
 		height: 100px;
 	}
-	
+
 	.shaft .row, .mine .row, .score .row, .mine .row > div {
 		height: 60px;
 	}
-	
+
 .shaft, .shaft:hover {
  	background-size: contain;
 }
@@ -729,11 +773,11 @@ img.thumbnail{
 }
 
 
-	
+
 	.landscape .row, .landscape .row > div {
 		height: 175px;
 	}
-	
+
 	.shaft .row, .mine .row, .score .row, .mine .row > div {
 		height: 90px;
 	}
@@ -754,19 +798,19 @@ img.thumbnail{
 .map .row {
 	height: 300px;
 }
-	
+
 .landscape .row, .landscape .row > div {
 	height: 200px;
 }
-	
+
 .shaft .row, .mine .row, .score .row, .mine .row > div {
 		height: 90px;
 }
-	
+
 .shaft, .shaft:hover {
  	background-size: 70%;
 }
-	
+
 }
 
 @media (min-width: 992px) {
@@ -778,16 +822,16 @@ img.thumbnail{
 .map .row {
 	height: 375px;
 }
-	
+
 .landscape .row, .landscape .row > div {
 	height: 260px;
 }
-	
+
 .shaft .row, .mine .row, .score .row, .mine .row > div {
 	height: 110px;
 }
-	
-	
+
+
 }
 
 @media (min-width: 1200px) {
@@ -809,7 +853,7 @@ img.thumbnail{
 }
 
 .navbar-inverse .navbar-toggle {
-	color: #fff;	
+	color: #fff;
 }
 
 .navbar-inverse .navbar-toggle:hover {
