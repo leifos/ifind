@@ -61,8 +61,8 @@ def mod_reverse(response):
 
 conditions = {
     1: mod_normal,
-    2: mod_reverse,
-    3: mod_interleave
+    2: mod_interleave,
+    3: mod_reverse
 }
 
 def get_user_condition(request):
@@ -122,6 +122,9 @@ def paginated_search(request, query, user):
             except EmptyPage:
                 # if page out of range, deliver last page of results
                 results = paginator.page(paginator.num_pages)
+
+            if results is None:
+                results = "No results"
 
             return results
 

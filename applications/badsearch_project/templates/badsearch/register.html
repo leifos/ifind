@@ -5,8 +5,9 @@
         <div align="left">
         {% if registered %}
         <p>Thank you for registering.</p>
+       Please continue to our <a href = "/badsearch/demographic/">Demographic Survey</a><br>
+       Alternatively, <a href = "/badsearch/">Skip the survey and begin searching</a>
 
-        <p>You are now logged in, please click <a href="/badsearch/">here</a> to begin searching.</p>
         {% else %}
         <form class="form-signin span8" id="user_form" method="post" action="/badsearch/register/"
               enctype="multipart/form-data">
@@ -14,18 +15,12 @@
             <h2 class="form-signin-heading">Sign up Here</h2>
             <!-- Display each form here -->
 
-            Thank you for your interest in participating in this experiment.<br />
+        Thank you for your interest in participating in this experiment.<br />
         This application is powered by a popular search engine, please use this application
         in place of your favourite search engine for the duration of this experiment.<br />
 
         Please fill in your details below and agree to the terms and conditions to begin searching.<br><br>
-            <table>
-            {% csrf_token %}
-            {{ user_form.as_table }}
-            {{ profile_form.as_table }}
-            {{ demographics_form.as_table }}
-</table>
-            <br><br>
+
         <strong>Study Information:</strong><br>
         Badsearch is a search application developed by Iain Hendry, an MSc IT student at the University of Glasgow,
         as part of a research project. Please read the Study Information below and tick the boxes to agree to the terms
@@ -48,9 +43,34 @@
 
         </ul>
 
-            {{ validation_form.as_p }}
+         {% for field in validation_form %}
+            {{ field.label }}
+            {{ field }}<br><br>
+        {% endfor %}<br>
 
-            <br />
+        {% for field in user_form %}
+            {{ field.label }}:
+            {{ field }}<br>
+        {% endfor %}
+
+        {% if user_form.errors or validation_form.errors %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">Close</button>
+
+                {% for field in user_form %}
+                    {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in validation_form %}
+                    {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        {% endif %}
             <input class="btn btn-primary" type="submit" name="submit" value="Register"/>
         </form>
         {% endif %}

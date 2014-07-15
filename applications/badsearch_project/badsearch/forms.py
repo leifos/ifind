@@ -26,8 +26,11 @@ class UserForm(forms.ModelForm):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
 
-        if password and password != password2:
-            raise forms.ValidationError("Passwords don't match")
+        if not password2:
+            raise forms.ValidationError("You must confirm your password")
+        if password != password2:
+            raise forms.ValidationError("Your passwords do not match")
+        return password2
 
         return self.cleaned_data
 
@@ -44,7 +47,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class DemographicsForm(forms.ModelForm):
-    age = forms.IntegerField(label="Please provide your age (in years)", max_value=100, min_value=0, required=False)
+    age = forms.IntegerField(label="Please provide your age (in years)", max_value=100, min_value=18, required=False)
     sex = forms.CharField(max_length=20, widget=forms.Select(choices=GENDER_CHOICES), label="Please indicate your sex",
                           required=False)
     education_undergrad = forms.CharField(widget=forms.Select(choices=YES_CHOICES),

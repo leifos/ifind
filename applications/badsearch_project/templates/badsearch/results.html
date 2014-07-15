@@ -23,10 +23,9 @@
             <ul>
             {% for result in result_list %}
                     <strong><u><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></u></strong><br />
-                    <div style="font-size: smaller; color: green">{{ result.url }}</div>
-                    <em>{{ result.summary }}</em><br>
-                <hr>
-            {% endfor %}
+                    <div style="font-size: smaller; color: green">{% if result.url|length > 70 %}{{ contact.url|slice:"70" }}...
+                    {% else %}{{ result.url }}{% endif % %}
+                    <em>{{ result.summary }}</em>
             </ul>
         </div>
         <div class="pagination">
