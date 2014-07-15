@@ -436,6 +436,8 @@ def game2(request):
     print user.equipment, "EQUIPMENT"
     print request.session.items()
 
+
+
     if not request.session['has_mine']:
         print "GOT HERE"
         gen = yieldgen.YieldGenerator
@@ -443,6 +445,8 @@ def game2(request):
         down_boundary = 40
         max_gold = random.randint(down_boundary, up_boundary)
         limits = divide(max_gold)
+        pickled_limits = pickle.dumps(limits)
+        request.session['limits'] = pickled_limits
         time_remaining = request.session['time_remaining']
 
         if mine_type == 'constant':
@@ -481,10 +485,10 @@ def game2(request):
         blocks = m.blocks
         request.session['has_mine'] = True
         pointer = 0
-        print request.session['pointer'], "POINTER!"
         request.session['pointer'] = pointer
+        print request.session['pointer'], "POINTER!"
         mine_type = request.session['mine_type']
-
+        scaffold = [1, 2, 3]
         # Pickling
         pickled_blocks = pickle.dumps(blocks)
         request.session['pickle'] = pickled_blocks
@@ -497,16 +501,20 @@ def game2(request):
                                                             'pointer': pointer,
                                                             'time_remaining': time_remaining,
                                                             'mine_type': mine_type,
-                                                            'limits': limits}, context)
+                                                            'limits': limits,
+                                                            'scaffold': scaffold}, context)
     else:
 
         # Unpickling
         pickled_blocks = request.session['pickle']
         blocks = pickle.loads(pickled_blocks)
+        pickled_limits = request.session['limits']
+        limits = pickle.loads(pickled_limits)
         pointer = request.session['pointer']
         time_remaining = request.session['time_remaining']
         session_gold = request.session['gold']
         mine_type = request.session['mine_type']
+        scaffold = [1, 2, 3]
 
         print "Blocks Length", len(blocks)
 
@@ -518,18 +526,20 @@ def game2(request):
                                                             'pointer': pointer,
                                                             'time_remaining': time_remaining,
                                                             'gold': session_gold,
-                                                            'mine_type': mine_type,}, context)
+                                                            'mine_type': mine_type,
+                                                            'limits': limits,
+                                                            'scaffold': scaffold}, context)
 
 def divide(max_gold):
 
     limits = []
     span = max_gold / 6
+    limits.append(max_gold)
     for x in range(6):
 
         max_gold -= span
 
-        print max_gold
-
         limits.append(max_gold)
 
+    print "LIMITS", limits
     return limits

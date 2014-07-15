@@ -140,6 +140,7 @@ max_gold = 51
 limits = []
 span = max_gold / 6
 limits.append(max_gold)
+print max_gold
 
 for x in range(6):
 
@@ -149,3 +150,4 @@ for x in range(6):
 
     limits.append(max_gold)
 
+print limits

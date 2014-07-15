@@ -3,7 +3,7 @@
 <head>
     {% load static %}
     <meta charset="utf-8">
-    <title>Search Abstraction</title>
+    <title>Gold Digger - {{ mine_type }} mine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
@@ -15,11 +15,11 @@
 <body class="dig_view">
 
 
-
-<!-- row 2: header -->
+<!-- Header -->
 
 <div class="landscape_container">
     <div class="row landscape landscape_5"><!-- change increment (1-10) to show different landscapes -->
+
         <div class="col-xs-2">
             <div class="row"><a href="map_view.html">
                 <div class="map_button"></div>
@@ -44,11 +44,12 @@
 <div class="row">
     <!-- a few empty columns on the left. -->
     <div class="col-xs-1 mine"></div>
-    <div class="col-xs-3 mine" id="stats">
+    <div class="col-xs-3 mine" >
         <!-- Player stats -->
 
-        <table>
+        <table id="stats">
             <tr>
+
                 <td>Equipment:
                 <td><img src="{{ user.equipment.image.url }}"
                          title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}" height="75px">
@@ -94,6 +95,7 @@
 
     </div>
 
+<!-- Mine -->
 
     {% if blocks %}
         <div class="col-xs-5 mine">
@@ -105,15 +107,40 @@
                         </div>
                     </div>
                 {% else %}
-                    {% if  block.gold  > 0 %}
+                    {% if  block.gold < limits.0 and block.gold > limits.1  %}
                         <div class="row nuggets_6">
-                            <div class="scaffold_1">
-
+                            <div class="scaffold_{{ scaffold|random }}">
                             </div>
                         </div>
+                    {% elif block.gold <= limits.1 and block.gold > limits.2 %}
+                        <div class="row nuggets_5">
+                            <div class="scaffold_{{ scaffold|random }}">
+                            </div>
+                        </div>
+                    {% elif block.gold <= limits.2 and block.gold > limits.3 %}
+                        <div class="row nuggets_4">
+                            <div class="scaffold_{{ scaffold|random }}">
+                            </div>
+                        </div>
+                    {% elif block.gold <= limits.3 and block.gold > limits.4 %}
+                        <div class="row nuggets_3">
+                            <div class="scaffold_{{ scaffold|random }}">
+                            </div>
+                        </div>
+                    {% elif block.gold <= limits.4 and block.gold > limits.5 %}
+                        <div class="row nuggets_2">
+                            <div class="scaffold_{{ scaffold|random }}">
+                            </div>
+                        </div>
+                    {% elif block.gold <= limits.5 and block.gold > limits.6 %}
+                        <div class="row nuggets_1">
+                            <div class="scaffold_{{ scaffold|random }}">
+                            </div>
+                        </div>
+                    {% elif block.gold <= limits.6 and block.gold < limits.7 %}
+                            <div class="scaffold_{{ scaffold|random }}"></div>
                     {% endif %}
-                {% endif %}
-
+                    {% endif %}
             {% endfor %}
         </div>
         <div class="col-xs-2 mine" id="statsright">
