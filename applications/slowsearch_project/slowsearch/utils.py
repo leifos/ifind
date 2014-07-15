@@ -153,6 +153,9 @@ def paginated_search(query, condition, u_ID, page, user):
                 # if page out of range, deliver last page of results
                 contacts = paginator.page(paginator.num_pages)
 
+        if contacts is None:
+            contacts = "No results."
+
         return contacts
 
 

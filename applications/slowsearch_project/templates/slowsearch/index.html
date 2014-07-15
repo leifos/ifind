@@ -12,25 +12,26 @@
          setTimeout("document.getElementById('results').style.pointerEvents='auto'", 5000);
     }
 </script>
-{% if user.is_authenticated %}
-   <h4>Hello, {{ user.username }}!</h4>
-    <div class="modal" id="progress" style="visibility: hidden">
-        <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
-    </div>
+        {% if user.is_authenticated %}
+           <h4>Hello, {{ user.username }}!</h4>
+            <div class="modal" id="progress" style="visibility: hidden">
+                <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
+            </div>
 
-    <div id="results">
+            <div id="results">
 
-            <form id="search" action="/slowsearch/search/" method="post">
-                {% csrf_token %}
-                <input type=text name=query value="{{ query }}">
-                {% if request.user.id != 1 %}
-                     <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
-                {% else %}
-                    <input type=submit value="Search">
-                {% endif %}
-            </form>
-    </div>
-{% else %}
-    Please use the links in the navbar above to create an account or log in
-    {% endif %}
+                    <form id="search" action="/slowsearch/search/" method="post">
+                        {% csrf_token %}
+                        <input type=text name=query value="{{ query }}">
+                        {% if request.user.id != 1 %}
+                             <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+                        {% else %}
+                            <input type=submit value="Search">
+                        {% endif %}
+                    </form>
+            </div>
+        {% else %}
+            Please use the links in the navbar above to create an account or log in
+            {% endif %}
+    <img src="{% static "SOCS Logo.jpg"%}">
 {% endblock %}

@@ -7,6 +7,7 @@ from slowsearch.models import User, UKDemographicsSurvey, Experience, QueryTime,
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from utils import paginated_search, get_condition, record_query, record_link
+from django import forms
 import datetime
 
 def index(request):
@@ -178,6 +179,7 @@ def final_survey(request):
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
+    error = ""
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -189,6 +191,7 @@ def user_login(request):
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
+        print user
 
         # If we have a User object, the details are correct.
         # If None (Python's way of representing the absence of a value), no user
@@ -206,14 +209,15 @@ def user_login(request):
         else:
             # Bad login details were provided. So we can't log the user in.
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            error = "Invalid login details supplied. Please try again."
+            return render_to_response('slowsearch/login.html', {'error': error}, context)
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render_to_response('slowsearch/login.html', {}, context)
+        return render_to_response('slowsearch/login.html', {'error': error}, context)
 
 
 def user_logout(request):
