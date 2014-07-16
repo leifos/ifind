@@ -7,7 +7,7 @@
 
 <body>
 {% block nav %}
- <span id='csrf'>{% csrf_token %}</span>
+    <span id='csrf'>{% csrf_token %}</span>
     <div class="row">
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             {% if user.user.is_authenticated %}
@@ -60,17 +60,20 @@
                     <tr>
                         <td class="def">Equipment</td>
                         <td class="imma"><img src="{{ user.equipment.image.url }}"
-                               title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}" id="img"></td>
+                                              title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
+                                              id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Vehicle</td>
                         <td class="imma"><img src="{{ user.vehicle.image.url }}"
-                             title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}" id="img"></td>
+                                              title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
+                                              id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Tool</td>
                         <td class="imma"><img src="{{ user.tool.image.url }}"
-                          title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" id="img"></td>
+                                              title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" id="img">
+                        </td>
                     </tr>
                     <tr>
                         <td><img class="chest" src="/media/icons/Items/Chest.png"> <br>Total gold:</td>
@@ -81,7 +84,7 @@
                         <td class="imma">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="20"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ time_remaining }}%">
+                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ request.session.time_remaining }}%">
 
                                 </div>
                             </div>
@@ -89,13 +92,13 @@
                     </tr>
                     <tr>
                         <td><img class="chest" src="/media/icons/Items/pile2.png">Current gold:</td>
-                        <td class="imma"> {{ gold }}</td>
+                        <td class="imma"> {{ request.session.gold }}</td>
                     </tr>
                 </table>
 
 
 
-                {% if pointer == blocks|length %}
+                {% if request.session.pointer == blocks|length %}
                     <a href="/gold_digger/dig/">Next mine?</a><br>
 
                 {% endif %}
@@ -153,7 +156,7 @@
                             </div>
                         {% elif block.gold <= limits.6 and block.gold > limits.7 %}
                             <div class="row">
-                            <div class="scaffold_{{ scaffold|random }}"></div>
+                                <div class="scaffold_{{ scaffold|random }}"></div>
                             </div>
                         {% elif block.gold <= 0 %}
                             <div class="scaffold_{{ scaffold|random }}"></div>
@@ -176,10 +179,11 @@
 
                             </div>
                         {% endif %}
-                        {% if pointer == block.pos %}
+                        {% if request.session.pointer == block.pos %}
                             <div class="buttons">
-                               <form action="/gold_digger/dig/" method="post">
-                                    {% csrf_token %}
+
+                                <form action="/gold_digger/dig/" method="post">
+                                {% csrf_token %}
 
                                     <button type="submit" class="button btn-group-sm" value="{{ block.gold }}"
                                             name="dig" id="digbutton"> dig!
@@ -190,8 +194,8 @@
                                     <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                             id="controls">move
                                     </button>
-                               </form>
-                                {% elif pointer == block.pos and pointer == blocks|length %}
+                                </form>
+                                {% elif request.session.pointer == block.pos and request.session.pointer == blocks|length %}
                                 <br><a href="/gold_digger/dig/">Next mine?</a><br>
                             </div>
 
