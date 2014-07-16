@@ -10,8 +10,7 @@ from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment,
 import pickle
 from django.core.urlresolvers import reverse
 import random
-
-
+import json
 # scan_dict = {
 #     'Oil lamp': 0.2,
 #     'Map': 0.3,
@@ -550,3 +549,9 @@ def divide(max_gold):
 
     print "LIMITS", limits
     return limits
+
+
+def ajaxview(request):
+
+    my_response = request.POST['block'] + request.POST['dig']
+    return(HttpResponse(json.dumps(my_response), content_type="application/json"))

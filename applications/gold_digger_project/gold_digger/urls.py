@@ -19,6 +19,7 @@ urlpatterns = patterns('',
         url(r'^game_choice2/$', views.game_choice2, name='game_choice2'),
         url(r'^profile/$', views.user_profile, name='profile'),
         url(r'^game2/$', views.game2, name='game2'),
+        url(r'^ajaxview/$', views.ajaxview, name='ajaxview')
 
 
 

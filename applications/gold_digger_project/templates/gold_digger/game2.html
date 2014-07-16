@@ -7,6 +7,7 @@
 
 <body>
 {% block nav %}
+ <span id='csrf'>{% csrf_token %}</span>
     <div class="row">
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             {% if user.user.is_authenticated %}
@@ -73,7 +74,7 @@
                     </tr>
                     <tr>
                         <td><img class="chest" src="/media/icons/Items/Chest.png"> <br>Total gold:</td>
-                        <td class="imma">{{ user.gold }}</td>
+                        <td class="imma" id="totalgold">{{ user.gold }}</td>
                     </tr>
                     <tr>
                         <td>Time:</td>
@@ -178,7 +179,8 @@
                         {% if pointer == block.pos %}
                             <div class="buttons">
                                <!--<form action="/gold_digger/dig/" method="post">-->
-                                    <!--{% csrf_token %}-->
+
+
                                     <button type="submit" class="button btn-group-sm" value="{{ block.gold }}"
                                             name="dig" id="digbutton"> dig!
                                     </button>
