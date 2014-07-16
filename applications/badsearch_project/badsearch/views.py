@@ -22,9 +22,12 @@ def about(request):
 @login_required
 def profile(request):
     context = RequestContext(request)
+    demographics =""
     user = request.user
     profile = UserProfile.objects.get(user=user)
-    demographics = Demographics.objects.get(user=user)
+
+    if Demographics.objects.filter(user=user):
+        demographics = Demographics.objects.get(user=user)
 
     return render_to_response('badsearch/profile.html', {'profile':profile, 'demographics':demographics}, context)
 
@@ -112,27 +115,49 @@ def register(request):
             {'user_form': user_form, 'profile_form': profile_form, 'validation_form': validation_form, 'registered': registered},
             context)
 
+@login_required()
 def demographics(request):
     context = RequestContext(request)
     completed = False
     user = request.user
+    demographics_form = None
 
-    if request.method == 'POST':
-        demographics_form = DemographicsForm(data=request.POST)
+    if Demographics.objects.filter(user=user):
+        current_user_form = Demographics.objects.get(user=user)
+        demographics_form = DemographicsForm(instance = current_user_form)
 
-        if demographics_form.is_valid():
-            demographics = demographics_form.save(commit=False)
-            demographics.user = user
+        if request.method == 'POST':
 
-            demographics.save()
+            demographics_form = DemographicsForm(data=request.POST, instance=current_user_form)
 
-            completed = True
+            if demographics_form.is_valid():
+                #demographics.user = user
 
+                demographics_form.save()
+                print "valid"
+
+            else: print "invalid"
         else:
-            print demographics_form.errors
+            demographics_form = DemographicsForm(instance=current_user_form)
 
     else:
-        demographics_form = DemographicsForm
+
+        if request.method == 'POST':
+            demographics_form = DemographicsForm(data=request.POST)
+
+            if demographics_form.is_valid():
+                demographics = demographics_form.save(commit=False)
+                demographics.user = user
+
+                demographics.save()
+
+                completed = True
+
+            else:
+                print demographics_form.errors
+
+        else:
+            demographics_form = DemographicsForm
 
     return render_to_response('badsearch/demographics.html', {'demographics_form': demographics_form,
                                                               'completed': completed}, context)
@@ -150,7 +175,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/badsearch/')
+                return HttpResponseRedirect('/')
             else:
                 return HttpResponse("Your badsearch account is disabled.")
         else:
@@ -162,7 +187,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/badsearch/')
+    return HttpResponseRedirect('/')
 
 @login_required
 def search(request):

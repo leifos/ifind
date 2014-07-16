@@ -6,11 +6,11 @@
         {% if registered %}
        <div align = center>
        Thank you for registering.<br>
-       Please continue to our <a href = "/badsearch/demographics/">Demographic Survey</a><br>
-       Alternatively, <a href = "/badsearch/">Skip the survey and begin searching</a>
+       Please continue to our <a href = "/demographics/">Demographic Survey</a><br>
+       Alternatively, <a href = "/">Skip the survey and begin searching</a>
         </div>
         {% else %}
-        <form class="form-signin span8" id="user_form" method="post" action="/badsearch/register/"
+        <form class="form-signin span8" id="user_form" method="post" action="/register/"
               enctype="multipart/form-data">
             {% csrf_token %}
             <h2 class="form-signin-heading">Sign up Here</h2>
@@ -40,7 +40,7 @@
             <li>Your details will not be used for any purposes other than this experiment, and will not be passed on to
             any third party.</li>
             <li>You are able to ask questions at any time before, during or after the experiment using the contact
-            details available on the <a target=_blank href="/badsearch/about">About</a> page.</li>
+            details available on the <a target=_blank href="/about">About</a> page.</li>
 
         </ul>
 

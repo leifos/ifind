@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^badsearch/', include('badsearch.urls')),
+    url(r'', include('badsearch.urls')),
     )
 
 if settings.DEBUG:

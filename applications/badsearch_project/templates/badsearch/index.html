@@ -8,7 +8,7 @@
         <h1>Welcome to Badsearch, {{ user.username }}!<br></h1>
         <br>
         Begin searching below:<br><br><br><br>
-        <form id="search" action="/badsearch/search/" method="post">
+        <form id="search" action="/search/" method="post">
         {% csrf_token %}
             <input type="text" size="60" name="query" value= "{{ query }}"  id="query" />
             <input class="btn btn-primary" type="submit" name="submit" value="Search" />
@@ -17,7 +17,7 @@
         {% else %}
         <div align="center">
         <h1>Welcome to Badsearch!</h1>
-          <br>  Please <a href="/badsearch/login">login</a> or <a href="/badsearch/register">register</a> to begin searching
+          <br>  Please <a href="/login">login</a> or <a href="/register">register</a> to begin searching
         </div>
         {% endif %}
 </div>

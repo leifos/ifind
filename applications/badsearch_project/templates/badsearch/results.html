@@ -10,7 +10,7 @@
     <br/>
 
     <div class="hero-unit">
-        <form class="form-signin span8" id="user_form" method="post" action="/badsearch/search/">
+        <form class="form-signin span8" id="user_form" method="post" action="/search/">
             {% csrf_token %}
             <input type="text" size="50" name="query" value= "{{ query }}"  id="query" />
             <input class="btn btn-primary" type="submit" name="submit" value="Search" />
@@ -20,35 +20,42 @@
 </div>
         {% if result_list %}
         <div align="left" style="clear: both;">
+            {% if "Unable to connect" in result_list %}
+            <p class="text-error" align="center">{{ result_list }}</p>
+            {% else %}
             <ul>
             {% for result in result_list %}
-                    <strong><u><a href="/badsearch/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></u></strong><br />
+                    <strong><u><a href="/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></u></strong><br />
                     <div style="font-size: smaller; color: green">{% if result.url|length > 70 %}{{ contact.url|slice:"70" }}...
                     {% else %}{{ result.url }}{% endif %}</div>
                     <em>{{ result.summary }}</em><br>
                 <hr>
-            {%  endfor %}
+            {% endfor %}
             </ul>
-        </div>
-        <div class="pagination">
-        <span class="step-links">
-        {% if result_list.has_previous %}
-            <a href="?page={{ result_list.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ result_list.number }} of {{ result_list.paginator.num_pages }}
-        </span>
-
-        {% if result_list.has_next %}
-            <a href="?page={{ result_list.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-    </div>
+            {% endif %}
         {% else %}
         There are no results to show.
         {% endif %}
+        </div>
+            {% if not "Unable to connect" in result_list and result_list %}
+                <div class="pagination">
+                <span class="step-links">
+                {% if result_list.has_previous %}
+                <a href="?page={{ result_list.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                Page {{ result_list.number }} of {{ result_list.paginator.num_pages }}
+                </span>
+
+                {% if result_list.has_next %}
+                <a href="?page={{ result_list.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+                </div>
+            {end if}
 
     </div>
 </div>
+        {% endif %}
 {% endblock %}

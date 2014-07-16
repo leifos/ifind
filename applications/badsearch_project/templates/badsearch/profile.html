@@ -7,6 +7,7 @@
         <h1>Here is your Badsearch profile, {{ user.username }}!</h1><br>
 
         <body>
+        {% if demographics %}
         Username: {{ user.username }}<br>
         {% if profile.picture %}Picture: <img src="/media/{{ profile.picture }}" alt="Profile picture unavailable" /> <br>{% endif %}
         Age: {{ demographics.age }}<br>
@@ -14,6 +15,10 @@
         Undergraduate Degree: {{ demographics.education_undergrad }}<br>
         Major: {{ demographics.education_undergrad_major }}<br>
         Year: {{ demographics.education_undergrad_year }}<br><br>
+        {% else %}
+                    You haven't completed the demographic form yet. <a href = "/demographics/">Do it now!</a><br><br>
+        {% endif %}
+
         User Since: {{ profile.user_since }}<br>
         Number of Queries: {{ profile.num_query }} <br>
         Number of URLs Visited: {{ profile.num_links }} <br>
@@ -21,10 +26,10 @@
 
         </body>
 
-        <a href="/badsearch/"> Return to the homepage</a><br />
+        <a href="/"> Return to the homepage</a><br />
         {% else %}
         <h1>You are not logged in! Please login or register to access your profile.</h1>
-        <a href="/badsearch/"> Return to the homepage</a><br />
+        <a href="/"> Return to the homepage</a><br />
         {% endif %}
 </div>
 {% endblock %}

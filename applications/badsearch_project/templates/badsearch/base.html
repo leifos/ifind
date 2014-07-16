@@ -21,7 +21,7 @@
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/badsearch/">Badsearch!</a>
+          <a class="navbar-brand" href="/">Badsearch!</a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
               <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -37,10 +37,10 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-             <li><a href="/badsearch/">Search</a></li>
-             <li><a href="/badsearch/profile">Profile</a></li>
-            <li><a href="/badsearch/about">About</a></li>
-            <li><a href="/badsearch/logout">Sign Out</a></li>
+             <li><a href="/">Search</a></li>
+             <li><a href="/profile">Profile</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/logout">Sign Out</a></li>
                 </ul>
 
         {% else %}
@@ -49,9 +49,9 @@
                 </ul>
 
              <ul class="nav navbar-nav navbar-right">
-             <li ><a href="/badsearch/about">About</a></li>
-             <li ><a href="/badsearch/register">Register</a></li>
-             <li ><a href="/badsearch/login">Sign In</a></li>
+             <li ><a href="/about">About</a></li>
+             <li ><a href="/register">Register</a></li>
+             <li ><a href="/login">Sign In</a></li>
              </ul>
         {% endif %}
 
@@ -83,8 +83,7 @@
 
 
 
-<script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
+<script src="{% static 'js/jquery-2.1.1.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/bootswatch.js' %}"></script>
     </body>
 </html>
