@@ -6,6 +6,7 @@
         {% if user.is_authenticated %}
         <div align="center">
         <h1>Welcome to Badsearch, {{ user.username }}!<br></h1>
+        <br>
         Begin searching below:<br><br><br><br>
         <form id="search" action="/badsearch/search/" method="post">
         {% csrf_token %}
