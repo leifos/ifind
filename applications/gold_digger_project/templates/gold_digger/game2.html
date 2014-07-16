@@ -8,173 +8,177 @@
 <body>
 {% block nav %}
     <div class="row">
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        {% if user.user.is_authenticated %}
-        <div class="notices pull-right">
-                <p class="navbar-brand"> {{ user.user.username }} / <a href="/gold_digger/logout/">Logout</a></p>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            {% if user.user.is_authenticated %}
+                <div class="notices pull-right">
+                    <p class="navbar-brand"> {{ user.user.username }} / <a href="/gold_digger/logout/">Logout</a></p>
+                </div>
+            {% endif %}
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                    MENU
+                </button>
+                <a href="/gold_digger/" class="navbar-brand">Gold Digger</a>
             </div>
-        {% endif %}
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="glyphicon glyphicon-chevron-down"></span>
-					MENU
-				</button>
-				 <a href="/gold_digger/" class="navbar-brand">Gold Digger</a>
-			</div>
 
-			<div class="collapse navbar-collapse" id="collapse">
-				<ul class="nav navbar-nav">
+            <div class="collapse navbar-collapse" id="collapse">
+                <ul class="nav navbar-nav">
                     {% if user.is_authenticated %}
-					<li class="active"><a href="/gold_digger/game_choice2/">Play</a></li>
+                        <li class="active"><a href="/gold_digger/game_choice2/">Play</a></li>
                     {% endif %}
-					<li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-					<li><a href="/gold_digger/about/">About</a></li>
-					<li><a href="how_to_play.html">How to Play</a></li>
-				</ul>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="/gold_digger/about/">About</a></li>
+                    <li><a href="how_to_play.html">How to Play</a></li>
+                </ul>
 
-			</div>
-		</nav>
-	</div>
+            </div>
+        </nav>
+    </div>
 
 {% endblock %}
 {% block body_block %}
 
-<!-- Header -->
+    <!-- Header -->
 
-<div class="landscape_container">
-    <div class="row landscape landscape_5"><!-- change increment (1-10) to show different landscapes -->
-
-        <div class="col-xs-2">
-            <div class="row"><a href="map_view.html">
-                <div class="map_button"></div>
-            </a></div>
-        </div>
-        <div class="col-xs-8">
-            <div class="row shaft_shack">
-                <!-- get rid of the 'shaft_shack' class until you're ready to show the mining shaft -->
-                <div class="extraction_technology_4"></div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="row dig_view">
-<hr>
-    <!-- a few empty columns on the left. -->
-    <div class="col-xs-1" id="side" ></div>
-    <div class="col-xs-3" id="side">
-
-<div class="well equipment">      <!-- Player stats -->
-
-Equipment <img  src="{{ user.equipment.image.url }}" title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}" height="75px" ><br><br>
-Vehicle <img  src="{{ user.vehicle.image.url }}" title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}" height="75px" ><br><br>
-Tool <img  src="{{ user.tool.image.url }}" title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" height="75px"><br><br>
-
-<img src="/media/icons/Items/Chest.png" height="50px"> Total gold:  {{ user.gold }}<br><br>
-
-Time remaining: {{ time_remaining }}<div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="20"
-             aria-valuemin="0" aria-valuemax="100" style="width: {{ time_remaining }}%">
-
-        </div>
+    <div class="jumbotron" id="about">
+        <br>
     </div>
 
-    {% if pointer == blocks|length %}
+    <div class="row dig_view">
+        <hr>
+        <!-- a few empty columns on the left. -->
+
+        <div class="col-xs-3" id="side">
+
+            <div class="well equipment">      <!-- Player stats -->
+
+                Equipment <img src="{{ user.equipment.image.url }}"
+                               title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"><br>
+                Vehicle <img src="{{ user.vehicle.image.url }}"
+                             title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"><br>
+                Tool <img src="{{ user.tool.image.url }}"
+                          title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}"><br>
+
+                <img class="chest" src="/media/icons/Items/Chest.png"> Total gold: {{ user.gold }}<br><br>
+
+                Time remaining: {{ time_remaining }}
+                <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="20"
+                     aria-valuemin="0" aria-valuemax="100" style="width: {{ time_remaining }}%">
+
+                </div>
+                </div></br>
+                <img class="chest" src="/media/icons/Items/pile2.png"> Current gold: {{gold }}<br>
+
+                {% if pointer == blocks|length %}
                     <a href="/gold_digger/dig/">Next mine?</a><br>
 
                 {% endif %}
-</div>
+            </div>
 
-    </div>
-
-<!-- Mine -->
-
-    {% if blocks %}
-        <div class="col-xs-5 mine">
-            {% for block in blocks %}
-
-                {% if block.dug == False %}
-                    <div class="row flecks_{{ block.cue }}">
-                        <div class="scaffold_1_shaded">
-                        </div>
-                    </div>
-                {% else %}
-                    {% if  block.gold <= limits.0 and block.gold > limits.1  %}
-                        <div class="row nuggets_6">
-                            <div class="scaffold_{{ scaffold|random }}">
-                            </div>
-                        </div>
-                    {% elif block.gold <= limits.1 and block.gold > limits.2 %}
-                        <div class="row nuggets_5">
-                            <div class="scaffold_{{ scaffold|random }}">
-                            </div>
-                        </div>
-                    {% elif block.gold <= limits.2 and block.gold > limits.3 %}
-                        <div class="row nuggets_4">
-                            <div class="scaffold_{{ scaffold|random }}">
-                            </div>
-                        </div>
-                    {% elif block.gold <= limits.3 and block.gold > limits.4 %}
-                        <div class="row nuggets_3">
-                            <div class="scaffold_{{ scaffold|random }}">
-                            </div>
-                        </div>
-                    {% elif block.gold <= limits.4 and block.gold > limits.5 %}
-                        <div class="row nuggets_2">
-                            <div class="scaffold_{{ scaffold|random }}">
-                            </div>
-                        </div>
-                    {% elif block.gold <= limits.5 and block.gold > limits.6 %}
-                        <div class="row nuggets_1">
-                            <div class="scaffold_{{ scaffold|random }}">
-                            </div>
-                        </div>
-                    {% elif block.gold <= limits.6 and block.gold > limits.7 %}
-                            <div class="scaffold_{{ scaffold|random }}"></div>
-
-                    {% elif block.gold < limits.7 %}
-                            <div class="scaffold_{{ scaffold|random }}"></div>
-
-                    {% endif %}
-                    {% endif %}
-            {% endfor %}
         </div>
-        <div class="col-xs-2 mine" id="statsright">
-            {% for block in blocks %}
+        <div class="col-xs-1" id="side"></div>
 
-                <div class="row">
-                    {% if block.dug == True %}
-                        {{ block.gold }} <img src="/media/icons/items/Gold.png">
-                        ({{ block.gold_extracted }}) <img src="/media/icons/items/Chest.png">
-                        {{ gold }}
-                    {% endif %}
-                    {% if pointer == block.pos %}
-                        <div>
-                        <form action="/gold_digger/dig/" >
-                           <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig" id="controls"> dig!</button>
-                            <input type="hidden" value="{{ block.pos }}" name="block">
-                        </form>
-                         <form action="/gold_digger/move/" >
-                            <button type="submit" class="button btn-group-sm" value="move mine" name="move" id="controls">move</button>
-                        </form>
+        <!-- Mine -->
+
+        {% if blocks %}
+            <div class="col-xs-5 mine">
+                {% for block in blocks %}
+
+                    {% if block.dug == False %}
+                        <div class="row flecks_{{ block.cue }}">
+                            <div class="scaffold_1_shaded">
+                            </div>
                         </div>
-                        {% if pointer == blocks|length %}
-                            <a href="/gold_digger/dig/">Next mine?</a><br>
+                    {% else %}
+
+                        {% if  block.gold <= limits.0 and block.gold > limits.1 %}
+                            <div class="row nuggets_6">
+                                <div class="scaffold_{{ scaffold|random }}">
+                                </div>
+                            </div>
+                        {% elif block.gold <= limits.1 and block.gold > limits.2 %}
+                            <div class="row nuggets_5">
+                                <div class="scaffold_{{ scaffold|random }}">
+                                </div>
+                            </div>
+                        {% elif block.gold <= limits.2 and block.gold > limits.3 %}
+                            <div class="row nuggets_4">
+                                <div class="scaffold_{{ scaffold|random }}">
+                                </div>
+                            </div>
+                        {% elif block.gold <= limits.3 and block.gold > limits.4 %}
+                            <div class="row nuggets_3">
+                                <div class="scaffold_{{ scaffold|random }}">
+                                </div>
+                            </div>
+                        {% elif block.gold <= limits.4 and block.gold > limits.5 %}
+                            <div class="row nuggets_2">
+                                <div class="scaffold_{{ scaffold|random }}">
+                                </div>
+                            </div>
+                        {% elif block.gold <= limits.5 and block.gold > limits.6 %}
+                            <div class="row nuggets_1">
+                                <div class="scaffold_{{ scaffold|random }}">
+                                </div>
+                            </div>
+                        {% elif block.gold <= limits.6 and block.gold > limits.7 %}
+                            <div class="row">
+                            <div class="scaffold_{{ scaffold|random }}"></div>
+                            </div>
+                        {% elif block.gold <= 0 %}
+                            <div class="scaffold_{{ scaffold|random }}"></div>
+                            </div>
+
+                        {% else %}
+                            <div class="scaffold_{{ scaffold|random }}"></div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-xs-2 mine">
+                {% for block in blocks %}
+
+                    <div class="row">
+                        {% if block.dug == True %}
+                            <div class="score_right">
+                                {{ block.gold }}<img src="/media/icons/items/Gold.png">
+                                ({{ block.gold_extracted }})<img src="/media/icons/items/Chest.png">
+
+                            </div>
+                        {% endif %}
+                        {% if pointer == block.pos %}
+                            <div class="buttons">
+                                <form action="/gold_digger/dig/" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="button btn-group-sm" value="{{ block.gold }}"
+                                            name="dig" id="controls"> dig!
+                                    </button>
+                                    <input type="hidden" value="{{ block.pos }}" name="block">
+                                </form>
+                                <form action="/gold_digger/move/">
+                                    <button type="submit" class="button btn-group-sm" value="move mine" name="move"
+                                            id="controls">move
+                                    </button>
+                                </form>
+                            </div>
+                            {% if pointer == blocks|length %}
+                                <a href="/gold_digger/dig/">Next mine?</a><br>
+
+                            {% endif %}
 
                         {% endif %}
 
-                    {% endif %}
 
+                    </div>
+                {% endfor %}
+            </div>
 
-                </div>
-            {% endfor %}
-        </div>
+        {% endif %}
 
-    {% endif %}
-
-</div>
+    </div>
 {% endblock %}
 </body>
 </html>

@@ -55,7 +55,8 @@
 
 #statsright{
     font-family: pixelfont;
-    font-size: 25px;
+
+    font-size: 150%;
     background-color: rgba(255, 255, 255, 0.17);
     padding-left: 1.5%
 }
@@ -102,26 +103,55 @@ body{
 
 .equipment {
     align-items: center;
-    font-family: pixelfont;
     margin-right: 20px ;
     background-color: rgba(255, 255, 255, 0.10);
-    font-size: 25px;
+
     border-radius: 4px;
     position: fixed;
-    padding-left: 2%;
-    padding-right: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
     margin-left: 2%
 }
 
 .well {
+    padding-top: 1%;
+    margin-right: 1%;
+    align-items: center;
+    font-family: pixelfont;
     border-color: rgb(0, 0, 0);
     border-style: inset;
     border-width: 3px;
+    width: inherit;
+    height: 63%;
+    font-size: 150%;
+
+}
+
+.well img {
+    width: 20%;
+}
+
+.buttons {
+    font-family: pixelfont;
+    align-content: space-around;
+
+}
+
+.score_right {
+    width: inherit;
+    align-items: center;
+    font-size: 150%;
+    font-family: pixelfont;
+    padding-left: 3%;
+    background-color: rgba(255, 255, 255, 0.16);
 }
 
 .progress-bar {
-    background-color: #ffb200;
+    background-color: #589e03;
     border-width: 2px;
+    width: inherit;
+    font-size: inherit;
+
 }
 
 .progress {
