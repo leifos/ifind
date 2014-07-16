@@ -258,7 +258,6 @@ def dig(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
     request.session['game_started'] = True
-    print request.session['pointer'], "POINTER"
 
     pickled_blocks = request.session['pickle']
     blocks = pickle.loads(pickled_blocks)
@@ -271,7 +270,7 @@ def dig(request):
     gold_extracted = int(round(gold_dug*user.tool.modifier))
     pos = int(request.POST['block'])
     request.session['pointer'] += 1
-    print request.session['pointer'], "POINTER"
+
     request.session['time_remaining'] -= 3
 
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
