@@ -15,7 +15,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Demographics(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     age = models.IntegerField(default=0, help_text="Please provide your age (in years).")
     sex = models.CharField(max_length=20, help_text="Please indicate your sex.")
     education_undergrad = models.CharField(max_length=20, default="No")

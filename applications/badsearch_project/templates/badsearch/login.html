@@ -5,7 +5,7 @@
 <div class="jumbotron">
 
     <div align="center" class="container">
-    <form id="login_form" method="post" action="/badsearch/login/">
+    <form id="login_form" method="post" action="/login/">
        <br> <h2 class="form-signin-heading">Sign in to Badsearch</h2> <br><br>
         {% csrf_token %}
 
@@ -16,8 +16,8 @@
         {% endif %}
         <fieldset></fieldset>
         <div class="form-group">
-        <label for="username" class="col-lg-2 control-label">User Name</label>
-        <input type="text" class="form-control" placeholder="Username" name="username" value="" size="50" />
+        <label for="username" class="col-lg-2 control-label">Username</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" value="" size="50" style="clear: both;" />
         <br />
 
         <label for="password" class="col-lg-2 control-label">Password</label>

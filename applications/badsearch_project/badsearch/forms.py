@@ -17,10 +17,10 @@ EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
 
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(label="Username*")
-    email = forms.CharField(label="Email*")
-    password = forms.CharField(label="Password*",widget=forms.PasswordInput())
-    password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password*')
+    username = forms.CharField(label="Username")
+    email = forms.CharField(label="Email")
+    password = forms.CharField(label="Password",widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput(),label='Repeat Password')
 
     def clean(self):
         password = self.cleaned_data.get('password')

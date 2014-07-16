@@ -1,4 +1,4 @@
-from ifind.search import Query, EngineFactory
+from ifind.search import Query, EngineFactory, exceptions
 from keys import BING_API_KEY
 from models import UserProfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -100,8 +100,11 @@ def paginated_search(request, query, user):
     if query:
 
             if not response_cache.get(query):
-                response = run_query(query, condition)
-                response_cache.set(query, pickle.dumps(response), 600)
+                try:
+                    response = run_query(query, condition=1)
+                    response_cache.set(query, pickle.dumps(response), 600)
+                except exceptions.EngineConnectionException:
+                    response = 'Unable to connect to the search engine at this time. Please try again later.'
                 profile = UserProfile.objects.get(user=user)
                 query_num = int(profile.num_query)
                 profile.num_query = query_num + 1
@@ -112,19 +115,19 @@ def paginated_search(request, query, user):
                 response = pickle.loads(response_cache.get(query))
                 event_logger.info(user_id + ' HQ ' + hash_q + ' PA ' + str(page) + ' RR')
 
-            paginator = Paginator(response.results, 10)
+            if type(response) == str:
+                results = response
+            else:
+                paginator = Paginator(response.results, 10)
 
-            try:
-                results = paginator.page(page)
-            except PageNotAnInteger:
-                # if page not an integer, deliver first page
-                results = paginator.page(1)
-            except EmptyPage:
-                # if page out of range, deliver last page of results
-                results = paginator.page(paginator.num_pages)
-
-            if results is None:
-                results = "No results"
+                try:
+                     results = paginator.page(page)
+                except PageNotAnInteger:
+                    # if page not an integer, deliver first page
+                    results = paginator.page(1)
+                except EmptyPage:
+                    # if page out of range, deliver last page of results
+                    results = paginator.page(paginator.num_pages)
 
             return results
 
