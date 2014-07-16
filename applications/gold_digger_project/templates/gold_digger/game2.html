@@ -178,14 +178,14 @@
                         {% endif %}
                         {% if pointer == block.pos %}
                             <div class="buttons">
-                               <!--<form action="/gold_digger/dig/" method="post">-->
-
+                               <form action="/gold_digger/dig/" method="post">
+                                    {% csrf_token %}
 
                                     <button type="submit" class="button btn-group-sm" value="{{ block.gold }}"
                                             name="dig" id="digbutton"> dig!
                                     </button>
                                     <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition">
-                                <!--</form>-->
+                                </form>
                                 <form action="/gold_digger/move/">
                                     <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                             id="controls">move
