@@ -30,7 +30,7 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError("You must confirm your password")
         if password != password2:
             raise forms.ValidationError("Your passwords do not match")
-        return password2
+        #return password2
 
         return self.cleaned_data
 
@@ -47,7 +47,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class DemographicsForm(forms.ModelForm):
-    age = forms.IntegerField(label="Please provide your age (in years)", max_value=100, min_value=18, required=False)
+    age = forms.IntegerField(label="Please provide your age (in years)", max_value=100, required=False)
     sex = forms.CharField(max_length=20, widget=forms.Select(choices=GENDER_CHOICES), label="Please indicate your sex",
                           required=False)
     education_undergrad = forms.CharField(widget=forms.Select(choices=YES_CHOICES),
@@ -59,9 +59,9 @@ class DemographicsForm(forms.ModelForm):
                                                label="What year are you in?", required=False)
 
     def clean(self):
-        age = self.cleaned_data['age']
-        if age < 18:
-            raise forms.ValidationError('Must be at least 18 years old to register')
+        user_age = self.cleaned_data['age']
+        if user_age < 18:
+            raise forms.ValidationError('You must be at least 18 years old to register')
         return self.cleaned_data
 
     class Meta:
@@ -85,6 +85,8 @@ class ValidationForm(forms.Form):
     agree = forms.BooleanField(required=True, initial=False,
                                label="I agree to take part in this study:",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
+    age = forms.BooleanField(required=True, initial=False, label="I certify that I am aged 18 or over:",
+                             error_messages={'required': 'You must be 18 or over to participate in the experiment'},)
     notify = forms.BooleanField(required=False, initial=False,
                                label="I would like to be notified by email of the outcome of this experiment:",
                                error_messages={'required': 'You must accept the terms and conditions'}, )

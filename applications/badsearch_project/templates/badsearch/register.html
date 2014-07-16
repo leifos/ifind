@@ -4,10 +4,11 @@
 
         <div align="left">
         {% if registered %}
-        <p>Thank you for registering.</p>
-       Please continue to our <a href = "/badsearch/demographic/">Demographic Survey</a><br>
+       <div align = center>
+       Thank you for registering.<br>
+       Please continue to our <a href = "/badsearch/demographics/">Demographic Survey</a><br>
        Alternatively, <a href = "/badsearch/">Skip the survey and begin searching</a>
-
+        </div>
         {% else %}
         <form class="form-signin span8" id="user_form" method="post" action="/badsearch/register/"
               enctype="multipart/form-data">
@@ -50,12 +51,11 @@
 
         {% for field in user_form %}
             {{ field.label }}:
-            {{ field }}<br>
+            {{ field }}<br><br>
         {% endfor %}
 
         {% if user_form.errors or validation_form.errors %}
-            <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">Close</button>
+            <div class="alert alert-danger">
 
                 {% for field in user_form %}
                     {% if field.errors %}
@@ -65,7 +65,7 @@
 
                 {% for field in validation_form %}
                     {% if field.errors %}
-                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                    <li>{{ field.label }} {{ field.errors|striptags }}</li>
                     {% endif %}
                 {% endfor %}
 

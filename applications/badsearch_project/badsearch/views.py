@@ -121,7 +121,7 @@ def demographics(request):
         demographics_form = DemographicsForm(data=request.POST)
 
         if demographics_form.is_valid():
-            demographics = demog_form.save(commit=False)
+            demographics = demographics_form.save(commit=False)
             demographics.user = user
 
             demographics.save()
@@ -134,8 +134,8 @@ def demographics(request):
     else:
         demographics_form = DemographicsForm
 
-    return render_to_response('badsearch/demographics.html', {'demographics_form': demographics_form, 'completed': completed},
-                              context)
+    return render_to_response('badsearch/demographics.html', {'demographics_form': demographics_form,
+                                                              'completed': completed}, context)
 
 
 def user_login(request):

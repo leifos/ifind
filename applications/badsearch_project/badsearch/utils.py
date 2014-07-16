@@ -79,7 +79,7 @@ def get_user_id(request):
     return user_id
 
 def run_query(query, condition):
-    q = Query(query, top=50)
+    q = Query(query, top=100)
 
     # check cache, if query is there, return results
     # else send query to bing, and store the results in the cache
