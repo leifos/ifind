@@ -254,47 +254,6 @@ def game_choice(request):
 
 
 @login_required
-def dig(request):
-
-    # Request contex and user
-    context = RequestContext(request)
-    user = UserProfile.objects.get(user=request.user)
-
-    # Unpickling the blocks
-    pickled_blocks = request.session['pickle']
-    blocks = pickle.loads(pickled_blocks)
-
-    if request.session['pointer'] == len(blocks):
-        request.session['has_mine'] = False
-        return HttpResponseRedirect(reverse('game2'))
-
-    # POSTED objects
-    gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
-    pos = int(request.POST['block'])                            # Requesting the POSITION
-
-    gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
-
-    # Updating the session values
-    request.session['pointer'] += 1
-    request.session['time_remaining'] -= 3
-    request.session['gold'] += int(round(gold_dug*user.tool.modifier))
-
-    # Updating user values
-    user.gold += gold_extracted
-    user.save()
-
-    # Updating the block values
-    blocks[pos].dug = True
-    blocks[pos].gold_extracted = gold_extracted
-
-    # Pickling
-    pickled_blocks = pickle.dumps(blocks)
-    request.session['pickle'] = pickled_blocks
-
-    return HttpResponseRedirect(reverse('game2'), context)
-
-
-@login_required
 def move(request):
     print request.GET['move']
     if request.GET['move'] == "move mine":
@@ -527,7 +486,7 @@ def game2(request):
                                                              'user': user,
                                                              'time_remaining': time_remaining,
                                                              'limits': limits,
-                                                             'scaffold': scaffold }, context)
+                                                             'scaffold': scaffold}, context)
 
 
 def divide(max_gold):
@@ -544,9 +503,93 @@ def divide(max_gold):
     print "LIMITS", limits
     return limits
 
+@login_required
+def dig(request):
+
+    # Request context and user
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+
+    # Unpickling the blocks
+    pickled_blocks = request.session['pickle']
+    blocks = pickle.loads(pickled_blocks)
+
+    if request.session['pointer'] == len(blocks):
+        request.session['has_mine'] = False
+        return HttpResponseRedirect(reverse('game2'))
+
+    # POSTED objects
+    gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
+    pos = int(request.POST['block'])                            # Requesting the POSITION
+
+    gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
+
+    # Updating the session values
+    request.session['pointer'] += 1
+    request.session['time_remaining'] -= 3
+    request.session['gold'] += int(round(gold_dug*user.tool.modifier))
+
+    # Updating user values
+    user.gold += gold_extracted
+    user.save()
+
+    # Updating the block values
+    blocks[pos].dug = True
+    blocks[pos].gold_extracted = gold_extracted
+
+    # Pickling
+    pickled_blocks = pickle.dumps(blocks)
+    request.session['pickle'] = pickled_blocks
+
+    return HttpResponseRedirect(reverse('game2'), context)
+
+
 
 def ajaxview(request):
+    # Request context and user
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
 
-    my_response = request.POST['block'] + request.POST['dig']
+    # Unpickling the blocks
+    pickled_blocks = request.session['pickle']
+    blocks = pickle.loads(pickled_blocks)
 
-    return(HttpResponse(json.dumps(my_response), content_type="application/json"))
+    # if request.session['pointer'] == len(blocks):
+    #     request.session['has_mine'] = False
+    #     return HttpResponseRedirect(reverse('game2'))
+
+    # POSTED objects
+    gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
+    pos = int(request.POST['block'])                            # Requesting the POSITION
+
+    gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
+
+    # Updating the session values
+    request.session['pointer'] += 1
+    request.session['time_remaining'] -= 3
+    request.session['gold'] += int(round(gold_dug*user.tool.modifier))
+
+    # Updating user values
+    user.gold += gold_extracted
+    user.save()
+
+    # Updating the block values
+    blocks[pos].dug = True
+    blocks[pos].gold_extracted = gold_extracted
+
+    # Pickling
+    pickled_blocks = pickle.dumps(blocks)
+    request.session['pickle'] = pickled_blocks
+
+    # return HttpResponseRedirect(reverse('game2'), context)
+
+    print user.gold
+    my_response = {'gold_dug': gold_dug,
+                   'pos': pos,
+                   'gold_extracted': gold_extracted,
+                   'pointer': request.session['pointer'],
+                   'time_remaining': request.session['time_remaining'],
+                   'gold': request.session['gold']}
+                   #'blocks': blocks}
+
+    return HttpResponse(json.dumps(my_response), content_type="application/json")
