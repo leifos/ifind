@@ -258,6 +258,7 @@ def dig(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
     request.session['game_started'] = True
+    print request.session['pointer'], "POINTER"
 
     pickled_blocks = request.session['pickle']
     blocks = pickle.loads(pickled_blocks)
@@ -266,11 +267,11 @@ def dig(request):
         request.session['has_mine'] = False
         return HttpResponseRedirect(reverse('game2'))
 
-    gold_dug = int(request.GET['dig'])
+    gold_dug = int(request.POST['dig'])
     gold_extracted = int(round(gold_dug*user.tool.modifier))
-    pos = int(request.GET['block'])
+    pos = int(request.POST['block'])
     request.session['pointer'] += 1
-    print request.session['pointer']
+    print request.session['pointer'], "POINTER"
     request.session['time_remaining'] -= 3
 
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
@@ -285,6 +286,10 @@ def dig(request):
     print "Time remaining", request.session['time_remaining']
 
     print "DUGGGG!"
+
+    for block in blocks:
+        print block
+
     return HttpResponseRedirect(reverse('game2'), context)
 
 
