@@ -26,6 +26,8 @@ def populate():
     add_user('a2','2',4,0,0,'')
     add_user('a3','3',5,2,1,'')
     add_user('a4','4',5,2,0,'')
+
+    # David Conditions
     add_user('d1','1',6,0,1,'')
     add_user('d2','2',6,0,0,'')
     add_user('d3','3',7,0,1,'')
@@ -53,26 +55,37 @@ def populate():
 #        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
 #        add_user(username, password,cond, experiment, rotation, data)
 
-
-    cond = 4
-    for i in range(1,19):
-        username = 'aca' + str(i)
-        password = 'p'+str(i)
+    # 12 New Users for fast, controlled condition
+    cond = 10
+    for i in range(55, 69):
+        username = 'search' + str(i)
+        password = passwords[i-55]
         rotation = (i % 2)
-        experiment = 0 # not used
-        data = None # not used
-        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
-        add_user(username, password,cond, experiment, rotation, data)
+        experiment = 0
+        data = None
 
-    cond = 5
-    for i in range(1,19):
-        username = 'acb' + str(i)
-        password = 'p'+str(i)
-        rotation = (i % 2)
-        experiment = 0 # not used
-        data = None # not used
         print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
-        add_user(username, password,cond, experiment, rotation, data)
+        add_user(username, password, cond, experiment, rotation, data)
+
+    # cond = 4
+    # for i in range(1,19):
+    #     username = 'aca' + str(i)
+    #     password = 'p'+str(i)
+    #     rotation = (i % 2)
+    #     experiment = 0 # not used
+    #     data = None # not used
+    #     print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
+    #     add_user(username, password,cond, experiment, rotation, data)
+    #
+    # cond = 5
+    # for i in range(1,19):
+    #     username = 'acb' + str(i)
+    #     password = 'p'+str(i)
+    #     rotation = (i % 2)
+    #     experiment = 0 # not used
+    #     data = None # not used
+    #     print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
+    #     add_user(username, password,cond, experiment, rotation, data)
 
 
 

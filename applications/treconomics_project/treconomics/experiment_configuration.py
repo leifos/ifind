@@ -152,6 +152,7 @@ exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, pra
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 
+exp_fast_controlled = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 controlled query delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
 
 # these correspond to conditions
-experiment_setups = [exp0, exp1, exp2, exp3, exp_struct_concept, exp_stand_concept, exp_fast_high, exp_slow_high, exp_fast_low, exp_slow_low]
+experiment_setups = [exp0, exp1, exp2, exp3, exp_struct_concept, exp_stand_concept, exp_fast_high, exp_slow_high, exp_fast_low, exp_slow_low, exp_fast_controlled]
