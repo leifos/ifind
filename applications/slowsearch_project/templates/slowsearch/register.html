@@ -3,13 +3,13 @@
 {% block body_block %}
     {% if registered %}
        <strong>Thank you for registering!</strong><br>
-       Please continue to our <a href = "/slowsearch/demographic/">Demographic Survey</a><br>
-       Alternatively, <a href = "/slowsearch/">Skip the survey</a>
+       Please continue to our <a href = "/demographic/">Demographic Survey</a><br>
+       Alternatively, <a href = "/">Skip the survey</a>
 
     {% else %}
         <h2>Register here!</h2><br />
 
-    <form id="reg_form" method="post" action="/slowsearch/register/"
+    <form id="reg_form" method="post" action="/register/"
             enctype="multipart/form-data">
 
         {% csrf_token %}

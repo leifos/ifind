@@ -21,7 +21,7 @@
 
     <div id="results">
 
-            <form id="search" action="/slowsearch/search/" method="post">
+            <form id="search" action="/search/" method="post">
                 {% csrf_token %}
                 <input type=text name=query value="{{ query }}">
                 {% if request.user.id != 1 %}
@@ -38,7 +38,7 @@
              {% for contact in contacts %}
                 {% if contact.url %}
                     <div>
-                    <strong style="font-size: 13pt"><a href="/slowsearch/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
+                    <strong style="font-size: 13pt"><a href="/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
                     <div style="font-size: smaller; color: green">{% if contact.url|length > 70 %}{{ contact.url|slice:"70" }}...
                     {% else %}{{ contact.url }}{% endif %}</div>
                     <em>{{ contact.summary }}</em>

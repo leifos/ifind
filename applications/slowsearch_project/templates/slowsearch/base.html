@@ -24,32 +24,32 @@
                    <span class="icon-bar"></span>
                    <span class="icon-bar"></span>
                </button>
-               <a class="brand" href="/slowsearch/">Slowsearch</a>
+               <a class="brand" href="/">Slowsearch</a>
 
                <div class="nav-collapse collapse">
                    <ul class="nav pull-right">
                        {% if user.is_authenticated %}
                             <li class="navbar-text">Welcome, {{ user.username }}!</li>
                            {% if 'profile' not in request.get_full_path %}
-                            <li><a href="/slowsearch/profile/{{ user.username }}">Profile</a> </li>
+                            <li><a href="/profile/{{ user.username }}">Profile</a> </li>
                            {% endif %}
 
-                            <li><a href="/slowsearch/logout/">Logout</a></li>
+                            <li><a href="/logout/">Logout</a></li>
                         {% else %}
                             {% if request.get_full_path != "/slowsearch/register/" %}
-                               <li><a href="/slowsearch/register/">Register</a></li>
+                               <li><a href="/register/">Register</a></li>
                             {% endif %}
                             {% if request.get_full_path != "/slowsearch/login/" %}
-                            <li><a href="/slowsearch/login/">Login</a></li>
+                            <li><a href="/login/">Login</a></li>
                             {% endif %}
                         {% endif %}
 
                         {% if request.get_full_path != "/slowsearch/" %}
-                            <li><a href="/slowsearch/">Home</a></li>
+                            <li><a href="/">Home</a></li>
                         {% endif %}
 
                         {% if request.get_full_path != "/slowsearch/about/" %}
-                            <li><a href="/slowsearch/about">About</a> </li>
+                            <li><a href="/about">About</a> </li>
                         {% endif %}
 
 
