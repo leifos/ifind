@@ -10,6 +10,7 @@ from utils import paginated_search, get_condition, record_query, record_link
 from django import forms
 import datetime
 
+
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
@@ -35,6 +36,30 @@ def profile(request, *args, **kwargs):
     # Create a context dictionary which we can pass to the template rendering engine.
     context_dict = {'user_name': user_name, 'demographics': demographics, 'profile': profile}
     return render_to_response('slowsearch/profile.html', context_dict, context)
+
+
+@login_required()
+def editprofile(request, username):
+    context = RequestContext(request)
+    user = request.user
+    curr_user_demog = UKDemographicsSurvey.objects.get(user=user)
+    new_demog_form = None
+
+    if request.method == 'POST':
+        new_demog_form = UKDemographicsSurveyForm(data=request.POST, instance=curr_user_demog)
+
+        if new_demog_form.is_valid():
+            new_demog_form.save()
+            print 'valid'
+
+        else:
+            print 'invalid'
+
+    else:
+        print 'apparently not a POST'
+        new_demog_form = UKDemographicsSurveyForm(instance=curr_user_demog)
+
+    return render_to_response('slowsearch/editprofile',  {'new_demog_form': new_demog_form}, context)
 
 
 def about(request):
@@ -201,7 +226,7 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/slowsearch/')
+                return HttpResponseRedirect('/')
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your account is disabled.")
