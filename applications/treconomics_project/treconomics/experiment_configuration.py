@@ -5,7 +5,7 @@ import logging.config
 import logging.handlers
 from ifind.common.autocomplete_trie import AutocompleteTrie
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
-#from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
+from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
 work_dir = os.getcwd()
@@ -137,6 +137,7 @@ bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
 
 #pl2cache = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
 pl2cache = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
+pl2postings = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=False)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)
@@ -152,7 +153,7 @@ exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, pra
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 
-exp_fast_controlled = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 controlled query delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_fast_controlled = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2postings, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 controlled query delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
 
 # these correspond to conditions
 experiment_setups = [exp0, exp1, exp2, exp3, exp_struct_concept, exp_stand_concept, exp_fast_high, exp_slow_high, exp_fast_low, exp_slow_low, exp_fast_controlled]

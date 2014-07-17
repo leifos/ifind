@@ -209,9 +209,14 @@ class WhooshTrecNewsRedis(Engine):
         else:
             try:
                 postings = searcher.postings(self.parser.fieldname, term)
+                count = 0
 
                 for i in postings.all_ids():
                     doc_term_scores[i] = postings.score()
+
+                    count += 1
+                    if count == 1200:
+                        break
 
             except TermNotFound:  # If the term is not found in the inverted index, do nada.
                 pass
