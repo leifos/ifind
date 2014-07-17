@@ -6,7 +6,7 @@ from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
 # Paths
 work_dir = os.getcwd()
 whoosh_index_dir = os.path.join(work_dir, 'fullindex')
-query_file = os.path.join(work_dir, '347.sigir2013.queries')
+query_file = os.path.join(work_dir, '347.iiix2014.queries')
 
 # Settings
 skip = 1
@@ -14,7 +14,7 @@ top = 10
 ignore_terms = ['and', 'or', 'not']
 
 # Engine
-engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir)
+engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir, use_cache=False)
 
 def get_query_list():
 	input_file = open(query_file, 'r')
