@@ -561,6 +561,7 @@ def ajaxview(request):
     # POSTED objects
     gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
     pos = int(request.POST['block'])                            # Requesting the POSITION
+    print gold_dug, "GOLD DUG"
 
     gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
 
@@ -583,10 +584,22 @@ def ajaxview(request):
 
     # return HttpResponseRedirect(reverse('game2'), context)
 
+    pickled_limits = request.session['limits']
+    limits = pickle.loads(pickled_limits)
+
     myResponse = {}
+
+    for x in range(len(limits)-1):
+        if limits[x] >= gold_dug > limits[x+1]:
+            print x, "limit"
+            myResponse['nuggets'] = x
+
+
+
 
     myResponse['totalgold'] = user.gold
     myResponse['timeremaining'] = request.session['time_remaining']
     myResponse['currentgold'] = request.session['gold']
+
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")

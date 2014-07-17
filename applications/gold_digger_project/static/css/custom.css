@@ -177,6 +177,11 @@ body{
     background-color: rgba(255, 255, 255, 0.16);
 }
 
+.hidden{
+    visibility: hidden;
+}
+
+
 .dig_view {
  padding-top: 0;
  background: url(/static/ground.jpg);
@@ -414,32 +419,32 @@ body{
 }
 
 .nuggets_1 {
- 	background: url(/media/mine/main_nuggets_1pixel.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_6pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
 .nuggets_2 {
- 	background: url(/media/mine/main_nuggets_2pixel.png) no-repeat center;
- 	background-size: 100% 100%;
-}
-
-.nuggets_3 {
- 	background: url(/media/mine/main_nuggets_3pixel.png) no-repeat center;
- 	background-size: 100% 100%;
-}
-
-.nuggets_4 {
- 	background: url(/media/mine/main_nuggets_4pixel.png) no-repeat center;
- 	background-size: 100% 100%;
-}
-
-.nuggets_5 {
  	background: url(/media/mine/main_nuggets_5pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
+.nuggets_3 {
+ 	background: url(/media/mine/main_nuggets_4pixel.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_4 {
+ 	background: url(/media/mine/main_nuggets_3pixel.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
+.nuggets_5 {
+ 	background: url(/media/mine/main_nuggets_2pixel.png) no-repeat center;
+ 	background-size: 100% 100%;
+}
+
 .nuggets_6 {
- 	background: url(/media/mine/main_nuggets_6pixel.png) no-repeat center;
+ 	background: url(/media/mine/main_nuggets_1pixel.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
