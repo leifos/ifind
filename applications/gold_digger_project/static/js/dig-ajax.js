@@ -5,6 +5,7 @@ $(document).ready(function(){
     $('#digbutton').click(function(){
         var pos = $('#blockposition').val();
         var gold = $('#digbutton').val();
+        var cue = $('goldlayer').val();
 
         var csrf = $('#csrf > input').val();
 
@@ -13,12 +14,14 @@ $(document).ready(function(){
             url: "/gold_digger/ajaxview/",
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
             success: function(response){
-                alert(response['gold_dug']);
+
                 $('#totalgold').html(response['totalgold']);
                 $('#progressbar').css("width", response['timeremaining']);
                 $('#currentgold').html(response['currentgold']);
-                $('#')
 
+                $('#goldlayer').removeClass().addClass("row nuggets_"+response['nuggets']);
+                $('#scaffoldlayer').removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
+//                $('#buttons').remove().
 
             }
         })

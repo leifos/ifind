@@ -116,19 +116,19 @@
         {% if blocks %}
             <div class="col-xs-5 mine">
                 {% for block in blocks %}
-                    <div class="row flecks_{{ block.cue }}" id="{{ block.pos }}">
-                        <div class="scaffold_1_shaded">
+                    <div class="row flecks_{{ block.cue }}" id="goldlayer">
+                        <div class="scaffold_1_shaded" id="scaffoldlayer">
                         </div>
                     </div>
 
 
 
-                    <!-- {% if block.dug == False %}
+                   <!--{% if block.dug == False %}
                          <div class="row flecks_{{ block.cue }}">
                              <div class="scaffold_1_shaded">
                              </div>
                          </div>
-                     {% else %}
+                       {% else %}
                          {% if  block.gold > limits.0 %}
                              <div class="row nuggets_6" id="nuggets{{ block.pos }}">
                                  <div class="scaffold_{{ scaffold|random }}">
@@ -176,12 +176,14 @@
                              <div class="scaffold_{{ scaffold|random }}"></div>
                          {% endif %}
                      {% endif %} -->
+
+
                 {% endfor %}
             </div>
             <div class="col-xs-2 mine">
                 {% for block in blocks %}
 
-                    <div class="row">
+                    <div class="row" id="{{ block.pos }}">
                         {% if block.dug == True %}
                             <div class="score_right">
                                 {{ block.gold }}<img src="/media/icons/items/Gold.png">
@@ -190,7 +192,7 @@
                             </div>
                         {% endif %}
                         {% if request.session.pointer == block.pos %}
-                            <div class="buttons">
+                            <div class="buttons" id="buttons">
 
                                 <!--<form action="/gold_digger/dig/" method="post"> -->
 
@@ -199,8 +201,8 @@
                                             name="dig" id="digbutton"> dig!
                                     </button>
                                     <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition">
-                                </form>
-                                <form action="/gold_digger/move/">
+                                <!--</form>
+                                <form action="/gold_digger/move/">-->
                                     <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                             id="controls">move
                                     </button>
