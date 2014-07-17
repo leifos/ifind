@@ -13,9 +13,12 @@ $(document).ready(function(){
             url: "/gold_digger/ajaxview/",
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
             success: function(response){
-                alert(response['gold_dug'])
-                $('#golddug').html(response['gold_dug'])
-                $('#goldextracted').html(response['gold_extracted'])
+                alert(response['gold_dug']);
+                $('#totalgold').html(response['totalgold']);
+                $('#progressbar').css("width", response['timeremaining']);
+                $('#currentgold').html(response['currentgold']);
+                $('#')
+
 
             }
         })

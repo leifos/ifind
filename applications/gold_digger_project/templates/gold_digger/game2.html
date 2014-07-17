@@ -76,15 +76,18 @@
                                               title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" id="img">
                         </td>
                     </tr>
+
+                    <!-- Begin  JQuery Ajax -->
+
                     <tr>
-                        <td><img class="chest" src="/media/icons/Items/Chest.png"> <br>Total gold:</td>
+                        <td><img class="chest" src="/media/icons/Items/Chest.png">Total gold:</td>
                         <td class="imma" id="totalgold">{{ user.gold }}</td>
                     </tr>
                     <tr>
                         <td>Time:</td>
                         <td class="imma">
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="20"
+                                <div class="progress-bar" role="progressbar" aria-valuenow="" id="progressbar"
                                      aria-valuemin="0" aria-valuemax="100" style="width: {{ request.session.time_remaining }}%">
 
                                 </div>
@@ -93,7 +96,7 @@
                     </tr>
                     <tr>
                         <td><img class="chest" src="/media/icons/Items/pile2.png">Current gold:</td>
-                        <td class="imma"> {{ request.session.gold }}</td>
+                        <td class="imma" id="currentgold"> {{ request.session.gold }}</td>
                     </tr>
                 </table>
 
@@ -113,60 +116,66 @@
         {% if blocks %}
             <div class="col-xs-5 mine">
                 {% for block in blocks %}
-
-                    {% if block.dug == False %}
-                        <div class="row flecks_{{ block.cue }}">
-                            <div class="scaffold_1_shaded">
-                            </div>
+                    <div class="row flecks_{{ block.cue }}" id="{{ block.pos }}">
+                        <div class="scaffold_1_shaded">
                         </div>
-                    {% else %}
-                        {% if  block.gold > limits.0 %}
-                            <div class="row nuggets_6">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif  block.gold <= limits.0 and block.gold > limits.1 %}
-                            <div class="row nuggets_6">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif block.gold <= limits.1 and block.gold > limits.2 %}
-                            <div class="row nuggets_5">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif block.gold <= limits.2 and block.gold > limits.3 %}
-                            <div class="row nuggets_4">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif block.gold <= limits.3 and block.gold > limits.4 %}
-                            <div class="row nuggets_3">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif block.gold <= limits.4 and block.gold > limits.5 %}
-                            <div class="row nuggets_2">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif block.gold <= limits.5 and block.gold > limits.6 %}
-                            <div class="row nuggets_1">
-                                <div class="scaffold_{{ scaffold|random }}">
-                                </div>
-                            </div>
-                        {% elif block.gold <= limits.6 and block.gold > limits.7 %}
-                            <div class="row">
-                                <div class="scaffold_{{ scaffold|random }}"></div>
-                            </div>
-                        {% elif block.gold <= 0 %}
-                            <div class="scaffold_{{ scaffold|random }}"></div>
-                            </div>
+                    </div>
 
-                        {% else %}
-                            <div class="scaffold_{{ scaffold|random }}"></div>
-                        {% endif %}
-                    {% endif %}
+
+
+                    <!-- {% if block.dug == False %}
+                         <div class="row flecks_{{ block.cue }}">
+                             <div class="scaffold_1_shaded">
+                             </div>
+                         </div>
+                     {% else %}
+                         {% if  block.gold > limits.0 %}
+                             <div class="row nuggets_6" id="nuggets{{ block.pos }}">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif  block.gold <= limits.0 and block.gold > limits.1 %}
+                             <div class="row nuggets_6">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif block.gold <= limits.1 and block.gold > limits.2 %}
+                             <div class="row nuggets_5">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif block.gold <= limits.2 and block.gold > limits.3 %}
+                             <div class="row nuggets_4">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif block.gold <= limits.3 and block.gold > limits.4 %}
+                             <div class="row nuggets_3">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif block.gold <= limits.4 and block.gold > limits.5 %}
+                             <div class="row nuggets_2">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif block.gold <= limits.5 and block.gold > limits.6 %}
+                             <div class="row nuggets_1">
+                                 <div class="scaffold_{{ scaffold|random }}">
+                                 </div>
+                             </div>
+                         {% elif block.gold <= limits.6 and block.gold > limits.7 %}
+                             <div class="row">
+                                 <div class="scaffold_{{ scaffold|random }}"></div>
+                             </div>
+                         {% elif block.gold <= 0 %}
+                             <div class="scaffold_{{ scaffold|random }}"></div>
+                             </div>
+
+                         {% else %}
+                             <div class="scaffold_{{ scaffold|random }}"></div>
+                         {% endif %}
+                     {% endif %} -->
                 {% endfor %}
             </div>
             <div class="col-xs-2 mine">

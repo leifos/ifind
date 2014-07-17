@@ -583,13 +583,10 @@ def ajaxview(request):
 
     # return HttpResponseRedirect(reverse('game2'), context)
 
-    print user.gold
-    my_response = {'gold_dug': gold_dug,
-                   'pos': pos,
-                   'gold_extracted': gold_extracted,
-                   'pointer': request.session['pointer'],
-                   'time_remaining': request.session['time_remaining'],
-                   'gold': request.session['gold']}
-                   #'blocks': blocks}
+    myResponse = {}
 
-    return HttpResponse(json.dumps(my_response), content_type="application/json")
+    myResponse['totalgold'] = user.gold
+    myResponse['timeremaining'] = request.session['time_remaining']
+    myResponse['currentgold'] = request.session['gold']
+
+    return HttpResponse(json.dumps(myResponse), content_type="application/json")

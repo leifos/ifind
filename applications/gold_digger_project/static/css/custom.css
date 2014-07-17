@@ -169,7 +169,6 @@ body{
 .progress-bar {
     background-color: #589e03;
     border-width: 2px;
-    width: inherit;
     font-size: inherit;
 
 }
