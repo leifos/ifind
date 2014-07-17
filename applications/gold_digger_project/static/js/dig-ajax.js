@@ -5,9 +5,9 @@ $(document).ready(function(){
     $('#digbutton').click(function(){
         var pos = $('#blockposition').val();
         var gold = $('#digbutton').val();
-        var cue = $('goldlayer').val();
 
         var csrf = $('#csrf > input').val();
+        $('#row_'+pos).addClass("hidden");
 
         $.ajax({
             type: "POST",
@@ -15,13 +15,15 @@ $(document).ready(function(){
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
             success: function(response){
 
+
+                console.log(pos);
                 $('#totalgold').html(response['totalgold']);
                 $('#progressbar').css("width", response['timeremaining']);
                 $('#currentgold').html(response['currentgold']);
 
                 $('#goldlayer').removeClass().addClass("row nuggets_"+response['nuggets']);
                 $('#scaffoldlayer').removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
-//                $('#buttons').remove().
+                $('#row_1').removeClass()
 
             }
         })

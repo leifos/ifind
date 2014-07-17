@@ -98,6 +98,9 @@
                         <td><img class="chest" src="/media/icons/Items/pile2.png">Current gold:</td>
                         <td class="imma" id="currentgold"> {{ request.session.gold }}</td>
                     </tr>
+                    <tr>
+                        <td class="hidden" id="prova">PROVA</td>
+                    </tr>
                 </table>
 
 
@@ -183,46 +186,41 @@
             <div class="col-xs-2 mine">
                 {% for block in blocks %}
 
-                    <div class="row" id="{{ block.pos }}">
-                        {% if block.dug == True %}
-                            <div class="score_right">
-                                {{ block.gold }}<img src="/media/icons/items/Gold.png">
-                                ({{ block.gold_extracted }})<img src="/media/icons/items/Chest.png">
-
-                            </div>
-                        {% endif %}
-                        {% if request.session.pointer == block.pos %}
+                    {% if block.pos == 0 %}
+                        <div class="row" id="row_{{ block.pos }}">
                             <div class="buttons" id="buttons">
-
-                                <!--<form action="/gold_digger/dig/" method="post"> -->
-
-
-                                    <button type="submit" class="button btn-group-sm" value="{{ block.gold }}"
-                                            name="dig" id="digbutton"> dig!
-                                    </button>
-                                    <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition">
-                                <!--</form>
-                                <form action="/gold_digger/move/">-->
-                                    <button type="submit" class="button btn-group-sm" value="move mine" name="move"
-                                            id="controls">move
-                                    </button>
-                                <!-- </form> -->
-                                {% elif request.session.pointer == block.pos and request.session.pointer == blocks|length %}
-                                <br><a href="/gold_digger/dig/">Next mine?</a><br>
+                                <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
+                                        id="digbutton"> dig!
+                                </button>
+                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition"/>
+                                <button type="submit" class="button btn-group-sm" value="move mine" name="move"
+                                        id="controls">move
+                                </button>
                             </div>
+                        </div>
+                    {% else %}
+                        <div class="row" id="row_{{ block.pos }}">
+                            <div class="buttons" id="buttons">
+                                <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
+                                        id="digbutton"> dig!
+                                </button>
+                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition"/>
+                                <button type="submit" class="button btn-group-sm" value="move mine" name="move"
+                                        id="controls">move
+                                </button>
+                            </div>
+                         </div>
 
+                    {% endif %}
 
-
-                        {% endif %}
-
-
-                    </div>
                 {% endfor %}
+
+            </div>
+
             </div>
 
         {% endif %}
 
-    </div>
 {% endblock %}
 </body>
 </html>

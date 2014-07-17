@@ -177,6 +177,11 @@ body{
     background-color: rgba(255, 255, 255, 0.16);
 }
 
+.hidden{
+    visibility: hidden;
+}
+
+
 .dig_view {
  padding-top: 0;
  background: url(/static/ground.jpg);
