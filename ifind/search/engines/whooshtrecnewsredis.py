@@ -20,7 +20,7 @@ class WhooshTrecNewsRedis(Engine):
     A revised Whoosh ifind engine.
     Implemented by dmax. Uses a new way of poking the postings file by @leifos, and also some tasty Redis caching.
     """
-    def __init__(self, whoosh_index_dir='', use_cache=True, cache_host='localhost', cache_port=6379, **kwargs):
+    def __init__(self, whoosh_index_dir='', use_cache=True, cache_host='localhost', cache_port=6379, results_limit=1200, **kwargs):
         """
         Constructor for the engine.
         """
@@ -33,6 +33,9 @@ class WhooshTrecNewsRedis(Engine):
         #  Only put PL2 in for now (for more, add the model parameter to the constructor to specify!)
         self.scoring_model_identifier = 1
         self.scoring_model = scoring.PL2(c=10.0)
+
+        #  Sets a hard limit of x results - specify False to return all results.
+        self.results_limit = results_limit
 
         try:
             self.doc_index = open_dir(self.whoosh_index_dir)
@@ -215,7 +218,7 @@ class WhooshTrecNewsRedis(Engine):
                     doc_term_scores[i] = postings.score()
 
                     count += 1
-                    if count == 1200:
+                    if self.results_limit and count == self.results_limit:
                         break
 
             except TermNotFound:  # If the term is not found in the inverted index, do nada.
