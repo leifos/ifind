@@ -179,6 +179,7 @@ body{
 
 .hidden{
     visibility: hidden;
+
 }
 
 
@@ -903,6 +904,9 @@ body{
 	.shaft .row, .mine .row, .score .row, .mine .row > div {
 		height: 130px;
 	}
+    .row .hidden > div {
+        height: 130px;
+    }
 }
 
 .navbar-inverse .navbar-toggle {

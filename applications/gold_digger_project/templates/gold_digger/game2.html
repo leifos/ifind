@@ -124,75 +124,19 @@
                         </div>
                     </div>
 
+        {% endfor %}
 
-
-                   <!--{% if block.dug == False %}
-                         <div class="row flecks_{{ block.cue }}">
-                             <div class="scaffold_1_shaded">
-                             </div>
-                         </div>
-                       {% else %}
-                         {% if  block.gold > limits.0 %}
-                             <div class="row nuggets_6" id="nuggets{{ block.pos }}">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif  block.gold <= limits.0 and block.gold > limits.1 %}
-                             <div class="row nuggets_6">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif block.gold <= limits.1 and block.gold > limits.2 %}
-                             <div class="row nuggets_5">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif block.gold <= limits.2 and block.gold > limits.3 %}
-                             <div class="row nuggets_4">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif block.gold <= limits.3 and block.gold > limits.4 %}
-                             <div class="row nuggets_3">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif block.gold <= limits.4 and block.gold > limits.5 %}
-                             <div class="row nuggets_2">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif block.gold <= limits.5 and block.gold > limits.6 %}
-                             <div class="row nuggets_1">
-                                 <div class="scaffold_{{ scaffold|random }}">
-                                 </div>
-                             </div>
-                         {% elif block.gold <= limits.6 and block.gold > limits.7 %}
-                             <div class="row">
-                                 <div class="scaffold_{{ scaffold|random }}"></div>
-                             </div>
-                         {% elif block.gold <= 0 %}
-                             <div class="scaffold_{{ scaffold|random }}"></div>
-                             </div>
-
-                         {% else %}
-                             <div class="scaffold_{{ scaffold|random }}"></div>
-                         {% endif %}
-                     {% endif %} -->
-
-
-                {% endfor %}
             </div>
             <div class="col-xs-2 mine">
                 {% for block in blocks %}
 
                     {% if block.pos == 0 %}
                         <div class="row" id="row_{{ block.pos }}">
-                            <div class="buttons" id="buttons">
+                            <div class="buttons" id="invisiblebuttons_{{ block.pos }}">
                                 <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
-                                        id="digbutton"> dig!
+                                        id="digbutton_{{ block.pos }}"> dig!
                                 </button>
-                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition"/>
+                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition_{{ block.pos }}"/>
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                         id="controls">move
                                 </button>
@@ -200,11 +144,11 @@
                         </div>
                     {% else %}
                         <div class="row" id="row_{{ block.pos }}">
-                            <div class="buttons" id="buttons">
+                            <div class="buttons hidden" id="invisiblebuttons_{{ block.pos }}">
                                 <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
-                                        id="digbutton"> dig!
+                                        id="digbutton_{{ block.pos }}"> dig!
                                 </button>
-                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition"/>
+                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition_{{ block.pos }}"/>
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                         id="controls">move
                                 </button>
