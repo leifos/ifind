@@ -24,16 +24,15 @@ $(document).ready(function(){
             url: "/gold_digger/ajaxview/",
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
             success: function(response){
-
-
-
+                posi = count - 1;
                 console.log(count);
                 $('#totalgold').html(response['totalgold']);
                 $('#progressbar').css("width", response['timeremaining']);
                 $('#currentgold').html(response['currentgold']);
 
-                $('#goldlayer').removeClass().addClass("row nuggets_"+response['nuggets']);
-                $('#scaffoldlayer').removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
+                $('#goldlayer_'+posi).removeClass().addClass("row nuggets_"+response['nuggets']);
+
+                $('#scaffoldlayer_'+posi).removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
                 $('#invisiblebuttons_'+count).removeClass("hidden");
 
             }

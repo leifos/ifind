@@ -105,36 +105,55 @@ body{
 }
 
 .equipment {
-    align-items: center;
+    align-content: center;
     margin-right: 20px ;
     background-color: rgba(255, 255, 255, 0.10);
 
     border-radius: 4px;
-    position: fixed;
     padding-left: 1%;
     padding-right: 1%;
     margin-left: 2%
 }
+ td .thumb{
+    width: 100px;
+
+}
+
+.equip {
+    width: 80%;
+    height: 50%;
+}
+
+.equip td{
+    text-align: right
+}
 
 .equip #img {
-    width: 50%;
+    width: 60%;
 }
 
-.imma {
-    width: 10%;
-    height: 100%;
-    text-align: center right;
-
+.scores td{
+    text-align: left;
+    width: inherit;
 }
+
+.probar {
+    padding-top: 6%;
+    padding-left: 5%;
+}
+
+.current {
+    padding-left: 3%;
+}
+
 
 .def {
     width: 5%;
-    height: 100%;
+    height: inherit;
 }
 .well {
     padding-top: 1%;
     margin-right: 1%;
-    align-items: center;
     font-family: pixelfont;
     border-color: rgb(0, 0, 0);
     border-style: solid;
@@ -143,6 +162,8 @@ body{
     height: 63%;
     font-size: 150%;
     color: gold;
+    position: fixed;
+
 }
 
 
@@ -166,16 +187,6 @@ body{
     background-color: rgba(255, 255, 255, 0.16);
 }
 
-.progress-bar {
-    background-color: #589e03;
-    border-width: 2px;
-    font-size: inherit;
-
-}
-
-.progress {
-    background-color: rgba(255, 255, 255, 0.16);
-}
 
 .hidden{
     visibility: hidden;
@@ -417,6 +428,11 @@ body{
 .score_4 {
  	background: url(/media/mine/score_nuggets_4.png) no-repeat center top;
  	background-size: contain;
+}
+
+.nuggets_0 {
+ 	background: url(/media/mine/main_nuggets_6pixel.png) no-repeat center;
+ 	background-size: 100% 100%;
 }
 
 .nuggets_1 {

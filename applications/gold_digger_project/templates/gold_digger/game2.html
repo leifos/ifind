@@ -60,47 +60,48 @@
                 <table class="equip">
                     <tr>
                         <td class="def">Equipment</td>
-                        <td class="imma"><img src="{{ user.equipment.image.url }}"
+                        <td class="thumb"><img src="{{ user.equipment.image.url }}"
                                               title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
                                               id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Vehicle</td>
-                        <td class="imma"><img src="{{ user.vehicle.image.url }}"
+                        <td class="thumb"><img src="{{ user.vehicle.image.url }}"
                                               title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
                                               id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Tool</td>
-                        <td class="imma"><img src="{{ user.tool.image.url }}"
+                        <td class="thumb"><img src="{{ user.tool.image.url }}"
                                               title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" id="img">
                         </td>
                     </tr>
 
                     <!-- Begin  JQuery Ajax -->
-
+                    </table>
+                    <hr>
+                    <table class="scores">
                     <tr>
-                        <td><img class="chest" src="/media/icons/Items/Chest.png">Total gold:</td>
-                        <td class="imma" id="totalgold">{{ user.gold }}</td>
+                        <td><img class="chest" src="/media/icons/Items/Chest.png"></td>
+                        <td>Total gold:</td>
+                        <td id="totalgold">{{ user.gold }}</td>
                     </tr>
                     <tr>
-                        <td>Time:</td>
-                        <td class="imma">
+                        <td>Time </td>
+                        <td class="probar">
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="" id="progressbar"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ request.session.time_remaining }}%">
+                                <div class="progress-bar" id="progressbar" style="width: {{ request.session.time_remaining }}%">
 
                                 </div>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td><img class="chest" src="/media/icons/Items/pile2.png">Current gold:</td>
-                        <td class="imma" id="currentgold"> {{ request.session.gold }}</td>
+                        <td><img class="chest" src="/media/icons/Items/pile2.png" height="32px" width="50px"></td>
+                        <td class="current">Current gold:</td>
+                        <td id="currentgold"> {{ request.session.gold }}</td>
                     </tr>
-                    <tr>
-                        <td class="hidden" id="prova">PROVA</td>
-                    </tr>
+
                 </table>
 
 
@@ -119,8 +120,8 @@
         {% if blocks %}
             <div class="col-xs-5 mine">
                 {% for block in blocks %}
-                    <div class="row flecks_{{ block.cue }}" id="goldlayer">
-                        <div class="scaffold_1_shaded" id="scaffoldlayer">
+                    <div class="row flecks_{{ block.cue }}" id="goldlayer_{{ block.pos }}">
+                        <div class="scaffold_1_shaded" id="scaffoldlayer_{{ block.pos }}">
                         </div>
                     </div>
 
