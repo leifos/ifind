@@ -26,6 +26,16 @@
     margin-bottom: 0;
 }
 
+#currentgold {
+    text-align: right;
+    width: 60%;
+}
+
+#totalgold {
+    text-align: right;
+    width: 60%;
+}
+
 #right{
     text-align: right;
     width: 10%;
@@ -76,6 +86,7 @@
 #controls {
     margin-right: 5%;
 }
+
 
 
 .jumbotron{
@@ -133,17 +144,18 @@ body{
 }
 
 .scores td{
-    text-align: left;
+    text-align: center;
     width: inherit;
+    line-height: 170%;
 }
 
-.probar {
-    padding-top: 6%;
-    padding-left: 5%;
+.progress {
+
 }
 
 .current {
     padding-left: 3%;
+    width: 200px;
 }
 
 
@@ -167,16 +179,21 @@ body{
 }
 
 
-
 .buttons {
     font-family: pixelfont;
-    align-content: space-around;
+    width: 60px;
+    height: 40px;
 
 }
 
-.buttons button {
-    background-color: lightgrey;
+
+.results {
+    font-family: pixelfont;
+    font-size: 150%;
+    color: gold;
+    padding-left: 4%;
 }
+
 
 .score_right {
     width: inherit;
@@ -192,6 +209,32 @@ body{
     visibility: hidden;
 
 }
+
+.colophon {
+    width: 100%;
+    height: 30%;
+}
+
+.gameover {
+    background-color: black;
+    font-family: pixelfont;
+    color: #ffffff;
+    font-size: 400%;
+    text-align: center;
+
+}
+
+.newrow {
+    padding-top: 12%;
+    height: 130px;
+}
+
+.move {
+	margin-left: 0;
+    font-family: pixelfont;
+    color: #000000;
+}
+/******************************************************************************/
 
 
 .dig_view {
@@ -383,12 +426,6 @@ body{
 	right: 5px;
 }
 
-
-.move_button {
-	position: absolute;
-	bottom: 20px;
-	right: 30px;
-}
 
 
 .button:hover > .button_icon {
@@ -923,7 +960,8 @@ body{
     .row .hidden > div {
         height: 130px;
     }
-}
+
+   }
 
 .navbar-inverse .navbar-toggle {
 	color: #fff;
@@ -945,4 +983,39 @@ background: linear-gradient(to bottom, #393836 0%,#181b22 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#393836', endColorstr='#181b22',GradientType=0 ); /* IE6-9 */
 }
 
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 0.2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
 
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 0.2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 0.2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    color: gold;
+}
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}

@@ -14,7 +14,7 @@ $(document).ready(function(){
         var csrf = $('#csrf > input').val();
 
         $('#invisiblebuttons_'+count).addClass("hidden");
-
+        $('#movebutton_'+count).addClass("hidden");
         count += 1;
         console.log(count);
         console.log(pos);
@@ -25,15 +25,24 @@ $(document).ready(function(){
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
             success: function(response){
                 posi = count - 1;
+
                 console.log(count);
                 $('#totalgold').html(response['totalgold']);
-                $('#progressbar').css("width", response['timeremaining']);
+                $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
                 $('#currentgold').html(response['currentgold']);
 
                 $('#goldlayer_'+posi).removeClass().addClass("row nuggets_"+response['nuggets']);
 
                 $('#scaffoldlayer_'+posi).removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
                 $('#invisiblebuttons_'+count).removeClass("hidden");
+                $('#movebutton_'+count).removeClass("hidden");
+                $('#row_'+posi).append("<div class='results'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
+
+                if (response['nextmine']){
+                    $('#well').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
+                }
+
+
 
             }
         })

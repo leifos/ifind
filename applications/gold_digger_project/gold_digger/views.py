@@ -142,131 +142,15 @@ def user_profile(request):
 
     return render_to_response('gold_digger/profile.html', {'user': user}, context)
 
-@login_required
-def game(request):
-
-    context = RequestContext(request)
-    user = UserProfile.objects.get(user=request.user)
-
-    if request.session['mine_type'] == '':
-        mine_type = request.GET['mine type']
-
-    else:
-        mine_type = request.session['mine_type']
-
-    print user.equipment, "EQUIPMENT"
-    print request.session.items()
-
-    if not request.session['has_mine']:
-        print "GOT HERE"
-        gen = yieldgen.YieldGenerator
-        up_boundary = 50
-        down_boundary = 40
-        max_gold = random.randint(down_boundary, up_boundary)
-        request.session['max_gold'] = max_gold
-        time_remaining = request.session['time_remaining']
-
-        if mine_type == 'constant':
-            print "constant"
-            request.session['mine_type'] = 'constant'
-            gen = yieldgen.ConstantYieldGenerator(depth=10, max=max_gold, min=0)
-
-        elif mine_type == 'linear':
-            print "linear"
-            request.session['mine_type'] = "linear"
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
-
-        elif mine_type == 'random':
-            print "random"
-            request.session['mine_type'] = 'random'
-            gen = yieldgen.RandomYieldGenerator(depth=10, max=max_gold, min=0)
-
-        elif mine_type == 'quadratic':
-            print "quadratic"
-            request.session['mine_type'] = 'quadratic'
-            gen = yieldgen.QuadraticYieldGenerator(depth=10, max=max_gold, min=0)
-
-        elif mine_type == 'exponential':
-            print "exponential"
-            request.session['mine_type'] = 'exponential'
-            gen = yieldgen.ExponentialYieldGenerator(depth=10, max=max_gold, min=0)
-
-        elif mine_type == 'cubic':
-            print "cubic"
-            request.session['mine_type'] = 'cubic'
-            gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
-
-        accuracy = user.equipment.modifier
-        m = mine.Mine(gen, accuracy)
-
-        blocks = m.blocks
-        request.session['has_mine'] = True
-        pointer = 0
-        request.session['pointer'] = pointer
-        print request.session['pointer'], "POINTER!"
-        mine_type = request.session['mine_type']
-
-        # Pickling
-        pickled_blocks = pickle.dumps(blocks)
-        request.session['pickle'] = pickled_blocks
-
-        if time_remaining < 0:
-            return HttpResponseRedirect(reverse('game_over'), context)
-
-        return render_to_response('gold_digger/game.html', {'blocks': blocks,
-                                                            'user': user,
-                                                            'pointer': pointer,
-                                                            'time_remaining': time_remaining,
-                                                            'mine_type': mine_type}, context)
-    else:
-
-        # Unpickling
-        pickled_blocks = request.session['pickle']
-        blocks = pickle.loads(pickled_blocks)
-
-        # Updating SESSION values
-        pointer = request.session['pointer']
-        time_remaining = request.session['time_remaining']
-        session_gold = request.session['gold']
-        mine_type = request.session['mine_type']
-
-        print "Blocks Length", len(blocks)
-
-        if time_remaining < 0:
-            return HttpResponseRedirect(reverse('game_over'), context)
-
-        return render_to_response('gold_digger/game.html', {'blocks': blocks,
-                                                            'user': user,
-                                                            'pointer': pointer,
-                                                            'time_remaining': time_remaining,
-                                                            'gold': session_gold,
-                                                            'mine_type': mine_type}, context)
-
-
-@login_required
-def game_choice(request):
-
-    context = RequestContext(request)
-    request.session['has_mine'] = False
-    request.session['mine_type'] = ''
-    request.session['purchase'] = False
-    return render_to_response('gold_digger/game_choice.html', {}, context)
-
 
 @login_required
 def move(request):
-    print request.GET['move']
-    if request.GET['move'] == "move mine":
-        context = RequestContext(request)
-        request.session['has_mine'] = False
-        request.session['time_remaining'] -= 5
-        return HttpResponseRedirect(reverse('game2'), context)
 
-    elif request.GET['move'] == "choose mine":
-        context = RequestContext(request)
-        request.session['has_mine'] = False
-        request.session['time_remaining'] -= 5
-        return HttpResponseRedirect(reverse('gamechoice'), context)
+    context = RequestContext(request)
+    request.session['has_mine'] = False
+    print request.session['has_mine']
+    request.session['time_remaining'] -= 5
+    return HttpResponseRedirect(reverse('game2'), context)
 
 
 @login_required
@@ -390,6 +274,7 @@ def game_choice2(request):
     request.session['purchase'] = False
     return render_to_response('gold_digger/game_choice2.html', {}, context)
 
+
 @login_required
 def game2(request):
     context = RequestContext(request)
@@ -401,92 +286,91 @@ def game2(request):
     else:
         mine_type = request.session['mine_type']
 
-    if not request.session['has_mine']:
+    print "NEW MINE!!!"
+    gen = yieldgen.YieldGenerator
 
-        gen = yieldgen.YieldGenerator
+    # Randomising the max amount of gold
+    up_boundary = 50
+    down_boundary = 40
+    max_gold = random.randint(down_boundary, up_boundary)
 
-        # Randomising the max amount of gold
-        up_boundary = 50
-        down_boundary = 40
-        max_gold = random.randint(down_boundary, up_boundary)
+    limits = divide(max_gold)
+    pickled_limits = pickle.dumps(limits)
+    request.session['limits'] = pickled_limits
 
-        limits = divide(max_gold)
-        pickled_limits = pickle.dumps(limits)
-        request.session['limits'] = pickled_limits
+    time_remaining = request.session['time_remaining']
 
-        time_remaining = request.session['time_remaining']
+    if mine_type == 'constant':
+        print "constant"
+        request.session['mine_type'] = 'constant'
+        gen = yieldgen.ConstantYieldGenerator(depth=10, max=max_gold, min=0)
 
-        if mine_type == 'constant':
-            print "constant"
-            request.session['mine_type'] = 'constant'
-            gen = yieldgen.ConstantYieldGenerator(depth=10, max=max_gold, min=0)
+    elif mine_type == 'linear':
+        print "linear"
+        request.session['mine_type'] = "linear"
+        gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'linear':
-            print "linear"
-            request.session['mine_type'] = "linear"
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+    elif mine_type == 'random':
+        print "random"
+        request.session['mine_type'] = 'random'
+        gen = yieldgen.RandomYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'random':
-            print "random"
-            request.session['mine_type'] = 'random'
-            gen = yieldgen.RandomYieldGenerator(depth=10, max=max_gold, min=0)
+    elif mine_type == 'quadratic':
+        print "quadratic"
+        request.session['mine_type'] = 'quadratic'
+        gen = yieldgen.QuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'quadratic':
-            print "quadratic"
-            request.session['mine_type'] = 'quadratic'
-            gen = yieldgen.QuadraticYieldGenerator(depth=10, max=max_gold, min=0)
+    elif mine_type == 'exponential':
+        print "exponential"
+        request.session['mine_type'] = 'exponential'
+        gen = yieldgen.ExponentialYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'exponential':
-            print "exponential"
-            request.session['mine_type'] = 'exponential'
-            gen = yieldgen.ExponentialYieldGenerator(depth=10, max=max_gold, min=0)
+    elif mine_type == 'cubic':
+        print "cubic"
+        request.session['mine_type'] = 'cubic'
+        gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'cubic':
-            print "cubic"
-            request.session['mine_type'] = 'cubic'
-            gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
+    accuracy = user.equipment.modifier
+    m = mine.Mine(gen, accuracy)
+    blocks = m.blocks
+    request.session['has_mine'] = True
+    request.session['pointer'] = 0
 
-        accuracy = user.equipment.modifier
-        m = mine.Mine(gen, accuracy)
-        blocks = m.blocks
-        request.session['has_mine'] = True
-        request.session['pointer'] = 0
+    print request.session['pointer'], "POINTER!"
 
-        print request.session['pointer'], "POINTER!"
+    scaffold = [1, 2, 3]
 
-        scaffold = [1, 2, 3]
+    # Pickling
+    pickled_blocks = pickle.dumps(blocks)
+    request.session['pickle'] = pickled_blocks
 
-        # Pickling
-        pickled_blocks = pickle.dumps(blocks)
-        request.session['pickle'] = pickled_blocks
+    if time_remaining < 0:
+        return HttpResponseRedirect(reverse('game_over'), context)
 
-        if time_remaining < 0:
-            return HttpResponseRedirect(reverse('game_over'), context)
-
-        return render_to_response('gold_digger/game2.html', {'blocks': blocks,
-                                                             'user': user,
-                                                             'time_remaining': time_remaining,
-                                                             'limits': limits,
-                                                             'scaffold': scaffold}, context)
-    else:
-
-        # Unpickling
-        pickled_blocks = request.session['pickle']
-        blocks = pickle.loads(pickled_blocks)
-        pickled_limits = request.session['limits']
-        limits = pickle.loads(pickled_limits)
-
-        time_remaining = request.session['time_remaining']
-        scaffold = [1, 2, 3]
-
-        if time_remaining < 0:
-            return HttpResponseRedirect(reverse('game_over'), context)
-
-        return render_to_response('gold_digger/game2.html', {'blocks': blocks,
-                                                             'user': user,
-                                                             'time_remaining': time_remaining,
-                                                             'limits': limits,
-                                                             'scaffold': scaffold}, context)
+    return render_to_response('gold_digger/game2.html', {'blocks': blocks,
+                                                         'user': user,
+                                                         'time_remaining': time_remaining,
+                                                         'limits': limits,
+                                                         'scaffold': scaffold}, context)
+    # else:
+    #     print "OLD MINE!!!"
+    #     # Unpickling
+    #     pickled_blocks = request.session['pickle']
+    #     blocks = pickle.loads(pickled_blocks)
+    #     pickled_limits = request.session['limits']
+    #     limits = pickle.loads(pickled_limits)
+    #
+    #     time_remaining = request.session['time_remaining']
+    #     scaffold = [1, 2, 3]
+    #
+    #     if time_remaining < 0:
+    #         return HttpResponseRedirect(reverse('game_over'), context)
+    #
+    #     return render_to_response('gold_digger/game2.html', {'blocks': blocks,
+    #                                                          'user': user,
+    #                                                          'time_remaining': time_remaining,
+    #                                                          'limits': limits,
+    #                                                          'scaffold': scaffold}, context)
 
 
 def divide(max_gold):
@@ -546,9 +430,12 @@ def dig(request):
 
 
 def ajaxview(request):
-    # Request context and user
-    context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    context = RequestContext(request)
+
+    if request.session['time_remaining'] == 0:
+        return HttpResponseRedirect(reverse('game_over'), context)
+
 
     # Unpickling the blocks
     pickled_blocks = request.session['pickle']
@@ -594,12 +481,14 @@ def ajaxview(request):
             print x, "limit"
             myResponse['nuggets'] = x
 
-
+    if request.session['pointer'] == len(blocks):
+        myResponse['nextmine'] = True
 
 
     myResponse['totalgold'] = user.gold
     myResponse['timeremaining'] = request.session['time_remaining']
     myResponse['currentgold'] = request.session['gold']
+    myResponse['goldextracted'] = gold_extracted
 
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")

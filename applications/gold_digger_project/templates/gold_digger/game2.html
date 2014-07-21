@@ -54,48 +54,40 @@
 
         <div class="col-xs-3" id="side">
 
-            <div class="well equipment">
+            <div class="well equipment" id="well">
 
                 <!-- Player stats -->
                 <table class="equip">
                     <tr>
                         <td class="def">Equipment</td>
                         <td class="thumb"><img src="{{ user.equipment.image.url }}"
-                                              title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
-                                              id="img"></td>
+                                               title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
+                                               id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Vehicle</td>
                         <td class="thumb"><img src="{{ user.vehicle.image.url }}"
-                                              title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
-                                              id="img"></td>
+                                               title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
+                                               id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Tool</td>
                         <td class="thumb"><img src="{{ user.tool.image.url }}"
-                                              title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}" id="img">
+                                               title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}"
+                                               id="img">
                         </td>
                     </tr>
 
                     <!-- Begin  JQuery Ajax -->
-                    </table>
-                    <hr>
-                    <table class="scores">
+                </table>
+                <hr>
+                <table class="scores">
                     <tr>
                         <td><img class="chest" src="/media/icons/Items/Chest.png"></td>
-                        <td>Total gold:</td>
+                        <td class="current">Total gold:</td>
                         <td id="totalgold">{{ user.gold }}</td>
                     </tr>
-                    <tr>
-                        <td>Time </td>
-                        <td class="probar">
-                            <div class="progress">
-                                <div class="progress-bar" id="progressbar" style="width: {{ request.session.time_remaining }}%">
 
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
                     <tr>
                         <td><img class="chest" src="/media/icons/Items/pile2.png" height="32px" width="50px"></td>
                         <td class="current">Current gold:</td>
@@ -103,13 +95,17 @@
                     </tr>
 
                 </table>
+                <br>
+
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ request.session.time_remaining }}"
+                         aria-valuemin="100"
+                         aria-valuemax="0" style="width: {{ request.session.time_remaining }}%;">
+
+                    </div>
+                </div>
 
 
-
-                {% if request.session.pointer == blocks|length %}
-                    <a href="/gold_digger/dig/">Next mine?</a><br>
-
-                {% endif %}
             </div>
 
         </div>
@@ -125,36 +121,44 @@
                         </div>
                     </div>
 
-        {% endfor %}
+                {% endfor %}
 
             </div>
-            <div class="col-xs-2 mine">
+            <div class="col-xs-1 mine">
                 {% for block in blocks %}
 
                     {% if block.pos == 0 %}
-                        <div class="row" id="row_{{ block.pos }}">
+                        <div class="newrow" id="row_{{ block.pos }}">
                             <div class="buttons" id="invisiblebuttons_{{ block.pos }}">
                                 <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
                                         id="digbutton_{{ block.pos }}"> dig!
                                 </button>
-                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition_{{ block.pos }}"/>
+                                <input type="hidden" value="{{ block.pos }}" name="block"
+                                       id="blockposition_{{ block.pos }}"/>
+                            </div>
+                            <form class="move" action="/gold_digger/move/" method="post" id="movebutton_{{ block.pos }}">
+                                {% csrf_token %}
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                         id="controls">move
                                 </button>
-                            </div>
+                            </form>
                         </div>
                     {% else %}
-                        <div class="row" id="row_{{ block.pos }}">
+                        <div class="newrow"  id="row_{{ block.pos }}">
                             <div class="buttons hidden" id="invisiblebuttons_{{ block.pos }}">
                                 <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
                                         id="digbutton_{{ block.pos }}"> dig!
                                 </button>
-                                <input type="hidden" value="{{ block.pos }}" name="block" id="blockposition_{{ block.pos }}"/>
+                                <input type="hidden" value="{{ block.pos }}" name="block"
+                                       id="blockposition_{{ block.pos }}"/>
+                            </div>
+                            <form class="move hidden row" action="/gold_digger/move/" method="post" id="movebutton_{{ block.pos }}">
+                                {% csrf_token %}
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                         id="controls">move
                                 </button>
-                            </div>
-                         </div>
+                            </form>
+                        </div>
 
                     {% endif %}
 
