@@ -6,9 +6,15 @@
 
         <form id="login_form" method="post" action="/login/">
             {% csrf_token %}
-            Username: <input type="text" name="username" value="" size="50" />
-            <br />
-            Password: <input type="password" name="password" value="" size="50" />
+            <table>
+                <tr>
+                    <td>Username: </td><td><input type="text" name="username" value="" size="50" /></td>
+                </tr>
+
+                <tr>
+                        <td>Password: </td><td><input type="password" name="password" value="" size="50" /></tr>
+                </td>
+            </table>
             <br />
 
             <input type="submit" value="submit" />
