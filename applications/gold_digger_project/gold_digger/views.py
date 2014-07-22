@@ -453,6 +453,7 @@ def ajaxview(request):
     gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
 
     # Updating the session values
+    print request.session['pointer'], "POINTER!"
     request.session['pointer'] += 1
     request.session['time_remaining'] -= 3
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
