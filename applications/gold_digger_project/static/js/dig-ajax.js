@@ -11,6 +11,8 @@ $(document).ready(function(){
         var pos = $('#blockposition_'+count).val();
         var gold = $('#digbutton_'+count).val();
 
+
+
         var csrf = $('#csrf > input').val();
 
         $('#invisiblebuttons_'+count).addClass("hidden");
@@ -24,9 +26,14 @@ $(document).ready(function(){
             url: "/gold_digger/ajaxview/",
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
             success: function(response){
+
                 posi = count - 1;
 
                 console.log(count);
+                if (response['timeremaining'] <= 0){
+                    $('.buttons').wrap("<form action='/gold_digger/game_over'></form>")
+                }
+
                 $('#totalgold').html(response['totalgold']);
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
                 $('#currentgold').html(response['currentgold']);
@@ -36,7 +43,7 @@ $(document).ready(function(){
                 $('#scaffoldlayer_'+posi).removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
                 $('#invisiblebuttons_'+count).removeClass("hidden");
                 $('#movebutton_'+count).removeClass("hidden");
-                $('#row_'+posi).append("<div class='results'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
+                $('#row_'+posi).append("<div class='row' id='resultcol'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
 
                 if (response['nextmine']){
                     $('#well').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
@@ -45,6 +52,6 @@ $(document).ready(function(){
 
 
             }
-        })
-    })
+        });
+    });
 });

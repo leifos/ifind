@@ -10,137 +10,165 @@
 </head>
 <body>
 {% block body_block %}
-<div class="jumbotron" id="home">
-<h1>Gold Digger</h1>
-<h2>{{ request.session.prova }}</h2>
-</div>
-<hr>
+    <div class="jumbotron" id="home">
+        <h1>Gold Digger</h1>
+
+        <h2>{{ request.session.prova }}</h2>
+    </div>
+    <hr>
 
 
 
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-      <div class="col-xs-6 col-md-2">
+        <div class="col-xs-6 col-md-2">
 
             <ul class="nav nav-pills nav-stacked">
 
                 {% if user.is_authenticated %}
-                    <li><a href = "/gold_digger/profile/">Your profile</a></li>
-                    <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="/gold_digger/profile/">Your profile</a></li>
+                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
                 {% else %}
-                    <li><a href = "/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
 
                 {% endif %}
             </ul>
-      </div>
+        </div>
         <div class="col-xs-6 col-md-7">
             {% if registered %}
-            <div class="alert alert-dismissable alert-success">
-              <button type="button" class="close" data-dismiss="alert">×</button>
-              <strong> You successfully registrated! </strong> Now click on "Play" to begin diggin'!
-            </div>
+                <div class="alert alert-dismissable alert-success">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong> You successfully registrated! </strong> Now click on "Play" to begin diggin'!
+                </div>
             {% endif %}
             <h2>Welcome</h2>
             Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
+            <br><br>
+            {% if registered == False %}
+                <div class="alert alert-dismissable alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Invalid registration details supplied!</strong>
+                    </div>
+            {% endif %}
             {% if user.is_authenticated %}
                 <br> <br><a class="btn btn-primary btn-lg btn-success" href="/gold_digger/game_choice2/">Play!</a>
 
 
             {% endif %}
         </div>
-  {% if not user.is_authenticated %}
-      <div class="col-xs-6 col-md-3">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <form class="form-horizontal" action="/gold_digger/user_login/" method="post">
-                {% csrf_token %}
-              <fieldset>
-                <legend>Login</legend>
+        {% if not user.is_authenticated %}
+            <div class="col-xs-6 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form class="form-horizontal" action="/gold_digger/user_login/" method="post">
+                            {% csrf_token %}
+                            <fieldset>
+                                <legend>Login</legend>
 
 
 
-                  {% if bad_details %}
+                                {% if bad_details %}
 
-                    <div class="form-group has-error">
-                        <label for="inputError" class="col-lg-3 control-label">Username</label>
-                        <div class="col-lg-8">
-                        <input type="text" name="username" class="form-control" id="inputError" placeholder="Username">
-                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
-                        </div>
+                                    <div class="form-group has-error">
+                                        <label for="inputError" class="col-lg-3 control-label">Username</label>
+
+                                        <div class="col-lg-8">
+                                            <input type="text" name="username" class="form-control" id="inputError"
+                                                   placeholder="Username">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group has-error">
+                                        <label for="inputError" class="col-lg-3 control-label">Password</label>
+
+                                        <div class="col-lg-8">
+                                            <input type="password" name="password" class="form-control" id="inputError"
+                                                   placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Login</button>
+                                {% else %}
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-lg-3 control-label">Username</label>
+
+                                        <div class="col-lg-8">
+                                            <input type="text" name="username" class="form-control" id="inputEmail"
+                                                   placeholder="Username">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="col-lg-3 control-label">Password</label>
+
+                                        <div class="col-lg-8">
+                                            <input type="password" name="password" class="form-control"
+                                                   id="inputPassword" placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Login</button>
+                                {% endif %}
+
+                            </fieldset>
+                        </form>
                     </div>
-                    <div class="form-group has-error">
-                        <label for="inputError" class="col-lg-3 control-label">Username</label>
-                        <div class="col-lg-8">
-                        <input type="password" name="password" class="form-control" id="inputError" placeholder="Password">
-                    </div>
-                    </div>
-                      <button type="submit" class="btn btn-default">Login</button>
-                 {% else %}
-                   <div class="form-group">
-                      <label for="inputEmail" class="col-lg-3 control-label">Username</label>
-                      <div class="col-lg-8">
-                        <input type="text" name="username" class="form-control" id="inputEmail" placeholder="Username">
-
-                      </div>
-                  </div>
-                    <div class="form-group">
-                      <label for="inputPassword" class="col-lg-3 control-label">Password</label>
-                          <div class="col-lg-8">
-                            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-                          </div>
-                        </div>
-                  <button type="submit" class="btn btn-default">Login</button>
-                  {% endif %}
-
-               </fieldset>
-            </form>
-          </div>
-        </div>
-          {% if bad_details %}
-            <div class="alert alert-dismissable alert-danger">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                 <strong>Invalid login details supplied</strong>
                 </div>
-          {% endif %}
+                {% if bad_details %}
+                    <div class="alert alert-dismissable alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Invalid login details supplied</strong>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
-{% endif %}
-  </div>
-</div>
+    </div>
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+    <!-- Modal -->
+    <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
 
-      <form class="form-horizontal" id="user_form" method="post" action="/gold_digger/register/" enctype="multipart/form-data">
-          {% csrf_token %}
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Register</h4>
-      </div>
-      <div class="modal-body" style="padding-right: 60px;">
+            <form class="form-horizontal" id="user_form" method="post" action="/gold_digger/register/"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Register</h4>
+                    </div>
+                    <div class="modal-body" style="padding-right: 60px;">
 
-         {% if user_form and profile_form %}
-            {{ user_form| bootstrap_horizontal:'col-lg-3'}}
-            {{ profile_form | bootstrap_horizontal:'col-lg-3'}}
-         {% endif %}
+                        {% if user_form and profile_form %}
+                            {{ user_form| bootstrap_horizontal:'col-lg-3' }}
+                            {{ profile_form | bootstrap_horizontal:'col-lg-3' }}
+                        {% endif %}
+
+                    <label for="text" class="col-lg-2 control-label" id="disclaimerlabel">Disclaimer</label>
+                        <textarea id="text" class="form-inline" disabled="disabled" rows="10" cols="50">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci justo, ullamcorper sed pulvinar sit amet, venenatis ac nibh. Vivamus in sapien eu sem bibendum vulputate ac sed ante. Integer dictum blandit urna, malesuada tristique tortor ultrices at. Mauris et aliquet nisi. Maecenas id lorem tortor. Curabitur vitae neque nibh. Integer et lorem non odio consectetur tempor vitae in arcu. Quisque ultricies enim vel elit ullamcorper eu suscipit massa porta. Suspendisse sodales rhoncus purus, volutpat egestas mi molestie id. Aenean arcu sem, tincidunt ac vulputate vestibulum, posuere id massa. Praesent sit amet pretium quam. Nunc adipiscing diam quis felis rhoncus et cursus lectus adipiscing. Aliquam erat volutpat. Nunc lorem nibh, vestibulum condimentum pellentesque non, tincidunt vitae mauris.
+
+Nullam id augue eu nulla pharetra pharetra non quis odio. Suspendisse at accumsan erat. In tempor eros eu dolor egestas non tristique turpis euismod. Nunc nisl neque, egestas et placerat in, vehicula et ante. Nulla tempus tempor adipiscing. Praesent sapien neque, semper a sollicitudin sed, malesuada ut felis. Proin laoreet ipsum non diam feugiat eu fringilla est dignissim. Mauris ac sodales justo. Aliquam erat volutpat. Cras aliquet commodo massa eu faucibus. Pellentesque tempus urna sit amet nunc gravida et dapibus tortor congue. Nulla facilisi. Nulla facilisi. Duis sem turpis, sodales dapibus congue sit amet, molestie sit amet dui. Aliquam imperdiet viverra sapien sed vestibulum. In malesuada commodo condimentum.
+
+Pellentesque semper urna id odio vulputate mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean tristique suscipit ultricies. Quisque ac dolor vitae odio fermentum auctor et eget risus. Proin ipsum sapien, fermentum vel aliquam at, hendrerit id nisi. Vestibulum cursus mollis nisi, et pretium felis rhoncus id. Suspendisse ante lectus, imperdiet ac ullamcorper in, ornare quis augue. Proin id velit eu lorem tristique porta eu quis tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Cras fringilla aliquam ipsum elementum fringilla. Vestibulum eu magna nibh, vel dapibus sapien.
+</textarea>
 
 
-        <br>
-      </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" name="submit" value="Register" class="btn btn-primary">Register</button>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" name="submit" value="Register" class="btn btn-primary">Register
+                            </button>
+                        </div>
+            </form>
         </div>
-        </form>
     </div>
-  </div>
-</div>
+    </div>
 
 
 

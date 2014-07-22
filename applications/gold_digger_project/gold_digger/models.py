@@ -21,6 +21,7 @@ class DiggingEquipment(models.Model):
 
     name = models.CharField(max_length=100)
     modifier = models.FloatField(default=0.2)
+    time_modifier = models.IntegerField(default=8)
     image = models.ImageField(upload_to='icons/Tools')
     price = models.IntegerField(default=0)
 
@@ -35,7 +36,7 @@ class DiggingEquipment(models.Model):
 
 class Vehicle(models.Model):
     name = models.CharField(max_length=100)
-    modifier = models.FloatField(default=0.2)
+    modifier = models.IntegerField(default=10)
     image = models.ImageField(upload_to='icons/Vehicle')
     price = models.IntegerField(default=0)
 

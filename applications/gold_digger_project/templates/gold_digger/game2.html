@@ -44,7 +44,8 @@
 
     <!-- Header -->
 
-    <div class="jumbotron" id="about">
+    <div class="jumbotron game" id="{{ location }}_landscape">
+    <h1>{{ location }}</h1>
         <br>
     </div>
 
@@ -97,10 +98,10 @@
                 </table>
 
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ request.session.time_remaining }}"
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ time_remaining }}"
                          aria-valuemin="100"
-                         aria-valuemax="0" style="width: {{ request.session.time_remaining }}%;">
-
+                         aria-valuemax="0" style="width: {{ time_remaining }}%;">
+                            <span id="time">{{ time_remaining }}%</span>
                     </div>
                 </div>
 
@@ -123,14 +124,14 @@
                 {% endfor %}
 
             </div>
-            <div class="col-xs-1 mine">
+            <div class="col-xs-2 mine" >
                 {% for block in blocks %}
 
                     {% if block.pos == 0 %}
-                        <div class="newrow" id="row_{{ block.pos }}">
+                        <div class="" id="row_{{ block.pos }}">
                             <div class="buttons" id="invisiblebuttons_{{ block.pos }}">
                                 <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
-                                        id="digbutton_{{ block.pos }}"> dig!
+                                        id="digbutton_{{ block.pos }}"> dig ({{ dig_cost }})
                                 </button>
                                 <input type="hidden" value="{{ block.pos }}" name="block"
                                        id="blockposition_{{ block.pos }}"/>
@@ -138,15 +139,15 @@
                             <form class="move" action="/gold_digger/move/" method="post" id="movebutton_{{ block.pos }}">
                                 {% csrf_token %}
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
-                                        id="controls">move
+                                        id="controls">move ({{ move_cost }})
                                 </button>
                             </form>
                         </div>
                     {% else %}
-                        <div class="newrow"  id="row_{{ block.pos }}">
+                        <div class=""  id="row_{{ block.pos }}">
                             <div class="buttons hidden" id="invisiblebuttons_{{ block.pos }}">
                                 <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
-                                        id="digbutton_{{ block.pos }}"> dig!
+                                        id="digbutton_{{ block.pos }}"> dig ({{ dig_cost }})
                                 </button>
                                 <input type="hidden" value="{{ block.pos }}" name="block"
                                        id="blockposition_{{ block.pos }}"/>
@@ -154,7 +155,7 @@
                             <form class="move hidden row" action="/gold_digger/move/" method="post" id="movebutton_{{ block.pos }}">
                                 {% csrf_token %}
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
-                                        id="controls">move
+                                        id="controls">move ({{ move_cost }})
                                 </button>
                             </form>
                         </div>

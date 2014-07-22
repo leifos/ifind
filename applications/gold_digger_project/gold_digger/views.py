@@ -19,6 +19,11 @@ import json
 #     'Spell': 0.8
 # }
 
+location_dict = {
+    'constant': 'California',
+    'cubic': 'Scotland'
+}
+
 def home(request):
 
     context = RequestContext(request)
@@ -89,6 +94,7 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
+
     return render_to_response('gold_digger/home.html',
                               {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}, context)
 
@@ -147,9 +153,14 @@ def user_profile(request):
 def move(request):
 
     context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+
+    if request.session['time_remaining'] <= 0:
+        return HttpResponseRedirect(reverse('game_over'), context)
+
     request.session['has_mine'] = False
     print request.session['has_mine']
-    request.session['time_remaining'] -= 5
+    request.session['time_remaining'] -= user.vehicle.modifier
     return HttpResponseRedirect(reverse('game2'), context)
 
 
@@ -343,6 +354,9 @@ def game2(request):
     # Pickling
     pickled_blocks = pickle.dumps(blocks)
     request.session['pickle'] = pickled_blocks
+    move_cost = user.vehicle.modifier
+    dig_cost = user.tool.time_modifier
+    location = location_dict.get(mine_type)
 
     if time_remaining < 0:
         return HttpResponseRedirect(reverse('game_over'), context)
@@ -351,7 +365,10 @@ def game2(request):
                                                          'user': user,
                                                          'time_remaining': time_remaining,
                                                          'limits': limits,
-                                                         'scaffold': scaffold}, context)
+                                                         'scaffold': scaffold,
+                                                         'move_cost': move_cost,
+                                                         'dig_cost': dig_cost,
+                                                         'location': location}, context)
     # else:
     #     print "OLD MINE!!!"
     #     # Unpickling
@@ -388,53 +405,16 @@ def divide(max_gold):
     return limits
 
 @login_required
-def dig(request):
+def check_time():
 
-    # Request context and user
-    context = RequestContext(request)
-    user = UserProfile.objects.get(user=request.user)
+    return HttpResponseRedirect(reverse('game_over'))
 
-    # Unpickling the blocks
-    pickled_blocks = request.session['pickle']
-    blocks = pickle.loads(pickled_blocks)
-
-    if request.session['pointer'] == len(blocks):
-        request.session['has_mine'] = False
-        return HttpResponseRedirect(reverse('game2'))
-
-    # POSTED objects
-    gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
-    pos = int(request.POST['block'])                            # Requesting the POSITION
-
-    gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
-
-    # Updating the session values
-    request.session['pointer'] += 1
-    request.session['time_remaining'] -= 3
-    request.session['gold'] += int(round(gold_dug*user.tool.modifier))
-
-    # Updating user values
-    user.gold += gold_extracted
-    user.save()
-
-    # Updating the block values
-    blocks[pos].dug = True
-    blocks[pos].gold_extracted = gold_extracted
-
-    # Pickling
-    pickled_blocks = pickle.dumps(blocks)
-    request.session['pickle'] = pickled_blocks
-
-    return HttpResponseRedirect(reverse('game2'), context)
 
 
 
 def ajaxview(request):
     user = UserProfile.objects.get(user=request.user)
     context = RequestContext(request)
-
-    if request.session['time_remaining'] == 0:
-        return HttpResponseRedirect(reverse('game_over'), context)
 
 
     # Unpickling the blocks
@@ -455,7 +435,7 @@ def ajaxview(request):
     # Updating the session values
     print request.session['pointer'], "POINTER!"
     request.session['pointer'] += 1
-    request.session['time_remaining'] -= 3
+    request.session['time_remaining'] -= user.tool.time_modifier
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
 
     # Updating user values
@@ -485,6 +465,8 @@ def ajaxview(request):
     if request.session['pointer'] == len(blocks):
         myResponse['nextmine'] = True
 
+    if request.session['time_remaining'] <= 0:
+        return HttpResponseRedirect(reverse('game_over'), context)
 
     myResponse['totalgold'] = user.gold
     myResponse['timeremaining'] = request.session['time_remaining']
