@@ -7,10 +7,13 @@
 
      {% csrf_token %}
 
+    <table>
     {% for field in new_demog_form %}
-        {{ field.label }}
-        {{ field }}<br>
+        <tr><td>{{ field.label }}</td>
+        <td>{{ field }}</td></tr>
     {% endfor %}
+
+    </table>
 
     <input type="submit" name="submit" value="Update" />
 {% endblock %}

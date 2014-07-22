@@ -20,7 +20,10 @@
             Number of Queries: {{ profile.queries_submitted }} <br>
             Number of URLs Visited: {{ profile.links_visited }} <br>
             <br>
+
+            {% if demographics %}
             <a href="/editprofile/{{ user.username }}">Edit Profile</a>
+            {% endif %}
 
         {% else %}
             You are not logged in! Please use the login button in the navbar above

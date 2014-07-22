@@ -11,10 +11,7 @@
 
          {% csrf_token %}
 
-        {% for field in demog_form %}
-            {{ field.label }}
-            {{ field }}<br>
-        {% endfor %}
+         {{ demog_form.as_p }}
 
          {% if demog_form.errors %}
              <div class="alert alert-error">

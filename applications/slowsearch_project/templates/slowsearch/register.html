@@ -1,4 +1,5 @@
 {% extends 'slowsearch/base.html' %}
+{% load static %}
 
 {% block body_block %}
     {% if registered %}
@@ -7,50 +8,50 @@
        Alternatively, <a href = "/">Skip the survey</a>
 
     {% else %}
-        <h2>Register here!</h2><br />
+        <h2>Register here!</h2><img src="{% static "SOCS Logo.jpg"%}"> <br />
 
     <form id="reg_form" method="post" action="/register/"
             enctype="multipart/form-data">
 
         {% csrf_token %}
 
-         <strong>Thank you for agreeing to participate in this experiment. For the duration of the experimental period,
-        please use this site in place of your go-to search engine. All searches are confidential and data related
-        to queries entered and websites visited will not be recorded by this site and is visible to nobody.
+        Thank you for agreeing to participate in this experiment. <b>For the duration of the experimental period,
+        please use this site in place of your go-to search engine</b>. All searches are <b>confidential</b> and data related
+        to queries entered and websites visited <b>will not be recorded by this site</b> and is visible to nobody.
         <br>
         <br>
         The search engine functions like any other popular search engine. Before you begin searching, please
         create your account and fill in the optional short questionnaire.
         <br>
         <br>
-        Please read the Study Information below and tick the boxes to agree to the terms
-        of this study.<br>
+        <strong>Please read the Study Information below and tick the boxes to agree to the terms
+        of this study.</strong><br>
         <ul>
             <li> The application is intended to be used in place of your favourite
             search engine for the duration of the experiment.</li>
             <li>As part of the study you will be asked to complete some optional questionnaires regarding your
             demographics and experience with the application.</li>
             <li>The experiment will last for X days, beginning on X July, 2014.</li>
-            <li>Participation in this study is voluntary, and you may withdraw consent to use the information you
-                provided at any time before the X of August, 2014.</li>
+            <li>Participation in this study is voluntary, and <strong>you may withdraw consent to use the information you
+                provided at any time before the X of August, 2014.</strong></li>
             <li>Your name will not appear on any published document in relation to this study.</li>
-            <li>The time you spend on each query will be recorded for purposes of this experiment. Your search
+            <li>The time you spend on each query will be recorded for purposes of this experiment. <strong>Your search
                 queries will be converted to hashes so that they cannot be read and will not be recorded, nor will any
-                URLs visited using this application.</li>
+                URLs visited using this application.</strong></li>
+            <li>An example of a hashed query is the query 'test', which would be hashed to 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'
+            before being recorded to render it unreadable to any individual. URLs visited are hashed in a similar way.</li>
             <li>You are able to ask questions at any time before, during or after the experiment using the contact
             details available on the <a target="_blank" href="slowsearch/about">About</a> page.</li>
 
-        </ul>
+        </ul><br>
 
-         {% for field in validation_form %}
-            {{ field.label }}
-            {{ field }}<br><br>
-        {% endfor %}<br>
-
-        {% for field in user_form %}
-            {{ field.label }}:
-            {{ field }}<br>
+        {% for field in validation_form %}
+        {{ field }}{{ field.label_tag }}<br>
         {% endfor %}
+
+
+
+        {{ user_form.as_table }}
 
         {% if user_form.errors or validation_form.errors %}
             <div class="alert alert-error">
@@ -70,6 +71,7 @@
 
             </div>
         {% endif %}
+         <br>
         <input type="submit" name="submit" value="Register" />
         </form>
 {% endif %}

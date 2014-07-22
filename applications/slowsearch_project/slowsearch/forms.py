@@ -26,6 +26,13 @@ class UserForm(forms.ModelForm):
             return username
         raise forms.ValidationError(u'Username "%s" is already in use.' % username)
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username']:
+            self.fields[fieldname].help_text = None
+
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
@@ -79,25 +86,25 @@ class UKDemographicsSurveyForm(forms.ModelForm):
 # checkbox for user validation
 class RegValidation(forms.Form):
     terms = forms.BooleanField(label="I have read and agree to the above Study Information and I have had the "
-                               "opportunity to ask any questions",
+                               "opportunity to ask any questions*",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
     questions = forms.BooleanField(required=True, initial=False,
-                                   label="I understand that I am able to ask questions about this study at any time",
+                                   label="I understand that I am able to ask questions about this study at any time*",
                                    error_messages={'required': 'You must accept the terms and conditions'}, )
     name = forms.BooleanField(required=True, initial=False,
                               label="I understand that my name will not appear in any published document relating"
-                              " to research conducted as part of this study.",
+                              " to research conducted as part of this study*",
                               error_messages={'required': 'You must accept the terms and conditions'}, )
     info = forms.BooleanField(required=True, initial=False,
                               label="I am willing for anonymous data from my search sessions and questionnaires that "
                                     "I have submitted may be quoted in papers, journal articles and books that may be "
-                                    "written by the researchers.",
+                                    "written by the researchers*",
                               error_messages={'required': 'You must accept the terms and conditions'}, )
     agree = forms.BooleanField(required=True, initial=False,
-                               label="I agree to take part in this study",
+                               label="I agree to take part in this study*",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
 
-    age = forms.BooleanField(required=True, initial=False, label="I certify that I am aged 18 or over",
+    age = forms.BooleanField(required=True, initial=False, label="I certify that I am aged 18 or over*",
                              error_messages={'required': 'You must be 18 or over to participate in the experiment'},)
 
     notify = forms.BooleanField(required=False, initial=False,
