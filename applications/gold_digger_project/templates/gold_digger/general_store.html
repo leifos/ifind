@@ -1,104 +1,118 @@
+{% extends "gold_digger/base.html" %}
+
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
     <title>General Store</title>
 </head>
-<style>
-table,tr,td
-{
-border:1px solid black;
-}
-</style>
+
 <body>
-<h1>General store</h1>
-{% if purchase == True %}
-    <h2>Item Purchased!</h2>
-{% endif %}
-<table>
-<tr>
-    <td><img src ="media/Icons/Items/Chest.png" title = "gold" height = "50px"></td>
-    <td>Current Gold:{{ gold }}</td>
-</tr>
-</table>
-<h3>Scanning Equipment</h3>
-Use these items to view more accurate cues!
-<br>
-<br>
-<table style="width:150px;  height:100px">
+{% block body_block %}
+    <div class="jumbotron" id="about">
 
-<tr>
-    <th>Object</th>
-    <th></th>
-    <th>Modifier</th>
-    <th>Price</th>
-    <th></th>
-</tr>
-{% for eq in equipment %}
-<tr>
+        <img src="/media/mine/store_sign.png" id="storesign"><br>
 
-    <td>{{ eq.name }}</td>
-    <td><img src ="media/{{ eq.image }}" title = "{{ eq.name }}, modifier: {{ eq.modifier }}" height = "50px"></td>
-    <td>{{ eq.modifier }}</td>
-    <td>{{ eq.price }}</td>
-    <td><form method="post" action="/gold_digger/buy/">{% csrf_token %}<button type="submit" value="{{ eq.name }}" name="buy equipment">Buy</button></form></td>
+    </div>
 
-</tr>
-{% endfor %}
-</table>
-<h3>Vehicles</h3>
-Buy a vehicle to spend less gold moving to a new mine!
-<br>
-<br>
-<table style="width:150px;  height:100px">
-    <tr>
-        <th>Vehicle</th>
-        <th></th>
-        <th>Modifier</th>
-        <th>Price</th>
-        <th></th>
-    </tr>
-    {% for v in vehicles %}
-    <tr>
+    <div class="container-fluid" id="store">
 
-        <td>{{ v.name }}</td>
-        <td><img src ="media/{{ v.image }}" title = "{{ v.name }}, modifier: {{ v.modifier }}" height = "50px"></td>
-        <td>{{ v.modifier }}</td>
-        <td>{{ v.price }}</td>
-        <td><form method="post" action="/gold_digger/buy/">{% csrf_token %}<button type="submit" value="{{ v.name }}" name="buy vehicle">Buy</button></form></td>
 
-    </tr>
-{% endfor %}
-</table>
+        <!-- <table>
+            <tr>
+                <td><img src="media/Icons/Items/Chest.png" title="gold" height="50px"></td>
+                <td>Current Gold:{{ gold }}</td>
+            </tr>
+        </table>-->
 
-<h3>Tools</h3>
-Buy new tools to get more gold from each dig!
-<br>
-<br>
-<table style="width:150px;  height:100px">
-    <tr>
-        <th>Tool</th>
-        <th></th>
-        <th>Modifier</th>
-        <th>Price</th>
-        <th></th>
-    </tr>
-    {% for t in tools %}
-    <tr>
+    <div class="col-xs-2 col-md-2">
 
-        <td>{{ t.name }}</td>
-        <td><img src ="media/{{ t.image }}" title = "{{ t.name }}, modifier: {{ t.modifier }}" height = "50px"></td>
-        <td>{{ t.modifier }}</td>
-        <td>{{ t.price }}</td>
-        <td><form method="post" action="/gold_digger/buy/">{% csrf_token %}<button type="submit" value="{{ t.name }}" name="buy tool">Buy</button></form></td>
+            <ul class="nav nav-pills nav-stacked">
 
-    </tr>
-{% endfor %}
-</table>
-<br>
-<br>
+                {% if user.is_authenticated %}
+                    <li><a href="/gold_digger/profile/">Your profile</a></li>
+                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                {% else %}
+                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
+                    <li><a href="/gold_digger/store/">About Gold Digger</a></li>
 
-<a href="/gold_digger/game_choice/">Game choice</a><br>
-<a href = "/gold_digger/" >Back to Main</a>
 
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-sm-10 col-md-10">
+        <h3>Scanning Equipment</h3>
+        Use these items to view more accurate cues!
+        <br><br>
+
+        <div class="row">
+            {% for eq in equipment %}
+                <div class="col-sm-2 col-md-2">
+                    <div class="thumbnail">
+                        <img class="thumbnail" src="{{ eq.image.url }}" alt="{{ eq.name }}">
+
+                        <div class="caption">
+                            <h3>{{ eq.name }}</h3>
+
+                            <p>Image</p>
+
+                            <p><a href="#" class="btn btn-primary" role="button">Buy!</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3>Vehicles</h3>
+        Buy a vehicle to spend less gold moving to a new mine!
+        <br><br>
+        <div class="row">
+            {% for v in vehicles %}
+                <div class="col-sm-2 col-md-2">
+                    <div class="thumbnail">
+                        <img class="thumbnail" src="{{ v.image.url }}" alt="{{ v.name }}">
+
+                        <div class="caption">
+                            <h3>{{ v.name }}</h3>
+
+                            <p>Image</p>
+
+                            <p><a href="#" class="btn btn-primary" role="button">Buy!</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            {% endfor %}
+        </div>
+
+        <h3>Tools</h3>
+        Buy new tools to get more gold from each dig!
+        <br><br>
+        <div class="row">
+            {% for t in tools %}
+                <div class="col-sm-2 col-md-2">
+                    <div class="thumbnail">
+                        <img class="thumbnail" src="{{ t.image.url }}" alt="{{ t.name }}">
+
+                        <div class="caption">
+                            <h3>{{ t.name }}</h3>
+
+                            <p>Image</p>
+
+                            <p><a href="#" class="btn btn-primary" role="button">Buy!</a>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
 </body>
 </html>

@@ -69,10 +69,6 @@
     width: 10%;
 }
 
-#thumb{
-    text-align: center;
-    width: 10%;
-}
 
 #rank{
     width: 6%;
@@ -134,6 +130,20 @@
 
 }
 
+#store {
+    background-image: url(/media/mine/wood_texture.jpg);
+}
+
+#storesign {
+    width: 30%;
+    margin-left: 32%;
+    margin-top: 2%;
+}
+h1, h2, h3, p {
+
+    color:#000000;
+}
+
 hr {
     border-top: 2px groove rgba(0, 0, 0, 0.59);
     background-color: rgba(255, 255, 255, 0);
@@ -171,19 +181,22 @@ body{
     height: inherit;
 }
 
-.equip td{
+.equip td, th{
     text-align: right;
     padding-left: 15%;
+    height: 29px;
+    width: 49px;
 }
 
 .equip img {
     width: 20%;
 }
 
+
 .scores td{
     text-align: center;
     width: inherit;
-    line-height: 170%;
+    line-height: 155%;
 }
 
 .progress {
@@ -195,11 +208,6 @@ body{
     width: 200px;
 }
 
-
-.def {
-    width: 5%;
-    height: inherit;
-}
 .well {
     padding-top: 1%;
     margin-right: 1%;
@@ -272,6 +280,21 @@ body{
     font-family: pixelfont;
     color: #000000;
 }
+
+.description {
+    height: 250px;
+    font-family: pixelfont;
+    font-size: medium;
+}
+
+.thumbnail {
+    border: 2px solid #000000;
+}
+
+.thumbnail img {
+    width: 50%;
+}
+
 /******************************************************************************/
 
 
@@ -678,7 +701,7 @@ body{
 
 .digging_3 {
  	background: url(/media/icons/Tools/Dynamite.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 60%;
 }
 
 .digging_3:hover {
@@ -688,7 +711,7 @@ body{
 
 .digging_4 {
  	background: url(/media/icons/Tools/Mecha.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 60%;
 }
 
 .digging_4:hover {
@@ -748,7 +771,7 @@ body{
 
 .scanning_2 {
  	background: url(/media/icons/Scan/Sonar.gif) no-repeat center;
- 	background-size: 60%;
+ 	background-size: 40%;
 }
 
 .scanning_2:hover {
@@ -758,7 +781,7 @@ body{
 
 .scanning_3 {
  	background: url(/media/icons/Scan/Guide%20Dwarf.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 60%;
 }
 
 .scanning_3:hover {
@@ -768,7 +791,7 @@ body{
 
 .scanning_4 {
  	background: url(/media/icons/Scan/Spell.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 40%;
 }
 
 .scanning_4:hover {
@@ -778,7 +801,7 @@ body{
 
 .moving_2 {
  	background: url(/media/icons/Vehicle/Cart.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 60%;
 }
 
 .moving_2:hover {
@@ -808,7 +831,7 @@ body{
 
 .moving_1 {
  	background: url(/media/icons/Vehicle/Wheelbarrow.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 60%;
 }
 
 .moving_1:hover {
@@ -919,6 +942,32 @@ body{
 	height: 110px;
 }
 
+.equip img {
+        width: 40px;
+    }
+
+.equip {
+
+        font-size: medium;
+    }
+
+.scores{
+    font-size: small;
+    }
+
+.progress  {
+        margin-top: 4%;
+
+    }
+
+ .well {
+        height: 46%;
+    }
+
+    hr {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
 
 }
 
@@ -942,8 +991,64 @@ body{
         height: 130px;
     }
 
+    .equip img {
+        width: 40px;
+    }
+
+    .equip {
+
+        font-size: medium;
+    }
+
+    .scores{
+        font-size: small;
+    }
+
+    .well {
+        height: 46%;
+    }
+
+    .progress {
+        margin-top: 4%;
+
+    }
+
+    hr {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
    }
 
+@media (min-width: 1500px) {
+
+	.store .row, .store .row > div {
+		height: 300px;
+	}
+
+	.map .row {
+		height: 400px;
+	}
+
+	.landscape .row, .landscape .row > div {
+		height: 330px;
+	}
+	.shaft .row, .mine .row, .score .row, .mine .row > div {
+		height: 130px;
+	}
+    .row .hidden > div {
+        height: 130px;
+    }
+
+    .equip img {
+        width: 80px;
+    }
+
+    .scores{
+        font-size: large;
+    }
+
+   }
 
 
 .blink_me {

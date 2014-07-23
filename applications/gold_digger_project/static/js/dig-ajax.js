@@ -46,7 +46,7 @@ $(document).ready(function(){
                 $('#row_'+posi).append("<div class='row' id='resultcol'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
 
                 if (response['nextmine']){
-                    $('#well').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
+                    $('#resultcol').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
                 }
 
 

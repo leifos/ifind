@@ -61,19 +61,19 @@
                 <table class="equip">
                     <tr>
                         <td class="def">Equipment</td>
-                        <td class="thumb"><img src="{{ user.equipment.image.url }}"
+                        <td><img src="{{ user.equipment.image.url }}"
                                                title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
                                                id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Vehicle</td>
-                        <td class="thumb"><img src="{{ user.vehicle.image.url }}"
+                        <td><img src="{{ user.vehicle.image.url }}"
                                                title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
                                                id="img"></td>
                     </tr>
                     <tr>
                         <td class="def">Tool</td>
-                        <td class="thumb"><img src="{{ user.tool.image.url }}"
+                        <td><img src="{{ user.tool.image.url }}"
                                                title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}"
                                                id="img">
                         </td>
@@ -96,7 +96,6 @@
                     </tr>
 
                 </table>
-
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{ time_remaining }}"
                          aria-valuemin="100"

@@ -202,14 +202,12 @@ def shop(request):
     equipment = ScanningEquipment.objects.all()
     vehicles = Vehicle.objects.all()
     tools = DiggingEquipment.objects.all()
-    purchase = request.session['purchase']
     gold = user.gold
 
     print equipment
     return render_to_response('gold_digger/general_store.html', {'equipment': equipment,
                                                                  'vehicles': vehicles,
                                                                  'tools': tools,
-                                                                 'purchase': purchase,
                                                                  'gold': gold
                                                                  }, context)
 
