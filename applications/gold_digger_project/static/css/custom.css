@@ -706,7 +706,7 @@ body{
 }
 
 .digging_1 {
- 	background: url(../media/store_digging_1.png) no-repeat center;
+ 	background: url(/media/icons/Tools/Shovel_normal.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -716,7 +716,7 @@ body{
 }
 
 .digging_2 {
- 	background: url(../media/store_digging_2.png) no-repeat center;
+ 	background: url(/media/icons/Tools/Shovel_golden.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -726,7 +726,7 @@ body{
 }
 
 .digging_3 {
- 	background: url(../media/store_digging_3.png) no-repeat center;
+ 	background: url(/media/icons/Tools/Dynamite.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -736,7 +736,7 @@ body{
 }
 
 .digging_4 {
- 	background: url(../media/store_digging_4.png) no-repeat center;
+ 	background: url(/media/icons/Tools/Mecha.png) no-repeat center;
  	background-size: contain;
 }
 

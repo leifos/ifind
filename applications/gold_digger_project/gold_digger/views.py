@@ -475,3 +475,7 @@ def ajaxview(request):
 
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+def store(request):
+    context = RequestContext(request)
+    return render_to_response('gold_digger/store.html', {}, request)
