@@ -45,6 +45,15 @@
     background-image: url(/static/Scotland.png)
 }
 
+#Yukon_landscape {
+    background-image: url(/static/Yukon.png)
+
+}
+
+#Yukon_landscape h1 {
+    margin-top: 14%;
+}
+
 #currentgold {
     text-align: right;
     width: 60%;
@@ -155,10 +164,7 @@ body{
     padding-right: 1%;
     margin-left: 2%
 }
- td .thumb{
-    width: 100px;
 
-}
 
 .equip {
     width: inherit;
@@ -170,7 +176,9 @@ body{
     padding-left: 15%;
 }
 
-
+.equip img {
+    width: 20%;
+}
 
 .scores td{
     text-align: center;
@@ -279,7 +287,7 @@ body{
 
 .store_view {
  padding-top: 50px;
- background: url(../media/wood_texture.jpg) repeat;
+ background: url(/media/mine/wood_texture.jpg) repeat;
 }
 
 .landscape_container {
@@ -606,78 +614,21 @@ body{
 	background: rgba(0,0,0,0.3);
 }
 
-.map_1 {
- 	background: url(../media/map_01.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
 
-.map_2 {
- 	background: url(../media/map_02.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.map_3 {
- 	background: url(../media/map_03.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.map_4 {
- 	background: url(../media/map_04.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.map_5 {
- 	background: url(../media/map_05.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.map_6 {
- 	background: url(../media/map_06.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.map .row:hover .move_1 {
- 	background: url(../media/move_1.png) no-repeat center;
- 	background-size: 60%;
- 	height: 100%;
-}
-
-.map .row:hover .move_2 {
- 	background: url(../media/move_2.png) no-repeat center;
- 	background-size: 60%;
- 	height: 100%;
-}
-
-.map .row:hover .move_3 {
- 	background: url(../media/move_3.png) no-repeat center;
- 	background-size: 60%;
- 	height: 100%;
-}
-.map .row:hover .move_4 {
- 	background: url(../media/move_4.png) no-repeat center;
- 	background-size: 60%;
- 	height: 100%;
-}
-
-.map .row:hover .buy_stuff {
- 	background: url(../media/buy_stuff.png) no-repeat center;
- 	background-size: 60%;
- 	height: 100%;
-}
 
 .store_sign {
- 		background: url(../media/store_sign.png) no-repeat center top;
+ 		background: url(/media/mine/store_sign.png) no-repeat center top;
  		background-size: contain;
  		margin-top: 50px;
 }
 
 .left .row {
- 	background: url(../media/shelf_cubes_left.jpg) no-repeat center top;
+ 	background: url(/media/mine/shelf_cubes_left.jpg) no-repeat center top;
  	background-size: 100% 100%;
 }
  	
 .right .row {
- 	background: url(../media/shelf_cubes_right.jpg) no-repeat center top;
+ 	background: url(/media/mine/shelf_cubes_right.jpg) no-repeat center top;
  	background-size: 100% 100%;
 }
 
@@ -707,17 +658,17 @@ body{
 
 .digging_1 {
  	background: url(/media/icons/Tools/Shovel_normal.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 80%;
 }
 
 .digging_1:hover {
- 	background: url(../media/store_digging_1_hover.png) no-repeat center;
+ 	background: url(/media/mine/Shovel_normal_hover.png) no-repeat center;
  	background-size: contain;
 }
 
 .digging_2 {
  	background: url(/media/icons/Tools/Shovel_golden.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 80%;
 }
 
 .digging_2:hover {
@@ -727,7 +678,7 @@ body{
 
 .digging_3 {
  	background: url(/media/icons/Tools/Dynamite.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 80%;
 }
 
 .digging_3:hover {
@@ -737,7 +688,7 @@ body{
 
 .digging_4 {
  	background: url(/media/icons/Tools/Mecha.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 80%;
 }
 
 .digging_4:hover {
@@ -786,8 +737,8 @@ body{
 }
 
 .scanning_1 {
- 	background: url(../media/store_scanning_1.png) no-repeat center;
- 	background-size: contain;
+ 	background: url(/media/icons/Scan/Map.png) no-repeat center;
+ 	background-size: 40%;
 }
 
 .scanning_1:hover {
@@ -796,8 +747,8 @@ body{
 }
 
 .scanning_2 {
- 	background: url(../media/store_scanning_2.png) no-repeat center;
- 	background-size: contain;
+ 	background: url(/media/icons/Scan/Sonar.gif) no-repeat center;
+ 	background-size: 60%;
 }
 
 .scanning_2:hover {
@@ -806,8 +757,8 @@ body{
 }
 
 .scanning_3 {
- 	background: url(../media/store_scanning_3.png) no-repeat center;
- 	background-size: contain;
+ 	background: url(/media/icons/Scan/Guide%20Dwarf.png) no-repeat center;
+ 	background-size: 80%;
 }
 
 .scanning_3:hover {
@@ -816,8 +767,8 @@ body{
 }
 
 .scanning_4 {
- 	background: url(../media/store_scanning_4.png) no-repeat center;
- 	background-size: contain;
+ 	background: url(/media/icons/Scan/Spell.png) no-repeat center;
+ 	background-size: 80%;
 }
 
 .scanning_4:hover {
@@ -825,42 +776,42 @@ body{
  	background-size: contain;
 }
 
-.moving_1 {
- 	background: url(../media/store_moving_1.png) no-repeat center;
- 	background-size: contain;
+.moving_2 {
+ 	background: url(/media/icons/Vehicle/Cart.png) no-repeat center;
+ 	background-size: 80%;
 }
 
-.moving_1:hover {
+.moving_2:hover {
  	background: url(../media/store_moving_1_hover.png) no-repeat center;
  	background-size: contain;
 }
 
-.moving_2 {
- 	background: url(../media/store_moving_2.png) no-repeat center;
- 	background-size: contain;
+.moving_3 {
+ 	background: url(/media/icons/Vehicle/Donkey.png) no-repeat center;
+ 	background-size: 80%;
 }
 
-.moving_2:hover {
+.moving_3:hover {
  	background: url(../media/store_moving_2_hover.png) no-repeat center;
  	background-size: contain;
 }
 
-.moving_3 {
- 	background: url(../media/store_moving_3.png) no-repeat center;
- 	background-size: contain;
+.moving_4 {
+ 	background: url(/media/icons/Vehicle/Truck.png) no-repeat center;
+ 	background-size: 80%;
 }
 
-.moving_3:hover {
+.moving_4:hover {
  	background: url(../media/store_moving_3_hover.png) no-repeat center;
  	background-size: contain;
 }
 
-.moving_4 {
- 	background: url(../media/store_moving_4.png) no-repeat center;
- 	background-size: contain;
+.moving_1 {
+ 	background: url(/media/icons/Vehicle/Wheelbarrow.png) no-repeat center;
+ 	background-size: 80%;
 }
 
-.moving_4:hover {
+.moving_1:hover {
  	background: url(../media/store_moving_4_hover.png) no-repeat center;
  	background-size: contain;
 }
@@ -993,25 +944,7 @@ body{
 
    }
 
-.navbar-inverse .navbar-toggle {
-	color: #fff;
-}
 
-.navbar-inverse .navbar-toggle:hover {
-	background-color: #ddd;
-	color: #333;
-}
-
-.navbar-inverse {
-background: #393836; /* Old browsers */
-background: -moz-linear-gradient(top, #393836 0%, #181b22 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#393836), color-stop(100%,#181b22)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, #393836 0%,#181b22 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, #393836 0%,#181b22 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top, #393836 0%,#181b22 100%); /* IE10+ */
-background: linear-gradient(to bottom, #393836 0%,#181b22 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#393836', endColorstr='#181b22',GradientType=0 ); /* IE6-9 */
-}
 
 .blink_me {
     -webkit-animation-name: blinker;

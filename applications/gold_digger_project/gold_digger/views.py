@@ -21,7 +21,8 @@ import json
 
 location_dict = {
     'constant': 'California',
-    'cubic': 'Scotland'
+    'cubic': 'Scotland',
+    'random': 'Yukon',
 }
 
 def home(request):
