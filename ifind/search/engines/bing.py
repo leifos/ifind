@@ -232,9 +232,9 @@ class Bing(Engine):
         if query.result_type == 'web' or not query.result_type:
             for result in content[u'd'][u'results'][0][u'Web']:
                 response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'], rank=rank_counter)
-                print result[u'Title']
-                print rank_counter
-                print ' '
+                #print result[u'Title']
+                #print rank_counter
+                #print ' '
                 rank_counter+=1
 				
         if query.result_type == 'image':

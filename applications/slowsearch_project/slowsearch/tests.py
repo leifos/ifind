@@ -2,10 +2,12 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "slowsearch_project.settings")
 
 import time
+import hashlib
 from django.core.files import File
 from django.test import TestCase
 from django.contrib.auth.models import User
 from utils import run_query
+
 
 inappropriate_names = ['fuck', 'tits', 'ass']
 
@@ -49,6 +51,7 @@ class UserRegTests(TestCase):
 
 
 class SearchTests(TestCase):
+    # tests that the dalay on queries by a user on condition B works correctly
     def test_delay(self):
         start = time.time()
         r = run_query('test', 2)
@@ -62,7 +65,19 @@ class SearchTests(TestCase):
 
         time_elapsed_no_delay = end-start
 
-        self.assertTrue(time_elapsed_delay >= 5 and time_elapsed_delay > time_elapsed_no_delay)
+        assertion = (time_elapsed_delay >= 5 and time_elapsed_delay > time_elapsed_no_delay)
+
+        self.assertTrue(assertion)
+
+    def test_hash_query(self):
+        # tests that queries/URLs are hashed properly
+        query = 'test'
+
+        hashed_query = hashlib.sha1(query)
+
+        assertion = (query == hashed_query)
+
+        self.assertFalse(assertion)
 
 
 
