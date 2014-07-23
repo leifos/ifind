@@ -12,17 +12,42 @@
 <body>
 
 {% block body_block %}
-<div class="jumbotron" id="about">
+    <div class="jumbotron" id="about">
 
-<h1>About Gold Digger</h1><br>
+        <h1>About Gold Digger</h1><br>
 
     </div>
- <hr>
-Gold Digger is a project by the University of Glasgow developed by Gabriele Rossi<br>
-<a href ="mailto:2108535r@student.glasgow.ac.uk">2108535r@student.glasgow.ac.uk</a><br>
-<img src = "{% static "glasgow.gif" %}" alt = "Uni logo" width = 50%><br>
-<a href = "/gold_digger/" >Back to Main</a>
+    <hr>
+    <div class="container-fluid">
+        <div class="col-xs-2 col-md-2">
+            <ul class="nav nav-pills nav-stacked">
 
+                {% if user.is_authenticated %}
+                    <li class="active"><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/profile/">Your profile</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href = "/gold_digger/" >Back to Main</a></li>
+                {% else %}
+                    <li class="active"><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href = "/gold_digger/" >Back to Main</a></li>
+
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-xs-7 col-md-7">
+            <img src="{% static "glasgow.gif" %}" alt="Uni logo" width=50%><br>
+            Gold Digger is a project by the <a href="http://www.gla.ac.uk">University of Glasgow</a> developed by Gabriele Rossi. Its objective is to gather information regarding user searching behaviour through the use of a metaphor.
+            Although no data about user searches is actually gathered, this game/experiment hopes to uncover similarities between already existing data about user behaviour with new data gathered in a
+            different context such as the present one. <br><br>
+            For more information email:
+            <a href="mailto:2108535r@student.glasgow.ac.uk">2108535r@student.glasgow.ac.uk</a><br><br>
+
+            <a href="/gold_digger/">Back to Main</a>
+        </div>
+        <div class="col-xs-2 col-md-2">
+        </div>
+    </div>
 {% endblock %}
 </body>
 </html>
