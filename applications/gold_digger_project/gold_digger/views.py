@@ -478,4 +478,4 @@ def ajaxview(request):
 
 def store(request):
     context = RequestContext(request)
-    return render_to_response('gold_digger/store.html', {}, request)
+    return render_to_response('gold_digger/store.html', {}, context)
