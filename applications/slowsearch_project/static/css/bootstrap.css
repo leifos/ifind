@@ -8,6 +8,8 @@
  * Designed and built with all the love in the world by @mdo and @fat.
  */
 
+.longTextbox {width:50%; height: 20px}
+
 .clearfix {
   *zoom: 1;
 }

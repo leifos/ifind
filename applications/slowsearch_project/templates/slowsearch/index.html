@@ -22,7 +22,7 @@
 
                     <form id="search" action="/search/" method="post">
                         {% csrf_token %}
-                        <input type=text name=query value="{{ query }}">
+                        <input type=text class="longTextbox" name=query value="{{ query }}">
                         {% if request.user.id != 1 %}
                              <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
                         {% else %}

@@ -19,11 +19,11 @@
                  <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
             </div>
 
-    <div id="results">
+    <div id="results" style="width: 50%">
 
             <form id="search" action="/search/" method="post">
                 {% csrf_token %}
-                <input type=text name=query value="{{ query }}">
+                <input type=text style="width: 80%" name=query value="{{ query }}">
                 {% if request.user.id != 1 %}
                      <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
                 {% else %}
