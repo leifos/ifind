@@ -695,7 +695,7 @@ body{
 }
 
 .digging_2:hover {
- 	background: url(../media/store_digging_2_hover.png) no-repeat center;
+ 	background: url(/media/mine/Shovel_golden_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -705,7 +705,7 @@ body{
 }
 
 .digging_3:hover {
- 	background: url(../media/store_digging_3_hover.png) no-repeat center;
+ 	background: url(/media/mine/Dynamite_hover.jpg) no-repeat center;
  	background-size: contain;
 }
 
@@ -715,7 +715,7 @@ body{
 }
 
 .digging_4:hover {
- 	background: url(../media/store_digging_4_hover.png) no-repeat center;
+ 	background: url(/media/mine/Mecha_hover.jpg) no-repeat center;
  	background-size: contain;
 }
 
@@ -765,17 +765,17 @@ body{
 }
 
 .scanning_1:hover {
- 	background: url(../media/store_scanning_1_hover.png) no-repeat center;
+ 	background: url(/media/mine/Map_hover.png) no-repeat center;
  	background-size: contain;
 }
 
 .scanning_2 {
- 	background: url(/media/icons/Scan/Sonar.gif) no-repeat center;
+ 	background: url(/media/icons/Scan/Sonar.png) no-repeat center;
  	background-size: 40%;
 }
 
 .scanning_2:hover {
- 	background: url(../media/store_scanning_2_hover.png) no-repeat center;
+ 	background: url(/media/mine/Sonar_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -785,7 +785,7 @@ body{
 }
 
 .scanning_3:hover {
- 	background: url(../media/store_scanning_3_hover.png) no-repeat center;
+ 	background: url(/media/mine/Guide%20Dwarf_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -795,7 +795,7 @@ body{
 }
 
 .scanning_4:hover {
- 	background: url(../media/store_scanning_4_hover.png) no-repeat center;
+ 	background: url(/media/mine/Spell_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -805,7 +805,7 @@ body{
 }
 
 .moving_2:hover {
- 	background: url(../media/store_moving_1_hover.png) no-repeat center;
+ 	background: url(/media/mine/Cart_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -815,7 +815,7 @@ body{
 }
 
 .moving_3:hover {
- 	background: url(../media/store_moving_2_hover.png) no-repeat center;
+ 	background: url(/media/mine/Donkey_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -825,7 +825,7 @@ body{
 }
 
 .moving_4:hover {
- 	background: url(../media/store_moving_3_hover.png) no-repeat center;
+ 	background: url(/media/mine/Truck_hover.png) no-repeat center;
  	background-size: contain;
 }
 
@@ -835,7 +835,7 @@ body{
 }
 
 .moving_1:hover {
- 	background: url(../media/store_moving_4_hover.png) no-repeat center;
+ 	background: url(/media/mine/Wheelbarrow_hover.png) no-repeat center;
  	background-size: contain;
 }
  
