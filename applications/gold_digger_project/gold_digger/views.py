@@ -477,14 +477,18 @@ def ajaxview(request):
 
 def store(request):
     context = RequestContext(request)
-    #user = UserProfile.objects.get(user=request.user)
-    #equipment = ScanningEquipment.objects.all()
-    #vehicles = Vehicle.objects.all()
-    #tools = DiggingEquipment.objects.all()
-    #gold = user.gold
-
-    return render_to_response('gold_digger/store.html', {#'equipment': equipment,
-                                                         #'vehicles': vehicles,
-                                                         #'tools': tools,
-                                                         #'gold': gold
-    }, context)
+    user = UserProfile.objects.get(user=request.user)
+    equipment = ScanningEquipment.objects.all()
+    vehicles = Vehicle.objects.all()
+    tools = DiggingEquipment.objects.all()
+    gold = user.gold
+    scan = user.equipment.image.url
+    dig = user.tool.image.url
+    move = user.vehicle.image.url
+    return render_to_response('gold_digger/store.html', {'equipment': equipment,
+                                                         'vehicles': vehicles,
+                                                         'tools': tools,
+                                                         'gold': gold,
+                                                         'scan': scan,
+                                                         'dig': dig,
+                                                         'move': move}, context)

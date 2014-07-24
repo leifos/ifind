@@ -34,9 +34,9 @@ $(document).ready(function(){
                     $('.buttons').wrap("<form action='/gold_digger/game_over'></form>")
                 }
 
-                $('#totalgold').html(response['totalgold']);
+                $('#totalgold').animateNumbers(response['totalgold'], true);
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
-                $('#currentgold').html(response['currentgold']);
+                $('#currentgold').animateNumbers(response['currentgold']);
 
                 $('#goldlayer_'+posi).removeClass().addClass("row nuggets_"+response['nuggets']);
 
@@ -46,7 +46,7 @@ $(document).ready(function(){
                 $('#row_'+posi).append("<div class='row' id='resultcol'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
 
                 if (response['nextmine']){
-                    $('#resultcol').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
+                    $('.row #resultcol').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
                 }
 
 

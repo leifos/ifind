@@ -69,6 +69,9 @@
     width: 10%;
 }
 
+#left{
+    text-align: left;
+}
 
 #rank{
     width: 6%;
@@ -138,6 +141,17 @@
     width: 30%;
     margin-left: 32%;
     margin-top: 2%;
+}
+
+#shopgold {
+    font-family: pixelfont;
+    height: 35%;
+    background-color: rgba(245, 222, 179, 0.21);
+    width: 15%;
+    color: #000000;
+    margin-top: 2%;
+    position: fixed;
+    font-size: medium;
 }
 h1, h2, h3, p {
 
@@ -283,17 +297,21 @@ body{
 
 .description {
     height: 250px;
-    font-family: pixelfont;
     font-size: medium;
 }
 
-.thumbnail {
+#shoppe {
     border: 2px solid #000000;
+    margin-top: 5%;
+    border-radius: 0;
+    background-color: rgba(245, 222, 179, 0.25);
 }
 
-.thumbnail img {
+#shoppe img {
     width: 50%;
 }
+
+
 
 /******************************************************************************/
 
@@ -322,99 +340,6 @@ body{
 }
 
 
-.landscape_1 {
- 		background: url(../media/landscape_1.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_2 {
- 		background: url(../media/landscape_2.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_3 {
- 		background: url(../media/landscape_3.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_4 {
- 		background: url(../media/landscape_4pixel.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_5 {
- 		background: url(/static/Wild%20West%20Background.png) no-repeat center bottom;
- 		background-size: 100%;
-
-}
-
-.landscape_6 {
- 		background: url(../media/landscape_6.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_7 {
- 		background: url(../media/landscape_7.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_8 {
- 		background: url(../media/landscape_8.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_9 {
- 		background: url(../media/landscape_9.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.landscape_10 {
- 		background: url(../media/landscape_10.png) no-repeat center top;
- 		background-size: cover;
-}
-
-.extraction_technology_1 {
- 	background: url(../media/extraction_technology_1.png) no-repeat center bottom;
- 	background-size: contain;
-}
-
-.extraction_technology_2 {
- 	background: url(../media/extraction_technology_2.png) no-repeat center bottom;
- 	background-size: contain;
- 	}
-
-.extraction_technology_3 {
- 	background: url(../media/extraction_technology_3.png) no-repeat center bottom;
- 	background-size: contain;
- 	}
-
-.extraction_technology_4 {
- 	background: url(../media/extraction_technology_4pixel.png) no-repeat center bottom;
- 	background-size: contain;
- 	}
-
-.shaft_shack {
- 	background: url(../media/shaft_shack.png) no-repeat right -11px bottom;
- 	background-size: 15%;
-}
-
-.total {
- 	background: url(../media/total.png) no-repeat center bottom;
- 	margin-top: 20px;
-}
-
-.map_button {
- 	background: url(../media/map_button.png) no-repeat center top;
- 	background-size: 90%;
- 	height: 80%;
-}
-
-.map_button:hover {
- 	background: url(../media/map_button_hover.png) no-repeat center top;
- 	background-size: 90%;
- 	height: 80%;
-}
-
 .mine > div > div {
 	position: relative;
 }
@@ -428,45 +353,6 @@ body{
   	opacity: 0.7;
 }
 
-.icon_dig_1 {
- 	background: #990000 url(../media/icon_dig_1.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_dig_2 {
- 	background: #990000 url(../media/icon_dig_2.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_dig_3 {
- 	background: #990000 url(../media/icon_dig_3.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_dig_4 {
- 	background: #990000 url(../media/icon_dig_4.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_move_1 {
- 	background: #009900 url(../media/icon_move_1.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_move_2 {
- 	background: #009900 url(../media/icon_move_2.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_move_3 {
- 	background: #009900 url(../media/icon_move_3.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
-
-.icon_move_4 {
- 	background: #009900 url(../media/icon_move_4.png) no-repeat center top;
- 	background-size: 100% 100%;
-}
 
 .button {
  	background: #dfdfdf;
@@ -655,48 +541,25 @@ body{
  	background-size: 100% 100%;
 }
 
-.row:hover > div > .buy_1 {
- 	background: url(../media/buy_1.png) no-repeat center bottom;
- 	background-size: 100%;
- 	height: 100%;
-}
-
-.row:hover > div > .buy_2 {
- 	background: url(../media/buy_2.png) no-repeat center bottom;
- 	background-size: 100%;
- 	height: 100%;
-}
-
-.row:hover > div > .buy_3 {
- 	background: url(../media/buy_3.png) no-repeat center bottom;
- 	background-size: 100%;
- 	height: 100%;
-}
-
-.row:hover > div > .buy_4 {
- 	background: url(../media/buy_4.png) no-repeat center bottom;
- 	background-size: 100%;
- 	height: 100%;
-}
 
 .digging_1 {
  	background: url(/media/icons/Tools/Shovel_normal.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 50%;
 }
 
 .digging_1:hover {
  	background: url(/media/mine/Shovel_normal_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 60%;
 }
 
 .digging_2 {
  	background: url(/media/icons/Tools/Shovel_golden.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 50%;
 }
 
 .digging_2:hover {
  	background: url(/media/mine/Shovel_golden_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 60%;
 }
 
 .digging_3 {
@@ -706,7 +569,7 @@ body{
 
 .digging_3:hover {
  	background: url(/media/mine/Dynamite_hover.jpg) no-repeat center;
- 	background-size: contain;
+ 	background-size: 70%;
 }
 
 .digging_4 {
@@ -716,48 +579,9 @@ body{
 
 .digging_4:hover {
  	background: url(/media/mine/Mecha_hover.jpg) no-repeat center;
- 	background-size: contain;
+ 	background-size: 70%;
 }
 
-.extraction_1 {
- 	background: url(../media/store_extraction_1.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_1:hover {
- 	background: url(../media/store_extraction_1_hover.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_2 {
- 	background: url(../media/store_extraction_2.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_2:hover {
- 	background: url(../media/store_extraction_2_hover.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_3 {
- 	background: url(../media/store_extraction_3.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_3:hover {
- 	background: url(../media/store_extraction_3_hover.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_4 {
- 	background: url(../media/store_extraction_4.png) no-repeat center;
- 	background-size: contain;
-}
-
-.extraction_4:hover {
- 	background: url(../media/store_extraction_4_hover.png) no-repeat center;
- 	background-size: contain;
-}
 
 .scanning_1 {
  	background: url(/media/icons/Scan/Map.png) no-repeat center;
@@ -766,7 +590,7 @@ body{
 
 .scanning_1:hover {
  	background: url(/media/mine/Map_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 50%;
 }
 
 .scanning_2 {
@@ -776,7 +600,7 @@ body{
 
 .scanning_2:hover {
  	background: url(/media/mine/Sonar_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 60%;
 }
 
 .scanning_3 {
@@ -786,7 +610,7 @@ body{
 
 .scanning_3:hover {
  	background: url(/media/mine/Guide%20Dwarf_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 70%;
 }
 
 .scanning_4 {
@@ -796,7 +620,17 @@ body{
 
 .scanning_4:hover {
  	background: url(/media/mine/Spell_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 50%;
+}
+
+.scanning_5 {
+ 	background: url(/media/icons/Scan/Oil%20Lamp.png) no-repeat center;
+ 	background-size: 40%;
+}
+
+.scanning_5:hover {
+ 	background: url(/media/mine/Oil%20Lamp_hover.png) no-repeat center;
+ 	background-size: 50%;
 }
 
 .moving_2 {
@@ -806,17 +640,17 @@ body{
 
 .moving_2:hover {
  	background: url(/media/mine/Cart_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 70%;
 }
 
 .moving_3 {
  	background: url(/media/icons/Vehicle/Donkey.png) no-repeat center;
- 	background-size: 80%;
+ 	background-size: 70%;
 }
 
 .moving_3:hover {
  	background: url(/media/mine/Donkey_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 80%;
 }
 
 .moving_4 {
@@ -826,7 +660,7 @@ body{
 
 .moving_4:hover {
  	background: url(/media/mine/Truck_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 90%;
 }
 
 .moving_1 {
@@ -836,7 +670,7 @@ body{
 
 .moving_1:hover {
  	background: url(/media/mine/Wheelbarrow_hover.png) no-repeat center;
- 	background-size: contain;
+ 	background-size: 70%;
 }
  
 
@@ -926,8 +760,9 @@ body{
 
 @media (min-width: 992px) {
 
-	.store .row, .store .row > div {
-		height: 250px;
+.store .row, .store .row > div {
+		height: 170px;
+
 	}
 
 .map .row {
@@ -969,12 +804,115 @@ body{
         margin-bottom: 8px;
     }
 
+    .container{
+        width: 888px;
+        margin-left: 270px;
+    }
+    #shoprow{
+        margin-left: 107px;
+    }
+
+    #generalstore{
+        margin-left: 70px;
+    }
+
+    #shopgold{
+        height: 48%;
+        width: 23%;
+    }
+
+    #shopgold img {
+        height: 50px;
+    }
+
 }
 
 @media (min-width: 1200px) {
 
+.store .row, .store .row > div {
+		height: 200px;
+        width: 200px;
+
+	}
+
+.map .row {
+	height: 375px;
+}
+
+.landscape .row, .landscape .row > div {
+	height: 260px;
+}
+
+.shaft .row, .mine .row, .score .row, .mine .row> div {
+	height: 110px;
+}
+
+.equip img {
+        width: 40px;
+    }
+
+.equip {
+
+        font-size: medium;
+    }
+
+.scores{
+    font-size: small;
+    }
+
+.progress  {
+        margin-top: 4%;
+
+    }
+
+ .well {
+        height: 46%;
+    }
+
+    hr {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .container{
+        width: 888px;
+        margin-left: 270px;
+    }
+    #shoprow{
+        margin-left: 326px;
+    }
+
+    #generalstore{
+        margin-left: 163px;
+    }
+
+    #shopgold{
+        height: 48%;
+        width: 23%;
+    }
+
+    #shopgold img {
+        height: 50px;
+    }
+
+    #shoppe {
+        height: 233px;
+        font-size: small;
+        width: 162px;
+    }
+
+     #resultcol {
+        font-size: medium;
+        width: 300px;
+    }
+
+}
+
+@media (min-width: 1300px) {
+
 	.store .row, .store .row > div {
-		height: 300px;
+		height: 220px;
+        width: 220px;
 	}
 
 	.map .row {
@@ -1018,12 +956,42 @@ body{
         margin-bottom: 8px;
     }
 
-   }
+    #shoprow{
+        margin-left: 340px;
+    }
+
+    #generalstore{
+        margin-left: 180px;
+    }
+
+    #shopgold{
+        height: 48%;
+        width: 23%;
+    }
+
+    #shopgold img {
+        height: 50px;
+    }
+
+    #shoppe {
+        width: 170px;
+        padding-right: 5%;
+
+    }
+
+    #resultcol {
+        font-size: medium;
+        width: 300px;
+    }
+}
+
+
 
 @media (min-width: 1500px) {
 
 	.store .row, .store .row > div {
 		height: 300px;
+        width: 300px;
 	}
 
 	.map .row {
@@ -1046,6 +1014,34 @@ body{
 
     .scores{
         font-size: large;
+    }
+
+    .container {
+        margin-left: 295px;
+        width: 1599px;
+    }
+
+    #shoprow{
+        margin-left: 486px;
+    }
+
+     #shopgold img {
+        height: 70px;
+    }
+
+     #shopgold{
+       font-size: x-large;
+       height: 38%;
+    }
+
+     #generalstore{
+        margin-left: 200px;
+        margin-bottom: 3%;
+    }
+
+     #shoppe {
+        font-size: medium;
+        width: 230px;
     }
 
    }
