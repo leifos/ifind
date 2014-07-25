@@ -465,7 +465,7 @@ def ajaxview(request):
         myResponse['nextmine'] = True
 
     if request.session['time_remaining'] <= 0:
-        return HttpResponseRedirect(reverse('game_over'), context)
+        return HttpResponse(status=204)
 
     myResponse['totalgold'] = user.gold
     myResponse['timeremaining'] = request.session['time_remaining']
@@ -492,3 +492,60 @@ def store(request):
                                                          'scan': scan,
                                                          'dig': dig,
                                                          'move': move}, context)
+
+def ajax_buy(request):
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+
+    print request.POST
+
+    if 'scan' in request.POST:
+        item_name = request.POST['scan']
+        item = ScanningEquipment.objects.get(name=item_name)
+
+        if user.gold >= item.price:
+            user.gold -= item.price
+            user.equipment = item
+            user.save()
+            request.session['purchase'] = True
+            print "ITEM BOUGHT"
+
+            myResponse = "ITEM PURCHASED"
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+        else:
+            request.session['purchase'] = False
+            myResponse = "NOT ENOUGH GOLD"
+            return HttpResponse(status=204)
+
+    if 'buy tool' in request.POST:
+        item_name = request.POST['buy tool']
+        item = DiggingEquipment.objects.get(name=item_name)
+
+        if user.gold >= item.price:
+            user.gold -= item.price
+            user.tool = item
+            user.save()
+            request.session['purchase'] = True
+            print "ITEM BOUGHT"
+            return HttpResponseRedirect(reverse('shop'), context)
+
+        else:
+            request.session['purchase'] = False
+            return HttpResponseRedirect(reverse('shop'), context)
+
+    if 'buy vehicle' in request.POST:
+        item_name = request.POST['buy vehicle']
+        item = Vehicle.objects.get(name=item_name)
+
+        if user.gold >= item.price:
+            user.gold -= item.price
+            user.vehicle = item
+            user.save()
+            request.session['purchase'] = True
+            print "ITEM BOUGHT"
+            return HttpResponseRedirect(reverse('shop'), context)
+
+        else:
+            request.session['purchase'] = False
+            return HttpResponseRedirect(reverse('shop'), context)

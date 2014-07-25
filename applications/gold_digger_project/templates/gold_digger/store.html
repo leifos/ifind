@@ -5,6 +5,7 @@
 
 </head>
 {% block body_block %}
+<span id='csrf'>{% csrf_token %}</span>
 <body class="store_view">
 
 
@@ -55,7 +56,9 @@
                                     <p>Price: {{ e.price }}</p>
                                     <p>Gold Modifier: {{ e.modifier }}</p>
 
-                                    <p><button value="" name="" href="#" class="btn btn-primary" role="button">Buy!</button>
+                                    <p><button id="{{ forloop.counter }}"  value="{{ e.name }}" name="buy equipment"  class="btn btn-primary buy" role="button">Buy!</button>
+                                    <!--<input type="hidden" value="{{ forloop.counter }}" id="itemno_{{ forloop.counter }}"-->
+                                    <p id="response_{{ forloop.counter }}"></p>
                                 </div>
                             </div>
                         </div>

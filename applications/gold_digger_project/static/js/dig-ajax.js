@@ -25,14 +25,15 @@ $(document).ready(function(){
             type: "POST",
             url: "/gold_digger/ajaxview/",
             data: {block: pos, dig: gold, csrfmiddlewaretoken: csrf},
-            success: function(response){
+            statusCode:{
+            200: function(response){
 
                 posi = count - 1;
 
                 console.log(count);
-                if (response['timeremaining'] <= 0){
-                    $('.buttons').wrap("<form action='/gold_digger/game_over'></form>")
-                }
+//                if (response['timeremaining'] <= 0){
+//                    $('.buttons').wrap("<form action='/gold_digger/game_over'></form>")
+//                }
 
                 $('#totalgold').animateNumbers(response['totalgold'], true);
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
@@ -50,6 +51,12 @@ $(document).ready(function(){
                 }
 
 
+
+            },
+
+            204: function (){
+                window.location = "/gold_digger/game_over/"
+            }
 
             }
         });

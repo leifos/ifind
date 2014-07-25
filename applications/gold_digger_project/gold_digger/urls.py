@@ -18,7 +18,8 @@ urlpatterns = patterns('',
         url(r'^profile/$', views.user_profile, name='profile'),
         url(r'^game2/$', views.game2, name='game2'),
         url(r'^ajaxview/$', views.ajaxview, name='ajaxview'),
-        url(r'^store/$', views.store, name='store')
+        url(r'^store/$', views.store, name='store'),
+        url(r'^ajax_buy/$', views.ajax_buy, name='store')
 
 
 
