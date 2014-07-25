@@ -5,6 +5,9 @@
     Thank you for completing the survey! <a href = "/">Start Searching</a>
 
     {% else %}
+         <strong>Thank you for registering!</strong><br>
+       Please complete the following Demographic Survey<br>
+       <a class="btn-primary" href = "/">Skip Survey</a><br><br>
 
          <form id="reg_form" method="post" action="/demographic/"
                 enctype="multipart/form-data">
@@ -24,7 +27,7 @@
             {% endfor %}
              </div>
          {% endif %}
-              <input type="submit" name="submit" value="Register" />
+              <input class="btn-primary" type="submit" name="submit" value="Register" />
         </form>
     {% endif %}
 {% endblock %}

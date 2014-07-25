@@ -8,6 +8,14 @@
  * Designed and built with all the love in the world by @mdo and @fat.
  */
 
+.logo {
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    height: 98%;
+    width: 15%;
+}
+
 .longTextbox {width:50%; height: 20px}
 
 .clearfix {
@@ -4375,7 +4383,7 @@ input[type="submit"].btn.btn-mini {
   min-height: 40px;
   padding-right: 20px;
   padding-left: 20px;
-  background-color: #fafafa;
+  background-color: #45aeea;
   background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
   background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
@@ -4432,7 +4440,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-text {
   margin-bottom: 0;
   line-height: 40px;
-  color: #777777;
+  color: #ffffff;
 }
 
 .navbar-link {
@@ -4798,15 +4806,15 @@ input[type="submit"].btn.btn-mini {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
   background-image: -webkit-linear-gradient(top, #222222, #111111);
   background-image: -o-linear-gradient(top, #222222, #111111);
-  background-image: linear-gradient(to bottom, #222222, #111111);
+  background-image: linear-gradient(to bottom, #5F9EA0, #0000FF);
   background-repeat: repeat-x;
-  border-color: #252525;
+  border-color: #0000FF;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
 }
 
 .navbar-inverse .brand,
 .navbar-inverse .nav > li > a {
-  color: #999999;
+  color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -4818,11 +4826,11 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inverse .brand {
-  color: #999999;
+  color: #ffffff;
 }
 
 .navbar-inverse .navbar-text {
-  color: #999999;
+  color: #ffffff;
 }
 
 .navbar-inverse .nav > li > a:focus,

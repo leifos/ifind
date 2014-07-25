@@ -12,19 +12,21 @@
     <script src="{% static "/js/slowsearch-ajax.js" %}"></script>
     <script src="{% static "/js/slowsearch-javascript.js" %}"></script>
 
-    <title>slowsearch</title>
+    <title>WebSearch</title>
 </head>
 <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
            <div class="container">
+
                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                    <span class="icon-bar"></span>
                    <span class="icon-bar"></span>
                    <span class="icon-bar"></span>
                </button>
-               <a class="brand" href="/">Slowsearch</a>
+               <a href=""><img class="logo" src="{% static "SOCS Logo.jpg"%}">
+               <a class="brand" href="/">WebSearch</a>
 
                <div class="nav-collapse collapse">
                    <ul class="nav pull-right">
@@ -36,19 +38,19 @@
 
                             <li><a href="/logout/">Logout</a></li>
                         {% else %}
-                            {% if request.get_full_path != "/slowsearch/register/" %}
+                            {% if request.get_full_path != "/register/" %}
                                <li><a href="/register/">Register</a></li>
                             {% endif %}
-                            {% if request.get_full_path != "/slowsearch/login/" %}
+                            {% if request.get_full_path != "/login/" %}
                             <li><a href="/login/">Login</a></li>
                             {% endif %}
                         {% endif %}
 
-                        {% if request.get_full_path != "/slowsearch/" %}
+                        {% if request.get_full_path != "/" %}
                             <li><a href="/">Home</a></li>
                         {% endif %}
 
-                        {% if request.get_full_path != "/slowsearch/about/" %}
+                        {% if request.get_full_path != "/about/" %}
                             <li><a href="/about">About</a> </li>
                         {% endif %}
 
@@ -60,7 +62,7 @@
            </div>
         </div>
     </div>
-   <div style="margin: 2%"><h1> Welcome to slowsearch </h1></div>
+   <div style="margin: 2%"><h1> Welcome to WebSearch </h1></div>
 
     <div style="margin: 2%">
         {% block body_block %}

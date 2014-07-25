@@ -8,8 +8,7 @@
        Alternatively, <a href = "/">Skip the survey</a>
 
     {% else %}
-        <h2>Register here!</h2><img src="{% static "SOCS Logo.jpg"%}"> <br />
-
+        <h2>Register here!</h2>
     <form id="reg_form" method="post" action="/register/"
             enctype="multipart/form-data">
 
@@ -41,7 +40,8 @@
             <li>An example of a hashed query is the query 'test', which would be hashed to 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'
             before being recorded to render it unreadable to any individual. URLs visited are hashed in a similar way.</li>
             <li>You are able to ask questions at any time before, during or after the experiment using the contact
-            details available on the <a target="_blank" href="slowsearch/about">About</a> page.</li>
+            details available on the <a target="_blank" href="/about">About</a> page.</li>
+            details available on the <a target="_blank" href="/about">About</a> page.</li>
 
         </ul><br>
 
@@ -72,7 +72,7 @@
             </div>
         {% endif %}
          <br>
-        <input type="submit" name="submit" value="Register" />
+        <input class="btn-primary" type="submit" name="submit" value="Register" />
         </form>
 {% endif %}
 

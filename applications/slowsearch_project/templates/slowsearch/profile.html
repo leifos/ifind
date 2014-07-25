@@ -14,7 +14,7 @@
                     Year: {{ demographics.education_undergrad_year }}<br><br>
                 {% endif %}
                 {% else %}
-                    You haven't completed the demographic form yet! <a href = "/demographic/">Do it now!</a><br>
+                    You haven't completed the demographic form yet! <a class="btn-primary" href = "/demographic/">Do it now!</a><br>
             {% endif %}
             User Since: {{ profile.user_since }}<br>
             Number of Queries: {{ profile.queries_submitted }} <br>
@@ -22,7 +22,7 @@
             <br>
 
             {% if demographics %}
-            <a href="/editprofile/{{ user.username }}">Edit Profile</a>
+            <a class="btn-primary" href="/editprofile/{{ user.username }}">Edit Profile</a>
             {% endif %}
 
         {% else %}
