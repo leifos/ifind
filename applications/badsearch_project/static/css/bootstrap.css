@@ -6288,3 +6288,8 @@ legend {
 .modal .close {
   color: #333333;
 }
+tr.spaceUnder > td
+{
+  padding-bottom: 2em;
+  border-bottom: 20px;
+}

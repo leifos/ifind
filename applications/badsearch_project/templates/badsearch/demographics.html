@@ -17,10 +17,7 @@
 
          {% csrf_token %}
 
-        {% for field in demographics_form %}
-            {{ field.label }}
-            {{ field }}<br>
-        {% endfor %}
+        {{ demographics_form.as_p }}
 
          {% if demographics_form.errors %}
              <div class="alert alert-danger">
@@ -32,7 +29,8 @@
             {% endfor %}
              </div>
          {% endif %}
-              <input class="btn btn-primary" type="submit" name="submit" value="Register"/>
+             <br>
+              <input class="btn btn-primary" type="submit" name="submit" value="Submit"/>
         </form>
     {% endif %}
     </div>

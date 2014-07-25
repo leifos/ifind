@@ -27,7 +27,9 @@
          </div>
     </fieldset>
     </form>
-
+    {% if error %}
+    <p class="alert alert-danger" size = "medium">{{ error }}</p>
+    {% endif %}
     </div>
     <!-- /container -->
 </div>

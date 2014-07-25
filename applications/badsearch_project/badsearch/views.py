@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from models import UserProfile, Demographics
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from utils import paginated_search, run_query, record_query, record_link
+from django import forms
 import datetime
 
 def index(request):
@@ -67,51 +68,55 @@ def register(request):
     # Like before, get the request's context.
     context = RequestContext(request)
 
-    # A boolean value for telling the template whether the registration was successful.
-    # Set to False initially. Code changes value to True when registration succeeds.
-    registered = False
+    if request.user.is_authenticated:
+        #return HttpResponseRedirect('/profile')
+
+    #else:
+
+            # A boolean value for telling the template whether the registration was successful.
+             # Set to False initially. Code changes value to True when registration succeeds.
+        registered = False
 
     # If it's a HTTP POST, we're interested in processing form data.
-    if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
-        validation_form = ValidationForm(data=request.POST)
+        if request.method == 'POST':
+            user_form = UserForm(data=request.POST)
+            profile_form = UserProfileForm(data=request.POST)
+            validation_form = ValidationForm(data=request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid() and validation_form.is_valid():
-            user = user_form.save()
+            if user_form.is_valid() and profile_form.is_valid() and validation_form.is_valid():
+                user = user_form.save()
 
-            user.set_password(user.password)
-            user.save()
+                user.set_password(user.password)
+                user.save()
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.user_since = datetime.datetime.today()
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.user_since = datetime.datetime.today()
 
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+                if 'picture' in request.FILES:
+                    profile.picture = request.FILES['picture']
 
-            user_id = user.id
-            if user_id % 2 is 0:
-                profile.condition=1
-            elif user_id % 2 is not 0:
-                profile.condition=2
+                user_id = user.id
+                if user_id % 2 is 0:
+                    profile.condition=1
+                elif user_id % 2 is not 0:
+                    profile.condition=2
 
-            profile.save()
-            registered = True
-            new_user = authenticate(username=request.POST['username'],
+                profile.save()
+                registered = True
+                new_user = authenticate(username=request.POST['username'],
                                     password=request.POST['password'])
-            login(request, new_user)
+                login(request, new_user)
+
+            else:
+                print user_form.errors, profile_form.errors, validation_form.errors
 
         else:
-            print user_form.errors, profile_form.errors, validation_form.errors
+            user_form = UserForm()
+            profile_form = UserProfileForm()
+            validation_form = ValidationForm()
 
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-        validation_form = ValidationForm()
-
-    return render_to_response(
-            'badsearch/register.html',
+        return render_to_response('badsearch/register.html',
             {'user_form': user_form, 'profile_form': profile_form, 'validation_form': validation_form, 'registered': registered},
             context)
 
@@ -131,17 +136,16 @@ def demographics(request):
             demographics_form = DemographicsForm(data=request.POST, instance=current_user_form)
 
             if demographics_form.is_valid():
-                #demographics.user = user
 
                 demographics_form.save()
                 print "valid"
+                return HttpResponseRedirect('/profile')
 
             else: print "invalid"
         else:
             demographics_form = DemographicsForm(instance=current_user_form)
 
     else:
-
         if request.method == 'POST':
             demographics_form = DemographicsForm(data=request.POST)
 
@@ -165,6 +169,7 @@ def demographics(request):
 
 def user_login(request):
     context = RequestContext(request)
+    error = ""
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -180,9 +185,10 @@ def user_login(request):
                 return HttpResponse("Your badsearch account is disabled.")
         else:
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            error = "Invalid username or password entered. Please try again."
+            return render_to_response('badsearch/login.html', {'error': error}, context)
     else:
-        return render_to_response('badsearch/login.html', {}, context)
+        return render_to_response('badsearch/login.html', {'error': error}, context)
 
 @login_required
 def user_logout(request):

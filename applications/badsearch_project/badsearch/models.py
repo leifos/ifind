@@ -16,7 +16,7 @@ class UserProfile(models.Model):
 
 class Demographics(models.Model):
     user = models.OneToOneField(User)
-    age = models.IntegerField(default=0, help_text="Please provide your age (in years).")
+    age = models.IntegerField(blank=True, help_text="Please provide your age (in years).")
     sex = models.CharField(max_length=20, help_text="Please indicate your sex.")
     education_undergrad = models.CharField(max_length=20, default="No")
     education_undergrad_major = models.CharField(max_length=100, default="")

@@ -8,7 +8,7 @@ GENDER_CHOICES = (('Not Indicated', 'Not Indicated'),
 YES_CHOICES = (('Not Indicated', 'Not Indicated'),
                ('Yes', 'Yes'), ('No', 'No'))
 
-YEAR_CHOICES = (('Not Specified', 'Not Specified'),
+YEAR_CHOICES = (('Not Indicated', 'Not Indicated'),
                 ('First Year', 'First Year'), ('Second Year', 'Second Year'), ('Third Year', 'Third Year'),
                 ('Fourth Year', 'Fourth Year'), ('Fifth Year', 'Fifth Year'), ('Completed', 'Completed'))
 
@@ -33,6 +33,20 @@ class UserForm(forms.ModelForm):
         #return password2
 
         return self.cleaned_data
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        try:
+            user = User.objects.exclude(pk=self.instance.pk).get(username=username)
+        except User.DoesNotExist:
+            return username
+        raise forms.ValidationError(u'Username "%s" is already in use.' % username)
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username']:
+            self.fields[fieldname].help_text = None
 
 
     class Meta:
@@ -59,10 +73,17 @@ class DemographicsForm(forms.ModelForm):
                                                label="What year are you in?", required=False)
 
     def clean(self):
-        user_age = self.cleaned_data['age']
-        if user_age < 18:
-            raise forms.ValidationError('You must be at least 18 years old to register')
-        return self.cleaned_data
+        cleaned_data = self.cleaned_data
+        if not cleaned_data.get("age"):
+            cleaned_data["age"] = 0
+            print "clean age"
+        return cleaned_data
+
+   # def clean(self):
+      #  user_age = self.cleaned_data['age']
+      #  if user_age < 18:
+       #     raise forms.ValidationError('You must be at least 18 years old to register')
+        #return self.cleaned_data
 
     class Meta:
         model = Demographics
@@ -71,24 +92,24 @@ class DemographicsForm(forms.ModelForm):
 
 class ValidationForm(forms.Form):
     terms = forms.BooleanField(required=True, initial=False,
-                               label="I have read and agree to the above Study Information and I have had the opportunity to ask any questions:",
+                               label="I have read and agree to the above Study Information and I have had the opportunity to ask any questions",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
     questions = forms.BooleanField(required=True, initial=False,
-                               label="I understand that I am able to ask questions about this study at any time:",
+                               label="I understand that I am able to ask questions about this study at any time",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
     name = forms.BooleanField(required=True, initial=False,
-                               label="I understand that my name will not appear in any published document relating to research conducted as part of this study:",
+                               label="I understand that my name will not appear in any published document relating to research conducted as part of this study",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
     info = forms.BooleanField(required=True, initial=False,
-                               label="I am willing for anonymous data from my search sessions and questionnaires that I have submitted may be quoted in papers, journal articles and books that may be written by the researchers:",
+                               label="I am willing for anonymous data from my search sessions and questionnaires that I have submitted may be quoted in papers, journal articles and books that may be written by the researchers",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
     agree = forms.BooleanField(required=True, initial=False,
-                               label="I agree to take part in this study:",
+                               label="I agree to take part in this study",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
-    age = forms.BooleanField(required=True, initial=False, label="I certify that I am aged 18 or over:",
+    age = forms.BooleanField(required=True, initial=False, label="I certify that I am aged 18 or over",
                              error_messages={'required': 'You must be 18 or over to participate in the experiment'},)
     notify = forms.BooleanField(required=False, initial=False,
-                               label="I would like to be notified by email of the outcome of this experiment:",
+                               label="I would like to be notified by email of the outcome of this experiment",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
 
 class FinalQuestionnaireForm(forms.ModelForm):
