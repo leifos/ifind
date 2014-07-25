@@ -35,6 +35,8 @@
  		<div class="container-fluid">
 
 	    <div class="col-xs-10" id="shoprow" >
+        <h1>Scanning Equipment</h1>
+        <h4>Improve your cue accuracy and everything that shines <i>will</i> be gold!</h4>
             <div class="row store left" >
             {% for e in equipment %}
 	    	<div class="col-xs-2 store left">
@@ -42,6 +44,7 @@
             </div>
             {% endfor %}
             </div>
+
             <div class="row" >
             {% for e in equipment %}
                 <div class="col-xs-2 store left">
@@ -52,14 +55,17 @@
                                     <p>Price: {{ e.price }}</p>
                                     <p>Gold Modifier: {{ e.modifier }}</p>
 
-                                    <p><a href="#" class="btn btn-primary" role="button">Buy!</a>
+                                    <p><button value="" name="" href="#" class="btn btn-primary" role="button">Buy!</button>
                                 </div>
                             </div>
                         </div>
             </div>
             {% endfor %}
 	    </div>
+            <h1>Digging Equipment</h1>
+            <h4>Get more gold for every dig AND pay less for digging! Double gain!</h4>
             <div class="row" >
+
             {% for t in tools %}
 	    	<div class="col-xs-2 store left">
 				<a href="#"><div class="row"><div class="{% cycle 'digging_1' 'digging_2' 'digging_3' 'digging_4' %}"><div class="buy_1"></div></div></div></a>
@@ -84,7 +90,8 @@
             </div>
             {% endfor %}
 	    </div>
-
+        <h1>Vehicles</h1>
+        <h4>In a rush? Buy yourself a vehicle and beet the gold rush!</h4>
         <div class="row" >
             {% for v in vehicles %}
 	    	<div class="col-xs-2 store left">

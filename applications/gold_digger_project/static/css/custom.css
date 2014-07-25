@@ -158,6 +158,10 @@ h1, h2, h3, p {
     color:#000000;
 }
 
+h4 {
+    color: #1c1d1c;
+}
+
 hr {
     border-top: 2px groove rgba(0, 0, 0, 0.59);
     background-color: rgba(255, 255, 255, 0);
