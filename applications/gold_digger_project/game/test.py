@@ -135,19 +135,10 @@ import pickle
 # print a
 # print array_list
 #
+import random
+from random import shuffle
+mine_list = ['co', 'ra', 'qu', 'ex', 'cu', 'li']
+shuffle(mine_list)
 
-max_gold = 51
-limits = []
-span = max_gold / 6
-limits.append(max_gold)
-print max_gold
-
-for x in range(6):
-
-    max_gold -= span
-
-    print max_gold
-
-    limits.append(max_gold)
-
-print limits
+# a = random.choice(mine_list)
+print mine_list

@@ -10,6 +10,7 @@
 </head>
 <body>
 {% block body_block %}
+    <span id='csrf'>{% csrf_token %}</span>
     <div class="jumbotron" id="about">
         <h1>Locations</h1>
 
@@ -37,7 +38,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="constant" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.1 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -62,7 +63,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="random" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.2 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -88,7 +89,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="linear" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.3 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -112,7 +113,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="quadratic" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.4 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -145,7 +146,7 @@
                     <div class="modal-footer">
                         <form action="/gold_digger/game2/">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" value="cubic" name="mine type">Go to mine
+                            <button type="submit" class="btn btn-primary" value="{{ mine_types.5 }}" name="mine type">Go to mine
                             </button>
                         </form>
                     </div>
@@ -164,12 +165,16 @@
                         <h4 class="modal-title" id="myModalLabel">California</h4>
                     </div>
                     <div class="modal-body">
-                        California man! C'mon!
+                    <div class="thumbnail">
+                    <img src="{% static "Victoria2.png" %}"></div>
+                        When <strong><a href="http://en.wikipedia.org/wiki/Victorian_gold_rush#Gold_discovered">gold was discovered in 1850 by  Mr. W. Campbell of Strath Loddon</a></strong>
+                        the whole business was kept secret for fear of destabilizing the young colony, but now you can dig to your heart's content! <strong>Go on! Grab a shovel and start digging mate!</strong>
+                        <br><br>
                     </div>
                     <div class="modal-footer">
                         <form action="/gold_digger/game2/">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" value="exponential" name="mine type">Go to
+                            <button type="submit" class="btn btn-primary" value="{{ mine_types.6 }}" name="mine type">Go to
                                 mine
                             </button>
                         </form>
@@ -188,26 +193,29 @@
                     <li><a href="/gold_digger/about/">About Gold Digger</a></li>
                     <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
                     <li><a href="/gold_digger/store/" class="btn btn-info" role="button"><strong>Get new gear!</strong></a></li>
+                    <li><a href="#" class="location"><strong>Prova</strong></a></li>
 
                 </ul>
             </div>
             <div class="col-xs-10 col-md-10">
+
+
                 <!-- Map -->
                 <img id="img_ID" src="/static/map_locations.png" usemap="#map" border="0" width="100%" alt=""/>
             </div>
             <map id="map_ID" name="map">
                 <area shape="rect" coords="79,212,249,264" href="#" data-toggle="modal" data-target="#California"
-                      alt="California" title="California"/>
+                      alt="California" title="California" class="location"/>
                 <area shape="rect" coords="258,62,378,109" href="#" data-toggle="modal" data-target="#Yukon" alt="Yukon"
-                      title="Yukon"/>
+                      title="Yukon" class="location"/>
                 <area shape="rect" coords="583,613,715,643" href="#" data-toggle="modal" data-target="#Brazil"
-                      alt="Brazil" title="Brazil"/>
+                      alt="Brazil" title="Brazil" class="location"/>
                 <area shape="rect" coords="995,576,1234,624" href="#" data-toggle="modal" data-target="#South_Africa"
-                      alt="South Africa" title="South Africa"/>
+                      alt="South Africa" title="South Africa" class="location"/>
                 <area shape="rect" coords="657,37,815,81" href="#" data-toggle="modal" data-target="#Scotland"
-                      alt="Scotland" title="Scotland"/>
+                      alt="Scotland" title="Scotland" class="location"/>
                 <area shape="rect" coords="1500,693,1640,737" href="#" data-toggle="modal" data-target="#Victoria"
-                      alt="Victoria" title="Victoria"/>
+                      alt="Victoria" title="Victoria" class="location"/>
 
             </map>
         </div>

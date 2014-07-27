@@ -26,11 +26,11 @@
 
     <div class="col-xs-2 store left">
         <div class="well" id="shopgold">
-            <img src="/media/icons/Items/Chest.png">  Gold: {{ gold }}
+            <img src="/media/icons/Items/Chest.png"><span id="gold">Gold: {{ gold }}</span>
             <hr>
-            <p>Scanning: <img src="{{ scan }}"></p>
-            <p>Tool: <img src="{{ dig }}"></p>
-            <p>Vehicle: <img src="{{ move }}"></p>
+            <p>Scanning: <img id="scan" src="{{ scan }}"></p>
+            <p>Tool: <img id="tool" src="{{ dig }}"></p>
+            <p>Vehicle: <img id="vehicle" src="{{ move }}"></p>
         </div>
     </div>
  		<div class="container-fluid">
@@ -57,8 +57,7 @@
                                     <p>Gold Modifier: {{ e.modifier }}</p>
 
                                     <p><button id="{{ forloop.counter }}"  value="{{ e.name }}" name="buy equipment"  class="btn btn-primary buy" role="button">Buy!</button>
-                                    <!--<input type="hidden" value="{{ forloop.counter }}" id="itemno_{{ forloop.counter }}"-->
-                                    <p id="response_{{ forloop.counter }}"></p>
+                                    <p id="response_e{{ forloop.counter }}"></p>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +85,8 @@
                                     <p>Gold Modifier: {{ t.modifier }}</p>
                                     <p>Time Modifier: {{ t.time_modifier }}</p>
 
-                                    <p><a href="#" class="btn btn-primary" role="button">Buy!</a>
+                                    <p><button id="{{ forloop.counter }}"  value="{{ t.name }}" name="buy tool"  class="btn btn-primary buy" role="button">Buy!</button>
+                                    <p id="response_t{{ forloop.counter }}"></p>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +112,8 @@
                                     <p>Price: {{ v.price }}</p>
                                     <p>Time Modifier: {{ v.modifier }}</p>
 
-                                    <p><a href="#" class="btn btn-primary" role="button">Buy!</a>
+                                    <p><button id="{{ forloop.counter }}"  value="{{ v.name }}" name="buy vehicle"  class="btn btn-primary buy" role="button">Buy!</button>
+                                    <p id="response_v{{ forloop.counter }}"></p>
                                 </div>
                             </div>
                         </div>

@@ -47,6 +47,11 @@
 
 #Yukon_landscape {
     background-image: url(/static/Yukon.png)
+}
+
+#Victoria_landscape {
+    background-image: url(/static/Victoria2.png);
+    background-position: top
 
 }
 

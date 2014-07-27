@@ -10,6 +10,7 @@ from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment,
 import pickle
 from django.core.urlresolvers import reverse
 import random
+from random import shuffle
 import json
 # scan_dict = {
 #     'Oil lamp': 0.2,
@@ -23,7 +24,9 @@ location_dict = {
     'constant': 'California',
     'cubic': 'Scotland',
     'random': 'Yukon',
+    'exponential': 'Victoria',
 }
+
 
 def home(request):
 
@@ -195,79 +198,6 @@ def game_over(request):
     return render_to_response('gold_digger/game_over.html', {}, context)
 
 
-@login_required
-def shop(request):
-    context = RequestContext(request)
-    user = UserProfile.objects.get(user=request.user)
-    equipment = ScanningEquipment.objects.all()
-    vehicles = Vehicle.objects.all()
-    tools = DiggingEquipment.objects.all()
-    gold = user.gold
-
-    print equipment
-    return render_to_response('gold_digger/general_store.html', {'equipment': equipment,
-                                                                 'vehicles': vehicles,
-                                                                 'tools': tools,
-                                                                 'gold': gold
-                                                                 }, context)
-
-
-@login_required
-def buy(request):
-    context = RequestContext(request)
-    user = UserProfile.objects.get(user=request.user)
-
-    print request.POST
-
-    if 'buy equipment' in request.POST:
-        item_name = request.POST['buy equipment']
-        item = ScanningEquipment.objects.get(name=item_name)
-
-        if user.gold >= item.price:
-            user.gold -= item.price
-            user.equipment = item
-            user.save()
-            request.session['purchase'] = True
-            print "ITEM BOUGHT"
-            return HttpResponseRedirect(reverse('shop'), context)
-
-        else:
-            request.session['purchase'] = False
-            return HttpResponseRedirect(reverse('shop'), context)
-
-    if 'buy tool' in request.POST:
-        item_name = request.POST['buy tool']
-        item = DiggingEquipment.objects.get(name=item_name)
-
-        if user.gold >= item.price:
-            user.gold -= item.price
-            user.tool = item
-            user.save()
-            request.session['purchase'] = True
-            print "ITEM BOUGHT"
-            return HttpResponseRedirect(reverse('shop'), context)
-
-        else:
-            request.session['purchase'] = False
-            return HttpResponseRedirect(reverse('shop'), context)
-
-    if 'buy vehicle' in request.POST:
-        item_name = request.POST['buy vehicle']
-        item = Vehicle.objects.get(name=item_name)
-
-        if user.gold >= item.price:
-            user.gold -= item.price
-            user.vehicle = item
-            user.save()
-            request.session['purchase'] = True
-            print "ITEM BOUGHT"
-            return HttpResponseRedirect(reverse('shop'), context)
-
-        else:
-            request.session['purchase'] = False
-            return HttpResponseRedirect(reverse('shop'), context)
-
-
 def leaderboards(request):
     context = RequestContext(request)
     users_avg = UserProfile.objects.order_by('-average')
@@ -279,16 +209,23 @@ def leaderboards(request):
 @login_required
 def game_choice2(request):
     context = RequestContext(request)
+
+    mine_types = ['constant', 'random', 'cubic', 'exponential', 'quadratic', 'linear']
+
+    shuffle(mine_types)
+    print mine_types
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
     request.session['purchase'] = False
-    return render_to_response('gold_digger/game_choice2.html', {}, context)
+
+    return render_to_response('gold_digger/game_choice2.html', {'mine_types': mine_types}, context)
 
 
 @login_required
 def game2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    print request.GET['mine type']
 
     if request.session['mine_type'] == '':
         mine_type = request.GET['mine type']
@@ -296,7 +233,7 @@ def game2(request):
     else:
         mine_type = request.session['mine_type']
 
-    print "NEW MINE!!!"
+
     gen = yieldgen.YieldGenerator
 
     # Randomising the max amount of gold
@@ -355,7 +292,7 @@ def game2(request):
     request.session['pickle'] = pickled_blocks
     move_cost = user.vehicle.modifier
     dig_cost = user.tool.time_modifier
-    location = location_dict.get(mine_type)
+    location = request.session['location']
 
     if time_remaining < 0:
         return HttpResponseRedirect(reverse('game_over'), context)
@@ -368,25 +305,6 @@ def game2(request):
                                                          'move_cost': move_cost,
                                                          'dig_cost': dig_cost,
                                                          'location': location}, context)
-    # else:
-    #     print "OLD MINE!!!"
-    #     # Unpickling
-    #     pickled_blocks = request.session['pickle']
-    #     blocks = pickle.loads(pickled_blocks)
-    #     pickled_limits = request.session['limits']
-    #     limits = pickle.loads(pickled_limits)
-    #
-    #     time_remaining = request.session['time_remaining']
-    #     scaffold = [1, 2, 3]
-    #
-    #     if time_remaining < 0:
-    #         return HttpResponseRedirect(reverse('game_over'), context)
-    #
-    #     return render_to_response('gold_digger/game2.html', {'blocks': blocks,
-    #                                                          'user': user,
-    #                                                          'time_remaining': time_remaining,
-    #                                                          'limits': limits,
-    #                                                          'scaffold': scaffold}, context)
 
 
 def divide(max_gold):
@@ -403,26 +321,14 @@ def divide(max_gold):
     print "LIMITS", limits
     return limits
 
-@login_required
-def check_time():
-
-    return HttpResponseRedirect(reverse('game_over'))
-
-
-
 
 def ajaxview(request):
     user = UserProfile.objects.get(user=request.user)
     context = RequestContext(request)
 
-
     # Unpickling the blocks
     pickled_blocks = request.session['pickle']
     blocks = pickle.loads(pickled_blocks)
-
-    # if request.session['pointer'] == len(blocks):
-    #     request.session['has_mine'] = False
-    #     return HttpResponseRedirect(reverse('game2'))
 
     # POSTED objects
     gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
@@ -449,8 +355,6 @@ def ajaxview(request):
     pickled_blocks = pickle.dumps(blocks)
     request.session['pickle'] = pickled_blocks
 
-    # return HttpResponseRedirect(reverse('game2'), context)
-
     pickled_limits = request.session['limits']
     limits = pickle.loads(pickled_limits)
 
@@ -475,6 +379,7 @@ def ajaxview(request):
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
+
 def store(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
@@ -494,7 +399,6 @@ def store(request):
                                                          'move': move}, context)
 
 def ajax_buy(request):
-    context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
 
     print request.POST
@@ -508,18 +412,19 @@ def ajax_buy(request):
             user.equipment = item
             user.save()
             request.session['purchase'] = True
-            print "ITEM BOUGHT"
 
-            myResponse = "ITEM PURCHASED"
+            myResponse = {}
+
+            myResponse['image'] = item.image.url
+            myResponse['gold'] = user.gold
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
             request.session['purchase'] = False
-            myResponse = "NOT ENOUGH GOLD"
             return HttpResponse(status=204)
 
-    if 'buy tool' in request.POST:
-        item_name = request.POST['buy tool']
+    if 'tool' in request.POST:
+        item_name = request.POST['tool']
         item = DiggingEquipment.objects.get(name=item_name)
 
         if user.gold >= item.price:
@@ -527,15 +432,20 @@ def ajax_buy(request):
             user.tool = item
             user.save()
             request.session['purchase'] = True
-            print "ITEM BOUGHT"
-            return HttpResponseRedirect(reverse('shop'), context)
+
+            myResponse = {}
+
+            myResponse['image'] = item.image.url
+            myResponse['gold'] = user.gold
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
             request.session['purchase'] = False
-            return HttpResponseRedirect(reverse('shop'), context)
+            return HttpResponse(status=204)
 
-    if 'buy vehicle' in request.POST:
-        item_name = request.POST['buy vehicle']
+
+    if 'vehicle' in request.POST:
+        item_name = request.POST['vehicle']
         item = Vehicle.objects.get(name=item_name)
 
         if user.gold >= item.price:
@@ -543,9 +453,20 @@ def ajax_buy(request):
             user.vehicle = item
             user.save()
             request.session['purchase'] = True
-            print "ITEM BOUGHT"
-            return HttpResponseRedirect(reverse('shop'), context)
+
+            myResponse = {}
+
+            myResponse['image'] = item.image.url
+            myResponse['gold'] = user.gold
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
             request.session['purchase'] = False
-            return HttpResponseRedirect(reverse('shop'), context)
+            return HttpResponse(status=204)
+
+
+def update_location(request):
+    request.session['location'] = request.POST['loc']
+    request.session['mine_type'] = ''
+    print request.session['location']
+    return HttpResponse(status=200)

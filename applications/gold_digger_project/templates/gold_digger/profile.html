@@ -1,25 +1,53 @@
+{% extends "gold_digger/base.html" %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>User Profile</title>
 </head>
-<body>
-<h1>User Profile</h1>
-{% if user %}
-<h2>{{ user.user.username }}</h2>
-<br>
-<img src="{{ user.picture.url }}" height="70px" alt="{{ user.user.username }}">
-<h4>Equipment</h4>
-Scanning:<img src="{{ user.equipment.image.url }}" height="70px" alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}"><br>
-Digging:<img src="{{ user.tool.image.url }}" height="70px" alt="{{ user.tool.name }}, {{ user.tool.modifier }}"><br>
-Moving:<img src="{{ user.vehicle.image.url }}" height="70px" alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}"><br><br>
-<h4>Game stats</h4>
-Current gold: {{ user.gold }} gold<br>
-Max gold dug: {{ user.all_time_max_gold }} gold<br>
-Average: {{ user.average }} gold per game<br>
-Games played: {{ user.games_played }}<br><br>
-{% endif %}
+{% block body_block %}
+    <body>
+    <div class="jumbotron" id="about">
+
+        <h1>{{ user.user.username }}</h1><br>
+
+    </div>
+
+    {% if user %}
+        <div class="container-fluid">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+
+        <br>
+        <div>
+            <img class="thumbnail" src="{{ user.picture.url }}" height="300px" alt="{{ user.user.username }}">
+        </div>
+        <h2>Equipment</h2><br>
+        <table>
+        <tr>
+            <td>Scanning:</td>
+            <td> <img src="{{ user.equipment.image.url }}" height="70px" alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}"/></td>
+        </tr>
+            <tr>
+                <td>Digging:</td>
+                <td><img src="{{ user.tool.image.url }}" height="70px" alt="{{ user.tool.name }}, {{ user.tool.modifier }}"/></td>
+           </tr>
+            <tr>
+                <td>Moving:</td>
+                <td><img src="{{ user.vehicle.image.url }}" height="70px"
+                    alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}" /></td>
+            </tr>
+        </table>
+
+        <h2>Game stats</h2>
+        Current gold: {{ user.gold }} gold<br>
+        Max gold dug: {{ user.all_time_max_gold }} gold<br>
+        Average: {{ user.average }} gold per game<br>
+        Games played: {{ user.games_played }}<br><br>
+    {% endif %}
 Location: {{ user.location }}<br>
 Email: {{ user.user.email }}
+</div>
+{% endblock %}
+</div>
 </body>
 </html>
