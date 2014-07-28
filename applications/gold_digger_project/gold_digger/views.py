@@ -225,7 +225,7 @@ def game_choice2(request):
 def game2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    print request.GET['mine type']
+
 
     if request.session['mine_type'] == '':
         mine_type = request.GET['mine type']

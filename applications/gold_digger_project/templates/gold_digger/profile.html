@@ -5,7 +5,7 @@
     <title>User Profile</title>
 </head>
 {% block body_block %}
-    <body>
+    <body class="dig_view">
     <div class="jumbotron" id="about">
 
         <h1>{{ user.user.username }}</h1><br>
@@ -14,40 +14,72 @@
 
     {% if user %}
         <div class="container-fluid">
-        <div class="col-md-1"></div>
-        <div class="col-md-8">
-
-        <br>
+        <div class="row">
         <div>
-            <img class="thumbnail" src="{{ user.picture.url }}" height="300px" alt="{{ user.user.username }}">
+            <img id="profileimg" class="thumbnail" src="{{ user.picture.url }}"  alt="{{ user.user.username }}">
         </div>
-        <h2>Equipment</h2><br>
-        <table>
+        <h2 id="titoli">Profile</h2>
+        <table class="thumbnail" id="details_well">
         <tr>
-            <td>Scanning:</td>
-            <td> <img src="{{ user.equipment.image.url }}" height="70px" alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}"/></td>
+            <td>Username:</td>
+            <td id="right_stats">{{ user.user.username }}</td>
         </tr>
+        <tr>
+            <td>Location:</td>
+            <td id="right_stats">{{ user.location }}</td>
+        </tr>
+         <tr>
+            <td>Email: </td>
+            <td id="right_stats">{{ user.user.email }}</td>
+        </tr>
+        </table>
+            <h2 id="titoli">Equipment</h2>
+         <table class = "thumbnail" id="profile_well">
+
+            <tr>
+                <td>Scanning:</td>
+                <td id="right"><img src="{{ user.equipment.image.url }}" height="70px"
+                         alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}" /></td>
+            </tr>
             <tr>
                 <td>Digging:</td>
-                <td><img src="{{ user.tool.image.url }}" height="70px" alt="{{ user.tool.name }}, {{ user.tool.modifier }}"/></td>
-           </tr>
+                <td id="right"><img src="{{ user.tool.image.url }}" height="70px"
+                         alt="{{ user.tool.name }}, {{ user.tool.modifier }}" /></td>
+            </tr>
             <tr>
                 <td>Moving:</td>
-                <td><img src="{{ user.vehicle.image.url }}" height="70px"
-                    alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}" /></td>
+                <td id="right"><img src="{{ user.vehicle.image.url }}" height="70px"
+                         alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}" /></td>
             </tr>
         </table>
+            <h2 id="titoli">Game stats</h2>
+        <table class="thumbnail" id="stats_well">
+        <tr>
+            <td>Current gold:</td>
+            <td id="right_stats">{{ user.gold }}</td>
+        </tr>
+        <tr>
+            <td>Max gold dug:</td>
+            <td id="right_stats">{{ user.all_time_max_gold }}</td>
+        </tr>
+        <tr>
+            <td>Average:</td>
+            <td id="right_stats">{{ user.average }}</td>
+        </tr>
+        <tr>
+            <td>Games played:</td>
+            <td id="right_stats">{{ user.games_played }}</td>
+        </tr>
+        </table>
 
-        <h2>Game stats</h2>
-        Current gold: {{ user.gold }} gold<br>
-        Max gold dug: {{ user.all_time_max_gold }} gold<br>
-        Average: {{ user.average }} gold per game<br>
-        Games played: {{ user.games_played }}<br><br>
+
+        </div>
+        </div>
+
     {% endif %}
-Location: {{ user.location }}<br>
-Email: {{ user.user.email }}
-</div>
+<br>
+
+
 {% endblock %}
-</div>
 </body>
 </html>

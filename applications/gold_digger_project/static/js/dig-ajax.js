@@ -35,7 +35,7 @@ $(document).ready(function(){
 //                    $('.buttons').wrap("<form action='/gold_digger/game_over'></form>")
 //                }
 
-                $('#totalgold').animateNumbers(response['totalgold'], true);
+                $('#totalgold').animateNumbers(response['totalgold'], true, 200, "linear");
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
                 $('#currentgold').animateNumbers(response['currentgold']);
 
