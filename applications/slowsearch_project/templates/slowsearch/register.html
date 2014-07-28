@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body_block %}
-    {% if registered %}
+    {% if registered or request.user %}
        <strong>Thank you for registering!</strong><br>
        Please continue to our <a href = "/demographic/">Demographic Survey</a><br>
        Alternatively, <a href = "/">Skip the survey</a>
