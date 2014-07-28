@@ -11,11 +11,12 @@
                 {% if demographics.education_undergrad == "Y" %}
                     University Education: Yes<br>
                     Major: {{ demographics.education_undergrad_major }}<br>
-                    Year: {{ demographics.education_undergrad_year }}<br><br>
+                    Year: {{ demographics.education_undergrad_year }}<br>
                 {% endif %}
                 {% else %}
                     You haven't completed the demographic form yet! <a class="btn-primary" href = "/demographic/">Do it now!</a><br>
             {% endif %}
+            <br>
             User Since: {{ profile.user_since }}<br>
             Number of Queries: {{ profile.queries_submitted }} <br>
             Number of URLs Visited: {{ profile.links_visited }} <br>
