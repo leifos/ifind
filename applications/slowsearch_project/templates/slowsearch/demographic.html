@@ -1,7 +1,7 @@
 {% extends 'slowsearch/base.html' %}
 
 {% block body_block %}
-    {% if completed %}
+    {% if completed or exists %}
     Thank you for completing the survey! <a href = "/">Start Searching</a>
 
     {% else %}

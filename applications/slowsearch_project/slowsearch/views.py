@@ -154,6 +154,7 @@ def demographic(request):
     # Set to False initially. Code changes value to True when registration succeeds.
     completed = False
     user = request.user
+    exists = UKDemographicsSurvey.objects.filter(user=user)
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         demog_form = UKDemographicsSurveyForm(data=request.POST)
@@ -172,8 +173,8 @@ def demographic(request):
     else:
         demog_form = UKDemographicsSurveyForm
 
-    return render_to_response('slowsearch/demographic.html', {'demog_form': demog_form, 'completed': completed},
-                              context)
+    return render_to_response('slowsearch/demographic.html', {'demog_form': demog_form, 'exists': exists,
+                                                              'completed': completed}, context)
 
 
 @login_required()
