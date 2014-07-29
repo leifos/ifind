@@ -182,7 +182,7 @@
 }
 
 #dayscore {
-    font-size: 40pt;
+    font-size: 30pt;
 }
 
 #dayscore img {
@@ -192,7 +192,7 @@
 
 .points {
   font-family: pixelfont;
-  color: gold;
+  color: #06ff00;
   visibility: hidden;
   opacity: 0.0;
   position: relative;
@@ -404,6 +404,10 @@ ul li {
 
 }
 
+.prova{
+    height: 100px;
+}
+
 .colophon {
     width: 100%;
     height: 30%;
@@ -468,6 +472,10 @@ a:hover {
     width: 50%;
 }
 
+.finalscore {
+    font-size: 60pt;
+    color: #8c0c00;
+}
 
 
 /******************************************************************************/
