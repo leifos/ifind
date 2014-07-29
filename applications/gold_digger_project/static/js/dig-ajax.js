@@ -3,6 +3,7 @@
  */
 
 var count = 0;
+
 $(document).ready(function(){
     console.log("Ajax started");
 
@@ -29,21 +30,50 @@ $(document).ready(function(){
             200: function(response){
 
                 posi = count - 1;
+                points_pos = Math.floor((Math.random() * 500) + 1);
+                console.log(points_pos);
+                var comment;
 
-                console.log(count);
-//                if (response['timeremaining'] <= 0){
-//                    $('.buttons').wrap("<form action='/gold_digger/game_over'></form>")
-//                }
+                if (response['goldextracted']>=0 && response['goldextracted']<5){
+                    comment = "OK";
+                }
+                else if(response['goldextracted']>=5 && response['goldextracted']<10){
+                    comment = "GOOD";
+                }
+
+                else if(response['goldextracted']>=10 && response['goldextracted']<15){
+                    comment = "MONEY!";
+                }
+
+                else if (response['goldextracted']>=15 && response['goldextracted']<25){
+                    comment = "YIPPIKAYAY!";
+                }
+
+                else if (response['goldextracted']>=25 && response['goldextracted']<30){
+                    comment = "AWESOME!";
+                }
+
+                else if (response['goldextracted']>=30){
+                    comment = "SHINY!!";
+                }
+
+                else {
+                    comment = "GOLD RUSH!!!";
+                }
+
+                console.log(comment, "comment")
 
                 $('#totalgold').animateNumbers(response['totalgold'], true, 200, "linear");
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
-                $('#currentgold').animateNumbers(response['currentgold']);
+                $('#currentgold').animateNumbers(response['currentgold'], true, 200, "linear");
 
                 $('#goldlayer_'+posi).removeClass().addClass("row nuggets_"+response['nuggets']);
 
                 $('#scaffoldlayer_'+posi).removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1));
                 $('#invisiblebuttons_'+count).removeClass("hidden");
                 $('#movebutton_'+count).removeClass("hidden");
+                $('#comment_'+posi).html(comment).css('visibility', 'visible').animate({opacity: 1.0}, 100).fadeOut( "fast" );
+                $('#points_'+posi).html(response['goldextracted'] + " ").append('<img src="/static/nugget.png"/>').css("left", points_pos).css('visibility', 'visible').animate({opacity: 1.0, bottom: '70px'}, 300).animate({opacity: 0.0}, 300);
                 $('#row_'+posi).append("<div class='row' id='resultcol'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
 
                 if (response['nextmine']){

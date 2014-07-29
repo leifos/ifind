@@ -180,6 +180,37 @@
     color: gold;
 
 }
+
+#dayscore {
+    font-size: 40pt;
+}
+
+#dayscore img {
+
+    vertical-align: middle;
+}
+
+.points {
+  font-family: pixelfont;
+  color: gold;
+  visibility: hidden;
+  opacity: 0.0;
+  position: relative;
+  left: 300px;
+  font-size: large;
+
+}
+
+.comment {
+  font-family: pixelfont;
+  color: #03870d;
+  visibility: hidden;
+  opacity: 0.0;
+  position: relative;
+  text-align: center;
+  font-size: 30pt;
+}
+
 h1, h2, h3, h4, p {
 
     color:#000000;
@@ -193,6 +224,10 @@ hr {
 
 body{
     color: black;
+}
+
+ul li {
+    list-style-type: none;
 }
 
 #leaderboards{
@@ -275,7 +310,7 @@ body{
     margin-left: auto;
     margin-right: auto;
     border-width: 3px;
-    width: 24%;
+    width: 400px;
     padding-left: 2%;
     padding-right: 2%;
 }
@@ -290,7 +325,7 @@ body{
     margin-left: auto;
     margin-right: auto;
     border-width: 3px;
-    width: 30%;
+    width: 400px;
     padding-left: 2%;
     padding-right: 2%;
 
@@ -305,7 +340,7 @@ body{
     margin-left: auto;
     margin-right: auto;
     border-width: 3px;
-    width: 24%;
+    width: 400px;
     padding-left: 2%;
     padding-right: 2%;
 
@@ -316,6 +351,25 @@ body{
    font-size: xx-large;
    text-align: center;
     text-decoration: underline;
+}
+
+#img {
+    text-align: right;
+}
+
+#profile_options {
+    margin-top: 2%;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    border-radius: 6px;
+    background-color: rgba(245, 222, 179, 0.26);
+    border-width: 3px;
+
+}
+
+#profile_options a {
+    color: #000000;
+    font-weight: bold;
 }
 
 .buttons {
@@ -356,12 +410,35 @@ body{
 }
 
 .gameover {
-    background-color: black;
+    background-image: url(/static/Day_end.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
     font-family: pixelfont;
     color: #ffffff;
     font-size: 400%;
     text-align: center;
 
+}
+
+.tab-content {
+    font-size: 12pt;
+}
+
+
+.gameover_options {
+    font-size: 30pt;
+}
+
+ a:visited {
+    text-decoration: none;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 .newrow {
@@ -871,7 +948,7 @@ body{
     }
 
 .progress  {
-        margin-top: 4%;
+        margin-top: 2%;
 
     }
 
@@ -941,7 +1018,7 @@ body{
     }
 
 .progress  {
-        margin-top: 4%;
+        margin-top: 2%;
 
     }
 
@@ -1027,7 +1104,7 @@ body{
     }
 
     .progress {
-        margin-top: 4%;
+        margin-top: 2%;
 
     }
 
@@ -1062,6 +1139,10 @@ body{
     #resultcol {
         font-size: medium;
         width: 300px;
+    }
+
+    #details_well .thumbnail{
+        width: 500px;
     }
 }
 
@@ -1099,6 +1180,10 @@ body{
     .container {
         margin-left: 295px;
         width: 1599px;
+    }
+
+     .progress {
+        margin-top: 4%;
     }
 
     #shoprow{

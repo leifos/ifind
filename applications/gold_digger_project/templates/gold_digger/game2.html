@@ -96,14 +96,16 @@
                     </tr>
 
                 </table>
+                <div style="font-size: medium; margin-top: 2%">Time remaining:</div>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{ time_remaining }}"
                          aria-valuemin="100"
                          aria-valuemax="0" style="width: {{ time_remaining }}%;">
                             <span id="time">{{ time_remaining }}%</span>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </div>
 
@@ -117,6 +119,8 @@
                 {% for block in blocks %}
                     <div class="row flecks_{{ block.cue }}" id="goldlayer_{{ block.pos }}">
                         <div class="scaffold_1_shaded" id="scaffoldlayer_{{ block.pos }}">
+                            <div class="points" id="points_{{ block.pos }}"></div>
+                            <div class="comment" id="comment_{{ block.pos }}"></div>
                         </div>
                     </div>
 

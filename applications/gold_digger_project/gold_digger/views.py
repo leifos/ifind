@@ -195,7 +195,10 @@ def game_over(request):
     user.save()
     request.session['has_mine'] = False
     request.session['time_remaining'] = 100
-    return render_to_response('gold_digger/game_over.html', {}, context)
+    day_gold = request.session['gold']
+    total_gold = user.gold
+    return render_to_response('gold_digger/game_over.html', {'day_gold': day_gold,
+                                                             'total_gold': total_gold}, context)
 
 
 def leaderboards(request):

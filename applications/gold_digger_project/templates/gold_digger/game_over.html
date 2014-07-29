@@ -11,11 +11,19 @@
 <body class="gameover">
 
 <div>
-    <h3>GAME OVER MAN,</h3>
-    <h1>GAME OVER!</h1>
+    <h1>End of the Day!</h1>
 </div>
-<a href="/gold_digger/">Home page</a><br>
-<a href="/gold_digger/game_choice2/">Game choice</a><br>
+<div>
+<p id="dayscore"><img height="70px" src="/media/icons/Items/Chest.png">Total Gold: {{ total_gold }}  <img  height="70px" src="/media/icons/Items/Gold.png">Day's Gold: {{ day_gold }}</p>
+</div>
+<ul>
+    <li><a href="/gold_digger/game2/">Continue Mining!</a></li>
+    <li><a href="/gold_digger/game_choice2/">Choose new location</a><br></li><br>
+    <li><a class="gameover_options"href="/gold_digger/">Home page</a><br>
+</li>
+</ul>
+
+
 
 </body>
 </html>
