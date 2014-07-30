@@ -24,7 +24,7 @@
             <form id="search" action="/search/" method="post">
                 {% csrf_token %}
                 <input type=text style="width: 80%" name=query value="{{ query }}">
-                {% if request.user.id != 1 %}
+                {% if not request.user.id|divisibleby:2 %}
                      <input class="btn-primary" id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
                 {% else %}
                     <input class="btn-primary" type=submit value="Search">

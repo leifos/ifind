@@ -24,7 +24,7 @@
                         {% csrf_token %}
 
                         <input type=text class="longTextbox" name=query value="{{ query }}">
-                        {% if request.user.id != 1 %}
+                        {% if not request.user.id|divisibleby:2 %}
                              <input class="btn-primary" id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
                         {% else %}
                             <input class="btn-primary" type=submit value="Search">
