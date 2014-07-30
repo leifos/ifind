@@ -4,21 +4,24 @@
 {% load static %}
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Game Over</title>
+    <title>End of the day</title>
     <link href="{% static "css/custom.css"%}" rel="stylesheet">
+    <link href="{% static "css/animate.css" %}" rel="stylesheet">
+
 </head>
 
 <body class="gameover">
 
 <div>
-    <h1>End of the Day!</h1>
+    <h1 class="animated flipInX">End of the Day!</h1>
 </div>
 <div>
-<p id="dayscore"><img height="70px" src="/media/icons/Items/Chest.png">Total Gold: <span class="finalscore">{{ total_gold }}</span>  <img  height="70px" src="/media/icons/Items/Gold.png">Day's Gold: <span class="finalscore">{{ day_gold }}</span></p>
+<p id="dayscore"><img height="70px" src="/media/icons/Items/Chest.png">Total Gold: <span class="finalscore animated tada">{{ total_gold }}</span>  <img  height="70px" src="/media/icons/Items/Gold.png">Day's Gold: <span class="finalscore animated tada">{{ day_gold }}</span><br><br>Mines: <span class="finalscore animated tada">{{ mine_no }}</span></p>
 </div>
 <ul>
     <li><a href="/gold_digger/game2/">Continue Mining!</a></li>
     <li><a href="/gold_digger/game_choice2/">Choose new location</a><br></li><br>
+
     <li><a class="gameover_options"href="/gold_digger/">Home page</a><br>
 </li>
 </ul>

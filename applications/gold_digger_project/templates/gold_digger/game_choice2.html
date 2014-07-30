@@ -38,7 +38,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="{{ mine_types.1 }}" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.0 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="{{ mine_types.2 }}" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.1 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -81,15 +81,12 @@
                     <h4 class="modal-title" id="myModalLabel">Brazil</h4>
                 </div>
                 <div class="modal-body">
-                    Gold Rush!!<br>
-                    In 1848 <a href="http://en.wikipedia.org/wiki/California_Gold_Rush#History">James W. Marshall noticed some shiny metal</a> in the tailrace of a lumber mill at Sutter's Mill (Coloma) and, what do you know?
-                    The old dog litterally struck gold! After Marshall's find the news start to spread, and before one was able to saddle a horse and say
-                    "giddyup!" thousands came flocking to California.
+
                 </div>
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="{{ mine_types.3 }}" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.2 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -115,7 +112,7 @@
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" value="{{ mine_types.4 }}" name="mine type">Go to mine
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.3 }}" name="mine type">Go to mine
                         </button>
                     </form>
                 </div>
@@ -148,7 +145,7 @@
                     <div class="modal-footer">
                         <form action="/gold_digger/game2/">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" value="{{ mine_types.5 }}" name="mine type">Go to mine
+                            <button type="submit" class="btn btn-primary" value="{{ mine_types.4 }}" name="mine type">Go to mine
                             </button>
                         </form>
                     </div>
@@ -176,7 +173,7 @@
                     <div class="modal-footer">
                         <form action="/gold_digger/game2/">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" value="{{ mine_types.6 }}" name="mine type">Go to
+                            <button type="submit" class="btn btn-primary" value="{{ mine_types.5 }}" name="mine type">Go to
                                 mine
                             </button>
                         </form>
@@ -190,11 +187,11 @@
                 <ul class="nav nav-pills nav-stacked">
 
                     {% if user.is_authenticated %}
-                        <li><a href="/gold_digger/profile/">Your profile</a></li>
+                        <li class="animated bounceInDown"><a href="/gold_digger/profile/">Your profile</a></li>
                     {% endif %}
-                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li><a href="/gold_digger/store/" class="btn btn-info" role="button"><strong>Get new gear!</strong></a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li class="animated wobble"><a href="/gold_digger/store/" class="btn btn-info" role="button"><strong>Get new gear!</strong></a></li>
 
                 </ul>
             </div>

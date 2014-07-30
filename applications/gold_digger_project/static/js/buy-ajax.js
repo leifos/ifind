@@ -3,13 +3,9 @@
  */
 $(document).ready(function(){
    $("button[name='buy equipment']").click(function(){
+
        var scan = $(this).val();
-
        var id = $(this).attr("id");
-
-       alert(id);
-
-
        var csrf = $('#csrf > input').val();
 
 
@@ -20,7 +16,7 @@ $(document).ready(function(){
            statusCode:{
             200: function(response){
 
-                $("#response_e"+id).append("<div class='alert alert-dismissable alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>");
+                $("#response_e"+id).append("<div class='alert alert-dismissable alert-success animated baunceInTop'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>");
                 $("#scan").attr('src', response['image'])
                 $("#gold").html('Gold: '+response['gold'])
             },
@@ -34,13 +30,9 @@ $(document).ready(function(){
    });
 
     $("button[name='buy tool']").click(function(){
+
        var tool = $(this).val();
-
        var id = $(this).attr("id");
-
-       alert(id);
-
-
        var csrf = $('#csrf > input').val();
 
 
@@ -66,13 +58,9 @@ $(document).ready(function(){
    });
 
     $("button[name='buy vehicle']").click(function(){
+
        var vehicle = $(this).val();
-
        var id = $(this).attr("id");
-
-       alert(id);
-
-
        var csrf = $('#csrf > input').val();
 
 

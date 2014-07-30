@@ -46,6 +46,7 @@
 
     <div class="jumbotron game" id="{{ location }}_landscape">
     <h1>{{ location }}</h1>
+    <h2 class="animated swing">Mine: {{ mine_no }}</h2>
         <br>
     </div>
 
@@ -59,19 +60,19 @@
 
                 <!-- Player stats -->
                 <table class="equip">
-                    <tr>
+                    <tr class="animated bounceInDown">
                         <td class="def">Equipment</td>
                         <td><img src="{{ user.equipment.image.url }}"
                                                title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
                                                id="img"></td>
                     </tr>
-                    <tr>
+                    <tr class="animated bounceInDown">
                         <td class="def">Vehicle</td>
                         <td><img src="{{ user.vehicle.image.url }}"
                                                title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
                                                id="img"></td>
                     </tr>
-                    <tr>
+                    <tr class="animated bounceInDown">
                         <td class="def">Tool</td>
                         <td><img src="{{ user.tool.image.url }}"
                                                title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}"
@@ -83,21 +84,21 @@
                 </table>
                 <hr>
                 <table class="scores">
-                    <tr>
+                    <tr class="animated fadeInLeft">
                         <td><img class="chest" src="/media/icons/Items/Chest.png"></td>
                         <td class="current">Total gold:</td>
                         <td id="totalgold">{{ user.gold }}</td>
                     </tr>
 
-                    <tr>
+                    <tr class="animated fadeInRight">
                         <td><img class="chest" src="/media/icons/Items/pile2.png" height="32px" width="50px"></td>
                         <td class="current">Current gold:</td>
                         <td id="currentgold"> {{ request.session.gold }}</td>
                     </tr>
 
                 </table>
-                <div style="font-size: medium; margin-top: 2%">Time remaining:</div>
-                <div class="progress">
+                <div class="animated fadeInLeft" style="font-size: medium; margin-top: 2%">Time remaining:</div>
+                <div class="progress animated fadeInRight">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{ time_remaining }}"
                          aria-valuemin="100"
                          aria-valuemax="0" style="width: {{ time_remaining }}%;">
@@ -118,7 +119,7 @@
             <div class="col-xs-5 mine">
                 {% for block in blocks %}
                     {% if block.dug == False %}
-                    <div class="row flecks_{{ block.cue }}" id="goldlayer_{{ block.pos }}">
+                    <div class="row flecks_{{ block.cue }} animated" id="goldlayer_{{ block.pos }}">
                         <div class="scaffold_1_shaded" id="scaffoldlayer_{{ block.pos }}">
                             <div class="points" id="points_{{ block.pos }}"></div>
                             <div class="comment" id="comment_{{ block.pos }}"></div>
@@ -138,7 +139,7 @@
             </div>
 
             <!-- Buttons -->
-            <div class="col-xs-2 mine" >
+            <div class="col-xs-3 mine" >
                 {% for block in blocks %}
 
                     {% if block.pos == pointer %}

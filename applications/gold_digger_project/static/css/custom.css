@@ -192,23 +192,25 @@
 
 .points {
   font-family: pixelfont;
-  color: #06ff00;
+  color: gold;
   visibility: hidden;
   opacity: 0.0;
   position: relative;
-  left: 300px;
+  right: 70px;
+  top: 30px;
   font-size: large;
 
 }
 
 .comment {
   font-family: pixelfont;
-  color: #03870d;
+  color: #05ff18;
   visibility: hidden;
   opacity: 0.0;
   position: relative;
   text-align: center;
-  font-size: 30pt;
+  font-size: 50pt;
+  bottom: 20px;
 }
 
 h1, h2, h3, h4, p {
@@ -260,7 +262,7 @@ ul li {
 
 .equip td, th{
     text-align: right;
-    padding-left: 15%;
+    padding-left: 28px;
     height: 29px;
     width: 49px;
 }

@@ -26,13 +26,13 @@
             <ul class="nav nav-pills nav-stacked">
 
                 {% if user.is_authenticated %}
-                    <li><a href="/gold_digger/profile/">Your profile</a></li>
-                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/profile/">Your profile</a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
                 {% else %}
-                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li class="animated bounceInDown"><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
 
 
 
@@ -56,7 +56,7 @@
                     </div>
             {% endif %}
             {% if user.is_authenticated %}
-                <br> <br><a class="btn btn-primary btn-lg btn-success" href="/gold_digger/game_choice2/">Play!</a>
+                <br> <br><a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/">Play!</a>
 
 
             {% endif %}
