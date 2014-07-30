@@ -71,8 +71,17 @@ $(document).ready(function(){
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
                 $('#currentgold').animateNumbers(response['currentgold'], true, 200, "linear");
 
-                // Update mine layer
+                var offset = 0;
+                if ((pointer-2)<0){
+                    offset = 0;
+                }
 
+                else {
+                    offset = pointer - 2
+                }
+
+                // Update mine layer
+                $('html, body').animate({scrollTop: $('#scaffoldlayer_'+(offset)).offset().top}, 500);
                 $('#scaffoldlayer_'+pointer).removeClass().addClass("scaffold_"+Math.floor((Math.random() * 3) + 1)).addClass("animated").addClass("bounceInDown");
                 $('#goldlayer_'+pointer).removeClass().addClass("row nuggets_"+response['nuggets']).addClass("animated").addClass("fadeIn");
                 $('#comment_'+pointer).html(comment).css('visibility', 'visible').animate({opacity: 1.0}, 1000).fadeOut( "fast" );
@@ -80,6 +89,7 @@ $(document).ready(function(){
                 $('#row_'+pointer).append("<div class='row' id='resultcol'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
 
                 pointer +=1;
+
                 // Update side
                 $('#invisiblebuttons_'+pointer).removeClass("hidden");
                 $('#movebutton_'+pointer).removeClass("hidden");
@@ -100,4 +110,6 @@ $(document).ready(function(){
             }
         });
     });
+
+
 });
