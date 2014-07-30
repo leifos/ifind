@@ -34,7 +34,7 @@ $(document).ready(function(){
        var tool = $(this).val();
        var id = $(this).attr("id");
        var csrf = $('#csrf > input').val();
-
+       $("#tool").removeClass("fadeInRight");
 
        $.ajax({
            type: "POST",
@@ -43,9 +43,9 @@ $(document).ready(function(){
            statusCode:{
             200: function(response){
 
-                $("#response_t"+id).append("<div class='alert alert-dismissable alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>").animate({opacity: 0.0}, 2000);;
-                $("#tool").attr('src', response['image'])
-                $("#gold").html('Gold: '+response['gold'])
+                $("#response_t"+id).append("<div class='alert alert-dismissable alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>").animate({opacity: 0.0}, 2000);
+                $("#tool").attr('src', response['image']).addClass("animated").addClass("fadeInRight");
+                $("#gold").html('Gold: '+response['gold']);
 
             },
 
@@ -62,6 +62,7 @@ $(document).ready(function(){
        var vehicle = $(this).val();
        var id = $(this).attr("id");
        var csrf = $('#csrf > input').val();
+       $("#vehicle").removeClass("fadeInRight");
 
 
        $.ajax({
@@ -72,7 +73,7 @@ $(document).ready(function(){
             200: function(response){
 
                 $("#response_v"+id).append("<div class='alert alert-dismissable alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>").animate({opacity: 0.0}, 2000);
-                $("#vehicle").attr('src', response['image']);
+                $("#vehicle").attr('src', response['image']).addClass("animated").addClass("fadeInRight");
                 $("#gold").html('Gold: '+response['gold']);
 
             },

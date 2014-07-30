@@ -12,7 +12,7 @@
 	<!-- row 2: header -->
 
 		<div class="landscape_container" id="generalstore">
-		<div class="row store_sign_area">
+		<div class="row store_sign_area animated flipInX">
 	    	<div class="col-xs-2">
 	    		<div class="row"><a href="map_view.html"><div class="map_button"></div></a></div>
 	    	</div>
@@ -44,7 +44,7 @@
             <div class="row store left" >
             {% for e in equipment %}
 	    	<div class="col-xs-2 store left">
-				<a href="#"><div class="row"><div class="{% cycle 'scanning_5' 'scanning_1' 'scanning_2' 'scanning_3' 'scanning_4' 'scanning_5' %}"><div class="buy_1"></div></div></div></a>
+				<a href="#"><div class="row"><div class="{% cycle 'scanning_5' 'scanning_1' 'scanning_2' 'scanning_3' 'scanning_4' 'scanning_5' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
             </div>
             {% endfor %}
             </div>
@@ -73,7 +73,7 @@
 
             {% for t in tools %}
 	    	<div class="col-xs-2 store left">
-				<a href="#"><div class="row"><div class="{% cycle 'digging_1' 'digging_2' 'digging_3' 'digging_4' %}"><div class="buy_1"></div></div></div></a>
+				<a href="#"><div class="row"><div class="{% cycle 'digging_1' 'digging_2' 'digging_3' 'digging_4' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
             </div>
             {% endfor %}
             </div>
@@ -101,7 +101,7 @@
         <div class="row" >
             {% for v in vehicles %}
 	    	<div class="col-xs-2 store left">
-				<a href="#"><div class="row"><div class="{% cycle 'moving_1' 'moving_2' 'moving_3' 'moving_4' %}"><div class="buy_1"></div></div></div></a>
+				<a href="#"><div class="row"><div class="{% cycle 'moving_1' 'moving_2' 'moving_3' 'moving_4' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
             </div>
             {% endfor %}
             </div>

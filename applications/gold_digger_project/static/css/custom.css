@@ -321,7 +321,25 @@ ul li {
     padding-right: 2%;
 }
 
+#equipment_well {
+    font-family: pixelfont;
+    font-size: large;
+    padding-top: 1%;
+    background-color: rgba(245, 222, 179, 0.26);
+    border-radius: 10px;
+    border-color: #000000;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 3px;
+    width: 700px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
 
+#modifier {
+    font-size: xx-large;
+    color: #1c5916;
+}
 #stats_well {
     font-family: pixelfont;
     font-size: large;
@@ -356,7 +374,8 @@ ul li {
    font-family: pixelfont;
    font-size: xx-large;
    text-align: center;
-    text-decoration: underline;
+   text-decoration: underline;
+   color: darkgoldenrod;
 }
 
 #img {
@@ -424,9 +443,9 @@ ul li {
 }
 
 .gameover {
-    background-image: url(/static/Day_end.jpg);
+    background-image: url(/static/Day_end.png);
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     font-family: pixelfont;
     color: #ffffff;
     font-size: 400%;

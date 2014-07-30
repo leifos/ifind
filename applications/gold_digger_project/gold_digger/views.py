@@ -137,8 +137,16 @@ def user_logout(request):
 def user_profile(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    mod_scan = int((user.equipment.modifier)*100)
+    mod_tool = int((user.tool.modifier)*100)
+    modt_tool = user.tool.time_modifier
+    mod_vehicle = int((user.tool.modifier)*100)
 
-    return render_to_response('gold_digger/profile.html', {'user': user}, context)
+    return render_to_response('gold_digger/profile.html', {'user': user,
+                                                           'mod_scan': mod_scan,
+                                                           'mod_tool': mod_tool,
+                                                           'modt_tool':modt_tool,
+                                                           'mod_vehicle': mod_vehicle}, context)
 
 
 @login_required

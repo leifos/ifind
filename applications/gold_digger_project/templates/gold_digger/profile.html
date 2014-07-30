@@ -45,37 +45,44 @@
         </tr>
         </table>
             <h2 id="titoli">Equipment</h2>
-         <table class = "thumbnail" id="profile_well">
+         <table class = "thumbnail" id="equipment_well">
 
             <tr>
-                <td>Scanning:</td>
+                <td><u>Scanning:</u></td>
                 <td id="right"><img src="{{ user.equipment.image.url }}" height="70px"
                          alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}" /></td>
+                <td style="text-align: center;">{{ user.equipment.name }}</td>
+                <td colspan="2" style="text-align: right">mod.: <span id="modifier">{{ mod_scan }}%</span></td>
             </tr>
             <tr>
-                <td>Digging:</td>
+                <td><u>Digging:</u></td>
                 <td id="right"><img src="{{ user.tool.image.url }}" height="70px"
                          alt="{{ user.tool.name }}, {{ user.tool.modifier }}" /></td>
+                <td style="text-align: center">{{ user.tool.name }}</td>
+                <td style="text-align: right">mod.: <span id="modifier">{{ mod_tool }}%</span></td>
+                <td style="text-align: right">Time mod.: <span id="modifier">{{ modt_tool }}</span></td>
             </tr>
             <tr>
-                <td>Moving:</td>
+                <td><u>Moving:</u></td>
                 <td id="right"><img src="{{ user.vehicle.image.url }}" height="70px"
                          alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}" /></td>
+                <td style="text-align: center">{{ user.vehicle.name }}</td>
+                <td colspan="2" style="text-align: right">mod.: <span id="modifier">{{ mod_vehicle }}%</span></td>
             </tr>
         </table>
             <h2 id="titoli">Game stats</h2>
         <table class="thumbnail" id="stats_well">
         <tr>
             <td>Current gold:</td>
-            <td id="right_stats">{{ user.gold }}</td>
+            <td id="right_stats">{{ user.gold }} <img height="25" src="/static/nugget.png"/></td>
         </tr>
         <tr>
             <td>Max gold dug:</td>
-            <td id="right_stats">{{ user.all_time_max_gold }}</td>
+            <td id="right_stats">{{ user.all_time_max_gold }} <img height="25" src="/static/nugget.png"/></td>
         </tr>
         <tr>
             <td>Average:</td>
-            <td id="right_stats">{{ user.average }}</td>
+            <td id="right_stats">{{ user.average }} <img height="25" src="/static/nugget.png"/></td>
         </tr>
         <tr>
             <td>Games played:</td>
