@@ -190,6 +190,10 @@
     vertical-align: middle;
 }
 
+#playstore {
+    margin-top: 10%;
+}
+
 .points {
   font-family: pixelfont;
   color: gold;
@@ -374,6 +378,10 @@ ul li {
     font-weight: bold;
 }
 
+#buystuff {
+    padding-top: 111%;
+}
+
 .buttons {
     font-family: pixelfont;
     width: 60px;
@@ -418,7 +426,7 @@ ul li {
 .gameover {
     background-image: url(/static/Day_end.jpg);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     font-family: pixelfont;
     color: #ffffff;
     font-size: 400%;
@@ -1054,7 +1062,7 @@ a:hover {
     }
 
     #shopgold{
-        height: 48%;
+        height: 38%;
         width: 23%;
     }
 
@@ -1072,6 +1080,10 @@ a:hover {
         font-size: medium;
         width: 300px;
     }
+
+     #buystuff {
+         width: 146px;
+     }
 
 }
 
@@ -1132,7 +1144,7 @@ a:hover {
     }
 
     #shopgold{
-        height: 48%;
+        height: 41%;
         width: 23%;
     }
 
@@ -1154,6 +1166,11 @@ a:hover {
     #details_well .thumbnail{
         width: 500px;
     }
+
+    #buystuff {
+        width: 158px;
+        padding-top: 98%;
+     }
 }
 
 
@@ -1218,6 +1235,11 @@ a:hover {
         font-size: medium;
         width: 230px;
     }
+
+     #buystuff {
+        width: 158px;
+        padding-top: 140%;
+     }
 
    }
 

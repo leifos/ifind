@@ -45,7 +45,7 @@
     <!-- Header -->
 
     <div class="jumbotron game" id="{{ location }}_landscape">
-    <h1>{{ location }}</h1>
+    <h1>{% if location == South_Africa %} South Africa {% else %}{{ location }} {% endif %}</h1>
     <h2 class="animated swing">Mine: {{ mine_no }}</h2>
         <br>
     </div>
