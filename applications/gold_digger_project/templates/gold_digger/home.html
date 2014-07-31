@@ -23,17 +23,17 @@
 
         <div class="col-xs-6 col-md-2">
 
-            <ul class="nav nav-pills nav-stacked">
+            <ul class="nav nav-pills nav-stacked animated bounceInDown">
 
                 {% if user.is_authenticated %}
-                    <li class="animated bounceInDown"><a href="/gold_digger/profile/">Your profile</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="/gold_digger/profile/">Your profile</a></li>
+                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
                 {% else %}
-                    <li class="animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li class="animated bounceInDown"><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
-
+                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
+                    <li><a href="/gold_digger/tour/">Tour</a></li>
 
 
                 {% endif %}

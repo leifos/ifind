@@ -17,6 +17,7 @@ urlpatterns = patterns('',
         url(r'^ajaxview/$', views.ajaxview, name='ajaxview'),
         url(r'^store/$', views.store, name='store'),
         url(r'^ajax_buy/$', views.ajax_buy, name='store'),
-        url(r'^update_location/$', views.update_location, name='update_location')
+        url(r'^update_location/$', views.update_location, name='update_location'),
+        url(r'^tour/$', views.tour, name='tour'),
 
 )

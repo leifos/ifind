@@ -32,6 +32,11 @@ def about(request):
     return render_to_response('gold_digger/about.html', context)
 
 
+def tour(request):
+    context = RequestContext(request)
+    return render_to_response('gold_digger/tour.html', context)
+
+
 def register(request):
 
     context = RequestContext(request)
