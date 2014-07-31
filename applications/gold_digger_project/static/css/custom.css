@@ -49,6 +49,15 @@
     background-image: url(/static/Yukon.png)
 }
 
+#Brazil_landscape {
+    background-image: url(/static/Brazil2.png);
+    color: #ffffff;
+}
+
+#Brazil_landscape h2{
+    color: #ffffff;
+}
+
 #Victoria_landscape {
     background-image: url(/static/Victoria2.png);
     background-position: top
@@ -59,9 +68,6 @@
     background-image: url(/static/South_Africa3.png);
 }
 
-#Yukon_landscape h1 {
-    margin-top: 14%;
-}
 
 #currentgold {
     text-align: right;
@@ -292,7 +298,7 @@ ul li {
 }
 
 #well {
-    padding-top: 1%;
+    padding-top: 10px;
     margin-right: 1%;
     font-family: pixelfont;
     border-color: rgb(0, 0, 0);
@@ -1081,7 +1087,7 @@ a:hover {
     }
 
     #shopgold{
-        height: 38%;
+        height: 41%;
         width: 23%;
     }
 
