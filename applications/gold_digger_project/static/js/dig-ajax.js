@@ -83,7 +83,7 @@ $(document).ready(function(){
                 $('#goldlayer_'+pointer).removeClass().addClass("row nuggets_"+response['nuggets']).addClass("animated").addClass("flipInX");
                 $('#comment_'+pointer).html(comment).css('visibility', 'visible').animate({opacity: 1.0}, 1000).fadeOut( "fast" );
                 $('#points_'+pointer).html("+" + response['goldextracted'] + " ").append('<img src="/static/nugget.png"/>').css('visibility', 'visible').animate({opacity: 1.0}, 300).animate({opacity: 0.0}, 2000);
-                $('#row_'+pointer).append("<div class='row' id='resultcol'>"+ gold +"<img src='/media/icons/Items/Gold.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
+                $('#row_'+pointer).append("<div class='row' id='resultcol'>"+ gold + "<img src='/static/nugget.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
 
                 pointer +=1;
 

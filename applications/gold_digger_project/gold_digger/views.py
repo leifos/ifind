@@ -201,6 +201,8 @@ def game_over(request):
     request.session['mine_no'] = 0
     day_gold = request.session['gold']
     total_gold = user.gold
+    request.session['gold'] = 0
+
     return render_to_response('gold_digger/game_over.html', {'day_gold': day_gold,
                                                              'total_gold': total_gold,
                                                              'mine_no': mine_no}, context)
@@ -217,6 +219,7 @@ def leaderboards(request):
 @login_required
 def game_choice2(request):
     context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
 
     mine_types = ['constant', 'random', 'cubic', 'exponential', 'quadratic', 'linear']
 
@@ -226,8 +229,16 @@ def game_choice2(request):
     request.session['mine_type'] = ''
     request.session['purchase'] = False
     request.session['mine_no'] = 0
+    scan = user.equipment.image.url
+    tool = user.tool.image.url
+    vehicle = user.vehicle.image.url
+    gold = user.gold
 
-    return render_to_response('gold_digger/game_choice2.html', {'mine_types': mine_types}, context)
+    return render_to_response('gold_digger/game_choice2.html', {'mine_types': mine_types,
+                                                                'scan': scan,
+                                                                'tool': tool,
+                                                                'vehicle': vehicle,
+                                                                'gold': gold}, context)
 
 
 @login_required

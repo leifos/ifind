@@ -10,6 +10,7 @@
 </head>
 <body>
 {% block body_block %}
+    <div id="shopbody">
     <span id='csrf'>{% csrf_token %}</span>
     <div class="jumbotron" id="about">
         <h1>Locations</h1>
@@ -96,10 +97,13 @@
                     <div class="thumbnail">
                         <img src="{% static "Brazil.png" %}"></div>
 
-                Qualé mano!?<br><br>
-                The Brazilian Gold rush started in the 1700s when bandeirantes <a href="http://en.wikipedia.org/wiki/Brazilian_Gold_Rush">discovered large deposits in the mountains of Minas Gerais. </a>
-                More than 400,000 Portuguese people came to the mines to seek fortune abandoning the sugar plantations in the north east coast.
-                By 1725 <strong>half the population of Brazil</strong> was living here in southeastern Brazil!
+                    Qualé mano!?<br><br>
+                    The Brazilian Gold rush started in the 1700s when bandeirantes <a
+                        href="http://en.wikipedia.org/wiki/Brazilian_Gold_Rush">discovered large deposits in the
+                    mountains of Minas Gerais. </a>
+                    More than 400,000 Portuguese people came to the mines to seek fortune abandoning the sugar
+                    plantations in the north east coast.
+                    By 1725 <strong>half the population of Brazil</strong> was living here in southeastern Brazil!
                 </div>
                 <div class="modal-footer">
                     <form action="/gold_digger/game2/">
@@ -211,15 +215,16 @@
         <div class="container-fluid">
             <div class="col-xs-2 col-md-2">
 
-                <ul class="nav nav-pills nav-stacked">
+                <div class="well" id="mapstats">
+                    <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span>
+                    <hr>
+                    <p style="color: gold">Scanning: <img id="scan" src="{{ scan }}"></p>
 
-                    {% if user.is_authenticated %}
-                        <li class="animated bounceInDown"><a href="/gold_digger/profile/">Your profile</a></li>
-                    {% endif %}
-                    <li class="animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <p style="color: gold">Tool: <img id="tool" src="{{ tool }}"></p>
 
-                </ul>
+                    <p style="color: gold">Vehicle: <img id="vehicle" src="{{ vehicle }}"></p>
+
+                </div>
                 <div class="animated wobble"><a href="/gold_digger/store/"><img id="buystuff"
                                                                                 src="/media/mine/buy_stuff.png"/></a>
                 </div>
@@ -249,7 +254,7 @@
     </div>
     <hr>
     <script type="text/javascript" src="/static/js/map_javascript.js"></script>
-
+</div>
 {% endblock %}
 </body>
 </html>

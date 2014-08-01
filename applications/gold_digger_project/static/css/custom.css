@@ -169,6 +169,17 @@
     font-size: medium;
 }
 
+#mapstats {
+    font-family: pixelfont;
+    border-color: #000000;
+    border-width: 2px;
+    height: 300px;
+    font-size: large;
+    margin-top: 3%;
+    background-color: rgba(245, 222, 179, 0.14);
+    color: gold;
+}
+
 #profileimg {
     margin-right: auto;
     margin-left: auto;
@@ -289,8 +300,14 @@ ul li {
 }
 
 .progress {
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgb(255, 255, 255);
 }
+
+.progress-bar {
+    background-color: #0FD968;
+    color: #000000;
+}
+
 
 .current {
     padding-left: 3%;
@@ -403,10 +420,6 @@ ul li {
     font-weight: bold;
 }
 
-#buystuff {
-    padding-top: 111%;
-}
-
 .buttons {
     font-family: pixelfont;
     width: 60px;
@@ -505,6 +518,10 @@ a:hover {
 
 #shoppe img {
     width: 50%;
+}
+
+#shopbody {
+    background-image: url(/static/ground.jpg);
 }
 
 .finalscore {
@@ -1107,9 +1124,32 @@ a:hover {
     }
 
      #buystuff {
-         width: 146px;
+         width: 100px;
+         margin-top: 10px;
+         /*margin-bottom: 100px;*/
+         margin-left: 20%;
      }
 
+     #mapstats {
+        font-family: pixelfont;
+        border-color: #000000;
+        border-width: 2px;
+        height: 300px;
+        font-size: large;
+        margin-top: 3%;
+        background-color: rgba(245, 222, 179, 0.14);
+        color: gold;
+        width: 283px;
+     }
+
+     #mapstats img {
+         height: 60px;
+     }
+
+     #img_ID {
+        width: 1021px;
+        margin-left: 92px;
+     }
 }
 
 @media (min-width: 1300px) {
@@ -1193,8 +1233,10 @@ a:hover {
     }
 
     #buystuff {
-        width: 158px;
-        padding-top: 98%;
+         width: 100px;
+         margin-top: 30px;
+         margin-bottom: 100px;
+         margin-left: 20%;
      }
 }
 
@@ -1263,7 +1305,18 @@ a:hover {
 
      #buystuff {
         width: 158px;
-        padding-top: 140%;
+        margin-top: 50%;
+        /*margin-bottom: 100px;*/
+        margin-left: 20%;
+     }
+
+     #mapstats img{
+        height: 50px;
+     }
+
+      #img_ID {
+        width: 100%;
+        margin-left: 0;
      }
 
    }

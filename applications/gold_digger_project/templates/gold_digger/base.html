@@ -22,7 +22,7 @@
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         {% if user.is_authenticated %}
         <div class="notices pull-right">
-                <p class="navbar-brand"> {{ user.username }} / <a href="/gold_digger/logout/">Logout</a></p>
+                <p class="navbar-brand"><a href="/gold_digger/profile/">{{ user.username }}</a> / <a href="/gold_digger/logout/">Logout</a></p>
             </div>
         {% endif %}
 			<div class="navbar-header">
