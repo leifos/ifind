@@ -1147,7 +1147,7 @@ a:hover {
      }
 
      #img_ID {
-        width: 1021px;
+        width: 930px;
         margin-left: 92px;
      }
 }
@@ -1238,6 +1238,11 @@ a:hover {
          margin-bottom: 100px;
          margin-left: 20%;
      }
+
+    #img_ID {
+        width: 970px;
+        margin-left: 92px;
+     }
 }
 
 
@@ -1310,16 +1315,104 @@ a:hover {
         margin-left: 20%;
      }
 
+     #mapstats {
+         width: 280px;
+     }
+
      #mapstats img{
         height: 50px;
      }
 
       #img_ID {
         width: 100%;
-        margin-left: 0;
+        margin-left: 25px;
      }
 
    }
+
+@media (min-width: 1700px) {
+
+	.store .row, .store .row > div {
+		height: 300px;
+        width: 300px;
+	}
+
+	.map .row {
+		height: 400px;
+	}
+
+	.landscape .row, .landscape .row > div {
+		height: 330px;
+	}
+	.shaft .row, .mine .row, .score .row, .mine .row > div {
+		height: 130px;
+	}
+    .row .hidden > div {
+        height: 130px;
+    }
+
+    .equip img {
+        width: 80px;
+    }
+
+    .scores{
+        font-size: large;
+    }
+
+    .container {
+        margin-left: 295px;
+        width: 1599px;
+    }
+
+     .progress {
+        margin-top: 4%;
+    }
+
+    #shoprow{
+        margin-left: 486px;
+    }
+
+     #shopgold img {
+        height: 70px;
+    }
+
+     #shopgold{
+       font-size: x-large;
+       height: 38%;
+    }
+
+     #generalstore{
+        margin-left: 200px;
+        margin-bottom: 3%;
+    }
+
+     #shoppe {
+        font-size: medium;
+        width: 230px;
+    }
+
+     #buystuff {
+        width: 158px;
+        margin-top: 50%;
+        /*margin-bottom: 100px;*/
+        margin-left: 20%;
+     }
+
+     #mapstats {
+         width: 319px;
+     }
+
+     #mapstats img{
+        height: 50px;
+     }
+
+      #img_ID {
+        width: 100%;
+        margin-left: 25px;
+     }
+
+   }
+
 
 
 .blink_me {

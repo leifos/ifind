@@ -7,10 +7,10 @@
 <head>
     <title>Mine selection</title>
 
-</head>
-<body>
-{% block body_block %}
-    <div id="shopbody">
+</head>{% block body_block %}
+<body id="shopbody">
+
+    <div>
     <span id='csrf'>{% csrf_token %}</span>
     <div class="jumbotron" id="about">
         <h1>Locations</h1>
@@ -233,14 +233,14 @@
 
 
                 <!-- Map -->
-                <img id="img_ID" src="/static/map_locations.png" usemap="#map" border="0" width="100%" alt=""/>
+                <img id="img_ID" src="/static/map_locations2.png" usemap="#map" border="0" width="100%" alt=""/>
             </div>
             <map id="map_ID" name="map">
                 <area shape="rect" coords="79,212,249,264" href="#" data-toggle="modal" data-target="#California"
                       alt="California" title="California" class="location"/>
                 <area shape="rect" coords="258,62,378,109" href="#" data-toggle="modal" data-target="#Yukon" alt="Yukon"
                       title="Yukon" class="location"/>
-                <area shape="rect" coords="583,613,715,643" href="#" data-toggle="modal" data-target="#Brazil"
+                <area shape="rect" coords="590,608,772,652" href="#" data-toggle="modal" data-target="#Brazil"
                       alt="Brazil" title="Brazil" class="location"/>
                 <area shape="rect" coords="995,576,1234,624" href="#" data-toggle="modal" data-target="#South_Africa"
                       alt="South Africa" title="South_Africa" class="location"/>
