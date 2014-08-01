@@ -13,21 +13,20 @@
     }
 </script>
         {% if user.is_authenticated %}
-           <h4>Hello, {{ user.username }}!</h4>
             <div class="modal" id="progress" style="visibility: hidden">
                 <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
             </div>
 
-            <div id="results">
-
+            <div align="center" style="margin-top: 18%" id="results">
+                    <h2>Welcome to WebSearch</h2><br>
                     <form id="search" action="/search/" method="post">
                         {% csrf_token %}
 
                         <input type=text class="longTextbox" name=query value="{{ query }}">
                         {% if not request.user.id|divisibleby:2 %}
-                             <input class="btn-primary" id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+                             <input class="btn-primary" style="vertical-align: top; height: 30px" id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
                         {% else %}
-                            <input class="btn-primary" type=submit value="Search">
+                            <input class="btn-primary" style="vertical-align: top; height: 30px" type=submit value="Search">
                         {% endif %}
                     </form>
             </div>
