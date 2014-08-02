@@ -31,7 +31,7 @@
                     </form>
             </div>
         {% else %}
-        <div style="width: 40%">
+        <div style="width: 40%; float: left">
             Thank you for agreeing to participate in this experiment. <b>For the duration of the experimental period,
             please use this site in place of your go-to search engine</b>. All searches are <b>confidential</b> and data related
             to queries entered and websites visited <b>will not be recorded by this site</b> and is visible to nobody.
@@ -60,6 +60,13 @@
                 <li>You are able to ask questions at any time before, during or after the experiment using the contact
                 details available on the <a target="_blank" href="slowsearch/about">About</a> page.</li>
         </div>
+
+            <div class="inline">
+            <div class="span2">
+            <a class="btn btn-link" href="register.html">Register</a><br><br>
+            <a class="btn btn-link" href="login.html">Login</a>
+            </div>
+            </div>
         {% endif %}
 
     {% endblock %}

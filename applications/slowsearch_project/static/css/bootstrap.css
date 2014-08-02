@@ -3607,12 +3607,13 @@ input[type="submit"].btn.btn-mini {
 }
 
 .btn-link {
-  color: #0088cc;
+  color: #ffffff;
+  background-color: #006dcc;
   cursor: pointer;
   border-color: transparent;
   -webkit-border-radius: 0;
      -moz-border-radius: 0;
-          border-radius: 0;
+          border-radius: 5px;
 }
 
 .btn-link:hover,
