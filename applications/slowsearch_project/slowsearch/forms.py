@@ -85,8 +85,8 @@ class UKDemographicsSurveyForm(forms.ModelForm):
 
 # checkbox for user validation
 class RegValidation(forms.Form):
-    terms = forms.BooleanField(label="I have read and agree to the above Study Information and I have had the "
-                               "opportunity to ask any questions*",
+    terms = forms.BooleanField(label="I have read and agree to the Study Information and I have had the "
+                               "opportunity to ask any questions via email*",
                                error_messages={'required': 'You must accept the terms and conditions'}, )
     questions = forms.BooleanField(required=True, initial=False,
                                    label="I understand that I am able to ask questions about this study at any time*",
