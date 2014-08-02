@@ -14,22 +14,21 @@
 
     <title>WebSearch</title>
 </head>
-<body>
+<body style="padding-top: 90px">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
            <div class="container">
 
-               <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                   <span class="icon-bar"></span>
-                   <span class="icon-bar"></span>
-                   <span class="icon-bar"></span>
-               </button>
-               <a href=""><img class="logo" src="{% static "uni_white_text.png"%}">
-               <a class="brand" style="margin-left: 15%"  href="/">WebSearch</a>
+           <div class="hidden-tablet">
+           <div class="hidden-phone">
+               <a href=""><img class="logo" style="width: 37px;" src="{% static "New_Glasgow_Crest.png"%}">
+           </div>
+           </div>
+                   <a class="brand" style="margin-left: 5px" href="/">WebSearch</a>
 
-               <div class="nav-collapse collapse">
-                   <ul class="nav pull-right">
+               <div class="nav-collapse collapse navbar-responsive-collapse">
+                   <ul class="nav pull-right" style="margin-left: 10px">
                        {% if user.is_authenticated %}
                             <li class="navbar-text">Welcome, {{ user.username }}!</li>
                            {% if 'profile' not in request.get_full_path %}
