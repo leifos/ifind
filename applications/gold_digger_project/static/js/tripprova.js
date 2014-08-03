@@ -2,7 +2,7 @@ console.log("trip started");
 var trip2 = new Trip([
     {
         sel: $("#California_landscape"),
-        content: 'Hello And welcome to the Gold Digger tutorial!',
+        content: 'Hello and welcome to the <b>Gold Digger tutorial!</b>',
         position: "s"
 
     },
@@ -48,6 +48,12 @@ var trip2 = new Trip([
     {
         sel: $("#equip"),
         content: "Our <b>Scanning Equipment</b> right now is the <b>Sonar</b>. With this object equipped, as our scanning equipment, we will have <b>an accuracy of 50%</b> in identifying gold specks.",
+        position: "e"
+
+    },
+     {
+        sel: $("#equip"),
+        content: "Furthermore, the <b>scanning equipment</b> will only allow us to see up to a certain number of layers. In this case, <b>five</b>",
         position: "e"
 
     },

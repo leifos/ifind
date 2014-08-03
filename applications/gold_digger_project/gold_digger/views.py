@@ -367,6 +367,7 @@ def game2(request):
         location = request.session['location']
         pointer = request.session['pointer']
         mine_no = request.session['mine_no']
+        visibility = int((user.equipment.modifier)*10)
 
         if time_remaining < 0:
             return HttpResponseRedirect(reverse('game_over'), context)
@@ -380,7 +381,8 @@ def game2(request):
                                                              'dig_cost': dig_cost,
                                                              'location': location,
                                                              'pointer':pointer,
-                                                             'mine_no': mine_no}, context)
+                                                             'mine_no': mine_no,
+                                                             'visibility': visibility}, context)
     else:
          # Unpickling
           pickled_blocks = request.session['pickle']
@@ -393,6 +395,8 @@ def game2(request):
           time_remaining = request.session['time_remaining']
           pointer = request.session['pointer']
           mine_no = request.session['mine_no']
+          visibility = int((user.equipment.modifier)*10)
+
 
           scaffold = [1, 2, 3]
 
@@ -408,7 +412,8 @@ def game2(request):
                                                                'dig_cost': dig_cost,
                                                                'location': location,
                                                                'pointer': pointer,
-                                                               'mine_no': mine_no}, context)
+                                                               'mine_no': mine_no,
+                                                               'visibility': visibility}, context)
 
 
 def divide(max_gold):

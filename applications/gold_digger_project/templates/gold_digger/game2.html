@@ -45,8 +45,9 @@
     <!-- Header -->
 
     <div class="jumbotron game" id="{{ location }}_landscape">
-    <h1>{% if location == "South_Africa" %} South Africa {% else %}{{ location }} {% endif %}</h1>
-    <h2 class="animated swing">Mine: {{ mine_no }}</h2>
+        <h1>{% if location == "South_Africa" %} South Africa {% else %}{{ location }} {% endif %}</h1>
+
+        <h2 class="animated swing">Mine: {{ mine_no }}</h2>
         <br>
     </div>
 
@@ -63,20 +64,20 @@
                     <tr class="animated bounceInDown" id="equip">
                         <td class="def">Equipment</td>
                         <td><img src="{{ user.equipment.image.url }}"
-                                               title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
-                                               id="img"></td>
+                                 title="{{ user.equipment.name }}, modifier: {{ user.equipment.modifier }}"
+                                 id="img"></td>
                     </tr>
                     <tr class="animated bounceInDown">
                         <td class="def">Vehicle</td>
                         <td><img src="{{ user.vehicle.image.url }}"
-                                               title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
-                                               id="img"></td>
+                                 title="{{ user.vehicle.name }}, modifier: {{ user.vehicle.modifier }}"
+                                 id="img"></td>
                     </tr>
                     <tr class="animated bounceInDown">
                         <td class="def">Tool</td>
                         <td><img src="{{ user.tool.image.url }}"
-                                               title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}"
-                                               id="img">
+                                 title="{{ user.tool.name }}, modifier: {{ user.tool.modifier }}"
+                                 id="img">
                         </td>
                     </tr>
 
@@ -102,7 +103,7 @@
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{ time_remaining }}"
                          aria-valuemin="100"
                          aria-valuemax="0" style="width: {{ time_remaining }}%;">
-                            <span id="time">{{ time_remaining }}</span>
+                        <span id="time">{{ time_remaining }}</span>
 
                     </div>
 
@@ -118,28 +119,37 @@
         {% if blocks %}
             <div class="col-xs-5 mine">
                 {% for block in blocks %}
-                    {% if block.dug == False %}
-                    <div class="row flecks_{{ block.cue }} animated" id="goldlayer_{{ block.pos }}">
-                        <div class="scaffold_1_shaded" id="scaffoldlayer_{{ block.pos }}">
-                            <div class="points" id="points_{{ block.pos }}"></div>
-                            <div class="comment" id="comment_{{ block.pos }}"></div>
+                    {% if visibility > block.pos %}
+                        {% if block.dug == False %}
+                            <div class="row flecks_{{ block.cue }} animated" id="goldlayer_{{ block.pos }}">
+                                <div class="scaffold_1_shaded" id="scaffoldlayer_{{ block.pos }}">
+                                    <div class="points" id="points_{{ block.pos }}"></div>
+                                    <div class="comment" id="comment_{{ block.pos }}"></div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row nuggets_{{ block.cue }}" id="goldlayer_{{ block.pos }}">
+                                <div class="scaffold_3" id="scaffoldlayer_{{ block.pos }}">
+                                    <div class="points" id="points_{{ block.pos }}"></div>
+                                    <div class="comment" id="comment_{{ block.pos }}"></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="row flecks_0 animated" id="goldlayer_{{ block.pos }}">
+                            <div class="scaffold_1_shaded" id="scaffoldlayer_{{ block.pos }}">
+                                <div class="points" id="points_{{ block.pos }}"></div>
+                                <div class="comment" id="comment_{{ block.pos }}"></div>
+                            </div>
                         </div>
-                    </div>
-                {% else %}
-                        <div class="row nuggets_{{ block.cue }}" id="goldlayer_{{ block.pos }}">
-                        <div class="scaffold_3" id="scaffoldlayer_{{ block.pos }}">
-                            <div class="points" id="points_{{ block.pos }}"></div>
-                            <div class="comment" id="comment_{{ block.pos }}"></div>
-                        </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
 
                 {% endfor %}
 
             </div>
 
             <!-- Buttons -->
-            <div class="col-xs-3 mine" >
+            <div class="col-xs-3 mine">
                 {% for block in blocks %}
 
                     {% if block.pos == pointer %}
@@ -151,24 +161,29 @@
                                 <input type="hidden" value="{{ block.pos }}" name="block"
                                        id="blockposition_{{ block.pos }}"/>
                             </div>
-                            <form class="move" action="/gold_digger/move/" method="post" id="movebutton_{{ block.pos }}">
+                            <form class="move" action="/gold_digger/move/" method="post"
+                                  id="movebutton_{{ block.pos }}">
                                 {% csrf_token %}
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                         id="controls">move ({{ move_cost }})
                                 </button>
                             </form>
                         </div>
-                     {% elif block.dug == True %}
-                         <div class='row' id='resultcol'>--- <img src='/static/nugget.png'>--- <img src='/media/icons/Items/Chest.png'></div>
+                    {% elif block.dug == True %}
+                        <div class='row' id='resultcol'>--- <img src='/static/nugget.png'>--- <img
+                                src='/media/icons/Items/Chest.png'></div>
                     {% elif block.dug == False %}
-                        <div class=""  id="row_{{ block.pos }}">
+                        <div class="" id="row_{{ block.pos }}">
                             <div class="buttons hidden" id="invisiblebuttons_{{ block.pos }}">
-                                <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig" id="digbutton_{{ block.pos }}"> dig ({{ dig_cost }})</button>
+                                <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
+                                        id="digbutton_{{ block.pos }}"> dig ({{ dig_cost }})
+                                </button>
 
                                 <input type="hidden" value="{{ block.pos }}" name="block"
                                        id="blockposition_{{ block.pos }}"/>
                             </div>
-                            <form class="move hidden row" action="/gold_digger/move/" method="post" id="movebutton_{{ block.pos }}">
+                            <form class="move hidden row" action="/gold_digger/move/" method="post"
+                                  id="movebutton_{{ block.pos }}">
                                 {% csrf_token %}
                                 <button type="submit" class="button btn-group-sm" value="move mine" name="move"
                                         id="controls">move ({{ move_cost }})
