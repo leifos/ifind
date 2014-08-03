@@ -329,6 +329,21 @@ body{
 
 }
 
+#welltour {
+    padding-top: 10px;
+    margin-right: 1%;
+    font-family: pixelfont;
+    border-color: rgb(0, 0, 0);
+    border-style: solid;
+    border-width: 3px;
+    width: inherit;
+    height: 47%;
+    font-size: 150%;
+    color: gold;
+    position: fixed;
+
+}
+
 #profile_well {
     font-family: pixelfont;
     font-size: large;

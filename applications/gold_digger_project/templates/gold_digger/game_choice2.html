@@ -223,11 +223,11 @@
                 <div class="well" id="mapstats">
                     <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span>
                     <hr>
-                    <p style="color: gold">Scanning: <img id="scan" src="{{ scan }}"></p>
+                    <p style="color: gold">Scanning: <img data-toggle="tooltip" data-placement="right" title="Accuracy: {{ mod_scan }}%" id="scan" src="{{ scan }}"></p>
 
-                    <p style="color: gold">Tool: <img id="tool" src="{{ tool }}"></p>
+                    <p style="color: gold">Tool: <img data-toggle="tooltip" data-placement="right" title="Dig cost: {{ modt_tool }} Extracted: {{ mod_tool }}%" id="tool" src="{{ tool }}"></p>
 
-                    <p style="color: gold">Vehicle: <img id="vehicle" src="{{ vehicle }}"></p>
+                    <p style="color: gold">Vehicle: <img data-toggle="tooltip" data-placement="right" title="Move cost: {{ mod_vehicle }}" id="vehicle" src="{{ vehicle }}"></p>
 
                 </div>
                 <div class="animated wobble"><a href="/gold_digger/store/"><img id="buystuff"

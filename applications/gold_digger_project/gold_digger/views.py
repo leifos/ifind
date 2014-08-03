@@ -232,13 +232,22 @@ def game_choice2(request):
     scan = user.equipment.image.url
     tool = user.tool.image.url
     vehicle = user.vehicle.image.url
+    mod_scan = int((user.equipment.modifier)*100)
+    mod_tool = int((user.tool.modifier)*100)
+    modt_tool = user.tool.time_modifier
+    mod_vehicle = user.vehicle.modifier
+
     gold = user.gold
 
     return render_to_response('gold_digger/game_choice2.html', {'mine_types': mine_types,
                                                                 'scan': scan,
                                                                 'tool': tool,
                                                                 'vehicle': vehicle,
-                                                                'gold': gold}, context)
+                                                                'gold': gold,
+                                                                'mod_scan': mod_scan,
+                                                                'mod_tool': mod_tool,
+                                                                'modt_tool': modt_tool,
+                                                                'mod_vehicle': mod_vehicle}, context)
 
 
 @login_required
