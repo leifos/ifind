@@ -20,25 +20,35 @@
 
 
     <div class="container-fluid">
-
-        <div class="col-xs-6 col-md-2">
-
-            <ul class="nav nav-pills nav-stacked animated bounceInDown">
-
                 {% if user.is_authenticated %}
-                    <li><a href="/gold_digger/profile/">Your profile</a></li>
-                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+
+                <div class="col-xs-6 col-md-3">
+                <div class="well" id="mapstats">
+                    <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span>
+                    <hr>
+                    <p style="color: gold">Scanning: <img data-toggle="tooltip" data-placement="right" title="Accuracy: {{ mod_scan }}%" id="scan" src="{{ scan }}"></p>
+
+                    <p style="color: gold">Tool: <img data-toggle="tooltip" data-placement="right" title="Dig cost: {{ modt_tool }} Extracted: {{ mod_tool }}%" id="tool" src="{{ tool }}"></p>
+
+                    <p style="color: gold">Vehicle: <img data-toggle="tooltip" data-placement="right" title="Move cost: {{ mod_vehicle }}" id="vehicle" src="{{ vehicle }}"></p>
+
+                </div>
+                </div>
+
                 {% else %}
+                <div class="col-xs-6 col-md-2">
+                 <ul class="nav nav-pills nav-stacked animated bounceInDown">
                     <li><a href="/gold_digger/about/">About Gold Digger</a></li>
                     <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
                     <li><a href="/gold_digger/tour/">Tour</a></li>
-
+                 </ul>
+                </div>
 
                 {% endif %}
-            </ul>
-        </div>
+
+
+
         <div class="col-xs-6 col-md-7">
             {% if registered %}
                 <div class="alert alert-dismissable alert-success">
@@ -57,6 +67,7 @@
             {% endif %}
             {% if user.is_authenticated %}
                 <br> <br><a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/">Play!</a>
+                <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/">How to play</a>
 
 
             {% endif %}

@@ -71,7 +71,7 @@ $(document).ready(function(){
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
                 $('#currentgold').animateNumbers(response['currentgold'], true, 200, "linear");
 
-                if ((pointer-2)>0){
+                if ((pointer-1)>0){
                     $('html, body').animate({scrollTop: $('#scaffoldlayer_'+(pointer-1)).offset().top}, 500);
                 }
 

@@ -31,11 +31,11 @@ $(document).ready(function () {
                 position: 'bottom'
             },
             {
-                element: '#well',
+                element: '#welltour',
                 intro: 'This is the equipment we have at the moment'
             },
             {
-                element: '.def1',
+                element: '#step5',
                 intro: 'This is our <b>scanning equipment</b>, it will allow us to detect how much gold we can expect from a mine. The higher the modifies, the higher the accuracy of the visual cues (the gold specs) in the undug layers of the mine.'
             }
         ]

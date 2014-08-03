@@ -19,11 +19,36 @@ locations = ['constant', 'random', 'cubic', 'exponential', 'quadratic', 'linear'
 def home(request):
 
     context = RequestContext(request)
-    request.session['time_remaining'] = 100
-    request.session['gold'] = 0
-    user_form = UserForm()
-    profile_form = UserProfileForm()
-    return render_to_response('gold_digger/home.html', {'user_form': user_form, 'profile_form': profile_form}, context)
+
+    try:
+        current_user = UserProfile.objects.get(user=request.user)
+        scan = current_user.equipment.image.url
+        tool = current_user.tool.image.url
+        vehicle = current_user.vehicle.image.url
+        mod_scan = int(current_user.equipment.modifier)*100
+        mod_tool = int(current_user.tool.modifier)*100
+        modt_tool = current_user.tool.time_modifier
+        mod_vehicle = current_user.vehicle.modifier
+
+        gold = current_user.gold
+
+        return render_to_response('gold_digger/home.html', {'current_user': current_user,
+                                                            'scan': scan,
+                                                            'tool': tool,
+                                                            'vehicle': vehicle,
+                                                            'gold': gold,
+                                                            'mod_scan': mod_scan,
+                                                            'mod_tool': mod_tool,
+                                                            'modt_tool': modt_tool,
+                                                            'mod_vehicle': mod_vehicle}, context)
+
+    except:
+        context = RequestContext(request)
+        request.session['time_remaining'] = 100
+        request.session['gold'] = 0
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+        return render_to_response('gold_digger/home.html', {'user_form': user_form, 'profile_form': profile_form}, context)
 
 
 def about(request):
@@ -127,7 +152,24 @@ def user_login(request):
 
     else:
         current_user = UserProfile.objects.get(user=request.user)
-        return render_to_response('gold_digger/home.html', {'current_user': current_user}, context)
+        scan = current_user.equipment.image.url
+        tool = current_user.tool.image.url
+        vehicle = current_user.vehicle.image.url
+        mod_scan = int(current_user.equipment.modifier)*100
+        mod_tool = int(current_user.tool.modifier)*100
+        modt_tool = current_user.tool.time_modifier
+        mod_vehicle = current_user.vehicle.modifier
+
+        gold = current_user.gold
+        return render_to_response('gold_digger/home.html', {'current_user': current_user,
+                                                            'scan': scan,
+                                                            'tool': tool,
+                                                            'vehicle': vehicle,
+                                                            'gold': gold,
+                                                            'mod_scan': mod_scan,
+                                                            'mod_tool': mod_tool,
+                                                            'modt_tool': modt_tool,
+                                                            'mod_vehicle': mod_vehicle}, context)
 
 
 @login_required
