@@ -8,15 +8,18 @@ import sys
 import time
 from ifind.search.query import Query
 from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
+from ifind.search.engines.whooshtrecnewsredis_revised import WhooshTrecNewsRedis
 from ifind.seeker.trec_qrel_handler import TrecQrelHandler
 
 # Specify variable engine as an instance of the engine you wish to use.
 doc_index_dir = os.path.join(os.getcwd(), 'fullindex')
-engine = WhooshTrecNewsRedis(whoosh_index_dir=doc_index_dir, use_cache=False)
-#engine = WhooshTrecNewsRedis(whoosh_index_dir=doc_index_dir, use_cache=False, results_limit=False)
+stopwords_file = os.path.join(os.getcwd(), 'stopwords.txt')
+
+#engine = WhooshTrecNewsRedis(whoosh_index_dir=doc_index_dir, use_cache=False)
+engine = WhooshTrecNewsRedis(whoosh_index_dir=doc_index_dir, stopwords_file=stopwords_file)
 
 def print_usage():
-    print "Usage: engine_perf.py <queries_file> <output_file>"
+    print "Usage: engine_perf.py <queries_file> <qrels_file> <output_file>"
     print "   <queries_file>: Input file of queries. In format <TOPIC>-<QID> <TERMS><LINEBREAK>"
     print "   <qrels_file>:   Location to the QRELS file."
     print "   <output_file>:  Location of file for writing output. Includes column headers."
@@ -57,7 +60,7 @@ def get_perf(queries_file, qrels_file, output_file):
         topic = line[0].split('-')[0]
         query = ' '.join(line[1:])
 
-        print "Query '{0}'".format(query)
+        print "Query {0}: '{1}'".format(qid, query)
         time_start = time.time()
 
         q = Query(query, top=100)
@@ -91,7 +94,28 @@ def get_perf(queries_file, qrels_file, output_file):
             os.linesep
         ))
 
-        print "{0:.3f} seconds".format(time_elapsed)
+        print "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}{11}".format(
+            qid,
+            time_elapsed,
+            p_at_1,
+            p_at_2,
+            p_at_3,
+            p_at_4,
+            p_at_5,
+            p_at_10,
+            p_at_15,
+            p_at_20,
+            p_at_30,
+            os.linesep
+        )
+
+        print "execution time: {0:.3f} seconds".format(time_elapsed)
+        print "p@1: {0:.3f}\tp@5: {1:.3f}\tp@10: {2:.3f}\tp@20: {3:.3f}".format(
+            p_at_1,
+            p_at_5,
+            p_at_10,
+            p_at_20
+        )
         print
 
     qf.close()

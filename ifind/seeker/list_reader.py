@@ -41,7 +41,7 @@ class ListReader(list):
                 append_value = self._can_append_entry(line)
 
                 if append_value:
-                    self.append(append_value)
+                    self.append(append_value.strip())
 
     def save(self, filename):
         '''

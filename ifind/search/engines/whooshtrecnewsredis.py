@@ -14,13 +14,15 @@ from ifind.search.exceptions import EngineConnectionException, QueryParamExcepti
 import Queue
 from threading import Thread
 
+import time
+
 
 class WhooshTrecNewsRedis(Engine):
     """
     A revised Whoosh ifind engine.
     Implemented by dmax. Uses a new way of poking the postings file by @leifos, and also some tasty Redis caching.
     """
-    def __init__(self, whoosh_index_dir='', use_cache=True, cache_host='localhost', cache_port=6379, results_limit=1200, **kwargs):
+    def __init__(self, whoosh_index_dir='', use_cache=True, cache_host='localhost', cache_port=6379, **kwargs):
         """
         Constructor for the engine.
         """
@@ -34,13 +36,9 @@ class WhooshTrecNewsRedis(Engine):
         self.scoring_model_identifier = 1
         self.scoring_model = scoring.PL2(c=10.0)
 
-        #  Sets a hard limit of x results - specify False to return all results.
-        self.results_limit = results_limit
-
         try:
             self.doc_index = open_dir(self.whoosh_index_dir)
             self.reader = self.doc_index.reader()
-
             self.parser = QueryParser('content', self.doc_index.schema)  # By default, we use AND grouping.
                                                                          # Use the grouping parameter and specify whoosh.qparser.OrGroup, etc...
 
@@ -131,6 +129,7 @@ class WhooshTrecNewsRedis(Engine):
                         pass
 
             sorted_results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
+            #sorted_results = sorted(set(doc_scores.iteritems()), key=itemgetter(1), reverse=True)
 
         # This block of code checks if additional page caching is required.
         # This will arise when no pages for the given query are cached, or the user is close to reaching the end of
@@ -212,14 +211,9 @@ class WhooshTrecNewsRedis(Engine):
         else:
             try:
                 postings = searcher.postings(self.parser.fieldname, term)
-                count = 0
 
-                for i in postings.all_ids():
+                for i in postings.all_ids(): ## too much time
                     doc_term_scores[i] = postings.score()
-
-                    count += 1
-                    if self.results_limit and count == self.results_limit:
-                        break
 
             except TermNotFound:  # If the term is not found in the inverted index, do nada.
                 pass
