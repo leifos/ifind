@@ -128,6 +128,7 @@
 #controls {
     margin-right: 0%;
     margin-left: 0%;
+    margin-top: 2%;
 }
 
 #disclaimerlabel {
@@ -162,6 +163,8 @@
     font-family: pixelfont;
     height: 35%;
     background-color: rgba(245, 222, 179, 0.21);
+    border-color: #000000;
+    border-width: 2px;
     width: 15%;
     color: #000000;
     margin-top: 2%;
@@ -175,7 +178,16 @@
     border-width: 2px;
     height: 300px;
     font-size: large;
-    margin-top: 3%;
+    background-color: rgba(245, 222, 179, 0.14);
+    color: gold;
+}
+
+#mapstats2 {
+    font-family: pixelfont;
+    border-color: #000000;
+    border-width: 2px;
+    height: 300px;
+    font-size: large;
     background-color: rgba(245, 222, 179, 0.14);
     color: gold;
 }
@@ -255,6 +267,7 @@ body{
 
 #leaderboards{
     background-color: #acacac;
+    font-size: 10pt;
 }
 
 
@@ -531,9 +544,17 @@ a:hover {
     background-color: rgba(245, 222, 179, 0.25);
 }
 
-#shoppe img {
-    width: 50%;
+
+
+
+#shoppe h3 {
+    margin-top: 0;
 }
+
+
+/*.caption {*/
+    /*padding-left: 0;*/
+/*}*/
 
 #shopbody {
     background-image: url(/static/ground.jpg);
@@ -543,6 +564,53 @@ a:hover {
     font-size: 60pt;
     color: #8c0c00;
 }
+
+#upgrade {
+    /*width: 64px;*/
+    /*height: 26px;*/
+    padding-left: 5px;
+    font-size: 11px;
+    background-image: linear-gradient(#2E2A2E, #000000 6%, #5C575C);
+    border: 1px solid #000000;
+}
+
+#homewell {
+
+    border-color: #000000;
+    border-width: 2px;
+    background-color: rgba(245, 222, 179, 0.24);
+
+}
+
+#name {
+    font-family: pixelfont;
+    font-weight: bolder;
+}
+
+#thumb {
+    margin-right: auto;
+    margin-right: auto;
+    width: 11%;
+}
+
+.thumbnail {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0;
+}
+
+#prices {
+    color: gold;
+}
+
+#accuracy {
+    color: darkgreen;
+}
+
+#cost {
+    color: darkred;
+}
+
 
 
 /******************************************************************************/
@@ -587,7 +655,9 @@ a:hover {
 
 
 .button {
- 	background: #dfdfdf;
+ 	background-image: linear-gradient(#2E2A2E, #000000 6%, #5C575C);
+    border: 1px solid #000000;
+    color: #ffffff;
 	margin-top: 13%;
     float: left;
     vertical-align: top;
@@ -909,6 +979,8 @@ a:hover {
  	background: url(/media/mine/Wheelbarrow_hover.png) no-repeat center;
  	background-size: 70%;
 }
+
+
  
 
 @media (min-width: 0px) {
@@ -1154,21 +1226,41 @@ a:hover {
         font-family: pixelfont;
         border-color: #000000;
         border-width: 2px;
-        height: 300px;
+        height: 310px;
         font-size: large;
-        margin-top: 3%;
         background-color: rgba(245, 222, 179, 0.14);
         color: gold;
         width: 283px;
      }
 
+
      #mapstats img {
+         height: 60px;
+     }
+
+     #mapstats2 {
+        font-family: pixelfont;
+        border-color: #000000;
+        border-width: 2px;
+        height: 300px;
+        font-size: large;
+        background-color: rgba(245, 222, 179, 0.14);
+        color: gold;
+        width: 283px;
+     }
+
+     #mapstats2 img {
          height: 60px;
      }
 
      #img_ID {
         width: 930px;
         margin-left: 92px;
+
+
+     }
+     #shoppe {
+        font-family: pixelfont;
      }
 }
 
@@ -1238,6 +1330,7 @@ a:hover {
     }
 
     #shoppe {
+        font: pixelfont;
         width: 170px;
         padding-right: 5%;
 
@@ -1259,10 +1352,15 @@ a:hover {
          margin-left: 20%;
      }
 
+
     #img_ID {
         width: 970px;
         margin-left: 92px;
      }
+
+    #shoppe {
+        font-family: pixelfont;
+    }
 }
 
 
@@ -1324,6 +1422,7 @@ a:hover {
     }
 
      #shoppe {
+        font-family: pixelfont;
         font-size: medium;
         width: 230px;
     }
@@ -1336,11 +1435,21 @@ a:hover {
      }
 
      #mapstats {
-         width: 280px;
+         width: 380px;
+         height: 350px;
      }
 
      #mapstats img{
-        height: 50px;
+        height: 70px;
+     }
+
+     #mapstats2 {
+         width: 280px;
+         height: 350px;
+     }
+
+     #mapstats2 img {
+         height: 70px;
      }
 
       #img_ID {
@@ -1407,6 +1516,7 @@ a:hover {
     }
 
      #shoppe {
+        font-family: pixelfont;
         font-size: medium;
         width: 230px;
     }
@@ -1419,11 +1529,21 @@ a:hover {
      }
 
      #mapstats {
-         width: 319px;
+         width: 400px;
+         height: 370px;
      }
 
      #mapstats img{
-        height: 50px;
+        height: 70px;
+     }
+
+     #mapstats2 {
+         width: 330px;
+         height: 370px;
+     }
+
+     #mapstats2 img {
+         height: 60px;
      }
 
       #img_ID {

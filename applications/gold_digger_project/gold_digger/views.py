@@ -25,12 +25,12 @@ def home(request):
         scan = current_user.equipment.image.url
         tool = current_user.tool.image.url
         vehicle = current_user.vehicle.image.url
-        mod_scan = int(current_user.equipment.modifier)*100
-        mod_tool = int(current_user.tool.modifier)*100
+        mod_scan = int(current_user.equipment.modifier*100)
+        mod_tool = int(current_user.tool.modifier*100)
         modt_tool = current_user.tool.time_modifier
         mod_vehicle = current_user.vehicle.modifier
-
         gold = current_user.gold
+
 
         return render_to_response('gold_digger/home.html', {'current_user': current_user,
                                                             'scan': scan,
@@ -139,7 +139,7 @@ def user_login(request):
                 request.session['time_remaining'] = 100
                 request.session['gold'] = 0
 
-                return HttpResponseRedirect('/gold_digger/')
+                return HttpResponseRedirect(reverse('home'),context)
             else:
                 return HttpResponse("Your Gold Digger account is disabled.")
         else:
@@ -431,6 +431,7 @@ def divide(max_gold):
     return limits
 
 
+@login_required
 def ajaxview(request):
     user = UserProfile.objects.get(user=request.user)
     context = RequestContext(request)
@@ -494,6 +495,7 @@ def ajaxview(request):
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
+@login_required
 def store(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
@@ -512,6 +514,8 @@ def store(request):
                                                          'dig': dig,
                                                          'move': move}, context)
 
+
+@login_required
 def ajax_buy(request):
     user = UserProfile.objects.get(user=request.user)
 
@@ -578,7 +582,7 @@ def ajax_buy(request):
             request.session['purchase'] = False
             return HttpResponse(status=204)
 
-
+@login_required
 def update_location(request):
     request.session['location'] = request.POST['loc']
     request.session['mine_type'] = ''

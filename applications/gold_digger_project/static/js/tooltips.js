@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $("#scan").tooltip({ placement: 'right'});
-    $("#tool").tooltip({ placement: 'down'});
-    $("#vehicle").tooltip({ placement: 'down'});
+    $("#tool").tooltip({ placement: 'right'});
+    $("#vehicle").tooltip({ placement: 'right'});
 
 });

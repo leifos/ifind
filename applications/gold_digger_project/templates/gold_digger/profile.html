@@ -1,11 +1,44 @@
 {% extends "gold_digger/base.html" %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>User Profile</title>
 </head>
-{% block body_block %}
-    <body class="dig_view">
+
+    <body>
+    {% block nav %}
+        <div class="row">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+        <div class="notices pull-right">
+                <p class="navbar-brand"><a style="color: #808080" href="/gold_digger/profile/" id="username">{{ user.user.username }}</a> / <a href="/gold_digger/logout/" id="logout">Logout</a></p>
+            </div>
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="glyphicon glyphicon-chevron-down"></span>
+					MENU
+				</button>
+				 <a href="/gold_digger/" class="navbar-brand" id="golddigger">Gold Digger</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="collapse">
+				<ul class="nav navbar-nav">
+                    {% if user.user.is_authenticated %}
+					<li class="active"><a href="/gold_digger/game_choice2/">Play!</a></li>
+                    {% endif %}
+					<li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+					<li><a href="/gold_digger/about/">About</a></li>
+					<li><a href="/gold_digger/tour/">How to Play</a></li>
+				</ul>
+
+			</div>
+		</nav>
+	</div>
+    {% endblock %}
+    {% block body_block %}
     <div class="jumbotron" id="about">
 
         <h1>{{ user.user.username }}</h1><br>
@@ -14,15 +47,8 @@
 
     {% if user %}
         <div class="container-fluid">
-        <div class="col-xs-2" id="profile_options" >
-            <ul class="nav nav-pills nav-stacked">
+        <div class="col-xs-2">
 
-                    <li class="animated bounceInDown"><a href = "/gold_digger/game_choice2/">Play!</a></li>
-                    <li class="active animated bounceInDown"><a href = "/gold_digger/profile/">Your profile</a></li>
-                    <li class="animated bounceInDown"><a href = "/gold_digger/about/">About Gold Digger</a></li>
-                    <li class="animated bounceInDown"><a href = "/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li class="animated bounceInDown"><a href = "/gold_digger/" >Back to Main</a></li>
-            </ul>
         </div>
         <div class="col-xs-9" >
         <div class="row">

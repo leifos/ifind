@@ -18,13 +18,13 @@
 
     {% endblock %}
 </head>
-<body>
+<body id="shopbody">
  {% block nav %}
 	<div class="row">
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         {% if user.is_authenticated %}
         <div class="notices pull-right">
-                <p class="navbar-brand"><a href="/gold_digger/profile/" id="username">{{ user.username }}</a> / <a href="/gold_digger/logout/" id="logout">Logout</a></p>
+                <p class="navbar-brand"><a style="color: #808080" href="/gold_digger/profile/" id="username">{{ user.username }}</a> / <a href="/gold_digger/logout/" id="logout">Logout</a></p>
             </div>
         {% endif %}
 			<div class="navbar-header">
@@ -39,11 +39,11 @@
 			<div class="collapse navbar-collapse" id="collapse">
 				<ul class="nav navbar-nav">
                     {% if user.is_authenticated %}
-					<li class="active"><a href="/gold_digger/game_choice2/">Play</a></li>
+					<li class="active"><a href="/gold_digger/game_choice2/">Play!</a></li>
                     {% endif %}
 					<li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
 					<li><a href="/gold_digger/about/">About</a></li>
-					<li><a href="how_to_play.html">How to Play</a></li>
+					<li><a href="/gold_digger/tour/">How to Play</a></li>
 				</ul>
 
 			</div>

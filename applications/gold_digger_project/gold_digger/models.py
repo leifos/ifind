@@ -7,6 +7,8 @@ class ScanningEquipment(models.Model):
     modifier = models.FloatField(default=0.2)
     image = models.ImageField(upload_to='icons/Scan')
     price = models.IntegerField(default=0)
+    description = models.CharField(max_length=1000)
+    store_val = models.IntegerField(default=0)
 
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.image.url)
@@ -24,6 +26,9 @@ class DiggingEquipment(models.Model):
     time_modifier = models.IntegerField(default=8)
     image = models.ImageField(upload_to='icons/Tools')
     price = models.IntegerField(default=0)
+    description = models.CharField(max_length=1000)
+    store_val = models.IntegerField(default=0)
+
 
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.image.url)
@@ -39,6 +44,9 @@ class Vehicle(models.Model):
     modifier = models.IntegerField(default=10)
     image = models.ImageField(upload_to='icons/Vehicle')
     price = models.IntegerField(default=0)
+    description = models.CharField(max_length=1000)
+
+
 
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.image.url)

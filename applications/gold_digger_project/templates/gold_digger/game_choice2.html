@@ -7,7 +7,8 @@
 <head>
     <title>Mine selection</title>
 
-</head>{% block body_block %}
+</head>
+{% block body_block %}
 <body id="shopbody">
 
     <div>
@@ -15,7 +16,6 @@
     <div class="jumbotron" id="about">
         <h1>Locations</h1>
 
-        <h4>Select a location to start diggin'!</h4>
     </div>
     <hr>
     <!-- California Modal -->
@@ -220,7 +220,7 @@
         <div class="container-fluid">
             <div class="col-xs-2 col-md-2">
 
-                <div class="well" id="mapstats">
+                <div class="well" id="mapstats2">
                     <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span>
                     <hr>
                     <p style="color: gold">Scanning: <img data-toggle="tooltip" data-placement="right" title="Accuracy: {{ mod_scan }}%" id="scan" src="{{ scan }}"></p>
@@ -238,7 +238,7 @@
 
 
                 <!-- Map -->
-                <img id="img_ID" src="/static/map_locations_price.png" usemap="#map" border="0" width="100%" alt=""/>
+                <img style="border-color: #000000; border-width: 2px; border-radius:6px; " id="img_ID" src="/static/map_locations_price.png" usemap="#map" border="0" width="100%" alt=""/>
             </div>
             <map id="map_ID" name="map">
                 <area shape="rect" coords="79,212,249,264" href="#" data-toggle="modal" data-target="#California"

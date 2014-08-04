@@ -5,25 +5,25 @@ def populate():
 
     ### SCANNING ###
 
-    lamp = add_scanning_equipment('Oil lamp', 0.2, 'icons/Scan/Oil lamp.png', 10)
-    map = add_scanning_equipment('Map', 0.3, 'icons/Scan/Map.png', 10)
-    sonar = add_scanning_equipment('Sonar', 0.5, 'icons/Scan/Sonar.gif', 10)
-    dwarf = add_scanning_equipment('Guide Dwarf', 0.6, 'icons/Scan/Guide Dwarf.png', 10)
-    spell = add_scanning_equipment('Spell', 0.8, 'icons/Scan/Spell.png', 10)
+    lamp = add_scanning_equipment('Oil lamp', 0.2, 'icons/Scan/Oil lamp.png', 10, "It won't allow you to see much but it's better than going in blind!", 20)
+    map = add_scanning_equipment('Map', 0.3, 'icons/Scan/Map.png', 10, "It probably helps knowing you're not digging in the wrong place", 30)
+    sonar = add_scanning_equipment('Sonar', 0.5, 'icons/Scan/Sonar.gif', 10, "Now we're cooking with gas!", 50)
+    dwarf = add_scanning_equipment('Guide Dwarf', 0.6, 'icons/Scan/Guide Dwarf.png', 10, "If you're not sure, just ask the locals!", 60)
+    spell = add_scanning_equipment('Spell', 0.8, 'icons/Scan/Spell.png', 10, "Magic beats science EVERY TIME", 80)
 
     ### DIGGING ###
 
-    shovel =add_digging_equipment('Shovel', 0.2, 8, 'icons/Tools/Shovel_normal.png', 10)
-    golden_shovel = add_digging_equipment('Golden Shovel', 0.4, 6, 'icons/Tools/Shovel_golden.png', 10)
-    dynamite = add_digging_equipment('Dynamite', 0.6, 3, 'icons/Tools/Dynamite.png', 10)
-    mecha = add_digging_equipment('Mecha', 0.8, 1,'icons/Tools/Mecha.png', 10)
+    shovel = add_digging_equipment('Shovel', 0.2, 8, 'icons/Tools/Shovel_normal.png', 10, "It's a shovel", 20)
+    golden_shovel = add_digging_equipment('Golden Shovel', 0.4, 6, 'icons/Tools/Shovel_golden.png', 10, "It might seem like a bad idea, but it's not REAL gold", 40)
+    dynamite = add_digging_equipment('Dynamite', 0.6, 3, 'icons/Tools/Dynamite.png', 10, "KABLAMO!", 60)
+    mecha = add_digging_equipment('Mecha', 0.8, 1, 'icons/Tools/Mecha.png', 10, "Dig ALL the gold!", 80)
 
     ### MOVING ###
 
-    wheelbarrow = add_vehicle('Wheelbarrow', 20, 'icons/Vehicle/Wheelbarrow.png', 10)
-    cart = add_vehicle('Cart', 15, 'icons/Vehicle/Cart.png', 10)
-    donkey = add_vehicle('Donkey', 10, 'icons/Vehicle/Donkey.png', 10)
-    truck = add_vehicle('Truck', 5, 'icons/Vehicle/Truck.png', 10)
+    wheelbarrow = add_vehicle('Wheelbarrow', 20, 'icons/Vehicle/Wheelbarrow.png', 10, "Well, if you start selling mussels too, you're set!")
+    cart = add_vehicle('Cart', 15, 'icons/Vehicle/Cart.png', 10, "Maybe don't ride it, it doesn't have breaks")
+    donkey = add_vehicle('Donkey', 10, 'icons/Vehicle/Donkey.png', 10, "Nothing like good'ol animal power to carry your gold!")
+    truck = add_vehicle('Truck', 5, 'icons/Vehicle/Truck.png', 10, "They see me rollin'!")
 
     jill = add_user('Jill', 'jill@gmail.com', 'jill')
     john = add_user('John', 'john@gmail.com', 'john')
@@ -53,16 +53,16 @@ def add_user_profile(user, picture, location, equipment, vehicle, tool, all_time
     return up
 
 
-def add_scanning_equipment(name, modifier, image, price):
-    eq = ScanningEquipment.objects.get_or_create(name=name, modifier=modifier, image=image, price=price)[0]
+def add_scanning_equipment(name, modifier, image, price, description, store_val):
+    eq = ScanningEquipment.objects.get_or_create(name=name, modifier=modifier, image=image, price=price, description=description, store_val=store_val)[0]
     return eq
 
-def add_digging_equipment(name, modifier, time_modifier, image, price):
-    deq = DiggingEquipment.objects.get_or_create(name=name, modifier=modifier, time_modifier=time_modifier, image=image, price=price)[0]
+def add_digging_equipment(name, modifier, time_modifier, image, price, description, store_val):
+    deq = DiggingEquipment.objects.get_or_create(name=name, modifier=modifier, time_modifier=time_modifier, image=image, price=price, description=description, store_val=store_val)[0]
     return deq
 
-def add_vehicle(name, modifier, image, price):
-    vehicle = Vehicle.objects.get_or_create(name=name, modifier=modifier, image=image, price=price)[0]
+def add_vehicle(name, modifier, image, price, description):
+    vehicle = Vehicle.objects.get_or_create(name=name, modifier=modifier, image=image, price=price, description=description)[0]
     return vehicle
 
 if __name__ == '__main__':

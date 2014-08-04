@@ -20,22 +20,10 @@
     <hr>
     <div class="container-fluid">
         <div class="col-xs-2 col-md-2">
-            <ul class="nav nav-pills nav-stacked">
 
-                {% if user.is_authenticated %}
-                    <li class="active animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/profile/">Your profile</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li class="animated bounceInDown"><a href = "/gold_digger/" >Back to Main</a></li>
-                {% else %}
-                    <li class="active animated bounceInDown"><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li class="animated bounceInDown"><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li class="animated bounceInDown"><a href = "/gold_digger/" >Back to Main</a></li>
-
-                {% endif %}
-            </ul>
         </div>
-        <div class="col-xs-7 col-md-7">
+        <div class="col-xs-7 col-md-7 well">
+
             <img src="{% static "glasgow.gif" %}" alt="Uni logo" width=50%><br>
             Gold Digger is a project by the <a href="http://www.gla.ac.uk">University of Glasgow</a> developed by Gabriele Rossi. Its objective is to gather information regarding user searching behaviour through the use of a metaphor.
             Although no data about user searches is actually gathered, this game/experiment hopes to uncover similarities between already existing data about user behaviour with new data gathered in a

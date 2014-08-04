@@ -38,9 +38,12 @@
 
 			<div class="collapse navbar-collapse" id="collapse">
 				<ul class="nav navbar-nav">
-
+                    {% if user.is_authenticated %}
+                    <li class="active"><a href="/gold_digger/game_choice2/">Play!</a></li>
+                    {% endif %}
 					<li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
 					<li><a href="/gold_digger/about/">About</a></li>
+                    <li><a href="/gold_digger/tour/">How to play</a></li>
 
 				</ul>
 
@@ -178,7 +181,7 @@
 
             <div class="" id="row_{{ block.pos }}">
                 <div class="buttons" id="invisiblebuttons_{{ block.pos }}">
-                    <button type="submit" class="button btn-group-sm" value="{{ block.gold }}" name="dig"
+                    <button type="submit" class="button btm-default btn-sm" value="{{ block.gold }}" name="dig"
                             id="digbutton_1"> dig (5)
                     </button>
                     <input type="hidden" value="" name="block"
@@ -186,7 +189,7 @@
                 </div>
                 <form class="move" action="#" id="movebutton_1">
 
-                    <button type="submit" class="button btn-group-sm" value="move mine" name="move"
+                    <button type="submit" class="button btm-default btn-sm" value="move mine" name="move"
                             id="controls">move (5)
                     </button>
                 </form>

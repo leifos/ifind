@@ -20,66 +20,37 @@
 
 
     <div class="container-fluid">
-                {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
 
-                <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6 col-md-3">
                 <div class="well" id="mapstats">
                     <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span>
                     <hr>
-                    <p style="color: gold">Scanning: <img data-toggle="tooltip" data-placement="right" title="Accuracy: {{ mod_scan }}%" id="scan" src="{{ scan }}"></p>
+                    <p style="color: gold">Scanning: <img data-toggle="tooltip" data-placement="right"
+                                                          title="Accuracy: {{ mod_scan }}%" id="scan" src="{{ scan }}">
+                    </p>
 
-                    <p style="color: gold">Tool: <img data-toggle="tooltip" data-placement="right" title="Dig cost: {{ modt_tool }} Extracted: {{ mod_tool }}%" id="tool" src="{{ tool }}"></p>
+                    <p style="color: gold">Tool: <img data-toggle="tooltip" data-placement="right"
+                                                      title="Dig cost: {{ modt_tool }} Extracted: {{ mod_tool }}%"
+                                                      id="tool" src="{{ tool }}"></p>
 
-                    <p style="color: gold">Vehicle: <img data-toggle="tooltip" data-placement="right" title="Move cost: {{ mod_vehicle }}" id="vehicle" src="{{ vehicle }}"></p>
+                    <p style="color: gold">Vehicle: <img data-toggle="tooltip" data-placement="right"
+                                                         title="Move cost: {{ mod_vehicle }}" id="vehicle"
+                                                         src="{{ vehicle }}"></p>
 
                 </div>
-                </div>
+            </div>
 
-                {% else %}
-                <div class="col-xs-6 col-md-2">
-                 <ul class="nav nav-pills nav-stacked animated bounceInDown">
-                    <li><a href="/gold_digger/about/">About Gold Digger</a></li>
-                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#regModal">Register</a></li>
-                    <li><a href="/gold_digger/tour/">Tour</a></li>
-                 </ul>
-                </div>
-
-                {% endif %}
-
-
-
-        <div class="col-xs-6 col-md-7">
-            {% if registered %}
-                <div class="alert alert-dismissable alert-success">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <strong> You successfully registrated! </strong> Now click on "Play" to begin diggin'!
-                </div>
-            {% endif %}
-            <h2>Welcome</h2>
-            Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
-            <br><br>
-            {% if registered == False %}
-                <div class="alert alert-dismissable alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>Invalid registration details supplied!</strong>
-                    </div>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <br> <br><a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/">Play!</a>
-                <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/">How to play</a>
-
-
-            {% endif %}
-        </div>
-        {% if not user.is_authenticated %}
+        {% else %}
+           {% if not user.is_authenticated %}
             <div class="col-xs-6 col-md-3">
-                <div class="panel panel-default">
+
+                <div class="panel panel-default" id="homewell">
                     <div class="panel-body">
                         <form class="form-horizontal" action="/gold_digger/user_login/" method="post">
                             {% csrf_token %}
                             <fieldset>
-                                <legend>Login</legend>
+                                <legend style="color: black; border-color: #000000;">Login</legend>
 
 
 
@@ -136,7 +107,42 @@
                 {% endif %}
             </div>
         {% endif %}
-    </div>
+
+
+
+        {% endif %}
+
+
+
+        <div class="col-xs-6 col-md-7">
+            <div class="well" id="homewell">
+                {% if registered %}
+                    <div class="alert alert-dismissable alert-success">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong> You successfully registrated! </strong> Now click on "Play" to begin diggin'!
+                    </div>
+                {% endif %}
+                <h2>Welcome</h2>
+                Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
+                <br><br>
+                {% if registered == False %}
+                    <div class="alert alert-dismissable alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Invalid registration details supplied!</strong>
+                    </div>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <br> <br>
+                    <a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/"
+                       style="font-family: pixelfont">Play!</a>
+                    <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/"
+                       style="font-family: pixelfont">How to play</a>
+
+
+                {% endif %}
+            </div>
+        </div>
+
     </div>
 
 
@@ -161,26 +167,46 @@
                             {{ profile_form | bootstrap_horizontal:'col-lg-3' }}
                         {% endif %}
 
-                    <label for="text" class="col-lg-2 control-label" id="disclaimerlabel">Disclaimer</label>
+                        <label for="text" class="col-lg-2 control-label" id="disclaimerlabel">Disclaimer</label>
                         <textarea id="text" class="form-inline" disabled="disabled" rows="10" cols="50">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci justo, ullamcorper sed pulvinar sit amet, venenatis ac nibh. Vivamus in sapien eu sem bibendum vulputate ac sed ante. Integer dictum blandit urna, malesuada tristique tortor ultrices at. Mauris et aliquet nisi. Maecenas id lorem tortor. Curabitur vitae neque nibh. Integer et lorem non odio consectetur tempor vitae in arcu. Quisque ultricies enim vel elit ullamcorper eu suscipit massa porta. Suspendisse sodales rhoncus purus, volutpat egestas mi molestie id. Aenean arcu sem, tincidunt ac vulputate vestibulum, posuere id massa. Praesent sit amet pretium quam. Nunc adipiscing diam quis felis rhoncus et cursus lectus adipiscing. Aliquam erat volutpat. Nunc lorem nibh, vestibulum condimentum pellentesque non, tincidunt vitae mauris.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci justo, ullamcorper sed
+                            pulvinar sit amet, venenatis ac nibh. Vivamus in sapien eu sem bibendum vulputate ac sed
+                            ante. Integer dictum blandit urna, malesuada tristique tortor ultrices at. Mauris et aliquet
+                            nisi. Maecenas id lorem tortor. Curabitur vitae neque nibh. Integer et lorem non odio
+                            consectetur tempor vitae in arcu. Quisque ultricies enim vel elit ullamcorper eu suscipit
+                            massa porta. Suspendisse sodales rhoncus purus, volutpat egestas mi molestie id. Aenean arcu
+                            sem, tincidunt ac vulputate vestibulum, posuere id massa. Praesent sit amet pretium quam.
+                            Nunc adipiscing diam quis felis rhoncus et cursus lectus adipiscing. Aliquam erat volutpat.
+                            Nunc lorem nibh, vestibulum condimentum pellentesque non, tincidunt vitae mauris.
 
-Nullam id augue eu nulla pharetra pharetra non quis odio. Suspendisse at accumsan erat. In tempor eros eu dolor egestas non tristique turpis euismod. Nunc nisl neque, egestas et placerat in, vehicula et ante. Nulla tempus tempor adipiscing. Praesent sapien neque, semper a sollicitudin sed, malesuada ut felis. Proin laoreet ipsum non diam feugiat eu fringilla est dignissim. Mauris ac sodales justo. Aliquam erat volutpat. Cras aliquet commodo massa eu faucibus. Pellentesque tempus urna sit amet nunc gravida et dapibus tortor congue. Nulla facilisi. Nulla facilisi. Duis sem turpis, sodales dapibus congue sit amet, molestie sit amet dui. Aliquam imperdiet viverra sapien sed vestibulum. In malesuada commodo condimentum.
+                            Nullam id augue eu nulla pharetra pharetra non quis odio. Suspendisse at accumsan erat. In
+                            tempor eros eu dolor egestas non tristique turpis euismod. Nunc nisl neque, egestas et
+                            placerat in, vehicula et ante. Nulla tempus tempor adipiscing. Praesent sapien neque, semper
+                            a sollicitudin sed, malesuada ut felis. Proin laoreet ipsum non diam feugiat eu fringilla
+                            est dignissim. Mauris ac sodales justo. Aliquam erat volutpat. Cras aliquet commodo massa eu
+                            faucibus. Pellentesque tempus urna sit amet nunc gravida et dapibus tortor congue. Nulla
+                            facilisi. Nulla facilisi. Duis sem turpis, sodales dapibus congue sit amet, molestie sit
+                            amet dui. Aliquam imperdiet viverra sapien sed vestibulum. In malesuada commodo condimentum.
 
-Pellentesque semper urna id odio vulputate mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean tristique suscipit ultricies. Quisque ac dolor vitae odio fermentum auctor et eget risus. Proin ipsum sapien, fermentum vel aliquam at, hendrerit id nisi. Vestibulum cursus mollis nisi, et pretium felis rhoncus id. Suspendisse ante lectus, imperdiet ac ullamcorper in, ornare quis augue. Proin id velit eu lorem tristique porta eu quis tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Cras fringilla aliquam ipsum elementum fringilla. Vestibulum eu magna nibh, vel dapibus sapien.
-</textarea>
+                            Pellentesque semper urna id odio vulputate mollis. Class aptent taciti sociosqu ad litora
+                            torquent per conubia nostra, per inceptos himenaeos. Aenean tristique suscipit ultricies.
+                            Quisque ac dolor vitae odio fermentum auctor et eget risus. Proin ipsum sapien, fermentum
+                            vel aliquam at, hendrerit id nisi. Vestibulum cursus mollis nisi, et pretium felis rhoncus
+                            id. Suspendisse ante lectus, imperdiet ac ullamcorper in, ornare quis augue. Proin id velit
+                            eu lorem tristique porta eu quis tortor. Vestibulum ante ipsum primis in faucibus orci
+                            luctus et ultrices posuere cubilia Curae; Cras fringilla aliquam ipsum elementum fringilla.
+                            Vestibulum eu magna nibh, vel dapibus sapien.
+                        </textarea>
 
 
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" name="submit" value="Register" class="btn btn-primary">Register
-                            </button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" name="submit" value="Register" class="btn btn-primary">Register
+                        </button>
+                    </div>
             </form>
         </div>
-    </div>
     </div>
 
 
