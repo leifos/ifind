@@ -20,6 +20,6 @@
     {% if edited %}
     <div class="alert">
         Profile updated successfully!<br>
-        <a class="btn-primary" href="profile.html">Return To Profile</a>
+        <a class="btn-primary" href="/profile/{{ user.username }}">Return To Profile</a>
     {% endif %}
 {% endblock %}
