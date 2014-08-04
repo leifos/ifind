@@ -44,12 +44,14 @@ def editprofile(request, username):
     user = request.user
     curr_user_demog = UKDemographicsSurvey.objects.get(user=user)
     new_demog_form = None
+    edited = False
 
     if request.method == 'POST':
         new_demog_form = UKDemographicsSurveyForm(data=request.POST, instance=curr_user_demog)
 
         if new_demog_form.is_valid():
             new_demog_form.save()
+            edited = True
             print 'valid'
 
         else:
@@ -59,7 +61,7 @@ def editprofile(request, username):
         print 'apparently not a POST'
         new_demog_form = UKDemographicsSurveyForm(instance=curr_user_demog)
 
-    return render_to_response('slowsearch/editprofile',  {'new_demog_form': new_demog_form}, context)
+    return render_to_response('slowsearch/editprofile',  {'new_demog_form': new_demog_form, 'edited':edited}, context)
 
 
 def about(request):
