@@ -52,8 +52,6 @@ def editprofile(request, username):
         if new_demog_form.is_valid():
             new_demog_form.save()
             edited = True
-            print 'valid'
-
         else:
             print 'invalid'
 
@@ -281,9 +279,6 @@ def search(request):
         query = request.session['session_query']
         contacts = paginated_search(query, cnd, u_ID, page, user)
 
-    for c in contacts:
-        if 'http://' in c.url:
-            c.url = c.url[7:]
 
     return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query}, context)
 
