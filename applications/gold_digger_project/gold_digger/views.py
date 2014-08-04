@@ -201,7 +201,7 @@ def move(request):
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    request.session['mine_type'] = random.choice(locations)
+
 
     if request.session['time_remaining'] <= 0:
         return HttpResponseRedirect(reverse('game_over'), context)
@@ -265,7 +265,7 @@ def game_choice2(request):
 
     mine_types = ['constant', 'random', 'cubic', 'exponential', 'quadratic', 'linear']
 
-    shuffle(mine_types)
+
     print mine_types
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
@@ -322,32 +322,32 @@ def game2(request):
         if mine_type == 'constant':
             print "constant"
             request.session['mine_type'] = 'constant'
-            gen = yieldgen.ConstantYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.CaliforniaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'linear':
             print "linear"
             request.session['mine_type'] = "linear"
-            gen = yieldgen.LinearYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.YukonQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'random':
             print "random"
             request.session['mine_type'] = 'random'
-            gen = yieldgen.RandomYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.BrazilQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'quadratic':
             print "quadratic"
             request.session['mine_type'] = 'quadratic'
-            gen = yieldgen.QuadraticYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'exponential':
             print "exponential"
             request.session['mine_type'] = 'exponential'
-            gen = yieldgen.ExponentialYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.SouthAfricaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'cubic':
             print "cubic"
             request.session['mine_type'] = 'cubic'
-            gen = yieldgen.CubicYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.VictoriaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         accuracy = user.equipment.modifier
         m = mine.Mine(gen, accuracy)

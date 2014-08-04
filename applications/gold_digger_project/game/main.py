@@ -1,5 +1,5 @@
 from game import cuegen
-from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator, QuadraticYieldGenerator,ExponentialYieldGenerator, CubicYieldGenerator
+from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator, QuadraticYieldGenerator,ExponentialYieldGenerator, CubicYieldGenerator, CaliforniaQuadraticYieldGenerator, BrazilQuadraticYieldGenerator, YukonQuadraticYieldGenerator, ScotlandQuadraticYieldGenerator, SouthAfricaQuadraticYieldGenerator, VictoriaQuadraticYieldGenerator
 from mine import Mine
 from gold_digger import logger
 
@@ -32,12 +32,12 @@ for d in range(maxgold, 0, -1):
         index = 0
 
 
-ryg = RandomYieldGenerator(depth=10, max=maxgold, min=0)
-cyg = ConstantYieldGenerator(depth=10, max=maxgold, min=0)
-lyg = LinearYieldGenerator(depth=10, max=maxgold, min=0)
-qyg = QuadraticYieldGenerator(depth=10, max=maxgold, min=0)
-eyg = ExponentialYieldGenerator(depth=10, max=maxgold, min=0)
-cuyg = CubicYieldGenerator(depth=10, max=maxgold, min=0)
+ryg = CaliforniaQuadraticYieldGenerator(depth=10, max=maxgold, min=0)
+cyg = YukonQuadraticYieldGenerator(depth=10, max=maxgold, min=0)
+lyg = BrazilQuadraticYieldGenerator(depth=10, max=maxgold, min=0)
+qyg = ScotlandQuadraticYieldGenerator(depth=10, max=maxgold, min=0)
+eyg = SouthAfricaQuadraticYieldGenerator(depth=10, max=maxgold, min=0)
+cuyg = VictoriaQuadraticYieldGenerator(depth=10, max=maxgold, min=0)
 
 logger.event_logger.info("Yield Generators created")
 
