@@ -6,13 +6,13 @@
 
     <div align="center" class="container">
     <form id="login_form" method="post" action="/login/">
-       <br> <h2 class="form-signin-heading">Sign in to Badsearch</h2> <br><br>
+       <br> <h2 class="form-signin-heading">Sign in to Netsearch</h2> <br><br>
         {% csrf_token %}
 
         {% if bad_details %}
         <p><strong>Your username and/or password were incorrect!</strong></p>
         {% elif disabled_account %}
-        <p><strong>Your Badsearch account is currently disabled; we can't log you in!</strong></p>
+        <p><strong>Your Netsearch account is currently disabled; we can't log you in!</strong></p>
         {% endif %}
         <fieldset></fieldset>
         <div class="form-group">

@@ -6,7 +6,7 @@
 
 {% block body_block %}
 <div class="hero-unit">
-    <h3>Your results from BadSearch</h3>
+    <h3>Your results from Netsearch</h3>
     <br/>
 
     <div class="hero-unit">
@@ -28,7 +28,7 @@
                     <strong><u><a href="/goto/{{ result.url }}/{{ result.rank }}">{{ result.title }}</a></u></strong><br />
                     <div style="font-size: smaller; color: green">{% if result.url|length > 70 %}{{ contact.url|slice:"70" }}...
                     {% else %}{{ result.url }}{% endif %}</div>
-                    <em>{{ result.summary }}</em><br>
+                    <em>{{ result.summary }}</em>
                 <hr>
             {% endfor %}
             </ul>
@@ -53,7 +53,7 @@
                 {% endif %}
                 </span>
                 </div>
-           
+
 
     </div>
 </div>

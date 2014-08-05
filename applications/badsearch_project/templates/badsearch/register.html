@@ -23,7 +23,7 @@
         <strong>Please fill in your details below and agree to the Study Information to begin searching.</strong><br><br>
 
         <strong>Study Information:</strong><br>
-        Badsearch is a search application developed by Iain Hendry, an MSc IT student at the University of Glasgow,
+        Netsearch is a search application developed by Iain Hendry, an MSc IT student at the University of Glasgow,
         as part of a research project. <strong>Please read the Study Information below and tick the boxes to agree to the terms
         of this study.</strong><br><br>
         <ul>
@@ -45,7 +45,7 @@
         </ul>
 
          {% for field in validation_form %}
-            {{ field }} {{ field.label }}
+            {{ field }}{{ field.label_tag }}
             <br><br>
         {% endfor %}<br>
 
