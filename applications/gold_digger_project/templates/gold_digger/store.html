@@ -8,7 +8,6 @@
 <span id='csrf'>{% csrf_token %}</span>
 <body class="store_view">
 
-
 	<!-- row 2: header -->
 
 		<div class="landscape_container" id="generalstore">
@@ -24,13 +23,14 @@
 		</div>
 		</div>
 <div class="container-fluid">
-    <div class="col-xs-2 store left">
+    <div id="message" class="col-xs-2 store left">
+
         <div class="well" id="shopgold">
-            <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span>
+            <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span> <!--<span style="color: red" id="message"></span>-->
             <hr>
-            <p>Scanning: <img id="scan" src="{{ scan }}"> <button type="button" class="btn btn-warning btn-xs" id="upgrade" style="font-family: pixelfont">Upgrade</button></p>
-            <p>Tool: <img id="tool" src="{{ dig }}"> <button type="button" class="btn btn-warning btn-xs" id="upgrade" style="font-family: pixelfont">Upgrade</button></p>
-            <p>Vehicle: <img id="vehicle" src="{{ move }}"> <button type="button" class="btn btn-warning btn-xs" id="upgrade" style="font-family: pixelfont">Upgrade</button></p>
+            <p id="result_s">Scanning: <img id="scan" src="{{ scan }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" name="upgrade_scan" style="font-family: pixelfont">Upgrade</button></p>
+            <p>Tool: <img id="tool" src="{{ dig }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" id="upgrade_tool" style="font-family: pixelfont">Upgrade</button></p>
+            <p>Vehicle: <img id="vehicle" src="{{ move }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" id="upgrade_vehicle" style="font-family: pixelfont">Upgrade</button></p><br>
             <p id="playstore"><a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/" style="font-family: pixelfont">Play!</a></p>
         </div>
 
@@ -123,6 +123,7 @@
 	    </div>
 
 	</div>
+
 
 {% endblock %}
 </body>

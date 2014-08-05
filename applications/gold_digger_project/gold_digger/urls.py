@@ -19,5 +19,7 @@ urlpatterns = patterns('',
         url(r'^ajax_buy/$', views.ajax_buy, name='store'),
         url(r'^update_location/$', views.update_location, name='update_location'),
         url(r'^tour/$', views.tour, name='tour'),
+        url(r'^update_cost/$', views.update_cost, name='update_cost'),
+        url(r'^ajax_upgrade/$', views.ajax_upgrade, name='ajax_upgrade')
 
 )

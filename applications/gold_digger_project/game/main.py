@@ -48,20 +48,20 @@ mqyg = Mine(qyg, 0.8)
 meyg = Mine(eyg, 0.8)
 mcuyg = Mine(cuyg, 0.8)
 
-print '\n' + "### Random yield ###" + '\n'
+print '\n' + "### Cali ###" + '\n'
 mryg.show_mine()
 
-print '\n' + "### Constant yield ###" + '\n'
+print '\n' + "### Yukon ###" + '\n'
 mcyg.show_mine()
 
-print '\n' + "### Linear Yield ###" + '\n'
+print '\n' + "### Brazil ###" + '\n'
 mlyg.show_mine()
 
-print '\n' + "### Quadratic Yield ###" + '\n'
+print '\n' + "### Scotland ###" + '\n'
 mqyg.show_mine()
 
-print '\n' + "### Exponential Yield ###" + '\n'
+print '\n' + "### SA ###" + '\n'
 meyg.show_mine()
 
-print '\n' + "### Cubic Yield ###" + '\n'
+print '\n' + "### Victoria ###" + '\n'
 mcuyg.show_mine()

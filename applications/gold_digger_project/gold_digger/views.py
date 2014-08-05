@@ -13,7 +13,7 @@ import random
 from random import shuffle
 import json
 
-locations = ['constant', 'random', 'cubic', 'exponential', 'quadratic', 'linear']
+locations = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
 
 
 def home(request):
@@ -138,8 +138,9 @@ def user_login(request):
                 login(request, user)
                 request.session['time_remaining'] = 100
                 request.session['gold'] = 0
+                request.session['days'] = 1
 
-                return HttpResponseRedirect(reverse('home'),context)
+                return HttpResponseRedirect(reverse('home'), context)
             else:
                 return HttpResponse("Your Gold Digger account is disabled.")
         else:
@@ -234,20 +235,24 @@ def game_over(request):
         user.all_time_max_gold = user.gold
 
     user.games_played += 1
+    request.session['days'] += 1
     user.all_time_gold += user.gold
     user.average = user.all_time_gold/user.games_played
     user.save()
     request.session['has_mine'] = False
+    request.session['mine_type'] = ''
     request.session['time_remaining'] = 100
     mine_no = request.session['mine_no']
     request.session['mine_no'] = 0
     day_gold = request.session['gold']
     total_gold = user.gold
     request.session['gold'] = 0
+    cost = determine_cost(request.session['location'])
 
     return render_to_response('gold_digger/game_over.html', {'day_gold': day_gold,
                                                              'total_gold': total_gold,
-                                                             'mine_no': mine_no}, context)
+                                                             'mine_no': mine_no,
+                                                             'cost': cost}, context)
 
 
 def leaderboards(request):
@@ -263,7 +268,7 @@ def game_choice2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
 
-    mine_types = ['constant', 'random', 'cubic', 'exponential', 'quadratic', 'linear']
+    mine_types = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
 
 
     print mine_types
@@ -297,10 +302,10 @@ def game2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
 
-
     if request.session['mine_type'] == '':
-        mine_type = request.GET['mine type']
-
+        mine_type = request.session['location']
+        user.gold -= determine_cost(mine_type)
+        user.save()
     else:
         mine_type = request.session['mine_type']
 
@@ -319,34 +324,35 @@ def game2(request):
 
         time_remaining = request.session['time_remaining']
 
-        if mine_type == 'constant':
-            print "constant"
-            request.session['mine_type'] = 'constant'
+        if mine_type == 'California':
+            print "California"
+            request.session['mine_type'] = 'California'
             gen = yieldgen.CaliforniaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'linear':
-            print "linear"
-            request.session['mine_type'] = "linear"
+        elif mine_type == 'Yukon':
+            print "Yukon"
+            request.session['mine_type'] = "Yukon"
             gen = yieldgen.YukonQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'random':
-            print "random"
-            request.session['mine_type'] = 'random'
+        elif mine_type == 'Brazil':
+            print "Brazil"
+            request.session['mine_type'] = 'Brazil'
             gen = yieldgen.BrazilQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'quadratic':
-            print "quadratic"
-            request.session['mine_type'] = 'quadratic'
+        elif mine_type == 'South Africa':
+            print "South Africa"
+            request.session['mine_type'] = 'South Africa'
             gen = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'exponential':
-            print "exponential"
-            request.session['mine_type'] = 'exponential'
+        elif mine_type == 'Scotland':
+            print "Scotland"
+            request.session['mine_type'] = 'Scotland'
             gen = yieldgen.SouthAfricaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
-        elif mine_type == 'cubic':
-            print "cubic"
-            request.session['mine_type'] = 'cubic'
+        elif mine_type == 'Victoria':
+            print "Victoria"
+            request.session['mine_type'] = 'Victoria'
+
             gen = yieldgen.VictoriaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         accuracy = user.equipment.modifier
@@ -368,6 +374,10 @@ def game2(request):
         pointer = request.session['pointer']
         mine_no = request.session['mine_no']
         visibility = int((user.equipment.modifier)*10)
+        mod_scan = int(user.equipment.modifier*100)
+        mod_tool = int(user.tool.modifier*100)
+        modt_tool = user.tool.time_modifier
+        mod_vehicle = user.vehicle.modifier
 
         if time_remaining < 0:
             return HttpResponseRedirect(reverse('game_over'), context)
@@ -380,44 +390,54 @@ def game2(request):
                                                              'move_cost': move_cost,
                                                              'dig_cost': dig_cost,
                                                              'location': location,
-                                                             'pointer':pointer,
+                                                             'pointer': pointer,
                                                              'mine_no': mine_no,
-                                                             'visibility': visibility}, context)
+                                                             'visibility': visibility,
+                                                             'mod_scan': mod_scan,
+                                                             'mod_tool': mod_tool,
+                                                             'modt_tool': modt_tool,
+                                                             'mod_vehicle': mod_vehicle}, context)
     else:
-         # Unpickling
-          pickled_blocks = request.session['pickle']
-          blocks = pickle.loads(pickled_blocks)
-          pickled_limits = request.session['limits']
-          limits = pickle.loads(pickled_limits)
-          move_cost = user.vehicle.modifier
-          dig_cost = user.tool.time_modifier
-          location = request.session['location']
-          time_remaining = request.session['time_remaining']
-          pointer = request.session['pointer']
-          mine_no = request.session['mine_no']
-          visibility = int((user.equipment.modifier)*10)
+        # Unpickling
+        pickled_blocks = request.session['pickle']
+        blocks = pickle.loads(pickled_blocks)
+        pickled_limits = request.session['limits']
+        limits = pickle.loads(pickled_limits)
+        move_cost = user.vehicle.modifier
+        dig_cost = user.tool.time_modifier
+        location = request.session['location']
+        time_remaining = request.session['time_remaining']
+        pointer = request.session['pointer']
+        mine_no = request.session['mine_no']
+        visibility = int((user.equipment.modifier) * 10)
+        mod_scan = int(user.equipment.modifier * 100)
+        mod_tool = int(user.tool.modifier * 100)
+        modt_tool = user.tool.time_modifier
+        mod_vehicle = user.vehicle.modifier
 
+        scaffold = [1, 2, 3]
 
-          scaffold = [1, 2, 3]
+        if time_remaining < 0:
+            return HttpResponseRedirect(reverse('game_over'), context)
 
-          if time_remaining < 0:
-              return HttpResponseRedirect(reverse('game_over'), context)
-
-          return render_to_response('gold_digger/game2.html', {'blocks': blocks,
-                                                               'user': user,
-                                                               'time_remaining': time_remaining,
-                                                               'limits': limits,
-                                                               'scaffold': scaffold,
-                                                               'move_cost':move_cost,
-                                                               'dig_cost': dig_cost,
-                                                               'location': location,
-                                                               'pointer': pointer,
-                                                               'mine_no': mine_no,
-                                                               'visibility': visibility}, context)
+        return render_to_response('gold_digger/game2.html', {'blocks': blocks,
+                                                             'user': user,
+                                                             'time_remaining': time_remaining,
+                                                             'limits': limits,
+                                                             'scaffold': scaffold,
+                                                             'move_cost': move_cost,
+                                                             'dig_cost': dig_cost,
+                                                             'location': location,
+                                                             'pointer': pointer,
+                                                             'mine_no': mine_no,
+                                                             'visibility': visibility,
+                                                             'mod_scan': mod_scan,
+                                                             'mod_tool': mod_tool,
+                                                             'modt_tool': modt_tool,
+                                                             'mod_vehicle': mod_vehicle}, context)
 
 
 def divide(max_gold):
-
     limits = []
     span = max_gold / 6
     limits.append(max_gold)
@@ -582,9 +602,89 @@ def ajax_buy(request):
             request.session['purchase'] = False
             return HttpResponse(status=204)
 
+
+def ajax_upgrade(request):
+    print "GOT HERE!!!"
+    user = UserProfile.objects.get(user=request.user)
+    item_id = user.equipment.id
+    myResponse = {}
+    myResponse['maxed_up'] = False
+
+    if item_id == 5:
+        return HttpResponse(status=204)
+
+    else:
+        item_id += 1
+        new_item = ScanningEquipment.objects.get(id=item_id)
+
+    if new_item.price > user.gold:
+        return HttpResponse(status=204)
+
+    else:
+        user.gold -= new_item.price
+        user.equipment = new_item
+        user.save()
+
+        myResponse['image'] = new_item.image.url
+        myResponse['gold'] = user.gold
+        return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+    # if 'scan' in request.POST:
+    #     if user.equipment.name == 'Spell':
+    #
+    #     else:
+    #         if user.gold >= user.price:
+    #         user.gold -= item.price
+    #         user.equipment = item
+    #         user.save()
+    #         request.session['purchase'] = True
+    #
+    #         myResponse = {}
+    #
+    #         myResponse['image'] = item.image.url
+    #         myResponse['gold'] = user.gold
+    #         return HttpResponse(json.dumps(myResponse), content_type="application/json")
+    #
+    #         else:
+    #             request.session['purchase'] = False
+    #
+
+
+
 @login_required
 def update_location(request):
     request.session['location'] = request.POST['loc']
     request.session['mine_type'] = ''
     print request.session['location']
     return HttpResponse(status=200)
+
+@login_required
+def update_cost(request):
+    user = UserProfile.objects.get(user=request.user)
+    print user.gold
+    user.gold -= int(request.POST['cost'])
+    print request.POST['cost'], "COOOOOSTTTTTTTTT"
+    print user.gold
+    user.save()
+
+    myResponse = user.gold
+
+    return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+
+def determine_cost(mine_type):
+    cost = 0
+    if mine_type == 'California':
+        cost = 20
+    elif mine_type == 'Yukon':
+        cost = 40
+    elif mine_type == 'Brazil':
+        cost = 80
+    elif mine_type == 'South Africa':
+        cost = 100
+    elif mine_type == 'Scotland':
+        cost = 120
+    elif mine_type == 'Victoria':
+        cost = 200
+
+    return cost

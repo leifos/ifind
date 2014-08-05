@@ -565,7 +565,7 @@ a:hover {
     color: #8c0c00;
 }
 
-#upgrade {
+.upgrade {
     /*width: 64px;*/
     /*height: 26px;*/
     padding-left: 5px;
@@ -611,7 +611,13 @@ a:hover {
     color: darkred;
 }
 
+#gover {
+    list-style-type: none;
+}
 
+#upgrade_scan {
+    color: #ffffff;
+}
 
 /******************************************************************************/
 

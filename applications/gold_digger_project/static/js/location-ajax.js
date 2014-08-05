@@ -15,6 +15,7 @@ $(document).ready(function(){
            statusCode:{
             200: function(){
                 console.log("location changed")
+
             }
            }
            })

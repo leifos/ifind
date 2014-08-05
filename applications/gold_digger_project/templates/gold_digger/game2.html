@@ -48,6 +48,7 @@
         <h1>{% if location == "South_Africa" %} South Africa {% else %}{{ location }} {% endif %}</h1>
 
         <h2 class="animated swing">Mine: {{ mine_no }}</h2>
+        <h3>Day: {{ request.session.days }}</h3>
         <br>
     </div>
 
@@ -63,16 +64,20 @@
                 <table class="equip">
                     <tr class="animated bounceInDown" id="equip">
                         <td class="def">Equipment</td>
-                        <td><img src="{{ user.equipment.image.url }}" id="scan" data-toggle="tooltip" title="Accuracy: {{ mod_scan }}%"></td>
+                        <td><img src="{{ user.equipment.image.url }}" id="scan" data-toggle="tooltip" title="Accuracy: {{ mod_scan }}%"/></td>
+                        <td style="color: #000000; font-size: xx-small; text-align: center">Accuracy: {{ mod_scan }}%</td>
+
                     </tr>
                     <tr class="animated bounceInDown">
                         <td class="def">Tool</td>
-                        <td><img src="{{ user.tool.image.url }}" id="tool" data-toggle="tooltip" title="Accuracyp: {{ mod_scan }}%" >
-                        </td>
+                        <td><img src="{{ user.tool.image.url }}" id="tool" data-toggle="tooltip" title="Accuracyp: {{ mod_tool }}%"/></td>
+                        <td style="color: #000000; font-size: xx-small; text-align: center">Gold extracted: {{ mod_tool }}%</td>
+
                     </tr>
                     <tr class="animated bounceInDown">
                         <td class="def">Vehicle</td>
-                        <td><img src="{{ user.vehicle.image.url }}" id="vehicle" data-toggle="tooltip"  title="Acculracy: {{ mod_scan }}%" ></td>
+                        <td><img src="{{ user.vehicle.image.url }}" id="vehicle" data-toggle="tooltip"  title="Acculracy: {{ mod_vehicle }}%"/></td>
+                        <td style="color: #000000; font-size: xx-small; text-align: center">Moving cost: {{ mod_vehicle }}</td>
                     </tr>
 
                     <!-- Begin  JQuery Ajax -->

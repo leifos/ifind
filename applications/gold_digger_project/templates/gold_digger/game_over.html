@@ -18,10 +18,10 @@
 <div>
 <p id="dayscore"><img height="70px" src="/media/icons/Items/Chest.png">Total Gold: <span class="finalscore animated tada">{{ total_gold }}</span>  <img  height="60px" src="/static/nugget.png"> Day's Gold: <span class="finalscore animated tada">{{ day_gold }}</span><br><br>Mines: <span class="finalscore animated tada">{{ mine_no }}</span></p>
 </div>
-<ul>
-    <li><a href="/gold_digger/game2/">Continue Mining!</a></li>
-    <li><a href="/gold_digger/game_choice2/">Choose new location</a><br></li><br>
-
+<ul  id="gover">
+    <li><a href="/gold_digger/game2/">Continue Mining! (cost: {{ cost }})</a></li>
+    <li><a href="/gold_digger/game_choice2/">Choose new location</a></li>
+    <li><a href="/gold_digger/store/"> Shop</a><br></li>
     <li><a class="gameover_options"href="/gold_digger/">Home page</a><br>
 </li>
 </ul>

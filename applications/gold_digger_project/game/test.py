@@ -136,9 +136,13 @@ import pickle
 # print array_list
 #
 import random
-from random import shuffle
-mine_list = ['co', 'ra', 'qu', 'ex', 'cu', 'li']
-shuffle(mine_list)
+# from random import shuffle
+# mine_list = ['co', 'ra', 'qu', 'ex', 'cu', 'li']
+# shuffle(mine_list)
+#
+# # a = random.choice(mine_list)
+# print mine_list
 
-# a = random.choice(mine_list)
-print mine_list
+a = -1*(random.uniform(0.2, 0.3))
+
+print a
