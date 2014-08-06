@@ -78,22 +78,22 @@
                 <td id="right"><img src="{{ user.equipment.image.url }}" height="70px"
                          alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}" /></td>
                 <td style="text-align: center;">{{ user.equipment.name }}</td>
-                <td colspan="2" style="text-align: right">mod.: <span id="modifier">{{ mod_scan }}%</span></td>
+                <td colspan="2" style="text-align: right">Accuracy: <span id="modifier">{{ mod_scan }}%</span></td>
             </tr>
             <tr>
                 <td><u>Digging:</u></td>
                 <td id="right"><img src="{{ user.tool.image.url }}" height="70px"
                          alt="{{ user.tool.name }}, {{ user.tool.modifier }}" /></td>
                 <td style="text-align: center">{{ user.tool.name }}</td>
-                <td style="text-align: right">mod.: <span id="modifier">{{ mod_tool }}%</span></td>
-                <td style="text-align: right">Time mod.: <span id="modifier">{{ modt_tool }}</span></td>
+                <td style="text-align: right">Extracted: <span id="modifier">{{ mod_tool }}%</span></td>
+                <td style="text-align: right">Dig cost: <span id="modifier">{{ modt_tool }}</span></td>
             </tr>
             <tr>
                 <td><u>Moving:</u></td>
                 <td id="right"><img src="{{ user.vehicle.image.url }}" height="70px"
                          alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}" /></td>
                 <td style="text-align: center">{{ user.vehicle.name }}</td>
-                <td colspan="2" style="text-align: right">mod.: <span id="modifier">{{ mod_vehicle }}%</span></td>
+                <td colspan="2" style="text-align: right">Move cost: <span id="modifier">{{ mod_vehicle }}%</span></td>
             </tr>
         </table>
             <h2 id="titoli">Game stats</h2>
