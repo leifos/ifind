@@ -2,15 +2,16 @@
 <html>
 <head>
     {% load static %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
-    <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
-    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen"/>
+    <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-    <script src="{% static "/js/jquery.js" %}"></script>
-    <script src="{% static "/js/slowsearch-ajax.js" %}"></script>
-    <script src="{% static "/js/slowsearch-javascript.js" %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/slowsearch-javascript.js' %}"></script>
 
     <title>WebSearch</title>
 </head>
@@ -28,7 +29,7 @@
                    <a class="brand" style="margin-left: 5px" href="/">WebSearch</a>
 
                <div class="nav-collapse collapse navbar-responsive-collapse">
-                   <ul class="nav pull-right" style="margin-left: 10px">
+                   <ul class="nav pull-right" style="margin-left: 20px">
                        {% if user.is_authenticated %}
                             <li class="navbar-text">Welcome, {{ user.username }}!</li>
                            {% if 'profile' not in request.get_full_path %}
@@ -62,12 +63,10 @@
         </div>
     </div>
 
-    <div style="margin-left: 2%">
+    <div style="margin-left: 5%">
         {% block body_block %}
         {% endblock %}
     </div>
-    <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>

@@ -5,32 +5,44 @@
 {% block body_block %}
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        var throbber_val = $('#show_throbber').val();
+
+        if (throbber_val == 'True') {
+            showThrobber();
+        }
+    });
+
     function showThrobber() {
          document.getElementById('progress').style.visibility='visible';
          document.getElementById('results').style.opacity='0.5';
          document.getElementById('results').style.pointerEvents="none";
+        document.getElementById('results_inner').style.visibility="hidden";
          setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
          setTimeout("document.getElementById('results').style.opacity='1'", 5000);
+         setTimeout("document.getElementById('results_inner').style.visibility='visible'", 5000);
          setTimeout("document.getElementById('results').style.pointerEvents='auto'", 5000);
     }
 </script>
 
+        <input type="hidden" value="{{ show_throbber}}" id="show_throbber"/>
       <div class="modal" id="progress" style="visibility: hidden">
                  <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
             </div>
 
-    <div id="results" style="width: 40%; margin-left: 5%">
+    <div id="results" style="width: 40%; margin-left: 10%">
 
             <form id="search" action="/search/" method="post">
                 {% csrf_token %}
                 <input type=text style="width: 80%; vertical-align: top" name=query value="{{ query }}">
                 {% if not request.user.id|divisibleby:2 %}
-                     <input class="btn-primary" style="vertical-align: top; height: 30px" id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+                     <input class="btn-primary" style="vertical-align: top; height: 30px" id="SearchDelay" type=submit value="Search">
                 {% else %}
                     <input class="btn-primary" style="vertical-align: top; height: 30px;" type=submit value="Search">
                 {% endif %}
             </form>
-
+    <div id="results_inner">
         {% if contacts %}
             {% if "Unable to connect" in contacts %}
             <p class="text-error">{{ contacts }}</p>
@@ -64,5 +76,6 @@
         {% endif %}
     </div>
     </div>
+        </div>
 
 {% endblock %}
