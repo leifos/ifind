@@ -2,21 +2,7 @@
 {% load static %}
 
 {% block body_block %}
-<script type="text/javascript">
-    function showThrobber() {
-         document.getElementById('progress').style.visibility='visible';
-         document.getElementById('results').style.opacity='0.5';
-         document.getElementById('results').style.pointerEvents="none";
-         setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
-         setTimeout("document.getElementById('results').style.opacity='1'", 5000);
-         setTimeout("document.getElementById('results').style.pointerEvents='auto'", 5000);
-    }
-</script>
-        {% if user.is_authenticated %}
-            <div class="modal" id="progress" style="visibility: hidden">
-                <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
-            </div>
-
+    {% if user.is_authenticated %}
             <div align="center" style="margin-top: 18%" id="results">
                     <h2>Welcome to WebSearch</h2><br>
                     <form id="search" action="/search/" method="post">
@@ -24,7 +10,7 @@
 
                         <input type=text class="longTextbox" name=query value="{{ query }}">
                         {% if not request.user.id|divisibleby:2 %}
-                             <input class="btn-primary" style="vertical-align: top; height: 30px" id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
+                             <input class="btn-primary" style="vertical-align: top; height: 30px" id="SearchDelay" type=submit value="Search">
                         {% else %}
                             <input class="btn-primary" style="vertical-align: top; height: 30px" type=submit value="Search">
                         {% endif %}

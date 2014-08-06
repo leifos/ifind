@@ -275,12 +275,18 @@ def search(request):
         request.session['session_query'] = query
         contacts = paginated_search(query, cnd, u_ID, page, user)
 
+        if cnd==2:
+            show_throbber = True
+        else:
+            show_throbber=False
+
     elif request.method == 'GET':
         query = request.session['session_query']
         contacts = paginated_search(query, cnd, u_ID, page, user)
+        show_throbber=False
 
-
-    return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query}, context)
+    return render_to_response('slowsearch/results.html', {'contacts': contacts, 'query': query, 'show_throbber':
+    show_throbber}, context)
 
 
 def goto(request, url, rank):
@@ -289,5 +295,8 @@ def goto(request, url, rank):
     url_visited = url
     url_rank = rank
     record_link(user, now, url_visited, url_rank)
+
+    if 'https:/' in url:
+        url = url.replace('https:/', 'http:/')
 
     return HttpResponseRedirect(url)
