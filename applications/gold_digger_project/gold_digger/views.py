@@ -526,13 +526,38 @@ def store(request):
     scan = user.equipment.image.url
     dig = user.tool.image.url
     move = user.vehicle.image.url
+    new_id_s = user.equipment.id
+    new_id_t = user.tool.id
+    new_id_v = user.vehicle.id
+    new_item_s = user.equipment
+    new_item_t = user.tool
+    new_item_v = user.vehicle
+
+    if new_id_s != 5:
+        new_id_s += 1
+        new_item_s = ScanningEquipment.objects.get(id=new_id_s)
+
+    if new_id_t != 5:
+        new_id_t += 1
+        new_item_t = DiggingEquipment.objects.get(id=new_id_t)
+
+    if new_id_v != 5:
+        new_id_v += 1
+        new_item_v = Vehicle.objects.get(id=new_id_v)
+
     return render_to_response('gold_digger/store.html', {'equipment': equipment,
                                                          'vehicles': vehicles,
                                                          'tools': tools,
                                                          'gold': gold,
                                                          'scan': scan,
                                                          'dig': dig,
-                                                         'move': move}, context)
+                                                         'move': move,
+                                                         'new_item_s': new_item_s,
+                                                         'new_item_t': new_item_t,
+                                                         'new_item_v': new_item_v}, context)
+
+
+
 
 
 @login_required
@@ -612,17 +637,16 @@ def ajax_upgrade(request):
         item_id = user.equipment.id
         myResponse = {}
         myResponse['maxed_up'] = False
-
+        myResponse['funds'] = False
 
         if item_id == 5:
-            return HttpResponse(status=204)
-
+            myResponse['maxed_up'] = True
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
         else:
             item_id += 1
             new_item = ScanningEquipment.objects.get(id=item_id)
 
         if new_item.price > user.gold:
-            print "GOT HERE!!!"
             return HttpResponse(status=204)
 
         else:
@@ -638,10 +662,11 @@ def ajax_upgrade(request):
         item_id = user.tool.id
         myResponse = {}
         myResponse['maxed_up'] = False
-
+        myResponse['funds'] = False
 
         if item_id == 5:
-            return HttpResponse(status=204)
+            myResponse['maxed_up'] = True
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
             item_id += 1
@@ -665,9 +690,9 @@ def ajax_upgrade(request):
         myResponse = {}
         myResponse['maxed_up'] = False
 
-
-        if item_id == 4:
-            return HttpResponse(status=204)
+        if item_id == 5:
+            myResponse['maxed_up'] = True
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
             item_id += 1

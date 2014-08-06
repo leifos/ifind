@@ -619,6 +619,12 @@ a:hover {
     color: #ffffff;
 }
 
+#alert {
+    display: inline;
+    margin-left: 30px;
+    color: red;
+}
+
 /******************************************************************************/
 
 
@@ -1219,7 +1225,7 @@ a:hover {
     }
 
     #shopgold{
-        height: 43%;
+        height: 45%;
         width: 23%;
     }
 
@@ -1249,7 +1255,7 @@ a:hover {
         font-family: pixelfont;
         border-color: #000000;
         border-width: 2px;
-        height: 310px;
+        height: 325px;
         font-size: large;
         background-color: rgba(245, 222, 179, 0.46);
         color: gold;
@@ -1265,7 +1271,7 @@ a:hover {
         font-family: pixelfont;
         border-color: #000000;
         border-width: 2px;
-        height: 310px;
+        height: 328px;
         font-size: large;
         background-color: rgba(245, 222, 179, 0.46);
         color: gold;
@@ -1344,7 +1350,7 @@ a:hover {
     }
 
     #shopgold{
-        height: 41%;
+        height: 48%;
         width: 23%;
     }
 
@@ -1530,7 +1536,7 @@ a:hover {
 
      #shopgold{
        font-size: x-large;
-       height: 38%;
+       height: 37%;
     }
 
      #generalstore{
@@ -1633,9 +1639,9 @@ a:hover {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 2px;
+    -webkit-border-radius: 15px;
     width: 8px;
-    border-radius: 2px;
+    border-radius: 15px;
     border-color: #000000;
     border-width: 1px;
     background: rgba(79, 79, 79, 0.80);
