@@ -854,6 +854,15 @@ a:hover {
  	background-size: 100% 100%;
 }
 
+.digging_0 {
+ 	background: url(/media/icons/Tools/Spoon.png) no-repeat center;
+ 	background-size: 30%;
+}
+
+.digging_0:hover {
+ 	background: url(/media/mine/Spoon_hover.png) no-repeat center;
+ 	background-size: 40%;
+}
 
 .digging_1 {
  	background: url(/media/icons/Tools/Shovel_normal.png) no-repeat center;
@@ -986,7 +995,15 @@ a:hover {
  	background-size: 70%;
 }
 
+.moving_0 {
+ 	background: url(/media/icons/Vehicle/Boots.png) no-repeat center;
+ 	background-size: 40%;
+}
 
+.moving_0:hover {
+ 	background: url(/media/mine/Boots_hover.png) no-repeat center;
+ 	background-size: 50%;
+}
  
 
 @media (min-width: 0px) {

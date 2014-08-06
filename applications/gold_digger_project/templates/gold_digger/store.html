@@ -28,9 +28,9 @@
         <div class="well" id="shopgold">
             <img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span> <!--<span style="color: red" id="message"></span>-->
             <hr>
-            <p id="result_s">Scanning: <img id="scan" src="{{ scan }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" name="upgrade_scan" style="font-family: pixelfont">Upgrade</button></p>
-            <p>Tool: <img id="tool" src="{{ dig }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" id="upgrade_tool" style="font-family: pixelfont">Upgrade</button></p>
-            <p>Vehicle: <img id="vehicle" src="{{ move }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" id="upgrade_vehicle" style="font-family: pixelfont">Upgrade</button></p><br>
+            <p>Scanning: <img id="scan" src="{{ scan }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" name="upgrade_scan" style="font-family: pixelfont">Upgrade</button></p>
+            <p>Tool: <img id="tool" src="{{ dig }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" name="upgrade_tool" style="font-family: pixelfont">Upgrade</button></p>
+            <p>Vehicle: <img id="vehicle" src="{{ move }}" /> <button type="button" class="btn btn-warning btn-xs upgrade" name="upgrade_vehicle" style="font-family: pixelfont">Upgrade</button></p><br>
             <p id="playstore"><a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/" style="font-family: pixelfont">Play!</a></p>
         </div>
 
@@ -72,7 +72,7 @@
 
             {% for t in tools %}
 	    	<div class="col-xs-2 store left">
-				<a href="#"><div class="row"><div class="{% cycle 'digging_1' 'digging_2' 'digging_3' 'digging_4' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
+				<a href="#"><div class="row"><div class="{% cycle 'digging_0' 'digging_1' 'digging_2' 'digging_3' 'digging_4' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
             </div>
             {% endfor %}
             </div>
@@ -99,7 +99,7 @@
         <div class="row" >
             {% for v in vehicles %}
 	    	<div class="col-xs-2 store left">
-				<a href="#"><div class="row"><div class="{% cycle 'moving_1' 'moving_2' 'moving_3' 'moving_4' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
+				<a href="#"><div class="row"><div class="{% cycle 'moving_0' 'moving_1' 'moving_2' 'moving_3' 'moving_4' %} animated bounceInRight"><div class="buy_1"></div></div></div></a>
             </div>
             {% endfor %}
             </div>

@@ -66,7 +66,7 @@ class UserProfile(models.Model):
     equipment = models.ForeignKey(ScanningEquipment)
     vehicle = models.ForeignKey(Vehicle)
     tool = models.ForeignKey(DiggingEquipment)
-    gold = models.IntegerField(default=0)
+    gold = models.IntegerField(default=40)
     all_time_max_gold = models.IntegerField(default=0)
     all_time_gold = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)

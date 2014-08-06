@@ -42,71 +42,72 @@
             </div>
 
         {% else %}
-           {% if not user.is_authenticated %}
-            <div class="col-xs-6 col-md-3">
+            {% if not user.is_authenticated %}
+                <div class="col-xs-6 col-md-3">
 
-                <div class="panel panel-default" id="homewell">
-                    <div class="panel-body">
-                        <form class="form-horizontal" action="/gold_digger/user_login/" method="post">
-                            {% csrf_token %}
-                            <fieldset>
-                                <legend style="color: black; border-color: #000000;">Login</legend>
+                    <div class="panel panel-default" id="homewell">
+                        <div class="panel-body">
+                            <form class="form-horizontal" action="/gold_digger/user_login/" method="post">
+                                {% csrf_token %}
+                                <fieldset>
+                                    <legend style="color: black; border-color: #000000;">Login</legend>
 
 
 
-                                {% if bad_details %}
+                                    {% if bad_details %}
 
-                                    <div class="form-group has-error">
-                                        <label for="inputError" class="col-lg-3 control-label">Username</label>
+                                        <div class="form-group has-error">
+                                            <label for="inputError" class="col-lg-3 control-label">Username</label>
 
-                                        <div class="col-lg-8">
-                                            <input type="text" name="username" class="form-control" id="inputError"
-                                                   placeholder="Username">
+                                            <div class="col-lg-8">
+                                                <input type="text" name="username" class="form-control" id="inputError"
+                                                       placeholder="Username">
 
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group has-error">
-                                        <label for="inputError" class="col-lg-3 control-label">Password</label>
+                                        <div class="form-group has-error">
+                                            <label for="inputError" class="col-lg-3 control-label">Password</label>
 
-                                        <div class="col-lg-8">
-                                            <input type="password" name="password" class="form-control" id="inputError"
-                                                   placeholder="Password">
+                                            <div class="col-lg-8">
+                                                <input type="password" name="password" class="form-control"
+                                                       id="inputError"
+                                                       placeholder="Password">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-default">Login</button>
-                                {% else %}
-                                    <div class="form-group">
-                                        <label for="inputEmail" class="col-lg-3 control-label">Username</label>
+                                        <button type="submit" class="btn btn-default">Login</button>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <label for="inputEmail" class="col-lg-3 control-label">Username</label>
 
-                                        <div class="col-lg-8">
-                                            <input type="text" name="username" class="form-control" id="inputEmail"
-                                                   placeholder="Username">
+                                            <div class="col-lg-8">
+                                                <input type="text" name="username" class="form-control" id="inputEmail"
+                                                       placeholder="Username">
 
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputPassword" class="col-lg-3 control-label">Password</label>
+                                        <div class="form-group">
+                                            <label for="inputPassword" class="col-lg-3 control-label">Password</label>
 
-                                        <div class="col-lg-8">
-                                            <input type="password" name="password" class="form-control"
-                                                   id="inputPassword" placeholder="Password">
+                                            <div class="col-lg-8">
+                                                <input type="password" name="password" class="form-control"
+                                                       id="inputPassword" placeholder="Password">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-default">Login</button>
-                                {% endif %}
+                                        <button type="submit" class="btn btn-default">Login</button>
+                                    {% endif %}
 
-                            </fieldset>
-                        </form>
+                                </fieldset>
+                            </form>
+                        </div>
                     </div>
+                    {% if bad_details %}
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>Invalid login details supplied</strong>
+                        </div>
+                    {% endif %}
                 </div>
-                {% if bad_details %}
-                    <div class="alert alert-dismissable alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>Invalid login details supplied</strong>
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
+            {% endif %}
 
 
 
@@ -125,6 +126,11 @@
                 <h2>Welcome</h2>
                 Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
                 <br><br>
+                {% if not user.is_authenticated %}
+                <button class="btn btn-warning btn-lg animated bounceIn" data-toggle="modal" data-target="#regModal">
+                    Register
+                </button><br><br>
+                {% endif %}
                 {% if registered == False %}
                     <div class="alert alert-dismissable alert-danger">
                         <button type="button" class="close" data-dismiss="alert">×</button>

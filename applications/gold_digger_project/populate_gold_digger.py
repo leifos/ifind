@@ -5,25 +5,27 @@ def populate():
 
     ### SCANNING ###
 
-    lamp = add_scanning_equipment('Oil lamp', 0.2, 'icons/Scan/Oil lamp.png', 10, "It won't allow you to see much but it's better than going in blind!", 20)
-    map = add_scanning_equipment('Map', 0.3, 'icons/Scan/Map.png', 10, "It probably helps knowing you're not digging in the wrong place", 30)
-    sonar = add_scanning_equipment('Sonar', 0.5, 'icons/Scan/Sonar.gif', 10, "Now we're cooking with gas!", 50)
-    dwarf = add_scanning_equipment('Guide Dwarf', 0.6, 'icons/Scan/Guide Dwarf.png', 10, "If you're not sure, just ask the locals!", 60)
-    spell = add_scanning_equipment('Spell', 0.8, 'icons/Scan/Spell.png', 10, "Magic beats science EVERY TIME", 80)
+    lamp = add_scanning_equipment('Oil lamp', 0.2, 'icons/Scan/Oil lamp.png', 1, "It won't allow you to see much but it's better than going in blind!", 20)
+    map = add_scanning_equipment('Map', 0.3, 'icons/Scan/Map.png', 100, "It probably helps knowing you're not digging in the wrong place", 30)
+    sonar = add_scanning_equipment('Sonar', 0.5, 'icons/Scan/Sonar.gif', 500, "Now we're cooking with gas!", 50)
+    dwarf = add_scanning_equipment('Guide Dwarf', 0.6, 'icons/Scan/Guide Dwarf.png', 800, "If you're not sure, just ask the locals!", 60)
+    spell = add_scanning_equipment('Spell', 0.8, 'icons/Scan/Spell.png', 1000, "Magic beats science EVERY TIME", 80)
 
     ### DIGGING ###
 
-    shovel = add_digging_equipment('Shovel', 0.2, 8, 'icons/Tools/Shovel_normal.png', 10, "It's a shovel", 20)
-    golden_shovel = add_digging_equipment('Golden Shovel', 0.4, 6, 'icons/Tools/Shovel_golden.png', 10, "It might seem like a bad idea, but it's not REAL gold", 40)
-    dynamite = add_digging_equipment('Dynamite', 0.6, 3, 'icons/Tools/Dynamite.png', 10, "KABLAMO!", 60)
-    mecha = add_digging_equipment('Mecha', 0.8, 1, 'icons/Tools/Mecha.png', 10, "Dig ALL the gold!", 80)
+    spoon  = add_digging_equipment('Spoon', 0.2, 8, 'icons/Tools/Spoon.png', 1, "What am I supposed to do with this?", 20)
+    shovel = add_digging_equipment('Shovel', 0.3, 7, 'icons/Tools/Shovel_normal.png', 200, "It's a shovel", 30)
+    golden_shovel = add_digging_equipment('Golden Shovel', 0.4, 6, 'icons/Tools/Shovel_golden.png', 300, "It might seem like a bad idea, but it's not REAL gold", 40)
+    dynamite = add_digging_equipment('Dynamite', 0.6, 5, 'icons/Tools/Dynamite.png', 500, "KABLAMO!", 60)
+    mecha = add_digging_equipment('Mecha', 0.8, 3, 'icons/Tools/Mecha.png', 1000, "Dig ALL the gold!", 80)
 
     ### MOVING ###
 
-    wheelbarrow = add_vehicle('Wheelbarrow', 20, 'icons/Vehicle/Wheelbarrow.png', 10, "Well, if you start selling mussels too, you're set!")
-    cart = add_vehicle('Cart', 15, 'icons/Vehicle/Cart.png', 10, "Maybe don't ride it, it doesn't have breaks")
-    donkey = add_vehicle('Donkey', 10, 'icons/Vehicle/Donkey.png', 10, "Nothing like good'ol animal power to carry your gold!")
-    truck = add_vehicle('Truck', 5, 'icons/Vehicle/Truck.png', 10, "They see me rollin'!")
+    boots = add_vehicle('Boots', 20, 'icons/Vehicle/Boots.png', 1, "Two boots is better than no boots!")
+    wheelbarrow = add_vehicle('Wheelbarrow', 18, 'icons/Vehicle/Wheelbarrow.png', 300, "Well, if you start selling mussels too, you're set!")
+    cart = add_vehicle('Cart', 15, 'icons/Vehicle/Cart.png', 500, "Maybe don't ride it, it doesn't have breaks")
+    donkey = add_vehicle('Donkey', 10, 'icons/Vehicle/Donkey.png', 800, "Nothing like good'ol animal power to carry your gold!")
+    truck = add_vehicle('Truck', 5, 'icons/Vehicle/Truck.png', 1000, "They see me rollin'!")
 
     jill = add_user('Jill', 'jill@gmail.com', 'jill')
     john = add_user('John', 'john@gmail.com', 'john')

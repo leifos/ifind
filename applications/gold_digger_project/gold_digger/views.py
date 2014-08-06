@@ -604,51 +604,86 @@ def ajax_buy(request):
 
 
 def ajax_upgrade(request):
-    print "GOT HERE!!!"
     user = UserProfile.objects.get(user=request.user)
-    item_id = user.equipment.id
-    myResponse = {}
-    myResponse['maxed_up'] = False
+    print "GOT HERE!!!"
+    item_type = request.POST['up']
 
-    if item_id == 5:
-        return HttpResponse(status=204)
+    if item_type == 'scan':
+        item_id = user.equipment.id
+        myResponse = {}
+        myResponse['maxed_up'] = False
 
-    else:
-        item_id += 1
-        new_item = ScanningEquipment.objects.get(id=item_id)
 
-    if new_item.price > user.gold:
-        return HttpResponse(status=204)
+        if item_id == 5:
+            return HttpResponse(status=204)
 
-    else:
-        user.gold -= new_item.price
-        user.equipment = new_item
-        user.save()
+        else:
+            item_id += 1
+            new_item = ScanningEquipment.objects.get(id=item_id)
 
-        myResponse['image'] = new_item.image.url
-        myResponse['gold'] = user.gold
-        return HttpResponse(json.dumps(myResponse), content_type="application/json")
+        if new_item.price > user.gold:
+            print "GOT HERE!!!"
+            return HttpResponse(status=204)
 
-    # if 'scan' in request.POST:
-    #     if user.equipment.name == 'Spell':
-    #
-    #     else:
-    #         if user.gold >= user.price:
-    #         user.gold -= item.price
-    #         user.equipment = item
-    #         user.save()
-    #         request.session['purchase'] = True
-    #
-    #         myResponse = {}
-    #
-    #         myResponse['image'] = item.image.url
-    #         myResponse['gold'] = user.gold
-    #         return HttpResponse(json.dumps(myResponse), content_type="application/json")
-    #
-    #         else:
-    #             request.session['purchase'] = False
-    #
+        else:
+            user.gold -= new_item.price
+            user.equipment = new_item
+            user.save()
 
+            myResponse['image'] = new_item.image.url
+            myResponse['gold'] = user.gold
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+    if item_type == 'tool':
+        item_id = user.tool.id
+        myResponse = {}
+        myResponse['maxed_up'] = False
+
+
+        if item_id == 5:
+            return HttpResponse(status=204)
+
+        else:
+            item_id += 1
+            new_item = DiggingEquipment.objects.get(id=item_id)
+
+        if new_item.price > user.gold:
+            return HttpResponse(status=204)
+
+        else:
+            user.gold -= new_item.price
+            user.tool = new_item
+            user.save()
+
+            myResponse['image'] = new_item.image.url
+            myResponse['gold'] = user.gold
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+
+    if item_type == 'vehicle':
+        item_id = user.vehicle.id
+        myResponse = {}
+        myResponse['maxed_up'] = False
+
+
+        if item_id == 4:
+            return HttpResponse(status=204)
+
+        else:
+            item_id += 1
+            new_item = Vehicle.objects.get(id=item_id)
+
+        if new_item.price > user.gold:
+            return HttpResponse(status=204)
+
+        else:
+            user.gold -= new_item.price
+            user.vehicle = new_item
+            user.save()
+
+            myResponse['image'] = new_item.image.url
+            myResponse['gold'] = user.gold
+            return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
 @login_required
