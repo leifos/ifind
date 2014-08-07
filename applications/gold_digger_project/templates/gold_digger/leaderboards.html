@@ -71,6 +71,7 @@
         <th>Rank</th>
         <th id="thumb">Thumbnail</th>
         <th>Username</th>
+        <th style="text-align: center" colspan="3">Equipment</th>
         <th id="right">Max gold</th>
         <th id="right">Games Played</th>
         <th id="right">Average</th>
@@ -84,8 +85,10 @@
         <td id="thumb">
         <img class="thumbnail" src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px">
         </td>
-
         <td>{{ user.user.username }}</td>
+        <td id="right"><img src="{{ user.equipment.image.url }}" height="50px" /></td>
+        <td id="right"><img src="{{ user.tool.image.url }}" height="50px" /></td>
+        <td id="right"><img src="{{ user.vehicle.image.url }}" height="50px" /></td>
         <td id="right">{{ user.all_time_max_gold}}</td>
         <td id="right">{{ user.games_played }}</td>
         <td id="right">{{ user.average}}</td>
@@ -103,6 +106,7 @@
         <th>Rank</th>
         <th  id="thumb">Thumbnail</th>
         <th>Username</th>
+        <th style="text-align: center" colspan="3">Equipment</th>
         <th id="right">Games Played</th>
         <th id="right">Max gold</th>
         <th id="right">Average</th>
@@ -116,8 +120,10 @@
         <td id="thumb">
         <img class="thumbnail" src="{{ user.picture.url }}" title="{{ user.user.username }}" height="75px">
         </td>
-
         <td>{{ user.user.username }}</td>
+        <td id="right"><img src="{{ user.equipment.image.url }}" height="50px" /></td>
+        <td id="right"><img src="{{ user.tool.image.url }}" height="50px" /></td>
+        <td id="right"><img src="{{ user.vehicle.image.url }}" height="50px" /></td>
         <td id="right">{{ user.games_played }}</td>
         <td id="right">{{ user.all_time_max_gold}}</td>
         <td id="right">{{ user.average}}</td>

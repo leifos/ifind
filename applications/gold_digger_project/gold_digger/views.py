@@ -15,6 +15,9 @@ import json
 
 locations = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
 
+from logger import event_logger
+
+
 
 def home(request):
 
@@ -139,6 +142,8 @@ def user_login(request):
                 request.session['time_remaining'] = 100
                 request.session['gold'] = 0
                 request.session['days'] = 1
+
+                event_logger.info('logged in: %s', username)
 
                 return HttpResponseRedirect(reverse('home'), context)
             else:
@@ -511,6 +516,7 @@ def ajaxview(request):
     myResponse['goldextracted'] = gold_extracted
 
 
+    # Logging
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
 

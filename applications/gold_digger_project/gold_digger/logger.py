@@ -15,14 +15,14 @@ event_logger = logging.getLogger('event_log')
 event_logger_handler = logging.FileHandler(log_file)
 
 # configure the format of the message string for the logger
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s' '%(user)')
 # set the formmater to the logger via a handler
 event_logger_handler.setFormatter(formatter)
 event_logger.addHandler(event_logger_handler)
 
 # set the level of the messages we want to log and above  (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 event_logger.setLevel(logging.INFO)
-event_logger.info("an info message")
+
 
 
 # how to use externally,

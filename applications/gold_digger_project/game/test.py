@@ -143,6 +143,10 @@ import random
 # # a = random.choice(mine_list)
 # print mine_list
 
-a = -1*(random.uniform(0.2, 0.3))
+a = -1*(random.uniform(0.06, 0.09))
 
 print a
+
+b = pow(10, 2)
+
+print b
