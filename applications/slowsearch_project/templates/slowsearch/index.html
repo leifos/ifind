@@ -4,8 +4,21 @@
 
 {% block body_block %}
 
-        <script type="text/javascript">
-    </script>
+<script type="text/javascript">
+
+    $( document ).ready(function() {
+        var token = "{{csrf_token}}";
+        var formData = token + '&';
+        formData = formData + (window.location.hash);
+
+        if(formData.indexOf("&query=")>1) {
+            processRequest(formData);
+        }
+    });
+
+</script>
+
+
     {% if user.is_authenticated %}
         <div id="whole_page">
         <div class="modal" id="progress" style="visibility: hidden">

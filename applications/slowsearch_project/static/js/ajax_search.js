@@ -1,8 +1,10 @@
 var stopHashChange = false;
 var interface1Querystring = "";
 
+
 $(function() {
     // When the search form is submitted...
+
     $("#search_form").submit(function (event) {
         event.preventDefault();
 
@@ -26,9 +28,16 @@ $(function() {
 
 function processRequest(serializedFormData){
     var query = (serializedFormData.split('query=')[1]);
+    var page = serializedFormData.split('&page=')[1];
+    var toRemove = ('&page=' + page);
+    query = query.replace(toRemove, "");
     if(query!=""){
-        document.location.hash = 'query=' + query;
+        if(!page){
+            page=1;
+        }
+        document.location.hash = 'query=' + query  + '&page=' + page;
     }
+
 
     console.log(serializedFormData);
 
@@ -55,7 +64,8 @@ function doHashSearch() {
     var query = getHashValue('query');
     var page = getHashValue('page');
 
-    if (query) {
+
+    if (query && query!="") {
         if (!page || isNaN(page)) {
             page = 1;
         }
@@ -64,8 +74,10 @@ function doHashSearch() {
             var queryField = $('#search_form');
                 query = query.replace(/\+/g, ' ');
                 queryField.val(query);
-                var formSerialized = $('form').serialize();
-                formSerialized += '&page=' + page;
+                var csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+                var formSerialized = "csrfmiddlewaretoken="+ csrf + "&query=" + query + "&page=" + page;
+
                 processRequest(formSerialized);
             }
         }
@@ -95,12 +107,14 @@ function getHashValue(key) {
 }
 
 function switchToPage(url) {
-    console.log(url);
-    var pageNumber = getPageNumber(url);
-    var formData = $("form").serialize();
-    formData = formData + '&page=' + pageNumber;
+    var query = getHashValue('query');
+    var page = getHashValue('page');
 
-    processRequest(formData);
+    var csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+    var formSerialized = "csrfmiddlewaretoken="+ csrf + "&query=" + query + "&page=" + page;
+
+    processRequest(formSerialized);
 }
 
 function getPageNumber(url) {
