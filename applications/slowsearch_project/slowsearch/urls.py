@@ -18,5 +18,6 @@ urlpatterns = patterns('',
         url(r'^search/$', views.search, name='search'),
         url(r'^finalsurvey/$', views.final_survey, name='finalsurvey'),
         url(r'^demographic/$', views.demographic, name='demographic'),
+        url(r'^ajax_results/$', views.ajax_results, name='ajax_results'),
         url(r'^goto/(.*)/(.*)/$', views.goto, name='goto'),
         )

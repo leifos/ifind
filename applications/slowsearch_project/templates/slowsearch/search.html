@@ -1,34 +1,50 @@
 {% extends 'slowsearch/base.html' %}
 {% load static %}
 
+
 {% block body_block %}
-<script type="text/javascript">
-    function showThrobber() {
-         document.getElementById('progress').style.visibility='visible';
-         document.getElementById('results').style.opacity='0.5';
-         setTimeout("document.getElementById('progress').style.visibility='hidden'", 5000);
-         setTimeout("document.getElementById('results').style.opacity='1'", 5000);
-    }
-</script>
+    <div id="results" style="width: 40%; margin-left: 10%">
 
-        {% if user.is_authenticated %}
-
-      <div class="modal" id="progress" style="visibility: hidden">
-                 <img src="{% static "throbber.GIF" %}" alt="Progress Spinner" height="45" width="45"/>
-            </div>
-
-    <div id="results">
-            {{ request.user.id }}
-
-            <form id="search" action="/search/" method="post">
+            <form id="search_form_no_delay" action="/search/" method="post">
                 {% csrf_token %}
-                <input type=text class="longTextbox" name=query value="{{ query }}" width="70%">
-                {% if request.user.id|divisibleby:2 %}
-                     <input id="SearchDelay" type=submit value="Search" onclick="showThrobber()">
-                {% else %}
-                    <input type=submit value="Search">
+                <input type=text style="width: 80%; vertical-align: top" name=query value="{{ query }}">
+                <input class="btn-primary" style="vertical-align: top; height: 30px;" type=submit value="Search">
                 {% endif %}
             </form>
-    {% endif %}
+    <div id="results_inner">
+        {% if contacts %}
+            {% if "Unable to connect" in contacts %}
+            <p class="text-error">{{ contacts }}</p>
+             {% else %}
+             {% for contact in contacts %}
+                {% if contact.url %}
+                    <div>
+                    <strong style="font-size: 13pt"><a href="/goto/{{ contact.url }}/{{ contact.rank }}">{{ contact.title }}</a></strong><br />
+                    <div style="font-size: smaller; color: green">{% if contact.url|length > 70 %}{{ contact.url|slice:"70" }}...
+                    {% else %}{{ contact.url }}{% endif %}</div>
+                    <em>{{ contact.summary }}</em>
+                    <br><br>
+                    </div>
+                {% endif %}
+             {% endfor %}
+         {% endif %}
+        {% else %}
+        <p class="alert">No results found. Please try a different query.</p>
+        {% endif %}
+        <br>
+    <div align="center">
+        {% if not "Unable to connect" in contacts and contacts %}
+            {% if contacts.has_previous %}
+                 <a href="?query={{ query }}&page={{ contacts.previous_page_number }}">Previous</a>
+            {% endif %}
+                 Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}
+
+            {% if contacts.has_next %}
+                <a href="?query={{ query }}&page={{ contacts.next_page_number }}">Next</a><br>
+            {% endif %}
+        {% endif %}
+    </div>
+    </div>
+        </div>
 
 {% endblock %}

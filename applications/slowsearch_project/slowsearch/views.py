@@ -278,7 +278,7 @@ def search(request):
         if cnd==2:
             show_throbber = True
         else:
-            show_throbber=False
+            show_throbber = False
 
     elif request.method == 'GET':
         query = request.session['session_query']
@@ -300,3 +300,38 @@ def goto(request, url, rank):
         url = url.replace('https:/', 'http:/')
 
     return HttpResponseRedirect(url)
+
+
+def ajax_results(request):
+    context = RequestContext(request)
+    contacts = ""
+    show_throbber = ""
+
+    print request.POST
+
+    user = request.user
+    now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
+    page = request.REQUEST.get('page')
+    cnd = get_condition(request)
+
+    u_ID = user.id
+
+    record_query(user, now)
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        request.session['session_query'] = query
+        contacts = paginated_search(query, cnd, u_ID, page, user)
+
+        if cnd == 2:
+            show_throbber = True
+        else:
+            show_throbber = False
+
+    elif request.method == 'GET':
+        query = request.session['session_query']
+        contacts = paginated_search(query, cnd, u_ID, page, user)
+        show_throbber = False
+
+    return render_to_response('slowsearch/ajax_results.html', {'contacts': contacts, 'show_throbber': show_throbber,
+    'query':query},context)
