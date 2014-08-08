@@ -150,3 +150,9 @@ print a
 b = pow(10, 2)
 
 print b
+
+array = [11, 11, 11, 10, 10, 9, 9, 8, 7, 6]
+
+c = str(array)
+
+print c

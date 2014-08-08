@@ -20,6 +20,9 @@ urlpatterns = patterns('',
         url(r'^update_location/$', views.update_location, name='update_location'),
         url(r'^tour/$', views.tour, name='tour'),
         url(r'^update_cost/$', views.update_cost, name='update_cost'),
-        url(r'^ajax_upgrade/$', views.ajax_upgrade, name='ajax_upgrade')
+        url(r'^ajax_upgrade/$', views.ajax_upgrade, name='ajax_upgrade'),
+        url(r'^ajax_exit/$', views.ajax_exit, name='exit'),
+        url(r'^game_over2/$', views.game_over2, name='game_over2'),
+
 
 )

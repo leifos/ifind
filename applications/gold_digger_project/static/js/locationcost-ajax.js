@@ -41,7 +41,16 @@ $(document).ready(function(){
             200: function(response){
                 console.log("cost deducted");
                 $(".totalgold").html("poooooopppppp")
+
+            },
+
+            204: function () {
+                window.location = "/gold_digger/game_over2/"
+                console.log("Game over man")
+                alert("game over man")
             }
+
+
            }
            })
     });

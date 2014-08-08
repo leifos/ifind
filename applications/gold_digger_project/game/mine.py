@@ -1,13 +1,15 @@
+from gold_digger.logger import event_logger
 from block import Block
 import cuegen
 
 class Mine(object):
 
-    def __init__(self, yield_generator, scan):
+    def __init__(self, yield_generator, scan, user):
         self.blocks = []
         self.yield_generator = yield_generator
         self.depth = self.yield_generator.depth
         self.scan = scan
+        self.user = user
         self.make_mine()
 
     def make_mine(self):
@@ -19,6 +21,9 @@ class Mine(object):
         self.blocks = []
 
         yield_array = self.yield_generator.make_yields()
+
+        yield_array_s = str(yield_array)
+        event_logger.info(self.user.user.username + ' MY ' + yield_array_s)
         print "Yield array:", yield_array
         max_gold = 0
         for y in yield_array:

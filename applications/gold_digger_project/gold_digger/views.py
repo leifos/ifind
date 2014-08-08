@@ -33,6 +33,7 @@ def home(request):
         modt_tool = current_user.tool.time_modifier
         mod_vehicle = current_user.vehicle.modifier
         gold = current_user.gold
+        request.session['days'] = current_user.games_played
 
 
         return render_to_response('gold_digger/home.html', {'current_user': current_user,
@@ -141,7 +142,7 @@ def user_login(request):
                 login(request, user)
                 request.session['time_remaining'] = 100
                 request.session['gold'] = 0
-                request.session['days'] = 1
+
 
                 event_logger.info('logged in: %s', username)
 
@@ -215,6 +216,10 @@ def move(request):
     request.session['has_mine'] = False
     print request.session['has_mine']
     request.session['time_remaining'] -= user.vehicle.modifier
+    request.session['mine_no'] += 1
+
+    days_s = str(request.session['days'])
+    event_logger.info(user.user.username + ' DAY ' + days_s + 'MOVE')
     return HttpResponseRedirect(reverse('game2'), context)
 
 
@@ -239,6 +244,9 @@ def game_over(request):
     if user.gold > user.all_time_max_gold:
         user.all_time_max_gold = user.gold
 
+    # Updating user values
+    user.gold += request.session['gold']
+    user.save()
     user.games_played += 1
     request.session['days'] += 1
     user.all_time_gold += user.gold
@@ -253,6 +261,13 @@ def game_over(request):
     total_gold = user.gold
     request.session['gold'] = 0
     cost = determine_cost(request.session['location'])
+
+    gold_s = str(request.session['gold'])
+    total_gold_s = str(total_gold)
+    event_logger.warning(user.user.username + ' END ' + 'CG' + gold_s + 'TG' + total_gold_s)
+
+    if user.gold < 20:
+        return HttpResponseRedirect(reverse('game_over2'), context)
 
     return render_to_response('gold_digger/game_over.html', {'day_gold': day_gold,
                                                              'total_gold': total_gold,
@@ -273,6 +288,9 @@ def game_choice2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
 
+    if user.gold < 20:
+        return HttpResponseRedirect(reverse('game_over2'), request)
+
     mine_types = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
 
 
@@ -281,6 +299,8 @@ def game_choice2(request):
     request.session['mine_type'] = ''
     request.session['purchase'] = False
     request.session['mine_no'] = 0
+    request.session['time_remaining'] = 100
+    request.session['gold'] = 0
     scan = user.equipment.image.url
     tool = user.tool.image.url
     vehicle = user.vehicle.image.url
@@ -306,13 +326,20 @@ def game_choice2(request):
 def game2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    days_s = str(request.session['days'])
+
 
     if request.session['mine_type'] == '':
         mine_type = request.session['location']
         user.gold -= determine_cost(mine_type)
         user.save()
+
+        event_logger.info(user.user.username + ' DAY ' + days_s + ' NLOC ' + mine_type + ' SCAN ' + user.equipment.name + ' DIG ' + user.tool.name + ' MOVE ' + user.vehicle.name)
+
     else:
         mine_type = request.session['mine_type']
+        mine_no_s = str(request.session['mine_no'])
+        event_logger.info(user.user.username + ' DAY ' + days_s + ' LOC ' + mine_type + ' MNO ' + mine_no_s)
 
     if not request.session['has_mine']:
         gen = yieldgen.YieldGenerator
@@ -361,8 +388,9 @@ def game2(request):
             gen = yieldgen.VictoriaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         accuracy = user.equipment.modifier
-        m = mine.Mine(gen, accuracy)
+        m = mine.Mine(gen, accuracy, user)
         blocks = m.blocks
+        print blocks
         request.session['has_mine'] = True
         request.session['pointer'] = 0
 
@@ -378,7 +406,7 @@ def game2(request):
         location = request.session['location']
         pointer = request.session['pointer']
         mine_no = request.session['mine_no']
-        visibility = int((user.equipment.modifier)*10)
+        visibility = int(user.equipment.modifier*10)
         mod_scan = int(user.equipment.modifier*100)
         mod_tool = int(user.tool.modifier*100)
         modt_tool = user.tool.time_modifier
@@ -467,11 +495,12 @@ def ajaxview(request):
 
     # POSTED objects
     gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
+    gold_dug_s = str(gold_dug)
     pos = int(request.POST['block'])                            # Requesting the POSITION
     print gold_dug, "GOLD DUG"
 
     gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
-
+    gold_extracted_s = str(gold_extracted)
     # Updating the session values
 
     request.session['pointer'] += 1
@@ -479,9 +508,6 @@ def ajaxview(request):
     request.session['time_remaining'] -= user.tool.time_modifier
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
 
-    # Updating user values
-    user.gold += gold_extracted
-    user.save()
 
     # Updating the block values
     blocks[pos].dug = True
@@ -516,7 +542,13 @@ def ajaxview(request):
     myResponse['goldextracted'] = gold_extracted
 
 
+
     # Logging
+    mine_no_s = str(request.session['mine_no'])
+    days_s = str(request.session['days'])
+
+
+    event_logger.info(user.user.username + ' DAY ' + days_s + ' MINE ' + mine_no_s + ' DIGS ' + ' GD ' + gold_dug_s + ' GE ' + gold_extracted_s)
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
@@ -586,6 +618,11 @@ def ajax_buy(request):
 
             myResponse['image'] = item.image.url
             myResponse['gold'] = user.gold
+
+            # logging
+            days_s = str(request.session['days'])
+            total_gold_s = str(user.gold)
+            event_logger.info(user.user.username + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
@@ -606,6 +643,11 @@ def ajax_buy(request):
 
             myResponse['image'] = item.image.url
             myResponse['gold'] = user.gold
+
+             # logging
+            days_s = str(request.session['days'])
+            total_gold_s = str(user.gold)
+            event_logger.info(user.user.username + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
@@ -627,6 +669,11 @@ def ajax_buy(request):
 
             myResponse['image'] = item.image.url
             myResponse['gold'] = user.gold
+
+            # logging
+            days_s = str(request.session['days'])
+            total_gold_s = str(user.gold)
+            event_logger.info(user.user.username + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
@@ -662,6 +709,11 @@ def ajax_upgrade(request):
 
             myResponse['image'] = new_item.image.url
             myResponse['gold'] = user.gold
+
+            # logging
+            days_s = str(request.session['days'])
+            total_gold_s = str(user.gold)
+            event_logger.info(user.user.username + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
     if item_type == 'tool':
@@ -688,6 +740,11 @@ def ajax_upgrade(request):
 
             myResponse['image'] = new_item.image.url
             myResponse['gold'] = user.gold
+
+            # logging
+            days_s = str(request.session['days'])
+            total_gold_s = str(user.gold)
+            event_logger.info(user.user.username + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
@@ -714,6 +771,11 @@ def ajax_upgrade(request):
 
             myResponse['image'] = new_item.image.url
             myResponse['gold'] = user.gold
+
+            # logging
+            days_s = str(request.session['days'])
+            total_gold_s = str(user.gold)
+            event_logger.info(user.user.username + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
@@ -729,6 +791,9 @@ def update_cost(request):
     user = UserProfile.objects.get(user=request.user)
     print user.gold
     user.gold -= int(request.POST['cost'])
+    if user.gold < 20:
+        return HttpResponse(status=204)
+
     print request.POST['cost'], "COOOOOSTTTTTTTTT"
     print user.gold
     user.save()
@@ -754,3 +819,31 @@ def determine_cost(mine_type):
         cost = 200
 
     return cost
+
+
+def ajax_exit(request):
+    user = UserProfile.objects.get(user=request.user)
+    days_s = str(request.session['days'])
+    mine_no_s = str(request.session['mine_no'])
+    event_logger.warning(user.user.username + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' EB ' + request.POST['escape'])
+
+    return HttpResponse(status=200)
+
+def game_over2(request):
+    context = RequestContext(request)
+    user = UserProfile.objects.get(user=request.user)
+    user.gold = 0
+    user.equipment = ScanningEquipment.objects.get(id=1)
+    user.tool = DiggingEquipment.objects.get(id=1)
+    user.vehicle = Vehicle.objects.get(id=1)
+    request.session['gold'] = 0
+    request.session['mine_no'] = 0
+    days = request.session['days']
+    request.session['days'] = 1
+    mines = request.session['mine_no']
+    user.games_played = 1
+    user.gold = 40
+    user.save()
+
+    return render_to_response('gold_digger/game_over2.html', {'mines': mines,
+                                                              'days': days}, context)

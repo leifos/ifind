@@ -500,6 +500,15 @@ body{
 
 }
 
+.gameover2 {
+    background-color: black;
+    font-family: pixelfont;
+    color: #ffffff;
+    font-size: 400%;
+    text-align: center;
+
+}
+
 .tab-content {
     font-size: 12pt;
 }

@@ -15,7 +15,7 @@ event_logger = logging.getLogger('event_log')
 event_logger_handler = logging.FileHandler(log_file)
 
 # configure the format of the message string for the logger
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s' '%(user)')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 # set the formmater to the logger via a handler
 event_logger_handler.setFormatter(formatter)
 event_logger.addHandler(event_logger_handler)

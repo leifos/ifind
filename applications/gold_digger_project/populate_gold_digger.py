@@ -31,9 +31,9 @@ def populate():
     john = add_user('John', 'john@gmail.com', 'john')
     jess = add_user('Jess', 'jess@gmail.com', 'jess')
 
-    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', spell, wheelbarrow, shovel, 1234, 4, 308.5)
-    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, cart, golden_shovel, 345, 10, 34.5)
-    add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', dwarf, truck, mecha, 567, 7, 1000)
+    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', spell, wheelbarrow, shovel, 1234, 0, 308.5, 0)
+    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, cart, golden_shovel, 345, 0, 34.5, 0)
+    add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', dwarf, truck, mecha, 567, 0, 1000, 0)
 
 
 
@@ -47,11 +47,11 @@ def add_user(username, email, password):
     return u
 
 
-def add_user_profile(user, picture, location, equipment, vehicle, tool, all_time_max_gold, games_played, average):
+def add_user_profile(user, picture, location, equipment, vehicle, tool, all_time_max_gold, games_played, average, mines):
     up = UserProfile.objects.get_or_create(user=user, picture=picture, location=location,
                                            equipment=equipment, vehicle=vehicle, tool=tool,
                                            all_time_max_gold=all_time_max_gold, games_played=games_played,
-                                           average=average)[0]
+                                           average=average, mines=mines)[0]
     return up
 
 

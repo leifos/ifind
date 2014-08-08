@@ -22,17 +22,17 @@
                     <span class="glyphicon glyphicon-chevron-down"></span>
                     MENU
                 </button>
-                <a href="/gold_digger/" class="navbar-brand">Gold Digger</a>
+                <a id="exithome" href="#" class="navbar-brand">Gold Digger</a>
             </div>
 
             <div class="collapse navbar-collapse" id="collapse">
                 <ul class="nav navbar-nav">
                     {% if user.user.is_authenticated %}
-                        <li class="active"><a href="/gold_digger/game_choice2/">Play!</a></li>
+                        <li class="active"><a id="exitplay" href="#">Play!</a></li>
                     {% endif %}
-                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-                    <li><a href="/gold_digger/about/">About</a></li>
-                    <li><a href="/gold_digger/tour/">How to Play</a></li>
+                    <li><a id="exitleader" href="#">Leaderboards</a></li>
+                    <li><a id="exitabout" href="#">About</a></li>
+                    <li><a id="exithowto" href="#">How to Play</a></li>
                 </ul>
 
             </div>
@@ -41,6 +41,24 @@
 
 {% endblock %}
 {% block body_block %}
+
+    <!-- Leave page -->
+
+    <div id="exitpage" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="text-align: center;">
+                    <h3 style="font-family: pixelfont">Don't leave!</h3>
+                    <h4 style="font-family: pixelfont">If you leave now your curent gold will be lost!</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    <button name="goaway" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
 
@@ -200,6 +218,8 @@
 
         {% endif %}
 
+    <script src="/static/js/dig-ajax.js"></script>
+    <script src="/static/js/noexit.js"></script>
 {% endblock %}
 </body>
 </html>

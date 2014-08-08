@@ -71,6 +71,7 @@ class UserProfile(models.Model):
     all_time_gold = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
     average = models.FloatField(default=0)
+    mines = models.IntegerField(default=0)
 
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.picture.url)
