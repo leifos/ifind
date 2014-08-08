@@ -216,7 +216,8 @@ def move(request):
     request.session['has_mine'] = False
     print request.session['has_mine']
     request.session['time_remaining'] -= user.vehicle.modifier
-    request.session['mine_no'] += 1
+    user.mines += 1
+    user.save()
 
     days_s = str(request.session['days'])
     event_logger.info(user.user.username + ' DAY ' + days_s + 'MOVE')
@@ -246,7 +247,7 @@ def game_over(request):
 
     # Updating user values
     user.gold += request.session['gold']
-    user.save()
+    user.mines += 1
     user.games_played += 1
     request.session['days'] += 1
     user.all_time_gold += user.gold
@@ -255,8 +256,7 @@ def game_over(request):
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
     request.session['time_remaining'] = 100
-    mine_no = request.session['mine_no']
-    request.session['mine_no'] = 0
+    mine_no = (request.session['mine_no'])-1
     day_gold = request.session['gold']
     total_gold = user.gold
     request.session['gold'] = 0
@@ -837,11 +837,11 @@ def game_over2(request):
     user.tool = DiggingEquipment.objects.get(id=1)
     user.vehicle = Vehicle.objects.get(id=1)
     request.session['gold'] = 0
+    mines = request.session['mine_no']
     request.session['mine_no'] = 0
     days = request.session['days']
     request.session['days'] = 1
-    mines = request.session['mine_no']
-    user.games_played = 1
+    user.games_played += 1
     user.gold = 40
     user.save()
 
