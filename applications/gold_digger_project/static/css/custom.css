@@ -20,7 +20,7 @@
     background-image: url(/static/Wild%20West%20Background.png);
     background-repeat: no-repeat;
     background-size: cover;
-    padding-bottom: 10%;
+    padding-bottom: 17%;
     padding-top: 3%;
     height: 0;
     margin-bottom: 0;
@@ -31,7 +31,7 @@
     color: #000000;
     background-repeat: no-repeat;
     background-size: cover;
-    padding-bottom: 20%;
+    padding-bottom: 17%;
     padding-top: 3%;
     height: 0;
     margin-bottom: 0;
@@ -246,8 +246,8 @@
   bottom: 20px;
 }
 
-h1, h2, h3, h4, p {
-
+h1, h2, h3, h4, h5, h6 {
+    font-family: pixelfont;
     color:#000000;
 }
 
@@ -634,6 +634,17 @@ a:hover {
     color: red;
 }
 
+.intro {
+    background: rgb(0, 0, 0);
+    border-color: black;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+
+.introp {
+    font-size: medium;
+    text-align: justify;
+}
 /*#goldlayer_1 {*/
     /*-webkit-animation-duration: 5s;*/
     /*-webkit-animation-delay: 5s;*/

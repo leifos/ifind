@@ -29,16 +29,20 @@
 
                     <table style="line-height: 74px">
                         <tr>
-                            <td>Scanning: </td>
-                            <td><img data-toggle="tooltip" data-placement="right" title="Accuracy: {{ mod_scan }}%" id="scan" src="{{ scan }}"></td>
+                            <td>Scanning:</td>
+                            <td><img data-toggle="tooltip" data-placement="right" title="Accuracy: {{ mod_scan }}%"
+                                     id="scan" src="{{ scan }}"></td>
                         </tr>
                         <tr>
-                            <td>Tool: </td>
-                            <td><img data-toggle="tooltip" data-placement="right" title="Dig cost: {{ modt_tool }} Extracted: {{ mod_tool }}%" id="tool" src="{{ tool }}"></td>
+                            <td>Tool:</td>
+                            <td><img data-toggle="tooltip" data-placement="right"
+                                     title="Dig cost: {{ modt_tool }} Extracted: {{ mod_tool }}%" id="tool"
+                                     src="{{ tool }}"></td>
                         </tr>
                         <tr>
-                            <td>Vehicle: </td>
-                            <td><img data-toggle="tooltip" data-placement="right" title="Move cost: {{ mod_vehicle }}" id="vehicle" src="{{ vehicle }}"></td>
+                            <td>Vehicle:</td>
+                            <td><img data-toggle="tooltip" data-placement="right" title="Move cost: {{ mod_vehicle }}"
+                                     id="vehicle" src="{{ vehicle }}"></td>
                         </tr>
                     </table>
 
@@ -127,31 +131,88 @@
                         <strong> You successfully registrated! </strong> Now click on "Play" to begin diggin'!
                     </div>
                 {% endif %}
-                <h2>Welcome</h2>
-                Gold digger is a videogame brought to you by the University of Glasgow and...I dunno, beer!
-                <br><br>
-                {% if not user.is_authenticated %}
-                <button class="btn btn-warning btn-lg animated bounceIn" data-toggle="modal" data-target="#regModal">
+                <h2>Welcome to Gold Digger!</h2>
+                <p class="introp">Gold Digger is a strategy game where your objecticve is to gather as much gold as possible in different
+                mines around the world.</p>
+                <div style="float: right;">
+                    <h3>1. Choose a location!</h3>
+
+                    <p class="introp"><img class="thumbnail intro" src="/static/map_locations3.png" height="180px"
+                                style="float: left;"/>To begin your gold digging journey, you need to choose a location. There are 6 locations you
+                        can
+                        travel to to try your luck: <b>California, Yukon, Brazil, South Africa, Scotland and
+                            Victoria</b>.
+                        Travelling to each location will cost an amount of money that is proportional to the amount of
+                        gold
+                        you'll be able to find. The more expensive the mine, the more gold you'll find!</p>
+                </div>
+                <div style="float: right">
+                    <h3>2. Dig!</h3>
+
+                    <p class="introp"><img class="thumbnail intro" src="/static/Intro1.png" height="150px"
+                                style="float: right;"/>Once you get to a mine you'll be able to start digging. Each mine has <b>10 layers</b>, each one
+                        yielding a certain amount of gold nuggets. You can guess how much gold there might be in a layer
+                        by
+                        looking
+                        at the <b>gold flecks</b> some of them will show. But be careful <u>the accuracy of these
+                            "clues" is
+                            only as good as your scanning equipment.</u> The better the scanning equipment, the better
+                        the chance that what shines <i>is</i> actually gold.<br> Scanning equipment also determines <u>how
+                            many layers of each mine will show you gold flecks</u></p>
+                </div>
+                <div style="float: right">
+                <h3>3. Move!</h3>
+
+                <p class="introp"><img class="thumbnail intro" src="/static/Intro2.png" height="200px"
+                                style="float: left;"/>If you think that the mine you're in is not giving you the amount of gold you need, there's only one
+                    thing to do: <b>move to a new mine</b>! Moving to a new mine will also cost you a certain amount of
+                    time
+                    but it might be hugely profitable! Your success will be measured by <u>your ability to know when to
+                        stop
+                        digging and move away</u>. Like gambling, you gotta know when to stop!</p>
+            </div>
+            <div style="float: right;">
+                <h3>4. Rest and Shop!</h3>
+
+                <p class="introp"><img class="thumbnail intro" src="/static/Intro3.png" height="200px"
+                                style="float: right "/>After a day of hard mining work, <u>when you've used up all your time</u>, you can have a look at how
+                    you did and <b>how much gold you were able to gather</b>. If you managed to get enough, you could
+                    <b>
+                        go to the shop</b> and buy yourself some new items!The better your equipment, the more gold
+                    you'll get.</p>
+            </div>
+            <br><br>
+            <div >
+                <h3>5. Explore the world and become rich!</h3>
+
+                <p class="introp">Go to all 6 locations and get more and more gold to <b>dominate the leaderboards</b> and become a true <b>Gold
+                    Digger!</b></p></div>
+
+            <div><br><br>
+            <div style="text-align: center"><img style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"> <img  style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"> <img  style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"></div>
+            {% if not user.is_authenticated %}
+                <button class="btn btn-warning btn-lg animated bounceIn" data-toggle="modal"
+                        data-target="#regModal">
                     Register
                 </button><br><br>
-                {% endif %}
-                {% if registered == False %}
-                    <div class="alert alert-dismissable alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>Invalid registration details supplied!</strong>
-                    </div>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <br> <br>
-                    <a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/"
-                       style="font-family: pixelfont">Play!</a>
-                    <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/"
-                       style="font-family: pixelfont">How to play</a>
+            {% endif %}
+            {% if registered == False %}
+                <div class="alert alert-dismissable alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Invalid registration details supplied!</strong>
+                </div>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <br> <br>
+                <a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/"
+                   style="font-family: pixelfont">Play!</a>
+                <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/"
+                   style="font-family: pixelfont">How to play</a>
 
-
-                {% endif %}
-            </div>
+</div>
+            {% endif %}
         </div>
+    </div>
 
     </div>
 
@@ -224,7 +285,7 @@
 
 
 
-            <script src="/static/js/tooltips.js"></script>
+    <script src="/static/js/tooltips.js"></script>
 
 {% endblock %}
 </body>

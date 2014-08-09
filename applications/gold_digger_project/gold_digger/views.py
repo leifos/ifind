@@ -143,10 +143,10 @@ def user_login(request):
                 request.session['time_remaining'] = 100
                 request.session['gold'] = 0
 
-
+                request.session['days'] = 1
                 event_logger.info('logged in: %s', username)
 
-                return HttpResponseRedirect(reverse('home'), context)
+                return HttpResponseRedirect(reverse('game_choice2'), context)
             else:
                 return HttpResponse("Your Gold Digger account is disabled.")
         else:
@@ -287,6 +287,7 @@ def leaderboards(request):
 def game_choice2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+
 
     if user.gold < 20:
         return HttpResponseRedirect(reverse('game_over2'), request)
@@ -836,7 +837,7 @@ def game_over2(request):
     request.session['gold'] = 0
     mines = request.session['mine_no']
     request.session['mine_no'] = 0
-    days = request.session['days']
+    days = (request.session['days'])-1
     request.session['days'] = 1
     user.games_played += 1
     user.gold = 40
