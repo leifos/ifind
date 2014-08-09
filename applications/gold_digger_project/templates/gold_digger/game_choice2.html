@@ -85,12 +85,18 @@
 
                 </div>
                 <div class="modal-footer">
+                    {% if gold < 40 %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.1 }}" name="mine type" disabled>Go to
+                            mine</button>
+                    {% else %}
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" value="{{ mine_types.1 }}" name="mine type">Go to
                             mine
                         </button>
                     </form>
+                {% endif %}
                 </div>
             </div>
         </div>
@@ -125,11 +131,18 @@
 
                 </div>
                 <div class="modal-footer">
-                    <form action="/gold_digger/game2/">
+                        {% if gold < 80 %}
+                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.2 }}" name="mine type" disabled>Go to
+                            mine
+                        </button>
+                        {% else %}
+                        <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" value="{{ mine_types.2 }}" name="mine type">Go to
                             mine
                         </button>
+                            {% endif %}
                     </form>
                 </div>
             </div>
@@ -159,12 +172,19 @@
 
                 </div>
                 <div class="modal-footer">
+                    {% if gold < 100 %}
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" value="{{ mine_types.3 }}" name="mine type" disabled>Go to
+                            mine
+                        </button>
+                    {% else %}
                     <form action="/gold_digger/game2/">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" value="{{ mine_types.3 }}" name="mine type">Go to
                             mine
                         </button>
                     </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -200,12 +220,19 @@
 
                     </div>
                     <div class="modal-footer">
+                        {% if gold < 120 %}
+                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" value="{{ mine_types.4 }}" name="mine type" disabled>Go
+                                to mine
+                            </button>
+                        {% else %}
                         <form action="/gold_digger/game2/">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" value="{{ mine_types.4 }}" name="mine type">Go
                                 to mine
                             </button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -241,6 +268,13 @@
 
                     </div>
                     <div class="modal-footer">
+                        {% if gold < 200 %}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" value="{{ mine_types.5 }}" name="mine type" disabled>Go
+                                to
+                                mine
+                            </button>
+                        {% else %}
                         <form action="/gold_digger/game2/">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" value="{{ mine_types.5 }}" name="mine type">Go
@@ -248,6 +282,7 @@
                                 mine
                             </button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -38,15 +38,15 @@ $(document).ready(function(){
            url: "/gold_digger/update_cost/",
            data: { cost: cost, csrfmiddlewaretoken: csrf },
            statusCode:{
-            200: function(response){
+            200: function(){
                 console.log("cost deducted");
                 $(".totalgold").html("poooooopppppp")
 
             },
 
             204: function () {
-                window.location = "/gold_digger/game_over2/"
-                console.log("Game over man")
+                window.location = "/gold_digger/game_over2/";
+                console.log("Game over man");
                 alert("game over man")
             }
 

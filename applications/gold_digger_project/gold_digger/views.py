@@ -293,8 +293,6 @@ def game_choice2(request):
 
     mine_types = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
 
-
-    print mine_types
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
     request.session['purchase'] = False
@@ -390,7 +388,6 @@ def game2(request):
         accuracy = user.equipment.modifier
         m = mine.Mine(gen, accuracy, user)
         blocks = m.blocks
-        print blocks
         request.session['has_mine'] = True
         request.session['pointer'] = 0
 

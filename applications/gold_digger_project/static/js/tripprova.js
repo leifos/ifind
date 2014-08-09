@@ -4,11 +4,12 @@ var trip2 = new Trip([
         sel: $("#California_landscape"),
         content: 'Hello and welcome to the <b>Gold Digger tutorial!</b>',
         position: "s"
+//        animation: "fadeInDown"
 
     },
     {
         sel: $("#California_landscape"),
-        content: 'In <b> Gold Digger </b> your objective is to gather as much gold as possible.',
+        content: 'In <b> Gold Digger </b> our objective is to <u>gather as much gold as possible</u>.',
         position: "s"
 
     },
@@ -19,19 +20,39 @@ var trip2 = new Trip([
         expose: true
     },
     {
+        sel: $("#ten"),
+        content: "Each mine has <b>ten layers</b>, each <u>yielding a certain amount of gold</u>",
+        position: "n"
+    },
+    {
         sel: $("#step2"),
         content: "This layer of the mine <b>has been dug</b> yielding a certain amount of nuggets.",
         position: "n"
     },
     {
         sel: $("#step3"),
-        content: "Whereas this layer has not been dug and <b>we can only see some gold flecks</b> that suggest us how much gold we can expect to find in this particular layer.",
+        content: "Whereas this layer has not been dug and <b>we can only see some gold flecks</b> that suggest us <u>how much gold we can expect to find in this particular layer.</u>",
         position: "n"
 
     },
     {
+        sel: $("#step3"),
+        content: "Depending on the <b>scanning equipment</b> we have, the gold flecks we can see,<u> will represent more or less accurately the <b>actual</b> amount of gold in a particular layer</u>.",
+        position: "n"
+    },
+    {
+        sel: $("#step3"),
+        content: "Our scanning equipment also determines <u>how many layers of the mine will show us cues</u>.",
+        position: "n"
+    },
+    {
+        sel: $("#empty"),
+        content: "For example, we don't know anything about this layer, since <u>our scanning equipment only allows us to see 5 layers down the mine</u>.",
+        position: "n"
+    },
+    {
         sel: $("#step4"),
-        content: "Here we can see how much gold was present in this particular layer.",
+        content: "Here we can see how much gold nuggets were present in this particular layer.",
         position: "s"
     },
     {
@@ -58,7 +79,7 @@ var trip2 = new Trip([
 
     },
     {
-        sel: $("#tool"),
+        sel: $("#digbutton_1"),
         content: "If we click on the dig button and we still have enough units of time, well'be able to <b>dig through one more layer</b> of the mine",
         position: "e"
 
