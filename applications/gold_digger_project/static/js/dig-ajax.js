@@ -38,7 +38,7 @@ $(document).ready(function(){
                 var comment;
 
                 if (response['goldextracted']>=0 && response['goldextracted']<5){
-                    comment = ":(";
+                    comment = "OK";
                 }
                 else if(response['goldextracted']>=5 && response['goldextracted']<10){
                     comment = "GOOD";
@@ -68,7 +68,7 @@ $(document).ready(function(){
 
                 // Update points
                 $('#totalgold').animateNumbers(response['totalgold'], true, 200, "linear");
-                $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']+"%");
+                $('.progress-bar').css("width", response['timeremaining']).html(response['timeremaining']);
                 $('#currentgold').animateNumbers(response['currentgold'], true, 200, "linear");
 
                 if ((pointer-1)>0){
@@ -83,7 +83,7 @@ $(document).ready(function(){
                 $('#goldlayer_'+pointer).removeClass().addClass("row nuggets_"+response['nuggets']).addClass("animated").addClass("flipInX");
                 $('#comment_'+pointer).html(comment).css('visibility', 'visible').animate({opacity: 1.0}, 1000).fadeOut( "fast" );
                 $('#points_'+pointer).html("+" + response['goldextracted'] + " ").append('<img src="/static/nugget.png"/>').css('visibility', 'visible').animate({opacity: 1.0}, 300).animate({opacity: 0.0}, 2000);
-                $('#row_'+pointer).append("<div class='row' id='resultcol'>"+ gold + "<img src='/static/nugget.png'> ("+response['goldextracted']+")<img src='/media/icons/Items/Chest.png'>"+"</div>");
+                $('#row_'+pointer).append("<div class='row' id='resultcol'>"+response['goldextracted']+"<img src='/static/nugget.png'></div>");
 
                 pointer +=1;
 

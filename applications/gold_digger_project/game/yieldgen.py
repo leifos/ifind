@@ -151,8 +151,8 @@ class CaliforniaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.06, 0.09))   # The steepness of the curve
-        k = random.randint(10, 18)
+        a = -1*(random.uniform(0.1, 0.2))   # The steepness of the curve
+        k = random.randint(15, 20)
         for index in range(self.depth):
             quadratic_yield_array.append(CaliforniaQuadraticYieldGenerator.cali_quadratic_function(index, a, k))
 

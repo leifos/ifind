@@ -9,14 +9,14 @@
 
 </head>
 {% block body_block %}
-    <body id="shopbody">
+    <body>
 
-    <div>
+    <div id="ocean">
     <span id='csrf'>{% csrf_token %}</span>
 
     <div class="jumbotron" id="about">
         <h1>Locations</h1>
-
+{#        <div class="well" id="totalwell" style="float: right"><img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span><hr></div>#}
     </div>
     <hr>
     <!-- California Modal -->
@@ -27,11 +27,11 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">California</h4>
+                    <h3 class="modal-title" id="myModalLabel">California</h3>
                 </div>
                 <div class="modal-body">
                     <div class="thumbnail">
-                        <img src="{% static "Wild%20West%20Background.png" %}"></div>
+                        <img src="{% static "Wild%20West%20Background.png" %}"></div><br>
                     <strong>Gold Rush!!</strong><br><br>
 
                     In 1848 <a href="http://en.wikipedia.org/wiki/California_Gold_Rush#History">James W. Marshall
@@ -42,8 +42,8 @@
                     "giddyup!" thousands came flocking to California.
                     <br><br>
                     <ul>
-                        <li><strong>Mine cost: 20 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong>Max yield: 10</strong></li>
+                        <li><strong style="font-size: 14pt">Mine cost: 20 </strong><img height="20px" src="/static/nugget.png"></li>
+                        <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"></strong></li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -66,11 +66,11 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Yukon - Klondike</h4>
+                    <h3 class="modal-title" id="myModalLabel">Yukon - Klondike</h3>
                 </div>
                 <div class="modal-body">
                     <div class="thumbnail">
-                        <img src="{% static "Yukon.png" %}"></div>
+                        <img src="{% static "Yukon.png" %}"></div><br>
                     <strong>The last Great gold Rush!</strong><br><br> On <a
                         href="http://en.wikipedia.org/wiki/Klondike_Gold_Rush#Discovery_.281896.29"> August 16 1896
                     George Carmack and Skookum Jim </a>found a considerable amount
@@ -79,8 +79,8 @@
                     Wanna have a go? But be careful it's pretty chilly up there!
                     <br><br>
                     <ul>
-                        <li><strong>Mine cost: 40 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong>Max yield: 12</strong></li>
+                        <li><strong style="font-size: 14pt">Mine cost: 40 </strong><img height="20px" src="/static/nugget.png"></li>
+                        <li><strong style="font-size: 14pt">Max yield: 12</strong></li>
                     </ul>
 
                 </div>
@@ -109,11 +109,11 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Brazil</h4>
+                    <h3 class="modal-title" id="myModalLabel">Brazil</h3>
                 </div>
                 <div class="modal-body">
                     <div class="thumbnail">
-                        <img src="{% static "Brazil.png" %}"></div>
+                        <img src="{% static "Brazil.png" %}"></div><br>
 
                     Qualé mano!?<br><br>
                     The Brazilian Gold rush started in the 1700s when bandeirantes <a
@@ -124,8 +124,8 @@
                     By 1725 <strong>half the population of Brazil</strong> was living here in southeastern Brazil!
                     <br><br>
                     <ul>
-                        <li><strong>Mine cost: 80 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong>Max yield: 15</strong></li>
+                        <li><strong style="font-size: 14pt">Mine cost: 80 </strong><img height="20px" src="/static/nugget.png"></li>
+                        <li><strong style="font-size: 14pt">Max yield: 15</strong></li>
                     </ul>
 
 
@@ -157,7 +157,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">South Africa</h4>
+                    <h3 class="modal-title" id="myModalLabel">South Africa</h3>
                 </div>
                 <div class="modal-body">
                     <div class="thumbnail">
@@ -166,8 +166,8 @@
 
                     <br><br>
                     <ul>
-                        <li><strong>Mine cost: 100 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong>Max yield: 17</strong></li>
+                        <li><strong style="font-size: 14pt">Mine cost: 100 </strong><img height="20px" src="/static/nugget.png"></li>
+                        <li><strong style="font-size: 14pt">Max yield: 17</strong></li>
                     </ul>
 
                 </div>
@@ -199,11 +199,11 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                                 class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Scotland - Kildonan</h4>
+                        <h3 class="modal-title" id="myModalLabel">Scotland - Kildonan</h3>
                     </div>
                     <div class="modal-body">
                         <div class="thumbnail">
-                            <img src="{% static "Scotland.png" %}"></div>
+                            <img src="{% static "Scotland.png" %}"></div><br>
                         Betcha didn't know <a href="http://www.helmsdale.org/gold-rush.php">Scotland had its own
                         gold rush!</a><br><br>
 
@@ -214,8 +214,8 @@
 
                         <br><br>
                         <ul>
-                            <li><strong>Mine cost: 120 </strong><img height="20px" src="/static/nugget.png"></li>
-                            <li><strong>Max yield: 20</strong></li>
+                            <li><strong style="font-size: 14pt">Mine cost: 120 </strong><img height="20px" src="/static/nugget.png"></li>
+                            <li><strong style="font-size: 14pt">Max yield: 20</strong></li>
                         </ul>
 
                     </div>
@@ -246,11 +246,11 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                                 class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Victoria</h4>
+                        <h3 class="modal-title" id="myModalLabel">Victoria</h3>
                     </div>
                     <div class="modal-body">
                         <div class="thumbnail">
-                            <img src="{% static "Victoria2.png" %}"></div>
+                            <img src="{% static "Victoria2.png" %}"></div><br>
 
                         Go Down Under to dig Down Under!<br><br>
 
@@ -262,8 +262,8 @@
 
                         <br><br>
                         <ul>
-                            <li><strong>Mine cost: 200 </strong><img height="20px" src="/static/nugget.png"></li>
-                            <li><strong>Max yield: 22</strong></li>
+                            <li><strong style="font-size: 14pt">Mine cost: 200 </strong><img height="20px" src="/static/nugget.png"></li>
+                            <li><strong style="font-size: 14pt">Max yield: 22</strong></li>
                         </ul>
 
                     </div>
@@ -309,8 +309,8 @@
                     </table>
 
                 </div>
-                <div class="animated wobble"><a href="/gold_digger/store/"><img id="buystuff"
-                                                                                src="/media/mine/buy_stuff.png"/></a>
+                <div class="animated bounceIn"><a class="btn btn-primary btn-lg btn-warning animated bounceIn" href="/gold_digger/store/"
+                   style="font-family: pixelfont">Buy stuff</a>
                 </div>
             </div>
             <div class="col-xs-10 col-md-10">

@@ -8,9 +8,10 @@
     <title>Gold Digger</title>
 
 </head>
-<body>
 {% block body_block %}
-    <div class="jumbotron" id="home">
+    <body id="shopbody">
+
+    <div class="jumbotron" id="about">
         <h1>Gold Digger</h1>
 
         <h2>{{ request.session.prova }}</h2>
@@ -47,6 +48,16 @@
                     </table>
 
                 </div>
+
+            {% if user.is_authenticated %}
+                        <div style="margin-left: 3%;">
+                        <a class="btn btn-primary btn-lg btn-success animated bounceIn"
+                           href="/gold_digger/game_choice2/"
+                           style="font-family: pixelfont">Play!</a>
+                        <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/"
+                           style="font-family: pixelfont">How to play</a>
+</div>
+                    {% endif %}
             </div>
 
         {% else %}
@@ -68,7 +79,7 @@
                                             <label for="inputError" class="col-lg-3 control-label">Username</label>
 
                                             <div class="col-lg-8">
-                                                <input type="text" name="username" class="form-control" id="inputError"
+                                                <input type="text" name="username" class="form-control animated shake" id="inputError"
                                                        placeholder="Username">
 
                                             </div>
@@ -77,12 +88,16 @@
                                             <label for="inputError" class="col-lg-3 control-label">Password</label>
 
                                             <div class="col-lg-8">
-                                                <input type="password" name="password" class="form-control"
+                                                <input type="password" name="password" class="form-control animated shake"
                                                        id="inputError"
                                                        placeholder="Password">
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-default">Login</button>
+                                         <button class="btn btn-warning animated bounceIn" data-toggle="modal"
+                                                    data-target="#regModal">
+                                                Register
+                                            </button>
                                     {% else %}
                                         <div class="form-group">
                                             <label for="inputEmail" class="col-lg-3 control-label">Username</label>
@@ -102,6 +117,11 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-default">Login</button>
+
+                                            <button class="btn btn-warning animated bounceIn" data-toggle="modal"
+                                                    data-target="#regModal">
+                                                Register
+                                            </button><br><br>
                                     {% endif %}
 
                                 </fieldset>
@@ -109,7 +129,7 @@
                         </div>
                     </div>
                     {% if bad_details %}
-                        <div class="alert alert-dismissable alert-danger">
+                        <div class="alert alert-dismissable alert-danger animated bounceInDown">
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Invalid login details supplied</strong>
                         </div>
@@ -126,19 +146,30 @@
         <div class="col-xs-6 col-md-7">
             <div class="well" id="homewell">
                 {% if registered %}
-                    <div class="alert alert-dismissable alert-success">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
+                    <div style="float: right;" class="alert alert-dismissable alert-success">
+                        <button type="button" class="close animated bounceInDown" data-dismiss="alert">×</button>
                         <strong> You successfully registrated! </strong> Now click on "Play" to begin diggin'!
                     </div>
                 {% endif %}
+                {% if registered == False %}
+                        <div  class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>Invalid registration details supplied!</strong>
+                        </div>
+                    {% endif %}
+                <div >
                 <h2>Welcome to Gold Digger!</h2>
-                <p class="introp">Gold Digger is a strategy game where your objecticve is to gather as much gold as possible in different
-                mines around the world.</p>
+
+                <p class="introp">Gold Digger is a strategy game where your objecticve is to gather as much gold as
+                    possible in different
+                    mines around the world.</p>
+                </div>
                 <div style="float: right;">
                     <h3>1. Choose a location!</h3>
 
                     <p class="introp"><img class="thumbnail intro" src="/static/map_locations3.png" height="180px"
-                                style="float: left;"/>To begin your gold digging journey, you need to choose a location. There are 6 locations you
+                                           style="float: left;"/>To begin your gold digging journey, you need to choose
+                        a location. There are 6 locations you
                         can
                         travel to to try your luck: <b>California, Yukon, Brazil, South Africa, Scotland and
                             Victoria</b>.
@@ -150,69 +181,63 @@
                     <h3>2. Dig!</h3>
 
                     <p class="introp"><img class="thumbnail intro" src="/static/Intro1.png" height="150px"
-                                style="float: right;"/>Once you get to a mine you'll be able to start digging. Each mine has <b>10 layers</b>, each one
+                                           style="float: right;"/>Once you get to a mine you'll be able to start
+                        digging. Each mine has <b>10 layers</b>, each one
                         yielding a certain amount of gold nuggets. You can guess how much gold there might be in a layer
                         by
                         looking
                         at the <b>gold flecks</b> some of them will show. But be careful <u>the accuracy of these
                             "clues" is
                             only as good as your scanning equipment.</u> The better the scanning equipment, the better
-                        the chance that what shines <i>is</i> actually gold.<br> Scanning equipment also determines <u>how
+                        the chance that what shines <i>is</i> actually gold. Scanning equipment also determines <u>how
                             many layers of each mine will show you gold flecks</u></p>
                 </div>
                 <div style="float: right">
-                <h3>3. Move!</h3>
+                    <h3>3. Move!</h3>
 
-                <p class="introp"><img class="thumbnail intro" src="/static/Intro2.png" height="200px"
-                                style="float: left;"/>If you think that the mine you're in is not giving you the amount of gold you need, there's only one
-                    thing to do: <b>move to a new mine</b>! Moving to a new mine will also cost you a certain amount of
-                    time
-                    but it might be hugely profitable! Your success will be measured by <u>your ability to know when to
-                        stop
-                        digging and move away</u>. Like gambling, you gotta know when to stop!</p>
-            </div>
-            <div style="float: right;">
-                <h3>4. Rest and Shop!</h3>
-
-                <p class="introp"><img class="thumbnail intro" src="/static/Intro3.png" height="200px"
-                                style="float: right "/>After a day of hard mining work, <u>when you've used up all your time</u>, you can have a look at how
-                    you did and <b>how much gold you were able to gather</b>. If you managed to get enough, you could
-                    <b>
-                        go to the shop</b> and buy yourself some new items!The better your equipment, the more gold
-                    you'll get.</p>
-            </div>
-            <br><br>
-            <div >
-                <h3>5. Explore the world and become rich!</h3>
-
-                <p class="introp">Go to all 6 locations and get more and more gold to <b>dominate the leaderboards</b> and become a true <b>Gold
-                    Digger!</b></p></div>
-
-            <div><br><br>
-            <div style="text-align: center"><img style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"> <img  style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"> <img  style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"></div>
-            {% if not user.is_authenticated %}
-                <button class="btn btn-warning btn-lg animated bounceIn" data-toggle="modal"
-                        data-target="#regModal">
-                    Register
-                </button><br><br>
-            {% endif %}
-            {% if registered == False %}
-                <div class="alert alert-dismissable alert-danger">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <strong>Invalid registration details supplied!</strong>
+                    <p class="introp"><img class="thumbnail intro" src="/static/Intro2.png" height="200px"
+                                           style="float: left;"/>If you think that the mine you're in is not giving you
+                        the amount of gold you need, there's only one
+                        thing to do: <b>move to a new mine</b>! Moving to a new mine will also cost you a certain amount
+                        of
+                        time
+                        but it might be hugely profitable! Your success will be measured by <u>your ability to know when
+                            to
+                            stop
+                            digging and move away</u>. Like gambling, you gotta know when to stop!</p>
                 </div>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <br> <br>
-                <a class="btn btn-primary btn-lg btn-success animated bounceIn" href="/gold_digger/game_choice2/"
-                   style="font-family: pixelfont">Play!</a>
-                <a class="btn btn-primary btn-lg btn-info animated bounceIn" href="/gold_digger/tour/"
-                   style="font-family: pixelfont">How to play</a>
+                <div style="float: right;">
+                    <h3>4. Rest and Shop!</h3>
 
-</div>
-            {% endif %}
+                    <p class="introp"><img class="thumbnail intro" src="/static/Intro3.png" height="200px"
+                                           style="float: right "/>After a day of hard mining work, <u>when you've used
+                        up all your time</u>, you can have a look at how
+                        you did and <b>how much gold you were able to gather</b>. If you managed to get enough, you
+                        could
+                        <b>
+                            go to the shop</b> and buy yourself some new items!The better your equipment, the more gold
+                        you'll get.</p>
+                </div>
+                <br><br>
+
+                <div >
+                    <h3 >5. Explore the world and become rich!</h3>
+
+                    <p class="introp">Go to all 6 locations and get more and more gold to <b>dominate the
+                        leaderboards</b> and become a true <b>Gold
+                        Digger!</b></p></div>
+
+                <div><br><br>
+
+                    <div style="text-align: center "><img style="margin-left: 3%; margin-right: 3%"
+                                                         src="/static/nugget.png"> <img
+                            style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"> <img
+                            style="margin-left: 3%; margin-right: 3%" src="/static/nugget.png"></div>
+
+
+
+            </div>
         </div>
-    </div>
 
     </div>
 

@@ -6,8 +6,8 @@
 </head>
 {% block body_block %}
     <span id='csrf'>{% csrf_token %}</span>
-    <body style="background: url(/media/mine/wood_texture.jpg) repeat;" class="store_view">
-
+    <body class="store_view">
+    <div id="storebody">
 
 <!-- Nogold -->
 
@@ -47,8 +47,8 @@
                     <h4 class="modal-title" id="myModalLabel">Item purchase</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="thumbnail">
-                        <img src="{{ new_item_s.image.url }}"></div>
+                    <div class="thumbnail" id="newitem">
+                        <img  src="{{ new_item_s.image.url }}"></div>
                     <h3>{{ new_item_s.name }}</h3>
                     <ul>
                         <li><strong>Price: <span>{{ new_item_s.price }} </span><img height="20px" width="20px"
@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <div class="thumbnail">
+                    <div class="thumbnail" id="newitem">
                         <img src="{{ new_item_t.image.url }}"></div>
                     <h3>{{ new_item_t.name }}</h3>
                     <ul>
@@ -114,7 +114,7 @@
                     <h4 class="modal-title" id="myModalLabel">Item purchase</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="thumbnail">
+                    <div class="thumbnail" id="newitem">
                         <img src="{{ new_item_v.image.url }}"></div>
                     <h3>{{ new_item_v.name }}</h3>
                     <ul>
@@ -206,7 +206,7 @@
                     </tr>
                 </table>
                 <div><p id="playstore"><a class="btn btn-primary btn-lg btn-success animated bounceIn"
-                                          href="/gold_digger/game_choice2/" style="font-family: pixelfont">Play!</a></p>
+                                          href="/gold_digger/game_choice2/" style="font-family: pixelfont; margin-top: 12px">Back to Map</a></p>
                 </div>
             </div>
 
@@ -254,8 +254,8 @@
                     </div>
                 {% endfor %}
             </div>
-            <h1 style="font-family: pixelfont; color: goldenrod">Digging Equipment</h1>
-            <h4 style="font-family: pixelfont; color: goldenrod">Get more gold for every dig AND pay less for digging!
+            <h1 style="font-family: pixelfont; color: gold">Digging Equipment</h1>
+            <h4 style="font-family: pixelfont; color: gold">Get more gold for every dig AND pay less for digging!
                 Double gain!</h4>
 
             <div class="row">
@@ -295,8 +295,8 @@
                     </div>
                 {% endfor %}
             </div>
-            <h1 style="font-family: pixelfont; color: goldenrod">Vehicles</h1>
-            <h4 style="font-family: pixelfont; color: goldenrod">In a rush? Buy yourself a vehicle and beat the gold
+            <h1 style="font-family: pixelfont;color: gold">Vehicles</h1>
+            <h4 style="font-family: pixelfont; color: gold">In a rush? Buy yourself a vehicle and beat the gold
                 rush!</h4>
 
             <div class="row">
@@ -336,7 +336,7 @@
         </div>
 
     </div>
-
+</div>
     <script src="/static/js/tooltips.js"></script>
 
 {% endblock %}

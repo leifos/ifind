@@ -2,7 +2,7 @@ console.log("trip started");
 var trip2 = new Trip([
     {
         sel: $("#California_landscape"),
-        content: 'Hello and welcome to the <b>Gold Digger tutorial!</b>',
+        content: 'Hello and welcome to the <b>Gold Digger tutorial!</b> You can click on next or use the arrow keys to go forward (and back)',
         position: "s"
 //        animation: "fadeInDown"
 
@@ -52,12 +52,12 @@ var trip2 = new Trip([
     },
     {
         sel: $("#step4"),
-        content: "Here we can see how much gold nuggets were present in this particular layer.",
+        content: "Here we can see how many gold nuggets were present in this particular layer.",
         position: "s"
     },
     {
         sel: $("#step5"),
-        content: "However,<b>because of our tool</b>, we were only able to actually acquire only a portion of them.",
+        content: "However, <b>because of our tool</b>, we were only able to actually acquire only a portion of them.",
         position: "s"
     },
     {
@@ -128,17 +128,17 @@ var trip2 = new Trip([
     },
     {
         sel: $("#Cali"),
-        content: "Right now, we are in California, the starting mine. This mine is the cheapest, but also the one that yields the least gold. There are other 5 to choose from: <b>Yukon, Brazil, Scotland, South Africa and Victoria</b> (Australia).",
+        content: "Right now, we are in <b>California</b>, the starting mine. This mine is the cheapest, but also the one that yields the least gold. There are other 5 to choose from: <b>Yukon, Brazil, Scotland, South Africa and Victoria</b> (Australia).",
         position: "e"
     },
     {
-        sel: $("#totalgold"),
+        sel: $("#tot"),
         content: "Here we can see <b>how much gold we have accumulated in total</b>. This Gold can be used to <b>access other mines</b> in the location selection screen or to <b>buy new equipment</b>. But be careful, if you spend all your gold, it's <b>Game Over!</b>",
-        position: "e"
+        position: "s"
     },
     {
         sel: $("#currentgold"),
-        content: "This is your <b>Current Gold</b> the gold you managed to harvest from the present mine. The more you get in a single mine, the more you'll rise through the leaderboards",
+        content: "This is your <b>Current Gold</b> the gold you managed to harvest today. The more you get in a single mine, the more you'll rise through the leaderboards",
         position: "e"
 
     },

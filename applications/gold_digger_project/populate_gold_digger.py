@@ -13,9 +13,9 @@ def populate():
 
     ### DIGGING ###
 
-    spoon  = add_digging_equipment('Spoon', 0.2, 8, 'icons/Tools/Spoon.png', 1, "What am I supposed to do with this?", 20)
-    shovel = add_digging_equipment('Shovel', 0.3, 7, 'icons/Tools/Shovel_normal.png', 200, "It's a shovel", 30)
-    golden_shovel = add_digging_equipment('Golden Shovel', 0.4, 6, 'icons/Tools/Shovel_golden.png', 300, "It might seem like a bad idea, but it's not REAL gold", 40)
+    spoon  = add_digging_equipment('Spoon', 0.3, 8, 'icons/Tools/Spoon.png', 1, "What am I supposed to do with this?", 30)
+    shovel = add_digging_equipment('Shovel', 0.4, 7, 'icons/Tools/Shovel_normal.png', 200, "It's a shovel", 40)
+    golden_shovel = add_digging_equipment('Golden Shovel', 0.5, 6, 'icons/Tools/Shovel_golden.png', 300, "It might seem like a bad idea, but it's not REAL gold", 50)
     dynamite = add_digging_equipment('Dynamite', 0.6, 5, 'icons/Tools/Dynamite.png', 500, "KABLAMO!", 60)
     mecha = add_digging_equipment('Mecha', 0.8, 3, 'icons/Tools/Mecha.png', 1000, "Dig ALL the gold!", 80)
 

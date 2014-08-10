@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <title>Leaderboards</title>
 </head>
-<body>
 {% block body_block %}
+<body id="shopbody">
+
 <div class="jumbotron" id="about">
 <h1>Leaderboards</h1><br>
 </div>
@@ -21,10 +22,10 @@
  </div>
  <div class="col-xs-6 col-md-8">
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" role="tablist" id="navtabs">
           <li class="active"><a href="#avg" role="tab" data-toggle="tab">Average</a></li>
           <li><a href="#max_gold" role="tab" data-toggle="tab">Max Gold</a></li>
-          <li><a href="#games" role="tab" data-toggle="tab">Games Played</a></li>
+          <li><a href="#games" role="tab" data-toggle="tab">Days worked</a></li>
 
         </ul>
 
@@ -39,7 +40,7 @@
             <th style="text-align: center" colspan="3">Equipment</th>
             <th id="right">Average</th>
             <th id="right">Max gold</th>
-            <th id="right">Games Played</th>
+            <th id="right">Days</th>
         </tr>
 
     {% for user in users_avg %}
@@ -73,7 +74,7 @@
         <th>Username</th>
         <th style="text-align: center" colspan="3">Equipment</th>
         <th id="right">Max gold</th>
-        <th id="right">Games Played</th>
+        <th id="right">Days</th>
         <th id="right">Average</th>
     </tr>
 
@@ -107,7 +108,7 @@
         <th  id="thumb">Thumbnail</th>
         <th>Username</th>
         <th style="text-align: center" colspan="3">Equipment</th>
-        <th id="right">Games Played</th>
+        <th id="right">Days</th>
         <th id="right">Max gold</th>
         <th id="right">Average</th>
     </tr>
@@ -127,6 +128,7 @@
         <td id="right">{{ user.games_played }}</td>
         <td id="right">{{ user.all_time_max_gold}}</td>
         <td id="right">{{ user.average}}</td>
+
 
     </tr>
 

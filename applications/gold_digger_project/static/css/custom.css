@@ -150,7 +150,7 @@
 }
 
 #store {
-    background-image: url(/media/mine/wood_texture.jpg);
+    background-image: url(/static/planks.jpg);
 }
 
 #storesign {
@@ -212,6 +212,7 @@
 
 #dayscore {
     font-size: 30pt;
+    color: #000000;
 }
 
 #dayscore img {
@@ -267,10 +268,13 @@ body{
 
 #leaderboards{
     background-color: #acacac;
-    font-size: 10pt;
+    font-family: pixelfont;
+    font-size: x-large;
 }
 
-
+#leaderboards th {
+    color: darkred;
+}
 
 @font-face {
     font-family: pixelfont;
@@ -569,6 +573,10 @@ a:hover {
     background-image: url(/static/ground.jpg);
 }
 
+#ocean {
+    background-image: url(/static/oceantile2.png);
+}
+
 .finalscore {
     font-size: 60pt;
     color: #8c0c00;
@@ -608,8 +616,12 @@ a:hover {
     margin-bottom: 0;
 }
 
+.thumbnail .caption {
+    color: #000000;
+}
+
 #prices {
-    color: gold;
+    color: #ffff00;
 }
 
 #accuracy {
@@ -656,7 +668,24 @@ a:hover {
     /*-webkit-animation-delay: 5s;*/
 /*}*/
 
+#storebody {
+    background-image: url(/static/planks.jpg);
+}
 
+#navtabs {
+    font-family: pixelfont;
+    font-size: large;
+    }
+#newitem {
+    border-width: 3px;
+    border-color: #000000;
+
+}
+
+#newitem img {
+    height: 100px
+;
+}
 /******************************************************************************/
 
 
@@ -1257,7 +1286,7 @@ a:hover {
     }
 
     #shopgold{
-        height: 45%;
+        height: 311px;
         width: 23%;
     }
 
@@ -1312,6 +1341,18 @@ a:hover {
 
      #mapstats2 img {
          height: 60px;
+     }
+
+     #totalwell {
+        font-family: pixelfont;
+        border-color: #000000;
+        border-width: 2px;
+        height: 110px;
+        font-size: large;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.85);
+        color: gold;
+        width: 283px;
      }
 
      #img_ID {
@@ -1475,6 +1516,8 @@ a:hover {
      #shopgold{
        font-size: x-large;
        height: 38%;
+       width: 350px;
+
     }
 
      #generalstore{
@@ -1569,11 +1612,13 @@ a:hover {
      #shopgold{
        font-size: x-large;
        height: 37%;
+       width: 328px;
+
     }
 
      #generalstore{
         margin-left: 200px;
-        margin-bottom: 3%;
+        margin-bottom: 5%;
     }
 
      #shoppe {

@@ -20,52 +20,53 @@
 <body>
 {% block nav %}
 
-	<div class="row">
-		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="row">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
-        <div class="notices pull-right">
-                <p class="navbar-brand"><span id="username">Skadoodle </span>/ <a href="/gold_digger/logout/" id="logout">Logout</a></p>
+            <div class="notices pull-right">
+                <p class="navbar-brand"><span id="username">myProfile </span>/ <a href="/gold_digger/logout/"
+                                                                                  id="logout">Logout</a></p>
             </div>
 
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="glyphicon glyphicon-chevron-down"></span>
-					MENU
-				</button>
-				 <a href="/gold_digger/" class="navbar-brand" id="golddigger">Gold Digger</a>
-			</div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                    MENU
+                </button>
+                <a href="/gold_digger/" class="navbar-brand" id="golddigger">Gold Digger</a>
+            </div>
 
-			<div class="collapse navbar-collapse" id="collapse">
-				<ul class="nav navbar-nav">
+            <div class="collapse navbar-collapse" id="collapse">
+                <ul class="nav navbar-nav">
                     {% if user.is_authenticated %}
-                    <li class="active"><a href="/gold_digger/game_choice2/">Play!</a></li>
+                        <li class="active"><a href="/gold_digger/game_choice2/">Play!</a></li>
                     {% endif %}
-					<li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
-					<li><a href="/gold_digger/about/">About</a></li>
+                    <li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
+                    <li><a href="/gold_digger/about/">About</a></li>
                     <li><a href="/gold_digger/tour/">How to play</a></li>
 
-				</ul>
+                </ul>
 
-			</div>
-		</nav>
-	</div>
+            </div>
+        </nav>
+    </div>
 
 {% endblock %}
 {% block body_block %}
     <div class="jumbotron game" id="California_landscape">
-        <span style="font-size: 50pt; font-family: pixelfont" id="Cali">California</span><br>
-
-        <span style="font-size: 25pt; font-family: pixelfont" id="mineno">Mine: 5</span><br>
-        <span style="font-size: 25pt; font-family: pixelfont" id="mineno">Day: 2</span>
+        <h1 id="Cali">California </h1>
+        <div class="well" id="totalwell" style="float: right"><img id="tot" src="/media/icons/Items/Chest.png">Total Gold: 99<hr style="background-color: #ffffff;"><img src="/static/dayicon2.png" height="30px"> Day: 5</div>
+        <h2 class="animated swing" id="mineno">Mine: 1</h2>
         <h2 class="provatour"></h2>
+        <br>
         <br>
     </div>
 
     <div class="row dig_view">
         <hr>
         <!-- a few empty columns on the left. -->
-<div id="123"></div>
+        <div id="123"></div>
         <div class="col-xs-3" id="eq">
 
             <div class="well equipment" id="welltour">
@@ -96,11 +97,6 @@
                 <hr>
 
                 <table class="scores">
-                    <tr class="animated fadeInLeft">
-                        <td><img class="chest" src="/media/icons/Items/Chest.png"></td>
-                        <td class="current">Total gold:</td>
-                        <td id="totalgold">3.576</td>
-                    </tr>
 
                     <tr class="animated fadeInRight">
                         <td><img class="chest" src="/media/icons/Items/pile2.png" height="32px" width="50px"></td>
@@ -109,12 +105,12 @@
                     </tr>
 
                 </table>
-                <div class="animated fadeInLeft" style="font-size: medium; margin-top: 2%">Time remaining:</div>
+                <div class="animated fadeInLeft" style="font-size: medium; margin-top: 2%"><img src="/static/clock.png" height="32px" > Time remaining:</div>
                 <div class="progress animated fadeInRight" id="prog">
                     <div class="progress-bar" role="progressbar" aria-valuenow="60"
                          aria-valuemin="100"
                          aria-valuemax="0" style="width:60%;">
-                        <span id="time">60%</span>
+                        <span id="time">60</span>
 
                     </div>
 
@@ -166,10 +162,11 @@
         </div>
 
         <!-- Buttons -->
-        <div class="col-xs-3 mine">
-            <div class='row' id='resultcol'><span id="step4"> 34 <img src='/media/icons/Items/Gold.png'></span> <span id="step5"> (14) <img
+        <div class="col-xs-2 mine">
+            <div class='row' id='resultcol'><span id="step4"> 34 <img src='/static/nugget.png'></span> <span
+                    id="step5"> (14) <img
                     src='/media/icons/Items/Chest.png'></span></div>
-            <div class='row' id='resultcol'> 25 <img src='/media/icons/Items/Gold.png'> (10) <img
+            <div class='row' id='resultcol'> 25 <img src='/static/nugget.png'> (10) <img
                     src='/media/icons/Items/Chest.png'></div>
 
             <div class="" id="row_{{ block.pos }}">
@@ -194,7 +191,7 @@
     </div>
 
 
-<script language="JavaScript" type="text/javascript" src="{% static "js/tripprova.js" %}"></script>
+    <script language="JavaScript" type="text/javascript" src="{% static "js/tripprova.js" %}"></script>
 {% endblock %}
 </body>
 

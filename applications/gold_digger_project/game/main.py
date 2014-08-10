@@ -2,6 +2,7 @@ from game import cuegen
 from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator, QuadraticYieldGenerator,ExponentialYieldGenerator, CubicYieldGenerator, CaliforniaQuadraticYieldGenerator, BrazilQuadraticYieldGenerator, YukonQuadraticYieldGenerator, ScotlandQuadraticYieldGenerator, SouthAfricaQuadraticYieldGenerator, VictoriaQuadraticYieldGenerator
 from mine import Mine
 from gold_digger import logger
+import os
 
 
 

@@ -24,6 +24,7 @@ def home(request):
     context = RequestContext(request)
 
     try:
+        print "Login Home"
         current_user = UserProfile.objects.get(user=request.user)
         scan = current_user.equipment.image.url
         tool = current_user.tool.image.url
@@ -47,6 +48,7 @@ def home(request):
                                                             'mod_vehicle': mod_vehicle}, context)
 
     except:
+        print "Simple Home"
         context = RequestContext(request)
         request.session['time_remaining'] = 100
         request.session['gold'] = 0
@@ -111,18 +113,20 @@ def register(request):
 
             if user is not None:
                 if user.is_active:
+                    print "User logged in"
                     login(request, user)
 
         else:
             print user_form.errors, profile_form.errors
+            return render_to_response('gold_digger/home.html',
+                              {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}, context)
 
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-
-    return render_to_response('gold_digger/home.html',
-                              {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}, context)
+    request.session['days'] = 1
+    return HttpResponseRedirect(reverse('game_choice2'), context)
 
 
 def user_login(request):
@@ -191,16 +195,17 @@ def user_logout(request):
 def user_profile(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    mod_scan_l = int((user.equipment.modifier)*10)
     mod_scan = int((user.equipment.modifier)*100)
     mod_tool = int((user.tool.modifier)*100)
     modt_tool = user.tool.time_modifier
-    mod_vehicle = int((user.tool.modifier)*100)
+
 
     return render_to_response('gold_digger/profile.html', {'user': user,
                                                            'mod_scan': mod_scan,
                                                            'mod_tool': mod_tool,
                                                            'modt_tool':modt_tool,
-                                                           'mod_vehicle': mod_vehicle}, context)
+                                                           'mod_scan_l': mod_scan_l}, context)
 
 
 @login_required

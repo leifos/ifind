@@ -77,8 +77,10 @@
                 <td><u>Scanning:</u></td>
                 <td id="right"><img src="{{ user.equipment.image.url }}" height="70px"
                          alt="{{ user.equipment.name }}, {{ user.equipment.modifier }}" /></td>
-                <td style="text-align: center;">{{ user.equipment.name }}</td>
-                <td colspan="2" style="text-align: right">Accuracy: <span id="modifier">{{ mod_scan }}%</span></td>
+                <td style="text-align: right;">{{ user.equipment.name }}</td>
+
+                <td style="text-align: right">Accuracy: <span id="modifier">{{ mod_scan }}%</span></td>
+                <td  style="text-align: right">Visibility: <span id="modifier">{{ mod_scan_l }}</span></td>
             </tr>
             <tr>
                 <td><u>Digging:</u></td>
@@ -93,13 +95,17 @@
                 <td id="right"><img src="{{ user.vehicle.image.url }}" height="70px"
                          alt="{{ user.vehicle.name }}, {{ user.vehicle.modifier }}" /></td>
                 <td style="text-align: center">{{ user.vehicle.name }}</td>
-                <td colspan="2" style="text-align: right">Move cost: <span id="modifier">{{ mod_vehicle }}%</span></td>
+                <td colspan="2" style="text-align: right">Moving cost: <span id="modifier">{{ user.vehicle.modifier }}</span></td>
             </tr>
         </table>
             <h2 id="titoli">Game stats</h2>
         <table class="thumbnail" id="stats_well">
         <tr>
-            <td>Current gold:</td>
+            <td>All time gold:</td>
+            <td id="right_stats">{{ user.all_time_gold }} <img height="25" src="/static/nugget.png"/></td>
+        </tr>
+        <tr>
+            <td style="width: 50%">Current gold:</td>
             <td id="right_stats">{{ user.gold }} <img height="25" src="/static/nugget.png"/></td>
         </tr>
         <tr>
@@ -114,6 +120,11 @@
             <td>Mined for:</td>
             <td id="right_stats">{{ user.games_played }} <span style="color: #000000">days</span></td>
         </tr>
+        <tr>
+            <td>Mined in:</td>
+            <td id="right_stats">{{ user.mines }} <span style="color: #000000">mines</span></td>
+        </tr>
+
         </table>
 
 
