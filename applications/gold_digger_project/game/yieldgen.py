@@ -151,8 +151,8 @@ class CaliforniaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.1, 0.2))   # The steepness of the curve
-        k = random.randint(15, 20)
+        a = -1*(random.uniform(0.4, 0.5))   # The steepness of the curve
+        k = random.randint(0, 6)
         for index in range(self.depth):
             quadratic_yield_array.append(CaliforniaQuadraticYieldGenerator.cali_quadratic_function(index, a, k))
 
@@ -161,7 +161,7 @@ class CaliforniaQuadraticYieldGenerator(YieldGenerator):
     @staticmethod
     def cali_quadratic_function(x, a, k):
 
-        y = a*(pow((x - 0), 2)) + k
+        y = a*(pow((x - k), 2)) + 25
 
         rounded = int(round(y))
         return rounded
@@ -176,18 +176,19 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.2, 0.5))   # The steepness of the curve
+        a = -1*(random.uniform(0.2, 0.4))   # The steepness of the curve
         k = random.randint(2, 4)
+        j = random.randint(30, 40)
 
         for index in range(self.depth):
-            quadratic_yield_array.append(YukonQuadraticYieldGenerator.yuki_quadratic_function(index, a, k))
+            quadratic_yield_array.append(YukonQuadraticYieldGenerator.yuki_quadratic_function(index, a, k, j))
 
         return quadratic_yield_array
 
     @staticmethod
-    def yuki_quadratic_function(x, a, k):
+    def yuki_quadratic_function(x, a, k, j):
 
-        y = a*(pow((x - k), 2)) + 20
+        y = a*(pow((x - k), 2)) + j
 
         rounded = int(round(y))
         return rounded
@@ -202,8 +203,8 @@ class BrazilQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.8, 1))   # The steepness of the curve
-        k = random.randint(30, 34)
+        a = -1.5  # The steepness of the curve
+        k = random.randint(50, 60)
 
         for index in range(self.depth):
             quadratic_yield_array.append(BrazilQuadraticYieldGenerator.brazi_quadratic_function(index, a, k))
@@ -229,8 +230,8 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.1, 0.2))   # The steepness of the curve
-        k = random.randint(35, 39)
+        a = -0.6   # The steepness of the curve
+        k = random.randint(-10, 15)
 
 
         for index in range(self.depth):
@@ -242,7 +243,7 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
     def scoti_quadratic_function(x, a, k):
 
 
-        y = a*(pow((x - 8), 2)) + k
+        y = a*(pow((x - k), 2)) + 90
 
         rounded = int(round(y))
         return rounded
@@ -257,19 +258,22 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.03, 0.05))   # The steepness of the curve
-        k = random.randint(25, 28)
-
+        k = 10
+        foo = [1, -40, -90]
+        a = random.choice(foo)
         for index in range(self.depth):
-            quadratic_yield_array.append(SouthAfricaQuadraticYieldGenerator.sa_quadratic_function(index, a, k))
+            quadratic_yield_array.append(SouthAfricaQuadraticYieldGenerator.sa_quadratic_function(index, k, a))
 
         return quadratic_yield_array
 
     @staticmethod
-    def sa_quadratic_function(x, a, k):
+    def sa_quadratic_function(x, k, a):
 
 
-        y = a*(pow((x - 5), 2)) + k
+        y = ((k*x)/1)+a
+
+        if y < 0:
+            y = 0
 
         rounded = int(round(y))
         return rounded
@@ -284,8 +288,8 @@ class VictoriaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.06, 0.8))   # The steepness of the curve
-        k = random.randint(40, 42)
+        a = -1*0.06   # The steepness of the curve
+        k = random.randint(40, 100)
 
         for index in range(self.depth):
             quadratic_yield_array.append(VictoriaQuadraticYieldGenerator.viki_quadratic_function(index, a, k))

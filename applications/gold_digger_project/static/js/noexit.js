@@ -114,7 +114,7 @@ var csrf = $('#csrf > input').val();
         });
     });
 
-     $('#exithome').click(function () {
+     $('#exitprofile').click(function () {
         $('#exitpage').modal('show');
 
         $("button[name='goaway']").click(function () {

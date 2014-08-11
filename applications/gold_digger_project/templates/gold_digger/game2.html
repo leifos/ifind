@@ -13,7 +13,7 @@
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             {% if user.user.is_authenticated %}
                 <div class="notices pull-right">
-                    <p class="navbar-brand"><a style="color: #808080" href="#"  id="exithome">{{ user.user.username }}</a> / <a href="/gold_digger/logout/" id="logout">Logout</a></p>
+                    <p class="navbar-brand"><a style="color: #808080" href="#"  id="exitprofile">{{ user.user.username }}</a> / <a href="/gold_digger/logout/" id="logout">Logout</a></p>
                 </div>
             {% endif %}
             <div class="navbar-header">
@@ -51,7 +51,7 @@
                 <div class="modal-body" style="text-align: justify;">
                     <h3 style=" text-align: center">Don't leave!</h3>
                     <h4 >If you leave now your current gold will be lost!</h4>
-                    <h5>Finish digging for the day to save your progress!</h5>
+                    <h5>Finish digging for the day to automatically save your progress!</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
@@ -62,13 +62,21 @@
     </div>
 
     <!-- Header -->
-
+    {% if location == "South Africa" %}
+        {% with "South_Africa" as location %}
     <div class="jumbotron game" id="{{ location }}_landscape">
-        <h1>{% if location == "South_Africa" %} South Africa {% else %}{{ location }} {% endif %}</h1>
+    {% endwith %}
+    {% else %}
+    <div class="jumbotron game" id="{{ location }}_landscape">
+
+    {% endif %}
+
+        <h1>{{ location }}</h1>
         <div class="well" id="totalwell" style="float: right"><img src="/media/icons/Items/Chest.png">Total Gold: {{ user.gold }}<hr style="background-color: #ffffff;"><img src="/static/dayicon2.png" height="30px"> Day: {{ request.session.days }}</div>
         <h2 class="animated swing">Mine: {{ mine_no }}</h2>
         <br>
     </div>
+
 
     <div class="row dig_view">
         <hr>
@@ -110,15 +118,11 @@
 
                 </table>
                 <div class="animated fadeInLeft" style="font-size: medium; margin-top: 2%"><img src="/static/clock.png" height="32px" > Time remaining:</div>
-                <div class="progress animated fadeInRight">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ time_remaining }}"
-                         aria-valuemin="100"
-                         aria-valuemax="0" style="width: {{ time_remaining }}%;">
-                        <span id="time">{{ time_remaining }}</span>
-
-                    </div>
-
+               <div class="progress progress-striped active animated fadeInRight">
+                <div style="width: {{ time_remaining }}%" id="1" class="progress-bar progress-bar-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100">
+                    <span id="time" >{{ time_remaining }}</span>
                 </div>
+            </div>
 
             </div>
 

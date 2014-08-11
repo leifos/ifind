@@ -252,11 +252,11 @@ def game_over(request):
 
     # Updating user values
     user.gold += request.session['gold']
-    user.mines += 1
+    # user.mines += 1
     user.games_played += 1
     request.session['days'] += 1
     user.all_time_gold += user.gold
-    user.average = user.all_time_gold/user.games_played
+    user.average = user.all_time_gold/user.mines
     user.save()
     request.session['has_mine'] = False
     request.session['mine_type'] = ''
@@ -376,21 +376,22 @@ def game2(request):
             gen = yieldgen.BrazilQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'South Africa':
-            print "South Africa"
+            print "South Africaaaaaaaaaaaaaaaaaaaaaaaa"
             request.session['mine_type'] = 'South Africa'
-            gen = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.SouthAfricaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'Scotland':
             print "Scotland"
             request.session['mine_type'] = 'Scotland'
-            gen = yieldgen.SouthAfricaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
+            gen = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
         elif mine_type == 'Victoria':
             print "Victoria"
             request.session['mine_type'] = 'Victoria'
 
             gen = yieldgen.VictoriaQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
-
+        else:
+            print "Faaaaaiiilllll"
         accuracy = user.equipment.modifier
         m = mine.Mine(gen, accuracy, user)
         blocks = m.blocks
@@ -811,7 +812,7 @@ def determine_cost(mine_type):
     if mine_type == 'California':
         cost = 20
     elif mine_type == 'Yukon':
-        cost = 40
+        cost = 50
     elif mine_type == 'Brazil':
         cost = 80
     elif mine_type == 'South Africa':

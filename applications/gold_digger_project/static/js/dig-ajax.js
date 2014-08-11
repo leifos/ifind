@@ -68,7 +68,7 @@ $(document).ready(function(){
 
                 // Update points
                 $('#totalgold').animateNumbers(response['totalgold'], true, 200, "linear");
-                $('.progress-bar').css("width", response['timeremaining']).html(response['timeremaining']);
+                $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']);
                 $('#currentgold').animateNumbers(response['currentgold'], true, 200, "linear");
 
                 if ((pointer-1)>0){
