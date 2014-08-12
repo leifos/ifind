@@ -35,8 +35,11 @@ def populate():
     add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, cart, golden_shovel, 345, 0, 34.5, 0)
     add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', dwarf, truck, mecha, 567, 0, 1000, 0)
 
+    ### ACHIEVEMENTS ###
 
-
+    rookie = add_achievement('Rookie', 'icons/Achievements/GoldCoin.png', 'Here you go pal')
+    ruby = add_achievement('Digger', 'icons/Achievements/Ruby.png', 'What is this thing, I want GOLD!')
+    saphire = add_achievement("Not Gold!", 'icons/Achievements/Saphire.png', "If it's not yellow and shiny I don't care!")
 
     for u in UserProfile.objects.all():
         print u
@@ -67,9 +70,14 @@ def add_vehicle(name, modifier, image, price, description):
     vehicle = Vehicle.objects.get_or_create(name=name, modifier=modifier, image=image, price=price, description=description)[0]
     return vehicle
 
+def add_achievement(name, image, description):
+    ach = Achievements.objects.get_or_create(name=name, image=image, description=description)
+
+    return ach
+
 if __name__ == '__main__':
     print "Starting Gold Digger population script..."
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gold_digger_project.settings')
-    from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle
+    from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle, Achievements
     from django.contrib.auth.models import User
     populate()

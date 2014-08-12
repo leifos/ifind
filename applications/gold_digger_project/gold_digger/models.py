@@ -82,3 +82,23 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class Achievements(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='icons/Achievements')
+    description = models.CharField(max_length=1000)
+
+    def image_tag(self):
+        return u'<img src="%s" height = 100 />' % (self.image.url)
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
+
+    def __unicode__(self):
+        return self.name
+
+
+class UserAchievements(models.Model):
+    user = models.ForeignKey(UserProfile)
+    achievement = models.ForeignKey(Achievements)
+
+    def __unicode__(self):
+        return self.achievement.name
