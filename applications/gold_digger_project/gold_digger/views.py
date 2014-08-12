@@ -285,8 +285,9 @@ def leaderboards(request):
     users_avg = UserProfile.objects.order_by('-average')
     users_gold = UserProfile.objects.order_by('-all_time_max_gold')
     users_games = UserProfile.objects.order_by('-games_played')
+    users_all_time_gold = UserProfile.objects.order_by('-all_time_gold')
 
-    return render_to_response('gold_digger/leaderboards.html', {'users_avg': users_avg, 'users_gold': users_gold, 'users_games': users_games}, context)
+    return render_to_response('gold_digger/leaderboards.html', {'users_avg': users_avg, 'users_gold': users_gold, 'users_games': users_games, 'users_all_time_gold': users_all_time_gold}, context)
 
 @login_required
 def game_choice2(request):

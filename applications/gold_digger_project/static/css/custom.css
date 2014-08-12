@@ -49,6 +49,7 @@
     background-image: url(/static/Yukon.png)
 }
 
+
 #Brazil_landscape {
     background-image: url(/static/Brazil2.png);
     color: #ffffff;
@@ -269,7 +270,7 @@ body{
 #leaderboards{
     background-color: #acacac;
     font-family: pixelfont;
-    font-size: x-large;
+    font-size: large;
 }
 
 #leaderboards th {
@@ -766,32 +767,6 @@ a:hover {
 	padding: 5px 0px;
 }
 
-.map_button:hover {
- 	background: url(../media/map_button_hover.png) no-repeat center top;
- 	background-size: 90%;
- 	height: 80%;
-}
-
-.score_1 {
- 	background: url(/media/mine/score_nuggets_1.png) no-repeat center top;
- 	background-size: contain;
-}
-
-.score_2 {
- 	background: url(/media/mine/score_nuggets_2.png) no-repeat center top;
- 	background-size: contain;
-}
-
-.score_3 {
- 	background: url(/media/mine/score_nuggets_3.png) no-repeat center top;
- 	background-size: contain;
-}
-
-.score_4 {
- 	background: url(/media/mine/score_nuggets_4.png) no-repeat center top;
- 	background-size: contain;
-}
-
 .nuggets_0 {
  	background: url(/media/mine/main_nuggets_6pixel.png) no-repeat center;
  	background-size: 100% 100%;
@@ -828,7 +803,7 @@ a:hover {
 }
 
 .flecks_0 {
- 	background: url(/media/mine/flecks_.png) no-repeat center;
+ 	background: url(/media/mine/flecks_0.png) no-repeat center;
  	background-size: 100% 100%;
 }
 
@@ -892,15 +867,6 @@ a:hover {
  	background-size: 100% 100%;
  	}
  	
-.scaffold_shaft {
- 	background: url(/media/mine/scaffold_shaft.png) no-repeat center top;
- 	background-size: 100% 100%;
- 	}
- 	
-.scaffold_shaft_shaded {
- 	background: url(/media/mine/scaffold_shaft_shaded.png) no-repeat center top;
- 	background-size: 100% 100%;
- 	}
 
 .mine, .shaft {
 	background: rgba(0,0,0,0.3);
@@ -1731,6 +1697,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-corner {
-background-color: rgba(255, 0, 0, 0);
+    background-color: rgba(255, 0, 0, 0);
 
 }
+
+

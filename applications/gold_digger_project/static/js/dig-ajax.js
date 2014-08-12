@@ -208,9 +208,9 @@ $(document).ready(function(){
                     $('.row #resultcol').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
                 }
 
-                if(response['totalgold'] > 3500){
-                      $('#achievement').modal('show');
-                }
+//                if(response['totalgold'] > 3500){
+//                      $('#achievement').modal('show');
+//                }
 
 
 
