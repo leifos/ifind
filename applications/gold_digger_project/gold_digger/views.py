@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from game import yieldgen, mine
-from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle
+from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle, UserAchievements, Achievements
 import pickle
 from django.core.urlresolvers import reverse
 import random
@@ -852,3 +852,9 @@ def game_over2(request):
 
     return render_to_response('gold_digger/game_over2.html', {'mines': mines,
                                                               'days': days}, context)
+
+def achievements(request):
+    user = UserProfile.objects.get(user=request.user)
+
+    if user.gold == 300:
+        UserAchievements.get

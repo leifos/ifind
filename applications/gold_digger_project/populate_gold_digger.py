@@ -5,7 +5,7 @@ def populate():
 
     ### SCANNING ###
 
-    lamp = add_scanning_equipment('Oil lamp', 0.2, 'icons/Scan/Oil lamp.png', 1, "It won't allow you to see much but it's better than going in blind!", 20)
+    lamp = add_scanning_equipment('Oil Lamp', 0.2, 'icons/Scan/Oil Lamp.png', 1, "It won't allow you to see much but it's better than going in blind!", 20)
     map = add_scanning_equipment('Map', 0.3, 'icons/Scan/Map.png', 100, "It probably helps knowing you're not digging in the wrong place", 30)
     sonar = add_scanning_equipment('Sonar', 0.5, 'icons/Scan/Sonar.gif', 500, "Now we're cooking with gas!", 50)
     dwarf = add_scanning_equipment('Guide Dwarf', 0.6, 'icons/Scan/Guide Dwarf.png', 800, "If you're not sure, just ask the locals!", 60)
