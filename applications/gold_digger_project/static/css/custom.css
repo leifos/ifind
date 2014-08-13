@@ -521,6 +521,7 @@ body{
 
 .gameover_options {
     font-size: 30pt;
+    color: #5e198a
 }
 
  a:visited {
@@ -680,6 +681,7 @@ a:hover {
 #newitem {
     border-width: 3px;
     border-color: #000000;
+    background-color: rgba(245, 222, 179, 0.26);;
 
 }
 
@@ -690,6 +692,18 @@ a:hover {
 #modalcost {
     background-color: rgba(255, 249, 0, 0.50);
 }
+
+.achievements {
+    color: #000000;
+    font-family: pixelfont;
+}
+
+#achievementprofile {
+    border-color: black;
+    border-width: 3px;
+}
+
+
 /******************************************************************************/
 
 

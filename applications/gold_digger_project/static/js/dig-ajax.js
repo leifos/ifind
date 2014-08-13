@@ -112,12 +112,7 @@ $(document).ready(function(){
     }
 });
 
-//    $(document).keyup(function(event){
-//    if(event.keyCode == 39){
-//
-//    }
-//
-//    });
+
 
 //////////////////////////////////////////////////////////////////////
 
@@ -208,9 +203,7 @@ $(document).ready(function(){
                     $('.row #resultcol').append("<a class='blink_me' href='/gold_digger/move/'>Next mine?</a><br>");
                 }
 
-//                if(response['totalgold'] > 3500){
-//                      $('#achievement').modal('show');
-//                }
+
 
 
 

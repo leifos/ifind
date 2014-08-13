@@ -195,17 +195,18 @@ def user_logout(request):
 def user_profile(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    mod_scan_l = int((user.equipment.modifier)*10)
-    mod_scan = int((user.equipment.modifier)*100)
-    mod_tool = int((user.tool.modifier)*100)
+    mod_scan_l = int(user.equipment.modifier*10)
+    mod_scan = int(user.equipment.modifier*100)
+    mod_tool = int(user.tool.modifier*100)
     modt_tool = user.tool.time_modifier
-
+    achieve = UserAchievements.objects.filter(user=user)
 
     return render_to_response('gold_digger/profile.html', {'user': user,
                                                            'mod_scan': mod_scan,
                                                            'mod_tool': mod_tool,
-                                                           'modt_tool':modt_tool,
-                                                           'mod_scan_l': mod_scan_l}, context)
+                                                           'modt_tool': modt_tool,
+                                                           'mod_scan_l': mod_scan_l,
+                                                           'achievements': achieve}, context)
 
 
 @login_required
@@ -309,8 +310,8 @@ def game_choice2(request):
     scan = user.equipment.image.url
     tool = user.tool.image.url
     vehicle = user.vehicle.image.url
-    mod_scan = int((user.equipment.modifier)*100)
-    mod_tool = int((user.tool.modifier)*100)
+    mod_scan = int(user.equipment.modifier*100)
+    mod_tool = int(user.tool.modifier*100)
     modt_tool = user.tool.time_modifier
     mod_vehicle = user.vehicle.modifier
 
@@ -854,7 +855,95 @@ def game_over2(request):
                                                               'days': days}, context)
 
 def achievements(request):
+    context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
+    print(user.games_played)
+    print(user.mines)
+    myResponse ={}
 
-    if user.gold == 300:
-        UserAchievements.get
+
+    if 10 < user.gold < 100:
+        print "gold"
+        achievement1 = Achievements.objects.get(id=1)
+        myResponse = add_achievement(user, achievement1)
+
+    if 100 < user.gold < 300:
+        print "gold"
+        achievement2 = Achievements.objects.get(id=2)
+        myResponse = add_achievement(user, achievement2)
+
+
+    if 500 <= user.gold < 1000:
+        print "gold"
+        achievement3 = Achievements.objects.get(id=3)
+        myResponse = add_achievement(user, achievement3)
+
+
+    if 10 <= user.games_played < 30:
+        print "games played"
+        achievement4 = Achievements.objects.get(id=4)
+        myResponse = add_achievement(user, achievement4)
+
+
+    if 30 <= user.games_played < 32:
+        print "games played"
+        achievement5 = Achievements.objects.get(id=5)
+        myResponse = add_achievement(user, achievement5)
+
+
+    if 100 <= user.games_played < 102:
+        print "games played"
+        achievement6 = Achievements.objects.get(id=6)
+        myResponse = add_achievement(user, achievement6)
+
+
+    if 300 <= user.games_played < 302:
+        print "games played"
+        achievement7 = Achievements.objects.get(id=7)
+        myResponse = add_achievement(user, achievement7)
+
+
+    if 500 <= user.games_played < 502:
+        print "games played"
+        achievement8 = Achievements.objects.get(id=8)
+        myResponse = add_achievement(user, achievement8)
+
+
+    if 50 <= user.mines < 100:
+        achievement9 = Achievements.objects.get(id=9)
+        myResponse = add_achievement(user, achievement9)
+
+
+    if 100 <= user.mines < 300:
+        achievement10 = Achievements.objects.get(id=10)
+        myResponse = add_achievement(user, achievement10)
+
+
+    if 300 <= user.mines < 400:
+        achievement11 = Achievements.objects.get(id=11)
+        myResponse = add_achievement(user, achievement11)
+
+
+    return HttpResponse(json.dumps(myResponse), content_type="application/json")
+
+
+
+def add_achievement(user, achievement):
+
+    myResponse = {}
+    if not UserAchievements.objects.filter(user=user, achievement=achievement).exists():
+        achieve = UserAchievements()
+        achieve.user = user
+        achieve.achievement = achievement
+        achieve.save()
+        print "Achievement UNLOCKED"
+
+        myResponse['achievement_name'] = achievement.name
+        myResponse['achievement_image'] = achievement.image.url
+        myResponse['achievement_desc'] = achievement.description
+
+        return myResponse
+    else:
+        myResponse['unlocked'] = True
+        print "NOOOOOOO Achievement"
+        return myResponse

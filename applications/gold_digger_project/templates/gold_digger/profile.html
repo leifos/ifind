@@ -126,7 +126,26 @@
         </tr>
 
         </table>
+            <h2 id="titoli">Achievements</h2>
 
+            <div class="row thumbnail" id="newitem">
+
+                {% for a in achievements %}
+                    <div class="col-sm-6 col-md-2">
+                    <div id="achievementprofile">
+                        <div style="background-color: rgba(255, 255, 255, 0); border: none" class="thumbnail"> <img src="{{ a.achievement.image.url }}" alt="{{ a.achievement.name }}">
+</div>
+                        <div class="caption">
+                            <h4>{{ a.achievement.name }}</h4>
+
+                            <p>{{ a.achievement.description }}</p>
+                        </div>
+                    </div>
+    </div>
+
+                {% endfor %}
+            </div>
+        </div>
 
         </div>
         </div>

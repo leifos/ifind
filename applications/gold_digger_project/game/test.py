@@ -156,3 +156,19 @@ array = [11, 11, 11, 10, 10, 9, 9, 8, 7, 6]
 c = str(array)
 
 print c
+
+b = 502
+
+if 500 <= b < 1000:
+    print b
+
+if 500 <= b < 1000:
+    print b
+
+if 500 <= b < 1000:
+    print b
+
+else:
+    print "poppaaaaaa"
+
+

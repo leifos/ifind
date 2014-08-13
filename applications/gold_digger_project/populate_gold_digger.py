@@ -32,14 +32,27 @@ def populate():
     jess = add_user('Jess', 'jess@gmail.com', 'jess')
 
     add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', spell, wheelbarrow, shovel, 1234, 0, 308.5, 0)
-    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, cart, golden_shovel, 345, 0, 34.5, 0)
+    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, boots, spoon, 345, 0, 34.5, 0)
     add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', dwarf, truck, mecha, 567, 0, 1000, 0)
 
     ### ACHIEVEMENTS ###
 
-    rookie = add_achievement('Rookie', 'icons/Achievements/GoldCoin.png', 'Here you go pal')
-    ruby = add_achievement('Digger', 'icons/Achievements/Ruby.png', 'What is this thing, I want GOLD!')
-    saphire = add_achievement("Not Gold!", 'icons/Achievements/Saphire.png', "If it's not yellow and shiny I don't care!")
+    #Gold
+    bronze = add_achievement('So, you want to be a Gold Digger...', 'icons/Achievements/Bronze.png', "Welcome to the Gold Rush! Keep digging to get more achievements!")
+    silver = add_achievement('Digger', 'icons/Achievements/Silver.png', 'What is this thing, I want GOLD!')
+    gold = add_achievement("Five Hundred", 'icons/Achievements/GoldCoin.png', "Five hundred of anything it's always a lot!")
+
+    #Days
+    ten_days = add_achievement("10 Days", 'icons/Achievements/Agate.png', "You've been digging for ten days! That's a lot...I guess?")
+    thirty_days = add_achievement("30 Days", 'icons/Achievements/Jade.png', "Woah, you like that shiny yellow!")
+    fifty_days = add_achievement("50 Days", 'icons/Achievements/Saphire.png', "Dude, it's becoming an addiction...")
+    hundred_days = add_achievement("100 Days", 'icons/Achievements/Ruby.png', "I think your family might be wondering were you are, shall I just tell them 'A Mine'? ")
+    strong = add_achievement("Still Going", 'icons/Achievements/Diamond.png', "I'm gonna go now...")
+
+    #Mines
+    mines1 = add_achievement("Mine Explorer", 'icons/Achievements/BronzeM.png', "You've been through 50 mines already!")
+    mines2 = add_achievement("Mole", 'icons/Achievements/SilverM.png', "(100 mines) I know the mines better than the surface!")
+    mines3 = add_achievement("Into Deep", 'icons/Achievements/GoldM.png', "(300 mines) Surface? What's 'Surface'?")
 
     for u in UserProfile.objects.all():
         print u
