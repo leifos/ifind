@@ -23,7 +23,9 @@ class Mine(object):
         yield_array = self.yield_generator.make_yields()
 
         yield_array_s = str(yield_array)
-        event_logger.info(self.user.user.username + ' MY ' + yield_array_s)
+        mines_s = str(self.user.mines)
+        game_overs = str(self.user.game_overs)
+        event_logger.info(self.user.user.username + ' LIFE ' + game_overs + ' TOT ' + mines_s + ' MY ' + yield_array_s)
         print "Yield array:", yield_array
         max_gold = 0
         for y in yield_array:

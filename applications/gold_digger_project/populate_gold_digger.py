@@ -31,28 +31,28 @@ def populate():
     john = add_user('John', 'john@gmail.com', 'john')
     jess = add_user('Jess', 'jess@gmail.com', 'jess')
 
-    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', spell, wheelbarrow, shovel, 1234, 0, 308.5, 0)
-    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, boots, spoon, 345, 0, 34.5, 0)
-    add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', dwarf, truck, mecha, 567, 0, 1000, 0)
+    add_user_profile(jill, 'profile_pictures/FOW.jpg', 'Jesrsey', spell, wheelbarrow, shovel, 1234, 0, 308.5, 0, 0)
+    add_user_profile(john, 'profile_pictures/duck.jpg', 'NYC', lamp, boots, spoon, 345, 0, 34.5, 0, 0)
+    add_user_profile(jess, 'profile_pictures/penguinwhale.jpg', 'Detroit', dwarf, truck, mecha, 567, 0, 1000, 0, 0)
 
     ### ACHIEVEMENTS ###
 
     #Gold
-    bronze = add_achievement('Bronze Coin', '50 Gold Nuggets', 'icons/Achievements/Bronze.png', "So you want to be a Gold Digger...continue digging and unlock more achievements!")
-    silver = add_achievement('Silver Coin', '200 Gold Nuggets', 'icons/Achievements/Silver.png', 'What is this thing, I want GOLD!')
-    gold = add_achievement("Gold Coin", '500 Gold Nuggets', 'icons/Achievements/GoldCoin.png', "Finally!")
+    bronze = add_achievement('Bronze Coin', 'Dig 50 Gold Nuggets', 'icons/Achievements/Bronze.png', "So you want to be a Gold Digger...continue digging and unlock more achievements!")
+    silver = add_achievement('Silver Coin', 'Dig 200 Gold Nuggets', 'icons/Achievements/Silver.png', 'What is this thing, I want GOLD!')
+    gold = add_achievement("Gold Coin", 'Dig 500 Gold Nuggets', 'icons/Achievements/GoldCoin.png', "Finally!")
 
     #Days
-    ten_days = add_achievement("Agate", "10 Days Digging", 'icons/Achievements/Agate.png', "You've been digging for ten days! That's a lot...I guess?")
-    thirty_days = add_achievement("Jade", "30 Days Digging", 'icons/Achievements/Jade.png', "Woah, you like shinies!")
-    fifty_days = add_achievement("Saphire", "50 Days Digging", 'icons/Achievements/Saphire.png', "Dude, it's becoming an addiction...")
-    hundred_days = add_achievement("Ruby", "100 Days Digging", 'icons/Achievements/Ruby.png', "I think your family might be wondering were you are, shall I just tell them 'A Mine'? ")
-    strong = add_achievement("Diamond", "500 Days Digging", 'icons/Achievements/Diamond.png', "I'm gonna go now...")
+    ten_days = add_achievement("Agate", "Dig for 10 days", 'icons/Achievements/Agate.png', "You've been digging for ten days! That's a lot...I guess?")
+    thirty_days = add_achievement("Jade", "Dig for 30 days", 'icons/Achievements/Jade.png', "Woah, you like shinies!")
+    fifty_days = add_achievement("Saphire", "Dig for 50 days", 'icons/Achievements/Saphire.png', "Dude, it's becoming an addiction...")
+    hundred_days = add_achievement("Ruby", "Dig for 100 days", 'icons/Achievements/Ruby.png', "I think your family might be wondering were you are, shall I just tell them 'A Mine'? ")
+    strong = add_achievement("Diamond", "Dig for 500 days", 'icons/Achievements/Diamond.png', "I'm gonna go now...")
 
     #Mines
-    mines1 = add_achievement("Bronze Medal - Mine Guide", "50 Mines", 'icons/Achievements/BronzeM.png', "You've been through 50 mines already!")
-    mines2 = add_achievement("Silver Medal - Mole", "100 Mines", 'icons/Achievements/SilverM.png', "I know the mines better than the surface!")
-    mines3 = add_achievement("Gold Medal - Into Deep", "300 Mines", 'icons/Achievements/GoldM.png', "Surface? What's 'Surface'?")
+    mines1 = add_achievement("Bronze Medal - Mine Guide", "Dig in 50 Mines", 'icons/Achievements/BronzeM.png', "You've been through 50 mines already!")
+    mines2 = add_achievement("Silver Medal - Mole", "Dig in 100 Mines", 'icons/Achievements/SilverM.png', "You know the mines better than the surface!")
+    mines3 = add_achievement("Gold Medal - Into Deep", "Dig in 300 Mines", 'icons/Achievements/GoldM.png', "Surface? What's 'Surface'?")
 
     for u in UserProfile.objects.all():
         print u
@@ -63,11 +63,11 @@ def add_user(username, email, password):
     return u
 
 
-def add_user_profile(user, picture, location, equipment, vehicle, tool, all_time_max_gold, games_played, average, mines):
+def add_user_profile(user, picture, location, equipment, vehicle, tool, all_time_max_gold, games_played, average, mines, game_overs):
     up = UserProfile.objects.get_or_create(user=user, picture=picture, location=location,
                                            equipment=equipment, vehicle=vehicle, tool=tool,
                                            all_time_max_gold=all_time_max_gold, games_played=games_played,
-                                           average=average, mines=mines)[0]
+                                           average=average, mines=mines, game_overs=game_overs)[0]
     return up
 
 
