@@ -84,6 +84,7 @@ class UserProfile(models.Model):
 
 class Achievements(models.Model):
     name = models.CharField(max_length=100)
+    condition = models.CharField(max_length=100)
     image = models.ImageField(upload_to='icons/Achievements')
     description = models.CharField(max_length=1000)
 

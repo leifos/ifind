@@ -32,6 +32,8 @@
 					<li><a href="/gold_digger/leaderboards/">Leaderboards</a></li>
 					<li><a href="/gold_digger/about/">About</a></li>
 					<li><a href="/gold_digger/tour/">How to Play</a></li>
+                    <li><a href="/gold_digger/display_achievements/">Achievements</a></li>
+
 				</ul>
 
 			</div>
@@ -126,25 +128,28 @@
         </tr>
 
         </table>
-            <h2 id="titoli">Achievements</h2>
+            {% if achievements %}
+                <h2 id="titoli">Achievements</h2>
 
-            <div class="row thumbnail" id="newitem">
+                <div class="row thumbnail" id="newitem">
 
-                {% for a in achievements %}
-                    <div class="col-sm-6 col-md-2">
-                    <div id="achievementprofile">
-                        <div style="background-color: rgba(255, 255, 255, 0); border: none" class="thumbnail"> <img src="{{ a.achievement.image.url }}" alt="{{ a.achievement.name }}">
-</div>
-                        <div class="caption">
-                            <h4>{{ a.achievement.name }}</h4>
+                    {% for a in achievements %}
+                        <div class="col-sm-6 col-md-2">
+                            <div id="achievementprofile">
+                                <div style="background-color: rgba(255, 255, 255, 0); border: none" class="thumbnail">
+                                    <img src="{{ a.achievement.image.url }}" alt="{{ a.achievement.name }}">
+                                </div>
+                                <div class="caption">
+                                    <h3 style="text-align: center">{{ a.achievement.name }}</h3>
 
-                            <p>{{ a.achievement.description }}</p>
+                                    <p style="text-align: center"><b>{{ a.achievement.condition }}</b></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-    </div>
 
-                {% endfor %}
-            </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         </div>

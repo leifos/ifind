@@ -23,7 +23,8 @@ urlpatterns = patterns('',
         url(r'^ajax_upgrade/$', views.ajax_upgrade, name='ajax_upgrade'),
         url(r'^ajax_exit/$', views.ajax_exit, name='exit'),
         url(r'^game_over2/$', views.game_over2, name='game_over2'),
-        url(r'^achievements/$', views.achievements, name='achievements')
+        url(r'^achievements/$', views.achievements, name='achievements'),
+        url(r'^display_achievements/$', views.display_achievements, name='display_achievements')
 
 
 )

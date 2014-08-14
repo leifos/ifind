@@ -826,7 +826,7 @@ def determine_cost(mine_type):
 
     return cost
 
-
+@login_required
 def ajax_exit(request):
     user = UserProfile.objects.get(user=request.user)
     days_s = str(request.session['days'])
@@ -835,6 +835,7 @@ def ajax_exit(request):
 
     return HttpResponse(status=200)
 
+@login_required
 def game_over2(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
@@ -853,7 +854,7 @@ def game_over2(request):
 
     return render_to_response('gold_digger/game_over2.html', {'mines': mines,
                                                               'days': days}, context)
-
+@login_required
 def achievements(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
@@ -862,12 +863,12 @@ def achievements(request):
     myResponse ={}
 
 
-    if 10 < user.gold < 100:
+    if 50 < user.gold < 200:
         print "gold"
         achievement1 = Achievements.objects.get(id=1)
         myResponse = add_achievement(user, achievement1)
 
-    if 100 < user.gold < 300:
+    if 200 <= user.gold < 500:
         print "gold"
         achievement2 = Achievements.objects.get(id=2)
         myResponse = add_achievement(user, achievement2)
@@ -885,25 +886,24 @@ def achievements(request):
         myResponse = add_achievement(user, achievement4)
 
 
-    if 30 <= user.games_played < 32:
+    if 30 <= user.games_played < 100:
         print "games played"
         achievement5 = Achievements.objects.get(id=5)
         myResponse = add_achievement(user, achievement5)
 
 
-    if 100 <= user.games_played < 102:
+    if 100 <= user.games_played < 300:
         print "games played"
         achievement6 = Achievements.objects.get(id=6)
         myResponse = add_achievement(user, achievement6)
 
 
-    if 300 <= user.games_played < 302:
+    if 300 <= user.games_played < 500:
         print "games played"
         achievement7 = Achievements.objects.get(id=7)
         myResponse = add_achievement(user, achievement7)
 
-
-    if 500 <= user.games_played < 502:
+    if  user.games_played > 500:
         print "games played"
         achievement8 = Achievements.objects.get(id=8)
         myResponse = add_achievement(user, achievement8)
@@ -947,3 +947,11 @@ def add_achievement(user, achievement):
         myResponse['unlocked'] = True
         print "NOOOOOOO Achievement"
         return myResponse
+
+def display_achievements(request):
+
+    ach = Achievements.objects.all()
+    context = RequestContext(request)
+
+    return render_to_response('gold_digger/achievements.html', {'achievements': ach}, context)
+

@@ -135,4 +135,25 @@ var csrf = $('#csrf > input').val();
         });
     });
 
+    $('#exitachievements').click(function () {
+        $('#exitpage').modal('show');
+
+        $("button[name='goaway']").click(function () {
+            console.log("profile");
+            window.location = "/gold_digger/profile/";
+            var escape = "profile";
+
+            $.ajax({
+                type: "POST",
+                url: "/gold_digger/ajax_exit/",
+                data: { escape: escape, csrfmiddlewaretoken: csrf },
+                statusCode: {
+                    200: function () {
+                        console.log("exited")
+                    }
+                }
+            })
+        });
+    });
+
 });
