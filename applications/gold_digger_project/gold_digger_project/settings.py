@@ -15,7 +15,7 @@ print TEMPLATE_PATH
 print STATIC_PATH
 
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
