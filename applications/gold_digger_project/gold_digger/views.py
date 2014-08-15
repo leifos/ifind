@@ -126,6 +126,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     request.session['days'] = 1
+    request.session['mine_no'] = 0
     return HttpResponseRedirect(reverse('game_choice2'), context)
 
 
@@ -259,7 +260,7 @@ def game_over(request):
     # user.mines += 1
     user.games_played += 1
     request.session['days'] += 1
-    user.all_time_gold += user.gold
+    user.all_time_gold += request.session['gold']
     user.average = user.all_time_gold/user.mines
     user.save()
     request.session['has_mine'] = False
@@ -906,64 +907,78 @@ def achievements(request):
     if user.gold < 50:
         myResponse['unlocked'] = True
 
-    if 50 < user.gold < 200:
+    if user.gold > 50:
         print "gold"
         achievement1 = Achievements.objects.get(id=1)
         myResponse = add_achievement(user, achievement1)
 
-    if 200 <= user.gold < 500:
+    if user.gold > 500:
         print "gold"
         achievement2 = Achievements.objects.get(id=2)
         myResponse = add_achievement(user, achievement2)
 
 
-    if 500 <= user.gold < 1000:
+    if user.gold > 1000:
         print "gold"
         achievement3 = Achievements.objects.get(id=3)
         myResponse = add_achievement(user, achievement3)
 
+    if user.gold > 5000:
+        print "gold"
+        achievement3 = Achievements.objects.get(id=4)
+        myResponse = add_achievement(user, achievement3)
 
-    if 10 <= user.games_played < 30:
+    if user.gold > 10000:
+        print "gold"
+        achievement3 = Achievements.objects.get(id=5)
+        myResponse = add_achievement(user, achievement3)
+
+    if user.gold > 20000:
+        print "gold"
+        achievement3 = Achievements.objects.get(id=6)
+        myResponse = add_achievement(user, achievement3)
+
+    if user.games_played > 5:
         print "games played"
-        achievement4 = Achievements.objects.get(id=4)
+        achievement4 = Achievements.objects.get(id=7)
         myResponse = add_achievement(user, achievement4)
 
 
-    if 30 <= user.games_played < 100:
+    if user.games_played > 10:
         print "games played"
-        achievement5 = Achievements.objects.get(id=5)
+        achievement5 = Achievements.objects.get(id=8)
         myResponse = add_achievement(user, achievement5)
 
 
-    if 100 <= user.games_played < 300:
+    if user.games_played > 15:
         print "games played"
-        achievement6 = Achievements.objects.get(id=6)
+        achievement6 = Achievements.objects.get(id=9)
         myResponse = add_achievement(user, achievement6)
 
 
-    if 300 <= user.games_played < 500:
+    if user.games_played > 20:
         print "games played"
-        achievement7 = Achievements.objects.get(id=7)
+        achievement7 = Achievements.objects.get(id=10)
         myResponse = add_achievement(user, achievement7)
 
-    if  user.games_played > 500:
+    if  user.games_played > 50:
         print "games played"
-        achievement8 = Achievements.objects.get(id=8)
+        achievement8 = Achievements.objects.get(id=11)
         myResponse = add_achievement(user, achievement8)
 
 
-    if 50 <= user.mines < 100:
-        achievement9 = Achievements.objects.get(id=9)
+    if user.mines > 50:
+        achievement9 = Achievements.objects.get(id=12)
         myResponse = add_achievement(user, achievement9)
 
 
-    if 100 <= user.mines < 300:
-        achievement10 = Achievements.objects.get(id=10)
+    if user.mines > 100:
+        achievement10 = Achievements.objects.get(id=13)
         myResponse = add_achievement(user, achievement10)
 
 
-    if 300 <= user.mines < 400:
-        achievement11 = Achievements.objects.get(id=11)
+    if user.mines > 300:
+        achievement11 = Achievements.objects.get(id=14)
         myResponse = add_achievement(user, achievement11)
 
 
@@ -982,6 +997,7 @@ def add_achievement(user, achievement):
         print "Achievement UNLOCKED"
 
         myResponse['achievement_name'] = achievement.name
+        myResponse['achievement_condition'] = achievement.condition
         myResponse['achievement_image'] = achievement.image.url
         myResponse['achievement_desc'] = achievement.description
 
@@ -998,3 +1014,17 @@ def display_achievements(request):
 
     return render_to_response('gold_digger/achievements.html', {'achievements': ach}, context)
 
+def egg(request):
+    user = UserProfile.objects.get(user=request.user)
+    achievementegg = Achievements.objects.get(id=15)
+
+    if not UserAchievements.objects.filter(user=user, achievement=achievementegg).exists():
+        achieve = UserAchievements()
+        achieve.user = user
+        achieve.achievement = achievementegg
+        achieve.save()
+
+        return HttpResponse(status=200)
+
+    else:
+        return HttpResponse(status=204)

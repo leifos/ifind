@@ -191,7 +191,7 @@
                     <tr>
                         <th id="thumb">Thumbnail</th>
                         <th style="text-align: left">Username</th>
-                        <th id="right" colspan="11">Achievements</th>
+                        <th id="right" colspan="15">Achievements</th>
                     </tr>
 
                     {% for user in users_achievements %}
@@ -205,9 +205,9 @@
                             </td>
                             <td>{{ user.user.username }}</td>
                             {% for a in achiev %}
-                                <td style="text-align: center">{% if a.user == user %}
+                                {% if a.user == user %}<td style="text-align: center">
                                     <img title="{{ a.achievement.name }}" src="{{ a.achievement.image.url }}"
-                                         height="50px"/>{% endif %}</td>
+                                         height="50px"/></td>{% endif %}
 
                             {% endfor %}
 

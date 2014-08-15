@@ -144,9 +144,15 @@ $(document).ready(function(){
                 console.log(points_pos, "poin position");
                 var comment;
 
-                if (response['goldextracted']>=0 && response['goldextracted']<5){
+                if (response['goldextracted'] < 0){
+                    comment = "AWW SNAP!";
+                }
+
+                else if(response['goldextracted']>=0 && response['goldextracted']<5){
                     comment = "OK";
                 }
+
+
                 else if(response['goldextracted']>=5 && response['goldextracted']<10){
                     comment = "GOOD";
                 }

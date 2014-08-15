@@ -19,17 +19,17 @@
     </div>
     <hr>
     <div class="container-fluid">
-        <div class="col-xs-2 col-md-3">
+        <div class="col-xs-2 col-md-2">
 
         </div>
-        <div class="col-xs-7 col-md-6">
+        <div class="col-xs-7 col-md-8">
         <h1 style="font-family: pixelfont; color: gold">Coins</h1>
             <h4 style="font-family: pixelfont; color: gold">Gather gold and get more achievements!</h4>
         <br>
         <div class="row thumbnail" id="newitem">
 
             {% for a in achievements %}
-                    {% if forloop.counter > 0 and forloop.counter <= 3 %}
+                    {% if forloop.counter > 0 and forloop.counter <= 6 %}
                         <div class="col-sm-6 col-md-3">
                             <div style="background-color: rgba(255, 255, 255, 0); border: none" class="thumbnail">
                                 <img src="{{ a.image.url }}" alt="{{ a.name }}" >
@@ -49,7 +49,7 @@
             <h4 style="font-family: pixelfont; color: gold">Keep digging and you'll find more than just gold!</h4><br>
         <div class="row thumbnail" id="newitem">
               {% for a in achievements %}
-                    {% if forloop.counter > 3 and forloop.counter <= 8 %}
+                    {% if forloop.counter > 6 and forloop.counter <= 11 %}
                         <div class="col-sm-6 col-md-3">
                          <div id="achievementprofile">
                             <div style="background-color: rgba(255, 255, 255, 0); border: none" class="thumbnail" >
@@ -71,7 +71,7 @@
             <h4 style="font-family: pixelfont; color: gold">A proud symbol of Gold digging heroes.</h4><br>
         <div class="row thumbnail" id="newitem">
               {% for a in achievements %}
-                    {% if forloop.counter > 8 and forloop.counter <= 11 %}
+                    {% if forloop.counter > 11 and forloop.counter <= 14 %}
                         <div class="col-sm-6 col-md-3">
                          <div id="achievementprofile">
                             <div style="background-color: rgba(255, 255, 255, 0); border: none" class="thumbnail" >
@@ -89,7 +89,7 @@
           </div>
          </div>
         </div>
-        <div class="col-xs-2 col-md-3">
+        <div class="col-xs-2 col-md-2">
         </div>
     </div>
 {% endblock %}

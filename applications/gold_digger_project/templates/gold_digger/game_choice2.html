@@ -16,9 +16,35 @@
 
     <div class="jumbotron" id="about">
         <h1>Locations</h1>
-{#        <div class="well" id="totalwell" style="float: right"><img src="/media/icons/Items/Chest.png"> Gold: <span id="gold">{{ gold }}</span><hr></div>#}
     </div>
     <hr>
+
+    <!-- Achievement unlocked! -->
+
+    <div id="egg" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                            <h2 class="achievements">Easter Egg!</h2>
+                        </div>
+                <div class="modal-body" style="text-align: justify;">
+                    <h3 class="achievements" id="achname" style=" text-align: center">BANANA!</h3>
+                     <div class="thumbnail" id="newitem">
+                        <img id="achimage"  src="/media/icons/Achievements/Banana.png"></div>
+                    <h4 class="achievements" id="achdesc" >Congratulations, you found the Gold Digger easter Egg! Except...it's a Banana!</h4>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button name="no" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- California Modal -->
     <div class="modal fade" id="California" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -44,7 +70,7 @@
                     <div class="well" id="modalcost">
                     <ul>
                         <li><strong style="font-size: 14pt">Mine cost: 20 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"></strong></li>
+                        <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"></strong></li>
                     </ul></div>
                 </div>
                 <div class="modal-footer">
@@ -82,7 +108,7 @@
                     <div class="well" id="modalcost">
                     <ul>
                         <li><strong style="font-size: 14pt">Mine cost: 50 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong style="font-size: 14pt">Max yield: 12</strong></li>
+                        <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"></strong></li>
                     </ul>
 </div>
                 </div>
@@ -128,7 +154,7 @@
                     <div class="well" id="modalcost">
                     <ul>
                         <li><strong style="font-size: 14pt">Mine cost: 80 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong style="font-size: 14pt">Max yield: 15</strong></li>
+                        <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"></strong></li>
                     </ul>
 </div>
 
@@ -167,7 +193,7 @@
                         <img src="{% static "South_Africa3.png" %}"></div><br>
                     You thought there were only diamonds!<br><br>
 
-                    Startred in 1886 <b>led to the establishment</b> of Johannesburg. <a href="http://en.wikipedia.org/wiki/Witwatersrand_Gold_Rush">It was part of the Mineral Revolution</a> , so much so that it's been known as the <b> modern
+                    Startred in 1886 <b>led to the establishment</b> of Johannesburg. <a href="http://en.wikipedia.org/wiki/Witwatersrand_Gold_Rush" target="_blank">It was part of the Mineral Revolution</a> , so much so that it's been known as the <b> modern
                     day El Dorado </b>. Studies have shown how the "Golden Arc" stretching from Johannesburg to Welkom was once a massive inland created by numerous rivers transporting gold
                     sediments.
 
@@ -178,7 +204,7 @@
                     <div class="well" id="modalcost">
                     <ul>
                         <li><strong style="font-size: 14pt">Mine cost: 100 </strong><img height="20px" src="/static/nugget.png"></li>
-                        <li><strong style="font-size: 14pt">Max yield: 17</strong></li>
+                        <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"></strong></li>
                     </ul>
 </div>
                 </div>
@@ -227,7 +253,7 @@
                         <div class="well" id="modalcost">
                         <ul>
                             <li><strong style="font-size: 14pt">Mine cost: 120 </strong><img height="20px" src="/static/nugget.png"></li>
-                            <li><strong style="font-size: 14pt">Max yield: 20</strong></li>
+                            <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"></strong></li>
                         </ul>
 </div>
                     </div>
@@ -276,7 +302,7 @@
                         <div class="well" id="modalcost">
                         <ul>
                             <li><strong style="font-size: 14pt">Mine cost: 200 </strong><img height="20px" src="/static/nugget.png"></li>
-                            <li><strong style="font-size: 14pt">Max yield: 22</strong></li>
+                            <li><strong style="font-size: 14pt">Max yield: <img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"><img height="20px" src="/static/nugget.png"></strong></li>
                         </ul>
 </div>
                     </div>
@@ -346,6 +372,8 @@
                       alt="Scotland" title="Scotland" class="location"/>
                 <area shape="rect" coords="1500,693,1640,737" href="#" data-toggle="modal" data-target="#Victoria"
                       alt="Victoria" title="Victoria" class="location"/>
+                <area shape="rect" coords="1156,231,1188,251" href="#" data-toggle="modal" data-target="#Egg"
+                      alt="Egg" title="Egg" class="locationegg"/>
 
             </map>
         </div>
@@ -356,7 +384,7 @@
     </div>
 
                 <script src="/static/js/tooltips.js"></script>
-
+                <script src="/static/js/egg.js"></script>
 {% endblock %}
 </body>
 </html>

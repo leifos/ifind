@@ -151,8 +151,8 @@ class CaliforniaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.4, 0.5))   # The steepness of the curve
-        k = random.randint(0, 6)
+        a = -1 # The steepness of the curve
+        k = random.randint(0, 10)
         for index in range(self.depth):
             quadratic_yield_array.append(CaliforniaQuadraticYieldGenerator.cali_quadratic_function(index, a, k))
 
@@ -162,6 +162,9 @@ class CaliforniaQuadraticYieldGenerator(YieldGenerator):
     def cali_quadratic_function(x, a, k):
 
         y = a*(pow((x - k), 2)) + 25
+
+        if y < 0:
+            y = 0
 
         rounded = int(round(y))
         return rounded
@@ -176,19 +179,19 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1*(random.uniform(0.2, 0.4))   # The steepness of the curve
-        k = random.randint(2, 4)
-        j = random.randint(30, 40)
+        a = -1  # The steepness of the curve
+        k = random.randint(0, 10)
+
 
         for index in range(self.depth):
-            quadratic_yield_array.append(YukonQuadraticYieldGenerator.yuki_quadratic_function(index, a, k, j))
+            quadratic_yield_array.append(YukonQuadraticYieldGenerator.yuki_quadratic_function(index, a, k))
 
         return quadratic_yield_array
 
     @staticmethod
-    def yuki_quadratic_function(x, a, k, j):
+    def yuki_quadratic_function(x, a, k):
 
-        y = a*(pow((x - k), 2)) + j
+        y = a*(pow((x - k), 2)) + 40
 
         rounded = int(round(y))
         return rounded
@@ -204,7 +207,7 @@ class BrazilQuadraticYieldGenerator(YieldGenerator):
         quadratic_yield_array = []
 
         a = -1.5  # The steepness of the curve
-        k = random.randint(50, 60)
+        k = random.randint(30, 80)
 
         for index in range(self.depth):
             quadratic_yield_array.append(BrazilQuadraticYieldGenerator.brazi_quadratic_function(index, a, k))
@@ -258,8 +261,8 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        k = 10
-        foo = [1, -40, -90]
+        k = 15
+        foo = [-10, 10, 20]
         a = random.choice(foo)
         for index in range(self.depth):
             quadratic_yield_array.append(SouthAfricaQuadraticYieldGenerator.sa_quadratic_function(index, k, a))
@@ -270,7 +273,7 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
     def sa_quadratic_function(x, k, a):
 
 
-        y = ((k*x)/1)+a
+        y = ((k*x)/1)-a
 
         if y < 0:
             y = 0

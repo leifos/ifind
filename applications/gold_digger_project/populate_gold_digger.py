@@ -13,19 +13,19 @@ def populate():
 
     ### DIGGING ###
 
-    spoon  = add_digging_equipment('Spoon', 0.3, 10, 'icons/Tools/Spoon.png', 1, "What am I supposed to do with this?", 30)
-    shovel = add_digging_equipment('Shovel', 0.4, 7, 'icons/Tools/Shovel_normal.png', 100, "It's a shovel", 40)
-    golden_shovel = add_digging_equipment('Golden Shovel', 0.5, 6, 'icons/Tools/Shovel_golden.png', 200, "It might seem like a bad idea, but it's not REAL gold", 50)
-    dynamite = add_digging_equipment('Dynamite', 0.6, 5, 'icons/Tools/Dynamite.png', 300, "KABLAMO!", 60)
-    mecha = add_digging_equipment('Mecha', 0.8, 3, 'icons/Tools/Mecha.png', 500, "Dig ALL the gold!", 80)
+    spoon  = add_digging_equipment('Spoon', 0.3, 5, 'icons/Tools/Spoon.png', 1, "What am I supposed to do with this?", 30)
+    shovel = add_digging_equipment('Shovel', 0.4, 4, 'icons/Tools/Shovel_normal.png', 100, "It's a shovel", 40)
+    golden_shovel = add_digging_equipment('Golden Shovel', 0.5, 3, 'icons/Tools/Shovel_golden.png', 200, "It might seem like a bad idea, but it's not REAL gold", 50)
+    dynamite = add_digging_equipment('Dynamite', 0.6, 2, 'icons/Tools/Dynamite.png', 300, "KABLAMO!", 60)
+    mecha = add_digging_equipment('Mecha', 0.8, 1, 'icons/Tools/Mecha.png', 500, "Dig ALL the gold!", 80)
 
     ### MOVING ###
 
-    boots = add_vehicle('Boots', 15, 'icons/Vehicle/Boots.png', 1, "Two boots is better than no boots!")
-    wheelbarrow = add_vehicle('Wheelbarrow', 10, 'icons/Vehicle/Wheelbarrow.png', 100, "Well, if you start selling mussels too, you're set!")
+    boots = add_vehicle('Boots', 10, 'icons/Vehicle/Boots.png', 1, "Two boots is better than no boots!")
+    wheelbarrow = add_vehicle('Wheelbarrow', 9, 'icons/Vehicle/Wheelbarrow.png', 100, "Well, if you start selling mussels too, you're set!")
     cart = add_vehicle('Cart', 8, 'icons/Vehicle/Cart.png', 150, "Maybe don't ride it, it doesn't have breaks")
-    donkey = add_vehicle('Donkey', 5, 'icons/Vehicle/Donkey.png', 200, "Nothing like good'ol animal power to carry your gold!")
-    truck = add_vehicle('Truck', 3, 'icons/Vehicle/Truck.png', 400, "They see me rollin'!")
+    donkey = add_vehicle('Donkey', 7, 'icons/Vehicle/Donkey.png', 200, "Nothing like good'ol animal power to carry your gold!")
+    truck = add_vehicle('Truck', 6, 'icons/Vehicle/Truck.png', 400, "They see me rollin'!")
 
     jill = add_user('Jill', 'jill@gmail.com', 'jill')
     john = add_user('John', 'john@gmail.com', 'john')
@@ -39,20 +39,26 @@ def populate():
 
     #Gold
     bronze = add_achievement('Bronze Coin', 'Dig 50 Gold Nuggets', 'icons/Achievements/Bronze.png', "So you want to be a Gold Digger...continue digging and unlock more achievements!")
-    silver = add_achievement('Silver Coin', 'Dig 200 Gold Nuggets', 'icons/Achievements/Silver.png', 'What is this thing, I want GOLD!')
-    gold = add_achievement("Gold Coin", 'Dig 500 Gold Nuggets', 'icons/Achievements/GoldCoin.png', "Finally!")
+    silver = add_achievement('Silver Coin', 'Dig 500 Gold Nuggets', 'icons/Achievements/Silver.png', 'What is this thing, I want GOLD!')
+    gold = add_achievement("Gold Coin", 'Dig 1000 Gold Nuggets', 'icons/Achievements/GoldCoin.png', "Finally!")
+    bronzeing = add_achievement('Bronze Ingot', 'Dig 5000 Gold Nuggets', 'icons/Achievements/BronzeBar.png', "So they make these out of Bronze too?")
+    silvering = add_achievement('Silver Ingot', 'Dig 10000 Gold Nuggets', 'icons/Achievements/SilverBar.png', "Uuhhh!")
+    golding = add_achievement('Gold Ingot', 'Dig 20000 Gold Nuggets', 'icons/Achievements/GoldBar.png', "Oooooohhh Yeeeeaah!")
+
 
     #Days
-    ten_days = add_achievement("Agate", "Dig for 10 days", 'icons/Achievements/Agate.png', "You've been digging for ten days! That's a lot...I guess?")
-    thirty_days = add_achievement("Jade", "Dig for 30 days", 'icons/Achievements/Jade.png', "Woah, you like shinies!")
-    fifty_days = add_achievement("Saphire", "Dig for 50 days", 'icons/Achievements/Saphire.png', "Dude, it's becoming an addiction...")
-    hundred_days = add_achievement("Ruby", "Dig for 100 days", 'icons/Achievements/Ruby.png', "I think your family might be wondering were you are, shall I just tell them 'A Mine'? ")
-    strong = add_achievement("Diamond", "Dig for 500 days", 'icons/Achievements/Diamond.png', "I'm gonna go now...")
+    ten_days = add_achievement("Agate", "Dig for 5 days", 'icons/Achievements/Agate.png', "You've been digging for ten days! That's a lot...I guess?")
+    thirty_days = add_achievement("Jade", "Dig for 10 days", 'icons/Achievements/Jade.png', "Woah, you like shinies!")
+    fifty_days = add_achievement("Saphire", "Dig for 15 days", 'icons/Achievements/Saphire.png', "Dude, it's becoming an addiction...")
+    hundred_days = add_achievement("Ruby", "Dig for 20 days", 'icons/Achievements/Ruby.png', "I think your family might be wondering were you are, shall I just tell them 'A Mine'? ")
+    strong = add_achievement("Diamond", "Dig for 50 days", 'icons/Achievements/Diamond.png', "I'm gonna go now...")
 
     #Mines
     mines1 = add_achievement("Bronze Medal - Mine Guide", "Dig in 50 Mines", 'icons/Achievements/BronzeM.png', "You've been through 50 mines already!")
     mines2 = add_achievement("Silver Medal - Mole", "Dig in 100 Mines", 'icons/Achievements/SilverM.png', "You know the mines better than the surface!")
     mines3 = add_achievement("Gold Medal - Into Deep", "Dig in 300 Mines", 'icons/Achievements/GoldM.png', "Surface? What's 'Surface'?")
+
+    banana = add_achievement("Banana", 'Click the Brown Bear', 'icons/Achievements/Banana.png', "BANANA!")
 
     for u in UserProfile.objects.all():
         print u

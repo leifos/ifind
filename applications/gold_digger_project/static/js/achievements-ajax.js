@@ -20,6 +20,8 @@ $(document).ready(function () {
                 else {
                     console.log("Achievement unlocked " + response['achievement_name']);
                     $('#achname').html(response['achievement_name']);
+                    console.log(response['achievement_condition']);
+                    $('#achcond').html(response['achievement_condition']);
                     $('#achimage').attr('src', response['achievement_image']);
                     $('#achdesc').html(response['achievement_desc']);
                     $('#achievement').modal('show')
