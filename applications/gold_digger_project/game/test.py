@@ -143,32 +143,17 @@ import random
 # # a = random.choice(mine_list)
 # print mine_list
 
-a = -1*(random.uniform(0.06, 0.09))
-
-print a
-
-b = pow(10, 2)
-
-print b
-
-array = [11, 11, 11, 10, 10, 9, 9, 8, 7, 6]
-
-c = str(array)
-
-print c
-
-b = 502
-
-if 500 <= b < 1000:
-    print b
-
-if 500 <= b < 1000:
-    print b
-
-if 500 <= b < 1000:
-    print b
-
-else:
-    print "poppaaaaaa"
 
 
+
+
+string = "2014-08-16 19:48:15,179 INFO USER Jess LIFE 0 TOT 10 RMY [0.0, 7.2, 12.8, 16.8, 19.2, 20.0, 19.2, 16.8, 12.8, 7.2]"
+
+
+example = string[string.find("["):]
+
+print example
+
+trad = eval(example)
+
+print trad

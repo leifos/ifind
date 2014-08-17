@@ -150,7 +150,7 @@ def user_login(request):
                 request.session['mine_no'] =0
                 request.session['days'] = 1
 
-                event_logger.info('logged in:' + username)
+                event_logger.info('USER ' + username + ' LOGIN')
 
                 return HttpResponseRedirect(reverse('game_choice2'), context)
             else:
@@ -230,7 +230,7 @@ def move(request):
     days_s = str(request.session['days'])
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
-    event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MOVE ' + point_s)
+    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MOVE ' + point_s)
     return HttpResponseRedirect(reverse('game2'), context)
 
 
@@ -277,7 +277,7 @@ def game_over(request):
     total_gold_s = str(total_gold)
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
-    event_logger.warning(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' END ' + ' CG ' + gold_s + ' TG ' + total_gold_s)
+    event_logger.warning('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' END ' + ' CG ' + gold_s + ' TG ' + total_gold_s)
 
     if user.gold < 20:
         return HttpResponseRedirect(reverse('game_over2'), context)
@@ -355,7 +355,7 @@ def game2(request):
 
         mines_s = str(user.mines)
         life_s = str(user.game_overs)
-        event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' NLOC ' + mine_type + ' SCAN ' + user.equipment.name + ' DIG ' + user.tool.name + ' MOVE ' + user.vehicle.name)
+        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' NLOC ' + mine_type + ' SCAN ' + user.equipment.name + ' DIG ' + user.tool.name + ' MOVE ' + user.vehicle.name)
 
     else:
         mine_type = request.session['mine_type']
@@ -363,7 +363,7 @@ def game2(request):
         mines_s = str(user.mines)
         life_s = str(user.game_overs)
 
-        event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' LOC ' + mine_type + ' MNO ' + mine_no_s)
+        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' LOC ' + mine_type + ' MNO ' + mine_no_s)
 
     if not request.session['has_mine']:
         gen = yieldgen.YieldGenerator
@@ -424,7 +424,7 @@ def game2(request):
 
         real_array_s = str(real_array)
 
-        event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' RMY ' + real_array_s)
+        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' RMY ' + real_array_s)
 
         request.session['has_mine'] = True
         request.session['pointer'] = 0
@@ -583,7 +583,7 @@ def ajaxview(request):
     days_s = str(request.session['days'])
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
-    event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MINE ' + mine_no_s + ' DIGS ' + ' GD ' + gold_dug_s + ' GE ' + gold_extracted_s)
+    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MINE ' + mine_no_s + ' DIGS ' + ' GD ' + gold_dug_s + ' GE ' + gold_extracted_s)
 
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
@@ -658,7 +658,7 @@ def ajax_buy(request):
             days_s = str(request.session['days'])
             total_gold_s = str(user.gold)
             life_s = str(user.game_overs)
-            event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
+            event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
@@ -685,7 +685,7 @@ def ajax_buy(request):
             days_s = str(request.session['days'])
             total_gold_s = str(user.gold)
             life_s = str(user.game_overs)
-            event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
+            event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
@@ -713,7 +713,7 @@ def ajax_buy(request):
             total_gold_s = str(user.gold)
             life_s = str(user.game_overs)
 
-            event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
+            event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
         else:
@@ -756,7 +756,7 @@ def ajax_upgrade(request):
             total_gold_s = str(user.gold)
             life_s = str(user.game_overs)
 
-            event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
+            event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
     if item_type == 'tool':
@@ -788,7 +788,7 @@ def ajax_upgrade(request):
             days_s = str(request.session['days'])
             total_gold_s = str(user.gold)
             life_s = str(user.game_overs)
-            event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
+            event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
@@ -820,7 +820,7 @@ def ajax_upgrade(request):
             days_s = str(request.session['days'])
             total_gold_s = str(user.gold)
             life_s = str(user.game_overs)
-            event_logger.info(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
+            event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' ITEM ' + new_item.name + ' TG ' + total_gold_s)
             return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
@@ -872,7 +872,7 @@ def ajax_exit(request):
     mine_no_s = str(request.session['mine_no'])
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
-    event_logger.warning(user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' EB ' + request.POST['escape'])
+    event_logger.warning('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' EB ' + request.POST['escape'])
 
     return HttpResponse(status=200)
 
