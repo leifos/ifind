@@ -277,7 +277,7 @@ def game_over(request):
     total_gold_s = str(total_gold)
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
-    event_logger.warning('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' END ' + ' CG ' + gold_s + ' TG ' + total_gold_s)
+    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' END ' + ' CG ' + gold_s + ' TG ' + total_gold_s)
 
     if user.gold < 20:
         return HttpResponseRedirect(reverse('game_over2'), context)

@@ -144,16 +144,48 @@ import random
 # print mine_list
 
 
+users = []
+
+file = open('../log_file.log')
 
 
 
-string = "2014-08-16 19:48:15,179 INFO USER Jess LIFE 0 TOT 10 RMY [0.0, 7.2, 12.8, 16.8, 19.2, 20.0, 19.2, 16.8, 12.8, 7.2]"
+for line in file:
+
+    a = line.split(" ")
+    count = 0
+    for token in a:
+        if token == "INFO":
+            user = a[count+1]
+
+            if user not in users and user != "logged":
+                users.append(user)
+
+        else:
+            count += 1
+print  users
 
 
-example = string[string.find("["):]
 
-print example
+for u in users:
+    file = open('../log_file.log')
+    log = open("../"+u+".txt", "w")
+    for linea in file:
+        if u in linea:
+            log.write(linea)
+            print linea
 
-trad = eval(example)
+    log.close()
 
-print trad
+
+#
+# print a
+# TO GET ARRAYS
+#
+# example = string[string.find("["):]
+#
+# print example
+#
+# trad = eval(example)
+#
+# print trad

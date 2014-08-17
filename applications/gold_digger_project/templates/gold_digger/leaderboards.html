@@ -204,12 +204,16 @@
                                      height="75px">
                             </td>
                             <td>{{ user.user.username }}</td>
+                        {% if achiev %}
                             {% for a in achiev %}
                                 {% if a.user == user %}<td style="text-align: center">
                                     <img title="{{ a.achievement.name }}" src="{{ a.achievement.image.url }}"
                                          height="50px"/></td>{% endif %}
 
                             {% endfor %}
+                            {% else %}
+                            <td>None</td>
+                        {% endif %}
 
                         </tr>
 
