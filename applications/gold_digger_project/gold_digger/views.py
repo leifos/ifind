@@ -891,7 +891,7 @@ def game_over2(request):
     request.session['days'] = 1
     user.games_played += 1
     user.game_overs += 1
-    user.gold = 40
+    user.gold = 100
     user.save()
 
     return render_to_response('gold_digger/game_over2.html', {'mines': mines,
