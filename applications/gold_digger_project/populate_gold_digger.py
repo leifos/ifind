@@ -58,7 +58,7 @@ def populate():
     mines2 = add_achievement("Silver Medal - Mole", "Dig in 100 Mines", 'icons/Achievements/SilverM.png', "You know the mines better than the surface!")
     mines3 = add_achievement("Gold Medal - Into Deep", "Dig in 300 Mines", 'icons/Achievements/GoldM.png', "Surface? What's 'Surface'?")
 
-    banana = add_achievement("Banana", 'Click the Brown Bear', 'icons/Achievements/Banana.png', "BANANA!")
+    banana = add_achievement("Banana", 'Found the Easter Egg', 'icons/Achievements/Banana.png', "BANANA!")
 
     for u in UserProfile.objects.all():
         print u

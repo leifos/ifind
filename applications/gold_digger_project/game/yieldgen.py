@@ -151,9 +151,10 @@ class CaliforniaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1 # The steepness of the curve
-        foo = [0, 2, 3, 5, 7, 8, 10]
-        k = random.choice(foo)
+        a =  -1  # The steepness of the curve
+        k = random.uniform(-2, 2)
+        # k = random.choice(foo)
+
         for index in range(self.depth):
             quadratic_yield_array.append(CaliforniaQuadraticYieldGenerator.cali_quadratic_function(index, a, k))
 
@@ -192,10 +193,10 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
     @staticmethod
     def yuki_quadratic_function(x, a, k):
 
-        span = [-15 , 5]
+        span = [-15, 5]
         b = random.choice(span)
 
-        y = (a*(pow((x - 5), 2)) + k) + b
+        y = (a*(pow((x - 0), 2)) + k) + b
 
 
         if y < 0:
@@ -245,9 +246,9 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -8   # The steepness of the curve
+        a = -0.7   # The steepness of the curve
 
-        k = random.randint(0, 7)
+        k = random.randint(-8, 0)
 
 
         for index in range(self.depth):
@@ -258,8 +259,9 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
     @staticmethod
     def scoti_quadratic_function(x, a, k):
 
+        b = random.randint(-10, 5)
 
-        y = a*(pow((x - k), 2)) + 90
+        y = (a*(pow((x - k), 2)) + 70)+b
 
         if y < 0:
            y = 0
@@ -277,7 +279,8 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        a = -1
+        foo = [-0.2, -0.1, -0.3, -6, -8, -10]
+        a = random.choice(foo)
 
         for index in range(self.depth):
             quadratic_yield_array.append(SouthAfricaQuadraticYieldGenerator.sa_quadratic_function(index, a))
@@ -287,10 +290,9 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
     @staticmethod
     def sa_quadratic_function(x, a):
 
-        f = [10, -20, -30]
-        b = random.choice(f)
+        b = random.randint(-3, 3)
 
-        y = (a*(pow((x - 5), 2)) + 50)+b
+        y = (a*(pow((x - 0), 2)) + 50)+b
 
         if y < 0:
             y = 0

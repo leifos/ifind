@@ -355,7 +355,7 @@ def game2(request):
 
         mines_s = str(user.mines)
         life_s = str(user.game_overs)
-        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' NLOC ' + mine_type + ' SCAN ' + user.equipment.name + ' DIG ' + user.tool.name + ' MOVE ' + user.vehicle.name)
+        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' NLOC ' + mine_type + ' SCAN ' + user.equipment.name + ' DIG ' + user.tool.name + ' VEHICLE ' + user.vehicle.name)
 
     else:
         mine_type = request.session['mine_type']
@@ -872,7 +872,7 @@ def ajax_exit(request):
     mine_no_s = str(request.session['mine_no'])
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
-    event_logger.warning('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' EB ' + request.POST['escape'])
+    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' EB ' + request.POST['escape'])
 
     return HttpResponse(status=200)
 
