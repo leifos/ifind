@@ -155,10 +155,10 @@ for line in file:
     a = line.split(" ")
     count = 0
     for token in a:
-        if token == "INFO":
+        if token == "USER":
             user = a[count+1]
 
-            if user not in users and user != "logged":
+            if user not in users:
                 users.append(user)
 
         else:
