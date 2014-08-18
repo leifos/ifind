@@ -248,7 +248,7 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
 
         a = -0.7   # The steepness of the curve
 
-        k = random.randint(-8, 0)
+        k = random.randint(-8, -2)
 
 
         for index in range(self.depth):
@@ -261,7 +261,7 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
 
         b = random.randint(-10, 5)
 
-        y = (a*(pow((x - k), 2)) + 70)+b
+        y = (a*(pow((x - k), 2)) + 90)+b
 
         if y < 0:
            y = 0
@@ -279,7 +279,7 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
         """
         quadratic_yield_array = []
 
-        foo = [-0.2, -0.1, -0.3, -6, -8, -10]
+        foo = [-0.2, -0.1, -0.3, -6, -8]
         a = random.choice(foo)
 
         for index in range(self.depth):
