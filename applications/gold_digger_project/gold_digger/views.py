@@ -851,17 +851,17 @@ def update_cost(request):
 def determine_cost(mine_type):
     cost = 0
     if mine_type == 'California':
-        cost = 20
-    elif mine_type == 'Yukon':
         cost = 50
-    elif mine_type == 'Brazil':
+    elif mine_type == 'Yukon':
         cost = 80
+    elif mine_type == 'Brazil':
+        cost = 90
     elif mine_type == 'South Africa':
-        cost = 100
+        cost = 150
     elif mine_type == 'Scotland':
-        cost = 120
-    elif mine_type == 'Victoria':
         cost = 200
+    elif mine_type == 'Victoria':
+        cost = 300
 
     return cost
 

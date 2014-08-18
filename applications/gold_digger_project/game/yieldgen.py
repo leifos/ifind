@@ -182,7 +182,7 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
         quadratic_yield_array = []
 
         a = -1  # The steepness of the curve
-        k = random.randint(20, 40)
+        k = random.randint(30, 50)
 
 
         for index in range(self.depth):
@@ -311,7 +311,7 @@ class VictoriaQuadraticYieldGenerator(YieldGenerator):
         quadratic_yield_array = []
 
         a = -1   # The steepness of the curve
-        k = random.randint(40, 100)
+        k = random.randint(60, 100)
 
         for index in range(self.depth):
             quadratic_yield_array.append(VictoriaQuadraticYieldGenerator.viki_quadratic_function(index, a, k))
