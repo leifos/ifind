@@ -20,7 +20,7 @@
 
 
     </div>
-    <div class="col-xs-6 col-md-9">
+    <div class="col-xs-6 col-md-10">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist" id="navtabs">
             <li class="active"><a href="#avg" role="tab" data-toggle="tab">Average</a></li>
@@ -207,7 +207,7 @@
                         {% if achiev %}
                             {% for a in achiev %}
                                 {% if a.user == user %}<td style="text-align: center">
-                                    <img title="{{ a.achievement.name }}" src="{{ a.achievement.image.url }}"
+                                    <img id="achleader" title="{{ a.achievement.name }} - {{ a.achievement.condition }}" src="{{ a.achievement.image.url }}"
                                          height="50px"/></td>{% endif %}
 
                             {% endfor %}

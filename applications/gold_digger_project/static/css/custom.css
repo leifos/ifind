@@ -704,6 +704,7 @@ a:hover {
 }
 
 
+
 /******************************************************************************/
 
 
@@ -1347,6 +1348,10 @@ a:hover {
      #shoppe {
         font-family: pixelfont;
      }
+
+     #achleader {
+         height: 30px;
+}
 }
 
 @media (min-width: 1300px) {
@@ -1446,6 +1451,9 @@ a:hover {
     #shoppe {
         font-family: pixelfont;
     }
+    #achleader {
+         height: 30px;
+}
 }
 
 
@@ -1543,6 +1551,9 @@ a:hover {
         width: 100%;
         margin-left: 25px;
      }
+      #achleader {
+         height: 40px;
+}
 
    }
 
@@ -1639,6 +1650,9 @@ a:hover {
         width: 100%;
         margin-left: 25px;
      }
+      #achleader {
+         height: 40px;
+}
 
    }
 
