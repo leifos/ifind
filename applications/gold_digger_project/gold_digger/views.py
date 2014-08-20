@@ -365,12 +365,6 @@ def game2(request):
 
         event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' LOC ' + mine_type + ' MNO ' + mine_no_s)
 
-        cumgold = request.session['gold']
-        digcost = user.tool.time_modifier
-        move_cost = user.vehicle.modifier
-
-        #event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' SMOVE ')
-
     if not request.session['has_mine']:
         gen = yieldgen.YieldGenerator
 
@@ -428,11 +422,18 @@ def game2(request):
             a = round(b.gold*user.tool.modifier)
             real_array.append(a)
 
-        should_stop(real_array, cumgold, digcost, move_cost)
+        digcost = user.tool.time_modifier
+        move_cost = user.vehicle.modifier
+
+
+        should_stop_s = str(should_stop(real_array, digcost, move_cost))
+
 
         real_array_s = str(real_array)
 
         event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' RMY ' + real_array_s)
+
+        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' SMOVE ' + should_stop_s)
 
         request.session['has_mine'] = True
         request.session['pointer'] = 0
@@ -1037,12 +1038,34 @@ def egg(request):
     else:
         return HttpResponse(status=204)
 
-def should_stop(real_array, cumgold, digcost, movecost):
-
+def should_stop(real_array, digcost, movecost):
     stopmax  = 0
-    for r in real_array:
+    cum_array = []
+    yieldovercost = []
+    cum_total = 0
 
-        if r > stopmax:
-            stopmax = r
+    for r in real_array:
+        cum_total += r
+        cum_array.append(cum_total)
+
+    print "CUM ARRAY"
+    print cum_array
+
+    for i in range(0, len(cum_array)):
+        yc = cum_array[i]/(movecost + (i * digcost))
+
+        yieldovercost.append(yc)
+
+    print "YIELDOVERCOST"
+    print yieldovercost
+
+    for i in range(0, len(yieldovercost)):
+        print yieldovercost[i]
+        print stopmax
+        if yieldovercost[i] > stopmax or yieldovercost[i] == stopmax:
+            stopmax = i
+
+    print "STOP AT"
+    print stopmax
 
     return stopmax
