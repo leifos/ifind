@@ -862,15 +862,15 @@ def determine_cost(mine_type):
     if mine_type == 'California':
         cost = 50
     elif mine_type == 'Yukon':
-        cost = 80
-    elif mine_type == 'Brazil':
-        cost = 90
-    elif mine_type == 'South Africa':
-        cost = 150
-    elif mine_type == 'Scotland':
         cost = 200
+    elif mine_type == 'Brazil':
+        cost = 500
+    elif mine_type == 'South Africa':
+        cost = 800
+    elif mine_type == 'Scotland':
+        cost = 1000
     elif mine_type == 'Victoria':
-        cost = 300
+        cost = 1200
 
     return cost
 
