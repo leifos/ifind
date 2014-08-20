@@ -270,7 +270,7 @@ body{
 #leaderboards{
     background-color: #acacac;
     font-family: pixelfont;
-    font-size: large;
+    font-size: medium;
 }
 
 #leaderboards th {

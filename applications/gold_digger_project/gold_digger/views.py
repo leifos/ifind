@@ -279,7 +279,7 @@ def game_over(request):
     life_s = str(user.game_overs)
     event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' END ' + ' CG ' + gold_s + ' TG ' + total_gold_s)
 
-    if user.gold < 50:
+    if user.gold < 40:
         return HttpResponseRedirect(reverse('game_over2'), context)
 
     return render_to_response('gold_digger/game_over.html', {'day_gold': day_gold,
@@ -310,7 +310,7 @@ def game_choice2(request):
     user = UserProfile.objects.get(user=request.user)
 
 
-    if user.gold < 50:
+    if user.gold < 40:
         return HttpResponseRedirect(reverse('game_over2'), request)
 
     mine_types = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
@@ -585,15 +585,6 @@ def ajaxview(request):
     myResponse['currentgold'] = request.session['gold']
     myResponse['goldextracted'] = gold_extracted
 
-
-
-    # Logging
-    mine_no_s = str(request.session['mine_no'])
-    days_s = str(request.session['days'])
-    mines_s = str(user.mines)
-    life_s = str(user.game_overs)
-    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MINE ' + mine_no_s + ' DIGS ' + ' GD ' + gold_dug_s + ' GE ' + gold_extracted_s)
-
     return HttpResponse(json.dumps(myResponse), content_type="application/json")
 
 
@@ -752,7 +743,7 @@ def ajax_upgrade(request):
         if new_item.price > user.gold:
             return HttpResponse(status=204)
 
-        if (user.gold - new_item.price) < 50:
+        if (user.gold - new_item.price) < 40:
             return HttpResponse(status=202)
 
         else:
@@ -788,7 +779,7 @@ def ajax_upgrade(request):
         if new_item.price > user.gold:
             return HttpResponse(status=204)
 
-        if (user.gold - new_item.price) < 50:
+        if (user.gold - new_item.price) < 40:
             return HttpResponse(status=202)
 
 
@@ -824,7 +815,7 @@ def ajax_upgrade(request):
         if new_item.price > user.gold:
             return HttpResponse(status=204)
 
-        if (user.gold - new_item.price) < 50:
+        if (user.gold - new_item.price) < 40:
             return HttpResponse(status=202)
 
         else:
@@ -870,17 +861,17 @@ def update_cost(request):
 def determine_cost(mine_type):
     cost = 0
     if mine_type == 'California':
-        cost = 50
+        cost = 40
     elif mine_type == 'Yukon':
-        cost = 200
+        cost = 100
     elif mine_type == 'Brazil':
-        cost = 500
+        cost = 200
     elif mine_type == 'South Africa':
-        cost = 800
+        cost = 300
     elif mine_type == 'Scotland':
-        cost = 1000
+        cost = 400
     elif mine_type == 'Victoria':
-        cost = 1200
+        cost = 500
 
     return cost
 

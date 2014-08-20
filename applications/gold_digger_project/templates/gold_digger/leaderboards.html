@@ -40,10 +40,10 @@
                         <th style="text-align: center">Thumbnail</th>
                         <th id="left">Username</th>
                         <th style="text-align: center" colspan="3">Equipment</th>
-                        <th id="right">All Time Gold</th>
-                        <th id="right">Average</th>
-                        <th id="right">Max Gold</th>
-                        <th id="right">Days</th>
+                        <th id="right">Average Gold Per Mine</th>
+                        <th id="right">All Time Gold Dug</th>
+                        <th id="right">Max Gold Reached</th>
+                        <th id="right">Days Dug</th>
                     </tr>
 
                     {% for user in users_avg %}
@@ -60,8 +60,8 @@
                             <td id="right"><img src="{{ user.equipment.image.url }}" height="50px"/></td>
                             <td id="right"><img src="{{ user.tool.image.url }}" height="50px"/></td>
                             <td id="right"><img src="{{ user.vehicle.image.url }}" height="50px"/></td>
-                            <td id="right">{{ user.all_time_gold }}</td>
                             <td id="right">{{ user.average }}</td>
+                            <td id="right">{{ user.all_time_gold }}</td>
                             <td id="right">{{ user.all_time_max_gold }}</td>
                             <td id="right">{{ user.games_played }}</td>
 
@@ -78,10 +78,10 @@
                         <th id="thumb">Thumbnail</th>
                         <th>Username</th>
                         <th style="text-align: center" colspan="3">Equipment</th>
-                        <th id="right">All Time Gold</th>
-                        <th id="right">Max gold</th>
-                        <th id="right">Days</th>
-                        <th id="right">Average</th>
+                        <th id="right">Max Gold Reached</th>
+                        <th id="right">All Time Gold Dug</th>
+                        <th id="right">Days Dug</th>
+                        <th id="right">Average Gold Per Mine</th>
                     </tr>
 
                     {% for user in users_gold %}
@@ -116,10 +116,10 @@
                         <th id="thumb">Thumbnail</th>
                         <th>Username</th>
                         <th style="text-align: center" colspan="3">Equipment</th>
-                        <th id="right">All Time Gold</th>
-                        <th id="right">Days</th>
-                        <th id="right">Max gold</th>
-                        <th id="right">Average</th>
+                        <th id="right">All Time Gold Dug</th>
+                        <th id="right">Days Dug</th>
+                        <th id="right">Max Gold Reached</th>
+                        <th id="right">Average Gold Per Mine</th>
                     </tr>
 
                     {% for user in users_games %}
@@ -154,10 +154,10 @@
                         <th id="thumb">Thumbnail</th>
                         <th>Username</th>
                         <th style="text-align: center" colspan="3">Equipment</th>
-                        <th id="right">All Time Gold</th>
-                        <th id="right">Days</th>
-                        <th id="right">Max gold</th>
-                        <th id="right">Average</th>
+                        <th id="right">All Time Gold Dug</th>
+                        <th id="right">Days Dug</th>
+                        <th id="right">Max Gold Reached</th>
+                        <th id="right">Average Gold Per MIne</th>
                     </tr>
 
                     {% for user in users_all_time_gold %}
