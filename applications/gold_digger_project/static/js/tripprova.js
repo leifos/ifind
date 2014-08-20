@@ -52,14 +52,10 @@ var trip2 = new Trip([
     },
     {
         sel: $("#step4"),
-        content: "Here we can see how many gold nuggets were present in this particular layer.",
+        content: "Here we can see how many gold nuggets we found in this particular layer. If we had a better tool <b>we probably would have extracted more</b>",
         position: "s"
     },
-    {
-        sel: $("#step5"),
-        content: "However, <b>because of our tool</b>, we were only able to actually acquire only a portion of them.",
-        position: "s"
-    },
+
     {
         sel: $("#eq"),
         content: "This is the equipment we have at the moment",

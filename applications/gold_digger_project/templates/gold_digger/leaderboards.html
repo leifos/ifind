@@ -116,8 +116,8 @@
                         <th id="thumb">Thumbnail</th>
                         <th>Username</th>
                         <th style="text-align: center" colspan="3">Equipment</th>
-                        <th id="right">All Time Gold Dug</th>
                         <th id="right">Days Dug</th>
+                        <th id="right">All Time Gold Dug</th>
                         <th id="right">Max Gold Reached</th>
                         <th id="right">Average Gold Per Mine</th>
                     </tr>
@@ -135,8 +135,8 @@
                             <td id="right"><img src="{{ user.equipment.image.url }}" height="50px"/></td>
                             <td id="right"><img src="{{ user.tool.image.url }}" height="50px"/></td>
                             <td id="right"><img src="{{ user.vehicle.image.url }}" height="50px"/></td>
-                            <td id="right">{{ user.all_time_gold }}</td>
                             <td id="right">{{ user.games_played }}</td>
+                            <td id="right">{{ user.all_time_gold }}</td>
                             <td id="right">{{ user.all_time_max_gold }}</td>
                             <td id="right">{{ user.average }}</td>
 
