@@ -279,7 +279,7 @@ def game_over(request):
     life_s = str(user.game_overs)
     event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' END ' + ' CG ' + gold_s + ' TG ' + total_gold_s)
 
-    if user.gold < 20:
+    if user.gold < 50:
         return HttpResponseRedirect(reverse('game_over2'), context)
 
     return render_to_response('gold_digger/game_over.html', {'day_gold': day_gold,
@@ -310,7 +310,7 @@ def game_choice2(request):
     user = UserProfile.objects.get(user=request.user)
 
 
-    if user.gold < 20:
+    if user.gold < 50:
         return HttpResponseRedirect(reverse('game_over2'), request)
 
     mine_types = ['California', 'Yukon', 'Brazil', 'South Africa', 'Scotland', 'Victoria']
@@ -752,6 +752,9 @@ def ajax_upgrade(request):
         if new_item.price > user.gold:
             return HttpResponse(status=204)
 
+        if (user.gold - new_item.price) < 50:
+            return HttpResponse(status=202)
+
         else:
             user.gold -= new_item.price
             user.equipment = new_item
@@ -785,6 +788,10 @@ def ajax_upgrade(request):
         if new_item.price > user.gold:
             return HttpResponse(status=204)
 
+        if (user.gold - new_item.price) < 50:
+            return HttpResponse(status=202)
+
+
         else:
             user.gold -= new_item.price
             user.tool = new_item
@@ -816,6 +823,9 @@ def ajax_upgrade(request):
 
         if new_item.price > user.gold:
             return HttpResponse(status=204)
+
+        if (user.gold - new_item.price) < 50:
+            return HttpResponse(status=202)
 
         else:
             user.gold -= new_item.price

@@ -40,7 +40,13 @@ $(document).ready(function () {
 //                  $("#alert").animate({opacity: 0.0}, 2000);
 //                  $("#message").delay( 800).remove();
 
+                },
+
+                202: function() {
+                    console.log("No access to mine");
+                    $('#noaccess').modal('show');
                 }
+
             }
         })
 
@@ -86,6 +92,11 @@ $(document).ready(function () {
 //                  $("#alert").animate({opacity: 0.0}, 2000);
 //                  $("#message").delay( 800).remove();
 
+                },
+
+                202: function() {
+                    console.log("No access to mine");
+                    $('#noaccess').modal('show');
                 }
             }
         })
@@ -130,10 +141,14 @@ $(document).ready(function () {
 //                  $("#alert").animate({opacity: 0.0}, 2000);
 //                  $("#message").delay( 800).remove();
 
+                },
+
+                202: function() {
+                    console.log("No access to mine");
+                    $('#noaccess').modal('show');
                 }
             }
         })
-
 
     })
 
