@@ -365,9 +365,9 @@ def game2(request):
 
         event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' LOC ' + mine_type + ' MNO ' + mine_no_s)
 
-        #cumgold = request.session['gold']
-        #digcost = user.tool.time_modifier
-        #move_cost = user.vehicle.modifier
+        cumgold = request.session['gold']
+        digcost = user.tool.time_modifier
+        move_cost = user.vehicle.modifier
 
         #event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' SMOVE ')
 
@@ -428,7 +428,7 @@ def game2(request):
             a = round(b.gold*user.tool.modifier)
             real_array.append(a)
 
-        should_stop(real_array)
+        should_stop(real_array, cumgold, digcost, move_cost)
 
         real_array_s = str(real_array)
 
@@ -1037,10 +1037,11 @@ def egg(request):
     else:
         return HttpResponse(status=204)
 
-def should_stop(real_array):
+def should_stop(real_array, cumgold, digcost, movecost):
 
     stopmax  = 0
     for r in real_array:
+
         if r > stopmax:
             stopmax = r
 
