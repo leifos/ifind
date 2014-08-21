@@ -216,7 +216,7 @@ def move(request):
 
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    point_s = str(request.session['pointer'])
+    point_s = str(request.session['pointer'] - 1)
 
     if request.session['time_remaining'] <= 0:
         return HttpResponseRedirect(reverse('game_over'), context)
@@ -231,8 +231,9 @@ def move(request):
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
     mine_no_s = str(request.session['mine_no'])
-
-    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' MOVE ' + point_s)
+    gold_s = str(user.gold)
+    curr_s = str(request.session['gold'])
+    event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' DAY ' + days_s + ' MNO ' + mine_no_s + ' TG ' + gold_s + ' CG ' + curr_s + ' MOVE ' + point_s)
     return HttpResponseRedirect(reverse('game2'), context)
 
 
@@ -436,15 +437,15 @@ def game2(request):
         move_cost = user.vehicle.modifier
         digcost_s = str(digcost)
         move_cost_s = str(move_cost)
-
+        gold_s = str(user.gold)
         should_stop_s = str(should_stop(user, real_array, digcost, move_cost))
+        curr_s = str(request.session['gold'])
 
-        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' MNO ' + mine_no_s + ' DIGC ' + digcost_s + ' MOC ' + move_cost_s + ' SMOVE ' + should_stop_s)
+
+        event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' MNO ' + mine_no_s + ' TG ' + gold_s + ' CG ' + curr_s + ' DIGC ' + digcost_s + ' MOC ' + move_cost_s + ' SMOVE ' + should_stop_s)
 
         request.session['has_mine'] = True
         request.session['pointer'] = 0
-
-        print request.session['pointer'], "POINTER!"
 
         scaffold = [1, 2, 3]
 
@@ -530,7 +531,6 @@ def divide(max_gold):
 
         limits.append(max_gold)
 
-    print "LIMITS", limits
     return limits
 
 
@@ -543,18 +543,16 @@ def ajaxview(request):
     pickled_blocks = request.session['pickle']
     blocks = pickle.loads(pickled_blocks)
 
-    # POSTED objects
+    # POSTED objects['pointer']
     gold_dug = int(request.POST['dig'])                         # Requesting the AMOUNT OF GOLD
     gold_dug_s = str(gold_dug)
     pos = int(request.POST['block'])                            # Requesting the POSITION
-    print gold_dug, "GOLD DUG"
 
     gold_extracted = int(round(gold_dug*user.tool.modifier))    # Working out the actual amount of gold
     gold_extracted_s = str(gold_extracted)
     # Updating the session values
 
     request.session['pointer'] += 1
-    print request.session['pointer'], "POINTER!"
     request.session['time_remaining'] -= user.tool.time_modifier
     request.session['gold'] += int(round(gold_dug*user.tool.modifier))
 
@@ -577,7 +575,6 @@ def ajaxview(request):
     else:
         for x in range(len(limits)-1):
             if limits[x] >= gold_dug > limits[x+1]:
-                print x, "limit"
                 myResponse['nuggets'] = x
 
     if request.session['pointer'] == len(blocks):
@@ -638,7 +635,6 @@ def store(request):
 
 def ajax_upgrade(request):
     user = UserProfile.objects.get(user=request.user)
-    print "GOT HERE!!!"
     item_type = request.POST['up']
     mines_s = str(user.mines)
 
@@ -770,13 +766,10 @@ def update_location(request):
 @login_required
 def update_cost(request):
     user = UserProfile.objects.get(user=request.user)
-    print user.gold
     user.gold -= int(request.POST['cost'])
     if user.gold < 20:
         return HttpResponse(status=204)
 
-    print request.POST['cost'], "COOOOOSTTTTTTTTT"
-    print user.gold
     user.save()
 
     myResponse = user.gold
@@ -837,69 +830,57 @@ def game_over2(request):
 def achievements(request):
     context = RequestContext(request)
     user = UserProfile.objects.get(user=request.user)
-    print(user.games_played)
-    print(user.mines)
+
     myResponse ={}
 
     if user.gold < 50:
         myResponse['unlocked'] = True
 
     if user.gold > 50:
-        print "gold"
         achievement1 = Achievements.objects.get(id=1)
         myResponse = add_achievement(user, achievement1)
 
     if user.gold > 500:
-        print "gold"
         achievement2 = Achievements.objects.get(id=2)
         myResponse = add_achievement(user, achievement2)
 
 
     if user.gold > 1000:
-        print "gold"
         achievement3 = Achievements.objects.get(id=3)
         myResponse = add_achievement(user, achievement3)
 
     if user.gold > 5000:
-        print "gold"
         achievement3 = Achievements.objects.get(id=4)
         myResponse = add_achievement(user, achievement3)
 
     if user.gold > 10000:
-        print "gold"
         achievement3 = Achievements.objects.get(id=5)
         myResponse = add_achievement(user, achievement3)
 
     if user.gold > 20000:
-        print "gold"
         achievement3 = Achievements.objects.get(id=6)
         myResponse = add_achievement(user, achievement3)
 
     if user.games_played > 5:
-        print "games played"
         achievement4 = Achievements.objects.get(id=7)
         myResponse = add_achievement(user, achievement4)
 
 
     if user.games_played > 10:
-        print "games played"
         achievement5 = Achievements.objects.get(id=8)
         myResponse = add_achievement(user, achievement5)
 
 
     if user.games_played > 15:
-        print "games played"
         achievement6 = Achievements.objects.get(id=9)
         myResponse = add_achievement(user, achievement6)
 
 
     if user.games_played > 20:
-        print "games played"
         achievement7 = Achievements.objects.get(id=10)
         myResponse = add_achievement(user, achievement7)
 
     if  user.games_played > 50:
-        print "games played"
         achievement8 = Achievements.objects.get(id=11)
         myResponse = add_achievement(user, achievement8)
 
@@ -941,7 +922,6 @@ def add_achievement(user, achievement):
         return myResponse
     else:
         myResponse['unlocked'] = True
-        print "NOOOOOOO Achievement"
         return myResponse
 
 def display_achievements(request):
@@ -967,10 +947,11 @@ def egg(request):
         return HttpResponse(status=204)
 
 def should_stop(user, real_array, digcost, movecost):
-    stopmax  = 0
+    ycmax  = 0.00
     cum_array = []
     yieldovercost = []
     cum_total = 0
+    stop_here = 0
 
     for r in real_array:
         cum_total += r
@@ -978,21 +959,17 @@ def should_stop(user, real_array, digcost, movecost):
 
 
     for i in range(0, len(cum_array)):
-        yc = round(cum_array[i]/(movecost + (i * digcost)), 2)
+        yc = round(cum_array[i]/(movecost + ((i+1) * digcost)), 2)
 
         yieldovercost.append(yc)
 
-    print "YIELDOVERCOST"
-    print yieldovercost
 
     for i in range(0, len(yieldovercost)):
 
-        if yieldovercost[i] >= stopmax:
-            stopmax = i
+        if yieldovercost[i] >= ycmax:
+            ycmax = yieldovercost[i]
+            stop_here = i
 
-
-    print "STOP AT"
-    print stopmax
 
     mines_s = str(user.mines)
     life_s = str(user.game_overs)
@@ -1001,4 +978,4 @@ def should_stop(user, real_array, digcost, movecost):
     event_logger.info('USER ' + user.user.username + ' LIFE ' + life_s + ' TOT ' + mines_s + ' YC ' + yieldovercost_s)
 
 
-    return stopmax
+    return stop_here
