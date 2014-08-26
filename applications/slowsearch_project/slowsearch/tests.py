@@ -65,7 +65,7 @@ class SearchTests(TestCase):
 
         time_elapsed_no_delay = end-start
 
-        assertion = (time_elapsed_delay >= 5 and time_elapsed_delay > time_elapsed_no_delay)
+        assertion = (time_elapsed_delay >= 3 and time_elapsed_delay > time_elapsed_no_delay)
 
         self.assertTrue(assertion)
 

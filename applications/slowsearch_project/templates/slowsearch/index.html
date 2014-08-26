@@ -7,6 +7,10 @@
 <script type="text/javascript">
 
     $( document ).ready(function() {
+        $("#progress").css("visibility", "visible");
+        $("#whole_page").css("opacity", "0.5");
+        $("#whole_page").css("pointerEvents", "none");
+
         var token = "{{csrf_token}}";
         var formData = token + '&';
         formData = formData + (window.location.hash);
@@ -14,6 +18,9 @@
         if(formData.indexOf("&query=")>1) {
             processRequest(formData);
         }
+        $("#progress").css("visibility", "hidden");
+        $("#whole_page").css("opacity", "1");
+        $("#whole_page").css("pointerEvents", "auto");
     });
 
 </script>
@@ -24,8 +31,12 @@
         <div class="modal" id="progress" style="visibility: hidden">
                 <img src="{% static 'throbber.GIF' %}" alt="Progress Spinner" height="45" width="45"/>
         </div>
-           <div id="results" style="width: 40%; margin-left: 10%">
+           <div id="results" style="width: 40%; margin-left: 10%; min-width: 500px">
             <h2>Welcome to WebSearch</h2>
+            <strong> The experimental period is now over. Your search behaviour will no longer be recorded, but if you haven't already, please
+                click the button to fill in the feedback questionnaire:
+                <a class="btn-primary" href="finalsurvey">Survey</a><br><br>
+            </strong>
 
                 {% if not request.user.id|divisibleby:2 %}
                     <form id="search_form" action="/ajax_results/" method="post">
@@ -62,9 +73,9 @@
                 search engine for the duration of the experiment.</li><br>
                 <li>As part of the study you will be asked to complete some optional questionnaires regarding your
                 demographics and experience with the application.</li><br>
-                <li>The experiment will last for X days, beginning on X July, 2014.</li><br>
+                <li>The experiment will last for 7 days, beginning on the 14th of August, 2014.</li><br>
                 <li>Participation in this study is voluntary, and <strong>you may withdraw consent to use the information you
-                    provided at any time before the X of August, 2014.</strong></li><br>
+                    provided at any time before the 22nd of August, 2014.</strong></li><br>
                 <li>Your name will not appear on any published document in relation to this study.</li>
                 <li>The time you spend on each query will be recorded for purposes of this experiment. <strong>Your search
                     queries will be converted to hashes so that they cannot be read and will not be recorded, nor will any

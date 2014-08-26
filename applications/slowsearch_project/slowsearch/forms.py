@@ -56,7 +56,7 @@ YEAR_CHOICES = (('', 'Not Specified'),
                ('1', 'First Year'), ('2', 'Second Year'), ('3', 'Third Year'), ('4', 'Fourth Year'),
                ('5', 'Fifth Year'), ('6', 'Completed'), ('7', 'Postgraduate'))
 
-EXPERIENCE_CHOICES = (('A', 'Agree'), ('U', 'Unsure'), ('D', 'Disagree'))
+EXPERIENCE_CHOICES = (('5', 'Strongly Agree'), ('4', 'Agree'), ('3', 'Neither Agree nor Disagree'), ('2', 'Disagree'), ('1', 'Strongly Disagree'))
 
 
 class UKDemographicsSurveyForm(forms.ModelForm):

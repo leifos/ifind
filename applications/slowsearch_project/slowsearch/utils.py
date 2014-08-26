@@ -18,7 +18,7 @@ e = EngineFactory("Bing", api_key=BING_API_KEY)  # create Bing search engine obj
 response_cache = get_cache('default')
 
 
-delay_time = 5  # length of delay for mod_slow in seconds
+delay_time = 3  # length of delay for mod_slow in seconds
 
 
 def mod_normal(results):
@@ -118,26 +118,29 @@ def paginated_search(query, condition, u_ID, page, user):
     if query:
             # Run our Bing function to get the results list!
         if not (response_cache.get(query)):
+            event_logger.info(str_u_ID + ' QL ' + 'HQ: ' + q_hash + ' ' + q_len + ' CA ')
             try:
                 result_list = run_query(query, cnd)
                 response_cache.set(query, pickle.dumps(result_list), 300)
             except exceptions.EngineConnectionException:
                 result_list = 'Unable to connect to the search engine at this time. Please try again later.'
-            event_logger.info(str_u_ID + ' QL ' + 'HQ: ' + q_hash + ' ' + q_len + ' CA ')
+
             profile.queries_submitted = queries + 1
             profile.save()
 
         elif page is None:  # a new query has been submitted
+            event_logger.info(str_u_ID + ' RR ' + 'HQ: ' + q_hash + ' ' + q_len)
             result_list = pickle.loads(response_cache.get(query))
             mod = conditions[condition]
             result_list = mod(result_list)
-            event_logger.info(str_u_ID + ' RR ' + 'HQ: ' + q_hash + ' ' + q_len)
+
             profile.queries_submitted = queries + 1
             profile.save()
 
+
         else:
-            result_list = pickle.loads(response_cache.get(query))
             event_logger.info(str_u_ID + ' PA' + str(page) + ' RR')
+            result_list = pickle.loads(response_cache.get(query))
 
         if type(result_list) == str:
             contacts = result_list
@@ -155,6 +158,10 @@ def paginated_search(query, condition, u_ID, page, user):
 
         if contacts is None:
             contacts = "No results."
+
+        #right before the results are returned, log the fact that the search is completed.
+        #this time difference can be used to calculate the lag from running the query through bing
+        event_logger.info(str_u_ID + ' RPL')
 
         return contacts
 

@@ -2,6 +2,7 @@
 <html>
 <head>
     {% load static %}
+    {% load days_remaining %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
     <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet"/>
@@ -18,6 +19,7 @@
     <title>WebSearch</title>
 </head>
 <body style="padding-top: 90px">
+{% get_remaining_day as days %}
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
@@ -26,10 +28,12 @@
            <div class="hidden-tablet">
            <div class="hidden-phone">
                <a href=""><img class="logo" style="width: 32px;" src="{% static "New_Glasgow_Crest.png"%}"></a>
+
            </div>
            </div>
                    <a class="brand" style="margin-left: 5px" href="/">WebSearch</a>
-
+                    <text class="brand" style="color: white; font-size: 10pt">
+                Days remaining: 0</text>
                <div class="nav-collapse collapse navbar-responsive-collapse">
                    <ul class="nav pull-right" style="margin-left: 20px">
                        {% if user.is_authenticated %}
@@ -55,6 +59,8 @@
                         {% if request.get_full_path != "/about/" %}
                             <li><a href="/about">About</a> </li>
                         {% endif %}
+
+
 
 
 

@@ -316,6 +316,9 @@ def ajax_results(request):
 
     u_ID = user.id
 
+    u_agent = request.META['HTTP_USER_AGENT']
+    print u_agent
+
     record_query(user, now)
 
     if request.method == 'POST':

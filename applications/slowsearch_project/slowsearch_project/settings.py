@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'slowsearch',
+    'slowsearch.templatetags.days_remaining',
     'sslify'
 )
 

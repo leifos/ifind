@@ -17,6 +17,9 @@ class UserProfile(models.Model):
     queries_submitted = models.IntegerField(default=0)
     links_visited = models.IntegerField(default=0)
 
+    def __unicode__(self):
+        return self.user.username
+
 
 class UKDemographicsSurvey(models.Model):
     user = models.OneToOneField(User)
