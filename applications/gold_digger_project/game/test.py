@@ -163,22 +163,120 @@ for line in file:
 
         else:
             count += 1
-print  users
+print users
+print len(users)
 
 
+# for u in users:
+#     file = open('../log_file.log')
+#     log = open("../users_log/"+u+".txt", "w")
+#     for linea in file:
+#         if u in linea:
+#             log.write(linea)
+#
+#     log.close()
+#
+# print "--------------------- SMOVE -------------------------"
+#
+# for u in users:
+#     print u, "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+#     log = open("../users_log/"+u+".txt", "r")
+#     log_a = open("../user_performance/"+u+".txt", "a")
+#     checking = False
+#     for line in log:
+#
+#         a = line.split(" ")
+#         index = 0
+#
+#         for token in a:
+#             if token == "SMOVE" and checking == True:
+#                 log_a.write(" " + '\n')
+#
+#             if token == "SMOVE":
+#                 smove = a[index+1]
+#                 log_a.write(smove.rstrip('\n') + " ")
+#                 checking = True
+#
+#
+#             if token == "MOVE" and checking == True:
+#                 move = a[index+1]
+#                 log_a.write(move)
+#                 checking = False
+#
+#             else:
+#                 index += 1
+#
+# for u in users:
+#     log_p = open("../user_performance/"+u+".txt", "r")
+#     log_pw = open("../user_performance/"+u+"_clean.txt", "w")
+#     print u, "USERRRRRRRRRRR"
+#     for line in log_p:
+#         l = line.split()
+#         if len(l) == 2:
+#
+#               # TOGGLE FOR +1 ON MOVE
+#             l[1] = int(l[1])
+#             l[1] += 1
+#             l[1] = str(l[1])
+#             for token_l in l:
+#                 log_pw.write(token_l + " ")
+
+######################
+
+smove_arr = []
+move_arr = []
+for u in users:
+    log_pw = open("../user_performance/"+u+"_clean.txt", "r")
+    for line in log_pw:
+        l = line.split(" ")
+        index = 0
+        print u, "visited ", float(len(l)-1)/2, " mines"
+        for tok in l:
+            if index % 2 == 0 and tok != '':
+                smove_arr.append(int(tok))
+                index += 1
+            elif index % 2 != 0 and tok != '':
+                move_arr.append(int(tok))
+                index += 1
+
+print "smove: ", smove_arr
+print len(smove_arr)
+print "move: ", move_arr
+print len(move_arr)
+
+print " "
+
+print "sum smove ", sum(smove_arr)
+print "sum move ", sum(move_arr)
+
+print reduce(lambda x, y: x + y, smove_arr) / float(len(smove_arr))
+print reduce(lambda x, y: x + y, move_arr) / float(len(move_arr))
+
+diff_arr = []
+for i in range(len(smove_arr)):
+    diff = smove_arr[i] - move_arr[i]
+    diff_arr.append(diff)
+
+print reduce(lambda x, y: x + y, diff_arr) / float(len(diff_arr))
 
 for u in users:
-    file = open('../log_file.log')
-    log = open("../"+u+".txt", "w")
-    for linea in file:
-        if u in linea:
-            log.write(linea)
-            print linea
+    log_pw = open("../user_performance/"+u+"_clean.txt", "r")
+    log_pw2 = open("../user_ordered/"+u+"_ordered.txt", "a")
+    for line in log_pw:
+        l = line.split(" ")
+        index = 0
+        for tok in l:
+            if index % 2 == 0 and tok != '':
+                print tok,
+                log_pw2.write(tok.rstrip('\n') + " ")
+                index += 1
+            elif index % 2 != 0 and tok != '':
+                print tok
+                log_pw2.write(tok + '\n')
+                index += 1
 
-    log.close()
+###############################################################################
 
-
-#
 # print a
 # TO GET ARRAYS
 #
