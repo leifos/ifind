@@ -89,12 +89,7 @@ class User(object):
             # action to be performed is examine a snippet
             snippet_list = screen.snippets
             # look at snippet in position i
-
-            if random.randint(0,10) > 5:
-                return self.examine_snippet()
-            else:
-                return self.examine_document()
-            # if snippet looks relevant, examine document
+            return self.examine_snippet()
 
         else:
             return self.query()
@@ -106,23 +101,35 @@ class User(object):
 
 
     def query(self):
-        # pick off the first query
-        query_text = ''
+        # select query, or stop
+
         if self.queries_issued < len(self.query_list):
             query_text = self.query_list[self.queries_issued]
             self.queries_issued = self.queries_issued + 1
             self.results_examined = 0
             return (1, query_text)
         else:
-            return (4, None)
+            return (0, None)
 
 
     def examine_document(self):
+        # look at document, compare it to topic, if relevant, mark relevant,
+        # then decide to continue to next snippet, or issue new query
+
         pass
 
 
     def examine_snippet(self):
-        pass
+        # looks at the next snippet, compare it to the topic,
+
+        snippet_position = self.results_examined
+        if random.randint(0,10) > 5:
+            # if relevant, then examine document
+            return (3, snippet_position)
+        else:
+            return (2, None)
+        # if not, then continue to next snippet or issue new query.
+
 
 
 
