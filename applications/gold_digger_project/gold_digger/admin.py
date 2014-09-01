@@ -7,7 +7,7 @@ class UserAdmin2 (admin.ModelAdmin):
 
 class GoldAdmin(admin.ModelAdmin):
 
-    list_display = ('user', 'picture', 'location')
+    list_display = ('user', 'picture', 'location', 'mines')
     readonly_fields = ('image_tag',)
 
 class ScanAdmin(admin.ModelAdmin):

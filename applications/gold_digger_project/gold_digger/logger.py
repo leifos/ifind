@@ -5,7 +5,7 @@ import logging
 # create the logger once.
 
 work_dir = os.getcwd()
-log_file = os.path.join(work_dir, 'log_file.log')
+log_file = os.path.join(work_dir, 'log_file2.log')
 # create a logger by asking logging to get a logger called "event_log",
 # if one exists it is returned, else a new logger called "event_log" is created
 
