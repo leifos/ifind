@@ -48,6 +48,7 @@ class User(object):
         self.query_list = ['hello','goodbye','ciao']
         self.queries_issued = 0
         self.results_examined = 0
+        self.marked_relevant = 0
 
 
     def process_topic(self, topic_text):
@@ -61,7 +62,7 @@ class User(object):
 
     def select_next_action(self, screen):
         """
-        given a
+        given a screen, calls a method which invokes an action to the driver (experimentor).
         :param Screen:
         :return:
         """
@@ -75,12 +76,12 @@ class User(object):
 
 
     def handle_start_screen(self,screen):
-
+        # At the moment, the only action that can be performed on the start screen is to issue a query.
         return self.query()
 
 
     def handle_result_screen(self,screen):
-
+        # The user can either issue another query, examine documents or snippets.
         actions = screen.actions
         i = self.results_examined
 
@@ -94,15 +95,13 @@ class User(object):
         else:
             return self.query()
 
-
-
     def handle_doc_screen(self,screen):
+        # When the view document screen is shown
         pass
 
 
     def query(self):
         # select query, or stop
-
         if self.queries_issued < len(self.query_list):
             query_text = self.query_list[self.queries_issued]
             self.queries_issued = self.queries_issued + 1
@@ -113,10 +112,20 @@ class User(object):
 
 
     def examine_document(self):
-        # look at document, compare it to topic, if relevant, mark relevant,
+        # look at document, if relevant, mark relevant,
         # then decide to continue to next snippet, or issue new query
-
-        pass
+        # ASSUMPTION: can we assume that the agent has already compared the document to the topic?
+        #             because to get here, the agent must examine the snippet for the document.
+        #             or can we say that what is inferred from the snippet in terms of relevance can be different from the actual document?
+        document_position = self.results_examined
+        document_text = 'some text for the document'
+        
+        if random.randint(0, 10) > 5: # if the document is relevant to the topic, mark it as relevant.
+            self.marked_relevant = self.marked_relevant + 1
+            #  Add to a list of marked documents for the given query?
+            return (2, snippet_position)
+        else:  # Document not considered relevant; so continue
+            return (2, None)
 
 
     def examine_snippet(self):
