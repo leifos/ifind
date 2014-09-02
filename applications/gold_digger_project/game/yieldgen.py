@@ -199,7 +199,7 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
         y = (a*(pow((x - 0), 2)) + k) + b
 
 
-        if y < 0:
+        if y < 0    :
             y = 0
 
         rounded = int(round(y))
