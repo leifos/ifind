@@ -78,16 +78,18 @@ def make_query(text, page=1, pagelen=100):
 # continue until done
 
 class SearchContext(object):
-    def __init__(self, query_list = [], actions=[], docs_examined=0, action=None, time_spent=0):
-        self.actions = actions
-        self.docs_examined = docs_examined
-        self.action = action
-        self.time_spent = time_spent
+    def __init__(self, query_list = []):
+        self.query_list = query_list
+        self.actions = []
+        self.docs_examined = 0
+        self.action = None
+        self.time_spent = 0
         self.assess_time = 20
         self.query_time = 10
-        self.query_list = query_list
         self.issued_query_list = []
+        self.examined_doc_list = []
         self.query_count = 0
+        self.total_docs_examined = 0
 
 
     def get_last_action(self):
@@ -101,6 +103,7 @@ class SearchContext(object):
     def set_assess_action(self):
         self.action = 'D'
         self.docs_examined += 1
+        self.total_docs_examined += 1
         self.actions.append(self.action)
         self.time_spent += self.assess_time
 
@@ -110,6 +113,7 @@ class SearchContext(object):
         self.docs_examined = 0
         self.actions.append(self.action)
         self.time_spent += self.query_time
+
 
 
 
@@ -141,19 +145,56 @@ def do_query(search_context):
         query = search_context.query_list[qc]
         print "query issued" , query
         search_context.query_count += 1
+        q = make_query(query[0],1,100)
+        response = search_context.engine.search(q)
+        q.response = response
+        search_context.issued_query_list.append(q)
+        search_context.last_query = q
+        return True
     else:
         print "out of queries"
+        return False
 
 
 
 def do_assess(search_context):
-    print "document assessed"
+    q= search_context.last_query
+    response = q.response
+    result_list = response.results
+    i = search_context.docs_examined - 1
+    # get the ith doc from the list.
 
+    whoosh_docid = result_list[i].whooshid
+    print "snippet title", result_list[i].title
+    print "snippet summary", result_list[i].summary[0:50]
 
-action_handler = { 'Q': do_query, 'D': do_assess}
+    document = get_document(search_context.index_reader, whoosh_docid)
+    print "document content", document[2], document[1][0:100]
+    search_context.examined_doc_list.append(document[2])
+
 
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
+
+
+from whoosh.index import open_dir
+ix = open_dir(my_whoosh_doc_index_dir)
+ixr = ix.reader()
+
+
+def get_document(index_reader, whoosh_docid):
+    fields = index_reader.stored_fields(int(whoosh_docid))
+    title = fields["title"]
+    content = fields["content"]
+    docnum = fields["docid"]
+    doc_date = fields["timedate"]
+    doc_source = fields["source"]
+    docid = whoosh_docid
+    return (title,content,docnum, whoosh_docid)
+
+action_handler = { 'Q': do_query, 'D': do_assess}
+
+
 engine = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
 stopword_file = 'data/stopwords.txt'
 bg_file = 'data/vocab.txt'
@@ -170,6 +211,8 @@ query_list = extract_query_list(topic_text, stopword_file, topicLM)
 
 time_limit = 500
 sc = SearchContext(query_list)
+sc.engine = engine
+sc.index_reader = ixr
 
 print "start sim"
 while sc.time_spent  <  time_limit:
@@ -184,32 +227,5 @@ print "end sim"
 
 
 
-#response = engine.search(q)
-
-#print response
-
-
-#for r in response.results:
-#    print r.summary
-
-#for q in queries:
-#    tq = Query(q[0])
-#    print q[0]
-#
-
-#    for r in response:
-#        # does the snippet match topic?
-#        print r.summary
-
-    #print response
-# take query from list
-
-
-
-# submit query to engine
-
-# inspect snippet, decide if relevant,
-
-# if snippet is relevant, inspect document
 
 
