@@ -4,66 +4,48 @@ from ifind.search.query import Query
 
 
 class SearchContext(object):
-
-    def __init__(self, topic):
-        self.Topic = topic
-        self.Relevance = None
-        self.Background = None
-        self.UserQueryList = None
-
-
-class Topic(object):
-
-    def __init__(self, topic_text):
-        self.text = topic_text
-
-
+    def __init__(self, query_list = []):
+        self.query_list = query_list
+        self.actions = []
+        self.docs_examined = 0
+        self.action = None
+        self.issued_query_list = []
+        self.examined_doc_list = []
+        self.query_count = 0
+        self.total_docs_examined = 0
+        self.total_snippets_examined = 0
+        self.snippets_examined = 0
+        #TODO(leifos): need to record the position of the current document that is under inspection
 
 
-class Relevance(object):
-    pass
-
-
-
-class UserQuery(object):
-
-    def __init__(self, query_text, query_score):
-        self.text = query_text
-        self.score = query_score
-        self.issued = False
-        self.exhausted = False
-        self.pos_examined = 0
-
-
-
-class UserQueryList(object):
-
-    def __init__(self):
-        self.ql = []
-
-    def add_query(self, text, score):
-        self.ql.append( UserQuery(text, score) )
-
-
-
-    def get_next_query(self):
-        """
-        gets the query with the highest score, which has not been issued, and returns it
-        :return: a UserQuery object
-        """
-
-        # sort list
-        #TODO(leifos): need to ensure the list is sorted first
-
-        n = len(self.ql)
-        i = 0
-        while (i < n):
-            if self.ql[i].issued:
-                i = i + 1
-            else:
-                break
-
-        if i < n:
-            return self.ql[i]
+    def get_last_action(self):
+        if self.actions:
+            last_action = self.actions[-1]
         else:
-            return None
+            last_action = None
+        return last_action
+
+    def set_snippet_action(self):
+        self.action = 'S'
+        self.snippets_examined += 1
+        self.total_snippets_examined += 1
+        self.actions.append(self.action)
+
+
+    def set_assess_action(self):
+        self.action = 'D'
+        self.docs_examined += 1
+        self.total_docs_examined += 1
+        self.actions.append(self.action)
+
+
+    def set_query_action(self):
+        self.action = 'Q'
+        self.docs_examined = 0
+        self.snippets_examined = 0
+        self.actions.append(self.action)
+
+
+
+
+
