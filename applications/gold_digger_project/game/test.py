@@ -2,6 +2,7 @@ from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGe
 from mine import Mine
 import pickle
 
+
 # gen = ConstantYieldGenerator(depth=10, max=42, min=0)
 # m = Mine(gen, 0.8)
 #
@@ -143,28 +144,29 @@ import random
 # # a = random.choice(mine_list)
 # print mine_list
 
+#BEGINNING#######################################
 
-users = []
-
-file = open('../log_file.log')
-
-
-
-for line in file:
-
-    a = line.split(" ")
-    count = 0
-    for token in a:
-        if token == "USER":
-            user = a[count+1]
-
-            if user not in users:
-                users.append(user)
-
-        else:
-            count += 1
-print users
-print len(users)
+# users = []
+#
+# file = open('../log_file.log')
+#
+#
+#
+# for line in file:
+#
+#     a = line.split(" ")
+#     count = 0
+#     for token in a:
+#         if token == "USER":
+#             user = a[count+1]
+#
+#             if user not in users:
+#                 users.append(user)
+#
+#         else:
+#             count += 1
+# print users
+# print len(users)
 
 
 # for u in users:
@@ -223,57 +225,57 @@ print len(users)
 
 ######################
 
-smove_arr = []
-move_arr = []
-for u in users:
-    log_pw = open("../user_performance/"+u+"_clean.txt", "r")
-    for line in log_pw:
-        l = line.split(" ")
-        index = 0
-        print u, "visited ", float(len(l)-1)/2, " mines"
-        for tok in l:
-            if index % 2 == 0 and tok != '':
-                smove_arr.append(int(tok))
-                index += 1
-            elif index % 2 != 0 and tok != '':
-                move_arr.append(int(tok))
-                index += 1
-
-print "smove: ", smove_arr
-print len(smove_arr)
-print "move: ", move_arr
-print len(move_arr)
-
-print " "
-
-print "sum smove ", sum(smove_arr)
-print "sum move ", sum(move_arr)
-
-print reduce(lambda x, y: x + y, smove_arr) / float(len(smove_arr))
-print reduce(lambda x, y: x + y, move_arr) / float(len(move_arr))
-
-diff_arr = []
-for i in range(len(smove_arr)):
-    diff = smove_arr[i] - move_arr[i]
-    diff_arr.append(diff)
-
-print reduce(lambda x, y: x + y, diff_arr) / float(len(diff_arr))
-
-for u in users:
-    log_pw = open("../user_performance/"+u+"_clean.txt", "r")
-    log_pw2 = open("../user_ordered/"+u+"_ordered.txt", "a")
-    for line in log_pw:
-        l = line.split(" ")
-        index = 0
-        for tok in l:
-            if index % 2 == 0 and tok != '':
-                print tok,
-                log_pw2.write(tok.rstrip('\n') + " ")
-                index += 1
-            elif index % 2 != 0 and tok != '':
-                print tok
-                log_pw2.write(tok + '\n')
-                index += 1
+# smove_arr = []
+# move_arr = []
+# for u in users:
+#     log_pw = open("../user_performance/"+u+"_clean.txt", "r")
+#     for line in log_pw:
+#         l = line.split(" ")
+#         index = 0
+#         print u, "visited ", float(len(l)-1)/2, " mines"
+#         for tok in l:
+#             if index % 2 == 0 and tok != '':
+#                 smove_arr.append(int(tok))
+#                 index += 1
+#             elif index % 2 != 0 and tok != '':
+#                 move_arr.append(int(tok))
+#                 index += 1
+#
+# print "smove: ", smove_arr
+# print len(smove_arr)
+# print "move: ", move_arr
+# print len(move_arr)
+#
+# print " "
+#
+# print "sum smove ", sum(smove_arr)
+# print "sum move ", sum(move_arr)
+#
+# print reduce(lambda x, y: x + y, smove_arr) / float(len(smove_arr))
+# print reduce(lambda x, y: x + y, move_arr) / float(len(move_arr))
+#
+# diff_arr = []
+# for i in range(len(smove_arr)):
+#     diff = smove_arr[i] - move_arr[i]
+#     diff_arr.append(diff)
+#
+# print reduce(lambda x, y: x + y, diff_arr) / float(len(diff_arr))
+#
+# for u in users:
+#     log_pw = open("../user_performance/"+u+"_clean.txt", "r")
+#     log_pw2 = open("../user_ordered/"+u+"_ordered.txt", "a")
+#     for line in log_pw:
+#         l = line.split(" ")
+#         index = 0
+#         for tok in l:
+#             if index % 2 == 0 and tok != '':
+#                 print tok,
+#                 log_pw2.write(tok.rstrip('\n') + " ")
+#                 index += 1
+#             elif index % 2 != 0 and tok != '':
+#                 print tok
+#                 log_pw2.write(tok + '\n')
+#                 index += 1
 
 ###############################################################################
 
