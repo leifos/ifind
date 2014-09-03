@@ -3,10 +3,12 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.core.files import File
-from gold_digger.models import UserProfile
+from gold_digger.models import UserProfile, ScanningEquipment, DiggingEquipment, Vehicle
 from gold_digger.forms import UserForm, UserProfileForm
-from game import yieldgen, cuegen
+from game import yieldgen, cuegen, mine
 import collections
+
+
 
 
 class ModelTest(TestCase):
@@ -22,32 +24,28 @@ class ModelTest(TestCase):
         """
 
         new_user = User.objects.create_user(**self.user_info)
-        user_profile = UserProfile.objects.create(user=new_user, picture='something.gif', location='Here')
+        user_profile = UserProfile()
+        user_profile.user = new_user
 
-        self.assertEqual(new_user.username, 'guybrush')
+        scan = ScanningEquipment.objects.get_or_create(name="Oil Lamp", modifier=0.2, image='icons/Scan/Oil Lamp.png', price=1, description="It won't allow you to see much but it's better than going in blind!", store_val=20)[0]
+        dig = DiggingEquipment.objects.get_or_create(name='Spoon', modifier=0.3, time_modifier=5, image='icons/Tools/Spoon.png', price=1, description="What am I supposed to do with this?", store_val=30)[0]
+        move = Vehicle.objects.get_or_create(name='Boots', modifier=10, image='icons/Vehicle/Boots.png', price=1, description="Two boots is better than no boots!")[0]
+        user_profile.equipment = scan
+        user_profile.tool = dig
+        user_profile.vehicle = move
+
+        self.assertEqual(user_profile.user.username, 'guybrush')
         self.assertEqual(new_user.email, 'guy@monkey.island')
         self.failUnless(new_user.check_password('secret'))
         self.failIf(not new_user.is_active)
-        self.assertEquals(user_profile.id, new_user.id)
+        self.failIf(not user_profile.equipment)
+        self.failIf(not user_profile.tool)
+        self.failIf(not user_profile.vehicle)
+        self.assertEqual(user_profile.gold, 100)
+        self.assertEqual(user_profile.games_played, 0)
+        self.assertEqual(user_profile.game_overs, 0)
+        self.assertEqual(user_profile.mines, 0)
 
-
-
-    def test_image_addition(self):
-        """
-        This adds the image in the wrong spot
-        """
-
-        new_user = User.objects.create_user(**self.user_info)
-
-        user_profile = UserProfile()
-        user_profile.user = new_user
-        user_profile.picture = File(open("static/glasgow.gif"))
-        user_profile.location = "NYC"
-        user_profile.save()
-
-        p = UserProfile.objects.get(id=1).picture.path
-
-        self.failUnless(open(p), 'file not found')
 
 class FormTests(TestCase):
 
@@ -64,7 +62,51 @@ class FormTests(TestCase):
         self.failIf(form.is_valid())
 
 
+class CueTest(TestCase):
+
+    def test_appropriate_cue(self):
+
+        test_array = [3, 11, 18, 25, 33, 39]
+        maxgold = 42
+        scan = 1
+
+        cue_array = cuegen.make_cue(test_array, scan, maxgold)
+
+        self.assertEqual(cue_array[0], 0)
+        self.assertEqual(cue_array[1], 1)
+        self.assertEqual(cue_array[2], 2)
+        self.assertEqual(cue_array[3], 3)
+        self.assertEqual(cue_array[4], 4)
+        self.assertEqual(cue_array[5], 5)
+
+    def test_cue_function(self):
+
+        test_array = [3, 11, 18, 25, 33, 39]
+        scan = 1
+        maxgold = 42
+
+        for t in test_array:
+            a = cuegen.cue_function(scan, maxgold)
+            self.assertEqual(t+a, t)
+
+
+
 class GameTest(TestCase):
+
+    user_info = {'username': 'guybrush',
+                 'email': 'guy@monkey.island',
+                 'password': 'secret'}
+
+    new_user = User.objects.create_user(user_info)
+    user_profile = UserProfile()
+    user_profile.user = new_user
+
+    scan = ScanningEquipment.objects.get_or_create(name="Oil Lamp", modifier=0.2, image='icons/Scan/Oil Lamp.png', price=1, description="It won't allow you to see much but it's better than going in blind!", store_val=20)[0]
+    dig = DiggingEquipment.objects.get_or_create(name='Spoon', modifier=0.3, time_modifier=5, image='icons/Tools/Spoon.png', price=1, description="What am I supposed to do with this?", store_val=30)[0]
+    move = Vehicle.objects.get_or_create(name='Boots', modifier=10, image='icons/Vehicle/Boots.png', price=1, description="Two boots is better than no boots!")[0]
+    user_profile.equipment = scan
+    user_profile.tool = dig
+    user_profile.vehicle = move
 
     def test_random_yield(self):
         """
@@ -184,3 +226,13 @@ class GameTest(TestCase):
         compare = lambda xc, yc: collections.Counter(xc) == collections.Counter(yc)
         same = compare(test_array, yield_array)
         self.assertEqual(same, True)
+
+
+    def test_undug(self):
+
+
+        depth = 10
+        c = yieldgen.ConstantYieldGenerator(depth)
+        yield_array = c.make_yields()
+
+        m = mine.Mine(c, 1, )
