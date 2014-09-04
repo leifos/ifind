@@ -25,10 +25,12 @@ class QueryRanker(object):
         :return:score: the probability of a query given the language model (lm)
         """
         score = 0.0
+        len = 0.0
         query = query.split(" ")
         for term in query:
+            len = len + 1.0
             score = score + self._calculate_term_score(term)
-        return score
+        return (score / len)
 
     def _calculate_term_score(self, term):
         return math.log(self.lm.get_term_prob(term),2)

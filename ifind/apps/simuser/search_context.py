@@ -26,24 +26,44 @@ class SearchContext(object):
         return last_action
 
     def set_snippet_action(self):
-        self.action = 'S'
+        self.action = 'SNIPPET'
         self.snippets_examined += 1
         self.total_snippets_examined += 1
         self.actions.append(self.action)
 
 
     def set_assess_action(self):
-        self.action = 'D'
+        self.action = 'DOC'
         self.docs_examined += 1
         self.total_docs_examined += 1
         self.actions.append(self.action)
 
 
     def set_query_action(self):
-        self.action = 'Q'
+        self.action = 'QUERY'
         self.docs_examined = 0
         self.snippets_examined = 0
         self.actions.append(self.action)
+
+    def set_serp_action(self):
+        self.action = 'SERP'
+
+        self.actions.append(self.action)
+
+    def set_mark_action(self):
+        self.action = 'MARK'
+
+        self.actions.append(self.action)
+
+
+    def set_action(self, action_name):
+
+        #TODO(leifos): call the corresponding action to update the search context appropriately.
+        self.actions.append(action_name)
+
+
+
+
 
 
 
