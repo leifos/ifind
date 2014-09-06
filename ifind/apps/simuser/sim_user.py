@@ -53,20 +53,21 @@ class SimUser(object):
             if self.action_value:
                 self.do_action('DOC')
             else:
-                self.do_decide()
+                self.do_action(self.do_decide())
 
         def _assess():
             if self.action_value:
                 self.do_action('MARK')
             else:
                 # look at next snip, or issue another query
-                self.do_decide()
+                self.do_action(self.do_decide())
 
 
         def _mark():
             # always true.
             # look at next snip, or issue another query
-            self.do_decide()
+            self.do_action(self.do_decide())
+
 
         def _none():
             self.do_action('QUERY')
@@ -87,22 +88,22 @@ class SimUser(object):
 
 
 
-    def make_query(self, text, page=1, pagelen=100):
+    def issue_query(self, text, page=1, pagelen=100):
         q = Query(text)
         q.skip = page
         q.top = pagelen
-        q.issued = False
-        q.examined = 0
-        q.docs_seen = []
-        q.docs_rel = []
+        response = self.si.issue_query(q)
+        q.response = response
+
         return q
 
 
 
-    def do_action(self,action_name):
+    def do_action(self, action_name):
 
         #self.sc.set_action(action_name)
         #self.log.log_action(action_name)
+        print action_name
         action_mapping = {
             'QUERY': self.do_query,
             'SERP': self.do_serp,
@@ -111,69 +112,50 @@ class SimUser(object):
             'MARK': self.do_mark_document
         }
 
+        # Notify the log that the user has performed the action
+        self.log.log_action(action_name)
+        # Record in the users search context that are going to performed the action
+        self.sc.set_action(action_name)
+        # Perform the action,
         self.action_value = action_mapping[action_name]()
 
 
 
     def do_decide(self):
-
         if self.dm.decide():
-            self.action_value = self.do_snippet()
+            return 'SNIPPET'
         else:
-            self.action_value = self.do_query()
+            return 'QUERY'
 
 
 
     def do_query(self):
-        self.sc.set_query_action()
-        self.log.log_query()
-
-        # set the query in the search context
-        qc = self.sc.query_count
-
-        if len(self.sc.query_list) > qc:
-            query = self.sc.query_list[qc]
-            print "query issued" , query
-            self.sc.query_count += 1
-
-            q = self.make_query(query[0],1,100)
-
-            response = self.si.issue_query(q)
-            q.response = response
-
-            self.sc.issued_query_list.append(q)
-            self.sc.last_query = q
-
+        query_text = self.sc.get_next_query()
+        if query_text:
+            q = self.issue_query(query_text)
+            self.sc.add_issued_query(q)
             return True
         else:
-            print "out of queries"
+            print "Out of queries"
             return False
 
     def do_serp(self):
-        self.log.log_result_page()
-        self.sc.set_serp_action()
+
         return True
 
 
     def do_snippet(self):
-        self.sc.set_snippet_action()
-        self.log.log_snippet()
-
         # needs to invoker the TextClassifier to make a decision on whether the snippet is relevant or not
         # need to remember in the search context which snippet the user is now looking at
         return True
 
 
     def do_mark_document(self):
-        self.sc.set_mark_action()
-        self.log.log_mark()
         return True
 
 
     def do_assess(self):
-        self.sc.set_assess_action()
-        self.log.log_assess()
-        q= self.sc.last_query
+        q = self.sc.last_query
         response = q.response
         result_list = response.results
         i = self.sc.docs_examined - 1
