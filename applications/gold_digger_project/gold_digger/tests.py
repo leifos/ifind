@@ -8,22 +8,18 @@ from gold_digger.forms import UserForm, UserProfileForm
 from game import yieldgen, cuegen, mine
 import collections
 
-
-
-
 class ModelTest(TestCase):
-
-    user_info = {'username': 'guybrush',
-                 'email': 'guy@monkey.island',
-                 'password': 'secret'}
 
 
     def test_user_profile_data(self):
         """
         Check if UserProfile object is created with appropriate  data
         """
+        user_info = {'username': 'guybrush',
+                 'email': 'guy@monkey.island',
+                 'password': 'secret'}
 
-        new_user = User.objects.create_user(**self.user_info)
+        new_user = User.objects.create_user(**user_info)
         user_profile = UserProfile()
         user_profile.user = new_user
 
@@ -45,6 +41,7 @@ class ModelTest(TestCase):
         self.assertEqual(user_profile.games_played, 0)
         self.assertEqual(user_profile.game_overs, 0)
         self.assertEqual(user_profile.mines, 0)
+
 
 
 class FormTests(TestCase):
@@ -93,20 +90,6 @@ class CueTest(TestCase):
 
 class GameTest(TestCase):
 
-    user_info = {'username': 'guybrush',
-                 'email': 'guy@monkey.island',
-                 'password': 'secret'}
-
-    new_user = User.objects.create_user(user_info)
-    user_profile = UserProfile()
-    user_profile.user = new_user
-
-    scan = ScanningEquipment.objects.get_or_create(name="Oil Lamp", modifier=0.2, image='icons/Scan/Oil Lamp.png', price=1, description="It won't allow you to see much but it's better than going in blind!", store_val=20)[0]
-    dig = DiggingEquipment.objects.get_or_create(name='Spoon', modifier=0.3, time_modifier=5, image='icons/Tools/Spoon.png', price=1, description="What am I supposed to do with this?", store_val=30)[0]
-    move = Vehicle.objects.get_or_create(name='Boots', modifier=10, image='icons/Vehicle/Boots.png', price=1, description="Two boots is better than no boots!")[0]
-    user_profile.equipment = scan
-    user_profile.tool = dig
-    user_profile.vehicle = move
 
     def test_random_yield(self):
         """
@@ -228,11 +211,64 @@ class GameTest(TestCase):
         self.assertEqual(same, True)
 
 
-    def test_undug(self):
+    def test_positive(self):
 
-
-        depth = 10
-        c = yieldgen.ConstantYieldGenerator(depth)
+        c = yieldgen.CaliforniaQuadraticYieldGenerator(depth=10, max=100, min=0)
         yield_array = c.make_yields()
+        for y in yield_array:
+            self.failIf(y < 0)
 
-        m = mine.Mine(c, 1, )
+        c = yieldgen.YukonQuadraticYieldGenerator(depth=10, max=100, min=0)
+        yield_array = c.make_yields()
+        for y in yield_array:
+            self.failIf(y < 0)
+
+        c = yieldgen.BrazilQuadraticYieldGenerator(depth=10, max=100, min=0)
+        yield_array = c.make_yields()
+        for y in yield_array:
+            self.failIf(y < 0)
+
+        c = yieldgen.SouthAfricaQuadraticYieldGenerator(depth=10, max=100, min=0)
+        yield_array = c.make_yields()
+        for y in yield_array:
+            self.failIf(y < 0)
+
+        c = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=100, min=0)
+        yield_array = c.make_yields()
+        for y in yield_array:
+            self.failIf(y < 0)
+
+        c = yieldgen.VictoriaQuadraticYieldGenerator(depth=10, max=100, min=0)
+        yield_array = c.make_yields()
+        for y in yield_array:
+            self.failIf(y < 0)
+
+    def test_mine(self):
+
+        user_info = {'username': 'guybrush2',
+                 'email': 'guy@monkey.island2',
+                 'password': 'secret2'}
+
+        new_user = User.objects.create_user(**user_info)
+        user_profile = UserProfile()
+        user_profile.user = new_user
+
+        scan = ScanningEquipment.objects.get_or_create(name="Oil Lamp", modifier=0.2, image='icons/Scan/Oil Lamp.png', price=1, description="It won't allow you to see much but it's better than going in blind!", store_val=20)[0]
+        dig = DiggingEquipment.objects.get_or_create(name='Spoon', modifier=0.3, time_modifier=5, image='icons/Tools/Spoon.png', price=1, description="What am I supposed to do with this?", store_val=30)[0]
+        move = Vehicle.objects.get_or_create(name='Boots', modifier=10, image='icons/Vehicle/Boots.png', price=1, description="Two boots is better than no boots!")[0]
+        user_profile.equipment = scan
+        user_profile.tool = dig
+        user_profile.vehicle = move
+
+        accuracy = 0.2
+        max_gold = 100
+        gen = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
+
+        m = mine.Mine(gen, accuracy, user_profile)
+
+        for block in m.blocks:
+            self.failIf(block.cue == None)
+            self.failIf(block.gold == None)
+            self.failIf(block.dug == True)
+            self.failIf((block.pos/10)>=1)
+            self.failIf((block.pos/10)<=-1)
