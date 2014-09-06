@@ -5,10 +5,11 @@ from ifind.search.query import Query
 from search_context import SearchContext
 from search_interface import WhooshInterface, Document, Topic
 from decision_maker import FixedDepthDecisionMaker, RandomDecisionMaker
+from text_classifier import iFindTextClassifier
 
 class SimUser(object):
 
-    def __init__(self, search_interface, query_producer, tlog, topic=None):
+    def __init__(self, search_interface, query_producer, text_classifier, tlog, topic=None):
         """
             args: Topic, SearchInterface, QueryProducer
         """
@@ -18,13 +19,11 @@ class SimUser(object):
         self.sc = None
         self.log = tlog
         self.action_value = None
-        self.dm = RandomDecisionMaker(self.si, self.sc)
+        self.dm = FixedDepthDecisionMaker(self.si, self.sc)
+        self.tc = text_classifier
 
         if topic:
             self.start_topic(topic)
-
-
-
 
 
     def get_actions_performed(self):
@@ -36,6 +35,7 @@ class SimUser(object):
         query_list = self.qp.produce_query_list(topic)
         self.sc = SearchContext(query_list)
         self.dm.sc = self.sc
+        self.tc.set_topic(topic)
 
 
     def decide_action(self):
@@ -158,12 +158,16 @@ class SimUser(object):
     def do_snippet(self):
         self.sc.set_snippet_action()
         self.log.log_snippet()
+
+        # needs to invoker the TextClassifier to make a decision on whether the snippet is relevant or not
+        # need to remember in the search context which snippet the user is now looking at
         return True
 
 
     def do_mark_document(self):
         self.sc.set_mark_action()
-        pass
+        self.log.log_mark()
+        return True
 
 
     def do_assess(self):
@@ -176,11 +180,15 @@ class SimUser(object):
         # get the ith doc from the list.
 
         whoosh_docid = result_list[i].whooshid
-
-        self.log.log_snippet()
-        print "snippet title", result_list[i].title
-        print "snippet summary", result_list[i].summary[0:50]
-
         document = self.si.get_document(whoosh_docid)
-        print "document content", document.title, document.content[0:100]
         self.sc.examined_doc_list.append(document.docid)
+
+        if self.tc.is_relevant(document):
+            print "found relevant", document.docid
+            self.sc.relevant_doc_list.append(document.docid)
+            return True
+        else:
+            self.sc.docs_not_relevant += 1
+            return False
+
+        #print "document content", document.title, document.content[0:100]

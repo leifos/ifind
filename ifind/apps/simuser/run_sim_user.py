@@ -1,6 +1,5 @@
 __author__ = 'leif'
 
-
 import os
 #from ifind.common.query_generation import SingleQueryGeneration, BiTermQueryGeneration, TriTermQueryGeneration
 #from ifind.common.language_model import LanguageModel
@@ -53,7 +52,3 @@ al =  bu.get_actions_performed()
 
 for a in al:
     print a
-
-
-
-

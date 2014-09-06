@@ -32,8 +32,6 @@ class Topic(Document):
 
 
 
-
-
 class SearchInterface(object):
 
     def __init__(self):

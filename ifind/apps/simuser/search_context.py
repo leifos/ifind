@@ -8,9 +8,11 @@ class SearchContext(object):
         self.query_list = query_list
         self.actions = []
         self.docs_examined = 0
+        self.docs_not_relevant = 0
         self.action = None
         self.issued_query_list = []
         self.examined_doc_list = []
+        self.relevant_doc_list = []
         self.query_count = 0
         self.total_docs_examined = 0
         self.total_snippets_examined = 0
@@ -42,6 +44,7 @@ class SearchContext(object):
     def set_query_action(self):
         self.action = 'QUERY'
         self.docs_examined = 0
+        self.docs_not_relevant = 0
         self.snippets_examined = 0
         self.actions.append(self.action)
 

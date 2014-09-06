@@ -75,5 +75,6 @@ class OddsRatioQueryRanker(QueryRanker):
         ptd = self.lm.get_term_prob(term)
         pt = self.lm.colLM.get_term_prob(term)
         if pt == 0.0:
-            pt = 0.0000001
-        return math.log( ptd/pt, 2)
+            return 0.0
+        else:
+            return math.log( ptd/pt, 2)
