@@ -4,7 +4,7 @@ __author__ = 'leif'
 from ifind.search.query import Query
 from search_context import SearchContext
 from search_interface import WhooshInterface, Document, Topic
-
+from decision_maker import FixedDepthDecisionMaker, RandomDecisionMaker
 
 class SimUser(object):
 
@@ -18,10 +18,13 @@ class SimUser(object):
         self.sc = None
         self.log = tlog
         self.action_value = None
-
+        self.dm = RandomDecisionMaker(self.si, self.sc)
 
         if topic:
             self.start_topic(topic)
+
+
+
 
 
     def get_actions_performed(self):
@@ -32,6 +35,7 @@ class SimUser(object):
         self.topic = topic
         query_list = self.qp.produce_query_list(topic)
         self.sc = SearchContext(query_list)
+        self.dm.sc = self.sc
 
 
     def decide_action(self):
@@ -113,8 +117,7 @@ class SimUser(object):
 
     def do_decide(self):
 
-
-        if (self.sc.docs_examined < 10):
+        if self.dm.decide():
             self.action_value = self.do_snippet()
         else:
             self.action_value = self.do_query()

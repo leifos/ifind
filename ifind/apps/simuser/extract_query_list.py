@@ -16,7 +16,6 @@ from query_producer import QueryProducer, SmarterQueryProducer
 import random
 
 
-
 #def read_in_background(vocab_file):
 #    vocab = {}
 #    f  = open(vocab_file,'r')
@@ -69,13 +68,6 @@ class ExpLog(object):
 
 
 
-
-
-
-
-
-
-
 work_dir = os.getcwd()
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
 
@@ -87,11 +79,9 @@ stopword_file = 'data/stopwords.txt'
 bg_file = 'data/vocab.txt'
 topic_file = 'topic.303'
 
-print "hello"
 
 t = Topic('303')
 t.read_topic_from_file(topic_file)
-print t
 
 qp = SmarterQueryProducer(stopword_file)
 
@@ -101,31 +91,17 @@ for q in query_list:
     print q
 
 
-log = ExpLog()
+log = ExpLog(limit=500)
 
 bu = SimUser(si,qp,log,t)
-
 
 while log.is_finished():
     bu.decide_action()
 
-print bu.get_actions_performed()
+al =  bu.get_actions_performed()
 
-
-
-time_limit = 500
-
-#print "start sim"
-#while sc.time_spent  <  time_limit:
-
-#    sc = decide_action(sc)
-#    action = sc.action
-#    #print action
-#    action_handler[action](sc)
-#
-#
-#print "end sim"
-
+for a in al:
+    print a
 
 
 
