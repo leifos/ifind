@@ -25,10 +25,10 @@ si = WhooshInterface(my_whoosh_doc_index_dir)
 
 stopword_file = 'data/stopwords.txt'
 bg_file = 'data/vocab.txt'
-topic_file = 'topic.307'
+topic_file = 'topic.347'
 
 
-t = Topic('307')
+t = Topic('347')
 t.read_topic_from_file(topic_file)
 
 qp = SmarterQueryProducer(stopword_file)
@@ -39,10 +39,10 @@ for q in query_list:
     print q
 
 
-log = ExpLog(limit=750)
+log = ExpLog(limit=660)
 
 tc = iFindTextClassifier(stopword_file, bg_file)
-tc.threshold = -0.15
+tc.threshold = -0.2
 
 bu = SimUser(si, qp, tc, log, t)
 
