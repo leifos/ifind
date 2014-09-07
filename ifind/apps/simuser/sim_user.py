@@ -33,7 +33,7 @@ class SimUser(object):
     def start_topic(self, topic):
         self.topic = topic
         query_list = self.qp.produce_query_list(topic)
-        self.sc = SearchContext(query_list)
+        self.sc = SearchContext(self.si, query_list)
         self.dm.sc = self.sc
         self.tc.set_topic(topic)
 
@@ -147,7 +147,17 @@ class SimUser(object):
     def do_snippet(self):
         # needs to invoker the TextClassifier to make a decision on whether the snippet is relevant or not
         # need to remember in the search context which snippet the user is now looking at
-        return True
+        snippet = self.sc.get_current_snippet()
+
+        if self.sc.seen_document_before(snippet):
+            # if the document has been seen before, dont examine it, i.e. return false to the decision maker
+            print "Seen this doc before", snippet.docid
+            print self.sc.examined_doc_list
+            return False
+        else:
+            # here we can check the quality of the snippet is it indicative of relevance?
+            # if so, return True, else, return False (ie. don't inspect document)
+            return True
 
 
     def do_mark_document(self):
@@ -155,22 +165,17 @@ class SimUser(object):
 
 
     def do_assess(self):
-        q = self.sc.last_query
-        response = q.response
-        result_list = response.results
-        i = self.sc.docs_examined - 1
-        # get the ith doc from the list.
 
-        whoosh_docid = result_list[i].whooshid
-        document = self.si.get_document(whoosh_docid)
-        self.sc.examined_doc_list.append(document.docid)
+        if self.sc.get_last_query():
+            document = self.sc.get_current_document()
 
-        if self.tc.is_relevant(document):
-            print "found relevant", document.docid
-            self.sc.relevant_doc_list.append(document.docid)
-            return True
+            if self.tc.is_relevant(document):
+                print "found relevant", document.docid
+                self.sc.relevant_doc_list.append(document.docid)
+                return True
+            else:
+                self.sc.docs_not_relevant += 1
+                return False
         else:
-            self.sc.docs_not_relevant += 1
             return False
 
-        #print "document content", document.title, document.content[0:100]

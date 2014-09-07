@@ -1,10 +1,11 @@
 __author__ = 'leif'
 
 from ifind.search.query import Query
-
+from search_interface import Document
 
 class SearchContext(object):
-    def __init__(self, query_list = []):
+    def __init__(self, search_interface, query_list = [] ):
+        self.si = search_interface
         self.query_list = query_list
         self.actions = []
         self.action = None
@@ -15,6 +16,7 @@ class SearchContext(object):
 
         self.query_count = 0
         self.last_query = None
+        self.last_results = None
 
         self.total_docs_examined = 0
         self.docs_examined = 0
@@ -50,6 +52,7 @@ class SearchContext(object):
 
         self.issued_query_list.append(query)
         self.last_query = query
+        self.last_results = self.last_query.response.results
 
 
     def get_next_query(self):
@@ -64,8 +67,19 @@ class SearchContext(object):
 
 
     def get_last_query(self):
-        return self.get_query
+        return self.last_query
 
+
+    def seen_document_before(self, document):
+        """
+        checks to see if the document is on the examined_doc_list
+        :param document: search_interface.Document
+        :return: True if seen before, else False
+        """
+        if document.docid in self.examined_doc_list:
+            return True
+        else:
+            return False
 
 
     def set_action(self, action_name):
@@ -86,10 +100,20 @@ class SearchContext(object):
         self.snippets_examined += 1
         self.total_snippets_examined += 1
 
+        rs = self.last_results[self.snippets_examined-1]
+        snippet = Document(rs.whooshid, rs.title, rs.summary, rs.docid)
+        self.current_snippet = snippet
+
+        # set current_document
+        document = self.si.get_document(snippet.id)
+        self.current_document = document
+
     def set_assess_action(self):
         # records the current document as examined
         self.docs_examined += 1
         self.total_docs_examined += 1
+        self.examined_doc_list.append(self.current_document.docid)
+
 
     def set_query_action(self):
         self.docs_examined = 0

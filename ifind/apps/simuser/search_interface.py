@@ -5,12 +5,13 @@ from ifind.search.engines.whooshtrecnews import WhooshTrecNews
 from whoosh.index import open_dir
 
 class Document(object):
-    def __init__(self, id, title=None, content=None):
+    def __init__(self, id, title=None, content=None, docid=None):
         self.id = id
         self.title = title
         self.content = content
         self.docid = id
-
+        if docid:
+            self.docid = docid
 
     def __str__(self):
         return "id: {0} title: {1} content: {2}".format(self.id, self.title, self.content)
