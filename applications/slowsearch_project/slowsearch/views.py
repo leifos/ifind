@@ -11,6 +11,7 @@ from django import forms
 import datetime
 
 
+# returns the main page of the site
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
@@ -22,6 +23,7 @@ def index(request):
     return render_to_response('slowsearch/index.html', context)
 
 
+# Pulls the current user's profile information from the database and returns it to the template
 @login_required()
 def profile(request, *args, **kwargs):
     # Get the context from the request.
@@ -38,6 +40,7 @@ def profile(request, *args, **kwargs):
     return render_to_response('slowsearch/profile.html', context_dict, context)
 
 
+# Handles the form that allows users to edit the demographic information they supplied when registering
 @login_required()
 def editprofile(request, username):
     context = RequestContext(request)
@@ -62,21 +65,25 @@ def editprofile(request, username):
     return render_to_response('slowsearch/editprofile',  {'new_demog_form': new_demog_form, 'edited':edited}, context)
 
 
+# Returns the about page of the site
 def about(request):
     context = RequestContext(request)
     return render_to_response('slowsearch/about.html', context)
 
 
+# Returns the search results from a condition A user search
 def results(request):
     context = RequestContext(request)
     return render_to_response('slowsearch/results.html', context)
 
 
+# Returns a page to be displayed when the experimental period is over
 def endexperiment(request):
     context = RequestContext(request)
     return render_to_response('slowsearch/endexperiment.html', context)
 
 
+# Handles the user registration form to be filled in by new users when creating their user accounts
 def register(request):
     # Like before, get the request's context.
     context = RequestContext(request)
@@ -146,6 +153,7 @@ def register(request):
             context)
 
 
+# As with the registration view, handles the demographic form to be filled in directly after the user has registered
 def demographic(request):
     # Like before, get the request's context.
     context = RequestContext(request)
@@ -177,6 +185,7 @@ def demographic(request):
                                                               'completed': completed}, context)
 
 
+# Handles the feedback survey form to be completed by users when the experimental period is over
 @login_required()
 def final_survey(request):
     context = RequestContext(request)
@@ -204,6 +213,7 @@ def final_survey(request):
         'slowsearch/finalsurvey.html', {'q_form': q_form, 'completed': completed}, context)
 
 
+# Handles user authentication on login to the site
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
@@ -248,13 +258,14 @@ def user_login(request):
         return render_to_response('slowsearch/login.html', {'error': error}, context)
 
 
+# Returns the page to be displayed when a user has successfully logged out
 def user_logout(request):
 
     return render_to_response('/slowsearch/logged_out.html')
 
 
-# perform a basic search using the query entered by the user
-# logs the time spent on the results page, provided it is less than an hour
+# Processes a condition A (no delay) user’s search using information from the query input form, and returns the results
+# Logs the time spent on the results page, provided it is less than an hour
 @login_required()
 def search(request):
     context = RequestContext(request)
@@ -289,6 +300,7 @@ def search(request):
     show_throbber}, context)
 
 
+# Redirects user to their chosen link, but first records a hash of the URL they clicked and its rank on the page
 def goto(request, url, rank):
     user = request.user
     now = datetime.datetime.now().replace(tzinfo=None, microsecond=0)
@@ -302,6 +314,7 @@ def goto(request, url, rank):
     return HttpResponseRedirect(url)
 
 
+# Processes a condition B (delay) user’s search and returns the results
 def ajax_results(request):
     context = RequestContext(request)
     contacts = ""
