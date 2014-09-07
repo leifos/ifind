@@ -42,7 +42,7 @@ for q in query_list:
 log = ExpLog(limit=750)
 
 tc = iFindTextClassifier(stopword_file, bg_file)
-tc.threshold = -0.20
+tc.threshold = -0.15
 
 bu = SimUser(si, qp, tc, log, t)
 
