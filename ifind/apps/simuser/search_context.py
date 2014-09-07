@@ -32,6 +32,14 @@ class SearchContext(object):
 
         #TODO(leifos): need to record the position of the current document that is under inspection
 
+    def report(self):
+        print "Number of Queries Issued: ", self.query_count
+        print "Number of Documents Examined", self.total_docs_examined
+        print "Number of Snippets", self.total_snippets_examined
+        print "Number of Documents Marked Relevant", len(self.relevant_doc_list)
+        print self.relevant_doc_list
+
+
 
     def get_last_action(self):
         if self.actions:

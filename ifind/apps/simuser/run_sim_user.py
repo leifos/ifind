@@ -39,7 +39,7 @@ for q in query_list:
     print q
 
 
-log = ExpLog(limit=500)
+log = ExpLog(limit=750)
 
 tc = iFindTextClassifier(stopword_file, bg_file)
 
@@ -50,5 +50,4 @@ while log.is_finished():
 
 al =  bu.get_actions_performed()
 
-for a in al:
-    print a
+bu.report()

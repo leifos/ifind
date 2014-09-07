@@ -25,6 +25,9 @@ class SimUser(object):
         if topic:
             self.start_topic(topic)
 
+    def report(self):
+        self.sc.report()
+
 
     def get_actions_performed(self):
         return self.sc.actions
@@ -134,6 +137,7 @@ class SimUser(object):
         if query_text:
             q = self.issue_query(query_text)
             self.sc.add_issued_query(q)
+            print "Issued query", query_text
             return True
         else:
             print "Out of queries"
@@ -152,13 +156,16 @@ class SimUser(object):
         if self.sc.seen_document_before(snippet):
             # if the document has been seen before, dont examine it, i.e. return false to the decision maker
             print "Seen this doc before", snippet.docid
-            print self.sc.examined_doc_list
+            #print self.sc.examined_doc_list
             return False
         else:
             # here we can check the quality of the snippet is it indicative of relevance?
             # if so, return True, else, return False (ie. don't inspect document)
-            return True
-
+            if self.tc.is_relevant(snippet):
+                print "Snippet seems relevant", snippet.docid
+                return True
+            else:
+                return False
 
     def do_mark_document(self):
         return True
@@ -168,7 +175,7 @@ class SimUser(object):
 
         if self.sc.get_last_query():
             document = self.sc.get_current_document()
-
+            print "examining document", document.docid
             if self.tc.is_relevant(document):
                 print "found relevant", document.docid
                 self.sc.relevant_doc_list.append(document.docid)

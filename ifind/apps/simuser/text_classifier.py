@@ -51,6 +51,7 @@ class iFindTextClassifier(TextClassifier):
     def __init__(self, stopword_file=[], background_file=[]):
         TextClassifier.__init__(self, stopword_file, background_file)
         self.topicLM = None
+        self.threshold = -0.20
 
 
     def set_topic(self, topic):
@@ -82,7 +83,7 @@ class iFindTextClassifier(TextClassifier):
             count += 1.0
 
 
-        if  (score/count) > -0.20:
+        if  (score/count) > self.threshold:
             return True
         else:
             return False
