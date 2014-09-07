@@ -1,11 +1,12 @@
 __author__ = 'leif'
 
-
+import os
 from ifind.search.query import Query
 from search_context import SearchContext
 from search_interface import WhooshInterface, Document, Topic
 from decision_maker import FixedDepthDecisionMaker, RandomDecisionMaker
 from text_classifier import iFindTextClassifier
+
 
 class SimUser(object):
 
@@ -36,12 +37,26 @@ class SimUser(object):
     def start_topic(self, topic):
         self.topic = topic
         query_list = self.qp.produce_query_list(topic)
-        self.sc = SearchContext(self.si, query_list)
+        self.sc = SearchContext(self.si, topic, query_list)
         self.dm.sc = self.sc
         self.tc.set_topic(topic)
 
 
     def decide_action(self):
+        """ This method decides what action the user performs next.
+        The work flow implemented below is as follows:
+
+        (1) issue Query
+        (2) look at SERP
+        (3* Decision Point) if serp looks poor, goto (1), else goto (4)
+        (4) examine Snippet
+        (5* Decision Point) if snippet looks good, goto (6), else decide whether to (1) or (4)
+        (6) examine document
+        (7* Decision Point) if document is relevant, goto (8), else decide whether to (1) or (4)
+        (8) mark document
+
+        :return: None
+        """
 
         def _query():
             self.do_action('SERP')
@@ -92,6 +107,12 @@ class SimUser(object):
 
 
     def issue_query(self, text, page=1, pagelen=100):
+        """ Creates a Query object, issues query to the search engine, attaches response to query object
+        :param text: query string
+        :param page: integer
+        :param pagelen: integer
+        :return: ifind.search.Query
+        """
         q = Query(text)
         q.skip = page
         q.top = pagelen
@@ -100,12 +121,13 @@ class SimUser(object):
 
         return q
 
-
-
     def do_action(self, action_name):
-
-        #self.sc.set_action(action_name)
-        #self.log.log_action(action_name)
+        """ selects the method to call to perform the action,
+        then logs the action in the log and the search context,
+        before performing the action
+        :param action_name:
+        :return: None
+        """
         print action_name
         action_mapping = {
             'QUERY': self.do_query,
@@ -123,8 +145,12 @@ class SimUser(object):
         self.action_value = action_mapping[action_name]()
 
 
-
     def do_decide(self):
+        """
+        Decisions between looking at the next snippet, or issuing a query.
+        The DecisionMaker dm is used to decide, so that different decision makers can be used.
+        :return: 'SNIPPET' or 'QUERY'
+        """
         if self.dm.decide():
             return 'SNIPPET'
         else:
@@ -144,7 +170,7 @@ class SimUser(object):
             return False
 
     def do_serp(self):
-
+        # could put a decision point in here to decide when the page is worth looking at or not.
         return True
 
 
@@ -154,7 +180,7 @@ class SimUser(object):
         snippet = self.sc.get_current_snippet()
 
         if self.sc.seen_document_before(snippet):
-            # if the document has been seen before, dont examine it, i.e. return false to the decision maker
+            # if the document has been seen before, don't examine it, i.e. return false to the decision maker
             print "Seen this doc before", snippet.docid
             #print self.sc.examined_doc_list
             return False
@@ -186,3 +212,12 @@ class SimUser(object):
         else:
             return False
 
+
+
+    def save_rel_judgements(self, filename):
+        f = open(filename,"w")
+        rank = 0
+        for i in self.sc.relevant_doc_list:
+            rank += 1
+            f.write( "{0} QO {1} {2} {3} Exp {4}".format(self.topic.id, i, rank, rank, os.linesep))
+        f.close()

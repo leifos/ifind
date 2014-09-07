@@ -32,8 +32,9 @@ class FixedDepthDecisionMaker(DecisionMaker):
 
     def __init__(self, search_interface, search_context):
         DecisionMaker.__init__(self, search_interface, search_context)
-        self.depth = 10
+        self.depth = 20
 
     def decide(self):
-        return (self.sc.docs_examined < self.depth)
+        return (self.sc.snippets_examined < self.depth)
+
 

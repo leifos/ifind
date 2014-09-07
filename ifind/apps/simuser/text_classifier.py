@@ -60,7 +60,8 @@ class iFindTextClassifier(TextClassifier):
 
 
     def make_topic_lm(self):
-        topic_text = self.topic.content
+        topic_text = self.topic.content + self.topic.title
+
         doc_extractor = SingleQueryGeneration(minlen=3, stopwordfile=self.stopword_file)
         doc_extractor.extract_queries_from_text(topic_text)
         doc_term_counts = doc_extractor.query_count

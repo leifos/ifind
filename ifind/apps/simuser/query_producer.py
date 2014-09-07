@@ -28,7 +28,7 @@ class QueryProducer(object):
 
         qr = QueryRanker(smoothed_language_model=topicLM)
         qr.calculate_query_list_probabilities(query_list)
-        queries = qr.get_top_queries(20)
+        queries = qr.get_top_queries(100)
         return queries
 
 

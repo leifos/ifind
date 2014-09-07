@@ -4,8 +4,9 @@ from ifind.search.query import Query
 from search_interface import Document
 
 class SearchContext(object):
-    def __init__(self, search_interface, query_list = [] ):
+    def __init__(self, search_interface, topic, query_list = [] ):
         self.si = search_interface
+        self.topic = topic
         self.query_list = query_list
         self.actions = []
         self.action = None
@@ -39,9 +40,12 @@ class SearchContext(object):
         print "Number of Documents Examined", self.total_docs_examined
         print "Number of Snippets", self.total_snippets_examined
         print "Number of Documents Marked Relevant", len(self.relevant_doc_list)
-        print self.relevant_doc_list
         print "Depths", self.depths
 
+        rank = 0
+        for i in self.relevant_doc_list:
+            rank += 1
+            print "{0} QO {1} {2} {3} Exp".format(self.topic.id, i, rank, rank)
 
 
     def get_last_action(self):
