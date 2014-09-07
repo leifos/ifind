@@ -14,6 +14,8 @@ class SearchContext(object):
         self.examined_doc_list = []
         self.relevant_doc_list = []
 
+        self.depths = []
+
         self.query_count = 0
         self.last_query = None
         self.last_results = None
@@ -38,6 +40,7 @@ class SearchContext(object):
         print "Number of Snippets", self.total_snippets_examined
         print "Number of Documents Marked Relevant", len(self.relevant_doc_list)
         print self.relevant_doc_list
+        print "Depths", self.depths
 
 
 
@@ -124,12 +127,16 @@ class SearchContext(object):
 
 
     def set_query_action(self):
+        if self.query_count > 0:
+            self.depths.append((self.snippets_examined, self.docs_examined))
         self.docs_examined = 0
         self.docs_not_relevant = 0
         self.snippets_examined = 0
         self.current_position = 0
         self.current_document = None
         self.current_snippet = None
+
+
 
     def set_serp_action(self):
         pass
