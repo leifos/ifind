@@ -25,10 +25,11 @@ si = WhooshInterface(my_whoosh_doc_index_dir)
 
 stopword_file = 'data/stopwords.txt'
 bg_file = 'data/vocab.txt'
-topic_file = 'topic.347'
+topic_no = '435'
+topic_file = 'topic.{0}'.format(topic_no)
 
 
-t = Topic('347')
+t = Topic(topic_no)
 t.read_topic_from_file(topic_file)
 
 qp = SmarterQueryProducer(stopword_file)

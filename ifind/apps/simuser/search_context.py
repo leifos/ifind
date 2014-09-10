@@ -15,6 +15,8 @@ class SearchContext(object):
         self.examined_doc_list = []
         self.relevant_doc_list = []
 
+        self.snippets_since_last_relevant = 0
+
         self.depths = []
 
         self.query_count = 0
@@ -139,6 +141,13 @@ class SearchContext(object):
         self.current_position = 0
         self.current_document = None
         self.current_snippet = None
+        self.snippets_since_last_relevant = 0
+
+
+    def update_snippet_seen_relevance(self, relevant):
+        if not relevant:
+            self.snippets_since_last_relevant += 1
+        print "XX", self.snippets_since_last_relevant
 
 
 

@@ -4,7 +4,7 @@ import os
 from ifind.search.query import Query
 from search_context import SearchContext
 from search_interface import WhooshInterface, Document, Topic
-from decision_maker import FixedDepthDecisionMaker, RandomDecisionMaker
+from decision_maker import FixedDepthDecisionMaker, RandomDecisionMaker, SnippetFixedDepthDecisionMaker
 from text_classifier import iFindTextClassifier
 
 
@@ -20,7 +20,7 @@ class SimUser(object):
         self.sc = None
         self.log = tlog
         self.action_value = None
-        self.dm = FixedDepthDecisionMaker(self.si, self.sc)
+        self.dm = SnippetFixedDepthDecisionMaker(self.si, self.sc)
         self.tc = text_classifier
 
         if topic:
@@ -187,7 +187,10 @@ class SimUser(object):
         else:
             # here we can check the quality of the snippet is it indicative of relevance?
             # if so, return True, else, return False (ie. don't inspect document)
-            if self.tc.is_relevant(snippet):
+            relevance = self.tc.is_relevant(snippet)
+            self.sc. update_snippet_seen_relevance(relevance)
+
+            if relevance :
                 print "Snippet seems relevant", snippet.docid
                 return True
             else:
