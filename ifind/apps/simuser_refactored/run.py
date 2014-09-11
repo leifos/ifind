@@ -17,8 +17,14 @@ def main(config_filename):
     
     user.save_relevance_judgments('test.out')
 
+def usage(script_name):
+    """
+    Prints the usage message to the output stream.
+    """
+    print "Usage: {0} [configuration_filename]".format(script_name)
+
 if __name__ == '__main__':
-    if len(sys.argv) < 2 and len(sys.argv) > 2:
-        print 'You need to supply a configuration file, too'
+    if len(sys.argv) < 2 or len(sys.argv) > 2:
+        usage(sys.argv[0])
     else:
         main(sys.argv[1])
