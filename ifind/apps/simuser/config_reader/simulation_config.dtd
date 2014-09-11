@@ -5,7 +5,7 @@ Author: David Maxwell
 Date: 2014-09-11
 -->
 
-<!ELEMENT simulation_config  (topic,queryGenerator,logger,textClassifiers,searchInterface,decisionMaker)*>
+<!ELEMENT simulation_config  (topic, output, queryGenerator, logger, textClassifiers, searchInterface, decisionMaker)>
 <!ATTLIST simulation_config  id CDATA #REQUIRED>
 
 <!ELEMENT attribute          (#PCDATA)>
@@ -17,6 +17,9 @@ Date: 2014-09-11
 <!ELEMENT topic              (#PCDATA)>
 <!ATTLIST topic              number CDATA #REQUIRED>
 <!ATTLIST topic              filename CDATA #REQUIRED>
+
+<!ELEMENT output             (#PCDATA)>
+<!ATTLIST output             directory CDATA #REQUIRED>
 
 <!ELEMENT queryGenerator     (attribute*)>
 <!ATTLIST queryGenerator     class CDATA #REQUIRED>
