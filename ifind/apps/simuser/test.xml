@@ -1,4 +1,4 @@
-<simulation_config name="Blah blah">
+<simulation_config id="Blah blah">
 	
 	<topic number="307" filename="data/topic.307" />
 	
@@ -36,7 +36,6 @@
 	</searchInterface>
 	
 	<decisionMaker class="FixedDepthDecisionMaker">
-		<attribute name="search_context" type="component" value="" is_argument="true" />
 		<attribute name="depth" type="int" value="10" is_argument="true" />
 	</decisionMaker>
 	

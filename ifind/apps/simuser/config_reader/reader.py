@@ -20,8 +20,6 @@ class ConfigReader(object):
         self.__config_filename = config_filename
         self.__dtd_filename = 'config_reader/simulation_config.dtd'
         
-        #libxml2.debugMemory(1)  # Supresses output of the XML parser (keeping terminal output tidy)
-        
         if self.__config_filename is None:
             raise ConfigReaderError("No configuration file specified.")
         else:
@@ -30,8 +28,6 @@ class ConfigReader(object):
         self.__validate_against_dtd()
         self.__build_dictionary()
         self.__validate_config()
-        
-        print self.__config_dict
         
         self.__components = ComponentFactory(self.__config_dict)
     

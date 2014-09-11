@@ -20,15 +20,24 @@ class ComponentFactory(object):
         The objects are instantiated based on the configuration parameters supplied in .__config_dict.
         """
         self.__components['topic'] = self.__generate_topic(self.__config_dict['topic'])
-        self.__components['query_generator'] = self.__generate_object(self.__config_dict['queryGenerator'], 'query_generators')
-        self.__components['logger'] = self.__generate_object(self.__config_dict['logger'], 'loggers')
-        self.__components['snippet_classifier'] = self.__generate_object(self.__config_dict['textClassifiers']['snippetClassifier'], 'text_classifiers')
-        self.__components['document_classifier'] = self.__generate_object(self.__config_dict['textClassifiers']['documentClassifier'], 'text_classifiers')
-        self.__components['search_interface'] = self.__generate_object(self.__config_dict['searchInterface'], 'search_interfaces')
+        self.__components['query_generator'] = self.__generate_object(details=self.__config_dict['queryGenerator'], package='query_generators')
+        self.__components['logger'] = self.__generate_object(details=self.__config_dict['logger'], package='loggers')
+        self.__components['snippet_classifier'] = self.__generate_object(details=self.__config_dict['textClassifiers']['snippetClassifier'], package='text_classifiers', include_components=['topic'])
+        self.__components['document_classifier'] = self.__generate_object(details=self.__config_dict['textClassifiers']['documentClassifier'], package='text_classifiers', include_components=['topic'])
+        self.__components['search_interface'] = self.__generate_object(details=self.__config_dict['searchInterface'], package='search_interfaces')
         self.__components['search_context'] = self.__generate_search_context()
-        self.__components['decision_maker'] = self.__generate_object(self.__config_dict['decisionMaker'], 'decision_makers')
+        self.__components['decision_maker'] = self.__generate_object(details=self.__config_dict['decisionMaker'], package='decision_makers', include_components=['search_context'])
         
         return self.__components
+    
+    def __generate_topic(self, topic_details):
+        """
+        Returns a Topic object, representing the topic number and description specified by the configuration dictionary.
+        """
+        topic = Topic(topic_details['@number'])
+        topic.read_topic_from_file(topic_details['@filename'])
+
+        return topic
     
     def __generate_search_context(self):
         """
@@ -38,7 +47,7 @@ class ComponentFactory(object):
                              topic=self.__components['topic'],
                              query_list=self.__components['query_generator'].generate_query_list(self.__components['topic']))
     
-    def __generate_object(self, details, package):
+    def __generate_object(self, details, package, include_components=[]):
         """
         Generic helper method to return an instantiated object.
         """
@@ -46,18 +55,9 @@ class ComponentFactory(object):
         available_classes= self.__get_classes(package)
         attributes = self.__return_attributes(details)
         
-        return self.__get_class_reference(selected_class, available_classes, attributes)
+        return self.__get_class_reference(selected_class, available_classes, attributes, include_components)
     
-    def __generate_topic(self, topic_details):
-        """
-        Returns a Topic object, representing the topic number and description specified by the configuration dictionary.
-        """
-        topic = Topic(topic_details['@number'])
-        topic.read_topic_from_file(topic_details['@filename'])
-        
-        return topic
-    
-    def __get_class_reference(self, selected_class, available_classes, attributes):
+    def __get_class_reference(self, selected_class, available_classes, attributes, include_components=[]):
         """
         Attempts to return a reference to the specified class from the list of available classes.
         If the class cannot be found, then an ImportError exception is raised.
@@ -65,23 +65,24 @@ class ComponentFactory(object):
         for available_class in available_classes:
             if available_class[0] == selected_class:
                 kwargs = {}
-
+                
+                # Add all attributes to kwargs to pass to the constructor.
                 for attribute in attributes:
                     if attribute['@is_argument']:
-                        if attribute['@type'] == 'component':
-                            kwargs[attribute['@name']] = self.__components[attribute['@name']]
-                        else:
-                            kwargs[attribute['@name']] = attribute['@value']
+                        kwargs[attribute['@name']] = attribute['@value']
+                
+                # For any component attributes (e.g. Topic, SearchContext), add to kwargs.
+                for attribute_name in include_components:
+                    kwargs[attribute_name] = self.__components[attribute_name]
 
                 reference = available_class[1](**kwargs)
                 
+                # Now pass any attributes.
                 for attribute in attributes:
                     if not attribute['@is_argument']:
-                        if attribute['@type'] == 'component':
-                            setattr(reference, attribute['@name'], self.__components[attribute['@name']])
-                        else:
-                            setattr(reference, attribute['@name'], attribute['@value'])
+                        setattr(reference, attribute['@name'], attribute['@value'])
                 
+                # The instance should be correctly instantiated!
                 return reference
                 
         raise ImportError("Specified class '{0}' could not be found.".format(selected_class))
