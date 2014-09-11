@@ -1,6 +1,6 @@
 import os
 import string
-import libxml2
+from lxml import etree
 from collections import defaultdict
 from xml.etree import cElementTree
 from component_factory import ComponentFactory
@@ -20,12 +20,12 @@ class ConfigReader(object):
         self.__config_filename = config_filename
         self.__dtd_filename = 'config_reader/simulation_config.dtd'
         
-        libxml2.debugMemory(1)  # Supresses output of the XML parser (keeping terminal output tidy)
+        #libxml2.debugMemory(1)  # Supresses output of the XML parser (keeping terminal output tidy)
         
         if self.__config_filename is None:
             raise ConfigReaderError("No configuration file specified.")
         else:
-            self.__config_file = libxml2.parseFile(self.__config_filename)
+            self.__config_file = etree.parse(self.__config_filename)
         
         self.__validate_against_dtd()
         self.__build_dictionary()
@@ -45,21 +45,19 @@ class ConfigReader(object):
         """
         Parses the configuration file and checks its validity compared to the DTD specification.
         """
-        try:
-            dtd_file = libxml2.parseDTD(None, self.__dtd_filename)
-        except libxml2.parserError:
-            raise ConfigReaderError("Something went wrong parsing the DTD file...look at the traceback")
+        # Opens the DTD file and loads it into a lxml DTD object.
+        dtd_file = open(self.__dtd_filename, 'r')
+        dtd_object = etree.DTD(dtd_file)
         
-        return_code = self.__config_file.validateDtd(libxml2.newValidCtxt(), dtd_file)  # Get return code from the libxml2 library to see if validation succeeded.
-        dtd_file.freeDtd()
+        # .validate() checks if the config file complies to the schema. If it doesn't, this condition is entered.
+        if not dtd_object.validate(self.__config_file):
+            dtd_file.close()
+            raise ConfigReaderError("DTD validation failed on {0}: {1}".format(self.__config_filename,
+                                                                               dtd_object.error_log.filter_from_errors()[0]))
         
-        # If the return_code == 1, validation passed and the config file is well formed!
-        # If this is the case, we return. otherwise, we continue execution and raise a ConfigReaderError
-        if return_code == 1:
-            return
+        # If we get here, the validation passed, so we can close the DTD file object.
+        dtd_file.close()
         
-        raise ConfigReaderError("The config file you specified does not meet the spec as laid out in the DTD. Look above for more information on what caused this failure.")
-    
     def __build_dictionary(self):
         """
         Turns the XML configuration file into a Python dictionary object.
@@ -95,7 +93,7 @@ class ConfigReader(object):
             
             return d
         
-        string_repr = str(self.__config_file)
+        string_repr = etree.tostring(self.__config_file, pretty_print=True)
         element_tree = cElementTree.XML(string_repr)
         
         self.__config_dict = recursive_generation(element_tree)
