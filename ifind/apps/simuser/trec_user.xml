@@ -4,7 +4,7 @@
 
 	<output directory="output/" />
 
-	<queryGenerator class="TrecQueryGenerator">
+	<queryGenerator class="TrecTopicQueryGenerator">
 		<attribute name="stopword_file" type="str" value="data/stopwords.txt" is_argument="true" />
 	</queryGenerator>
 
