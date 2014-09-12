@@ -14,4 +14,5 @@ class TrecDepthDecisionMaker(BaseDecisionMaker):
         """
         Returns True or False based upon the depth specified in .__depth.
         """
+        print self._search_context.get_current_serp_position(), self.__depth
         return (self._search_context.get_current_serp_position() < self.__depth)
