@@ -133,12 +133,13 @@ class SimulatedUser(object):
         Called when the user needs to make the decision whether to examine a snippet or not.
         The logic within this method supports previous observations of the same document, and whether the text within the snippet appears to be relevant.
         """
+        self.__search_context.increment_serp_position()
         snippet = self.__search_context.get_current_snippet()
         
         if self.__search_context.get_document_observation_count(snippet) > 0:
             # This document has been previously seen; so we ignore it. But the higher the count, cumulated credibility could force us to examine it?
             print "Seen this document before", snippet.doc_id
-            self.__search_context.increment_serp_position()
+            #self.__search_context.increment_serp_position()
             return False
         else:
             # This snippet has not been previously seen; check quality of snippet. Does it show some form of relevance?
@@ -147,7 +148,7 @@ class SimulatedUser(object):
                 print "Snippet seems relevant, go look at it", snippet.doc_id
                 return True
             else:
-                self.__search_context.increment_serp_position()
+                #self.__search_context.increment_serp_position()
                 return False
     
     def __do_assess_document(self):
@@ -161,11 +162,11 @@ class SimulatedUser(object):
             if self.__document_classifier.is_relevant(document):
                 print "Document considered relevant", document.doc_id
                 self.__search_context.add_relevant_document(document)
-                self.__search_context.increment_serp_position()
+                #self.__search_context.increment_serp_position()
                 return True
             else:
                 self.__search_context.add_irrelevant_document(document)
-                self.__search_context.increment_serp_position()
+                #self.__search_context.increment_serp_position()
                 return False
         
         return False

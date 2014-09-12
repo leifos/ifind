@@ -9,6 +9,7 @@ class TrecDepthDecisionMaker(BaseDecisionMaker):
     def __init__(self, search_context, depth):
         super(TrecDepthDecisionMaker, self).__init__(search_context)
         self.__depth = 1000
+        print self.__class__, self.__depth
 
     def decide(self):
         """
