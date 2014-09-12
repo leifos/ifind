@@ -17,7 +17,7 @@ class TrecTopicQueryGenerator(BaseQueryGenerator):
         Given a Topic object, produces a list of query terms that could be issued by the simulated agent.
 
         """
-        topic_text = topic.content
+        topic_text = topic.title
         return [ (topic_text, 1) ]
 
 

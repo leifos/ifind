@@ -36,6 +36,7 @@
 	</searchInterface>
 
 	<decisionMaker class="TrecDepthDecisionMaker">
+        <attribute name="depth" type="int" value="10" is_argument="true" />
 	</decisionMaker>
 
 </simulation_config>
