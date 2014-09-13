@@ -1,0 +1,32 @@
+<!--
+Simulation Configuration DTD
+
+Author: David Maxwell
+Date:   2014-09-13
+-->
+
+<!ENTITY % Attribute-DTD SYSTEM "./config_readers/dtds/attribute.dtd">
+%Attribute-DTD;
+
+<!ELEMENT simulationConfiguration (output, topics, users, logger, searchInterface)>
+<!ATTLIST simulationConfiguration id CDATA #REQUIRED>
+
+<!ELEMENT output (#PCDATA)>
+<!ATTLIST output baseDirectory CDATA #REQUIRED>
+
+<!ELEMENT users (user, user*)>
+
+<!ELEMENT user (#PCDATA)>
+<!ATTLIST user configurationFile CDATA #REQUIRED>
+
+<!ELEMENT topics (topic, topic*)>
+
+<!ELEMENT topic (#PCDATA)>
+<!ATTLIST topic id CDATA #REQUIRED>
+<!ATTLIST topic filename CDATA #REQUIRED>
+
+<!ELEMENT logger (attribute*)>
+<!ATTLIST logger class CDATA #REQUIRED>
+
+<!ELEMENT searchInterface (attribute*)>
+<!ATTLIST searchInterface class CDATA #REQUIRED>

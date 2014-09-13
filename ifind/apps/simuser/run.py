@@ -1,21 +1,23 @@
 import sys
 from sim_user import SimulatedUser
-from config_reader.reader import ConfigReader
+from config_readers.simulation_config_reader import SimulationConfigReader
 
 def main(config_filename):
-    config_reader = ConfigReader(config_filename)
-    components = config_reader.get_components_dictionary()
     
-    user = SimulatedUser(search_context=components['search_context'],
-                         decision_maker=components['decision_maker'],
-                         logger=components['logger'],
-                         document_classifier=components['document_classifier'],
-                         snippet_classifier=components['snippet_classifier'])
+    config_reader = SimulationConfigReader(config_filename)
     
-    while not components['logger'].is_finished():
-        user.decide_action()
-    
-    user.save_relevance_judgments('test.out')
+    for configuration in config_reader:
+        
+        user = SimulatedUser(search_context=configuration.user.search_context,
+                             decision_maker=configuration.user.decision_maker,
+                             logger=configuration.logger,
+                             document_classifier=configuration.user.document_classifier,
+                             snippet_classifier=configuration.user.snippet_classifier)
+        
+        while not configuration.logger.is_finished():
+            user.decide_action()
+        
+        user.save_relevance_judgments('test.out')
 
 def usage(script_name):
     """
