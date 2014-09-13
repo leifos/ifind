@@ -19,6 +19,8 @@ def main(config_filename):
         
         user.save_relevance_judgments('test.out')
 
+        user.report()
+
 def usage(script_name):
     """
     Prints the usage message to the output stream.

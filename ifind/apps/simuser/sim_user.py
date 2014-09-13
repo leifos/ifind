@@ -15,7 +15,12 @@ class SimulatedUser(object):
         self.__snippet_classifier = snippet_classifier
         
         self.__action_value = None  # Response from the appropriate action method - True or False?
-    
+
+    def report(self):
+        self.__search_context.report()
+
+
+
     def decide_action(self):
         """
         This method is central to the whole simulation - it decides which action the user should perform next.
@@ -185,16 +190,16 @@ class SimulatedUser(object):
         """
         
         print self.__search_context.reached_end_of_serp()
-        
-        
-        if self.__search_context.reached_end_of_serp():
-            return Actions.QUERY
+
+        #if self.__search_context.reached_end_of_serp():
+        #    return Actions.QUERY
         
         if self.__decision_maker.decide():
             return Actions.SNIPPET
+        else:
+            return Actions.QUERY
         
-        return Actions.QUERY
-    
+
     def save_relevance_judgments(self, output_filename):
         """
         Saves relevance judgments to the filename specified by parameter output_filename.

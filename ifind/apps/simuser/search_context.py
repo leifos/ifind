@@ -35,6 +35,15 @@ class SearchContext(object):
         self.__relevant_documents = []            # All documents marked relevant throughout the search session.
         self.__irrelevant_documents = []          # All documents marked irrelevant throughout the search session.
     
+
+    def report(self):
+        print "Number of Queries: ", self.__query_count
+        print "Number of Snippets Examined: ", len(self.__all_snippets_examined)
+        print "Number of Documents Examined: ", len(self.__all_documents_examined)
+        print "Number of Documents Marked Relevant: ", len(self.__relevant_documents)
+
+
+
     def get_last_action(self):
         """
         Returns the last action performed by the simulated user.
@@ -136,7 +145,7 @@ class SearchContext(object):
         
         return query_text
     
-    def add_issued_query(self, query_text, page=1, page_len=3):
+    def add_issued_query(self, query_text, page=1, page_len=1000):
         """
         Adds a query to the stack of previously issued queries.
         """
