@@ -7,11 +7,10 @@ Date:   2014-09-13
 
 <simulationConfiguration id="trecsim">
 	
-	<output baseDirectory="outdir" />
+	<output baseDirectory="/Users/david/Desktop/output/" saveInteractionLog="true" saveRelevanceJudgments="true" />
 	
 	<topics>
 		<topic id="303" filename="data/topic.303" />
-		<topic id="307" filename="data/topic.307" />
 	</topics>
 	
 	<users>

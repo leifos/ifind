@@ -88,6 +88,8 @@ class SimulationConfigReader(BaseConfigReader):
         
         # Output
         empty_string_check(self._config_dict['output']['@baseDirectory'])
+        self._config_dict['output']['@saveInteractionLog'] = parse_boolean(self._config_dict['output']['@saveInteractionLog'])
+        self._config_dict['output']['@saveRelevanceJudgments'] = parse_boolean(self._config_dict['output']['@saveRelevanceJudgments'])
         
         # Topics
         def check_topic(t):

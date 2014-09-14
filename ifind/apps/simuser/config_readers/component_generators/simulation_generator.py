@@ -1,4 +1,5 @@
 from search_interfaces import Topic
+from output_controller import OutputController
 from config_readers.user_config_reader import UserConfigReader
 from config_readers.component_generators.base_generator import BaseComponentGenerator
 
@@ -16,6 +17,9 @@ class SimulationComponentGenerator(BaseComponentGenerator):
         # What is the simulation's ID?
         self.simulation_id = simulation_id
         
+        # Create an OutputController object to handle the saving of output files to disk.
+        self.output = OutputController(self, self._config_dict['output'])
+        
         # Generate a Topic object.
         self.topic = self.__generate_topic()
         
@@ -30,6 +34,9 @@ class SimulationComponentGenerator(BaseComponentGenerator):
         # Create the user object - by loading the specified file into a UserConfigReader, then obtaining its components.
         user_config_file = self._config_dict['user']['@configurationFile']
         self.user = UserConfigReader(user_config_file).get_component_generator(self)
+        
+        # Creates a "base ID" for the saving of files, comprised of different component IDs (to uniquely identify the simulation).
+        self.base_id = '{0}-{1}-{2}'.format(self.simulation_id, self.topic.id, self.user.id)
     
     def __generate_topic(self):
         """

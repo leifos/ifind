@@ -7,7 +7,6 @@ def main(config_filename):
     config_reader = SimulationConfigReader(config_filename)
     
     for configuration in config_reader:
-        
         user = SimulatedUser(search_context=configuration.user.search_context,
                              decision_maker=configuration.user.decision_maker,
                              logger=configuration.logger,
@@ -17,7 +16,7 @@ def main(config_filename):
         while not configuration.logger.is_finished():
             user.decide_action()
         
-        user.save_relevance_judgments('test.out')
+        configuration.output.save()
 
         user.report()
 

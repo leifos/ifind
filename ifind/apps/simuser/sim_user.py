@@ -198,18 +198,3 @@ class SimulatedUser(object):
             return Actions.SNIPPET
         else:
             return Actions.QUERY
-        
-
-    def save_relevance_judgments(self, output_filename):
-        """
-        Saves relevance judgments to the filename specified by parameter output_filename.
-        """
-        f = open(output_filename, 'w')
-        topic = self.__search_context.get_topic()
-        rank = 0
-        
-        for document in self.__search_context.get_relevant_documents():
-            rank = rank + 1
-            f.write("{0} Q0 {1} {2} {3} Exp{4}".format(topic.id, document.doc_id, rank, rank, os.linesep))
-        
-        f.close()
