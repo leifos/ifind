@@ -5,7 +5,7 @@ Author: David Maxwell
 Date:   2014-09-13
 -->
 
-<simulationConfiguration id="smartsim">
+<simulationConfiguration id="trecsim">
 	
 	<output baseDirectory="output/"
 			saveInteractionLog="true"
@@ -17,7 +17,7 @@ Date:   2014-09-13
 	</topics>
 	
 	<users>
-		<user configurationFile="smart_user.xml" />
+		<user configurationFile="trec_user.xml" />
 	</users>
 	
 	<logger class="FixedCostLogger">
