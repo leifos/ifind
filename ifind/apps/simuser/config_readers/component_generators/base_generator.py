@@ -1,4 +1,5 @@
 import os
+import abc
 import inspect
 import importlib
 
@@ -9,7 +10,37 @@ class BaseComponentGenerator(object):
     """
     def __init__(self, config_dict):
         self._config_dict = config_dict
+    
+    @abc.abstractmethod
+    def prettify(self):
+        """
+        Abstract method.
+        Returns a prettified string representation of the configuration dictionary.
+        """
+        return self._config_dict
+    
+    def _prettify_attributes(self, config_entry):
+        """
+        Given a configuration entry, returns any attributes for said configuration entry in a readable string representation, with one attribute per line.
+        """
+        def get_string_representation(singular):
+            return "{0}: {1}{2}".format(singular['@name'], str(singular['@value']), os.linesep)
         
+        indent_level = 4
+        string_representation = ""
+
+        if 'attribute' in config_entry:
+            if type(config_entry['attribute']) == list:
+                for entry in config_entry['attribute']:
+                    string_representation = "{0}{1}{2}".format(string_representation, "  "*indent_level, get_string_representation(entry))
+            else:
+                string_representation = "{0}{1}".format("  "*indent_level, get_string_representation(config_entry['attribute']))
+        
+        if string_representation[-1] == os.linesep:
+            return string_representation[:-1]
+        
+        return string_representation
+    
     def _get_object_reference(self, config_details, package, components=[]):
         """
         Given a configuration dictionary for a particular class, a package, and an optional list of components...

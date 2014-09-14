@@ -1,3 +1,4 @@
+import os
 from search_interfaces import Topic
 from output_controller import OutputController
 from config_readers.user_config_reader import UserConfigReader
@@ -38,6 +39,16 @@ class SimulationComponentGenerator(BaseComponentGenerator):
         # Creates a "base ID" for the saving of files, comprised of different component IDs (to uniquely identify the simulation).
         self.base_id = '{0}-{1}-{2}'.format(self.simulation_id, self.topic.id, self.user.id)
     
+    def prettify(self):
+        """
+        Returns a prettified string representation with the key configuration details for the simulation.
+        """
+        return_string = "    Topic: {0}{1}".format(self.topic.id, os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "    Logger: {0}{1}{2}".format(self._config_dict['logger']['@class'], os.linesep, self._prettify_attributes(self._config_dict['logger'])), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "    Search Interface: {0}{1}{2}".format(self._config_dict['searchInterface']['@class'], os.linesep, self._prettify_attributes(self._config_dict['searchInterface'])), os.linesep)
+        
+        return return_string
+        
     def __generate_topic(self):
         """
         Generates a topic object based on the settings in the configuration dictionary provided.

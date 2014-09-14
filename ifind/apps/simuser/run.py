@@ -17,8 +17,7 @@ def main(config_filename):
             user.decide_action()
         
         configuration.output.save()
-
-        user.report()
+        configuration.output.report()
 
 def usage(script_name):
     """

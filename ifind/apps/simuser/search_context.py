@@ -1,3 +1,4 @@
+import os
 from loggers import Actions
 from ifind.search.query import Query
 from search_interfaces import Document
@@ -37,12 +38,16 @@ class SearchContext(object):
     
 
     def report(self):
-        print "Number of Queries: ", self.__query_count
-        print "Number of Snippets Examined: ", len(self.__all_snippets_examined)
-        print "Number of Documents Examined: ", len(self.__all_documents_examined)
-        print "Number of Documents Marked Relevant: ", len(self.__relevant_documents)
-
-
+        """
+        Returns basic statistics held within the search context at the time of calling.
+        Ideally, call at the end of the simulation for a complete set of stats.
+        """
+        return_string = "    Number of Queries Issued: {0}{1}".format(self.__query_count, os.linesep)
+        return_string = return_string + "    Number of Snippets Examined: {0}{1}".format(len(self.__all_snippets_examined), os.linesep)
+        return_string = return_string + "    Number of Documents Examined: {0}{1}".format(len(self.__all_documents_examined), os.linesep)
+        return_string = return_string + "    Number of Documents Marked Relevant: {0}".format(len(self.__relevant_documents))
+        
+        return return_string
 
     def get_last_action(self):
         """
