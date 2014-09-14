@@ -9,6 +9,7 @@ def main(config_filename):
     for configuration in config_reader:
         user = SimulatedUser(search_context=configuration.user.search_context,
                              decision_maker=configuration.user.decision_maker,
+                             output_controller=configuration.output,
                              logger=configuration.logger,
                              document_classifier=configuration.user.document_classifier,
                              snippet_classifier=configuration.user.snippet_classifier)

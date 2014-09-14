@@ -5,11 +5,12 @@ class SimulatedUser(object):
     """
     
     """
-    def __init__(self, search_context, decision_maker, logger, document_classifier, snippet_classifier):
+    def __init__(self, search_context, decision_maker, output_controller, logger, document_classifier, snippet_classifier):
         """
         """
         self.__search_context = search_context
         self.__decision_maker = decision_maker
+        self.__output_controller = output_controller
         self.__logger = logger
         self.__document_classifier = document_classifier
         self.__snippet_classifier = snippet_classifier
@@ -112,11 +113,11 @@ class SimulatedUser(object):
         query_text = self.__search_context.get_next_query()
         
         if query_text:
-            print "Issued query '{0}'".format(query_text)
+            self.__output_controller.log("Query issued: {0}".format(query_text))
             self.__search_context.add_issued_query(query_text)  # Can also supply page number and page lengths here/
             return True
         
-        print "Out of queries"
+        self.__output_controller.log("Out of queries")
         # Tells the logger that there are no remaining queries; the logger will then stop the simulation.
         self.__logger.queries_exhausted()
         return False
@@ -138,14 +139,14 @@ class SimulatedUser(object):
         
         if self.__search_context.get_document_observation_count(snippet) > 0:
             # This document has been previously seen; so we ignore it. But the higher the count, cumulated credibility could force us to examine it?
-            print "Seen this document before", snippet.doc_id
+            self.__output_controller.log("Seen this document before: {0}".format(snippet.doc_id))
             #self.__search_context.increment_serp_position()
             return False
         else:
             # This snippet has not been previously seen; check quality of snippet. Does it show some form of relevance?
             # If so, we return True - and if not, we return False, which moves the simulator to the next step.
             if self.__snippet_classifier.is_relevant(snippet):
-                print "Snippet seems relevant, go look at it", snippet.doc_id
+                self.__output_controller.log("Snippet seems relevant, go look at it: {0}".format(snippet.doc_id))
                 return True
             else:
                 #self.__search_context.increment_serp_position()
@@ -157,10 +158,10 @@ class SimulatedUser(object):
         """
         if self.__search_context.get_last_query():
             document = self.__search_context.get_current_document()
-            print "Examining document", document.doc_id
+            self.__output_controller.log("Examining document: {0}".format(document.doc_id))
             
             if self.__document_classifier.is_relevant(document):
-                print "Document considered relevant", document.doc_id
+                self.__output_controller.log("Document considered relevant: {0}".format(document.doc_id))
                 self.__search_context.add_relevant_document(document)
                 #self.__search_context.increment_serp_position()
                 return True
@@ -183,9 +184,6 @@ class SimulatedUser(object):
         This is the "decision making" logic - and makes use of the predefined DecisionMaker instance to work this out (with the search context available to it).
         The method also determines if we have reached the end of the SERP - if we have, the only action available to the user is to query (at the moment).
         """
-        
-        print self.__search_context.reached_end_of_serp()
-
         #if self.__search_context.reached_end_of_serp():
         #    return Actions.QUERY
         

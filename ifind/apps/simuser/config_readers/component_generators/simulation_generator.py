@@ -26,7 +26,8 @@ class SimulationComponentGenerator(BaseComponentGenerator):
         
         # Generate the logger object for the simulation.
         self.logger = self._get_object_reference(config_details=self._config_dict['logger'],
-                                                 package='loggers')
+                                                 package='loggers',
+                                                 components=[('output_controller', self.output)])
         
         # Generate the search interface to be used.
         self.search_interface = self._get_object_reference(config_details=self._config_dict['searchInterface'],

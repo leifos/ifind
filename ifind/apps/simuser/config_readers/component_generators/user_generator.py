@@ -1,3 +1,4 @@
+import os
 from search_context import SearchContext
 from config_readers.component_generators.base_generator import BaseComponentGenerator
 
@@ -34,6 +35,17 @@ class UserComponentGenerator(BaseComponentGenerator):
                                                          package='decision_makers',
                                                          components=[('search_context', self.search_context)])
     
+    def prettify(self):
+        """
+        Returns a prettified string representation with the key configuration details for the simulation.
+        """
+        return_string = "{0}{1}".format("    Query Generator: {0}{1}{2}".format(self._config_dict['queryGenerator']['@class'], os.linesep, self._prettify_attributes(self._config_dict['queryGenerator'])), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "    Snippet Classifier: {0}{1}{2}".format(self._config_dict['textClassifiers']['snippetClassifier']['@class'], os.linesep, self._prettify_attributes(self._config_dict['textClassifiers']['snippetClassifier'])), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "    Document Classifier: {0}{1}{2}".format(self._config_dict['textClassifiers']['documentClassifier']['@class'], os.linesep, self._prettify_attributes(self._config_dict['textClassifiers']['documentClassifier'])), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "    Query Generator: {0}{1}{2}".format(self._config_dict['decisionMaker']['@class'], os.linesep, self._prettify_attributes(self._config_dict['decisionMaker'])), os.linesep)
+        
+        return return_string
+
     def __generate_search_context(self):
         """
         Generate a search context object given the settings in the configuration dictionary.
