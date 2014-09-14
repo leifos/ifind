@@ -15,6 +15,7 @@ Date:   2014-09-13
 <!ATTLIST output baseDirectory CDATA #REQUIRED>
 <!ATTLIST output saveInteractionLog CDATA #REQUIRED>
 <!ATTLIST output saveRelevanceJudgments CDATA #REQUIRED>
+<!ATTLIST output trec_eval CDATA #REQUIRED>
 
 <!ELEMENT users (user, user*)>
 
@@ -26,6 +27,7 @@ Date:   2014-09-13
 <!ELEMENT topic (#PCDATA)>
 <!ATTLIST topic id CDATA #REQUIRED>
 <!ATTLIST topic filename CDATA #REQUIRED>
+<!ATTLIST topic qrelsFilename CDATA #REQUIRED>
 
 <!ELEMENT logger (attribute*)>
 <!ATTLIST logger class CDATA #REQUIRED>

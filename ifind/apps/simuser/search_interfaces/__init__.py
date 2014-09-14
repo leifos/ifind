@@ -25,6 +25,10 @@ class Topic(Document):
     """
     Extending from Document, provides the ability to read a topic title and description from a given input file.
     """
+    def __init__(self, id, title=None, content=None, doc_id=None, qrels_filename=None):
+        super(Topic, self).__init__(id=id, title=title, content=content, doc_id=doc_id)
+        self.qrels_filename = qrels_filename
+        
     def read_topic_from_file(self, topic_filename):
         """
         Attempts to open the given filename for reading and stores the contents within the given topic object.

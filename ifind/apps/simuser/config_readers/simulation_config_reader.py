@@ -90,6 +90,7 @@ class SimulationConfigReader(BaseConfigReader):
         empty_string_check(self._config_dict['output']['@baseDirectory'])
         self._config_dict['output']['@saveInteractionLog'] = parse_boolean(self._config_dict['output']['@saveInteractionLog'])
         self._config_dict['output']['@saveRelevanceJudgments'] = parse_boolean(self._config_dict['output']['@saveRelevanceJudgments'])
+        self._config_dict['output']['@trec_eval'] = parse_boolean(self._config_dict['output']['@trec_eval'])
         
         # Topics
         def check_topic(t):
@@ -98,6 +99,7 @@ class SimulationConfigReader(BaseConfigReader):
             """
             empty_string_check(t['@id'])
             filesystem_exists_check(t['@filename'])
+            filesystem_exists_check(t['@qrelsFilename'])
             
         topics = self._config_dict['topics']['topic']
         
