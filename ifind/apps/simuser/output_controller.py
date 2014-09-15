@@ -69,6 +69,7 @@ class OutputController(object):
         if self.__save_interaction_log_flag:
             interaction_log_filename = '{0}.log'.format(self.__simulation_configuration.base_id)
             interaction_log_filename = os.path.join(self.__base_directory, interaction_log_filename)
+            
             log_file = open(interaction_log_filename, 'w')
             
             for entry in self.__interaction_log:

@@ -11,26 +11,26 @@ Date:   2014-09-13
 <!ELEMENT simulationConfiguration (output, topics, users, logger, searchInterface)>
 <!ATTLIST simulationConfiguration id CDATA #REQUIRED>
 
-<!ELEMENT output (#PCDATA)>
-<!ATTLIST output baseDirectory CDATA #REQUIRED>
-<!ATTLIST output saveInteractionLog CDATA #REQUIRED>
-<!ATTLIST output saveRelevanceJudgments CDATA #REQUIRED>
-<!ATTLIST output trec_eval CDATA #REQUIRED>
+<!ELEMENT output                  (#PCDATA)>
+<!ATTLIST output                  baseDirectory CDATA #REQUIRED>
+<!ATTLIST output                  saveInteractionLog CDATA #REQUIRED>
+<!ATTLIST output                  saveRelevanceJudgments CDATA #REQUIRED>
+<!ATTLIST output                  trec_eval CDATA #REQUIRED>
 
-<!ELEMENT users (user, user*)>
+<!ELEMENT users                   (user, user*)>
 
-<!ELEMENT user (#PCDATA)>
-<!ATTLIST user configurationFile CDATA #REQUIRED>
+<!ELEMENT user                    (#PCDATA)>
+<!ATTLIST user                    configurationFile CDATA #REQUIRED>
 
-<!ELEMENT topics (topic, topic*)>
+<!ELEMENT topics                  (topic, topic*)>
 
-<!ELEMENT topic (#PCDATA)>
-<!ATTLIST topic id CDATA #REQUIRED>
-<!ATTLIST topic filename CDATA #REQUIRED>
-<!ATTLIST topic qrelsFilename CDATA #REQUIRED>
+<!ELEMENT topic                   (#PCDATA)>
+<!ATTLIST topic                   id CDATA #REQUIRED>
+<!ATTLIST topic                   filename CDATA #REQUIRED>
+<!ATTLIST topic                   qrelsFilename CDATA #REQUIRED>
 
-<!ELEMENT logger (attribute*)>
-<!ATTLIST logger class CDATA #REQUIRED>
+<!ELEMENT logger                  (attribute*)>
+<!ATTLIST logger                  class CDATA #REQUIRED>
 
-<!ELEMENT searchInterface (attribute*)>
-<!ATTLIST searchInterface class CDATA #REQUIRED>
+<!ELEMENT searchInterface         (attribute*)>
+<!ATTLIST searchInterface         class CDATA #REQUIRED>

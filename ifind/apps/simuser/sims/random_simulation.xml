@@ -1,25 +1,19 @@
-<!--
-Simulation Configuration DTD
 
-Author: David Maxwell
-Date:   2014-09-13
--->
+<simulationConfiguration id="randomsim">
 
-<simulationConfiguration id="smartsim">
-	
-	<output baseDirectory="output/"
+	<output baseDirectory="sims/output/"
 			saveInteractionLog="true"
 			saveRelevanceJudgments="true"
 			trec_eval="true" />
-	
+
 	<topics>
 		<topic id="307" filename="data/topic.307" qrelsFilename="data/trec2005.qrels.307" />
 	</topics>
-	
+
 	<users>
-		<user configurationFile="smart_user.xml" />
+		<user configurationFile="sims/random_user.xml" />
 	</users>
-	
+
 	<logger class="FixedCostLogger">
 		<attribute name="time_limit" type="integer" value="600" is_argument="true" />
 		<attribute name="query_cost" type="integer" value="10" is_argument="true" />
@@ -28,9 +22,9 @@ Date:   2014-09-13
 		<attribute name="serp_results_cost" type="integer" value="5" is_argument="true" />
 		<attribute name="mark_document_cost" type="integer" value="3" is_argument="true" />
 	</logger>
-	
+
 	<searchInterface class="WhooshSearchInterface">
 		<attribute name="whoosh_index_dir" type="string" value="data/fullindex" is_argument="true" />
 	</searchInterface>
-	
+
 </simulationConfiguration>
