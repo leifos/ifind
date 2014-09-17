@@ -1,3 +1,4 @@
+from loggers import Actions
 from decision_makers.base_decision_maker import BaseDecisionMaker
 
 class FixedDepthDecisionMaker(BaseDecisionMaker):
@@ -11,6 +12,10 @@ class FixedDepthDecisionMaker(BaseDecisionMaker):
     
     def decide(self):
         """
-        Returns True or False based upon the depth specified in .__depth.
+        If the user's current position in the current SERP is < the maximum depth, look at the next snippet in the SERP.
+        Otherwise, a new query should be issued.
         """
-        return (self._search_context.get_current_serp_position() < self.__depth)
+        if self._search_context.get_current_serp_position() < self.__depth:
+            return Actions.SNIPPET
+        
+        return Actions.QUERY

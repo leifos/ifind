@@ -11,7 +11,6 @@ class BaseDecisionMaker(object):
     def decide(self):
         """
         Abstract method - must be implemented by an inheriting class.
-        A returned value of True indicates that the user intends to examine a snippet.
-        Otherwise, False indicates that the next query should be issued.
+        Returns an action - from the loggers.Actions enum.
         """
         pass

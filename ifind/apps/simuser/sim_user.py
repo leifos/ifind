@@ -178,14 +178,7 @@ class SimulatedUser(object):
     
     def __do_decide(self):
         """
-        Method which returns whether a further snippet should be examined, or the next query should be issued.
-        This is the "decision making" logic - and makes use of the predefined DecisionMaker instance to work this out (with the search context available to it).
-        The method also determines if we have reached the end of the SERP - if we have, the only action available to the user is to query (at the moment).
+        Method which returns whether a further snippet should be examined, the next query should be issued, or some other action.
+        This is the "decision making" logic - and is abstracted to the instantiated DecisionMaker instance to work this out.
         """
-        #if self.__search_context.reached_end_of_serp():
-        #    return Actions.QUERY
-        
-        if self.__decision_maker.decide():
-            return Actions.SNIPPET
-        else:
-            return Actions.QUERY
+        return self.__decision_maker.decide()

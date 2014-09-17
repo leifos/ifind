@@ -1,19 +1,19 @@
 from whoosh.index import open_dir
 from search_interfaces import Document
-from ifind.search.engines.whooshtrecnews import WhooshTrecNews
+from ifind.search.engines.whooshtrecnewsredis_revised import WhooshTrecNewsRedis
 from search_interfaces.base_interface import BaseSearchInterface
 
 class WhooshSearchInterface(BaseSearchInterface):
     """
     A search interface making use of the Whoosh indexing library - and the ifind search components.
     """
-    def __init__(self, whoosh_index_dir):
+    def __init__(self, whoosh_index_dir, stopwords_file=None):
         super(WhooshSearchInterface, self).__init__()
         
         self.__index = open_dir(whoosh_index_dir)
         self.__reader = self.__index.reader()
         
-        self.__engine = WhooshTrecNews(whoosh_index_dir=whoosh_index_dir, implicit_or=True)
+        self.__engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir, stopwords_file=stopwords_file)
     
     def issue_query(self, query):
         """

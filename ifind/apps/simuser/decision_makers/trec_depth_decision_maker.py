@@ -1,4 +1,4 @@
-__author__ = 'leif'
+from loggers import Actions
 from decision_makers.base_decision_maker import BaseDecisionMaker
 
 class TrecDepthDecisionMaker(BaseDecisionMaker):
@@ -8,12 +8,15 @@ class TrecDepthDecisionMaker(BaseDecisionMaker):
     """
     def __init__(self, search_context, depth):
         super(TrecDepthDecisionMaker, self).__init__(search_context)
-        self.__depth = 1000
+        self.__depth = depth
         print self.__class__, self.__depth
 
     def decide(self):
         """
-        Returns True or False based upon the depth specified in .__depth.
+        If the user has not examined snippets up to depth .__depth, they will examine another snippet.
+        Otherwise, a further query should be issued.
         """
-        #print "decide", self._search_context.get_current_serp_position(), self.__depth
-        return (self._search_context.get_current_serp_position() < self.__depth)
+        if self._search_context.get_current_serp_position() < self.__depth:
+            return Actions.SNIPPET
+        
+        return Actions.QUERY

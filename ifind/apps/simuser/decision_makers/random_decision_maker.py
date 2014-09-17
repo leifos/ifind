@@ -1,4 +1,5 @@
 import random
+from loggers import Actions
 from decision_makers.base_decision_maker import BaseDecisionMaker
 
 class RandomDecisionMaker(BaseDecisionMaker):
@@ -12,6 +13,9 @@ class RandomDecisionMaker(BaseDecisionMaker):
     
     def decide(self):
         """
-        Returns True or False based upon the probability specified in .__probability.
+        Returns the examine snippet or issue query actions depending on the specified probability.
         """
-        return (random.random() > self.__probability)
+        if random.random() > self.__probability:
+            return Actions.SNIPPET
+        
+        return Actions.QUERY

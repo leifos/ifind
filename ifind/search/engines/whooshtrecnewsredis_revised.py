@@ -37,6 +37,8 @@ class WhooshTrecNewsRedis(Engine):
 
         self.scoring_model_identifier = 1
         self.scoring_model = scoring.PL2(c=10.0)
+        
+        self.__verbose = False
 
         try:
             self.doc_index = open_dir(self.whoosh_index_dir)
@@ -72,31 +74,41 @@ class WhooshTrecNewsRedis(Engine):
                 t = time.time()
                 doc_term_scores = self.__get_doc_term_scores(searcher, query.parsed_terms)
                 t = time.time() - t
-                print "  > Retrieve results for '{0}': {1}".format(query.parsed_terms, t)
+                
+                if self.__verbose:
+                    print "  > Retrieve results for '{0}': {1}".format(query.parsed_terms, t)
 
                 t = time.time()
                 self.__update_scores(doc_scores, doc_term_scores)
                 t = time.time() - t
-                print "  >> Time to update scores: {0}".format(t)
+                
+                if self.__verbose:
+                    print "  >> Time to update scores: {0}".format(t)
             else:
                 try:
                     for term in query.parsed_terms:
                         t = time.time()
                         doc_term_scores = self.__get_doc_term_scores(searcher, term.text)
                         t = time.time() - t
-                        print "  > Retrieve results for '{0}': {1}".format(term, t)
+                        
+                        if self.__verbose:
+                            print "  > Retrieve results for '{0}': {1}".format(term, t)
 
                         t = time.time()
                         self.__update_scores(doc_scores, doc_term_scores)
                         t = time.time() - t
-                        print "  >> Time to update scores: {0}".format(t)
+                        
+                        if self.__verbose:
+                            print "  >> Time to update scores: {0}".format(t)
                 except NotImplementedError:
                     pass
 
         t = time.time()
         sorted_results = sorted(doc_scores.iteritems(), key=itemgetter(1), reverse=True)
         t = time.time() - t
-        print "  > Time to sort results: {0}".format(t)
+        
+        if self.__verbose:
+            print "  > Time to sort results: {0}".format(t)
 
         return parse_response(reader=self.reader,
                               fieldname=self.parser.fieldname,
@@ -118,10 +130,12 @@ class WhooshTrecNewsRedis(Engine):
                                        term=term)
 
         if self.cache.exists(term_cache_key):
-            print "  >> Results are cached"
+            if self.__verbose:
+                print "  >> Results are cached"
             return self.cache.get(term_cache_key)  # Easy peasy, return the object from the cache.
         else:
-            print "  >> Results not cached"
+            if self.__verbose:
+                print "  >> Results not cached"
             try:
                 postings = searcher.postings(self.parser.fieldname, term)
 
@@ -283,5 +297,5 @@ def parse_response(reader, fieldname, analyzer, fragmenter, formatter, query, re
     setattr(response, 'results_on_page', len(results))
     setattr(response, 'actual_page', page)
     t = time.time() - t
-    print "  > Processing results time: {0}".format(t)
+    #print "  > Processing results time: {0}".format(t)
     return response

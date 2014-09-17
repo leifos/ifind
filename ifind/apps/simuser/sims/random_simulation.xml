@@ -16,6 +16,7 @@
 
 	<searchInterface class="WhooshSearchInterface">
 		<attribute name="whoosh_index_dir" type="string" value="data/fullindex" is_argument="true" />
+		<attribute name="stopwords_file" type="string" value="data/stopwords.txt" is_argument="true" />
 	</searchInterface>
 
 </simulationConfiguration>
