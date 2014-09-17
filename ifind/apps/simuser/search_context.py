@@ -36,7 +36,6 @@ class SearchContext(object):
         self.__relevant_documents = []            # All documents marked relevant throughout the search session.
         self.__irrelevant_documents = []          # All documents marked irrelevant throughout the search session.
     
-
     def report(self):
         """
         Returns basic statistics held within the search context at the time of calling.
@@ -64,7 +63,7 @@ class SearchContext(object):
     def set_action(self, action):
         """
         This method is key - depending on the action that is passed to it, the relevant method handling the tidying up for that action is called.
-        This is the publically exposed method for doing some action.
+        This is the publicly exposed method for doing some action.
         """
         action_mappings = {
             Actions.QUERY:   self.__set_query_action,
@@ -240,6 +239,4 @@ class SearchContext(object):
         Returns True iif the current position of the SERP has exceeded the number of results available on the SERP (e.g. EOF).
         This result is used when determining what to do next.
         """
-        print self.__current_serp_position, len(self.__last_results)
-        
         return self.__current_serp_position == len(self.__last_results)
