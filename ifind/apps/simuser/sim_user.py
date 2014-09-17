@@ -3,19 +3,17 @@ from loggers import Actions
 
 class SimulatedUser(object):
     """
-    
+    The simulated user. Stores references to all the required components, and contains the logical workflow for the simulation.
     """
-    def __init__(self, search_context, decision_maker, output_controller, logger, document_classifier, snippet_classifier):
-        """
-        """
-        self.__search_context = search_context
-        self.__decision_maker = decision_maker
-        self.__output_controller = output_controller
-        self.__logger = logger
-        self.__document_classifier = document_classifier
-        self.__snippet_classifier = snippet_classifier
+    def __init__(self, configuration):
+        self.__search_context = configuration.user.search_context
+        self.__decision_maker = configuration.user.decision_maker
+        self.__output_controller = configuration.output
+        self.__logger = configuration.user.logger
+        self.__document_classifier = configuration.user.document_classifier
+        self.__snippet_classifier = configuration.user.snippet_classifier
         
-        self.__action_value = None  # Response from the previous action method - True or False?
+        self.__action_value = None  # Response from the previous action method - True or False? (did the user do or not do what they thought?)
     
     def decide_action(self):
         """
@@ -35,7 +33,7 @@ class SimulatedUser(object):
         (8)  Mark the document
         (9*) Decide whether to goto (1) or (4)
         
-        This method returns no value.
+        This method returns None.
         """
         def after_query():
             self.__do_action(Actions.SERP)

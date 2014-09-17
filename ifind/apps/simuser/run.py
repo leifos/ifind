@@ -4,18 +4,16 @@ from progress_indicator import ProgressIndicator
 from config_readers.simulation_config_reader import SimulationConfigReader
 
 def main(config_filename):
-    
+    """
+    The main simulation!
+    For every configuration permutation, create a Simulated user object, and run the simulation (the while loop).
+    Then save, report, and repeat ad naseum.
+    """
     config_reader = SimulationConfigReader(config_filename)
     
     for configuration in config_reader:
-        user = SimulatedUser(search_context=configuration.user.search_context,
-                             decision_maker=configuration.user.decision_maker,
-                             output_controller=configuration.output,
-                             logger=configuration.user.logger,
-                             document_classifier=configuration.user.document_classifier,
-                             snippet_classifier=configuration.user.snippet_classifier)
-        
-        progress = ProgressIndicator(configuration.user.logger, configuration.output)
+        user = SimulatedUser(configuration)
+        progress = ProgressIndicator(configuration)
         
         configuration.output.display_config()
         

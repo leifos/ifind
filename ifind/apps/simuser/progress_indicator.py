@@ -5,9 +5,9 @@ class ProgressIndicator(object):
     """
     A simple class encapsulating either a progress bar or spinner object.
     """
-    def __init__(self, logger, output_controller):
-        self.__logger = logger
-        self.__output_controller = output_controller
+    def __init__(self, configuration):
+        self.__logger = configuration.user.logger
+        self.__output_controller = configuration.output
     
     def update(self):
         """
