@@ -30,6 +30,15 @@ class BaseLogger(object):
             self.__log_unknown_action(action_name)
     
     @abc.abstractmethod
+    def get_progress(self):
+        """
+        Abstract method. Returns a value between 0 and 1 representing the progress of the simulation.
+        0 represents the start of the simulation, and 1 represents total completion (e.g. the user's time limit has elapsed.)
+        If the progress of the simulation cannot be determined, return None.
+        """
+        return None
+    
+    @abc.abstractmethod
     def is_finished(self):
         """
         Abstract method, only returns indication as to whether the list of queries has been exhausted.

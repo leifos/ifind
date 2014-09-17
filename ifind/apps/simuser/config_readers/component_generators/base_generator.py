@@ -19,14 +19,14 @@ class BaseComponentGenerator(object):
         """
         return self._config_dict
     
-    def _prettify_attributes(self, config_entry):
+    def _prettify_attributes(self, config_entry, indentation_level):
         """
         Given a configuration entry, returns any attributes for said configuration entry in a readable string representation, with one attribute per line.
         """
         def get_string_representation(singular):
             return "{0}: {1}{2}".format(singular['@name'], str(singular['@value']), os.linesep)
         
-        indent_level = 4
+        indent_level = indentation_level * 2
         string_representation = ""
 
         if 'attribute' in config_entry:

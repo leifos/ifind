@@ -5,7 +5,14 @@ class FixedCostLogger(BaseLogger):
     """
     
     """
-    def __init__(self, output_controller, time_limit=300, query_cost=10, document_cost=20, snippet_cost=3, serp_results_cost=5, mark_document_cost=3):
+    def __init__(self,
+                 output_controller,
+                 time_limit=300,
+                 query_cost=10,
+                 document_cost=20,
+                 snippet_cost=3,
+                 serp_results_cost=5,
+                 mark_document_cost=3):
         """
         Instantiates the BaseLogger class and sets up additional instance variables for the FixedCostLogger.
         Note that this does not enforce the time limit...
@@ -21,6 +28,13 @@ class FixedCostLogger(BaseLogger):
         
         self.__total_time = 0  # An elapsed counter of the number of seconds a user has been interacting for.
         self.__time_limit = time_limit  # The maximum time that a user can search for in a session.
+    
+    def get_progress(self):
+        """
+        Concrete implementation of the abstract get_progress() method.
+        Returns a value between 0 and 1 representing how far through the current simulation the user is.
+        """
+        return self.__total_time / float(self.__time_limit)
     
     def is_finished(self):
         """

@@ -12,7 +12,7 @@ class SimulationConfigReader(BaseConfigReader):
         super(SimulationConfigReader, self).__init__(config_filename=config_filename, dtd_filename='simulation.dtd')
         
         # Specify the options which do not change over an interation, and those which do.
-        self.__static = ['output', 'logger', 'searchInterface']
+        self.__static = ['output', 'searchInterface']
         self.__iterables = ['topics', 'users']
         
         self.__calculate_iterations()
@@ -117,10 +117,6 @@ class SimulationConfigReader(BaseConfigReader):
                 filesystem_exists_check(user['@configurationFile'])
         else:
             filesystem_exists_check(users['@configurationFile'])
-        
-        # Logger
-        empty_string_check(self._config_dict['logger']['@class'])
-        check_attributes(self._config_dict['logger'])
         
         # Search Interface
         empty_string_check(self._config_dict['searchInterface']['@class'])

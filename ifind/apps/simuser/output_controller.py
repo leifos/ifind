@@ -14,7 +14,8 @@ class OutputController(object):
         
         self.__interaction_log = []
         
-        self.__cls_flag = True
+        self.output_indentation = 2  # Controls the level of indentation when outputting results to stdout.
+                                     # Publicly facing instance variable - is used by the Component Generators prettify() methods.
     
     def log(self, entry):
         """
@@ -22,35 +23,30 @@ class OutputController(object):
         """
         self.__interaction_log.append(entry)
     
-    def report(self):
+    def display_config(self):
         """
-        Prints a summary of the simulation to stdout.
-        Includes a copy of the simulation's configuration - and a brief summary of results from the search context.
+        Sends a prettified version of the current simulation's configuration to stdout.
         """
-        def prettify_configuration():
-            """
-            Returns a prettified string representation of the configuration dictionary.
-            """
-            return "config dict" + os.linesep
-
+        os.system('cls' if os.name == 'nt' else 'clear')
+        
         simulation_base_id = self.__simulation_configuration.base_id
-        search_context_summary = self.__simulation_configuration.user.search_context.report()
-
-        # Clear the terminal window for output (hopefully this is cross-platform compatiable)
-        if self.__cls_flag:
-            os.system('cls' if os.name =='nt' else 'clear')
-            self.__cls_flag = False
-
-        # Print the output to stdout.
         print "SIMULATION '{0}'".format(simulation_base_id)
-
-        print "  Simulation Configuration:"
+        
+        print "{0}Simulation Configuration:".format(" "*self.output_indentation)
         print self.__simulation_configuration.prettify()
 
-        print "  User Configuration ({0}):".format(self.__simulation_configuration.user.id)
+        print "{0}User Configuration ({1}):".format(" "*self.output_indentation, self.__simulation_configuration.user.id)
         print self.__simulation_configuration.user.prettify()
-
-        print "  Results Summary:"
+        
+    def display_report(self):
+        """
+        Prints a summary of the results from the simulation to stdout.
+        """
+        search_context_summary = self.__simulation_configuration.user.search_context.report()
+        
+        print
+        print
+        print "{0}Results Summary:".format(" "*self.output_indentation)
         print "{0}{1}".format(search_context_summary, os.linesep)
     
     def save(self):

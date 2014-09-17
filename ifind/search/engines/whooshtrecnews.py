@@ -314,8 +314,8 @@ class WhooshTrecNews(Engine):
 
                     if page_counter == page:
                         return_response = response
-                        print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
-                        print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
+                        #print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
+                        #print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
 
                     page_counter = page_counter + 1
 

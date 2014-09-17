@@ -1,5 +1,6 @@
 import sys
 from sim_user import SimulatedUser
+from progress_indicator import ProgressIndicator
 from config_readers.simulation_config_reader import SimulationConfigReader
 
 def main(config_filename):
@@ -10,15 +11,20 @@ def main(config_filename):
         user = SimulatedUser(search_context=configuration.user.search_context,
                              decision_maker=configuration.user.decision_maker,
                              output_controller=configuration.output,
-                             logger=configuration.logger,
+                             logger=configuration.user.logger,
                              document_classifier=configuration.user.document_classifier,
                              snippet_classifier=configuration.user.snippet_classifier)
         
-        while not configuration.logger.is_finished():
+        progress = ProgressIndicator(configuration.user.logger, configuration.output)
+        
+        configuration.output.display_config()
+        
+        while not configuration.user.logger.is_finished():
+            progress.update()  # Update the progress indicator in the terminal.
             user.decide_action()
         
         configuration.output.save()
-        configuration.output.report()
+        configuration.output.display_report()
 
 def usage(script_name):
     """

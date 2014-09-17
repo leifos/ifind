@@ -24,11 +24,6 @@ class SimulationComponentGenerator(BaseComponentGenerator):
         # Generate a Topic object.
         self.topic = self.__generate_topic()
         
-        # Generate the logger object for the simulation.
-        self.logger = self._get_object_reference(config_details=self._config_dict['logger'],
-                                                 package='loggers',
-                                                 components=[('output_controller', self.output)])
-        
         # Generate the search interface to be used.
         self.search_interface = self._get_object_reference(config_details=self._config_dict['searchInterface'],
                                                            package='search_interfaces')
@@ -44,9 +39,8 @@ class SimulationComponentGenerator(BaseComponentGenerator):
         """
         Returns a prettified string representation with the key configuration details for the simulation.
         """
-        return_string = "    Topic: {0}{1}".format(self.topic.id, os.linesep)
-        return_string = "{0}{1}{2}".format(return_string, "    Logger: {0}{1}{2}".format(self._config_dict['logger']['@class'], os.linesep, self._prettify_attributes(self._config_dict['logger'])), os.linesep)
-        return_string = "{0}{1}{2}".format(return_string, "    Search Interface: {0}{1}{2}".format(self._config_dict['searchInterface']['@class'], os.linesep, self._prettify_attributes(self._config_dict['searchInterface'])), os.linesep)
+        return_string = "{0}Topic: {1}{2}".format(" "*self.output.output_indentation*2, self.topic.id, os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "{0}Search Interface: {1}{2}{3}".format(" "*self.output.output_indentation*2, self._config_dict['searchInterface']['@class'], os.linesep, self._prettify_attributes(self._config_dict['searchInterface'], self.output.output_indentation)), os.linesep)
         
         return return_string
         

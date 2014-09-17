@@ -34,15 +34,21 @@ class UserComponentGenerator(BaseComponentGenerator):
         self.decision_maker = self._get_object_reference(config_details=self._config_dict['decisionMaker'],
                                                          package='decision_makers',
                                                          components=[('search_context', self.search_context)])
+        
+        # Generate the logger object for the simulation.
+        self.logger = self._get_object_reference(config_details=self._config_dict['logger'],
+                                                         package='loggers',
+                                                         components=[('output_controller', self.__simulation_components.output)])
     
     def prettify(self):
         """
         Returns a prettified string representation with the key configuration details for the simulation.
         """
-        return_string = "{0}{1}".format("    Query Generator: {0}{1}{2}".format(self._config_dict['queryGenerator']['@class'], os.linesep, self._prettify_attributes(self._config_dict['queryGenerator'])), os.linesep)
-        return_string = "{0}{1}{2}".format(return_string, "    Snippet Classifier: {0}{1}{2}".format(self._config_dict['textClassifiers']['snippetClassifier']['@class'], os.linesep, self._prettify_attributes(self._config_dict['textClassifiers']['snippetClassifier'])), os.linesep)
-        return_string = "{0}{1}{2}".format(return_string, "    Document Classifier: {0}{1}{2}".format(self._config_dict['textClassifiers']['documentClassifier']['@class'], os.linesep, self._prettify_attributes(self._config_dict['textClassifiers']['documentClassifier'])), os.linesep)
-        return_string = "{0}{1}{2}".format(return_string, "    Query Generator: {0}{1}{2}".format(self._config_dict['decisionMaker']['@class'], os.linesep, self._prettify_attributes(self._config_dict['decisionMaker'])), os.linesep)
+        return_string = "{0}{1}".format("{0}Query Generator: {1}{2}{3}".format(" "*self.__simulation_components.output.output_indentation*2, self._config_dict['queryGenerator']['@class'], os.linesep, self._prettify_attributes(self._config_dict['queryGenerator'], self.__simulation_components.output.output_indentation)), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "{0}Snippet Classifier: {1}{2}{3}".format(" "*self.__simulation_components.output.output_indentation*2, self._config_dict['textClassifiers']['snippetClassifier']['@class'], os.linesep, self._prettify_attributes(self._config_dict['textClassifiers']['snippetClassifier'], self.__simulation_components.output.output_indentation)), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "{0}Document Classifier: {1}{2}{3}".format(" "*self.__simulation_components.output.output_indentation*2, self._config_dict['textClassifiers']['documentClassifier']['@class'], os.linesep, self._prettify_attributes(self._config_dict['textClassifiers']['documentClassifier'], self.__simulation_components.output.output_indentation)), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "{0}Query Generator: {1}{2}{3}".format(" "*self.__simulation_components.output.output_indentation*2, self._config_dict['decisionMaker']['@class'], os.linesep, self._prettify_attributes(self._config_dict['decisionMaker'], self.__simulation_components.output.output_indentation)), os.linesep)
+        return_string = "{0}{1}{2}".format(return_string, "{0}Logger: {1}{2}{3}".format(" "*self.__simulation_components.output.output_indentation*2, self._config_dict['logger']['@class'], os.linesep, self._prettify_attributes(self._config_dict['logger'], self.__simulation_components.output.output_indentation)), os.linesep)
         
         return return_string
 

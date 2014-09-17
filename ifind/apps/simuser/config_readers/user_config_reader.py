@@ -38,3 +38,7 @@ class UserConfigReader(BaseConfigReader):
         # Decision Maker
         empty_string_check(self._config_dict['decisionMaker']['@class'])
         check_attributes(self._config_dict['decisionMaker'])
+        
+        # Logger
+        empty_string_check(self._config_dict['logger']['@class'])
+        check_attributes(self._config_dict['logger'])
