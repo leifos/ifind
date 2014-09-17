@@ -1,0 +1,28 @@
+<!--
+Simulation Configuration DTD
+
+Author: David Maxwell
+Date:   2014-09-13
+-->
+
+<simulationConfiguration id="querygen_test">
+	
+	<output baseDirectory="sims/output/"
+			saveInteractionLog="true"
+			saveRelevanceJudgments="true"
+			trec_eval="true" />
+	
+	<topics>
+		<topic id="307" filename="data/topic.307" qrelsFilename="data/trec2005.qrels.307" />
+	</topics>
+	
+	<users>
+		<user configurationFile="sims/querygen_test_user.xml" />
+	</users>
+	
+	<searchInterface class="WhooshSearchInterface">
+		<attribute name="whoosh_index_dir" type="string" value="data/fullindex" is_argument="true" />
+		<attribute name="stopwords_file" type="string" value="data/stopwords.txt" is_argument="true" />
+	</searchInterface>
+	
+</simulationConfiguration>

@@ -1,0 +1,34 @@
+<userConfiguration id="querygen_user">
+
+	<queryGenerator class="TestQueryGenerator">
+		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
+	</queryGenerator>
+
+	<textClassifiers>
+		<snippetClassifier class="IFindTextClassifier">
+			<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
+			<attribute name="background_file" type="string" value="data/vocab.txt" is_argument="true" />
+		    <attribute name="threshold" type="float" value="-0.2" is_argument="false" />
+        </snippetClassifier>
+
+		<documentClassifier class="IFindTextClassifier">
+			<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
+			<attribute name="background_file" type="string" value="data/vocab.txt" is_argument="true" />
+            <attribute name="threshold" type="float" value="-0.2" is_argument="false" />
+		</documentClassifier>
+	</textClassifiers>
+
+	<decisionMaker class="FixedDepthDecisionMaker">
+        <attribute name="depth" type="integer" value="30" is_argument="true" />
+	</decisionMaker>
+	
+	<logger class="FixedCostLogger">
+		<attribute name="time_limit" type="integer" value="600" is_argument="true" />
+		<attribute name="query_cost" type="integer" value="10" is_argument="true" />
+		<attribute name="document_cost" type="integer" value="20" is_argument="true" />
+		<attribute name="snippet_cost" type="integer" value="3" is_argument="true" />
+		<attribute name="serp_results_cost" type="integer" value="5" is_argument="true" />
+		<attribute name="mark_document_cost" type="integer" value="3" is_argument="true" />
+	</logger>
+
+</userConfiguration>
