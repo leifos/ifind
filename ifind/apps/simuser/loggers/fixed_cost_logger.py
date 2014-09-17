@@ -3,7 +3,10 @@ from loggers.base_logger import BaseLogger
 
 class FixedCostLogger(BaseLogger):
     """
-    
+    A fixed cost logger - where interactions have a different - but constant - cost.
+    Not the most realistic way of representing interaction costs, but as a start, it is pretty good.
+    Costs can be defined in the constructor - and time_limit is the maximum amount of time a search session can be carried out for.
+    A session ends when the accumulated costs reaches (or exceeds) the specified time limit. If a user initiates an activity which pushes them over the limit, they can complete that action - but nothing more.
     """
     def __init__(self,
                  output_controller,

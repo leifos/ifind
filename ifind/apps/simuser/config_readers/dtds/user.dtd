@@ -25,5 +25,5 @@ Date:   2014-09-13
 <!ELEMENT decisionMaker      (attribute*)>
 <!ATTLIST decisionMaker      class CDATA #REQUIRED>
 
-<!ELEMENT logger                  (attribute*)>
-<!ATTLIST logger                  class CDATA #REQUIRED>
+<!ELEMENT logger             (attribute*)>
+<!ATTLIST logger             class CDATA #REQUIRED>
