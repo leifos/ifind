@@ -4,7 +4,7 @@ from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineConnectionException, QueryParamException
 
-API_ENDPOINT = 'https://www.gov.uk/api/search.json?q=court+claim+for+money'
+API_ENDPOINT = 'https://www.gov.uk/api/search.json?q='
 
 
 class Govuk(Engine):
@@ -72,7 +72,7 @@ class Govuk(Engine):
         search_params = {'q': query.terms}
 
         try:
-            response = requests.get(API_ENDPOINT, params=search_params)
+            response = requests.get(API_ENDPOINT + search_params['q'])
         except requests.exceptions.ConnectionError:
             raise EngineConnectionException(self.name, "Unable to send request, check connectivity")
 
@@ -101,11 +101,13 @@ class Govuk(Engine):
 
         content = json.loads(results.text)
 
-        for result in content[u'results']:
-            text = result[u'details'][u'description']
-            title = result[u'title']
-            url = result[u'web_url']
+        # The base url - results do not provide a full link.
+        base_url = "https://www.gov.uk"
 
+        for result in content[u'results']:
+            text = result[u'description']
+            title = result[u'title']
+            url = base_url + result[u'link']
             response.add_result(title=title, url=url, summary=text)
 
             if len(response) == query.top:
