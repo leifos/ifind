@@ -152,6 +152,30 @@ class Facebook(Engine):
 
         return encoded_string
 
+
+    @staticmethod
+    def _check_errors(json_loaded):
+        """
+        Checks for errors from the Facebook API. Raises an InvalidQueryException if there is an error,
+        otherwise it does nothing.
+
+        Args:
+            json_loaded (JSON): A JSON dictionary containing the Facebook API response
+
+        Raises:
+            ifind.search.exceptions InvalidQueryException
+        """
+        c=''
+        m=''
+        content = json_loaded
+        try:
+            m = content[u'error'][u'message']
+            c = content[u'error'][u'code']
+            out= "API Error code: {}\nError message: {}".format(c,m)
+            raise InvalidQueryException(self.name, out)
+        except KeyError:
+            pass
+
     @staticmethod
     def _parse_json_response(query, results):
         """
@@ -166,12 +190,13 @@ class Facebook(Engine):
 
         Usage:
             Private method.
-
-
         """
 
         response = Response(query.terms)
         content = json.loads(results.text)
+        
+        # Check to see if the response contains any API errors.
+        Facebook._check_errors(content)
 
         if query.result_type == 'user' or not query.result_type:
             # Sample response
@@ -203,5 +228,5 @@ class Facebook(Engine):
                 response.add_result(title=name, url=url, summary=text)
 
             # Implement the other search tpyes.
-
         return response
+
