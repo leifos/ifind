@@ -43,7 +43,7 @@ class Response(object):
         self.results.append(result_object)
         self.result_total += 1
 
-    def add_result(self, title="", url="", summary="", rank=-1, **kwargs):
+    def add_result(self, title="", url="", summary="", imageurl='', rank=-1, **kwargs):
         """
         Adds a result to Response's results list.
 
@@ -51,14 +51,16 @@ class Response(object):
             title (str): title of search result
             url (str): url of search result
             summary (str): summary of search result
+            imageurl (str): the url of an image from the search result
             rank (int): the rank of the result
             **kwargs: further optional result attributes
 
         Usage:
-            response.add_result(title="don's shop", url="www.dons.com", summary="a very nice place", rank=2)
+            response.add_result(title="don's shop", url="www.dons.com",\
+            summary="a very nice place", imageurl="http://stuff.com/img" rank=2)
 
         """
-        self.results.append(Result(title, url, summary, rank, **kwargs))
+        self.results.append(Result(title, url, summary, imageurl , rank, **kwargs))
         self.result_total += 1
 
     def to_json(self):
@@ -156,7 +158,7 @@ class Result(object):
     Models a Result object for use with ifind's Response class.
 
     """
-    def __init__(self, title='', url='', summary='', rank=0, **kwargs):
+    def __init__(self, title='', url='', summary='', imageurl='', rank=0, **kwargs):
         """
         Result constructor.
 
@@ -164,6 +166,7 @@ class Result(object):
             title (str): title of search result
             url (str): url of search result
             summary (str): summary of search result
+            imageurl (str): the url of an image from the search result
             rank (int): the rank of the search result
             **kwargs: further optional result attributes
 
@@ -175,6 +178,7 @@ class Result(object):
         self.url = url
         self.summary = summary
         self.rank = rank
+        self.imageurl = imageurl
 
         for key, value in kwargs.items():
             setattr(self, key, value)

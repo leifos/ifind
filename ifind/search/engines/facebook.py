@@ -86,7 +86,6 @@ class Facebook(Engine):
         try:
             response = requests.get(query_string)
         except requests.exceptions.ConnectionError:
-
             raise EngineConnectionException(self.name, "Unable to send request, check connectivity.")
 
         if response.status_code != 200:
@@ -194,7 +193,7 @@ class Facebook(Engine):
 
         response = Response(query.terms)
         content = json.loads(results.text)
-        
+
         # Check to see if the response contains any API errors.
         Facebook._check_errors(content)
 
@@ -222,10 +221,11 @@ class Facebook(Engine):
                 name = user[u'name']
                 tempid = user[u'id']
                 url = base_url + tempid + '/'
-                text = ''
+                text=''
+                img = "https://graph.facebook.com/{}/picture?type=normal".format(tempid)
                 # Minimal information, probably need a second round of querying the API for each user to get something
                 # for the snippet. Better way?
-                response.add_result(title=name, url=url, summary=text)
+                response.add_result(title=name, url=url, summary=text, imageurl=img)
 
             # Implement the other search tpyes.
         return response
