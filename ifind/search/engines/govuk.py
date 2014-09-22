@@ -105,7 +105,11 @@ class Govuk(Engine):
         base_url = "https://www.gov.uk"
 
         for result in content[u'results']:
-            text = result[u'description']
+            try:
+                # Catch results with no description (they exist!)
+                text = result[u'description']
+            except KeyError:
+                text = ''
             title = result[u'title']
             url = base_url + result[u'link']
             response.add_result(title=title, url=url, summary=text)
