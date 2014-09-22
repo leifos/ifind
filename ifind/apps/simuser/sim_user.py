@@ -123,8 +123,11 @@ class SimulatedUser(object):
     def __do_serp(self):
         """
         Called when the simulated user wishes to examine a SERP - the "initial glance" - after issuing a query.
-        At present, the user will always move to examine the first snippet of the SERP - but a decision can be included here to do otherwise.
+        If the SERP has no results, we continue with the next action - otherwise we will always go and look at said SERP.
         """
+        if self.__search_context.get_current_results_length() == 0:
+            return False  # No results present; return False (we don't continue with this SERP)
+        
         return True
     
     def __do_snippet(self):

@@ -222,6 +222,16 @@ class SearchContext(object):
         """
         return self.__current_serp_position + 1
     
+    def get_current_results_length(self):
+        """
+        If a current set of results for a SERP is present, returns the number of results returned.
+        If the previous query returns no results, 0 will always be returned.
+        """
+        if self.__last_results:
+            return len(self.__last_results)
+        
+        return 0
+    
     def get_topic(self):
         """
         Returns the topic Document object.
