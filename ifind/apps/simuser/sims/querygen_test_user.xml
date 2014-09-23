@@ -1,6 +1,6 @@
 <userConfiguration id="smartuser">
 
-	<queryGenerator class="AdditionalQueryGenerator">
+	<queryGenerator class="TriTermQueryGenerator">
 		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
 	</queryGenerator>
 

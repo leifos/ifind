@@ -48,6 +48,11 @@ class SearchContext(object):
         
         return return_string
 
+
+    def show_query_list(self):
+        for q in self.__query_list:
+            print q
+
     def get_last_action(self):
         """
         Returns the last action performed by the simulated user.

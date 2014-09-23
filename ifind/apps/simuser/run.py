@@ -13,6 +13,7 @@ def main(config_filename):
     
     for configuration in config_reader:
         user = SimulatedUser(configuration)
+        user.show_query_list()
         progress = ProgressIndicator(configuration)
         
         configuration.output.display_config()

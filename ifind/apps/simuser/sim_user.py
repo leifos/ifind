@@ -181,3 +181,7 @@ class SimulatedUser(object):
         This is the "decision making" logic - and is abstracted to the instantiated DecisionMaker instance to work this out.
         """
         return self.__decision_maker.decide()
+
+
+    def show_query_list(self):
+        self.__search_context.show_query_list()
