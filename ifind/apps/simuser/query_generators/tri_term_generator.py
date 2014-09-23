@@ -2,17 +2,16 @@ from ifind.common.query_ranker import QueryRanker
 from ifind.common.query_generation import SingleQueryGeneration
 from query_generators.smarter_generator import SmarterQueryGenerator
 
-class BiTermQueryGenerator(SmarterQueryGenerator):
+class TriTermQueryGenerator(SmarterQueryGenerator):
     """
-    Implementing Strategy 2 from Heikki's 2009 paper, generating two-term queries.
-    The first term comes from the term ranked highest in the topic title, with the second term originating from the description.
-    Currently uses a language model to perform the ranking of terms.
+    Implementing Strategy 3 from Heikki's 2009 paper, generating two-term queries.
+    The first two terms are drawn from the topic, with the final and third term selected from the description - in some ranked order.
     """
     def generate_query_list(self, topic):
         """
         Given a Topic object, produces a list of query terms that could be issued by the simulated agent.
         """
-        self.__description_cutoff = 5
+        self.__description_cutoff = 0
         
         topic_title = topic.title
         topic_description = topic.content
@@ -22,6 +21,9 @@ class BiTermQueryGenerator(SmarterQueryGenerator):
         title_generator = SingleQueryGeneration(minlen=3, stopwordfile=self._stopword_file)
         title_query_list = title_generator.extract_queries_from_text(topic_title)
         title_query_list = self._rank_terms(title_query_list, topic_language_model=topic_language_model)
+        
+        # Produce the two-term query "stem"
+        title_query_list = self.__get_title_combinations(topic_language_model, title_query_list)
         
         # Perform the same steps, but from the description of the topic.
         description_generator = SingleQueryGeneration(minlen=3, stopwordfile=self._stopword_file)
@@ -40,6 +42,26 @@ class BiTermQueryGenerator(SmarterQueryGenerator):
         ranker = QueryRanker(smoothed_language_model=topic_language_model)
         ranker.calculate_query_list_probabilities(terms)
         return ranker.get_top_queries(len(terms))
+    
+    def __get_title_combinations(self, topic_language_model, title_query_list):
+        """
+        Returns a list of two-term ranked queries, extracted from the topic title.
+        If the title consists of one term...surely not!!
+        """
+        count = 0
+        prev_term = None
+        windows = []
+        
+        for term in title_query_list:
+            if count == 0:
+                prev_term = term[0]
+                count = count + 1
+                continue
+            else:
+                count = 0
+                windows.append('{0} {1}'.format(prev_term, term[0]))
+        
+        return self._rank_terms(windows, topic_language_model=topic_language_model)
     
     def __generate_permutations(self, topic_language_model, title_query_list, description_query_list):
         """
