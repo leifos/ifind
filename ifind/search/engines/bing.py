@@ -4,6 +4,7 @@ import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from copy import copy
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
 WEB_ONLY_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/SearchWeb/v1/'
@@ -125,24 +126,26 @@ class Bing(Engine):
             Private method.
 
         """
-        target = query.top
-        query.top = MAX_PAGE_SIZE
-        query.skip = 0
-        response = self._request(query)
+        # Copy the object so that mutation does not alter the original.
+        self.query = copy(query)
+        target = self.query.top
+        self.query.top = MAX_PAGE_SIZE
+        self.query.skip = 0
+        response = self._request(self.query)
 
         while response.result_total < target:
 
             remaining = target - response.result_total
 
             if remaining > MAX_PAGE_SIZE:
-                query.skip += MAX_PAGE_SIZE
-                query.top = MAX_PAGE_SIZE
-                response += self._request(query)
+                self.query.skip += MAX_PAGE_SIZE
+                self.query.top = MAX_PAGE_SIZE
+                response += self._request(self.query)
 
             if remaining <= MAX_PAGE_SIZE:
-                query.skip += query.top
-                query.top = remaining
-                response += self._request(query)
+                self.query.skip += self.query.top
+                self.query.top = remaining
+                response += self._request(self.query)
 
         return response
 

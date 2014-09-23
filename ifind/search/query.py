@@ -32,6 +32,10 @@ class Query(object):
         self.top = top
         self.skip = 0
 
+
+    def set_skip(self, skip):
+        self.skip = skip
+
     def __str__(self):
         """
         Returns human-readable string representation of query object.
