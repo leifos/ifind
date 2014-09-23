@@ -1,3 +1,4 @@
+import abc
 from ifind.common.query_ranker import QueryRanker
 from ifind.common.language_model import LanguageModel
 from ifind.common.query_generation import SingleQueryGeneration, BiTermQueryGeneration, TriTermQueryGeneration
@@ -46,3 +47,11 @@ class BaseQueryGenerator(object):
         query_ranker = QueryRanker(smoothed_language_model=topic_lang_model)
         query_ranker.calculate_query_list_probabilities(query_list)
         return query_ranker.get_top_queries(100)
+    
+    @abc.abstractmethod
+    def _rank_terms(self, terms, **kwargs):
+        """
+        Given a list of query terms (list of strings) as parameter terms, returns a list of those queries - ranked in some way.
+        Additional parameters may be passed (if required for a given implementation) through kwargs.
+        """
+        pass
