@@ -2,7 +2,7 @@
 
 	<queryGenerator class="TriTermQueryGenerator">
 		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
-        <attribute name="topic_model" type="integer" value="1" is_argument="true" />
+        <attribute name="topic_model" type="integer" value="0" is_argument="true" />
 	</queryGenerator>
 
 	<textClassifiers>

@@ -1,8 +1,8 @@
 from ifind.common.query_ranker import QueryRanker
 from ifind.common.query_generation import SingleQueryGeneration
-from query_generators.smarter_generator import SmarterQueryGenerator
+from query_generators.base_generator import BaseQueryGenerator
 
-class TriTermQueryGenerator(SmarterQueryGenerator):
+class TriTermQueryGenerator(BaseQueryGenerator):
     """
     Implementing Strategy 3 from Heikki's 2009 paper, generating two-term queries.
     The first two terms are drawn from the topic, with the final and third term selected from the description - in some ranked order.

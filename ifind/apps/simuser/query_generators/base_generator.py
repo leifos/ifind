@@ -2,6 +2,7 @@ import abc
 from ifind.common.query_ranker import QueryRanker
 from ifind.common.language_model import LanguageModel
 from ifind.common.query_generation import SingleQueryGeneration, BiTermQueryGeneration, TriTermQueryGeneration
+from ifind.common.smoothed_language_model import BayesLanguageModel
 
 class BaseQueryGenerator(object):
     """
@@ -22,9 +23,9 @@ class BaseQueryGenerator(object):
                               1: self._generate_title_topic_language_model}
 
         if self._topic_model in topic_model_switch:
-            return topic_model_switch[self._topic_model_switch]()
+            return topic_model_switch[self._topic_model](topic)
         else:
-            return self._generate_naive_topic_language_model()
+            return self._generate_naive_topic_language_model(topic)
 
     
     def _generate_naive_topic_language_model(self, topic):
@@ -32,7 +33,6 @@ class BaseQueryGenerator(object):
         Given a Topic object, returns a language model representation for the given topic.
         Override this method in inheriting classes to generate and return different language models.
         """
-        print "made a naive lm"
         topic_text = topic.content
         
         document_extractor = SingleQueryGeneration(minlen=3, stopwordfile=self._stopword_file)
@@ -48,7 +48,7 @@ class BaseQueryGenerator(object):
         """
 
         """
-        print "made a bayes smoothed lm"
+
         topic_text = topic.title
         topic_background = topic.content
 
