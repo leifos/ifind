@@ -5,7 +5,7 @@ Author: David Maxwell
 Date:   2014-09-13
 -->
 
-<simulationConfiguration id="trecsim">
+<simulationConfiguration id="fallibletrecsim">
 	
 	<output baseDirectory="sims/output/"
 			saveInteractionLog="true"
@@ -17,7 +17,7 @@ Date:   2014-09-13
 	</topics>
 	
 	<users>
-		<user configurationFile="sims/trec_user.xml" />
+		<user configurationFile="sims/fallible_trec_user.xml" />
 	</users>
 	
 	<searchInterface class="WhooshSearchInterface">
