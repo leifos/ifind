@@ -2,6 +2,7 @@
 
 	<queryGenerator class="TriTermQueryGenerator">
 		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
+        <attribute name="topic_model" type="integer" value="1" is_argument="true" />
 	</queryGenerator>
 
 	<textClassifiers>
@@ -18,8 +19,8 @@
 		</documentClassifier>
 	</textClassifiers>
 
-	<decisionMaker class="RandomDecisionMaker">
-        <attribute name="probability" type="float" value="0.75" is_argument="false" />
+	<decisionMaker class="FixedDepthDecisionMaker">
+        <attribute name="depth" type="integer" value="20" is_argument="true" />
 	</decisionMaker>
 	
 	<logger class="FixedCostLogger">

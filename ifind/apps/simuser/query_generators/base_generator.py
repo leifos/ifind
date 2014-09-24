@@ -7,18 +7,32 @@ class BaseQueryGenerator(object):
     """
     
     """
-    def __init__(self, stopword_file, background_file=[]):  # TODO(dmax): stopwords_file to be a list!
+    def __init__(self, stopword_file, background_file=[], topic_model = 0):  # TODO(dmax): stopwords_file to be a list!
         """
         
         """
         self._stopword_file = stopword_file
         self._background_file = background_file
-    
+        self._topic_model = topic_model
+
+
     def _generate_topic_language_model(self, topic):
+
+        topic_model_switch = {0: self._generate_naive_topic_language_model,
+                              1: self._generate_title_topic_language_model}
+
+        if self._topic_model in topic_model_switch:
+            return topic_model_switch[self._topic_model_switch]()
+        else:
+            return self._generate_naive_topic_language_model()
+
+    
+    def _generate_naive_topic_language_model(self, topic):
         """
         Given a Topic object, returns a language model representation for the given topic.
         Override this method in inheriting classes to generate and return different language models.
         """
+        print "made a naive lm"
         topic_text = topic.content
         
         document_extractor = SingleQueryGeneration(minlen=3, stopwordfile=self._stopword_file)
@@ -28,6 +42,30 @@ class BaseQueryGenerator(object):
         # The langauge model we return is simply a representtaion of the number of times terms occur within the topic text.
         topic_language_model = LanguageModel(term_dict=document_term_counts)
         return topic_language_model
+
+
+    def _generate_title_topic_language_model(self, topic):
+        """
+
+        """
+        print "made a bayes smoothed lm"
+        topic_text = topic.title
+        topic_background = topic.content
+
+        document_extractor = SingleQueryGeneration(minlen=3, stopwordfile=self._stopword_file)
+        document_extractor.extract_queries_from_text(topic_text)
+        document_term_counts = document_extractor.query_count
+
+        document_extractor.extract_queries_from_text(topic_background)
+
+        background_term_counts = document_extractor.query_count
+
+        title_language_model = LanguageModel(term_dict=document_term_counts)
+        background_language_model = LanguageModel(term_dict=background_term_counts)
+        topic_language_model = BayesLanguageModel(title_language_model, background_language_model, beta=10)
+        return topic_language_model
+
+
     
     def generate_query_list(self, topic):
         """
