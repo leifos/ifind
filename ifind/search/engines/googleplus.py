@@ -9,9 +9,8 @@ from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, 
 API_ENDPOINT = "https://www.googleapis.com/plus/v1/"
 
 RESULT_TYPES = ('people', 'activities')
-DEFAULT_RESULT_TYPE = 'people'
-MAX_PAGE_SIZE = 50
-DEFAULT_TOP = MAX_PAGE_SIZE
+DEFAULT_RESULT_TYPE = 'activities'
+MAX_PAGE_SIZE = {'people': 50, 'activities': 20}
 
 class Googleplus(Engine):
     """
@@ -126,13 +125,10 @@ class Googleplus(Engine):
                                                  .format(query.result_type))
 
         # Set the number of results to get back, max value specified at the top of this file
-        if query.top:
-            if query.top > MAX_PAGE_SIZE:
-                top = MAX_PAGE_SIZE
-            else:
-                top = query.top
+        if query.top and query.top <= MAX_PAGE_SIZE[result_type]:
+            top = query.top
         else:
-            top = DEFAULT_TOP
+            top = MAX_PAGE_SIZE[result_type]
 
         # Dictionary of search paramaters
         search_params = {'result_type': result_type,
@@ -169,6 +165,40 @@ class Googleplus(Engine):
 
         return encoded_string
 
+    @staticmethod
+    def _resize_image(imageurl, newsize=125):
+        """
+
+        :param imageurl: The Googleplus image url
+        :param newsize:  The new size of the url, the API returns ?sz=50
+        :return: Returns the new URL with the size update
+        """
+        return imageurl.split('?sz=')[0] + '?sz=' + str(newsize)
+
+    @staticmethod
+    def _build_activity_summary(activity):
+        object = "\n" + activity[u'object'][u'objectType'] + "\n" + activity[u'object'][u'content']
+        attachment =''
+
+        try:
+            activity[u'object'][u'attachments']
+            attachment = "\nAttachment: "
+        except KeyError:
+            pass
+
+        if attachment:
+            attachment += activity[u'object'][u'attachments'][0][u'objectType']
+            try:
+                attachment += activity[u'object'][u'attachments'][0][u'displayName']
+            except KeyError:
+                pass
+            attachment += "\n" + activity[u'object'][u'attachments'][0][u'url']
+
+        actorname = activity[u'actor'][u'displayName']
+        published = activity[u'published']
+        summary = u"User: {}\nPublished: {}{}{}".format(actorname, published, object, attachment)
+
+        return summary
 
     @staticmethod
     def _parse_json_response(query, results):
@@ -189,12 +219,29 @@ class Googleplus(Engine):
         response = Response(query.terms)
         content = json.loads(results.text)
 
-        for user in content[u'items']:
-            name = user[u'displayName']
-            url = user[u'url']
-            imageurl = user[u'image'][u'url']
-            summary = ''
-            response.add_result(title=name, url=url, summary=summary, imageurl=imageurl)
+        result_type = DEFAULT_RESULT_TYPE
+        if query.result_type:
+            result_type = query.result_type
+
+        if result_type == 'people':
+            for user in content[u'items']:
+                name = user[u'displayName']
+                url = user[u'url']
+                imageurl = Googleplus._resize_image(user[u'image'][u'url'])
+                summary = ''
+                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl)
+
+        elif result_type == 'activities':
+            for activity in content[u'items']:
+                title = activity[u'verb'] + ' '  +  activity[u'title']
+                url = activity[u'url']
+                summary = Googleplus._build_activity_summary(activity)
+                imageurl = ''
+                try:
+                    imageurl = activity[u'image'][u'url']
+                except KeyError:
+                    pass
+                response.add_result(title=title, url=url, summary=summary, imageurl=imageurl)
 
         return response
 
