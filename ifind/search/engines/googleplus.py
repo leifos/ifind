@@ -9,7 +9,7 @@ from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, 
 API_ENDPOINT = "https://www.googleapis.com/plus/v1/"
 
 RESULT_TYPES = ('people', 'activities')
-DEFAULT_RESULT_TYPE = 'activities'
+DEFAULT_RESULT_TYPE = 'people'
 MAX_PAGE_SIZE = {'people': 50, 'activities': 20}
 
 class Googleplus(Engine):
