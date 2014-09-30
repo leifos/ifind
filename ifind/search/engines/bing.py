@@ -1,9 +1,9 @@
 import json
-import string
 import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from ifind.utils.encoding import encode_symbols
 from copy import copy
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
@@ -185,30 +185,7 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return API_ENDPOINT + Bing._encode_symbols(result_string + '&' + query_string)
-
-    @staticmethod
-    def _encode_symbols(query_string):
-        """
-        Encodes certain symbols of a query string to match Bing's API specification.
-
-    spell    Args:
-            query_string (str): query string for Bing API request.
-
-        Returns:
-            str: encoded query string for Bing API request.
-
-        Usage:
-            Private method.
-
-        """
-        encoded_string = string.replace(query_string, "'", '%27')
-        encoded_string = string.replace(encoded_string, '"', '%27')
-        encoded_string = string.replace(encoded_string, '+', '%2b')
-        encoded_string = string.replace(encoded_string, ' ', '%20')
-        encoded_string = string.replace(encoded_string, ':', '%3a')
-
-        return encoded_string
+        return API_ENDPOINT + encode_symbols(result_string + '&' + query_string)
 
     @staticmethod
     def _parse_json_response(query, results):

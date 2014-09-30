@@ -1,10 +1,9 @@
 import json
 import requests
-import string
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
-
+from ifind.utils.encoding import encode_symbols
 
 API_ENDPOINT = "https://companycheck.co.uk/api/json/"
 
@@ -141,31 +140,7 @@ class Companycheck(Engine):
             raise QueryParamException(self.name, "No handler found for result type: {}"
                                                  .format(query.result_type))
 
-        return API_ENDPOINT + Companycheck._encode_symbols(query_append)
-
-
-    @staticmethod
-    def _encode_symbols(query_string):
-        """
-        Encodes symbols for http get.
-
-        Args:
-            query_string (str): query string for Bing API request.
-
-        Returns:
-            str: encoded query string for Bing API request.
-
-        Usage:
-            Private method.
-
-        """
-        encoded_string = string.replace(query_string, "'", '%27')
-        encoded_string = string.replace(encoded_string, '"', '%27')
-        encoded_string = string.replace(encoded_string, '+', '%2b')
-        encoded_string = string.replace(encoded_string, ' ', '%20')
-        encoded_string = string.replace(encoded_string, ':', '%3a')
-        return encoded_string
-
+        return API_ENDPOINT + encode_symbols(query_append)
 
     @staticmethod
     def _build_company_summary(company):

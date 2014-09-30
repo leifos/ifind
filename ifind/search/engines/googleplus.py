@@ -1,9 +1,9 @@
 import json
 import requests
-import string
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from ifind.utils.encoding import encode_symbols
 import time
 
 API_ENDPOINT = "https://www.googleapis.com/plus/v1/"
@@ -144,7 +144,7 @@ class Googleplus(Engine):
         query_append = "{}?query='{}'&maxResults={}&key={}".format\
             (search_params['result_type'], search_params['q'], search_params['top'] , self.api_key)
 
-        return API_ENDPOINT + Googleplus._encode_symbols(query_append)
+        return API_ENDPOINT + encode_symbols(query_append)
 
     def _get_person_info(self, user_id):
         """
@@ -164,30 +164,6 @@ class Googleplus(Engine):
             raise EngineConnectionException(self.name, "", code=personResponse.status_code)
 
         return personResponse
-
-
-    @staticmethod
-    def _encode_symbols(query_string):
-        """
-        Encodes symbols for http get.
-
-        Args:
-            query_string (str): query string for Bing API request.
-
-        Returns:
-            str: encoded query string for Bing API request.
-
-        Usage:
-            Private method.
-
-        """
-        encoded_string = string.replace(query_string, "'", '%27')
-        encoded_string = string.replace(encoded_string, '"', '%27')
-        encoded_string = string.replace(encoded_string, '+', '%2b')
-        encoded_string = string.replace(encoded_string, ' ', '%20')
-        encoded_string = string.replace(encoded_string, ':', '%3a')
-
-        return encoded_string
 
     @staticmethod
     def _resize_image(imageurl, newsize=125):
@@ -272,7 +248,7 @@ class Googleplus(Engine):
         summary = unicode(summary)
 
         # Add in a slight delay to reduce API strain
-        time.sleep(0.1)
+        time.sleep(0.8)
 
         return summary
 
