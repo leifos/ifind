@@ -132,7 +132,6 @@ class Pipl(Engine):
         """
 
         query_append = self._build_query_append(query)
-        print API_ENDPOINT + unicode(encode_symbols(query_append), encoding='utf-8')
         return API_ENDPOINT + unicode(encode_symbols(query_append), encoding='utf-8')
 
     def _build_query_append(self, query):
