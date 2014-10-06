@@ -112,30 +112,34 @@ class Companycheck(Engine):
         """
 
 
-        if query.result_type:
-            result_type = query.result_type
-        else:
+        result_type = query.__dict__.get('result_type', DEFAULT_RESULT_TYPE)
+        if result_type == '':
             result_type = DEFAULT_RESULT_TYPE
 
+        postcode = query.__dict__.get('postcode', '')
+
+
         # Check to if the result type is valid
-        if result_type not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+        if result_type:
+            if result_type not in RESULT_TYPES:
+                raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
+
 
         # Build the appropriate query string based on the result type
         if result_type == 'company':
             # Company search format:
-            # https://companycheck.co.uk/api/json/ search?name=tesco&apiKey=xxxxxx
+            # https://companycheck.co.uk/api/json/ search?name=tesco&postcode=xxxx&apiKey=xxxxxx
 
-            query_append = "search?name={}&apiKey={}".format\
-                (query.terms, self.api_key)
+            query_append = "search?name={}&postcode={}&apiKey={}".format\
+                (query.terms, postcode, self.api_key)
 
         elif result_type == 'director':
             # Director search format:
             # https://companycheck.co.uk/api/json/ directorSearch?name=branson&postcode=W11&apiKey=xxxxxx
 
-            query_append = "directorSearch?name={}&apiKey={}".format\
-                (query.terms, self.api_key)
+            query_append = "directorSearch?name={}&postcode={}&apiKey={}".format\
+                (query.terms, postcode, self.api_key)
         else:
             raise QueryParamException(self.name, "No handler found for result type: {}"
                                                  .format(query.result_type))
@@ -199,7 +203,7 @@ class Companycheck(Engine):
             result_type = DEFAULT_RESULT_TYPE
 
 
-        if result_type == 'company':
+        if result_type == 'company' or not result_type:
             for company in content:
                 name = company[u'name']
                 url =  url_base + 'company/' + str(company[u'number'])
