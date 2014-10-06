@@ -7,7 +7,7 @@ from ifind.utils.encoding import encode_symbols
 
 API_ENDPOINT = "http://api.pipl.com/search/v3/json/"
 
-DEFAULT_COUNTRY = 'UK'
+DEFAULT_COUNTRY = 'GB'
 
 
 class Pipl(Engine):
@@ -41,11 +41,32 @@ class Pipl(Engine):
         Concrete method of Engine's interface method 'search'.
         Performs a search and retrieves the results as an ifind Response.
 
+
+
         Args:
             query (ifind Query): Object encapsulating details of a search query.
 
         Query Kwargs:
-            result_type (str): specifies the type of results to return (see top of class for available types).
+            ********
+            Note: If *both* the first name and last name are not provided, query.terms will be interpreted as raw_name
+            ********
+
+            first_name (str): The first name of the target. Minimum 2 characters.
+            middle_name (str): The middle name or initial of the target
+            last_name (str): The last name of the target. Minimum 2 characters.
+            phone (str) The phone number of the target. Only supports US numbers at time of writing (06/10/14)
+                    formats:    phone= '999888777'
+                                phone= '(999) 888-777'
+                                phone= '+1 999888777'
+            username (str): A username or screen name associated with the target. Minimum 4 characters.
+            email (str): An email address associated with the target.
+            country (str): Two letter country code: e.g. GB, US.
+            state (str): A US or Canada state code, e.g. CO
+            city (str): A city name associated with the target.
+            raw_name (str): An unparsed version of the name. Bult from query terms if no first and last name provided.
+            raw_address (str): An unparsed address.
+            from_age (int): Lower limit on the age of the target.
+            to_age(int) Upper limit on the age of the target.
 
         Returns:
             ifind Response: object encapulsating a search request's results.
@@ -110,19 +131,58 @@ class Pipl(Engine):
 
         """
 
-        fname = None
-        lname = None
+        query_append = self._build_query_append(query)
+        print API_ENDPOINT + unicode(encode_symbols(query_append), encoding='utf-8')
+        return API_ENDPOINT + unicode(encode_symbols(query_append), encoding='utf-8')
 
-        # Assume the query only contains a name at the moment.
-        try:
-            fname,lname = query.terms.split(' ')
-        except ValueError:
-            fname = query.terms
+    def _build_query_append(self, query):
 
-        query_append = "?first_name={}&last_name={}&country={}&key={}".format\
-            (fname, lname, DEFAULT_COUNTRY, self.api_key)
+        first_name = query.__dict__.get('first_name', '')
+        middle_name = query.__dict__.get('middle_name', '')
+        last_name = query.__dict__.get('last_name', '')
+        phone = query.__dict__.get('phone', '')
+        username = query.__dict__.get('username', '')
+        email = query.__dict__.get('email', '')
+        country = query.__dict__.get('country', DEFAULT_COUNTRY)
+        state = query.__dict__.get('state', '')
+        city = query.__dict__.get('city', ''),
+        raw_name = query.__dict__.get('raw_name', '')
+        raw_address = query.__dict__.get('raw_address', '')
+        from_age = str(query.__dict__.get('from_age', ''))
+        to_age = str(query.__dict__.get('to_age', ''))
 
-        return API_ENDPOINT + encode_symbols(query_append)
+        if not (first_name and last_name) and not raw_name:
+            raw_name = query.terms
+        else:
+            raw_name = ''
+
+        if not (raw_name or (first_name and last_name) or phone or email or username):
+            raise QueryParamException(self.name, "Require one of: raw_name,\
+             (first_name + last_name), phone, email, username)")
+
+        return "?first_name={}&middle_name={}&last_name={}".format(first_name, middle_name, last_name) +\
+               "&phone={}&email={}".format(phone, email) +\
+               "&country={}&state={}&city={}".format(country, state, city) +\
+               "&raw_name={}&raw_address={}".format(raw_name, raw_address) +\
+               "&from_age={}&to_Age={}".format(from_age, to_age) +\
+               "&key={}".format(self.api_key)
+
+
+        # JSON layout of the person object - can be used to expand functionality later.
+        #
+        # json.dumps({'names': [{'first': first_name, 'middle': middle_name, 'last': last_name }],
+        #             'addresses': [{'country': country, 'state': state,
+        #                            'city': city, 'street': street, 'house': house_number}],
+        #             'phones': [],
+        #             'emails': [],
+        #             'usernames': [],
+        #             'dobs': [],
+        #             'jobs': [],
+        #             'educations': [],
+        #             'images': [],
+        #             'related_urls': [],
+        #             'relationships': []
+        #             })
 
     @staticmethod
     def _build_summary(record):
