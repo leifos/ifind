@@ -5,7 +5,7 @@ class Query(object):
     Models a Query object for use with ifind's search interface.
 
     """
-    def __init__(self, terms, top=10, lang="", result_type=""):
+    def __init__(self, terms, top=10, lang="", result_type="", **kwargs):
         """
         Query constructor.
 
@@ -32,6 +32,15 @@ class Query(object):
         self.top = top
         self.skip = 0
 
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        for key, value in self.__dict__.items():
+            self.__dict__[key] = value
+
+            if isinstance(value, str):
+                self.__dict__[key] = value.encode('utf-8').rstrip()
 
     def set_skip(self, skip):
         self.skip = skip
