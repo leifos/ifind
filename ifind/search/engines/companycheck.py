@@ -144,6 +144,7 @@ class Companycheck(Engine):
             raise QueryParamException(self.name, "No handler found for result type: {}"
                                                  .format(query.result_type))
 
+        print API_ENDPOINT + encode_symbols(query_append)
         return API_ENDPOINT + encode_symbols(query_append)
 
     @staticmethod
@@ -172,9 +173,9 @@ class Companycheck(Engine):
         postcodes = []
         for pcode in director[u'registeredPostcodes']:
             postcodes.append(unicode(pcode[u'postcode0']))
-        postcodes = u'Registered Postcodes: ' + unicode(postcodes)
+        postcodes_sum = u'Registered Postcodes: ' + unicode(postcodes)
 
-        return postcodes
+        return {'postcode_list': postcodes, 'summary': postcodes_sum}
 
     @staticmethod
     def _parse_json_response(query, results):
@@ -209,15 +210,27 @@ class Companycheck(Engine):
                 url =  url_base + 'company/' + str(company[u'number'])
                 imageurl = None
                 summary = Companycheck._build_company_summary(company)
-                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl)
+                # Keyword args below
+                number = company[u'number']
+                country = company[u'country']
+                address = company[u'address']
+                sic = company[u'sic']
+                status = company[u'status']
+                # Add result object to the response
+                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl,
+                                    number=number, country=country, address=address, sic=sic, status=status)
 
         elif result_type == 'director':
             for director in content:
                 name = director[u'name']
                 url =  url_base + 'director/' + str(director[u'number'])
                 imageurl = None
-                summary = Companycheck._build_director_summary(director)
-                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl)
+                sum_dic = Companycheck._build_director_summary(director)
+                summary = sum_dic.get('summary')
+                postcodes = sum_dic.get('postcode_list')
+                number = director[u'number']
+                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl, postcodes=postcodes,
+                                    number=number)
 
         return response
 
