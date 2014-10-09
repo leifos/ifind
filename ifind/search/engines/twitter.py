@@ -181,16 +181,61 @@ class Twitter(Engine):
 
             text = result[u'text']
             result_id = str(result[u'id'])
-            user_id = result[u'user'][u'id_str']
+
+            # User dictionary
+            user = {'user_id': result[u'user'][u'id_str'],
+                    'profile_image': result.get(u'user').get(u'profile_image_url'),
+                    'geo_enabled': result.get(u'user').get(u'geo_enabled'),
+                    'description': result.get(u'user').get(u'description'),
+                    'follower_count': result.get(u'user').get(u'followers_count'),
+                    'protected': result.get(u'user').get(u'protected'),
+                    'location': result.get(u'user').get(u'location'),
+                    'utc_offset': result.get(u'user').get(u'utc_offset'),
+                    'time_zone': result.get(u'user').get(u'time_zone'),
+                    'name': result.get(u'user').get(u'name'),
+                    'screen_name': result.get(u'user').get(u'screen_name'),
+                    'member_since': result.get(u'user').get(u'created_at')
+            }
 
             # TODO clean this up
-            created_at = result[u'created_at'].split()
-            created_at.pop(4)
-            created_at = ' '.join(created_at)
+            stamp = result[u'created_at'].split()
+            # Created at in format: '01 Jan, 2014 @ 20:23'
+            created_at = "{} {}, {} @ {}".format(stamp[2], stamp[1], stamp[5], stamp[3][:-3])
 
-            url = 'https://www.twitter.com/{0}/status/{1}'.format(user_id, result_id)
+            url = 'https://www.twitter.com/{0}/status/{1}'.format(user['user_id'], result_id)
+            imageurl = user.get('profile_image')
+            title = u"{} ({}) - {}".format(user['name'], user['screen_name'], created_at)
 
-            response.add_result(title=created_at, url=url, summary=text)
+            # Kwargs below
+            source = result.get(u'source')
+            coordinates = result.get(u'coordinates')
+            place = result.get(u'place')
+            hashtags= result.get(u'entities').get(u'hashtags')
+            user_info = user
+            reply_to_screen_name = result.get(u'in_reply_to_screen_name')
+            reply_to_userid = result.get(u'in_reply_to_user_id_str')
+            reply_to_status = result.get(u'in_reply_to_status_id_str')
+
+
+            # List of links in the tweet. Each item in the list is a dictionary with keys:
+            # u'url, u'indices', u'expanded_url, u'display_url'
+            links = result.get(u'entities').get(u'urls')
+
+            # List of media items in the tweet. Each item in the list is a dictionary with keys:
+            # u'expanded_url', u'sizes', u'url', u'media_url_https',
+            # u'id_str', u'indices', u'media_url', u'type', u'id', u'display_url'
+            media = result.get(u'entities').get(u'media')
+
+            # List of users mentioned in the tweet. Each item in the list is a dictionary with keys:
+            # u'indices', 'u'screen_name', u'PSG_inside', u'id', u'name', u'id_str'
+            user_mentions = result.get(u'entities').get(u'user_mentions')
+
+
+            response.add_result(title=title, url=url, summary=text, imageurl=imageurl, stamp=stamp,
+                                user_info=user_info, media=media, links=links, user_mentions=user_mentions,
+                                source=source, coordinates=coordinates, place=place,
+                                hashtags=hashtags,  reply_to_screen_name=reply_to_screen_name,
+                                reply_to_status=reply_to_status, reply_to_userid=reply_to_userid)
 
             if len(response) == query.top:
                 break
