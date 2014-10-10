@@ -215,6 +215,7 @@ class Twitter(Engine):
             reply_to_screen_name = result.get(u'in_reply_to_screen_name')
             reply_to_userid = result.get(u'in_reply_to_user_id_str')
             reply_to_status = result.get(u'in_reply_to_status_id_str')
+            tweet_id = result_id
 
 
             # List of links in the tweet. Each item in the list is a dictionary with keys:
@@ -235,7 +236,7 @@ class Twitter(Engine):
                                 user_info=user_info, media=media, links=links, user_mentions=user_mentions,
                                 source=source, coordinates=coordinates, place=place,
                                 hashtags=hashtags,  reply_to_screen_name=reply_to_screen_name,
-                                reply_to_status=reply_to_status, reply_to_userid=reply_to_userid)
+                                reply_to_status=reply_to_status, reply_to_userid=reply_to_userid, tweet_id=tweet_id)
 
             if len(response) == query.top:
                 break
