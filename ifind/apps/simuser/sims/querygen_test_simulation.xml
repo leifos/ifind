@@ -7,7 +7,7 @@
 			trec_eval="true" />
 	
 	<topics>
-		<topic id="307" filename="data/topic.307" qrelsFilename="data/trec2005.qrels.307" />
+		<topic id="307" filename="data/topics/topic.307" qrelsFilename="data/trec2005.qrels.307" />
 	</topics>
 	
 	<users>
