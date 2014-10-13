@@ -188,44 +188,51 @@ class Pipl(Engine):
             usernames = []
             try:
                 for usr in record[u'usernames']:
-                    usernames.append(usr[u'content'])
-                usernames = u'\nUsernames: ' + unicode(usernames)
-            except:
+                    usernames.append(usr[u'content'].encode('utf-8'))
+                usernames = '\nUsernames: ' + str(usernames)
+            except KeyError:
                 usernames = ''
 
             addresses = []
             try:
                 for add in record[u'addresses']:
-                    addresses.append(add[u'display'])
-                addresses = u'\nAddresses: ' + unicode(addresses)
-            except:
+                    addresses.append(add[u'display'].encode('utf-8'))
+                addresses = '\nAddresses: ' + str(addresses)
+            except KeyError:
                 addresses = ''
 
             relationships = []
             try:
                 for rel in record[u'relationships']:
-                    relationships.append(rel[u'name'][u'display'])
-                relationships = u'\nRelationships: ' + unicode(relationships)
-            except:
+                    relationships.append(rel[u'name'][u'display'].encode('utf-8'))
+                relationships = u'\nRelationships: ' + str(relationships)
+            except KeyError:
                 relationships = ''
 
             jobs = []
             try:
                 for job in record[u'jobs']:
-                    jobs.append(job[u'display'])
-                jobs = u'\nJobs: ' + unicode(jobs)
-            except:
-                job = ''
+                    jobs.append(job[u'display'].encode('utf-8'))
+                jobs = '\nJobs: ' + str(jobs)
+            except KeyError:
+                jobs = ''
 
             educations = []
             try:
                 for edu in record[u'educations']:
-                    educations.append(edu[u'display'])
-                educations = u'\nEducations: ' + unicode(educations)
-            except:
+                    educations.append(edu[u'display'].encode('utf-8'))
+                educations = '\nEducations: ' + str(educations)
+            except KeyError:
                 educations = ''
+            tags = []
+            try:
+                for tag in record[u'tags']:
+                    tags.append(tag[u'content'].encode('utf-8'))
+                tags = '\ntags: ' + str(tags)
+            except KeyError:
+                tags = ''
 
-            return "{}{}{}{}{}".format(jobs, addresses, educations, relationships, usernames)
+            return '{}{}{}{}{}{}'.format(jobs, addresses, educations, relationships, usernames, tags).translate(None, '[]')
 
 
     @staticmethod
@@ -257,8 +264,18 @@ class Pipl(Engine):
                 pass
             summary = Pipl._build_summary(record)
 
-            response.add_result(title=name, url=url, summary=summary, imageurl=imageurl)
+            # Kwargs below
+            # Each keyword contains a list of (potentially empty) dictionary objects.
+            usernames = record.get(u'usernames')
+            addresses = record.get(u'addresses')
+            relationships = record.get(u'relationships')
+            jobs = record.get(u'jobs')
+            educations = record.get(u'educations')
+            tags = record.get(u'tags')
 
+
+            response.add_result(title=name, url=url, summary=summary, imageurl=imageurl,
+                                usernames=usernames, addresses=addresses, relationships=relationships,
+                                jobs=jobs, educations=educations, tags=tags)
 
         return response
-
