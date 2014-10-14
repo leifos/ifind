@@ -174,7 +174,10 @@ class Googleplus(Engine):
         :param newsize:  The new size of the url, the API returns ?sz=50
         :return: Returns the new URL with the size update
         """
-        return imageurl.split('?sz=')[0] + '?sz=' + str(newsize)
+        if imageurl:
+            return imageurl.split('?sz=')[0] + '?sz=' + str(newsize)
+        else:
+            return None
 
     @staticmethod
     def _build_activity_summary(activity):
@@ -292,16 +295,45 @@ class Googleplus(Engine):
 
         elif result_type == 'activities':
             for activity in content[u'items']:
-                title = activity[u'verb'] + ' '  +  activity[u'title']
-                url = activity[u'url']
+
+                # The three dictionaries below are passed as keyword arguments to the result object
+                activity_dict = {
+                    'url': activity.get(u'url'),
+                    'verb': activity.get(u'verb'),
+                    'title': activity.get(u'title'),
+                    'published': activity.get(u'published'),
+                    'updated': activity.get(u'updated'),
+                    'kind': activity.get(u'kind'),
+                    'id': activity.get(u'id')
+                }
+
+                actor_dict = {
+                    'display_name': activity.get(u'actor').get(u'displayName'),
+                    'url': activity.get(u'actor').get(u'url'),
+                    'image': activity.get(u'actor').get(u'image').get(u'url'),
+                    'id': activity.get(u'actor').get(u'id')
+                    }
+
+                object_dict = {
+                    'type': activity.get(u'object').get(u'objectType'),
+                    'content': activity.get(u'object').get(u'content').encode('utf-8'),
+                    'url': activity.get(u'object').get(u'url'),
+                    }
+
+                title = u"{}  ({})".format(activity_dict.get('title'),
+                                          activity_dict.get('verb'))
+                url = activity_dict.get('url')
                 summary = Googleplus._build_activity_summary(activity)
-                imageurl = ''
-                try:
-                    imageurl = Googleplus._resize_image(activity[u'image'][u'url'])
-                except KeyError:
-                    pass
+                imageurl = Googleplus._resize_image(actor_dict.get('image'))
+
+                # Attachments is a list of dictionaries with keys:
+                # u'objectType', u'displayName', u'content', u'url' and potentially nested dictionaries,
+                # such as u'embed', u'image', u'thumbnails (list of dicts).
+                attachments = activity.get(u'object').get(u'attachments')
+
                 # Add the result to the response.
-                response.add_result(title=title, url=url, summary=summary, imageurl=imageurl)
+                response.add_result(title=title, url=url, summary=summary, imageurl=imageurl,
+                                    actor=actor_dict, object=object_dict, activity=activity_dict,
+                                    attachments=attachments)
 
         return response
-
