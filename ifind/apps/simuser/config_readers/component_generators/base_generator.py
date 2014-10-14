@@ -36,7 +36,7 @@ class BaseComponentGenerator(object):
             else:
                 string_representation = "{0}{1}".format("  "*indent_level, get_string_representation(config_entry['attribute']))
         
-        if string_representation[-1] == os.linesep:
+        if len(string_representation) > 0 and string_representation[-1] == os.linesep:
             return string_representation[:-1]
         
         return string_representation

@@ -8,11 +8,12 @@ class SearchContext(object):
     The "memory" of the simulated user. Contains details such as the documents that have been examined by the user.
     This class also provides a link between the simulated user and the search engine interface - allowing one to retrieve the next document, snippet, etc.
     """
-    def __init__(self, search_interface, topic, query_list=[]):
+    def __init__(self, search_interface, output_controller, topic, query_list=[]):
         """
         Several instance variables here to track the different aspects of the search process.
         """
         self.__search_interface = search_interface
+        self.__output_controller = output_controller
         self.__topic = topic
         
         self.__actions = []                       # A list of all of the actions undertaken by the simulated user in chronological order.
@@ -46,9 +47,14 @@ class SearchContext(object):
         return_string = return_string + "    Number of Documents Examined: {0}{1}".format(len(self.__all_documents_examined), os.linesep)
         return_string = return_string + "    Number of Documents Marked Relevant: {0}".format(len(self.__relevant_documents))
         
+        self.__output_controller.log_info(info_type="SUMMARY", text=4)  # 4 summary lines; change as required.
+        self.__output_controller.log_info(info_type="TOTAL_QUERIES_ISSUED", text=self.__query_count)
+        self.__output_controller.log_info(info_type="TOTAL_SNIPPETS_EXAMINED", text=len(self.__all_snippets_examined))
+        self.__output_controller.log_info(info_type="TOTAL_DOCUMENTS_EXAMINED", text=len(self.__all_documents_examined))
+        self.__output_controller.log_info(info_type="TOTAL_DOCUMENTS_MARKED_RELEVANT", text=len(self.__relevant_documents))
+        
         return return_string
-
-
+        
     def show_query_list(self):
         for q in self.__query_list:
             print q

@@ -20,9 +20,27 @@ class OutputController(object):
     def log(self, entry):
         """
         Adds an event to the interaction log.
+        For informational log entries (not actions) call log_info().
         """
         self.__interaction_log.append(entry)
     
+    def log_info(self, info_type=None, text=""):
+        """
+        Logs additional information to the interaction log which may be useful when supplemented with action log entries.
+        For example, you could include statistics at the end of the log file with this command.
+        
+        Entries are logged in the format
+        INFO <info_type> <text>
+        If <info_type> is None, then FREETEXT will be used.
+        
+        Specify info_type to indicate the data being presented (e.g. NUMBER_RELEVANT_DOCUMENTS_MARKED).
+        Use text to present the information.
+        """
+        if info_type is None:
+            info_type = "CUSTOM"
+        
+        self.__interaction_log.append("INFO {0} {1}".format(info_type, text))
+        
     def display_config(self):
         """
         Sends a prettified version of the current simulation's configuration to stdout.

@@ -6,7 +6,7 @@ from random import random
 
 class InformedTrecTextClassifier(BaseTextClassifier):
     """
-    Takes the  TREC QREL file, and the probabilities rprob and nprob
+    Takes the TREC QREL file, and the probabilities rprob and nprob
     if a document is TREC relevant, then the probability that it is judged relevant is given by rprob
     if it is NOT TREC releavnt, then the probabiltiy that iit is judged non-relevant is given by nprob
 

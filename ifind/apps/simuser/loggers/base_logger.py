@@ -54,12 +54,12 @@ class BaseLogger(object):
         """
         self.__queries_exhausted = True
     
-    def _report(self, action):
+    def _report(self, action, **kwargs):
         """
         A simple method to report the current action being logged.
         Extend this method and call the parent implementation (via super()) to include additional details.
         """
-        return "{0} ".format(action)
+        return "ACTION {0} ".format(action)
     
     @abc.abstractmethod
     def _log_query(self, **kwargs):

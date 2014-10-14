@@ -60,5 +60,6 @@ class UserComponentGenerator(BaseComponentGenerator):
         search_interface = self.__simulation_components.search_interface
         
         return SearchContext(search_interface=search_interface,
+                             output_controller=self.__simulation_components.output,
                              topic=topic,
                              query_list=self.query_generator.generate_query_list(topic))

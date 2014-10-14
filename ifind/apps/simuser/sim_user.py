@@ -95,8 +95,8 @@ class SimulatedUser(object):
             Actions.MARK   : self.__do_mark_document
         }
         
-        # Log - first telling the logger of the action, and then the search context.
-        self.__logger.log_action(action)
+        # Update the search context to reflect the most recent action.
+        # Logging takes place within each method called (e.g. __do_query()) to reflect different values being passed.
         self.__search_context.set_action(action)
         
         # Now call the appropriate method to perform the action.
@@ -111,11 +111,12 @@ class SimulatedUser(object):
         query_text = self.__search_context.get_next_query()
         
         if query_text:
-            self.__output_controller.log("Query issued: {0}".format(query_text))
-            self.__search_context.add_issued_query(query_text)  # Can also supply page number and page lengths here/
+            self.__search_context.add_issued_query(query_text)  # Can also supply page number and page lengths here.
+            self.__logger.log_action(Actions.QUERY, query=query_text)
+            #self.__output_controller.log_info(info_type=None, text="Query issued: {0}".format(query_text))
             return True
         
-        self.__output_controller.log("Out of queries")
+        self.__output_controller.log_info(info_type="OUT_OF_QUERIES")
         # Tells the logger that there are no remaining queries; the logger will then stop the simulation.
         self.__logger.queries_exhausted()
         return False
@@ -126,8 +127,10 @@ class SimulatedUser(object):
         If the SERP has no results, we continue with the next action - otherwise we will always go and look at said SERP.
         """
         if self.__search_context.get_current_results_length() == 0:
+            self.__logger.log_action(Actions.SERP, status="EMPTY_SERP")
             return False  # No results present; return False (we don't continue with this SERP)
         
+        self.__logger.log_action(Actions.SERP, status="EXAMINE_SERP")
         return True
     
     def __do_snippet(self):
@@ -140,15 +143,16 @@ class SimulatedUser(object):
         
         if self.__search_context.get_document_observation_count(snippet) > 0:
             # This document has been previously seen; so we ignore it. But the higher the count, cumulated credibility could force us to examine it?
-            self.__output_controller.log("Seen this document before: {0}".format(snippet.doc_id))
+            self.__logger.log_action(Actions.SNIPPET, status="SEEN_PREVIOUSLY", doc_id=snippet.doc_id)
             return False
         else:
             # This snippet has not been previously seen; check quality of snippet. Does it show some form of relevance?
             # If so, we return True - and if not, we return False, which moves the simulator to the next step.
             if self.__snippet_classifier.is_relevant(snippet):
-                self.__output_controller.log("Snippet seems relevant, go look at it: {0}".format(snippet.doc_id))
+                self.__logger.log_action(Actions.SNIPPET, status="SNIPPET_RELEVANT", doc_id=snippet.doc_id)
                 return True
             else:
+                self.__logger.log_action(Actions.SNIPPET, status="SNIPPET_NOT_RELEVANT", doc_id=snippet.doc_id)
                 return False
     
     def __do_assess_document(self):
@@ -157,14 +161,15 @@ class SimulatedUser(object):
         """
         if self.__search_context.get_last_query():
             document = self.__search_context.get_current_document()
-            self.__output_controller.log("Examining document: {0}".format(document.doc_id))
+            self.__logger.log_action(Actions.DOC, status="EXAMINING_DOCUMENT", doc_id=document.doc_id)
             
             if self.__document_classifier.is_relevant(document):
-                self.__output_controller.log("Document considered relevant: {0}".format(document.doc_id))
+                self.__logger.log_action(Actions.DOC, status="CONSIDERED_RELEVANT", doc_id=document.doc_id)
                 self.__search_context.add_relevant_document(document)
                 return True
             else:
                 self.__search_context.add_irrelevant_document(document)
+                self.__logger.log_action(Actions.DOC, status="CONSIDERED_NOT_RELEVANT", doc_id=document.doc_id)
                 return False
         
         return False
@@ -173,6 +178,8 @@ class SimulatedUser(object):
         """
         The outcome of marking a document as relevant. At this stage, the user has decided that the document is relevant; hence True can be the only result.
         """
+        document = self.__search_context.get_current_document()
+        self.__logger.log_action(Actions.MARK, doc_id=document.doc_id)
         return True
     
     def __do_decide(self):
@@ -181,7 +188,6 @@ class SimulatedUser(object):
         This is the "decision making" logic - and is abstracted to the instantiated DecisionMaker instance to work this out.
         """
         return self.__decision_maker.decide()
-
-
+        
     def show_query_list(self):
         self.__search_context.show_query_list()

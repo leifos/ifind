@@ -47,13 +47,21 @@ class FixedCostLogger(BaseLogger):
         # Include the super().is_finished() call to determine if there are any queries left to process.
         return (not (self.__total_time < self.__time_limit)) or super(FixedCostLogger, self).is_finished()
     
-    def _report(self, action):
+    def _report(self, action, **kwargs):
         """
         Re-implementation of the _report() method from BaseLogger.
         Includes additional details in the message such as the total elapsed time, and maximum time available to the user after the action has been processed.
         """
-        base = super(FixedCostLogger, self)._report(action)
-        self._output_controller.log("{0}{1} {2}".format(base, self.__time_limit, self.__total_time))
+        log_entry_mapper = {
+            Actions.QUERY  : kwargs.get('query'),
+            Actions.SERP   : kwargs.get('status'),
+            Actions.SNIPPET: "{0} {1}".format(kwargs.get('status'), kwargs.get('doc_id')),
+            Actions.DOC    : "{0} {1}".format(kwargs.get('status'), kwargs.get('doc_id')),
+            Actions.MARK   : "{0}".format(kwargs.get('doc_id')),
+        }
+        
+        base = super(FixedCostLogger, self)._report(action, **kwargs)
+        self._output_controller.log("{0}{1} {2} {3}".format(base, self.__time_limit, self.__total_time, log_entry_mapper[action]))
     
     def _log_query(self, **kwargs):
         """
@@ -61,7 +69,7 @@ class FixedCostLogger(BaseLogger):
         Increments the __total_time counter with the cost of issuing a query.
         """
         self.__total_time = self.__total_time + self.__query_cost
-        self._report(Actions.QUERY)
+        self._report(Actions.QUERY, **kwargs)
     
     def _log_serp(self, **kwargs):
         """
@@ -69,7 +77,7 @@ class FixedCostLogger(BaseLogger):
         Increments the __total_time counter with the cost of examining a SERP.
         """
         self.__total_time = self.__total_time + self.__serp_results_cost
-        self._report(Actions.SERP)
+        self._report(Actions.SERP, **kwargs)
     
     def _log_snippet(self, **kwargs):
         """
@@ -77,18 +85,18 @@ class FixedCostLogger(BaseLogger):
         Increments __total_time to reflect the cost of examining a snippet.
         """
         self.__total_time = self.__total_time + self.__snippet_cost
-        self._report(Actions.SNIPPET)
+        self._report(Actions.SNIPPET, **kwargs)
     
     def _log_assess(self, **kwargs):
         """
         Concrete implementation for assessing a document at a fixed cost.
         """
         self.__total_time = self.__total_time + self.__document_cost
-        self._report(Actions.DOC)
+        self._report(Actions.DOC, **kwargs)
     
     def _log_mark_document(self, **kwargs):
         """
         Concrete implementation for marking a document as relevant as a fixed cost.
         """
         self.__total_time = self.__total_time + self.__mark_document_cost
-        self._report(Actions.MARK)
+        self._report(Actions.MARK, **kwargs)

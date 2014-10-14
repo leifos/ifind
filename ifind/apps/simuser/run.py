@@ -22,8 +22,8 @@ def main(config_filename):
             progress.update()  # Update the progress indicator in the terminal.
             user.decide_action()
         
-        configuration.output.save()
         configuration.output.display_report()
+        configuration.output.save()
 
 def usage(script_name):
     """
