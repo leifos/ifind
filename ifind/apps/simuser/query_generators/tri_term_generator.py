@@ -4,7 +4,7 @@ from query_generators.base_generator import BaseQueryGenerator
 
 class TriTermQueryGenerator(BaseQueryGenerator):
     """
-    Implementing Strategy 3 from Heikki's 2009 paper, generating two-term queries.
+    Implementing Strategy 3 from Heikki's 2009 paper, generating three-term queries.
     The first two terms are drawn from the topic, with the final and third term selected from the description - in some ranked order.
     """
     def generate_query_list(self, topic):
@@ -69,6 +69,15 @@ class TriTermQueryGenerator(BaseQueryGenerator):
         Queries are ranked for each title term - this ensures that the sequence of w1 w2 > w1 w3 is not broken.
         """
         return_terms = []
+        observed_stems = []
+        
+        # Hack - this should be an instance variable or something that can be shared between the title and description parts.
+        for terms in title_query_list:
+            for term in terms[0].split():
+                stemmed_term = self._stem_term(term)
+                
+                if stemmed_term not in observed_stems:
+                    observed_stems.append(stemmed_term)
         
         for title_term in title_query_list:
             title_terms = []
@@ -78,11 +87,17 @@ class TriTermQueryGenerator(BaseQueryGenerator):
                 if self.__description_cutoff > 0 and cutoff_counter == self.__description_cutoff:
                     break
                 
-                title_terms.append('{0} {1}'.format(title_term[0], description_term[0]))
+                stemmed_term = self._stem_term(description_term[0])
+                if stemmed_term in observed_stems:
+                    continue
                 
+                observed_stems.append(stemmed_term)
+                    
+                title_terms.append('{0} {1}'.format(title_term[0], description_term[0]))
                 cutoff_counter = cutoff_counter + 1
             
             title_terms = self._rank_terms(title_terms, topic_language_model=topic_language_model)
             return_terms = return_terms + title_terms
         
+        print '============='
         return return_terms

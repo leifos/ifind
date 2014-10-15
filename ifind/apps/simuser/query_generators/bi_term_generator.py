@@ -47,6 +47,12 @@ class BiTermQueryGenerator(SmarterQueryGenerator):
         Queries are ranked for each title term - this ensures that the sequence of w1 w2 > w1 w3 is not broken.
         """
         return_terms = []
+        observed_stems = []
+        
+        for term in title_query_list:
+            stemmed_term = self._stem_term(term[0])
+            if stemmed_term not in observed_stems:
+                observed_stems.append(stemmed_term)
         
         for title_term in title_query_list:
             title_terms = []
@@ -56,6 +62,11 @@ class BiTermQueryGenerator(SmarterQueryGenerator):
                 if self.__description_cutoff > 0 and cutoff_counter == self.__description_cutoff:
                     break
                 
+                stemmed_term = self._stem_term(description_term[0])
+                if stemmed_term in observed_stems:
+                    continue
+                
+                observed_stems.append(stemmed_term)
                 title_terms.append('{0} {1}'.format(title_term[0], description_term[0]))
                 
                 cutoff_counter = cutoff_counter + 1

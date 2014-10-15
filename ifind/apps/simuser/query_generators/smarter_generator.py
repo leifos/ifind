@@ -8,8 +8,6 @@ class SmarterQueryGenerator(BaseQueryGenerator):
     """
     
     """
-    
-    
     def _generate_topic_language_model(self, topic):
         """
         

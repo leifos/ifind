@@ -1,4 +1,5 @@
 import abc
+from whoosh.lang.porter import stem
 from ifind.common.query_ranker import QueryRanker
 from ifind.common.language_model import LanguageModel
 from ifind.common.query_generation import SingleQueryGeneration, BiTermQueryGeneration, TriTermQueryGeneration
@@ -6,17 +7,13 @@ from ifind.common.smoothed_language_model import BayesLanguageModel
 
 class BaseQueryGenerator(object):
     """
-    
+    The base query generator class. Although you can use this query generator directly at present, refactoring is required to abstract the inner workings of the query generators more.
     """
     def __init__(self, stopword_file, background_file=[], topic_model = 0):  # TODO(dmax): stopwords_file to be a list!
-        """
-        
-        """
         self._stopword_file = stopword_file
         self._background_file = background_file
         self._topic_model = topic_model
-
-
+    
     def _generate_topic_language_model(self, topic):
 
         topic_model_switch = {0: self._generate_naive_topic_language_model,
@@ -26,8 +23,7 @@ class BaseQueryGenerator(object):
             return topic_model_switch[self._topic_model](topic)
         else:
             return self._generate_naive_topic_language_model(topic)
-
-    
+            
     def _generate_naive_topic_language_model(self, topic):
         """
         Given a Topic object, returns a language model representation for the given topic.
@@ -42,13 +38,11 @@ class BaseQueryGenerator(object):
         # The langauge model we return is simply a representtaion of the number of times terms occur within the topic text.
         topic_language_model = LanguageModel(term_dict=document_term_counts)
         return topic_language_model
-
-
+        
     def _generate_title_topic_language_model(self, topic):
         """
-
+        Generates a language model based on the content from the title and description of the TREC title/description.
         """
-
         topic_text = topic.title
         topic_background = topic.content
 
@@ -64,9 +58,7 @@ class BaseQueryGenerator(object):
         background_language_model = LanguageModel(term_dict=background_term_counts)
         topic_language_model = BayesLanguageModel(title_language_model, background_language_model, beta=10)
         return topic_language_model
-
-
-    
+        
     def generate_query_list(self, topic):
         """
         Given a Topic object, produces a list of query terms that could be issued by the simulated agent.
@@ -93,3 +85,10 @@ class BaseQueryGenerator(object):
         Additional parameters may be passed (if required for a given implementation) through kwargs.
         """
         pass
+    
+    def _stem_term(self, term):
+        """
+        Applies the Porter stemming algorithm (implementation from the Whoosh IR toolkit) to a given term, term.
+        The returned string represents the stemmed version of the term.
+        """
+        return stem(term)
