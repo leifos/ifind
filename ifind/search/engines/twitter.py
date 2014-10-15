@@ -133,11 +133,12 @@ class Twitter(Engine):
             Private method.
 
         """
+        # Check for a result type, if none found, set it to default.
         result_type = query.result_type
-
         if not result_type:
             result_type = DEFAULT_RESULT_TYPE
 
+        # Check to if the result type is valid
         if result_type not in RESULT_TYPES:
             raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
