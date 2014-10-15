@@ -48,7 +48,7 @@ class Pipl(Engine):
 
         Query Kwargs:
             ********
-            Note: If *both* the first name and last name are not provided, query.terms will be interpreted as raw_name
+            Note: If *both* the first name and last name are absent, query.terms will be interpreted as raw_name
             ********
 
             first_name (str): The first name of the target. Minimum 2 characters.

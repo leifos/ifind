@@ -22,6 +22,7 @@ class Facebook(Engine):
         Facebook engine constructor.
 
         Kwargs:
+            api_key (str): string representation of api key needed to access bing search api
             See Engine.
 
         Raises:
@@ -110,11 +111,12 @@ class Facebook(Engine):
             Private method.
 
         """
-
+        # Check for a result type, if none found, set it to default.
         result_type = query.result_type
         if not result_type:
             result_type = DEFAULT_RESULT_TYPE
 
+        # Check to if the result type is valid
         if result_type not in RESULT_TYPES:
             raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
@@ -140,8 +142,7 @@ class Facebook(Engine):
         Raises:
             ifind.search.exceptions InvalidQueryException
         """
-        c=''
-        m=''
+
         content = json_loaded
         try:
             m = content[u'error'][u'message']
@@ -193,6 +194,7 @@ class Facebook(Engine):
 
             # The base URL is used to create the link to the profile, it will redirect to a permanent user URL.
             base_url= "https://www.facebook.com/app_scoped_user_id/"
+
             for user in content[u'data']:
                 name = user[u'name']
                 tempid = user[u'id']
@@ -203,6 +205,6 @@ class Facebook(Engine):
                 # for the snippet. Better way?
                 response.add_result(title=name, url=url, summary=text, imageurl=img)
 
-            # Implement the other search tpyes.
+            # Implement the other search types!
         return response
 

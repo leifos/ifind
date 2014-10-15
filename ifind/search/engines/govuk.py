@@ -105,13 +105,11 @@ class Govuk(Engine):
         base_url = "https://www.gov.uk"
 
         for result in content[u'results']:
-            try:
-                # Catch results with no description (they exist!)
-                text = result[u'description']
-            except KeyError:
-                text = ''
+            text = result.get(u'description', '')
             title = result[u'title']
             url = base_url + result[u'link']
+
+            # Add the result to the ifind response
             response.add_result(title=title, url=url, summary=text)
 
             if len(response) == query.top:

@@ -22,6 +22,7 @@ class Companycheck(Engine):
         Companycheck engine constructor.
 
         Kwargs:
+            api_key (str): string representation of api key needed to access the CompanyCheck search api
             See Engine.
 
         Raises:
@@ -47,6 +48,7 @@ class Companycheck(Engine):
 
         Query Kwargs:
             result_type (str): specifies the type of results to return (see top of class for available types).
+            postcode (str): an additional postcode to include in the query
 
         Returns:
             ifind Response: object encapulsating a search request's results.
@@ -111,13 +113,10 @@ class Companycheck(Engine):
 
         """
 
-
+        # Check for a result type, if none found, set it to default.
         result_type = query.__dict__.get('result_type', DEFAULT_RESULT_TYPE)
         if result_type == '':
             result_type = DEFAULT_RESULT_TYPE
-
-        postcode = query.__dict__.get('postcode', '')
-
 
         # Check to if the result type is valid
         if result_type:
@@ -125,6 +124,8 @@ class Companycheck(Engine):
                 raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
 
+        # Fetch the postcode keyword
+        postcode = query.__dict__.get('postcode', '')
 
         # Build the appropriate query string based on the result type
         if result_type == 'company':
@@ -144,15 +145,15 @@ class Companycheck(Engine):
             raise QueryParamException(self.name, "No handler found for result type: {}"
                                                  .format(query.result_type))
 
-        print API_ENDPOINT + encode_symbols(query_append)
         return API_ENDPOINT + encode_symbols(query_append)
 
     @staticmethod
     def _build_company_summary(company):
         """
-        Builds the summary portion of the company result
+        Builds the summary portion of the company result. This is essentially just a composite of several features in
+        the response.
 
-        :param: dict - company - company dictionary from the companycheck JSON response
+        :param: dict - company dictionary from the companycheck JSON response
         :return: str - summary
         """
         country = u'Country: ' + company[u'country']
@@ -165,10 +166,11 @@ class Companycheck(Engine):
     @staticmethod
     def _build_director_summary(director):
         """
-        Builds the summary portion of the directors result
+        Builds the summary portion of the directors result, this is essentially just a composite of several features in
+        the resposne. Also returns a list of postcodes to be passed as keywords arguments in the response.
 
         :param: dict - company - company dictionary from the companycheck JSON response
-        :return: str - summary
+        :return: dict{list, string} - containing the postcodes found as well as the string representing the summary
         """
         postcodes = []
         for pcode in director[u'registeredPostcodes']:
@@ -195,9 +197,11 @@ class Companycheck(Engine):
 
         response = Response(query.terms)
         content = json.loads(results.text)
+
+        # The base URL to add the director or company number to, which provides the complete link.
         url_base = 'http://companycheck.co.uk/'
 
-
+        # Since the object isn't mutated, set the default again if there is nothing present.
         if query.result_type:
             result_type = query.result_type
         else:
@@ -205,6 +209,7 @@ class Companycheck(Engine):
 
 
         if result_type == 'company' or not result_type:
+            # Create the ifind response for company searches
             for company in content:
                 name = company[u'name']
                 url =  url_base + 'company/' + str(company[u'number'])
@@ -221,16 +226,18 @@ class Companycheck(Engine):
                                     number=number, country=country, address=address, sic=sic, status=status)
 
         elif result_type == 'director':
+            # Create the ifind response for director searches
             for director in content:
                 name = director[u'name']
                 url =  url_base + 'director/' + str(director[u'number'])
                 imageurl = None
                 sum_dic = Companycheck._build_director_summary(director)
                 summary = sum_dic.get('summary')
+                # Keyword args below
                 postcodes = sum_dic.get('postcode_list')
                 number = director[u'number']
+                # Add result object to the response
                 response.add_result(title=name, url=url, summary=summary, imageurl=imageurl, postcodes=postcodes,
                                     number=number)
 
         return response
-

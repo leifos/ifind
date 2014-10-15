@@ -8,9 +8,9 @@ import time
 
 API_ENDPOINT = "https://www.googleapis.com/plus/v1/"
 
-RESULT_TYPES = ('people', 'activities', 'people+')
+RESULT_TYPES = ('people', 'activities', 'person_lookup')
 DEFAULT_RESULT_TYPE = 'people'
-MAX_PAGE_SIZE = {'people': 50, 'activities': 20, 'people+':50}
+MAX_PAGE_SIZE = {'people': 50, 'activities': 20, 'person_lookup': 1}
 
 class Googleplus(Engine):
     """
@@ -23,6 +23,7 @@ class Googleplus(Engine):
         Googleplus engine constructor.
 
         Kwargs:
+            api_key (str): string representation of api key needed to access bing search api
             See Engine.
 
         Raises:
@@ -115,10 +116,6 @@ class Googleplus(Engine):
         # Set the result type
         if query.result_type:
             result_type = query.result_type
-            if result_type == 'people+':
-                # If it's a people+ search, modifiy the result_type for the purposes of the API call.
-                result_type = 'people'
-
         else:
             result_type = DEFAULT_RESULT_TYPE
 
@@ -140,40 +137,32 @@ class Googleplus(Engine):
                          'q': query.terms,
                          'top': top,
                          }
+
         # Craft the string to append to the endpoint url
-        query_append = "{}?query='{}'&maxResults={}&key={}".format\
-            (search_params['result_type'], search_params['q'], search_params['top'] , self.api_key)
+        if result_type in ['people', 'activities']:
+            query_append = "{}?query='{}'&maxResults={}&key={}".format\
+                (search_params['result_type'], search_params['q'], search_params['top'], self.api_key)
+
+        elif result_type == 'person_lookup':
+            query_append = "people/{}?key={}".format\
+                (search_params['q'], self.api_key)
+
 
         return API_ENDPOINT + encode_symbols(query_append)
-
-    def _get_person_info(self, user_id):
-        """
-        Could be in its own class, or result type for later handling.
-
-        Gets person specific information by making an additional API call.
-        """
-
-        query_string = "{}people/{}?key={}".format(API_ENDPOINT, user_id, self.api_key)
-
-        try:
-            personResponse = requests.get(query_string)
-        except requests.exceptions.ConnectionError:
-            raise EngineConnectionException(self.name, "Unable to send request, check connectivity.")
-
-        if personResponse.status_code != 200:
-            raise EngineConnectionException(self.name, "", code=personResponse.status_code)
-
-        return personResponse
 
     @staticmethod
     def _resize_image(imageurl, newsize=125):
         """
         Modifiies the image size parameter in the image URL, returns the modified string.
 
-        :param imageurl: The Googleplus image url
-        :param newsize:  The new size of the url, the API returns ?sz=50
-        :return: Returns the new URL with the size update
+        Args:
+            imageurl (str): The Googleplus image url
+            newsize (int):  The new size of the image, the API returns ?sz=50
+
+        Returns:
+            str/None: An updated URL or None if input was incorrect
         """
+
         if imageurl:
             return imageurl.split('?sz=')[0] + '?sz=' + str(newsize)
         else:
@@ -185,8 +174,11 @@ class Googleplus(Engine):
         Builds the summary portion of the activity search. Strips out the various JSON elements and returns an appropriate
         summary string.
 
-        :param activity: An activity dictionary from the Googleplus JSON response
-        :return: Summary string
+        Args:
+            activity (dict): An activity dictionary from the Googleplus JSON response
+
+        Returns:
+            str: Summary string
         """
 
         object = "\n" + activity[u'object'][u'objectType'] + "\n" + activity[u'object'][u'content']
@@ -211,47 +203,36 @@ class Googleplus(Engine):
         summary = u"User: {}\nPublished: {}{}{}".format(actorname, published, object, attachment)
         return summary
 
-    def _build_person_summary(self, user_id):
+    @staticmethod
+    def _build_person_summary(person):
         """
-        Builds the summary portion of a people+ search. For a given user, call self._get_person_info to get a new person
-        specific response, then buuilds and returns an appropriate summary string.
+        Builds the summary portion of a person lookup.
 
-        :param user_id:
-        :return:
+        Args:
+            person (dict): A dictionary representing the
+
+        Returns:
+            str: Summary of the person response (occupation, places lived, about)
         """
 
-        pinfo = self._get_person_info(user_id)
-        content = json.loads(pinfo.text)
+        occupation = person.get(u'occupation', '')
+        if occupation:
+            occupation = 'Occupation: ' + occupation.encode('utf-8')
 
+        about_me = person.get(u'aboutMe', '')
+        if about_me:
+            about_me = 'About Me : ' + about_me.encode('utf-8')
 
-        occupation = ''
-        try:
-            occupation = "Occupation: " + str(content[u'occupation'])
-        except:
-            # There's no occupation listed
-            pass
-
+        pl = person.get(u'placesLived', '')
         places_lived = []
-        try:
-            for location in content[u'placesLived']:
-                places_lived.append(str(location[u'value']))
-            places_lived = "\nPlaces Lived: " + str(places_lived)
-        except:
-            # There are lived places listed.
-            places_lived = ''
-
-        about_me = ''
-        try:
-            about_me = "\nAbout:" + str(content[u'aboutMe'])
-        except:
-            # There's no about me section
-            pass
+        if pl:
+            for location in pl:
+                places_lived.append(location.get(u'value').encode('utf-8'))
+            places_lived = str(places_lived).translate(None, '[]')
+        if places_lived:
+            places_lived = 'Places Lived: ' + places_lived.encode('utf-8')
 
         summary = "{}{}{}".format(occupation, places_lived, about_me)
-        summary = unicode(summary)
-
-        # Add in a slight delay to reduce API strain
-        time.sleep(0.8)
 
         return summary
 
@@ -275,25 +256,30 @@ class Googleplus(Engine):
         response = Response(query.terms)
         content = json.loads(results.text)
 
-        result_type = DEFAULT_RESULT_TYPE
+        # The query object wasn't mutated earlier and the result type isn't passed to this function.
+        # Check for a result_type or set it to default.
         if query.result_type:
             result_type = query.result_type
+        else:
+            result_type = DEFAULT_RESULT_TYPE
 
-        if result_type == 'people' or result_type == 'people+':
+        if result_type == 'people':
+            # Build the ifind response for a people search
+
             for user in content[u'items']:
                 name = user[u'displayName']
                 url = user[u'url']
                 imageurl = Googleplus._resize_image(user[u'image'][u'url'])
+                summary = ''
 
-                # Check to see if the search results needs recusrively acquired person details.
-                if result_type == 'people+':
-                    summary = self._build_person_summary(user[u'id'])
-                else:
-                    summary = ''
+                # Kwargs
+                id = user[u'id']
+
                 # Add the result to the response
-                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl)
+                response.add_result(title=name, url=url, summary=summary, imageurl=imageurl, id=id)
 
         elif result_type == 'activities':
+            # Build the ifind response for an activity search
             for activity in content[u'items']:
 
                 # The three dictionaries below are passed as keyword arguments to the result object
@@ -335,5 +321,38 @@ class Googleplus(Engine):
                 response.add_result(title=title, url=url, summary=summary, imageurl=imageurl,
                                     actor=actor_dict, object=object_dict, activity=activity_dict,
                                     attachments=attachments)
+
+        elif result_type == 'person_lookup':
+            # Build the ifind response for a person lookup. No loop as the content is for a single person.
+
+            title = content[u'displayName']
+            url = content[u'url']
+            imageurl = content[u'image'][u'url']
+            summary = Googleplus._build_person_summary(content)
+
+            about_me = content.get(u'aboutMe')
+            occupation = content.get(u'occupation')
+            verified = content.get(u'verified')
+            circled_count = content.get(u'circledByCount')
+            is_plus_user = content.get(u'isPlusUser')
+            birthday = content.get(u'birthday')
+            bragging_rights = content.get(u'braggingRights')
+            emails = content.get(u'emails')
+            skills = content.get(u'skills')
+            relationship_status = content.get(u'relationshipStatus')
+            places_lived = content.get(u'placesLived')
+            organizations = content.get(u'organizations')
+            tagline = content.get(u'tagline')
+
+            # Kwargs below
+            person = {'about_me': about_me, 'occupation':occupation, 'verified': verified, 'emails': emails,
+                      'circled_count': circled_count, 'is_plus_user': is_plus_user, 'birthday': birthday,
+                      'bragging_rights': bragging_rights, 'skills': skills, 'relationship_status': relationship_status,
+                      'places_lived': places_lived, 'organizations': organizations, 'tagline': tagline
+                    }
+
+
+            # Add the result to the response.
+            response.add_result(title=title, url=url, summary=summary, imageurl=imageurl, person=person)
 
         return response
