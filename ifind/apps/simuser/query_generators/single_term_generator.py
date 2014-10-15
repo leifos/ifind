@@ -24,7 +24,9 @@ class SingleTermQueryGenerator(BaseQueryGenerator):
         query_ranker = QueryRanker(smoothed_language_model=topic_language_model)
         query_ranker.calculate_query_list_probabilities(query_list)
         
-        return query_ranker.get_top_queries(100)
+        generated_queries = query_ranker.get_top_queries(100)
+        self._log_queries(generated_queries)
+        return generated_queries
         
     def _generate_topic_language_model(self, topic):
         """

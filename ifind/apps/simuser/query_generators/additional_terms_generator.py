@@ -32,7 +32,9 @@ class AdditionalQueryGenerator(SmarterQueryGenerator):
         description_query_list = description_generator.extract_queries_from_text(topic_description)
         description_query_list = self._rank_terms(description_query_list, topic_language_model=topic_language_model)
         
-        return self.__generate_permutations(topic_language_model, title_stem, description_query_list)
+        query_permutations = self.__generate_permutations(topic_language_model, title_stem, description_query_list)
+        self._log_queries(query_permutations)
+        return query_permutations
     
     def _rank_terms(self, terms, **kwargs):
         """
@@ -43,6 +45,7 @@ class AdditionalQueryGenerator(SmarterQueryGenerator):
         
         ranker = QueryRanker(smoothed_language_model=topic_language_model)
         ranker.calculate_query_list_probabilities(terms)
+        
         return ranker.get_top_queries(len(terms))
     
     def __get_title_stem(self, topic_language_model, title_query_list):

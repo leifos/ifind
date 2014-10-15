@@ -9,10 +9,11 @@ class BaseQueryGenerator(object):
     """
     The base query generator class. Although you can use this query generator directly at present, refactoring is required to abstract the inner workings of the query generators more.
     """
-    def __init__(self, stopword_file, background_file=[], topic_model = 0):  # TODO(dmax): stopwords_file to be a list!
+    def __init__(self, output_controller, stopword_file, background_file=[], topic_model=0):  # TODO(dmax): stopwords_file to be a list!
         self._stopword_file = stopword_file
         self._background_file = background_file
         self._topic_model = topic_model
+        self._output_controller = output_controller
     
     def _generate_topic_language_model(self, topic):
 
@@ -92,3 +93,14 @@ class BaseQueryGenerator(object):
         The returned string represents the stemmed version of the term.
         """
         return stem(term)
+    
+    def _log_queries(self, queries):
+        """
+        Given a log of queries, adds each one to the log file for the running simulation.
+        For informational purposes, really.
+        """
+        count = 1
+        
+        for query in queries:
+            self._output_controller.log_info(info_type="GENERATED_QUERY", text="{0} {1}".format(count, query[0]))
+            count = count + 1

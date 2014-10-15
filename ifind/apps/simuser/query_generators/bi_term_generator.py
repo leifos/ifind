@@ -28,7 +28,9 @@ class BiTermQueryGenerator(SmarterQueryGenerator):
         description_query_list = description_generator.extract_queries_from_text(topic_description)
         description_query_list = self._rank_terms(description_query_list, topic_language_model=topic_language_model)
         
-        return self.__generate_permutations(topic_language_model, title_query_list, description_query_list)
+        generated_permutations = self.__generate_permutations(topic_language_model, title_query_list, description_query_list)
+        self._log_queries(generated_permutations)
+        return generated_permutations
     
     def _rank_terms(self, terms, **kwargs):
         """

@@ -47,7 +47,7 @@ class SearchContext(object):
         return_string = return_string + "    Number of Documents Examined: {0}{1}".format(len(self.__all_documents_examined), os.linesep)
         return_string = return_string + "    Number of Documents Marked Relevant: {0}".format(len(self.__relevant_documents))
         
-        self.__output_controller.log_info(info_type="SUMMARY", text=4)  # 4 summary lines; change as required.
+        self.__output_controller.log_info(info_type="SUMMARY")
         self.__output_controller.log_info(info_type="TOTAL_QUERIES_ISSUED", text=self.__query_count)
         self.__output_controller.log_info(info_type="TOTAL_SNIPPETS_EXAMINED", text=len(self.__all_snippets_examined))
         self.__output_controller.log_info(info_type="TOTAL_DOCUMENTS_EXAMINED", text=len(self.__all_documents_examined))
