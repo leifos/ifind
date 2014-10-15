@@ -13,6 +13,7 @@ class OutputController(object):
         self.__trec_eval_flag = output_configuration['@trec_eval']
         
         self.__interaction_log = []
+        self.__query_log = []
         
         self.output_indentation = 2  # Controls the level of indentation when outputting results to stdout.
                                      # Publicly facing instance variable - is used by the Component Generators prettify() methods.
@@ -40,6 +41,12 @@ class OutputController(object):
             info_type = "CUSTOM"
         
         self.__interaction_log.append("INFO {0} {1}".format(info_type, text))
+    
+    def log_query(self, query):
+        """
+        Logs a generated query, ready to save it to the query output file.
+        """
+        self.__query_log.append(query)
         
     def display_config(self):
         """
@@ -74,6 +81,7 @@ class OutputController(object):
         """
         self.__save_interaction_log()
         self.__save_relevance_judgments()
+        self.__save_query_log()
         self.__run_trec_eval()
     
     def __save_interaction_log(self):
@@ -90,6 +98,20 @@ class OutputController(object):
                 log_file.write('{0}{1}'.format(entry, os.linesep))
             
             log_file.close()
+    
+    def __save_query_log(self):
+        """
+        Saves the query log to the output file.
+        """
+        query_log_filename = '{0}.queries'.format(self.__simulation_configuration.base_id)
+        query_log_filename = os.path.join(self.__base_directory, query_log_filename)
+        
+        log_file = open(query_log_filename, 'w')
+        
+        for entry in self.__query_log:
+            log_file.write('{0}{1}'.format(entry, os.linesep))
+        
+        log_file.close()
     
     def __save_relevance_judgments(self):
         """

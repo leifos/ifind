@@ -102,5 +102,6 @@ class BaseQueryGenerator(object):
         count = 1
         
         for query in queries:
-            self._output_controller.log_info(info_type="GENERATED_QUERY", text="{0} {1}".format(count, query[0]))
+            print query
+            self._output_controller.log_query("{0} {1}".format(count, query[0]))
             count = count + 1
