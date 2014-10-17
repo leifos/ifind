@@ -127,10 +127,8 @@ class Googleplus(Engine):
         # Set the number of results to get back, max value specified at the top of this file
         if query.top and query.top <= MAX_PAGE_SIZE[result_type]:
             top = query.top
-        elif query.top and query.top > MAX_PAGE_SIZE[result_type]:
-            top = MAX_PAGE_SIZE[result_type]
         else:
-            top = MAX_PAGE_SIZE[result_type/2]
+            top = MAX_PAGE_SIZE[result_type]
 
         # Dictionary of search paramaters
         search_params = {'result_type': result_type,
