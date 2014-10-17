@@ -35,6 +35,10 @@ class Response(object):
         self.total_pages = 0
         self.results_on_page = 0
         self.actual_page = 0
+        # Flag to determine whether the engine has any more results for this query.
+        self.no_more_results = False
+        # The url to request the next page from
+        self.next_page = None
 
     def add_result_object(self, result_object):
         """
