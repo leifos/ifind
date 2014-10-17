@@ -50,6 +50,7 @@ class Googleplus(Engine):
         Query Kwargs:
             result_type (str): specifies the type of results to return (see top of class for available types).
             top (int): number of tweets to return up to MAX_PAGE_SIZE
+            page_token (str): a page token to obtain a specific page in paginated results
         Returns:
             ifind Response: object encapulsating a search request's results.
 
@@ -134,16 +135,18 @@ class Googleplus(Engine):
         search_params = {'result_type': result_type,
                          'q': query.terms,
                          'top': top,
+                         'page_token': query.__dict__.get('page_token', '')
                          }
 
         # Craft the string to append to the endpoint url
         if result_type in ['people', 'activities']:
-            query_append = "{}?query='{}'&maxResults={}&key={}".format\
-                (search_params['result_type'], search_params['q'], search_params['top'], self.api_key)
+            query_append = "{}?query='{}'&maxResults={}&key={}&pageToken={}".format\
+                (search_params['result_type'], search_params['q'],
+                 search_params['top'], self.api_key, search_params['page_token'])
 
         elif result_type == 'person_lookup':
-            query_append = "people/{}?key={}".format\
-                (search_params['q'], self.api_key)
+            query_append = "people/{}?key={}&pageToken={}".format\
+                (search_params['q'], self.api_key, search_params['page_token'])
 
 
         return API_ENDPOINT + encode_symbols(query_append)
@@ -253,6 +256,7 @@ class Googleplus(Engine):
 
         response = Response(query.terms)
         content = json.loads(results.text)
+        print content
 
         # The query object wasn't mutated earlier and the result type isn't passed to this function.
         # Check for a result_type or set it to default.
@@ -260,6 +264,12 @@ class Googleplus(Engine):
             result_type = query.result_type
         else:
             result_type = DEFAULT_RESULT_TYPE
+
+        # Check for a next page token.
+        next_page_token = content.get('nextPageToken')
+        if next_page_token:
+            # A page token exists, create the URL which will fetch the next page
+            response.next_page = "{}&pageToken={}".format(self._create_query_string(query), next_page_token)
 
         if result_type == 'people':
             # Build the ifind response for a people search
@@ -348,7 +358,6 @@ class Googleplus(Engine):
                       'bragging_rights': bragging_rights, 'skills': skills, 'relationship_status': relationship_status,
                       'places_lived': places_lived, 'organizations': organizations, 'tagline': tagline
                     }
-
 
             # Add the result to the response.
             response.add_result(title=title, url=url, summary=summary, imageurl=imageurl, person=person)
