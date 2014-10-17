@@ -254,6 +254,9 @@ class Pipl(Engine):
         response = Response(query.terms)
         content = json.loads(results.text)
 
+        # Pipl only returns 20 results, so there are no more.
+        response.no_more_results = True
+
         for record in content[u'records']:
             name = record[u'names'][0][u'display']
             url = record[u'source'][u'url']
