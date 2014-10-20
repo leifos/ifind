@@ -12,7 +12,7 @@ class BiTermQueryGenerator(SmarterQueryGenerator):
         """
         Given a Topic object, produces a list of query terms that could be issued by the simulated agent.
         """
-        self.__description_cutoff = 5
+        self.__description_cutoff = 100
         
         topic_title = topic.title
         topic_description = topic.content

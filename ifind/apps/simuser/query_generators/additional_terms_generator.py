@@ -8,13 +8,18 @@ class AdditionalQueryGenerator(SmarterQueryGenerator):
     Given n fixed query terms, we then append query terms to the end of the fixed query m times.
     Fixed terms are derived from the topic title, appended terms from the topic description.
     """
+    def __init__(self, output_controller, stopword_file, background_file=[], topic_model=0, title_stem_length=2, description_cutoff=10):
+        super(AdditionalQueryGenerator, self).__init__(output_controller, stopword_file, background_file=background_file, topic_model=topic_model)
+        self.__title_stem_length = title_stem_length
+        self.__description_cutoff = description_cutoff
+        
+        print self.__title_stem_length
+        print self.__description_cutoff
+        
     def generate_query_list(self, topic):
         """
         Given a Topic object, produces a list of query terms that could be issued by the simulated agent.
-        """
-        self.__title_stem_length = 2
-        self.__description_cutoff = 0
-        
+        """        
         topic_title = topic.title
         topic_description = topic.content
         topic_language_model = self._generate_topic_language_model(topic)
@@ -72,25 +77,28 @@ class AdditionalQueryGenerator(SmarterQueryGenerator):
         observed_stems = []
         return_terms = []
         cutoff_counter = 0
+        current_query = title_stem
         
-        #TODO: Hack - this needs to be refactored. Ugly, we should have a instance variable storing observed stemmed terms across the title and description.
         for term in title_stem.split():
             stemmed_term = self._stem_term(term)
             if stemmed_term not in observed_stems:
                 observed_stems.append(stemmed_term)
         
         for description_term in description_query_list:
+            expanded_term = description_term[0]
             stemmed_term = self._stem_term(description_term[0])
             
             if stemmed_term in observed_stems:
                 continue
             
-            observed_stems.append(stemmed_term)            
+            observed_stems.append(stemmed_term)
             
+            # If we have reached the maximum number of query terms...if self.__description_cutoff > 0, there is a limit.
             if self.__description_cutoff > 0 and cutoff_counter == self.__description_cutoff:
                 break
             
-            return_terms.append(('{0} {1}'.format(title_stem, description_term[0]), 0))
+            current_query = "{0} {1}".format(current_query, expanded_term)
+            return_terms.append(current_query)
             cutoff_counter = cutoff_counter + 1
-            
+        
         return return_terms

@@ -1,8 +1,9 @@
 <userConfiguration id="smartuser">
 
-	<queryGenerator class="TriTermQueryGenerator">
+	<queryGenerator class="AdditionalQueryGenerator">
 		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
-        <attribute name="topic_model" type="integer" value="0" is_argument="true" />
+		<attribute name="title_stem_length" type="integer" value="1" is_argument="true" />
+		<attribute name="description_cutoff" type="integer" value="3" is_argument="true" />
 	</queryGenerator>
 
 	<textClassifiers>
