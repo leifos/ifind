@@ -2,8 +2,8 @@ import os
 
 ############
 SPLIT_AT = '-'
-DIRECTORY = os.path.abspath('baseline_informed_trec_topictitle')
-BASE_FILENAME = 'informedtrecbaseline-{0}-informeduser.{1}'  # {0} corresponds to the topic, {1} to the type of output file.
+DIRECTORY = os.path.abspath('baseline_realistic_informed_s_trec_topictitle')
+BASE_FILENAME = 'realisticinformedtrecbaseline-{0}-realisticinformeduser.{1}'  # {0} corresponds to the topic, {1} to the type of output file.
 
 LOG_DETAILS = ['TOTAL_QUERIES_ISSUED', 'TOTAL_SNIPPETS_EXAMINED', 'TOTAL_DOCUMENTS_EXAMINED', 'TOTAL_DOCUMENTS_MARKED_RELEVANT']
 TREC_DETAILS = ['num_rel', 'num_ret', 'num_rel_ret', 'p5', 'p10', 'p20', 'map']
@@ -35,6 +35,10 @@ def get_trec_eval_stats(topic, directory, base_filename):
     """
     log_file = base_filename.format(topic, 'out')
     log_file = os.path.join(directory, log_file)
+    
+    if os.path.getsize(log_file) == 0:
+        return None
+    
     log_file = open(log_file, 'r')
     
     stats = {}
@@ -88,7 +92,11 @@ def get_summary_string(topic, topic_details):
         return_str = "{0},{1}".format(return_str, value)
     
     for value in TREC_DETAILS:
-        value = topic_details[topic]['trec_eval'][value]
+        if topic_details[topic]['trec_eval'] is not None:
+            value = topic_details[topic]['trec_eval'][value]
+        else:
+            value = 0
+        
         return_str = "{0},{1}".format(return_str, value)
 
     return "{0}{1}".format(return_str, os.linesep)
