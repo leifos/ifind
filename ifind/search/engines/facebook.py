@@ -147,7 +147,7 @@ class Facebook(Engine):
         try:
             m = content[u'error'][u'message']
             c = content[u'error'][u'code']
-            out= "API Error code: {}\nError message: {}".format(c,m)
+            out= "API Error code: {}\nError message: {}".format(c, m)
             raise InvalidQueryException(self.name, out)
         except KeyError:
             pass
@@ -173,6 +173,9 @@ class Facebook(Engine):
 
         # Check to see if the response contains any API errors.
         Facebook._check_errors(content)
+
+        # By default, Facebook returns 5000 results. While it returns a pagination key, it seems to do nothing.
+        response.no_more_results = True
 
         if query.result_type == 'user' or not query.result_type:
             # Sample response

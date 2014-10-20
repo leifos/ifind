@@ -256,7 +256,6 @@ class Googleplus(Engine):
 
         response = Response(query.terms)
         content = json.loads(results.text)
-        print content
 
         # The query object wasn't mutated earlier and the result type isn't passed to this function.
         # Check for a result_type or set it to default.
@@ -266,7 +265,7 @@ class Googleplus(Engine):
             result_type = DEFAULT_RESULT_TYPE
 
         # Check for a next page token.
-        next_page_token = content.get('nextPageToken')
+        next_page_token = content.get(u'nextPageToken')
         if next_page_token:
             # A page token exists, create the URL which will fetch the next page
             response.next_page = "{}&pageToken={}".format(self._create_query_string(query), next_page_token)

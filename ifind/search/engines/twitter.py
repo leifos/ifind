@@ -114,9 +114,9 @@ class Twitter(Engine):
         if response.status_code != 200:
             raise EngineConnectionException(self.name, "", code=response.status_code)
 
-        return Twitter._parse_json_response(query, response)
+        return self._parse_json_response(query, response)
 
-    def _create_query_string(self, query):
+    def _create_query_string(self, query, search_params=''):
         """
         Creates and returns Twitter API query string with encoded query parameters.
 
@@ -133,20 +133,22 @@ class Twitter(Engine):
             Private method.
 
         """
-        # Check for a result type, if none found, set it to default.
-        result_type = query.result_type
-        if not result_type:
-            result_type = DEFAULT_RESULT_TYPE
+        # Check to see if there is an existing dictionary of twitter search parameters. This will only happen when
+        # creating the string for the next page
+        if not search_params:
+            # Check for a result type, if none found, set it to default.
+            result_type = query.result_type
+            if not result_type:
+                result_type = DEFAULT_RESULT_TYPE
 
-        # Check to if the result type is valid
-        if result_type not in RESULT_TYPES:
-            raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
-                                                 .format(query.result_type))
-
-        search_params = {'count': query.top,
-                         'result_type': result_type,
-                         'lang': query.lang,
-                         'q': query.terms}
+            # Check to if the result type is valid
+            if result_type not in RESULT_TYPES:
+                raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
+                                                     .format(query.result_type))
+            search_params = {'count': query.top,
+                             'result_type': result_type,
+                             'lang': query.lang,
+                             'q': query.terms}
 
         request = oauth.Request.from_consumer_and_token(OAUTH_CONSUMER,
                                                         token=OAUTH_TOKEN,
@@ -158,8 +160,7 @@ class Twitter(Engine):
 
         return request.to_url()
 
-    @staticmethod
-    def _parse_json_response(query, results):
+    def _parse_json_response(self, query, results):
         """
         Parses Twitter's JSON response and returns as an ifind Response.
 
@@ -175,8 +176,26 @@ class Twitter(Engine):
 
         """
         response = Response(query.terms)
-
         content = json.loads(results.text)
+
+        # Check to see if there are more results.
+        next_results = content[u'search_metadata'].get(u'next_results', '')
+        if next_results:
+            # Create a dictionary from the string found in u'next_results'
+            params = next_results[1:]
+            params = params.split('&')
+            for index in range(len(params)):
+                params[index] = params[index].split('=')
+            param_dic = {}
+            # At this point params looks like: [['someparam', 'somevalue'], ['someparam', 'somevalue']....]
+            for lis in params:
+                param_dic[lis[0]] = lis[1]
+
+            # Set the next page URL in the response.
+            response.next_page = self._create_query_string(query, search_params=param_dic)
+        else:
+            # No more results, set the flag in the response
+            response.no_more_results = True
 
         for result in content[u'statuses']:
 

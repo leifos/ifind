@@ -208,6 +208,9 @@ class Companycheck(Engine):
             result_type = DEFAULT_RESULT_TYPE
 
 
+        # CompanyCheck returns all the results it has, it has no further results.
+        response.no_more_results = True
+
         if result_type == 'company' or not result_type:
             # Create the ifind response for company searches
             for company in content:
