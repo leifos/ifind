@@ -197,7 +197,7 @@ class Googleplus(Engine):
                 attachment += activity[u'object'][u'attachments'][0][u'displayName']
             except KeyError:
                 pass
-            attachment += "\n" + activity[u'object'][u'attachments'][0][u'url']
+            attachment += "\n" + activity[u'object'][u'attachments'][0].get(u'url', '')
 
         actorname = activity[u'actor'][u'displayName']
         published = activity[u'published']
