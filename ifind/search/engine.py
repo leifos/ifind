@@ -14,7 +14,7 @@ class Engine(object):
     Abstract class representing an ifind search engine.
 
     """
-    def __init__(self, cache=None, throttle=0, proxies=None):
+    def __init__(self, cache=None, throttle=0, proxies=None, **kwargs):
         """
         Engine constructor.
 
@@ -52,6 +52,13 @@ class Engine(object):
         self.last_search = None
         self.num_requests = 0
         self.num_requests_cached = 0
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        for key, value in self.__dict__.items():
+            self.__dict__[key] = value
+
 
     def search(self, query):
         """
