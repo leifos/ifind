@@ -19,10 +19,10 @@ class Neutrinogeoaddress(Engine):
 
     def __init__(self, api_key='', username='', google_api_key='', **kwargs):
         """
-        Facebook engine constructor.
+        Neutrinogeoaddress engine constructor.
 
         Kwargs:
-            api_key (str): string representation of api key needed to access bing search api
+            api_key (str): string representation of api key needed to access the search api
             username (str): string representing the username associated with the service
             google_api_key(str): string representation of a Google API key which has map API permissions, this is used
                 for generating the iframe url for embedded maps.
@@ -55,9 +55,6 @@ class Neutrinogeoaddress(Engine):
 
         Args:
             query (ifind Query): Object encapsulating details of a search query.
-
-        Query Kwargs:
-            result_type (str): specifies the type of results to return (see top of class for available types).
 
         Returns:
             ifind Response: object encapulsating a search request's results.
