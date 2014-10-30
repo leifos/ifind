@@ -1,0 +1,25 @@
+<!--
+Automatically generated simulation configuration file
+-->
+
+<simulationConfiguration id="{0}">
+	
+	<output baseDirectory="{1}"
+			saveInteractionLog="true"
+			saveRelevanceJudgments="true"
+			trec_eval="true" />
+	
+	<topics>
+		{2}
+	</topics>
+	
+	<users>
+		{3}
+	</users>
+	
+	<searchInterface class="WhooshSearchInterface">
+		<attribute name="whoosh_index_dir" type="string" value="data/fullindex" is_argument="true" />
+		<attribute name="stopwords_file" type="string" value="data/stopwords.txt" is_argument="true" />
+	</searchInterface>
+	
+</simulationConfiguration>

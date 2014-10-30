@@ -187,6 +187,15 @@ class SimulatedUser(object):
         Method which returns whether a further snippet should be examined, the next query should be issued, or some other action.
         This is the "decision making" logic - and is abstracted to the instantiated DecisionMaker instance to work this out.
         """
+        current_serp_length = self.__search_context.get_current_results_length()
+        current_serp_position = self.__search_context.get_current_serp_position() + 1
+        
+        if current_serp_position > current_serp_length:
+            # If this condition arises, we have reached the end of the SERP!
+            # When SERP pagination is implemented, this condition will either result in moving to the next SERP page or query.
+            self.__output_controller.log_info(info_type="SERP_END_REACHED")
+            return Actions.QUERY
+        
         return self.__decision_maker.decide()
         
     def show_query_list(self):

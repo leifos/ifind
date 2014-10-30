@@ -98,7 +98,7 @@ class AdditionalQueryGenerator(SmarterQueryGenerator):
                 break
             
             current_query = "{0} {1}".format(current_query, expanded_term)
-            return_terms.append(current_query)
+            return_terms.append((current_query, 0))
             cutoff_counter = cutoff_counter + 1
         
         return return_terms
