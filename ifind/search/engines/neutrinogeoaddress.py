@@ -32,7 +32,8 @@ class Neutrinogeoaddress(Engine):
             EngineException
 
         Usage:
-            engine = EngineFactory('Neutrinogeoaddress api_key='etc123456etc123456etc123456')
+            engine = EngineFactory('Neutrinogeoaddress api_key='etc123456etc123456etc123456', username='someguy',
+                                    google_api_key='12313414412')
 
         """
         Engine.__init__(self, **kwargs)
@@ -121,6 +122,10 @@ class Neutrinogeoaddress(Engine):
 
         address = query.terms
 
+        # Throw an exception if we have no search terms.
+        if not address:
+            raise QueryParamException(self.name, "No address provided!")
+
         query_append = "?address={}&country-code={}&language-code={}&user-id={}&api-key={}".format\
             (address, self.country_code, self.language_code, self.username, self.api_key)
 
@@ -204,30 +209,33 @@ class Neutrinogeoaddress(Engine):
         response.no_more_results = True
 
         url_base = 'https://www.google.co.uk/maps/place/'
-        trans_table = maketrans(u' ', u'+')  # Swithc spaces with + for the google maps url
+        trans_table = maketrans(u' ', u'+')  # Switch spaces with + for the google maps url
 
-        for loc in content[u'locations']:
-            # Kwargs below
-            address = loc.get(u'address', '')
-            latitude = loc.get(u'latitude', '')
-            longitude = loc.get(u'longitude', '')
-            country = loc.get(u'country', '')
-            country_code = loc.get(u'country-code', '')
-            city = loc.get(u'city', '')
-            postcode = loc.get(u'postal-code', '')
+        locations = content.get(u'locations')
+        if locations:
+        # There are results present, iterate over them.
+            for loc in locations:
+                # Kwargs below
+                address = loc.get(u'address', '')
+                latitude = loc.get(u'latitude', '')
+                longitude = loc.get(u'longitude', '')
+                country = loc.get(u'country', '')
+                country_code = loc.get(u'country-code', '')
+                city = loc.get(u'city', '')
+                postcode = loc.get(u'postal-code', '')
 
-            if self.google_api_key:
-                iframe_url = self._build_iframe_url(address, trans_table)
-            else:
-                iframe_url = None
-            ###
+                # The iframe_url must be placed in an iframe in order to render the map.
+                if self.google_api_key:
+                    iframe_url = self._build_iframe_url(address, trans_table)
+                else:
+                    iframe_url = None
 
-            url = url_base + encode_symbols(address.encode('utf-8').translate(trans_table))
-            text = Neutrinogeoaddress._build_summary(address, city, country, postcode, latitude, longitude)
+                url = url_base + encode_symbols(address.encode('utf-8').translate(trans_table))
+                text = Neutrinogeoaddress._build_summary(address, city, country, postcode, latitude, longitude)
 
-            response.add_result(title=address, url=url, summary=text, imageurl=None,
-                                address=address, latitude=latitude, longitude=longitude, country=country,
-                                country_code=country_code, city=city, postcode=postcode, iframe_url=iframe_url)
+                response.add_result(title=address, url=url, summary=text, imageurl=None,
+                                    address=address, latitude=latitude, longitude=longitude, country=country,
+                                    country_code=country_code, city=city, postcode=postcode, iframe_url=iframe_url)
 
         return response
 
