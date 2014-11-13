@@ -130,14 +130,13 @@ suggestion_trie = AutocompleteTrie(
 
 print "creating search engine"
 bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-#tfidf = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
 
+#tfidf = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
 #bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
 #tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
 
-#pl2cache = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=True)
-pl2cache = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
-pl2postings = WhooshTrecNewsRedis(whoosh_index_dir=my_whoosh_doc_index_dir, use_cache=False)
+pl2cache = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
+pl2postings = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)
@@ -148,11 +147,14 @@ exp5 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, topics=['344', '
 
 exp_struct_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367', topics=['347', '435', ], rpp=10, interface=1, description='structured condition bm25')
 exp_stand_concept = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='367',  topics=['347', '435', ], rpp=10, interface=0, description='standard condition bm25')
+
+# IIIX 2012 experimental conditions
 exp_fast_high = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 no delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
 exp_slow_high = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 query delay', delay_results=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 exp_fast_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc delay', delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 exp_slow_low = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2cache, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 doc and query delay', delay_results=5, delay_docview=5, trie=suggestion_trie, autocomplete=True, timeout=1200)
 
+# New
 exp_fast_controlled = ExperimentSetup(workflow=exp_work_flows[0], engine=pl2postings, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 controlled query delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
 
 # these correspond to conditions

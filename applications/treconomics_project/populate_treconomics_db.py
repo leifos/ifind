@@ -64,7 +64,7 @@ def populate():
         experiment = 0
         data = None
 
-        print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
+        #print '%s, %s, %d, %d  ' % (username, password, cond, rotation)
         add_user(username, password, cond, experiment, rotation, data)
 
     # cond = 4
@@ -95,7 +95,8 @@ def add_user(username,password, condition, experiment, rotation, data=None):
     u.set_password(password)
     u.save()
     up = UserProfile.objects.get_or_create(user=u, condition=condition, experiment=experiment, rotation=rotation, data=data)[0]
-    #print "\t %s" % (u)
+
+    print '%s, %s, %d, %d  ' % (username, password, condition, rotation)
 
 def add_task(topic_num, title, description):
     t = TaskDescription.objects.get_or_create(topic_num=topic_num, title=title, description=description)[0]

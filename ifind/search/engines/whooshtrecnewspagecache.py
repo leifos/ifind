@@ -7,6 +7,8 @@ from whoosh.qparser import QueryParser
 from whoosh.qparser import MultifieldParser
 from whoosh import highlight
 from whoosh import scoring
+import redis
+import pickle
 
 
 FORWARD_LOOK_PAGES = 10  # How many pages do we look forward to cache?
@@ -16,7 +18,7 @@ class WhooshTrecNews(Engine):
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, **kwargs):
+    def __init__(self, whoosh_index_dir='', model=1, implicit_or=False, use_cache=False, interleave=False, interleave_continuous=False, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -32,12 +34,24 @@ class WhooshTrecNews(Engine):
         if not self.whoosh_index_dir:
             raise EngineConnectionException(self.name, "'whoosh_index_dir=' keyword argument not specified")
 
-        self.set_model(model)
-        self.implicit_or=implicit_or
+        self.use_cache = use_cache
+        self.cache = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.interleave = interleave  # Should we interleave results, and how often?
+        self.interleave_continuous = interleave_continuous  # Do we continue to interleave after the initial loop?
+        self.implicit_or = implicit_or  # Do we implicitly join terms together with ORs?
+        self.scoring_model = scoring.BM25F(B=0.25)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
+
+        if model == 0:
+            self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
+        if model == 2:
+            self.scoring_model = scoring.PL2()  # Use PL2 with default values
+        if model == 3:
+            self.scoring_model = scoring.BM25F(B=1)  # BM11
 
         try:
             #self.docIndex = open_dir(whoosh_index_dir)
-    # This creates a static docIndex for ALL instance of WhooshTrecNews.
+
+            # This creates a static docIndex for ALL instance of WhooshTrecNews.
             # This will not work if you want indexes from multiple sources.
             # As this currently is not the case, this is a suitable fix.
             if not hasattr(WhooshTrecNews, 'docIndex'):
@@ -49,19 +63,6 @@ class WhooshTrecNews(Engine):
         except:
             msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
-
-
-
-    def set_model(self, model):
-
-        self.scoring_model = scoring.BM25F(B=0.75)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
-        if model == 0:
-            self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
-        if model == 2:
-            self.scoring_model = scoring.PL2()  # Use PL2 with default values
-        if model == 1:
-            self.scoring_model = scoring.BM25F(B=0.75) # BM25
-
 
 
     @staticmethod
@@ -109,6 +110,42 @@ class WhooshTrecNews(Engine):
 
         return self._request(query)
 
+    def get_cache_key(self, page_no, query_terms):
+        """
+        Returns a string representing the state of a given instance of the WhooshTrecNews class.
+        Implemented for a way of determining a unique identifiable key for caching search results.
+        Returns a string in the format {0}**{1}, where
+            {0}: An identifier for the model used (0=TFIDF, 1=BM25F, 2=PL2)
+            {1}: 1 for use of implicit ORing, 0 for no use
+        """
+        model_identifier = 1
+
+        if isinstance(self.scoring_model, scoring.TF_IDF):
+            model_identifier = 0
+        if isinstance(self.scoring_model, scoring.PL2):
+            model_identifier = 2
+        if isinstance(self.scoring_model, scoring.BM25F) and (self.scoring_model.B == 1):
+            model_identifier = 3
+
+        if self.implicit_or:
+            implicit_or_identifier = 1
+        else:
+            implicit_or_identifier = 0
+
+        if not self.interleave:
+            interleave_identifier = 0
+            interleave_continuous_identifer = 2
+        else:
+            interleave_identifier = self.interleave
+
+            if self.interleave_continuous:
+                interleave_continuous_identifer = 1
+            else:
+                interleave_continuous_identifer = 0
+
+        no_space_terms = query_terms.replace(' ', '_')
+        return "search:{0}:{1}:{2}:{3}:{4}:'{5}'".format(model_identifier, implicit_or_identifier, interleave_identifier, interleave_continuous_identifer, page_no, no_space_terms)
+
     def __get__results_length(self, results):
         """
         Returns the number of hits in a results object.
@@ -128,6 +165,55 @@ class WhooshTrecNews(Engine):
         results_len = self.__get__results_length(results)
         return [results[i:i + query.top] for i in range(0, results_len, query.top)]
 
+    def __interleave_results(self, results, pagelen):
+        """
+        Interleaves results.
+
+        in_steps_of = self.interleave
+        CONTINUOUS = new var
+
+        """
+        def do_interleave(res_list):
+            """
+            Nested function which does the actual interleaving for the given list.
+            """
+            split_lists = [[] for x in xrange(self.interleave)]
+            final = []
+
+            for j in range(0, len(res_list)):
+                split_lists[j % self.interleave].append(res_list[j])
+
+            for j in range(0, self.interleave):
+                final += split_lists[j]
+
+            return final
+
+        if not self.interleave:
+            return results  # Do nothing, interleave value not set.
+
+        original = results
+        final_order = []
+
+        PAGE_LEN = 10  # CHANGE THIS BACK TO pagelen!
+
+        if self.interleave_continuous:
+            original = [original[i:(i + (self.interleave * PAGE_LEN))] for i in range(0, len(original), (self.interleave * PAGE_LEN))]
+
+            for split_list in original:
+                final_order += do_interleave(split_list)
+        else:
+            original = original[:(self.interleave * PAGE_LEN)]
+            final_order = do_interleave(original)
+
+            if len(original) < len(results):
+                final_order += results[len(original):]
+
+        #c = 1
+        #for res in final_order:
+        #    print "{0}\t{1}\t{2}".format(c, results[c - 1].docid, res.docid)
+        #    c = c + 1
+
+        return final_order
 
     def get_highest_cached_page(self, query_terms):
         """
@@ -190,35 +276,50 @@ class WhooshTrecNews(Engine):
         with self.docIndex.searcher(weighting=self.scoring_model) as searcher:
             #invalid_page_no = True
 
-            results = searcher.search_page(query_terms, page, pagelen=(FORWARD_LOOK_PAGES * pagelen))
-            results.fragmenter = highlight.ContextFragmenter(maxchars=3000, surround=3000)
-            results.formatter = highlight.HtmlFormatter()
-            results.fragmenter.charlimit = 100000
-            setattr(results, 'actual_page', page)
+            cache_key = self.get_cache_key(page, query.terms)
 
-            ifind_response = self._parse_whoosh_response(query, results)
-            split_results = self.__split_results(query, ifind_response.results)
+            if self.use_cache and self.cache.exists(cache_key):
+                return_response = self.cache.get(cache_key)
+                return_response = pickle.loads(return_response)
 
-            page_counter = page
-            return_response = Response(query.terms)
+                print "WhooshTRECNewsEngine found CACHED results"
+            else:
+                results = searcher.search_page(query_terms, page, pagelen=(FORWARD_LOOK_PAGES * pagelen))
+                results.fragmenter = highlight.ContextFragmenter(maxchars=3000, surround=3000)
+                results.formatter = highlight.HtmlFormatter()
+                results.fragmenter.charlimit = 100000
+                setattr(results, 'actual_page', page)
 
-            for page_list in split_results:
-                response = Response(query.terms)
+                ifind_response = self._parse_whoosh_response(query, results)
+                interleaved_results = self.__interleave_results(ifind_response.results, pagelen)
+                split_results = self.__split_results(query, interleaved_results)
 
-                for hit in page_list:
-                    response.add_result_object(hit)
+                page_counter = page
+                return_response = Response(query.terms)
 
-                response.pagenum = results.pagenum
-                response.total_pages = results.pagecount
-                response.results_on_page = len(page_list)
-                response.actual_page = page_counter
+                for page_list in split_results:
+                    response = Response(query.terms)
 
-                if page_counter == page:
-                    return_response = response
-                    #print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
-                    #print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
+                    for hit in page_list:
+                        response.add_result_object(hit)
 
-                page_counter = page_counter + 1
+                    response.pagenum = results.pagenum
+                    response.total_pages = results.pagecount
+                    response.results_on_page = len(page_list)
+                    response.actual_page = page_counter
+
+                    loop_cache_key = self.get_cache_key(page_counter, query.terms)
+
+                    if self.use_cache and not self.cache.exists(loop_cache_key):
+                        response_str = pickle.dumps(response)
+                        self.cache.set(loop_cache_key, response_str)
+
+                    if page_counter == page:
+                        return_response = response
+                        #print "WhooshTRECNewsEngine found: " + str(len(results)) + " results for query: " + query.terms
+                        #print "Page %d of %d - PageLength of %d" % (results.pagenum, results.pagecount, results.pagelen)
+
+                    page_counter = page_counter + 1
 
 
             """
