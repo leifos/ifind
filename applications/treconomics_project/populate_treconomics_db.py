@@ -95,7 +95,6 @@ def add_user(username,password, condition, experiment, rotation, data=None):
     u.set_password(password)
     u.save()
     up = UserProfile.objects.get_or_create(user=u, condition=condition, experiment=experiment, rotation=rotation, data=data)[0]
-
     print '%s, %s, %d, %d  ' % (username, password, condition, rotation)
 
 def add_task(topic_num, title, description):

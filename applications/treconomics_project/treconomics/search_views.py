@@ -266,7 +266,7 @@ def run_query(request, result_dict={}, query_terms='', page=1, page_len=10, cond
     result_dict['query'] = query_terms
     search_engine = experiment_setups[condition].get_engine()
 
-    result_cache = True
+    result_cache = False
     response = None
 
     if result_cache:

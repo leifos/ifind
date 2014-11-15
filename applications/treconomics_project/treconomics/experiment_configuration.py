@@ -5,7 +5,7 @@ import logging.config
 import logging.handlers
 from ifind.common.autocomplete_trie import AutocompleteTrie
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
-from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
+#from ifind.search.engines.whooshtrecnewsredis import WhooshTrecNewsRedis
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
 work_dir = os.getcwd()
@@ -13,10 +13,12 @@ my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
 qrels_file = os.path.join(work_dir, "data/TREC2005.qrels.txt")
+stopword_file = os.path.join(work_dir, "data/stopwords.txt")
 
 print "Work DIR: " + work_dir
 print "QRELS File: " + qrels_file
 print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
+print "Stopword file: " + stopword_file
 
 event_logger = logging.getLogger('event_log')
 event_logger.setLevel(logging.INFO)
@@ -128,15 +130,13 @@ suggestion_trie = AutocompleteTrie(
                     vocab_path=os.path.join(work_dir, "data/vocab.txt"),
                     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
 
-print "creating search engine"
-bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir)
+print "creating search engines"
 
-#tfidf = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0)
-#bm25or = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, implicit_or=True)
-#tfidfor = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=0, implicit_or=True)
 
-pl2cache = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
-pl2postings = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, model=2)
+
+bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file)
+pl2cache = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=2)
+pl2postings = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=2)
 
 exp0 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition')
 exp1 = ExperimentSetup(workflow=exp_work_flows[4], engine=bm25, interface=0, description='structured condition', delay_results=5)
