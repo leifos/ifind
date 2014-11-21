@@ -174,9 +174,14 @@ class Bing(Engine):
         if result_type not in RESULT_TYPES:
             raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
+        if not query.skip:
+            skip = 0
+        else:
+            skip = query.skip
+
         params = {'$format': 'JSON',
                   '$top': query.top,
-                  '$skip': query.skip}
+                  '$skip': skip}
 
         result_string = '?Sources="{}"'.format(result_type)
 
