@@ -243,7 +243,7 @@ def generate_markup(dict_repr, permutations):
     
     simulation_markup = read_file_to_string('base_files/simulation.xml')
     simulation_markup = simulation_markup.format(dict_repr['simulation']['@baseID'],
-                                                 os.path.join(dict_repr['simulation']['@baseDir'], 'output'),
+                                                 os.path.join(dict_repr['simulation']['@baseDir'], 'out'),
                                                  topics,
                                                  users)
     
