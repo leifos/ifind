@@ -216,7 +216,7 @@ def generate_markup(dict_repr, permutations):
             # Replace the string instance with the tag!
             user_base_id = user_base_id.replace("{{" + tag[0] + "}}", tag[1])
         
-        user_files.append("user-{0}.xml".format(user_base_id))
+        user_files.append(os.path.join(dict_repr['simulation']['@baseDir'], "user-{0}.xml").format(user_base_id))
         
         user_markup = read_file_to_string('base_files/user.xml')
         user_markup = user_markup.format(
@@ -243,7 +243,7 @@ def generate_markup(dict_repr, permutations):
     
     simulation_markup = read_file_to_string('base_files/simulation.xml')
     simulation_markup = simulation_markup.format(dict_repr['simulation']['@baseID'],
-                                                 dict_repr['simulation']['@outputDir'],
+                                                 os.path.join(dict_repr['simulation']['@baseDir'], 'output'),
                                                  topics,
                                                  users)
     
