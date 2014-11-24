@@ -11,6 +11,7 @@ class Document(object):
         self.title = title
         self.content = content
         self.doc_id = id
+        self.judgment = -1
         
         if self.doc_id:
             self.doc_id = doc_id

@@ -149,9 +149,11 @@ class SimulatedUser(object):
             # This snippet has not been previously seen; check quality of snippet. Does it show some form of relevance?
             # If so, we return True - and if not, we return False, which moves the simulator to the next step.
             if self.__snippet_classifier.is_relevant(snippet):
+                snippet.judgment = 1
                 self.__logger.log_action(Actions.SNIPPET, status="SNIPPET_RELEVANT", doc_id=snippet.doc_id)
                 return True
             else:
+                snippet.judgment = 0
                 self.__logger.log_action(Actions.SNIPPET, status="SNIPPET_NOT_RELEVANT", doc_id=snippet.doc_id)
                 return False
     

@@ -96,7 +96,7 @@ class SearchContext(object):
         if self.__query_count > 0:
             #  If a query has been issued previously, store the snippets and documents examined for reference later on.
             self.__depths.append((self.__snippets_examined, self.__documents_examined))
-        
+
         # Reset our counters for the next query.
         self.__snippets_examined = []
         self.__documents_examined = []
@@ -121,7 +121,8 @@ class SearchContext(object):
         # Pull out the next result, and construct a Document object representing the snippet. Set the current snippet to that Document.
         result = self.__last_results[self.__current_serp_position]
         snippet = Document(result.whooshid, result.title, result.summary, result.docid)
-        
+
+        self.__snippets_examined.append(snippet)
         self.__all_snippets_examined.append(snippet)
         self.__current_snippet = snippet
         
@@ -261,3 +262,11 @@ class SearchContext(object):
         This result is used when determining what to do next.
         """
         return self.__current_serp_position == len(self.__last_results)
+
+    def get_examined_snippets(self):
+        """
+        Returns a list of Document objects representing all of the snippets examined by the simulated agent for the current query.
+        The most recent snippet to be examined is the last document in the list - i.e. snippets are listed in chronological order.
+        An empty list indicates that no snippets have been examined for the current query.
+        """
+        return self.__snippets_examined
