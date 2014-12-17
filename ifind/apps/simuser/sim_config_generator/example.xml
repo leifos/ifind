@@ -18,6 +18,11 @@
 				<attribute name="depth" type="int" value="5" is_argument="true" />
 			</class>
 			
+			<class name="PredeterminedQueryGenerator">
+				<attribute name="query_file" type="string" value="data/queries.txt" is_argument="true" />
+				<attribute name="user" type="int" value="1" is_argument="true" />
+			</class>
+			
 		</queryGenerator>
 		
 		<textClassifiers>
