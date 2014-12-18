@@ -28,7 +28,7 @@ class BaseComponentGenerator(object):
         
         indent_level = indentation_level * 2
         string_representation = ""
-
+        
         if 'attribute' in config_entry:
             if type(config_entry['attribute']) == list:
                 for entry in config_entry['attribute']:
