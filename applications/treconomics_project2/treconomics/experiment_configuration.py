@@ -34,11 +34,11 @@ exp_work_flows = [
         '/treconomics/pretaskquestions/1/','/treconomics/search/1/','/treconomics/posttaskquestions/1/',
         '/treconomics/pretaskquestions/2/','/treconomics/search/2/','/treconomics/posttaskquestions/2/',
         '/treconomics/logout/'],
-    ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/','/treconomics/anitademographicssurvey/',
+    ['/treconomics/startexperiment/','/treconomics/preexperiment/UK/',
         '/treconomics/prepracticetask/0/', '/treconomics/search/0/',
         '/treconomics/anitapretasksurvey/1/','/treconomics/search/1/','/treconomics/anitaposttask1survey/1/','/treconomics/anitaposttask2survey/1/','/treconomics/anitaposttask3survey/1/',
         '/treconomics/anitapretasksurvey/2/','/treconomics/search/2/','/treconomics/anitaposttask1survey/2/','/treconomics/anitaposttask2survey/2/','/treconomics/anitaposttask3survey/2/',
-        '/treconomics/logout/'],
+        '/treconomics/anitademographicssurvey/','/treconomics/logout/'],
 ]
 
 
@@ -54,8 +54,8 @@ suggestion_trie = AutocompleteTrie(
 
 pl2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=2)
 
-exp_fast_high = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 no delay', trie=suggestion_trie, autocomplete=True, timeout=1200)
-exp_slow_high = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 increasing delays', delay_results=[0,5,10], trie=suggestion_trie, autocomplete=True, timeout=1200)
+exp_fast_high = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,4,0],delay_docview=[0,4,0], trie=suggestion_trie, autocomplete=True, timeout=0)
+exp_slow_high = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='367', topics=['347', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,4,0],delay_docview=[0,4,0], trie=suggestion_trie, autocomplete=True, timeout=300)
 
 
 # these correspond to conditions
