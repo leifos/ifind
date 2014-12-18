@@ -50,3 +50,7 @@ class PermutatedRotationOrdering(RotationOrdering):
             choice, index = index // fact, index % fact
             result += [seqc.pop (choice)]
         return result
+
+
+
+

@@ -40,7 +40,7 @@ class WhooshTrecNews(Engine):
             self.stopwords = ListReader(self.stopwords_file)  # Open the stopwords file, read into a ListReader
 
 
-        self.set_model(model)
+
         self.implicit_or=implicit_or
 
         try:
@@ -59,21 +59,31 @@ class WhooshTrecNews(Engine):
             self.fragmenter = ContextFragmenter(maxchars=200, surround=40)
             self.fragmenter.charlimit = 10000
             self.formatter = HtmlFormatter()
+            self.set_model(model)
+
         except:
             msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
 
 
 
-    def set_model(self, model):
-
+    def set_model(self, model, pval=None):
         self.scoring_model = scoring.BM25F(B=0.75)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
         if model == 2:
+            c = 10.0
+            if pval:
+                c = pval
             self.scoring_model = scoring.PL2()  # Use PL2 with default values
         if model == 1:
-            self.scoring_model = scoring.BM25F(B=0.75) # BM25
+            B = 0.75
+            if pval:
+                B = pval
+            self.scoring_model = scoring.BM25F(B=B) # BM25
+
+        print self.scoring_model
+        self.searcher = self.docIndex.searcher(weighting=self.scoring_model)
 
 
 
@@ -138,16 +148,15 @@ class WhooshTrecNews(Engine):
         page = query.skip
         pagelen = query.top
         response = None
+        print query.parsed_terms
+        #results = self.searcher.search(query.parsed_terms, page, pagelen=pagelen,limit=10)
+        results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
+        results.fragmenter = self.fragmenter
+        results.formatter = self.formatter
 
-        with self.docIndex.searcher(weighting=self.scoring_model) as searcher:
+        setattr(results, 'actual_page', page)
 
-            results = searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
-            results.fragmenter = self.fragmenter
-            results.formatter = self.formatter
-
-            setattr(results, 'actual_page', page)
-
-            response = self._parse_whoosh_response(query, results)
+        response = self._parse_whoosh_response(query, results)
 
         return response
 
@@ -238,7 +247,7 @@ class WhooshTrecNews(Engine):
             query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
 
 
-        if len(query.terms.split()) == 1:
-            query.parsed_terms = unicode(query.terms)
-        else:
-            query.parsed_terms = self.parser.parse(query.terms)
+        #if len(query.terms.split()) == 1:
+        #    query.parsed_terms = unicode(query.terms)
+        #else:
+        query.parsed_terms = self.parser.parse(query.terms)

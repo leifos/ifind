@@ -11,8 +11,16 @@ tester.py
 /applications/treconomics_project/data/fullindex
 /applications/treconomics_project/data/vocab.txt
 /applications/treconomics_project/data/vocab_trie.dat
+/applications/treconomics_project2/data
+/applications/treconomics_project2/data/fullindex
+/applications/treconomics_project2/data/vocab.txt
+/applications/treconomics_project2/data/vocab_trie.dat
+
+
+
 /apps/simuser/data/fullindex
 /apps/simuser_refactored/data/fullindex
+
 
 # Pycharm / Python
 .idea

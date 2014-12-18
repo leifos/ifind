@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>NewsSearch</title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link href="{% static 'css/treconomics/style.css' %}" rel="stylesheet" type="text/css">
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script type="text/javascript"  src="{% static 'javascripts/hashchange.js' %}"></script>
+
+        <script type="text/javascript"  src="{% static 'javascripts/validate_search_box.js' %}"></script>
+        <script type="text/javascript"  src="{% static 'javascripts/jquery_treconomics.js' %}"></script>
+        <script  type="text/javascript" src="{% static 'javascripts/gen_validatorv4-mod.js' %}"></script>
+        <script type="text/javascript" src="{% static 'javascripts/popup_launcher.js' %}"></script>
+    </head>
+    <body>
+        {% block wait-box %}{% endblock %}
+
+        <div class="container">
+        <div class="header">
+	    <h1>NewsSearch</h1>
+	    <div class="info_block"> {% block exp_info_block %}{% endblock %} </div>
+        </div> <!-- end header div -->
+
+ 	    <div class="search">
+		    <div class="content">
+                <div class="query_terms">
+                    {% block query_box %}
+                    {% endblock %}
+                </div>
+                <div class="results">
+                        {% block search_results %}{% endblock %}
+                </div>
+                <div class="results_nav">
+                        {% block result_nav %}{% endblock %}
+                </div>
+                <div class="document_content">
+                    {% block document_content %}{% endblock %}
+                </div>
+
+                <div class="experiment">
+                     {% block exp_block %}{% endblock %}
+                    </div>
+	   		</div><!-- end content div -->		
+	    </div>	<!-- end search civ-->
+        <div class="push"></div>
+        </div> <!-- end container div -->
+
+	    <div class="footer">
+	        {% block exp_footer_block %}{% endblock %}
+	    </div>	<!-- end footer div -->
+    </body>
+</html>
