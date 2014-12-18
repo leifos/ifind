@@ -148,7 +148,6 @@ class Googleplus(Engine):
             query_append = "people/{}?key={}&pageToken={}".format\
                 (search_params['q'], self.api_key, search_params['page_token'])
 
-
         return API_ENDPOINT + encode_symbols(query_append)
 
     @staticmethod
@@ -192,7 +191,7 @@ class Googleplus(Engine):
             pass
 
         if attachment:
-            attachment += activity[u'object'][u'attachments'][0][u'objectType']
+            attachment += activity[u'object'].get(u'attachments', [{}])[0].get(u'objectType', '')
             try:
                 attachment += activity[u'object'][u'attachments'][0][u'displayName']
             except KeyError:
