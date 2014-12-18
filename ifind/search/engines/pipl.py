@@ -3,6 +3,7 @@ import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.utils.encoding import encode_symbols
+from ifind.search.exceptions import QueryParamException
 
 
 API_ENDPOINT = "http://api.pipl.com/search/v3/json/"
@@ -152,8 +153,6 @@ class Pipl(Engine):
 
         if not (first_name and last_name) and not raw_name:
             raw_name = query.terms
-        else:
-            raw_name = ''
 
         if not (raw_name or (first_name and last_name) or phone or email or username):
             raise QueryParamException(self.name, "Require one of: raw_name,\
@@ -258,7 +257,10 @@ class Pipl(Engine):
         response.no_more_results = True
 
         for record in content[u'records']:
-            name = record[u'names'][0][u'display']
+            try:
+                name = record[u'names'][0][u'display']
+            except KeyError:
+                name = record.get('source').get('url', "_no title_")
             url = record[u'source'][u'url']
             imageurl = None
             try:
