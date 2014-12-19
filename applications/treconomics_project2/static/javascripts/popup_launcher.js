@@ -102,7 +102,7 @@ function displayCompletionMessage(instructionsElement) {
         $('<div>Thank you very much for participating in this NewsSearch experiment!</div>')
             .attr({'style': 'text-align: center; font-size: 14pt; font-weight: bold;'}));
     instructionsElement.append(
-        $('<div>Please let David know you have finished.</div>')
+        $('<div>Please let the research assistant know you have finished.</div>')
             .attr({'style': 'text-align: center; margin-top: 8px;'}));
 }
 

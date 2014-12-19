@@ -79,7 +79,7 @@ def view_anita_posttask3_survey( request, taskid ):
 
 @login_required
 def view_anita_demographic_survey(request):
-    return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/', 'survey/demographics_survey.html')
+    return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/', 'survey/anita_demographics_survey.html')
 
 @login_required
 def view_anita_exit1_survey(request):
