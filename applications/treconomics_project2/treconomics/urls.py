@@ -54,4 +54,5 @@ urlpatterns = patterns('',
     (r'^anitaposttask2survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask2_survey),
     (r'^anitaposttask3survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask3_survey),
     (r'^anitademographicssurvey/$', survey_anita_views.view_anita_demographic_survey),
+    (r'^anitaexit1survey/$', survey_anita_views.view_anita_exit1_survey),
     )

@@ -11,7 +11,7 @@ from experiment_functions import log_event
 
 from survey_views import handle_survey
 from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask1SurveyForm,AnitaPostTask2SurveyForm,AnitaPostTask3SurveyForm
-from models_anita_experiments import AnitaDemographicsSurveyForm
+from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm
 from models import TaskDescription
 
 
@@ -80,3 +80,7 @@ def view_anita_posttask3_survey( request, taskid ):
 @login_required
 def view_anita_demographic_survey(request):
     return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/', 'survey/demographics_survey.html')
+
+@login_required
+def view_anita_exit1_survey(request):
+    return handle_survey(request, AnitaExit1SurveyForm, 'EXIT1', '/treconomics/anitaexit1survey/', 'survey/anita_exit1_survey.html')

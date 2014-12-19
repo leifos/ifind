@@ -207,3 +207,36 @@ class AnitaPostTask3SurveyForm(ModelForm):
     class Meta:
         model = AnitaPostTask3Survey
         exclude = ('user','task_id','topic_num')
+
+
+
+class AnitaExit1Survey(models.Model):
+    user = models.ForeignKey(User)
+    ae_use_freq  = models.IntegerField(default=0)
+    ae_complex  = models.IntegerField(default=0)
+    ae_easy  = models.IntegerField(default=0)
+    ae_integrated = models.IntegerField(default=0)
+    ae_inconsistent  = models.IntegerField(default=0)
+    ae_learn_quickly  = models.IntegerField(default=0)
+    ae_cumbersome = models.IntegerField(default=0)
+    ae_confident  = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.user.username
+
+class AnitaExit1SurveyForm(ModelForm):
+    ae_use_freq = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I think that I would like to use this system frequently.", required=False)
+    ae_complex = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I found the system unnecessarily complex.", required=False)
+    ae_easy = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought the system was easy to use.", required=False)
+    ae_integrated = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I found the various functions in the system to be well integrated.", required=False)
+    ae_inconsistent = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought this system was too inconsistent.", required=False)
+    ae_learn_quickly = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I would imagine that most people would learn to use this system very quickly.", required=False)
+    ae_cumbersome = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I found the system very cumbersome to use.", required=False)
+    ae_confident = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I felt very confident using the system.", required=False)
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = AnitaExit1Survey
+        exclude = ('user',)

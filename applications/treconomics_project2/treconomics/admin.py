@@ -10,6 +10,7 @@ from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStress
 
 
 from models_anita_experiments import AnitaPreTaskSurvey, AnitaPostTask1Survey, AnitaPostTask2Survey, AnitaPostTask3Survey
+from models_anita_experiments import AnitaExit1Survey
 
 from django.contrib import admin
 from django import forms
@@ -81,3 +82,4 @@ admin.site.register(AnitaPreTaskSurvey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask1Survey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask2Survey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask3Survey,TaskQuestionSurveyAdmin)
+admin.site.register(AnitaExit1Survey, UserSurveyAdmin)
