@@ -50,9 +50,12 @@ urlpatterns = patterns('',
     (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
 
     (r'^anitapretasksurvey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_pretask_survey),
+    (r'^anitaposttask0survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask0_survey),
     (r'^anitaposttask1survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask1_survey),
     (r'^anitaposttask2survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask2_survey),
     (r'^anitaposttask3survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask3_survey),
     (r'^anitademographicssurvey/$', survey_anita_views.view_anita_demographic_survey),
     (r'^anitaexit1survey/$', survey_anita_views.view_anita_exit1_survey),
+    (r'^anitaexit2survey/$', survey_anita_views.view_anita_exit2_survey),
+    (r'^anitaexit3survey/$', survey_anita_views.view_anita_exit3_survey),
     )

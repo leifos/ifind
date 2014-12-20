@@ -10,8 +10,8 @@ from experiment_functions import get_experiment_context
 from experiment_functions import log_event
 
 from survey_views import handle_survey
-from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask1SurveyForm,AnitaPostTask2SurveyForm,AnitaPostTask3SurveyForm
-from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm
+from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask0SurveyForm, AnitaPostTask1SurveyForm, AnitaPostTask2SurveyForm,AnitaPostTask3SurveyForm
+from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm, AnitaExit2SurveyForm, AnitaExit3SurveyForm
 from models import TaskDescription
 
 
@@ -64,6 +64,11 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
 def view_anita_pretask_survey( request, taskid ):
     return handle_task_and_questions_survey(request, taskid, AnitaPreTaskSurveyForm, 'ANITA_PRETASK', '/treconomics/anitapretasksurvey/', 'survey/anita_pretask_survey.html')
 
+
+@login_required
+def view_anita_posttask0_survey( request, taskid ):
+    return handle_task_and_questions_survey(request, taskid, AnitaPostTask0SurveyForm, 'ANITA_POSTTASK0', '/treconomics/anitaposttask0survey/', 'survey/anita_posttask_survey.html')
+
 @login_required
 def view_anita_posttask1_survey( request, taskid ):
     return handle_task_and_questions_survey(request, taskid, AnitaPostTask1SurveyForm, 'ANITA_POSTTASK1', '/treconomics/anitaposttask1survey/', 'survey/anita_posttask_survey.html')
@@ -76,7 +81,6 @@ def view_anita_posttask2_survey( request, taskid ):
 def view_anita_posttask3_survey( request, taskid ):
     return handle_task_and_questions_survey(request, taskid, AnitaPostTask3SurveyForm, 'ANITA_POSTTASK3', '/treconomics/anitaposttask3survey/', 'survey/anita_posttask_survey.html')
 
-
 @login_required
 def view_anita_demographic_survey(request):
     return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/', 'survey/anita_demographics_survey.html')
@@ -84,3 +88,11 @@ def view_anita_demographic_survey(request):
 @login_required
 def view_anita_exit1_survey(request):
     return handle_survey(request, AnitaExit1SurveyForm, 'EXIT1', '/treconomics/anitaexit1survey/', 'survey/anita_exit1_survey.html')
+
+@login_required
+def view_anita_exit2_survey(request):
+    return handle_survey(request, AnitaExit2SurveyForm, 'EXIT2', '/treconomics/anitaexit2survey/', 'survey/anita_exit2_survey.html')
+
+@login_required
+def view_anita_exit3_survey(request):
+    return handle_survey(request, AnitaExit3SurveyForm, 'EXIT3', '/treconomics/anitaexit3survey/', 'survey/anita_exit3_survey.html')

@@ -329,6 +329,8 @@ def view_pre_experiment(request, version):
     uname = ec["username"]
     condition = ec["condition"]
 
+    if version == 'AN':
+        return render_to_response('base/anita_pre_experiment.html', {'participant': uname, 'condition': condition }, context)
     if version == 'US':
         return render_to_response('base/pre_experiment_us.html', {'participant': uname, 'condition': condition }, context)
     else:

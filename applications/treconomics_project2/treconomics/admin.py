@@ -9,8 +9,8 @@ from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad
 from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
 
 
-from models_anita_experiments import AnitaPreTaskSurvey, AnitaPostTask1Survey, AnitaPostTask2Survey, AnitaPostTask3Survey
-from models_anita_experiments import AnitaExit1Survey
+from models_anita_experiments import AnitaPreTaskSurvey, AnitaPostTask0Survey, AnitaPostTask1Survey, AnitaPostTask2Survey, AnitaPostTask3Survey
+from models_anita_experiments import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey
 
 from django.contrib import admin
 from django import forms
@@ -79,7 +79,10 @@ admin.site.register(ConceptListingSurvey, UserSurveyAdmin)
 admin.site.register(ShortStressSurvey, UserSurveyAdmin)
 admin.site.register(ModifiedStressSurvey, UserSurveyAdmin)
 admin.site.register(AnitaPreTaskSurvey,TaskQuestionSurveyAdmin)
+admin.site.register(AnitaPostTask0Survey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask1Survey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask2Survey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask3Survey,TaskQuestionSurveyAdmin)
 admin.site.register(AnitaExit1Survey, UserSurveyAdmin)
+admin.site.register(AnitaExit2Survey, UserSurveyAdmin)
+admin.site.register(AnitaExit3Survey, UserSurveyAdmin)

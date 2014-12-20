@@ -107,7 +107,10 @@ class AnitaPreTaskSurveyForm(ModelForm):
         exclude = ('user','task_id','topic_num')
 
 
-class AnitaPostTask1Survey(models.Model):
+
+
+
+class AnitaPostTask0Survey(models.Model):
     user = models.ForeignKey(User)
     task_id = models.IntegerField(default=0)
     topic_num = models.IntegerField(default=0)
@@ -116,27 +119,48 @@ class AnitaPostTask1Survey(models.Model):
     apt_work_fast  = models.IntegerField(default=0)
     apt_difficult_enough  = models.IntegerField(default=0)
     apt_time_pressure  = models.IntegerField(default=0)
-    apt_search_diff  = models.IntegerField(default=0)
-    apt_hurried  = models.IntegerField(default=0)
+
+
+    def __unicode__(self):
+        return self.user.username
+
+
+class AnitaPostTask0SurveyForm(ModelForm):
+    apt_satisfied_amount = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I am satisfied with the amount of information I found for the search topic.", required=False)
+    apt_satisfied_steps = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I am satisfied with the steps I took to find information about the search topic.", required=False)
+    apt_work_fast = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I needed to work fast to complete this task.", required=False)
+    apt_difficult_enough = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought it was difficult to determine when I had enough information to finish the task.", required=False)
+    apt_time_pressure = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I felt time pressure when completing this task.", required=False)
+
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = AnitaPostTask0Survey
+        exclude = ('user','task_id','topic_num')
+
+
+class AnitaPostTask1Survey(models.Model):
+    user = models.ForeignKey(User)
+    task_id = models.IntegerField(default=0)
+    topic_num = models.IntegerField(default=0)
+    apt_search_diff = models.IntegerField(default=0)
+    apt_hurried = models.IntegerField(default=0)
     apt_satisfied_systems  = models.IntegerField(default=0)
-    apt_doing_well  = models.IntegerField(default=0)
-    apt_found_enough  = models.IntegerField(default=0)
+    apt_doing_well = models.IntegerField(default=0)
+    apt_found_enough = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.user.username
 
 
 class AnitaPostTask1SurveyForm(ModelForm):
-    apt_satisfied_amount = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I am satisfied with the amount of information I found for the search topic.", required=False)
-    apt_satisfied_steps = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I am satisfied with the steps I took to find information about the search topic.", required=False)
-    apt_work_fast = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I needed to work fast to complete this task.", required=False)
-    apt_difficult_enough = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought it was difficult to determine when I had enough information to finish the task.", required=False)
-    apt_time_pressure = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I felt time pressure when completing this task.", required=False)
     apt_search_diff = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought it was difficult to search for information on this topic.", required=False)
     apt_hurried = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I felt hurried or rushed when completing this task.", required=False)
     apt_satisfied_systems = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I am satisfied with how the system performed for this task.", required=False)
     apt_doing_well = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="While I was working on this task, I thought about how well I was doing on the task.", required=False)
-    apt_found_enough  = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I found enough information about the search topic.", required=False)
+    apt_found_enough = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I found enough information about the search topic.", required=False)
 
 
     def clean(self):
@@ -165,8 +189,8 @@ class AnitaPostTask2Survey(models.Model):
 class AnitaPostTask2SurveyForm(ModelForm):
     apt_accurate = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="It was important to me to complete this task accurately.", required=False)
     apt_quick_results = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="The system retrieved and displayed search results pages quickly.", required=False)
-    apt_more_info = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="While I was working on this task, I thought about how much information I had already found and how much more I still needed.", required=False)
-    apt_time_left = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="While I was working on this task, I thought about how much time I had left on the task. ", required=False)
+    apt_more_info = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought about how much information I had already found and how much more I still needed.", required=False)
+    apt_time_left = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I thought about how much time I had left on the task. ", required=False)
     apt_quick_task = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="It was important to me to complete this task quickly.", required=False)
 
 
@@ -239,4 +263,59 @@ class AnitaExit1SurveyForm(ModelForm):
 
     class Meta:
         model = AnitaExit1Survey
+        exclude = ('user',)
+
+EXTENT_CHOICES = ( (1,'Not at all'), (2,''), (3,''), (4,''),(5,''),(6,''), (7,'Very much')  )
+
+
+class AnitaExit2Survey(models.Model):
+    user = models.ForeignKey(User)
+    ae_time_extent = models.IntegerField(default=0)
+    ae_time_reasonable = models.TextField(default="")
+    ae_time_process = models.TextField(default="")
+    ae_time_amount_found = models.TextField(default="")
+    ae_time_amount_read = models.TextField(default="")
+    ae_time_pressure_points = models.TextField(default="")
+
+    def __unicode__(self):
+        return self.user.username
+
+class AnitaExit2SurveyForm(ModelForm):
+    ae_time_extent = forms.ChoiceField(widget=RadioSelect,  choices = EXTENT_CHOICES, label="To what extent did the amount of time you had to compelte these task influence your performance?", required=False)
+    ae_time_reasonable = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Do you think the time you had to complete these tasks was reasonable? Please explain.", required=False)
+    ae_time_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the time you had to complete the tasks impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
+    ae_time_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the time you had to complete the tasks impact the amount of information you found? Please explain.", required=False)
+    ae_time_amount_read = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the time you had to complete the tasks impact the extent to which you read the information that you found? Please explain.", required=False)
+    ae_time_pressure_points = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="At what point(s) during the search tasks did you feel time pressure, if any? Please explain.", required=False)
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = AnitaExit2Survey
+        exclude = ('user',)
+
+class AnitaExit3Survey(models.Model):
+    user = models.ForeignKey(User)
+    ae_speed_compare = models.TextField(default="")
+    ae_speed_process = models.TextField(default="")
+    ae_speed_amount_found = models.TextField(default="")
+    ae_speed_amount_read = models.TextField(default="")
+
+    def __unicode__(self):
+        return self.user.username
+
+
+
+class AnitaExit3SurveyForm(ModelForm):
+    ae_speed_compare = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="How did the speed of this system compare to others you have used? Please explain.", required=False)
+    ae_speed_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the system speed impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
+    ae_speed_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the system speed impact the amount of information you found for the tasks? Please explain.", required=False)
+    ae_speed_amount_read = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the system speed impact the extent to which you read the information that you found? Please explain.", required=False)
+
+    def clean(self):
+        return clean_to_zero(self)
+
+    class Meta:
+        model = AnitaExit3Survey
         exclude = ('user',)
