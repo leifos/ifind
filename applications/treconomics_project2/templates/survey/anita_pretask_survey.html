@@ -8,22 +8,33 @@
 
 <div>
 <div class="experimentPageTitle">
-    <p>Below is a description of the search task that we would like you to undertake.</p>
-    <p>The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.</p>
+
+    <h1>Task Description</h1>
+    <p>
+    You are working with a group of scholars who are investigating the differences in how
+        several topics have been described in the news near the end of term for the last
+        three U.S. presidents:  Clinton, Bush and Obama.</p>
+    <p>
+    To prepare for the meeting,
+        you need to create a <strong>list of news articles relevant to four topics</strong> that were published from 1996-2000,
+        the final term of the Clinton Administration.
+
+    </p>
 
     <hr/>
-    <div id="query" > <b> {{tasktitle}} </b> <span>Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></span></div>
+    <!-- <div id="query" > <b> {{tasktitle}} </b> <span>Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></span></div> -->
 
-    <p>{% autoescape off %} <em>{{taskdescription}}</em> {% endautoescape %} </p>
+    <p>{% autoescape off %} <strong>{{taskdescription}}</strong> {% endautoescape %} </p>
 
     <hr/>
 
 <p> <b> Pre-Task Questions about the Topic/Task</b></p>
+    <p>Before you search for this task, please answer the following questions.</p>
+
 </div>
 </div>
 
 <div class="survey">
-
     <div id='survey_form_errorloc' class='error_strings' style="color: #F00; text-align: center;"></div>
 
     <form id="survey_form" method="post" action="{{action}}">
