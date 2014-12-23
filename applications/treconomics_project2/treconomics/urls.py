@@ -58,4 +58,6 @@ urlpatterns = patterns('',
     (r'^anitaexit1survey/$', survey_anita_views.view_anita_exit1_survey),
     (r'^anitaexit2survey/$', survey_anita_views.view_anita_exit2_survey),
     (r'^anitaexit3survey/$', survey_anita_views.view_anita_exit3_survey),
+    (r'^anitatimeinstructions/(?P<version>[A-Z]+)/$', survey_anita_views.view_anita_time_instructions),
+
     )

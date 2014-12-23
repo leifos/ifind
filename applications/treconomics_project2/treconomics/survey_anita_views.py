@@ -96,3 +96,15 @@ def view_anita_exit2_survey(request):
 @login_required
 def view_anita_exit3_survey(request):
     return handle_survey(request, AnitaExit3SurveyForm, 'EXIT3', '/treconomics/anitaexit3survey/', 'survey/anita_exit3_survey.html')
+
+
+@login_required
+def view_anita_time_instructions(request, version):
+    context = RequestContext(request)
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    pressure_condition = False
+    if version == "TC":
+        pressure_condition = True
+    return render_to_response('base/anita_time_constraint_instructions.html', {'participant': uname, 'condition': condition, 'pressure_condition': pressure_condition}, context)

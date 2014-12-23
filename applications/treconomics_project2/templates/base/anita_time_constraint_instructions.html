@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+{% block exp_block %}
+
+<p> <h1> Scenario Instructions </h1></p>
+
+<p>
+Now that you have had an opportunity to practice using the NewsSearch system,
+    you are almost ready to start preparing for your meeting with the scholars.
+</p>
+<p>
+{% if pressure_condition %}
+    Before you begin searching, you receive an urgent message that your meeting has been rescheduled.</p> <p> <strong>Now you only have 5 minutes to search for articles about each topic.</strong>
+{% else %}
+    Before you begin searching, you receive a message that your meeting has been rescheduled for tomorrow. </p> <p><strong>This means you can take as much time as you need to search for articles about each topic.</strong>
+{% endif %}
+</p>
+
+<p>Some things to keep in mind:
+
+<ul>
+<li>- Your goal for each task is to create a list of articles that represents the news coverage during the 1996-2000 time period.</li>
+<li>- Add articles to your list by clicking the "Mark as Relevant" button.</li>
+<li>- Your list of articles should be comprehensive and accurate. </li>
+<li>- When you are finished with your list, click the “End Task” button.</li>
+{% if pressure_condition %}
+<li>- If you are still searching 5 minutes after you begin a task, the system will inform you that you have ran out of time.</li>
+{% endif %}
+</ul>
+</p>
+<p>Click "Next" to start the first search task.</p>
+
+
+<div class="surveySubmitButton">
+<a href="/treconomics/next/"> <button class="largebutton" type="next" > Next </button></a>
+</div>
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}}
+{% endblock %}
