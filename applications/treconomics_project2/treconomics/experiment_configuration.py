@@ -50,6 +50,9 @@ exp_work_flows = [
         '/treconomics/anitapretasksurvey/4/','/treconomics/search/4/','/treconomics/anitaposttask0survey/4/','/treconomics/anitaposttask1survey/4/','/treconomics/anitaposttask2survey/4/','/treconomics/anitaposttask3survey/4/',
         '/treconomics/anitaexit1survey/','/treconomics/anitaexit2survey/','/treconomics/anitaexit3survey/',
         '/treconomics/anitademographicssurvey/','/treconomics/logout/'],
+    ['/treconomics/startexperiment/','/treconomics/preexperiment/AN/',
+        '/treconomics/anitaexit1survey/','/treconomics/anitaexit2survey/','/treconomics/anitaexit3survey/',
+        '/treconomics/anitademographicssurvey/','/treconomics/logout/'],
 ]
 
 
@@ -67,7 +70,8 @@ pl2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=st
 
 exp_no_time_constraint_delay  = ExperimentSetup(workflow=exp_work_flows[2], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)
 exp_time_constraint_delay = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=300)
+exp_test = ExperimentSetup(workflow=exp_work_flows[3], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 test', delay_results=[0,0,0,0,0],delay_docview=[0,0,0,0,0], trie=suggestion_trie, autocomplete=True, timeout=300)
 
 
 # these correspond to conditions
-experiment_setups = [exp_no_time_constraint_delay, exp_time_constraint_delay]
+experiment_setups = [exp_no_time_constraint_delay, exp_time_constraint_delay, exp_test]

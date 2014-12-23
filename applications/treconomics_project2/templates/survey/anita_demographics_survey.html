@@ -18,7 +18,8 @@
     <div id='survey_form_errorloc' class='error_strings' style="color: #F00; text-align: center;"></div>
 
     <form id="survey_form" method="post" action="{{action}}">
-<table cellpadding="20">
+
+<table class="survey_radio" cellpadding="20">
     {% csrf_token %}
     {# Include the hidden fields #}
     {% for hidden in formset.hidden_fields %}
@@ -27,17 +28,18 @@
     {# Include the visible fields #}
     {% for field in formset.visible_fields %}
 	<tr>
-	<td  class="matrix" >
+	<td class="matrix" >
             {{ field.errors }}
             {{ field.label_tag }}
-	</td>
-	<td>
- 	{{ field }}
+
+	<td class="matrix">
+{{ field }}
 	</td>
         </tr>
 	
     {% endfor %}
 </table>
+
 
 <script type="text/javascript">
     var frmvalidator = new Validator("survey_form");

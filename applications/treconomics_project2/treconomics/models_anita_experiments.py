@@ -28,7 +28,8 @@ YEAR_CHOICES = ( ('','Not Specified'),
 )
 
 
-ABILITY_CHOICES = ( (1,'Novice'), (2,''), (3,''), (4,''),(5,''),(6,''), (7,'Expert')  )
+ABILITY_CHOICES = ( ('0','Not Specified'), ('1','1 - Novice'), ('2','2'), ('3','3'),
+                    ('4','4'),('5','5'),('6','6'), ('7','7 - Expert')  )
 
 
 class AnitaDemographicsSurvey(models.Model):
@@ -37,20 +38,27 @@ class AnitaDemographicsSurvey(models.Model):
     #sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
     work = models.CharField(max_length=100, default="")
     status = models.CharField(max_length=100, default="")
-    search_freq = models.CharField(max_length=30, default="")
-    search_ability = models.CharField(max_length=30, default="")
+    level = models.CharField(max_length=3,default="")
+    search_freq = models.IntegerField(default=0)
+    search_ability = models.CharField(default="",max_length=1)
 
     def __unicode__(self):
         return self.user.username
+
+
+ED_CHOICES = ( ('','Not Specified'),
+    ('GED','High School or GED'),('ASS',"Associate's"),('BCA',"Bachelor's"),('MAS',"Master's"),('PHD',"Doctorate")
+)
+
 
 class AnitaDemographicsSurveyForm(ModelForm):
     age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
     #sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
     status =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="What is your status at UNC?", required=False)
-    work =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="What is your major? What is your occupation?", required=False)
-    search_freq = forms.CharField( widget=forms.TextInput( attrs={'size':'5', 'class':'inputText'}), label="How many times per week do you conduct searches for information?", required=False)
-
-    search_ability  = forms.ChoiceField(widget=RadioSelect, choices = ABILITY_CHOICES, label="How would you rate your onine search ability?", required=False)
+    work =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="Please provide your current occupation:", required=False)
+    level = forms.CharField(max_length=3, widget=forms.Select(choices=ED_CHOICES), label="Please indicate the highest degree you've earned:", required=False)
+    search_freq = forms.IntegerField(label="How many times per week do you conduct searches for information?",max_value = 1000, min_value=0, required=False)
+    search_ability  = forms.CharField(max_length=1, widget=forms.Select(choices = ABILITY_CHOICES), label="How would you rate your online search ability?", required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -282,11 +290,11 @@ class AnitaExit2Survey(models.Model):
 
 class AnitaExit2SurveyForm(ModelForm):
     ae_time_extent = forms.ChoiceField(widget=RadioSelect,  choices = EXTENT_CHOICES, label="To what extent did the amount of time you had to compelte these task influence your performance?", required=False)
-    ae_time_reasonable = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Do you think the time you had to complete these tasks was reasonable? Please explain.", required=False)
-    ae_time_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the time you had to complete the tasks impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
-    ae_time_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the time you had to complete the tasks impact the amount of information you found? Please explain.", required=False)
-    ae_time_amount_read = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the time you had to complete the tasks impact the extent to which you read the information that you found? Please explain.", required=False)
-    ae_time_pressure_points = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="At what point(s) during the search tasks did you feel time pressure, if any? Please explain.", required=False)
+    ae_time_reasonable = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Do you think the time you had to complete these tasks was reasonable? Please explain.", required=False)
+    ae_time_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the time you had to complete the tasks impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
+    ae_time_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the time you had to complete the tasks impact the amount of information you found? Please explain.", required=False)
+    ae_time_amount_read = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the time you had to complete the tasks impact the extent to which you read the information that you found? Please explain.", required=False)
+    ae_time_pressure_points = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="At what point(s) during the search tasks did you feel time pressure, if any? Please explain.", required=False)
 
     def clean(self):
         return clean_to_zero(self)
@@ -308,10 +316,10 @@ class AnitaExit3Survey(models.Model):
 
 
 class AnitaExit3SurveyForm(ModelForm):
-    ae_speed_compare = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="How did the speed of this system compare to others you have used? Please explain.", required=False)
-    ae_speed_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the system speed impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
-    ae_speed_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the system speed impact the amount of information you found for the tasks? Please explain.", required=False)
-    ae_speed_amount_read = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 5}), label="Did the system speed impact the extent to which you read the information that you found? Please explain.", required=False)
+    ae_speed_compare = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="How did the speed of this system compare to others you have used? Please explain.", required=False)
+    ae_speed_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the system speed impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
+    ae_speed_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the system speed impact the amount of information you found for the tasks? Please explain.", required=False)
+    ae_speed_amount_read = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the system speed impact the extent to which you read the information that you found? Please explain.", required=False)
 
     def clean(self):
         return clean_to_zero(self)
