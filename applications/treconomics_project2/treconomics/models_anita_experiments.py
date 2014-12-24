@@ -32,6 +32,28 @@ ABILITY_CHOICES = ( ('0','Not Specified'), ('1','1 - Novice'), ('2','2'), ('3','
                     ('4','4'),('5','5'),('6','6'), ('7','7 - Expert')  )
 
 
+class AnitaConsent(models.Model):
+    user = models.ForeignKey(User)
+    agreed = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.user.username
+
+class AnitaConsentForm(ModelForm):
+    agreed = forms.BooleanField(label="Do you consent to participate in the study?", required=True)
+
+    def clean(self):
+        cleaned_data = super(AnitaConsentForm, self).clean()
+        agreed = cleaned_data.get("agreed")
+        if not agreed:
+            raise forms.ValidationError("Consent not given.")
+        return cleaned_data
+
+    class Meta:
+        model = AnitaConsent
+        exclude = ('user',)
+
+
 class AnitaDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0,help_text="Please provide your age (in years).")

@@ -12,6 +12,7 @@ from experiment_functions import log_event
 from survey_views import handle_survey
 from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask0SurveyForm, AnitaPostTask1SurveyForm, AnitaPostTask2SurveyForm,AnitaPostTask3SurveyForm
 from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm, AnitaExit2SurveyForm, AnitaExit3SurveyForm
+from models_anita_experiments import AnitaConsentForm
 from models import TaskDescription
 
 
@@ -108,3 +109,38 @@ def view_anita_time_instructions(request, version):
     if version == "TC":
         pressure_condition = True
     return render_to_response('base/anita_time_constraint_instructions.html', {'participant': uname, 'condition': condition, 'pressure_condition': pressure_condition}, context)
+
+
+
+@login_required
+def view_anita_consent(request):
+
+    context = RequestContext(request)
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    errors = ""
+    uname = request.user.username
+    u = User.objects.get(username=uname)
+   #handle post within this element. save data to survey table,
+    if request.method == 'POST':
+        form = AnitaConsentForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = u
+            obj.save()
+            log_event("CONSENT_COMPLETED", request=request)
+            return HttpResponseRedirect('/treconomics/next/')
+        else:
+            print form.errors
+            errors = form.errors
+            survey = AnitaConsentForm(request.POST)
+
+    else:
+        log_event("CONSENT_STARTED", request=request)
+        survey = AnitaConsentForm()
+
+    # provide link to search interface / next system
+    return render_to_response('survey/anita_consent_form.html', {'participant': uname, 'condition': condition,
+                                          'formset': survey, 'action': '/treconomics/consent/', 'errors' : errors}, context)
+
