@@ -44,7 +44,7 @@
     <script type="text/javascript">
         var frmvalidator = new Validator("survey_form");
         {% for field in formset.visible_fields %}
-        frmvalidator.addValidation("{{field.html_name}}", "selectradio", "{{ field.label }}");
+        frmvalidator.addValidation("{{field.html_name}}", "required", "{{ field.label }}");
         {% endfor %}
     frmvalidator.EnableOnPageErrorDisplaySingleBox();
     frmvalidator.EnableMsgsTogether();

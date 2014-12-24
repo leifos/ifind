@@ -86,7 +86,10 @@ class AnitaDemographicsSurveyForm(ModelForm):
         cleaned_data = self.cleaned_data
         if not cleaned_data.get("age"):
             cleaned_data["age"] = 0
-            print "clean age"
+            
+        if not cleaned_data.get("search_freq"):
+            cleaned_data["search_freq"] = 0
+
         return cleaned_data
 
     class Meta:
