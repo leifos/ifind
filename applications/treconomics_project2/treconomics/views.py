@@ -350,6 +350,20 @@ def view_post_experiment(request):
     return render_to_response('base/post_experiment.html', {'participant': uname, 'condition': condition }, context)
 
 
+
+@login_required
+def view_task_spacer(request):
+    context = RequestContext(request)
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    # if we had post task survey we could ask them here
+    # else we can provide a link to a hosted questionnaire
+
+    # Provide debriefing
+    return render_to_response('base/task_spacer.html', {'participant': uname, 'condition': condition }, context)
+
+
 @login_required
 def view_end_experiment(request):
     context = RequestContext(request)

@@ -61,7 +61,7 @@ class AnitaDemographicsSurvey(models.Model):
     work = models.CharField(max_length=100, default="")
     status = models.CharField(max_length=100, default="")
     level = models.CharField(max_length=3,default="")
-    search_freq = models.IntegerField(default=0)
+    search_freq = models.IntegerField(default=0, help_text="How many times per week do you conduct searches for information (please enter a whole number)?")
     search_ability = models.CharField(default="",max_length=1)
 
     def __unicode__(self):
@@ -79,14 +79,14 @@ class AnitaDemographicsSurveyForm(ModelForm):
     status =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="What is your status at UNC?", required=False)
     work =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="Please provide your current occupation:", required=False)
     level = forms.CharField(max_length=3, widget=forms.Select(choices=ED_CHOICES), label="Please indicate the highest degree you've earned:", required=False)
-    search_freq = forms.IntegerField(label="How many times per week do you conduct searches for information?",max_value = 1000, min_value=0, required=False)
+    search_freq = forms.IntegerField(label="How many times per week do you conduct searches for information (please enter a whole number)?",max_value = 10000, min_value=0, required=False)
     search_ability  = forms.CharField(max_length=1, widget=forms.Select(choices = ABILITY_CHOICES), label="How would you rate your online search ability?", required=False)
 
     def clean(self):
         cleaned_data = self.cleaned_data
         if not cleaned_data.get("age"):
             cleaned_data["age"] = 0
-            
+
         if not cleaned_data.get("search_freq"):
             cleaned_data["search_freq"] = 0
 
@@ -314,7 +314,7 @@ class AnitaExit2Survey(models.Model):
         return self.user.username
 
 class AnitaExit2SurveyForm(ModelForm):
-    ae_time_extent = forms.ChoiceField(widget=RadioSelect,  choices = EXTENT_CHOICES, label="To what extent did the amount of time you had to compelte these task influence your performance?", required=False)
+    ae_time_extent = forms.ChoiceField(widget=RadioSelect,  choices = EXTENT_CHOICES, label="To what extent did the amount of time you had to complete these task influence your performance?", required=False)
     ae_time_reasonable = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Do you think the time you had to complete these tasks was reasonable? Please explain.", required=False)
     ae_time_process = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the time you had to complete the tasks impact the process you used to complete the tasks (e.g., steps, thought process)? Please explain.", required=False)
     ae_time_amount_found = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 6}), label="Did the time you had to complete the tasks impact the amount of information you found? Please explain.", required=False)

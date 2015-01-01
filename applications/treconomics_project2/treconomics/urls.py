@@ -20,6 +20,8 @@ urlpatterns = patterns('',
     (r'^posttask/(?P<taskid>\d+)/$', views.view_post_task),
     (r'^postpracticetask/(?P<taskid>\d+)/$', views.view_post_practice_task),
     (r'^posttaskquestions/(?P<taskid>\d+)/$', views.view_post_task_with_questions),
+    (r'^taskspacer/$', views.view_task_spacer),
+
     (r'^showtask/$', views.view_show_task),
     (r'^sessioncommence/$', views.view_commence_session),    
     (r'^sessioncompleted/$', views.view_session_completed),

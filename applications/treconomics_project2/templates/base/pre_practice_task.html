@@ -1,43 +1,48 @@
 {% extends 'base/base.html' %}
 
 {% block exp_info_block %}
- <p> <!-- a href="/treconomics/logout">Logout</a> -->
- </p>
+<p> <!-- a href="/treconomics/logout">Logout</a> --></p>
 {% endblock %}
 
 {% block exp_block %}
 
 
 <div class="experimentPageTitle">
-    <p>To get you familar with the system we would like you to undertake the following practice search task.</p>
+   <p> <h1> Practice Task</h1></p>
+    <p> So you that you can get acquainted with the search system and newspaper database,
+        we would first like you to practice using the system using a task similar to those
+        you will do later in the study.
+    </p>
 
+    <!--    <p>To get you familar with the system we would like you to undertake the following practice search task.</p>
     <p>The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.</p>
-
     <hr/>
-   <!-- <div id="query" > <b> {{tasktitle}} </b> <span>Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></span></div> -->
+    -->
+
+    <!-- <div id="query" > <b> {{tasktitle}} </b> <span>Search Task: <strong>{{task}}</strong> Search Topic: <strong>{{topic}}</strong></span></div> -->
 
     <p>{% autoescape off %} <strong>{{taskdescription}}</strong> {% endautoescape %} </p>
 
-    <hr/>
 
+
+    <p>To get familiar with the system, we would like you to:
+    <ul>
+        <li>- Search for articles about this topic,</li>
+        <li>- Mark at least two documents as relevant,</li>
+        <li>- Review your list of documents, by selecting "View Saved" , and</li>
+        <li>- Select "End Task".</li>
+    </ul>
+    </p>
 
 </div>
 
-<!---
-<p>Feel free to try out the interface by posing queries and examining the documents returned by the system. Try finding documents that are relevant to the topic description given below.</p>
 
-<div style="padding: 20px;"><em><strong>Topic: Old-Fashioned Piracy in Modern Times</strong></em><br /><em>What modern instances have there been of old fashioned piracy, the boarding or taking control of boats?<br />Documents discussing piracy on any body of water are relevant.<br />Documents discussing the legal taking of ships or their contents by a national authority are non-relevant.<br />Clashes between fishing vessels overfishing are not relevant, unless one vessel is boarded.</em></div>
-	
-	
-<p> Try to find a document that is relevant to the practice task. When you find a relevant document you will be able to mark it as relevant by clicking the button <em>'Mark as Relevant'.</em></p>
 
-<!--<p><strong>If you are unsure as to how a particular feature works, please call over the assistant.</strong></p>
--->
-<p>When you're confident you can use the system effectively, you can move on to the experiment.</p>
-<hr/>
 
 <div style="text-align: center;">
-<a href="/treconomics/next/"> <button class="button" type="next" >Next</button></a>
+    <p>Click Next to start the practice task.</p>
+    <hr/>
+    <a href="/treconomics/next/"> <button class="button" type="next" >Next</button></a>
 </div>
 
 
