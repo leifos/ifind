@@ -1,5 +1,6 @@
 __author__ = 'leif'
 import os
+import socket
 import logging
 import logging.config
 import logging.handlers
@@ -8,6 +9,8 @@ from ifind.search.engines.whooshtrecnews import WhooshTrecNews
 from experiment_setup import ExperimentSetup
 
 work_dir = os.getcwd()
+if socket.gethostname() =='newssearch':
+    work_dir = '/opt/tango/ifind/applications/treconomics_project2/'
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir

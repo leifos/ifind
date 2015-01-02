@@ -1,6 +1,9 @@
 # Django settings for treconomics_project project.
 import os
+import socket
 PROJECT_PATH = os.getcwd()
+if socket.gethostname()=='newssearch':
+    PROJECT_PATH = '/opt/tango/ifind/applications/treconomics_project2/'
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH,'static')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'treconomics.db')
@@ -83,7 +86,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = STATIC_PATH
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
