@@ -10,7 +10,7 @@ from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStress
 
 
 from models_anita_experiments import AnitaPreTaskSurvey, AnitaPostTask0Survey, AnitaPostTask1Survey, AnitaPostTask2Survey, AnitaPostTask3Survey
-from models_anita_experiments import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey
+from models_anita_experiments import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey, AnitaDemographicsSurvey
 
 from django.contrib import admin
 from django import forms
