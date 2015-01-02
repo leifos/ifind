@@ -70,6 +70,7 @@ suggestion_trie = AutocompleteTrie(
 
 
 pl2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=2)
+pl2.key_name = 'pl2'
 
 exp_no_time_constraint_delay  = ExperimentSetup(workflow=exp_work_flows[2], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)
 exp_time_constraint_delay = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=300)

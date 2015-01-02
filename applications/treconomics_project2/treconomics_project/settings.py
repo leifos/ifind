@@ -7,7 +7,7 @@ if socket.gethostname()=='newssearch':
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH,'static')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'treconomics.db')
-
+CACHE_DIR = os.path.join(PROJECT_PATH, 'cache')
 LOGIN_URL = '/treconomics/?notloggedin=true'
 
 DEBUG = True
@@ -35,9 +35,12 @@ DATABASES = {
 
 # Add caches for autocomplete suggestions and query results
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'newssearch-results',
+    'default' : {
+        'BACKEND' : 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION' : CACHE_DIR,
+        'OPTIONS' :{
+            'MAX_ENTRIES': 10000
+        }
     },
     'autocomplete': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -86,7 +89,9 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = STATIC_PATH
+STATIC_ROOT = ''
+if socket.gethostname()=='newssearch':
+    STATIC_ROOT = STATIC_PATH
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"

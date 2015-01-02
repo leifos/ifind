@@ -52,6 +52,7 @@ class Engine(object):
         self.last_search = None
         self.num_requests = 0
         self.num_requests_cached = 0
+        self.key_name = ''
 
         for key, value in kwargs.items():
             setattr(self, key, value)

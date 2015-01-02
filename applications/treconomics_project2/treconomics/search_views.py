@@ -1,6 +1,7 @@
 __author__ = 'leif'
 
 import os
+import sys
 import datetime
 # Django
 from django.template.context import RequestContext
@@ -37,6 +38,8 @@ from time import sleep
 from threading import Thread
 import json
 
+from result_cache import make_key, get_response, do_cache_pages
+
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
 
@@ -44,6 +47,7 @@ ixr = ix.reader()
 @login_required
 def show_document(request, whoosh_docid):
     #check for timeout
+    sys.stdout.flush()
     if time_search_experiment_out(request):
         return HttpResponseRedirect('/treconomics/timeout/')
 
@@ -267,6 +271,13 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     result_cache = False
     response = None
 
+    #key = make_key(query,search_engine)
+
+    (in_cache, response) = get_response(query,search_engine)
+    if in_cache == False:
+        print "do caching"
+        do_cache_pages(query,search_engine,3)
+    """
     if result_cache:
         if cache.cache.get(str(query)):
             response = cache.cache.get(str(query))
@@ -276,7 +287,7 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     else:
         response = search_engine.search(query)
 
-
+    """
 
     num_pages = response.total_pages
 
@@ -318,8 +329,8 @@ def get_results(request,  result_dict, page, page_len, condition, user_query, pr
     start_time = timeit.default_timer()
     # prevent_performance_logging can be passed to override logging.
     # If a user is on page 2 then goes back to page 1, we don't want to get the performance again.
-    if not prevent_performance_logging and page == 1:
-        print "Performance should be measured - but it's disabled as it's too costly!"
+    #if not prevent_performance_logging and page == 1:
+    #    print "Performance should be measured - but it's disabled as it's too costly!"
 
     run_query(request, result_dict, user_query, page, page_len, condition)
     result_dict['query_time'] = timeit.default_timer() - start_time
@@ -346,6 +357,7 @@ def set_task(request, taskid=-1):
 
 @login_required
 def search(request, taskid=-1):
+    sys.stdout.flush()
 
     def is_from_search_request(new_page_no):
         """
