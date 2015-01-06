@@ -45,4 +45,5 @@ class PredeterminedQueryGenerator(BaseQueryGenerator):
         queries_file.close()
         
         sorted(queries, key=lambda x: x[1])
+        self._log_queries(queries)
         return queries

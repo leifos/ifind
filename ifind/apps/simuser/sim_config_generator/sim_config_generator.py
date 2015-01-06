@@ -106,12 +106,12 @@ def create_attribute_markup(attribute_dict):
     """
     Given a dictionary representing an attribute, returns the associated XML markup for that attribute component.
     """
-    attribute_markup = read_file_to_string('base_files/attribute.xml')    
-    attribute_dict['@value'] = attribute_dict['@value'].replace('{{ base_dir }}', simulation_base_dir)
+    attribute_markup = read_file_to_string('base_files/attribute.xml')
+    value = attribute_dict['@value'].replace('{{ base_dir }}', simulation_base_dir)
     
     attribute_markup = attribute_markup.format(attribute_dict['@name'],
                                                attribute_dict['@type'],
-                                               attribute_dict['@value'],
+                                               value,
                                                attribute_dict['@is_argument'])
     
     return attribute_markup
@@ -152,6 +152,9 @@ def generate_markup(dict_repr, permutations):
     Given a tuple of dictionary objects, generates the markup for the associated simulation and its users.
     """
     user_files = []
+    
+    global simulation_base_dir
+    simulation_base_dir = dict_repr['simulation']['@baseDir']
     
     for iteration in permutations:
         user_markup = read_file_to_string('base_files/user.xml')
@@ -220,9 +223,6 @@ def generate_markup(dict_repr, permutations):
             user_base_id = user_base_id.replace("{{" + tag[0] + "}}", tag[1])
         
         user_files.append(os.path.join(dict_repr['simulation']['@baseDir'], "user-{0}.xml").format(user_base_id))
-        
-        global simulation_base_dir
-        simulation_base_dir = dict_repr['simulation']['@baseDir']
         
         user_markup = read_file_to_string('base_files/user.xml')
         user_markup = user_markup.format(
