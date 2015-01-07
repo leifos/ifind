@@ -56,6 +56,12 @@ class TopicDocumentFileHandler(object):
             return int(self.data[topic][doc])
         else:
             return 0
+    
+    def get_value_if_exists(self, topic, doc):
+        if self.data[topic][doc]:
+            return int(self.data[topic][doc])
+        else:
+            return None
 
     def get_doc_list(self, topic):
         if self.data[topic]:
