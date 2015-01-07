@@ -6,6 +6,8 @@ from lxml import etree
 from xml.etree import cElementTree
 from collections import defaultdict
 
+simulation_base_dir = ""
+
 def build_dictionary(input_filename):
     """
     Turns the XML configuration file into a Python dictionary object.
@@ -105,10 +107,11 @@ def create_attribute_markup(attribute_dict):
     Given a dictionary representing an attribute, returns the associated XML markup for that attribute component.
     """
     attribute_markup = read_file_to_string('base_files/attribute.xml')
+    value = attribute_dict['@value'].replace('{{ base_dir }}', simulation_base_dir)
     
     attribute_markup = attribute_markup.format(attribute_dict['@name'],
                                                attribute_dict['@type'],
-                                               attribute_dict['@value'],
+                                               value,
                                                attribute_dict['@is_argument'])
     
     return attribute_markup
@@ -149,6 +152,9 @@ def generate_markup(dict_repr, permutations):
     Given a tuple of dictionary objects, generates the markup for the associated simulation and its users.
     """
     user_files = []
+    
+    global simulation_base_dir
+    simulation_base_dir = dict_repr['simulation']['@baseDir']
     
     for iteration in permutations:
         user_markup = read_file_to_string('base_files/user.xml')
