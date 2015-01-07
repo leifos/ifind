@@ -18,7 +18,7 @@ class WhooshTrecNews(Engine):
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', stopwords_file='', model=1, implicit_or=False, **kwargs):
+    def __init__(self, whoosh_index_dir='', stopwords_file='', model=1, implicit_or=False, newschema=False, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -39,7 +39,7 @@ class WhooshTrecNews(Engine):
         if self.stopwords_file:
             self.stopwords = ListReader(self.stopwords_file)  # Open the stopwords file, read into a ListReader
 
-
+        self.newschema = newschema
 
         self.implicit_or=implicit_or
 
@@ -53,7 +53,10 @@ class WhooshTrecNews(Engine):
 
             print "Whoosh Document index open: ", whoosh_index_dir
             print "Documents in index: ", self.docIndex.doc_count()
-            self.parser = QueryParser("content", self.docIndex.schema)
+            if newschema:
+                self.parser = QueryParser("alltext", self.docIndex.schema)
+            else:
+                self.parser = QueryParser("content", self.docIndex.schema)
 
             self.analyzer = self.docIndex.schema[self.parser.fieldname].analyzer
             self.fragmenter = ContextFragmenter(maxchars=200, surround=40)
@@ -156,12 +159,12 @@ class WhooshTrecNews(Engine):
 
         setattr(results, 'actual_page', page)
 
-        response = self._parse_whoosh_response(query, results)
+        response = self._parse_whoosh_response(query, results, self.newschema)
 
         return response
 
     @staticmethod
-    def _parse_whoosh_response(query, results):
+    def _parse_whoosh_response(query, results, newschema):
         """
         Parses Whoosh's response and returns as an ifind Response.
 
@@ -187,11 +190,17 @@ class WhooshTrecNews(Engine):
             else:
                 title = "Untitled"
 
+            if title == '':
+                title = "Untitled"
+
             rank = ((int(results.pagenum)-1) * results.pagelen) + r
 
             url = "/treconomics/" + str(result.docnum)
+            if newschema:
+                summary = result.highlights("alltext")
+            else:
+                summary = result.highlights("content")
 
-            summary = result.highlights("content")
             trecid = result["docid"]
             trecid = trecid.strip()
 
@@ -228,23 +237,23 @@ class WhooshTrecNews(Engine):
             query.top = 10
 
         # Tidy up the querystring. Split it into individual terms so we can process them.
-        terms = query.terms
-        terms = terms.lower()
-        terms = terms.strip()
-        terms = terms.split()  # Chop!
+        #terms = query.terms
+        #terms = terms.lower()
+        #terms = terms.strip()
+        #terms = terms.split()  # Chop!
 
-        query.terms = ""  # Reset the query's terms string to a blank string - we will rebuild it.
+        #query.terms = ""  # Reset the query's terms string to a blank string - we will rebuild it.
 
-        for term in terms:
-            if term not in self.stopwords:
-                query.terms = "{0} {1}".format(query.terms, term)
+        #for term in terms:
+        #    if term not in self.stopwords:
+        #        query.terms = "{0} {1}".format(query.terms, term)
 
         query.terms = query.terms.strip()
         query.terms = unicode(query.terms)
 
-        if self.implicit_or:
-            query_terms = query.terms.split(' ')
-            query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
+        #if self.implicit_or:
+        #    query_terms = query.terms.split(' ')
+        #    query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
 
 
         #if len(query.terms.split()) == 1:

@@ -69,7 +69,7 @@ suggestion_trie = AutocompleteTrie(
                     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
 
 
-bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=1)
+bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=1, newschema=True)
 bm25.key_name = 'bm25'
 
 exp_no_time_constraint_delay  = ExperimentSetup(workflow=exp_work_flows[2], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)

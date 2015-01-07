@@ -182,85 +182,6 @@ def task(request, taskid):
     pid = request.user.username
     return HttpResponse(pid + " you're task is set to: "+ taskid +". <a href='/treconomics/saved/'>click here</a>" )
 
-def constructStructuredQuery(request):
-    user_and = request.POST['queryAND'].strip()
-    user_and1 = request.POST['queryAND1'].strip()
-    user_and2 = request.POST['queryAND2'].strip()
-    user_and3 = request.POST['queryAND3'].strip()
-    user_and4 = request.POST['queryAND4'].strip()
-    #user_and5 = request.POST['queryAND5'].strip()
-    #user_and6 = request.POST['queryAND6'].strip()
-
-    def buildQueryParts(term_list, op):
-        qp = ''
-        for t in term_list:
-            if t:
-                if qp:
-                    qp = qp + " " + op  +" " + t
-                else:
-                    qp = t
-        return qp
-
-    def buildQueryPartsNot(term_list):
-        qp = ''
-        for t in term_list:
-            if t:
-                nt = " NOT " + t
-                qp = qp + nt
-        return qp
-
-    def buildQuery(term_list):
-        qp = ''
-        for t in term_list:
-            if t:
-                qp = qp + " " + t
-        return qp
-
-    query_and = buildQueryParts([user_and, user_and1, user_and2, user_and3, user_and4],'AND')
-
-    user_query = ''
-
-    print "AND Query:"  + query_and
-
-    user_or = request.POST['queryANY'].strip()
-    user_or1 = request.POST['queryANY1'].strip()
-    user_or2 = request.POST['queryANY2'].strip()
-    user_or3 = request.POST['queryANY3'].strip()
-    user_or4 = request.POST['queryANY4'].strip()
-
-    query_or = buildQueryParts([user_or,user_or1,user_or2,user_or3,user_or4], "OR")
-
-    print "OR-Query: " +  query_or
-
-    user_not = request.POST['queryNOT'].strip()
-    user_not1 = request.POST['queryNOT1'].strip()
-    user_not2 = request.POST['queryNOT2'].strip()
-    user_not3 = request.POST['queryNOT3'].strip()
-    user_not4 = request.POST['queryNOT4'].strip()
-
-    query_not = buildQueryPartsNot([user_not,user_not1,user_not2,user_not3,user_not4])
-    print "Not-Query: " +  query_not
-
-    if query_and:
-        user_query = query_and
-
-    if query_or:
-        if user_query:
-            user_query = user_query + " AND ( " + query_or + " ) "
-        else:
-            user_query = query_or
-
-    if user_not:
-        if user_query:
-            user_query = user_query + " AND ( " + query_not + " ) "
-        else:
-            user_query = query_not
-
-    print user_query
-    user_query = user_query.strip()
-    return user_query
-
-
 def run_query(request, result_dict, query_terms='', page=1, page_len=10, condition=0, log_performance=False):
     # Stops an AWFUL lot of problems when people get up to mischief
     if page < 1:
@@ -271,31 +192,20 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     query = Query(query_terms)
     query.skip = page
     query.top = page_len
-
     result_dict['query'] = query_terms
     search_engine = experiment_setups[condition].get_engine()
 
     result_cache = False
     response = None
-
-    #key = make_key(query,search_engine)
-
-    (in_cache, response) = get_response(query,search_engine)
-    if in_cache == False:
-        print "do caching"
-        do_cache_pages(query,search_engine,3)
-    """
+    log_event(event="QUERY_START", request=request, query=query_terms)
     if result_cache:
-        if cache.cache.get(str(query)):
-            response = cache.cache.get(str(query))
-        else:
-            response = search_engine.search(query)
-            cache.cache.set(str(query),response, 500)
+        (in_cache, response) = get_response(query,search_engine)
+        if in_cache == False:
+            print "do caching"
+            do_cache_pages(query,search_engine,3)
     else:
         response = search_engine.search(query)
-
-    """
-
+    log_event(event="QUERY_END", request=request, query=query_terms)
     num_pages = response.total_pages
 
     result_dict['trec_results'] = None
@@ -453,10 +363,7 @@ def search(request, taskid=-1):
         query_flag = False
         if request.method =='POST':
             # handle the searches from the different interfaces
-            if interface == 1:
-                user_query = constructStructuredQuery(request)
-            else:
-                user_query = request.POST['query'].strip()
+            user_query = request.POST['query'].strip()
             log_event(event="QUERY_ISSUED", request=request, query=user_query)
             query_flag = True
             result_dict['page'] = page
