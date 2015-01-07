@@ -6,8 +6,25 @@
 
 {% block exp_block %}
 
-<p> <h1> Scenario Instructions </h1></p>
+        {% load static %}
+<p> <h1>  Before you begin </h1></p>
 
+       {% if pressure_condition %}
+        <img src="{% static 'images/attention-sign.png' %}" />
+
+        <p>
+        You just received a message that your meeting has been just rescheduled for tomorrow
+        and you only have 20 minutes today to create your lists of articles on each topic.
+        </p>
+        <p>
+        Since you only have 20 minutes to search,
+        you decide to limit yourself to <strong>5 minutes per topic</strong>.
+        The system will let you know when you have been searching for 5 minutes.
+        </p>
+        {% else %}
+        <p>You are ready to begin your first search task.</p>
+        {% endif %}
+<!--
 <p>
 Now that you have had an opportunity to practice using the <em> NewsSearch system</em>,
     you are almost ready to start preparing for your meeting with the scholars.
@@ -21,7 +38,8 @@ Now that you have had an opportunity to practice using the <em> NewsSearch syste
 <p><strong>This means you can take as much time as you need to search for articles about each topic.</strong>
 {% endif %}
 </p>
-
+--->
+<!--
 <p>Some things to keep in mind:
 
 <ul>
@@ -34,6 +52,8 @@ Now that you have had an opportunity to practice using the <em> NewsSearch syste
 {% endif %}
 </ul>
 </p>
+
+ -->
 <p>Click "Next" to start the first search task.</p>
 
 

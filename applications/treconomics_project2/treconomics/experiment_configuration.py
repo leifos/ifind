@@ -9,9 +9,9 @@ from ifind.search.engines.whooshtrecnews import WhooshTrecNews
 from experiment_setup import ExperimentSetup
 
 work_dir = os.getcwd()
-if socket.gethostname() =='newssearch':
+if socket.gethostname() == 'newssearch':
     work_dir = '/opt/tango/ifind/applications/treconomics_project2/'
-my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex')
+my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/test100index')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
 qrels_file = os.path.join(work_dir, "data/TREC2005.qrels.txt")
@@ -69,12 +69,12 @@ suggestion_trie = AutocompleteTrie(
                     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
 
 
-pl2 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=2)
-pl2.key_name = 'pl2'
+bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=1)
+bm25.key_name = 'bm25'
 
-exp_no_time_constraint_delay  = ExperimentSetup(workflow=exp_work_flows[2], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)
-exp_time_constraint_delay = ExperimentSetup(workflow=exp_work_flows[1], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=300)
-exp_test = ExperimentSetup(workflow=exp_work_flows[3], engine=pl2, practice_topic='341', topics=['347', '367', '383', '435', ], rpp=10, interface=0, description='standard condition PL2 test', delay_results=[0,0,0,0,0],delay_docview=[0,0,0,0,0], trie=suggestion_trie, autocomplete=True, timeout=300)
+exp_no_time_constraint_delay  = ExperimentSetup(workflow=exp_work_flows[2], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)
+exp_time_constraint_delay = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=300)
+exp_test = ExperimentSetup(workflow=exp_work_flows[3], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 test', delay_results=[0,0,0,0,0],delay_docview=[0,0,0,0,0], trie=suggestion_trie, autocomplete=True, timeout=300)
 
 
 # these correspond to conditions
