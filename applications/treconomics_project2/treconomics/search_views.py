@@ -59,6 +59,11 @@ def show_document(request, whoosh_docid):
     condition = ec["condition"]
     current_search = request.session['queryurl']
 
+    log_event(event="DOC_CLICKED",
+                  request=request,
+                  whooshid=whoosh_docid)
+
+
     # get document from index
     fields = ixr.stored_fields(int(whoosh_docid))
     title = fields["title"]
@@ -68,6 +73,8 @@ def show_document(request, whoosh_docid):
     doc_source = fields["source"]
     docid = whoosh_docid
     topicnum = ec["topicnum"]
+
+
 
     def get_document_rank():
         """
