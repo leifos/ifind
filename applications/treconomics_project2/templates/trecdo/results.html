@@ -1,5 +1,7 @@
 {% extends 'trecdo/search.html' %}
 
+{% load treconomics_tags %}
+
 
 {% block search_results %}
 
@@ -16,7 +18,7 @@
                 <div class="results_squash">
                     <div class="entry">
                         <p class="result_title"><strong><a class="doc-link" href="{{ result.url }}">{{ result.title }}</a></strong></p>
-                        <p class="summary">{% autoescape off %} {{ result.summary }} {% endautoescape %}</p>
+                        <p class="summary">{% autoescape off %} {{ result.summary | removeps  }} {% endautoescape %}</p>
                     </div>
 
                     <div class="byline">

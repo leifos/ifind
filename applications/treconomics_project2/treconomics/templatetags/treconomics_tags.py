@@ -17,3 +17,13 @@ def linebreaksbrbr(article, service):
 
     # Assume New York Times News Service formatting
     return article.replace('\n   ', '<p></p>')
+
+
+@register.filter
+def removeps(article):
+    article = article.replace('&lt;p&gt;', '')
+    article = article.replace('&lt;/p&gt;', '')
+    article = article.replace('/p&gt;', '')
+    article = article.replace('p&gt;', '')
+    article = article.replace('&lt;p', '')
+    return article
