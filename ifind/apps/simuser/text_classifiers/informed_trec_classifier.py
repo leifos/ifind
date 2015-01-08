@@ -36,11 +36,13 @@ class InformedTrecTextClassifier(BaseTextClassifier):
         """
 
         """
-
-        val = self._trecqrels.get_value(self._topic.id, document.doc_id)
-
+        val = self._trecqrels.get_value_if_exists(self._topic.id, document.doc_id)  # Does the document exist?
+        
+        if not val:  # If not, we fall back to the generic topic.
+            val = self._trecqrels.get_value('0', document.doc_id)
+        
         dp = random()
-
+        
         if val > 0:
             if dp > self._rel_prob:
                 return False

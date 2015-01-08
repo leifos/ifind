@@ -52,12 +52,18 @@ class TopicDocumentFileHandler(object):
 
 
     def get_value(self, topic, doc):
+        if topic not in self.data:
+            return 0
+        
         if self.data[topic][doc]:
             return int(self.data[topic][doc])
         else:
             return 0
     
     def get_value_if_exists(self, topic, doc):
+        if topic not in self.data:
+            return None
+        
         if self.data[topic][doc]:
             return int(self.data[topic][doc])
         else:
