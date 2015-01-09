@@ -32,7 +32,7 @@ from experiment_functions import get_topic_relevant_count
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import mark_document, log_event
 from experiment_functions import time_search_experiment_out,getPerformance, getQueryResultPerformance, get_query_performance_metrics, log_performance
-from experiment_configuration import my_whoosh_doc_index_dir
+from experiment_configuration import my_whoosh_doc_index_dir, data_dir
 from experiment_configuration import experiment_setups
 from time import sleep
 from threading import Thread
@@ -676,3 +676,42 @@ def autocomplete_suggestion(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
     return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')
+
+
+
+def view_run_queries(request, topic_num):
+    from experiment_configuration import bm25
+
+    context = RequestContext(request)
+    seconds = 0
+    num = 0
+    query_file_name = os.path.join(data_dir, topic_num + '.queries')
+    print query_file_name
+
+    start_time = timeit.default_timer()
+    query_list = []
+
+    try:
+        query_file = open(query_file_name,"r")
+        while query_file and num < 200:
+            num = num + 1
+            line = query_file.readline()
+            #print line
+            parts = line.partition(' ')
+            #print parts
+            query_num = parts[0]
+            query_str = unicode( parts[2] )
+            if query_str:
+                print query_str
+                q = Query(query_str)
+                q.skip = 1
+                response = bm25.search(q)
+                query_list.append(query_str)
+            else:
+                break
+    except:
+        pass
+
+    seconds = timeit.default_timer() - start_time
+
+    return render_to_response('base/query_test.html', {'topic_num': topic_num, 'seconds': seconds, 'num': num }, context)

@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     (r'^docview_delay/$', search_views.docview_delay),
 
     (r'^reset/$', views.view_reset_test_users),
+    (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
     (r'^timeout/$', views.show_timeout_message),
 
     (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),

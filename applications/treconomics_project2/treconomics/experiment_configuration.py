@@ -16,6 +16,7 @@ my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
 qrels_file = os.path.join(work_dir, "data/TREC2005.qrels.txt")
 stopword_file = os.path.join(work_dir, "data/stopwords.txt")
+data_dir = os.path.join(work_dir, "data")
 
 print "Work DIR: " + work_dir
 print "QRELS File: " + qrels_file
