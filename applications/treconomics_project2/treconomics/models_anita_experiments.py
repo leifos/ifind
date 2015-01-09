@@ -58,8 +58,8 @@ class AnitaDemographicsSurvey(models.Model):
     user = models.ForeignKey(User)
     age = models.IntegerField(default=0,help_text="Please provide your age (in years).")
     #sex = models.CharField(max_length=1, choices = SEX_CHOICES, help_text="Please indicate your sex.")
-    work = models.CharField(max_length=100, default="")
     status = models.CharField(max_length=100, default="")
+    work = models.CharField(max_length=100, default="")
     level = models.CharField(max_length=3,default="")
     search_freq = models.IntegerField(default=0, help_text="How many times per week do you conduct searches for information (please enter a whole number)?")
     search_ability = models.CharField(default="",max_length=1)
@@ -72,12 +72,16 @@ ED_CHOICES = ( ('','Not Specified'),
     ('GED','High School or GED'),('ASS',"Associate's"),('BCA',"Bachelor's"),('MAS',"Master's"),('PHD',"Doctorate")
 )
 
+STATUS_CHOICES = ( ('','Not Specified'),
+    ('staff','Staff'),('undergrad','Undergraduate Student'),('postgrad','Graduate Student')
+)
+
 
 class AnitaDemographicsSurveyForm(ModelForm):
     age = forms.IntegerField(label="Please provide your age (in years).", max_value = 100, min_value=0, required=False)
     #sex = forms.CharField(max_length=1, widget=forms.Select(choices=SEX_CHOICES), label="Please indicate your sex.", required=False)
-    status =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="What is your status at UNC?", required=False)
-    work =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="Please provide your current occupation:", required=False)
+    status =forms.CharField(widget=forms.Select(choices=STATUS_CHOICES), label="What is your status at UNC?", required=False)
+    work =forms.CharField(widget=forms.TextInput( attrs={'size':'60', 'class':'inputText'}), label="Please provide your occupation/major:", required=False)
     level = forms.CharField(max_length=3, widget=forms.Select(choices=ED_CHOICES), label="Please indicate the highest degree you've earned:", required=False)
     search_freq = forms.IntegerField(label="How many times per week do you conduct searches for information (please enter a whole number)?",max_value = 10000, min_value=0, required=False)
     search_ability  = forms.CharField(max_length=1, widget=forms.Select(choices = ABILITY_CHOICES), label="How would you rate your online search ability?", required=False)
@@ -124,7 +128,7 @@ class AnitaPreTaskSurveyForm(ModelForm):
     apt_interested = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I am interested in this topic.", required=False)
     apt_know = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I know a lot about this topic.", required=False)
     apt_clear_what = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="It is clear what information I need to complete the task.", required=False)
-    apt_info_diff = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I think it wil be difficult to find relevant items for this task.", required=False)
+    apt_info_diff = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I think it will be difficult to find relevant items for this task.", required=False)
     apt_sys_diff = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="I think it will be difficult to search for information using this system.", required=False)
     apt_clear_how = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="It is clear how much information I need to complete the task.", required=False)
     apt_clear_steps = forms.ChoiceField(widget=RadioSelect,  choices = LIKERT_CHOICES, label="It is clear which steps I need to take to complete this task.", required=False)
