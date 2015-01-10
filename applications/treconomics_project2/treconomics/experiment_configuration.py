@@ -74,9 +74,12 @@ bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=s
 bm25.key_name = 'bm25'
 
 exp_no_time_constraint_delay  = ExperimentSetup(workflow=exp_work_flows[2], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)
-exp_time_constraint_delay = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=300)
+exp_no_time_constraint_delay2  = ExperimentSetup(workflow=exp_work_flows[2], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delay', delay_results=[0,0,5,0,5],delay_docview=[0,0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=0)
+exp_time_constraint_delay = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,5,0,5,0],delay_docview=[0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=[0,300,300,300,300])
+exp_time_constraint_delay2 = ExperimentSetup(workflow=exp_work_flows[1], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 alt delays', delay_results=[0,0,5,0,5],delay_docview=[0,0,5,0,5,0], trie=suggestion_trie, autocomplete=True, timeout=[0,300,300,300,300])
+
 exp_test = ExperimentSetup(workflow=exp_work_flows[3], engine=bm25, practice_topic='341', topics=['347', '367', '354', '435', ], rpp=10, interface=0, description='standard condition PL2 test', delay_results=[0,0,0,0,0],delay_docview=[0,0,0,0,0], trie=suggestion_trie, autocomplete=True, timeout=300)
 
 
 # these correspond to conditions
-experiment_setups = [exp_no_time_constraint_delay, exp_time_constraint_delay, exp_test]
+experiment_setups = [exp_time_constraint_delay, exp_no_time_constraint_delay, exp_time_constraint_delay2, exp_no_time_constraint_delay2, exp_test]
