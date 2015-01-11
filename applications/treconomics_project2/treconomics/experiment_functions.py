@@ -63,7 +63,9 @@ def print_experiment_context(ec):
 def time_search_experiment_out(request):
     start_time = request.session['start_time']
     ec = get_experiment_context(request)
-    timeout = experiment_setups[ec['condition']].timeout
+    task_id = ec["taskid"]
+    timeout = experiment_setups[ec['condition']].get_timeout(task_id)
+    print "timeout", timeout
 
     if timeout == 0:
         return False
