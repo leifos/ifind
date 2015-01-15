@@ -5,14 +5,20 @@
 {% endblock %}
 
 {% block exp_block %}
-
+<script>
+$(document).ready(function(){
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
+})
+</script>
 
 <p>
     <strong>You have now completed the practice task.</strong><br />
     Click the button below to proceed to the first search task.
 </p>
 
-<div style="text-align: center;">
+<div class=surveySubmitButton" style="text-align: center;">
 <a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
 </div>
 

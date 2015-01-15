@@ -5,14 +5,22 @@
 {% endblock %}
 
 {% block exp_block %}
-
+<script>
+$(document).ready(function(){
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
+})
+</script>
 
 <p> Thank you for completing this task. </p>
 
 
 <p> Click the next button to proceed to the next stage of the experiment: </p>
-<a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
 
+<div class="surveySubmitButton">
+<a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
+</div>
 
 {% endblock %}
 

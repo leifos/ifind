@@ -332,10 +332,11 @@ def search(request, taskid=-1):
         page_len = exp['rpp']
         page = 1
 
-        def setup_result_dict(uname, taskid, condition, interface, experiment):
+        def setup_result_dict(uname, taskid, condition, interface, experiment, topic_num):
             result_dict = {}
             result_dict['participant'] = uname
             result_dict['task'] = taskid
+            result_dict['topicno'] = topic_num
             result_dict['condition'] = condition
             result_dict['interface'] = interface
             result_dict['application_root'] = '/treconomics/'
@@ -349,7 +350,7 @@ def search(request, taskid=-1):
             return result_dict
 
 
-        result_dict = setup_result_dict(uname, taskid, condition, interface, exp)
+        result_dict = setup_result_dict(uname, taskid, condition, interface, exp, topic_num)
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something

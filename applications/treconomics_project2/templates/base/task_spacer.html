@@ -7,9 +7,21 @@
 
 {% block exp_block %}
 
+<script>
+$(document).ready(function(){
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
+})
+</script>
+
+
+
 <div class="experimentPageTitle">
     <p> When you are ready click the "next" button to continue to the next task: </p>
+</div>
 
+<div class="surveySubmitButton">
 <a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
 
 </div>
