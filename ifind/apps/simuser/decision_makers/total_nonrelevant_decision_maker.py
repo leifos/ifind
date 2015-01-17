@@ -19,10 +19,12 @@ class TotalNonrelDecisionMaker(BaseDecisionMaker):
         """
         examined_snippets = self._search_context.get_examined_snippets()
         examined_snippets.reverse()
-
+        
+        # If the judgment for a snippet is -1, then it was seen previously and was therefore not judged - so we should skip it.
+        
         for snippet in examined_snippets:
             judgment = snippet.judgment
-
+            
             if judgment == 0:
                 self.__counter = self.__counter + 1  # Found something nonrelevant; increment counter
 

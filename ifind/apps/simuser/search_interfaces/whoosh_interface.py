@@ -20,6 +20,7 @@ class WhooshSearchInterface(BaseSearchInterface):
         Allows one to issue a query to the underlying search engine. Takes an ifind Query object.
         """
         response = self.__engine.search(query)
+        
         self._last_query = query
         self._last_response = response
         

@@ -330,6 +330,10 @@ def search(request, taskid=-1):
         If they match, we don't delay - if they don't, we do.
         """
         http_referer = request.META['HTTP_REFERER']
+
+        print ">> FROM NESTED FUNCTION"
+        print ">> " + http_referer
+
         http_referer = http_referer.strip().split('&')
         page = 1
 
@@ -340,6 +344,9 @@ def search(request, taskid=-1):
 
         if request.POST.get('newquery') == 'true':
             return '/treconomics/search/' in request.META['HTTP_REFERER']
+
+        print ">> " + str(new_page_no)
+        print ">> " + str(page)
 
         return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
 
