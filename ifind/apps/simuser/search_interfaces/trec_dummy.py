@@ -18,7 +18,7 @@ class TrecDummySearchInterface(BaseSearchInterface):
         response = self.__engine.search(query)
         self._last_query = query
         self._last_response = response
-        
+                
         return response
     
     def get_document(self, document_id):

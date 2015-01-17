@@ -232,7 +232,7 @@ class SearchContext(object):
         """
         Returns the current rank we are looking at within the current SERP.
         """
-        return self.__current_serp_position + 1
+        return self.__current_serp_position# + 1
     
     def get_current_results_length(self):
         """
