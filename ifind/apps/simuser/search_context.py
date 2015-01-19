@@ -270,3 +270,11 @@ class SearchContext(object):
         An empty list indicates that no snippets have been examined for the current query.
         """
         return self.__snippets_examined
+    
+    def get_all_examined_snippets(self):
+        """
+        Returns a list of Document objects representing all of the snippets examined by the simulated agent over the given search session.
+        The most recent snippet to be examined is the last document in the list - i.e. snippets are listed in chronological order.
+        An empty list indicates that no snippets have been examined in the entire search session.
+        """
+        return self.__all_snippets_examined
