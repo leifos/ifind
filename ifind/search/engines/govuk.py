@@ -97,7 +97,7 @@ class Govuk(Engine):
             Private method.
 
         """
-        response = Response(query.terms)
+        response = Response(query.terms, query)
 
         content = json.loads(results.text)
 

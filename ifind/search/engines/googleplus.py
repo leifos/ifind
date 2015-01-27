@@ -253,7 +253,7 @@ class Googleplus(Engine):
             Private method.
         """
 
-        response = Response(query.terms)
+        response = Response(query.terms, query)
         content = json.loads(results.text)
 
         # The query object wasn't mutated earlier and the result type isn't passed to this function.

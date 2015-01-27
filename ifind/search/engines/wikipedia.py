@@ -104,7 +104,7 @@ class Wikipedia(Engine):
             Private method.
 
         """
-        response = Response(query.terms)
+        response = Response(query.terms, query)
 
         xml_doc = xml.dom.minidom.parseString(results.content)
         results = xml_doc.getElementsByTagName('Item')
