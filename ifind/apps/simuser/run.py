@@ -11,6 +11,8 @@ def main(config_filename):
     """
     config_reader = SimulationConfigReader(config_filename)
     
+    print dir(config_reader)
+    
     for configuration in config_reader:
         user = SimulatedUser(configuration)
         user.show_query_list()
