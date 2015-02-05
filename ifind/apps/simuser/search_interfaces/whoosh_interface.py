@@ -7,13 +7,13 @@ class WhooshSearchInterface(BaseSearchInterface):
     """
     A search interface making use of the Whoosh indexing library - and the ifind search components.
     """
-    def __init__(self, whoosh_index_dir, stopwords_file=None):
+    def __init__(self, whoosh_index_dir, stopwords_file=None, cache_port=6379):
         super(WhooshSearchInterface, self).__init__()
         
         self.__index = open_dir(whoosh_index_dir)
         self.__reader = self.__index.reader()
         
-        self.__engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir, stopwords_file=stopwords_file)
+        self.__engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir, stopwords_file=stopwords_file, cache_port=cache_port)
     
     def issue_query(self, query):
         """
@@ -31,6 +31,8 @@ class WhooshSearchInterface(BaseSearchInterface):
         Retrieves a Document object for the given document specified by parameter document_id.
         """
         fields = self.__reader.stored_fields(int(document_id))
+        
+        print fields.keys()
         
         title = fields['title']
         content = fields['content']
