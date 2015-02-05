@@ -32,8 +32,6 @@ class WhooshSearchInterface(BaseSearchInterface):
         """
         fields = self.__reader.stored_fields(int(document_id))
         
-        print fields.keys()
-        
         title = fields['title']
         content = fields['content']
         document_num = fields['docid']
