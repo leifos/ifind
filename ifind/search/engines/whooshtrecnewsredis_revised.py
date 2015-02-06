@@ -281,7 +281,7 @@ def parse_response(reader, fieldname, analyzer, fragmenter, formatter, query, re
                         analyzer,
                         fragmenter,
                         formatter)
-        summary = "{0}...".format(summary)
+        summary = "{0}...".format(''.join([unicode_char if ord(unicode_char) < 128 else '' for unicode_char in summary]))
 
         response.add_result(title=title,
                             url=url,
