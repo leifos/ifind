@@ -44,7 +44,6 @@ class WhooshTrecNews(Engine):
         self.implicit_or=implicit_or
 
         try:
-            #self.docIndex = open_dir(whoosh_index_dir)
             # This creates a static docIndex for ALL instance of WhooshTrecNews.
             # This will not work if you want indexes from multiple sources.
             # As this currently is not the case, this is a suitable fix.
@@ -89,20 +88,6 @@ class WhooshTrecNews(Engine):
         self.searcher = self.docIndex.searcher(weighting=self.scoring_model)
 
 
-
-    @staticmethod
-    def build_query_parts(term_list, operator):
-        return_query = ''
-
-        for term in term_list:
-            if term:
-                if return_query:
-                    return_query += ' ' + operator + ' ' + term
-                else:
-                    return_query = term
-
-        return return_query
-
     def _search(self, query):
         """
         Concrete method of Engine's interface method 'search'.
@@ -128,6 +113,21 @@ class WhooshTrecNews(Engine):
 
         return self._request(query)
 
+
+
+    def __parse_query_terms(self, query):
+
+        if not query.top:
+            query.top = 10
+
+        if query.top < 1:
+            query.top = 10
+
+        query.terms = query.terms.strip()
+        query.terms = unicode(query.terms)
+        query.parsed_terms = self.parser.parse(query.terms)
+
+
     def _request(self, query):
         """
         Issues a single request to Whoosh Index and returns the result as
@@ -152,7 +152,6 @@ class WhooshTrecNews(Engine):
         pagelen = query.top
         response = None
         print query.parsed_terms
-        #results = self.searcher.search(query.parsed_terms, page, pagelen=pagelen,limit=10)
         results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
         results.fragmenter = self.fragmenter
         results.formatter = self.formatter
@@ -204,7 +203,6 @@ class WhooshTrecNews(Engine):
             trecid = result["docid"]
             trecid = trecid.strip()
 
-            #score = result["score"]
             source = result["source"]
 
             response.add_result(title=title,
@@ -225,38 +223,3 @@ class WhooshTrecNews(Engine):
         setattr(response, 'actual_page', results.actual_page)
         return response
 
-    def __parse_query_terms(self, query):
-        """
-        Using the stopwords list provided, parses the query object and prepares it for being sent to the engine.
-        """
-
-        if not query.top:
-            query.top = 10
-
-        if query.top < 1:
-            query.top = 10
-
-        # Tidy up the querystring. Split it into individual terms so we can process them.
-        #terms = query.terms
-        #terms = terms.lower()
-        #terms = terms.strip()
-        #terms = terms.split()  # Chop!
-
-        #query.terms = ""  # Reset the query's terms string to a blank string - we will rebuild it.
-
-        #for term in terms:
-        #    if term not in self.stopwords:
-        #        query.terms = "{0} {1}".format(query.terms, term)
-
-        query.terms = query.terms.strip()
-        query.terms = unicode(query.terms)
-
-        #if self.implicit_or:
-        #    query_terms = query.terms.split(' ')
-        #    query.terms = WhooshTrecNews.build_query_parts(query_terms, 'OR')
-
-
-        #if len(query.terms.split()) == 1:
-        #    query.parsed_terms = unicode(query.terms)
-        #else:
-        query.parsed_terms = self.parser.parse(query.terms)
