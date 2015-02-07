@@ -20,7 +20,7 @@ def main(config_filename):
         configuration.output.display_config()
         
         while not configuration.user.logger.is_finished():
-            progress.update()  # Update the progress indicator in the terminal.
+            #progress.update()  # Update the progress indicator in the terminal.
             user.decide_action()
         
         configuration.output.display_report()
