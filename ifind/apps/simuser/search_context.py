@@ -31,6 +31,7 @@ class SearchContext(object):
         self.__snippets_examined = []             # Snippets that have been previously examined.
         self.__documents_examined = []            # Documents that have been previously examined.
         
+        self.__previously_examined_snippets = []  # A list of all snippets that have been seen more than once across the search session.
         self.__all_snippets_examined = []         # A list of all snippets examined throughout the search session.
         self.__all_documents_examined = []        # A list of all documents examined throughout the search session.
         
@@ -203,6 +204,32 @@ class SearchContext(object):
                 occurrences = occurrences + 1
         
         return occurrences
+    
+    def get_snippet_observation_count(self, selected_snippet):
+        """
+        Returns a zero or positive integer representing the number of times the simulated user has seen the given snippet in previous SERPs.
+        If the returned value is 0, the document is new to the user, otherwise the snippet has been seen as many times as the returned value.
+        """
+        occurrences = 0
+        
+        for snippet in self.__all_snippets_examined:
+            if snippet.doc_id == selected_snippet.doc_id:
+                occurrences = occurrences + 1
+        
+        return occurrences
+    
+    def get_snippet_observation_judgment(self, selected_snippet):
+        """
+        Returns the historic judgment for a snippet.
+        If the snippet passed has not been seen previously, -1 will be returned.
+        """
+        if self.get_snippet_observation_count(selected_snippet) > 0:
+            for snippet in self.__all_snippets_examined:
+                if snippet.doc_id == selected_snippet.doc_id:
+                    if snippet.judgment > -1:
+                        return snippet.judgment
+        
+        return -1
     
     def get_current_document(self):
         """

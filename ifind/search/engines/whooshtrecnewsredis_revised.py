@@ -6,6 +6,7 @@ from whoosh import scoring
 from whoosh.qparser import QueryParser
 from whoosh.reading import TermNotFound
 from whoosh.index import open_dir, EmptyIndexError
+from whoosh.lang.porter import stem
 from whoosh.highlight import highlight, HtmlFormatter, ContextFragmenter
 
 from ifind.seeker.list_reader import ListReader
@@ -69,7 +70,7 @@ class WhooshTrecNewsRedis(Engine):
 
         with self.doc_index.searcher(weighting=self.scoring_model) as searcher:
             doc_scores = {}
-
+            
             if isinstance(query.parsed_terms, unicode):
                 t = time.time()
                 doc_term_scores = self.__get_doc_term_scores(searcher, query.parsed_terms)
@@ -137,13 +138,14 @@ class WhooshTrecNewsRedis(Engine):
             if self.__verbose:
                 print "  >> Results not cached"
             try:
-                postings = searcher.postings(self.parser.fieldname, term)
+                stemmed_term = stem(term)
+                postings = searcher.postings(self.parser.fieldname, stemmed_term)
 
                 for i in postings.all_ids():  # THIS IS SLOW, LEIF HAS AN ALGORITHM TO SPEED THIS UP?
                     doc_term_scores[i] = postings.score()
             except TermNotFound:
                 pass
-
+            
             self.cache.store(term_cache_key, doc_term_scores)
 
         return doc_term_scores
