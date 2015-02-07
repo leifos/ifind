@@ -1,3 +1,4 @@
+import os
 import sys
 from sim_user import SimulatedUser
 from progress_indicator import ProgressIndicator
@@ -24,6 +25,9 @@ def main(config_filename):
         
         configuration.output.display_report()
         configuration.output.save()
+    
+    completed_file = open(os.path.join(config_reader.get_base_dir(), 'COMPLETED'), 'w')
+    completed_file.close()
 
 def usage(script_name):
     """
