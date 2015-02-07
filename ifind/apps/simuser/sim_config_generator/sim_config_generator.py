@@ -291,6 +291,10 @@ def clear_output_dir():
                 os.unlink(file_path)
         except Exception, e:
             print e
+    
+    os.makedirs('output/out/')
+    f = open('output/out/CREATED', 'w')
+    f.close()
 
 def usage(filename):
     """
