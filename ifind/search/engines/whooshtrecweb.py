@@ -5,6 +5,7 @@ from ifind.search.exceptions import EngineConnectionException, QueryParamExcepti
 from whoosh.index import open_dir
 from whoosh.query import *
 from whoosh.qparser import QueryParser
+from whoosh.qparser import OrGroup, AndGroup
 from whoosh.qparser import MultifieldParser
 from whoosh import highlight
 from whoosh import scoring
@@ -42,7 +43,10 @@ class WhooshTrecWeb(Engine):
 
             #print "Whoosh Document index open: ", whoosh_index_dir
             #print "Documents in index: ", self.docIndex.doc_count()
-            self.parser = QueryParser("content", self.docIndex.schema)
+            if self.implicit_or:
+                self.parser = QueryParser("content", self.docIndex.schema, group=OrGroup)
+            else:
+                self.parser = QueryParser("content", self.docIndex.schema, group=AndGroup)
 
             self.analyzer = self.docIndex.schema[self.parser.fieldname].analyzer
             self.fragmenter = ContextFragmenter(maxchars=200, surround=40)
@@ -139,6 +143,7 @@ class WhooshTrecWeb(Engine):
         pagelen = query.top
         response = None
         results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
+        print query.parsed_terms
         results.fragmenter = self.fragmenter
         results.formatter = self.formatter
 

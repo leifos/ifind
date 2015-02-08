@@ -7,13 +7,13 @@ class WhooshSearchInterface(BaseSearchInterface):
     """
     A search interface making use of the Whoosh indexing library - and the ifind search components.
     """
-    def __init__(self, whoosh_index_dir, model=2):
+    def __init__(self, whoosh_index_dir, model=2, implicit_or=True):
         super(WhooshSearchInterface, self).__init__()
         
         self.__index = open_dir(whoosh_index_dir)
         self.__reader = self.__index.reader()
         
-        self.__engine = WhooshTrecWeb(whoosh_index_dir=whoosh_index_dir,model=model)
+        self.__engine = WhooshTrecWeb(whoosh_index_dir=whoosh_index_dir,model=model,implicit_or=implicit_or)
     
     def issue_query(self, query):
         """
