@@ -1,25 +1,27 @@
 from whoosh.index import open_dir
 from search_interfaces import Document
-from ifind.search.engines.whooshtrecnewsredis_revised import WhooshTrecNewsRedis
+from ifind.search.engines.whooshtrecweb import WhooshTrecWeb
 from search_interfaces.base_interface import BaseSearchInterface
 
 class WhooshSearchInterface(BaseSearchInterface):
     """
     A search interface making use of the Whoosh indexing library - and the ifind search components.
     """
-    def __init__(self, whoosh_index_dir, stopwords_file=None):
+    def __init__(self, whoosh_index_dir, model=2, implicit_or=True):
         super(WhooshSearchInterface, self).__init__()
         
         self.__index = open_dir(whoosh_index_dir)
         self.__reader = self.__index.reader()
         
-        self.__engine = WhooshTrecNewsRedis(whoosh_index_dir=whoosh_index_dir, stopwords_file=stopwords_file)
+        self.__engine = WhooshTrecWeb(whoosh_index_dir=whoosh_index_dir,model=model,implicit_or=implicit_or)
     
     def issue_query(self, query):
         """
         Allows one to issue a query to the underlying search engine. Takes an ifind Query object.
         """
+        query.top = 75  # Will never get as low as this!
         response = self.__engine.search(query)
+        
         self._last_query = query
         self._last_response = response
         

@@ -11,7 +11,7 @@ from experiment_setup import ExperimentSetup
 work_dir = os.getcwd()
 if socket.gethostname() == 'newssearch':
     work_dir = '/opt/tango/ifind/applications/treconomics_project2/'
-my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/test100index')
+my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/test100index/')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
 qrels_file = os.path.join(work_dir, "data/TREC2005.qrels.txt")

@@ -5,7 +5,13 @@
 {% endblock %}
 
 {% block exp_block %}
-
+<script>
+$(document).ready(function(){
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
+})
+</script>
 
 <div class="experimentPageTitle">
    <p> <h1> Practice Task</h1></p>
@@ -42,8 +48,10 @@
 <div style="text-align: center;">
     <p>Click Next to start the practice task.</p>
     <hr/>
+<div class=surveySubmitButton">
     <a href="/treconomics/next/"> <button class="button" type="next" >Next</button></a>
 </div>
+ </div>
 
 
 {% endblock %}

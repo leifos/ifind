@@ -30,7 +30,7 @@ class BaseQueryGenerator(object):
         Given a Topic object, returns a language model representation for the given topic.
         Override this method in inheriting classes to generate and return different language models.
         """
-        topic_text = topic.content
+        topic_text = "{0} {1}".format(topic.title, topic.content)
         
         document_extractor = SingleQueryGeneration(minlen=3, stopwordfile=self._stopword_file)
         document_extractor.extract_queries_from_text(topic_text)

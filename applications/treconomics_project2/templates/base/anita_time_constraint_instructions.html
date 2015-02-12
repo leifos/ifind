@@ -7,6 +7,15 @@
 {% block exp_block %}
 
         {% load static %}
+
+<script>
+$(document).ready(function(){
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
+})
+</script>
+
 <p> <h1>  Before you begin </h1></p>
 
        {% if pressure_condition %}

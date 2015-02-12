@@ -8,7 +8,9 @@
 {% block exp_block %}
 <script>
 $(document).ready(function(){
-    $('div.post-survey').hide();
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
 })
 </script>
 
@@ -69,9 +71,8 @@ Then you will search for articles taking as much time as you need to create the 
 <p> If you have any questions, please ask the moderator now.</p>
 -->
 <div class="surveySubmitButton">
-<a href="/treconomics/next/"> <button class="largebutton" type="next" > Next </button></a>
+    <a href="/treconomics/next/"> <button class="largebutton" type="next" > Next </button></a>
 </div>
-
 
 {% endblock %}
 

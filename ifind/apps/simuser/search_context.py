@@ -31,6 +31,7 @@ class SearchContext(object):
         self.__snippets_examined = []             # Snippets that have been previously examined.
         self.__documents_examined = []            # Documents that have been previously examined.
         
+        self.__previously_examined_snippets = []  # A list of all snippets that have been seen more than once across the search session.
         self.__all_snippets_examined = []         # A list of all snippets examined throughout the search session.
         self.__all_documents_examined = []        # A list of all documents examined throughout the search session.
         
@@ -204,6 +205,32 @@ class SearchContext(object):
         
         return occurrences
     
+    def get_snippet_observation_count(self, selected_snippet):
+        """
+        Returns a zero or positive integer representing the number of times the simulated user has seen the given snippet in previous SERPs.
+        If the returned value is 0, the document is new to the user, otherwise the snippet has been seen as many times as the returned value.
+        """
+        occurrences = 0
+        
+        for snippet in self.__all_snippets_examined:
+            if snippet.doc_id == selected_snippet.doc_id:
+                occurrences = occurrences + 1
+        
+        return occurrences
+    
+    def get_snippet_observation_judgment(self, selected_snippet):
+        """
+        Returns the historic judgment for a snippet.
+        If the snippet passed has not been seen previously, -1 will be returned.
+        """
+        if self.get_snippet_observation_count(selected_snippet) > 0:
+            for snippet in self.__all_snippets_examined:
+                if snippet.doc_id == selected_snippet.doc_id:
+                    if snippet.judgment > -1:
+                        return snippet.judgment
+        
+        return -1
+    
     def get_current_document(self):
         """
         Returns the current document. If no query has been issued, None is returned.
@@ -232,7 +259,7 @@ class SearchContext(object):
         """
         Returns the current rank we are looking at within the current SERP.
         """
-        return self.__current_serp_position + 1
+        return self.__current_serp_position# + 1
     
     def get_current_results_length(self):
         """
@@ -270,3 +297,11 @@ class SearchContext(object):
         An empty list indicates that no snippets have been examined for the current query.
         """
         return self.__snippets_examined
+    
+    def get_all_examined_snippets(self):
+        """
+        Returns a list of Document objects representing all of the snippets examined by the simulated agent over the given search session.
+        The most recent snippet to be examined is the last document in the list - i.e. snippets are listed in chronological order.
+        An empty list indicates that no snippets have been examined in the entire search session.
+        """
+        return self.__all_snippets_examined
