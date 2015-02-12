@@ -210,6 +210,7 @@ class Bing(Engine):
         """
         response = Response(query.terms, query)
 
+
         content = json.loads(results.text)
 		
         rank_counter = 1
