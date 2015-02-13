@@ -2,7 +2,7 @@ from ifind.common.query_ranker import QueryRanker
 from ifind.common.query_generation import SingleQueryGeneration
 from query_generators.base_generator import BaseQueryGenerator
 
-from query_generators.single_term_generator_reversed import SingleTermQueryGenerator
+from query_generators.single_term_generator_reversed import SingleTermQueryGeneratorReversed
 from query_generators.tri_term_generator import TriTermQueryGenerator
 
 class SingleReversedTriInterleavedQueryGenerator(BaseQueryGenerator):
