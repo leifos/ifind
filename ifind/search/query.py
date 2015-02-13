@@ -5,7 +5,7 @@ class Query(object):
     Models a Query object for use with ifind's search interface.
 
     """
-    def __init__(self, terms, top=10, lang="", result_type="", **kwargs):
+    def __init__(self, terms, top=10, lang="", result_type="", strip_punctuation=True, **kwargs):
         """
         Query constructor.
 
@@ -25,7 +25,7 @@ class Query(object):
             query = Query("hello world", top=20)
 
         """
-        self.terms = Query.check_input(terms)
+        self.terms = Query.check_input(terms, strip_punctuation=strip_punctuation)
         self.parsed_terms = None
         self.result_type = result_type.lower()
         self.lang = lang
@@ -94,7 +94,7 @@ class Query(object):
         return hash(tuple(self.__dict__.items()))
 
     @staticmethod
-    def check_input(input_string):
+    def check_input(input_string, strip_punctuation=True):
         """
         Takes a unicode string, encodes it to ascii
         whilst stripping out the punctuation.
@@ -109,7 +109,8 @@ class Query(object):
         s = input_string.encode('ascii', 'ignore')
 
         # remove all punctuation
-        s = s.translate(string.maketrans(PUNCTUATION, ' '*len(PUNCTUATION)))
+        if strip_punctuation:
+            s = s.translate(string.maketrans(PUNCTUATION, ' '*len(PUNCTUATION)))
 
         # set to None if just spaces
         if s.isspace():
