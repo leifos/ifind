@@ -2,6 +2,8 @@
  * Created by 2108535R on 15/08/14.
  */
 
+// Displays the Easter Egg
+
    $(document).ready(function(){
     console.log("Egg ajax started");
     $(".locationegg").click(function(){

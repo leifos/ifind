@@ -8,7 +8,7 @@ cue_patterns = 6
 def make_cue(yield_array, scan, max_gold):
     """
     Returns an array of integers representing cue patterns based on an array
-    of gold yield, the accuracy of the equipment and the maximum amount of gold
+    of gold yields, the accuracy of the equipment and the maximum amount of gold.
 
     :param: yield_array
     :param: scan
@@ -33,6 +33,11 @@ def make_cue(yield_array, scan, max_gold):
 
         cueno = cue_patterns - 1
 
+        """
+        To determine which cue pattern is chosen for the random value picked in the span range,
+        we need to decrement max_gold_yield until it matches one of the if statements. At that point
+        we can append it to the cue_array. The iteration continues until max_gold_yield reaches 0.
+        """
         while max_gold_yield >= 0:
             if cue <= 0:
                 cue_array.append(0)

@@ -11,7 +11,7 @@ $(document).ready(function(){
     $('.animated').addClass("rubberBand");
 
 //////////////////////////////////////////////////////////////////////
-
+    // If the user presses Enter
     $(document).keyup(function(event){
     if(event.keyCode == 13){
 
@@ -35,6 +35,7 @@ $(document).ready(function(){
             statusCode:{
             200: function(response){
 
+                // Determine the comment based on the amount of gold
 
                 var points_pos = 10;
                 console.log(points_pos, "poin position");
@@ -116,9 +117,10 @@ $(document).ready(function(){
 
 //////////////////////////////////////////////////////////////////////
 
-
+    // If the user clicks on 'move'
     $('.buttons').click(function(){
 
+        // Get the position of the block and the amount of gold
         var pos = $('#blockposition_'+pointer).val();
         var gold = $('#digbutton_'+pointer).val();
         console.log(pointer, "pointer");
@@ -126,6 +128,7 @@ $(document).ready(function(){
 
         var csrf = $('#csrf > input').val();
 
+        // Remove the buttons from the right side of the mine
         $('#invisiblebuttons_'+pointer).addClass("hidden");
         $('#movebutton_'+pointer).addClass("hidden");
 
@@ -144,6 +147,7 @@ $(document).ready(function(){
                 console.log(points_pos, "poin position");
                 var comment;
 
+                // Determine the comment based on the amount of gold
                 if (response['goldextracted'] < 0){
                     comment = "AWW SNAP!";
                 }
@@ -180,6 +184,7 @@ $(document).ready(function(){
                 console.log(comment, "comment");
 
                 // Update points
+
                 $('#totalgold').animateNumbers(response['totalgold'], true, 200, "linear");
                 $('.progress-bar').css("width", response['timeremaining']+"%").html(response['timeremaining']);
                 $('#currentgold').animateNumbers(response['currentgold'], true, 200, "linear");
@@ -201,6 +206,8 @@ $(document).ready(function(){
                 pointer +=1;
 
                 // Update side
+
+                // Remove the 'hidden' class from the next row of buttons
                 $('#invisiblebuttons_'+pointer).removeClass("hidden");
                 $('#movebutton_'+pointer).removeClass("hidden");
 

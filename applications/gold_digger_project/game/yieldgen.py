@@ -2,7 +2,9 @@ import random
 import math
 
 m = -6  # m is the slope of the linear function
-
+"""
+All of the YieldGenerators inherit from YieldGenerator and implement the .make_yields() method.
+"""
 
 class YieldGenerator(object):
     def __init__(self, depth, max=50, min=0):
@@ -13,6 +15,9 @@ class YieldGenerator(object):
 
     def make_yields(self):
         pass
+
+
+##### YieldGenerators not used in Gold Digger, are kept for further development#########################
 
 
 class RandomYieldGenerator(YieldGenerator):
@@ -141,19 +146,19 @@ class CubicYieldGenerator(YieldGenerator):
         else:
             return y
 
+#########################################################################################################################
 
 class CaliforniaQuadraticYieldGenerator(YieldGenerator):
 
     def make_yields(self):
         """
-        Returns an array of length (depth) ov values according to a quadratic function
-        (quadratic_function(x, depth))
+        Returns an array of length (depth) ov values according to the quadratic function
+        (cali_quadratic_function(x, a, k))
         """
         quadratic_yield_array = []
 
         a =  -1  # The steepness of the curve
-        k = random.uniform(-2, 2)
-        # k = random.choice(foo)
+        k = random.uniform(-2, 2) # Position of the curve on the x axis
 
         for index in range(self.depth):
             quadratic_yield_array.append(CaliforniaQuadraticYieldGenerator.cali_quadratic_function(index, a, k))
@@ -176,13 +181,13 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
 
     def make_yields(self):
         """
-        Returns an array of length (depth) ov values according to a quadratic function
-        (quadratic_function(x, depth))
+        Returns an array of length (depth) ov values according to the quadratic function
+        (yuki_quadratic_function(x, a, k))
         """
         quadratic_yield_array = []
 
         a = -1  # The steepness of the curve
-        k = random.randint(30, 50)
+        k = random.randint(30, 50) # Position of the curve on the x axis
 
 
         for index in range(self.depth):
@@ -194,7 +199,7 @@ class YukonQuadraticYieldGenerator(YieldGenerator):
     def yuki_quadratic_function(x, a, k):
 
         span = [-15, 5]
-        b = random.choice(span)
+        b = random.choice(span) # Random value to be added to the yield
 
         y = (a*(pow((x - 0), 2)) + k) + b
 
@@ -210,14 +215,14 @@ class BrazilQuadraticYieldGenerator(YieldGenerator):
 
     def make_yields(self):
         """
-        Returns an array of length (depth) ov values according to a quadratic function
-        (quadratic_function(x, depth))
+        Returns an array of length (depth) ov values according to the quadratic function
+        (brazi_quadratic_function(x, a, k))
         """
         quadratic_yield_array = []
 
         a = 1.5  # The steepness of the curve
         foo = [10, 12, 15, 20]
-        k = random.choice(foo)
+        k = random.choice(foo) # Position of the curve on the x axis
 
         for index in range(self.depth):
             quadratic_yield_array.append(BrazilQuadraticYieldGenerator.brazi_quadratic_function(index, a, k))
@@ -241,14 +246,14 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
 
     def make_yields(self):
         """
-        Returns an array of length (depth) ov values according to a quadratic function
-        (quadratic_function(x, depth))
+        Returns an array of length (depth) ov values according to the quadratic function
+        (scoti_quadratic_function(x, a, k))
         """
         quadratic_yield_array = []
 
         a = -0.7   # The steepness of the curve
 
-        k = random.randint(-8, -2)
+        k = random.randint(-8, -2) # Position of the curve on the x axis
 
 
         for index in range(self.depth):
@@ -259,7 +264,7 @@ class ScotlandQuadraticYieldGenerator(YieldGenerator):
     @staticmethod
     def scoti_quadratic_function(x, a, k):
 
-        b = random.randint(-10, 5)
+        b = random.randint(-10, 5) # Random value to be added to the yield
 
         y = (a*(pow((x - k), 2)) + 90)+b
 
@@ -274,13 +279,13 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
 
     def make_yields(self):
         """
-        Returns an array of length (depth) ov values according to a quadratic function
-        (quadratic_function(x, depth))
+        Returns an array of length (depth) ov values according to the quadratic function
+        (sa_quadratic_function(x, a, k))
         """
         quadratic_yield_array = []
 
         foo = [-0.2, -0.1, -0.3, -6, -8]
-        a = random.choice(foo)
+        a = random.choice(foo)  # The steepness of the curve
 
         for index in range(self.depth):
             quadratic_yield_array.append(SouthAfricaQuadraticYieldGenerator.sa_quadratic_function(index, a))
@@ -290,7 +295,7 @@ class SouthAfricaQuadraticYieldGenerator(YieldGenerator):
     @staticmethod
     def sa_quadratic_function(x, a):
 
-        b = random.randint(-3, 3)
+        b = random.randint(-3, 3) # The height of the curve on the y axis
 
         y = (a*(pow((x - 0), 2)) + 50)+b
 
@@ -305,13 +310,13 @@ class VictoriaQuadraticYieldGenerator(YieldGenerator):
 
     def make_yields(self):
         """
-        Returns an array of length (depth) ov values according to a quadratic function
-        (quadratic_function(x, depth))
+        Returns an array of length (depth) ov values according to the quadratic function
+        (viki_quadratic_function(x, a, k))
         """
         quadratic_yield_array = []
 
         a = -1   # The steepness of the curve
-        k = random.randint(60, 100)
+        k = random.randint(60, 100) # Position of the curve on the x axis
 
         for index in range(self.depth):
             quadratic_yield_array.append(VictoriaQuadraticYieldGenerator.viki_quadratic_function(index, a, k))
@@ -322,7 +327,7 @@ class VictoriaQuadraticYieldGenerator(YieldGenerator):
     def viki_quadratic_function(x, a, k):
 
         foo = [10, -20]
-        b = random.choice(foo)
+        b = random.choice(foo) # Random value to be added to the yield
 
         y = (a*(pow((x - 3), 2)) + k) + b
 

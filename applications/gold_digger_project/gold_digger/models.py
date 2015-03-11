@@ -10,6 +10,7 @@ class ScanningEquipment(models.Model):
     description = models.CharField(max_length=1000)
     store_val = models.IntegerField(default=0)
 
+    # Displays the image of the item in the admin interface
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.image.url)
     image_tag.short_description = 'Image'
@@ -29,7 +30,7 @@ class DiggingEquipment(models.Model):
     description = models.CharField(max_length=1000)
     store_val = models.IntegerField(default=0)
 
-
+    # Displays the image of the item in the admin interface
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.image.url)
     image_tag.short_description = 'Image'
@@ -47,7 +48,7 @@ class Vehicle(models.Model):
     description = models.CharField(max_length=1000)
 
 
-
+    # Displays the image of the item in the admin interface
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.image.url)
     image_tag.short_description = 'Image'
@@ -74,6 +75,7 @@ class UserProfile(models.Model):
     mines = models.IntegerField(default=0)
     game_overs = models.IntegerField(default=0)
 
+    # Displays the user thumbnail in the admin interface
     def image_tag(self):
         return u'<img src="%s" height = 100 />' % (self.picture.url)
     image_tag.short_description = 'Image'

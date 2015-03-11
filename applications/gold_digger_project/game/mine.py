@@ -14,7 +14,8 @@ class Mine(object):
 
     def make_mine(self):
         """
-        Generates a Mine with Blocks containing random
+        Generates a Mine containing an array of Block objects by first calling .make_yields() on the
+        YieldGenerator and then .make_cues() on the array that's returned
 
         :return: none
         """
@@ -27,6 +28,8 @@ class Mine(object):
         game_overs = str(self.user.game_overs)
         event_logger.info('USER ' + self.user.user.username + ' LIFE ' + game_overs + ' TOT ' + mines_s + ' MY ' + yield_array_s)
         print "Yield array:", yield_array
+
+        # Determine what's the maximum yield in the yield_array
         max_gold = 0
         for y in yield_array:
             if y > max_gold:
@@ -34,13 +37,19 @@ class Mine(object):
 
 
 
-        cue_array = cuegen.make_cue(yield_array, self.scan, max_gold)  # Generate the array of cue values;
-        print "Cue array:", cue_array                                                  # based on yield and scanning equipment
+        cue_array = cuegen.make_cue(yield_array, self.scan, max_gold)  # Generate the array of cue values
+        print "Cue array:", cue_array                                  # based on yield and scanning equipment
 
         for index in range(self.depth):                              # For every value in the array
             b = Block(index, yield_array[index], cue_array[index])   # Make a block with  yield and cue values
             self.blocks.append(b)                                    # Add the block to the Mine
 
+
     def show_mine(self):
+        """
+        Prints the content of a mine.
+
+        :return:
+        """
         for b in self.blocks:
             print b

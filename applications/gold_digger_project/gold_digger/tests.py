@@ -62,6 +62,11 @@ class FormTests(TestCase):
 class CueTest(TestCase):
 
     def test_appropriate_cue(self):
+        """
+        Tests if a mock yield array generates the appropriate cue values if sent to .make_cue() with
+        max_gold and scan values.
+        :return:
+        """
 
         test_array = [3, 11, 18, 25, 33, 39]
         maxgold = 42
@@ -77,6 +82,10 @@ class CueTest(TestCase):
         self.assertEqual(cue_array[5], 5)
 
     def test_cue_function(self):
+        """
+        Tests if the cue function in cuegen.py associates each of the yields of a mock array to the right cue.
+        :return:
+        """
 
         test_array = [3, 11, 18, 25, 33, 39]
         scan = 1
@@ -212,7 +221,10 @@ class GameTest(TestCase):
 
 
     def test_positive(self):
-
+        """
+        Test all the YieldGenerators to ascertain if they produce arrays of yields containing negative values.
+        We cannot check for accuracy of the values here, since their generation includes a certain degree of randomness.
+        """
         c = yieldgen.CaliforniaQuadraticYieldGenerator(depth=10, max=100, min=0)
         yield_array = c.make_yields()
         for y in yield_array:
@@ -244,7 +256,11 @@ class GameTest(TestCase):
             self.failIf(y < 0)
 
     def test_mine(self):
+        """
+        Tests if Mine objects are produced with arrays of Blocks that hold appropriate values
+        """
 
+        # Make a mock user
         user_info = {'username': 'guybrush2',
                  'email': 'guy@monkey.island2',
                  'password': 'secret2'}
@@ -260,15 +276,17 @@ class GameTest(TestCase):
         user_profile.tool = dig
         user_profile.vehicle = move
 
+        # Values to be passed to the Mine object
         accuracy = 0.2
         max_gold = 100
         gen = yieldgen.ScotlandQuadraticYieldGenerator(depth=10, max=max_gold, min=0)
 
+        # make mine
         m = mine.Mine(gen, accuracy, user_profile)
 
         for block in m.blocks:
-            self.failIf(block.cue == None)
-            self.failIf(block.gold == None)
-            self.failIf(block.dug == True)
-            self.failIf((block.pos/10)>=1)
+            self.failIf(block.cue == None)  # Fail if any of the cue values in None (should all be populated)
+            self.failIf(block.gold == None) # Fail if any of the gold yield is None (should all be populated)
+            self.failIf(block.dug == True)  # Fail if any of the dug values is True (should all be false)
+            self.failIf((block.pos/10)>=1)  # Fail if pos is not in range 0 to 9
             self.failIf((block.pos/10)<=-1)
