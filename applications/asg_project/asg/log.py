@@ -13,23 +13,20 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)
 event_logger.addHandler(event_logger_handler)
 
-def log_move_event(game):
+def log_move_event(uid,game):
 
-
-    move_pos = 0
     gain_list = []
     round = game.current_round
-
-    game_num = game.id
-
-    for i in round:
+    pos = 0
+    for i in range(len(round)):
         r = round[i]
         if r['opened'] == True:
-            i = i + 1
-        gain_list.append(r['gain'])
+            pos = pos + 1
+        gain_list.append(str(r['gain']))
 
+    print gain_list
 
-    
+    gain_str = ' '.join(gain_list)
 
-
-    event_logger.info(msg='MOVE')
+    msg = 'MOVE {0} {1} {2} {3}'.format(uid, game.id, pos, gain_str)
+    event_logger.info(msg=msg)

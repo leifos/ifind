@@ -51,7 +51,7 @@ def query(request):
             gid = request.COOKIES['gid']
         game = retrieve_game(gid)
         if game:
-            log_move_event(game)
+            log_move_event(request.user.id, game)
             game.issue_query()
             store_game(gid, game)
             data = game.get_game_state()
