@@ -25,12 +25,12 @@ def add_player(name, pw):
 
 
 def main():
-    add_game_exp('Random', 1 ,desc='Payoffs are random')
-    add_game_exp('High', 2 ,desc='Payoffs are high')
-    add_game_exp('High to Low' ,3, desc='Payoffs are High, Med or Low')
-    add_game_exp('Low Query Cost' ,4, desc='Payoffs are High, but assessment costs are high')
-    add_game_exp('Informative Cues with High to Low' ,5, desc='Snippets provide some information.')
-    add_game_exp('Informative Cues with Low' ,6, desc='Snippets provide some information.')
+    add_game_exp('Game 1', 1 ,desc='Payoffs are random')
+    add_game_exp('Game 2', 2 ,desc='Payoffs are high')
+    add_game_exp('Game 3' ,3, desc='Payoffs are High, Med or Low')
+    add_game_exp('Game 4' ,4, desc='Payoffs are High, but assessment costs are high')
+    add_game_exp('Game 5' ,5, desc='Cues provide some information about Payoff.')
+    add_game_exp('Game 6' ,6, desc='Cues provide some information about Payoff.')
 
     add_player('jill','test')
     add_player('jim','test')

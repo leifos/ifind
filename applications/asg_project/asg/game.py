@@ -3,10 +3,9 @@ from ifind.asg.abstract_search_game import ABSGame
 from ifind.asg.asg_generator import RandomYieldGenerator, TestHighYieldGenerator, ConstantLinearYieldGenerator, TestYieldGenerator, CueGenerator, GainBasedCueGenerator
 from ifind.asg.asg_generator import TestLowYieldGenerator, RandGainBasedCueGenerator
 from ifind.search.cache import RedisConn
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from models import UserProfile, MaxHighScore, GameExperiment
 import datetime
-from keys import REDIS_STR, REDIS_PW, REDIS_PORT
 from django.core.cache import cache
 import pickle
 
@@ -18,8 +17,7 @@ cg = CueGenerator(cue_length=30)
 lyg = TestLowYieldGenerator()
 gbcg = GainBasedCueGenerator(cue_length=30)
 rgbcg =RandGainBasedCueGenerator(cue_length=30)
-#print cg
-#print gbcg
+
 
 random_game = {'yield_generator': ryg, 'cue_generator': cg, 'query_cost': 3, 'assess_cost': 1 }
 high_game = {'yield_generator': hyg, 'cue_generator': cg, 'query_cost': 2, 'assess_cost': 1 }
@@ -32,8 +30,6 @@ low_game = {'yield_generator': lyg, 'cue_generator': rgbcg, 'query_cost': 2, 'as
 
 
 game_types = [random_game, random_game, high_game, test_game, low_cost_game, cue_based_game, low_game]
-
-
 
 def create_and_start_game(num):
     gt = game_types[0]
@@ -50,22 +46,11 @@ def get_game_incache(id):
     game = pickle.loads(cache.get(id))
     return game
 
-def get_redis_connection():
-    rc = RedisConn(host=REDIS_STR, port=REDIS_PORT, password=REDIS_PW)
-    rc.connect()
-    return rc
-
 def retrieve_game(id):
     return get_game_incache(id)
-    #rc = get_redis_connection()
-    #return rc.get(id)
-
 
 def store_game(id, game):
     store_game_incache(id, game)
-    #rc = get_redis_connection()
-    #rc.store(id, game)
-
 
 def end_game(user, game):
     update_user_profile(user, game)

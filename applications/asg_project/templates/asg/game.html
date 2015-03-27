@@ -19,11 +19,18 @@
         <ul class="nav nav-list">
              <li class="nav-header">Instructions</li>
 
-            <li>Click Assess to open a document to gain points</li>
+            <li>Click <b>Assess</b> to open the next document.</li>
             <br/>
-            <li>Click Query to bring back a new set of documents</li>
+            <li>Each document contains 0 to 3 new pieces of information (points).</li>
             <br/>
-            <li>Querying and Assessing take time!</li>
+            <li>Click <b>Query</b> to move to a new set of documents.</li>
+            <br/>
+            <li>Each action takes time.</li>
+            <br/>
+            <li>Each games has 30 units of unit.</li>
+            <br/>
+            <li>Find the most amount of information (points)</li>
+
         </ul>
              </div><!--/.well -->
                 {% endblock %}
@@ -37,7 +44,7 @@
         </div>
         <hr>
          <div class="row-fluid">
-            <div class="span7">
+            <div class="span5">
 
                 <h3>Results for Query {{data.no}}</h3>
                 {% for d in data.round %}
@@ -61,20 +68,38 @@
 {% if data.gameover %}
                 <p><a href="/asg/pick/" class="btn btn-success btn-large">Play Again &raquo;</a> </p>
              {% else %}
-                <p><a href="/asg/query/" class="btn btn-primary btn-large">Query &raquo;</a>  <a href="/asg/assess/" class="btn btn-primary btn-large">Assess &raquo;</a></p>
+               <p></p>
  {% endif %}
-
             </div>
+            <div class="span2">
+<h3>Actions</h3>
+                {% if data.gameover %}
+
+                {% else %}
+                <p></p>
+                <p></p>
+                 <p>
+                     <a href="/asg/query/" class="btn btn-primary btn-large">Query &nbsp &raquo;</a>
+                    </p>
+                <p>
+                    <a href="/asg/assess/" class="btn btn-warning btn-large"> &laquo; Assess</a>
+                    </p>
+
+                {% endif %}
+            </div>
+
+
+
             <div class="span5 well">
 
              <h3>Game Stats</h3>
-            <p>Time Left: {{data.tokens}}</p>
+            <p>Time Left: <span class="badge">{{data.tokens}}</span></p>
             <div class="progress">
             <div class="bar" style="width: {{data.ptokens}}%;"></div>
             </div>
             <p>Query Cost in units of time: <span class="badge badge-info">{{data.cq}}</span> </p>
-            <p>Assessment Cost in units of time:  <span class="badge badge-info">{{data.ca}}</span> </p>
-            <p>Points: {{data.points}}</p>
+            <p>Assessment Cost in units of time:  <span class="badge badge-warning">{{data.ca}}</span> </p>
+            <p>Information Points: <span class="badge badge-success">{{data.points}}</span></p>
             <p>No. of Queries Issued: {{data.no}}</p>
                 {% if data.gameover %}
 
@@ -88,7 +113,8 @@
 
                 <p><a href="/asg/pick/" class="btn btn-success btn-large">Play Again &raquo;</a> </p>
              {% else %}
-           <p><a href="/asg/query/" class="btn btn-primary btn-large">Query &raquo;</a>  <a href="/asg/assess/" class="btn btn-primary btn-large">Assess &raquo;</a></p>
+
+
 {% endif %}
             </div>
 

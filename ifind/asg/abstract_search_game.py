@@ -105,13 +105,6 @@ class ABSGame(object):
 
         return 0
 
-
-    def get_state(self):
-        """
-        :return: a dict composed of the game state attributes and round data
-        """
-        pass
-
     def print_state(self):
         print "Number of Tokens: %d" % (self.tokens)
         print "Points: %d" % (self.points)
@@ -123,6 +116,9 @@ class ABSGame(object):
 
 
     def get_game_state(self):
+        """
+        :return: a dict composed of the game state attributes and round data
+        """
         data = {}
         data['tokens'] = self.tokens
         data['cq'] = self.cq

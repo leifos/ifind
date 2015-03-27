@@ -118,10 +118,10 @@ class TestHighYieldGenerator(YieldGenerator):
         :return: list of n integers (i.e. the yeilds)
         """
         yls = []
-        yls.append([3,3,3,2,2,2,1,1,1,0])
+        yls.append([3,3,3,2,2,2,1,0,1,0])
         yls.append([3,2,3,2,2,2,1,0,0,0])
         yls.append([3,3,1,1,1,0,0,0,0,0])
-        yls.append([3,3,2,3,1,2,1,1,1,0])
+        yls.append([3,3,2,3,1,2,1,0,0,0])
         yls.append([3,3,3,3,0,0,0,0,0,0])
 
         yl = yls[ (self.count % 5) ]
@@ -151,7 +151,6 @@ class TestLowYieldGenerator(YieldGenerator):
         yl = yls[ (self.count % 5) ]
         self.count += 1
 
-        print yl
         return yl
 
 

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import os
 import sys
-from django_countries import CountryField
+#from django_countries import CountryField
 from registration.signals import *
 # Create your models here.
 

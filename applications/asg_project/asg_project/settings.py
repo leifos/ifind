@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'asg',
     'registration',
+    'django_countries',
 
 )
 

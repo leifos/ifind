@@ -8,10 +8,11 @@ from models import UserProfile, MaxHighScore, GameExperiment
 
 from game import create_and_start_game, store_game, retrieve_game, end_game
 
+from log import log_move_event
+
 def index(request):
     context = RequestContext(request, {})
     return render_to_response('asg/index.html', context)
-
 
 def pick(request):
     ge = GameExperiment.objects.all()
@@ -50,6 +51,7 @@ def query(request):
             gid = request.COOKIES['gid']
         game = retrieve_game(gid)
         if game:
+            log_move_event(game)
             game.issue_query()
             store_game(gid, game)
             data = game.get_game_state()
@@ -67,6 +69,7 @@ def assess(request):
         gid = ''
         if request.COOKIES.has_key('gid'):
             gid = request.COOKIES['gid']
+
 
         data = {}
         game = retrieve_game(gid)
