@@ -9,12 +9,13 @@ class Response(object):
 
     Response Attributes:
         query_terms:  string representation of original query terms
+        query:        ifind.Query object related ot the resuts, optional.
         results:      list representation of retrieved results (each result being a dict)
                       i.e {'title': Crow Rearing, 'url': http://etc.com, 'summary': How to rear crows?}
         result_total: integer representation of total results retrieved
     """
 
-    def __init__(self, query_terms):
+    def __init__(self, query_terms, query=None):
         """
         Response constructor.
 
@@ -30,6 +31,7 @@ class Response(object):
 
         """
         self.query_terms = query_terms
+        self.query = query
         self.results = []
         self.result_total = 0
         self.total_pages = 0

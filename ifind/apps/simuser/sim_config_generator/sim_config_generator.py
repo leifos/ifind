@@ -64,13 +64,18 @@ def tidy_dictionary(dict_repr):
             entry['type'] = specified_type
         
         return ref
-    
     dict_repr['simulation']['topics'] = to_list(dict_repr['simulation']['topics'], 'topic')
+    
+    print dict_repr['simulation']['searchInterface']['@class']
+    
+    dict_repr['simulation']['searchInterface'] = {'class': dict_repr['simulation']['searchInterface']['@class'],
+                                                  'attributes': to_list(dict_repr['simulation']['searchInterface'], 'searchInterface')}
+    
     dict_repr['simulation']['user']['queryGenerator'] = to_list(dict_repr['simulation']['user']['queryGenerator'], 'queryGenerator')
     dict_repr['simulation']['user']['textClassifiers']['snippetClassifier'] = to_list(dict_repr['simulation']['user']['textClassifiers']['snippetClassifier'], 'snippetClassifier')
     dict_repr['simulation']['user']['textClassifiers']['documentClassifier'] = to_list(dict_repr['simulation']['user']['textClassifiers']['documentClassifier'], 'documentClassifier')
     dict_repr['simulation']['user']['decisionMaker'] = to_list(dict_repr['simulation']['user']['decisionMaker'], 'decisionMaker')
-    dict_repr['simulation']['user']['logger'] = to_list(dict_repr['simulation']['user']['logger'], 'logger') 
+    dict_repr['simulation']['user']['logger'] = to_list(dict_repr['simulation']['user']['logger'], 'logger')
 
 def read_file_to_string(filename):
     """
@@ -146,6 +151,21 @@ def generate_user_entries(user_permuatation_list):
         entry_list = "{0}{1}".format(entry_list, user_markup.format(entry))
     
     return entry_list
+
+def generate_search_interface_markup(dict_repr):
+    """
+    Returns markup for the search interface component.
+    """
+    interface_markup = read_file_to_string('base_files/interface.xml')
+    interface_entry = dict_repr['simulation']['searchInterface']
+    attribute_markup_concat = ''
+    
+    for attribute in interface_entry['attributes']:
+        attribute_markup = read_file_to_string('base_files/attribute.xml')
+        attribute_markup = attribute_markup.format(attribute['@name'], attribute['@type'], attribute['@value'], attribute['@is_argument'])
+        attribute_markup_concat = '{0}{1}'.format(attribute_markup_concat, attribute_markup)
+    
+    return interface_markup.format(dict_repr['simulation']['searchInterface']['class'], attribute_markup_concat)
     
 def generate_markup(dict_repr, permutations):
     """
@@ -246,12 +266,14 @@ def generate_markup(dict_repr, permutations):
     
     users = generate_user_entries(user_files)
     topics = generate_topics(dict_repr)
+    search_interface = generate_search_interface_markup(dict_repr)
     
     simulation_markup = read_file_to_string('base_files/simulation.xml')
     simulation_markup = simulation_markup.format(dict_repr['simulation']['@baseID'],
                                                  os.path.join(dict_repr['simulation']['@baseDir'], 'out'),
                                                  topics,
-                                                 users)
+                                                 users,
+                                                 search_interface)
     
     simulation_file = open('output/simulation-{0}.xml'.format(dict_repr['simulation']['@baseID']), 'w')
     simulation_file.write(simulation_markup)
@@ -269,6 +291,10 @@ def clear_output_dir():
                 os.unlink(file_path)
         except Exception, e:
             print e
+    
+    os.makedirs('output/out/')
+    f = open('output/out/CREATED', 'w')
+    f.close()
 
 def usage(filename):
     """

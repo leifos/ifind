@@ -195,7 +195,7 @@ class Companycheck(Engine):
             Private method.
         """
 
-        response = Response(query.terms)
+        response = Response(query.terms, query)
         content = json.loads(results.text)
 
         # The base URL to add the director or company number to, which provides the complete link.

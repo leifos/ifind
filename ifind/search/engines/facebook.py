@@ -168,7 +168,7 @@ class Facebook(Engine):
             Private method.
         """
 
-        response = Response(query.terms)
+        response = Response(query.terms, query)
         content = json.loads(results.text)
 
         # Check to see if the response contains any API errors.

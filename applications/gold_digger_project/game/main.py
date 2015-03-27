@@ -4,7 +4,10 @@ from mine import Mine
 from gold_digger import logger
 import os
 
-
+"""
+This class helps us testing the generation of Mine objects. It not only print the contents of each mine,
+but also the range of each cue based on the maximum amount of gold.
+"""
 
 maxgold = 42
 

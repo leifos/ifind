@@ -23,6 +23,12 @@ class SimulationConfigReader(BaseConfigReader):
         """
         return self
     
+    def get_base_dir(self):
+        """
+        Returns the base directory for the simulations as a string.
+        """
+        return self._config_dict['output']['@baseDirectory']
+    
     def next(self):
         """
         Acts as an interator - returns the next set of components for next iteration of the simulation.

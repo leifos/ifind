@@ -1,7 +1,9 @@
 from yieldgen import RandomYieldGenerator, ConstantYieldGenerator, LinearYieldGenerator
 from mine import Mine
 import pickle
-
+"""
+This class is just for testing, it contains no functional code.
+"""
 
 # gen = ConstantYieldGenerator(depth=10, max=42, min=0)
 # m = Mine(gen, 0.8)
@@ -290,39 +292,3 @@ import random
 #
 # print trad
 
-class ModelTest(TestCase):
-
-    user_info = {'username': 'guybrush',
-                 'email': 'guy@monkey.island',
-                 'password': 'secret'}
-
-
-    def test_user_profile_data(self):
-        """
-        Check if UserProfile object is created with appropriate  data
-        """
-
-        new_user = User.objects.create_user(**self.user_info)
-        user_profile = UserProfile()
-        user_profile.user = new_user
-
-        scan = ScanningEquipment.objects.get_or_create(name="Oil Lamp", modifier=0.2, image='icons/Scan/Oil Lamp.png', price=1, description="It won't allow you to see much but it's better than going in blind!", store_val=20)[0]
-        dig = DiggingEquipment.objects.get_or_create(name='Spoon', modifier=0.3, time_modifier=5, image='icons/Tools/Spoon.png', price=1, description="What am I supposed to do with this?", store_val=30)[0]
-        move = Vehicle.objects.get_or_create(name='Boots', modifier=10, image='icons/Vehicle/Boots.png', price=1, description="Two boots is better than no boots!")[0]
-        user_profile.equipment = scan
-        user_profile.tool = dig
-        user_profile.vehicle = move
-
-        self.assertEqual(user_profile.user.username, 'guybrush')
-        self.assertEqual(new_user.email, 'guy@monkey.island')
-        self.failUnless(new_user.check_password('secret'))
-        self.failIf(not new_user.is_active)
-        self.failIf(not user_profile.equipment)
-        self.failIf(not user_profile.tool)
-        self.failIf(not user_profile.vehicle)
-        self.assertEqual(user_profile.gold, 100)
-        self.assertEqual(user_profile.games_played, 0)
-        self.assertEqual(user_profile.game_overs, 0)
-        self.assertEqual(user_profile.mines, 0)
-
-        user_profile.delete()

@@ -250,7 +250,7 @@ class Pipl(Engine):
             Private method.
         """
 
-        response = Response(query.terms)
+        response = Response(query.terms, query)
         content = json.loads(results.text)
 
         # Pipl only returns 20 results, so there are no more.

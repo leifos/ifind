@@ -1,18 +1,14 @@
 from ifind.common.query_ranker import QueryRanker
 from ifind.common.query_generation import SingleQueryGeneration
 from query_generators.base_generator import BaseQueryGenerator
-from query_generators import reverse, split, interleave
 
 class TriTermQueryGenerator(BaseQueryGenerator):
     """
     Implementing Strategy 3 from Heikki's 2009 paper, generating three-term queries.
     The first two terms are drawn from the topic, with the final and third term selected from the description - in some ranked order.
     """
-    def __init__(self, output_controller, stopword_file, background_file=[], topic_model=0, log_queries=True, split=False, reverse=False, interleave=False):
+    def __init__(self, output_controller, stopword_file, background_file=[], topic_model=0, log_queries=True):
         super(TriTermQueryGenerator, self).__init__(output_controller, stopword_file, background_file=background_file, topic_model=topic_model)
-        self.__split = split
-        self.__reverse = reverse
-        self.__interleave = interleave
         self.__log_queries = log_queries
     
     def generate_query_list(self, topic):
@@ -40,15 +36,6 @@ class TriTermQueryGenerator(BaseQueryGenerator):
         
         generated_permutations = self.__generate_permutations(topic_language_model, title_query_list, description_query_list)
         
-        if self.__split:
-            generated_permutations = split(generated_permutations)
-        
-        if self.__reverse:
-            generated_permutations = reverse(generated_permutations)
-            
-        if self.__interleave:
-            generated_permutations = interleave(generated_permutations)
-        
         if self.__log_queries:
             self._log_queries(generated_permutations)
         
@@ -73,6 +60,9 @@ class TriTermQueryGenerator(BaseQueryGenerator):
         count = 0
         prev_term = None
         windows = []
+        
+        if len(title_query_list) == 1:  # One term only, no need to do sliding windows.
+            return title_query_list
         
         for term in title_query_list:
             if count == 0:
@@ -101,9 +91,16 @@ class TriTermQueryGenerator(BaseQueryGenerator):
                 if stemmed_term not in observed_stems:
                     observed_stems.append(stemmed_term)
         
+        if len(observed_stems) == 1:
+            get_terms = 2  # Indicate that we need to pull out two terms to compensate
+        else:
+            get_terms = 1  # Our pivot is of length 2; just get one term.
+        
         for title_term in title_query_list:
             title_terms = []
             cutoff_counter = 0
+            
+            description_two = []
             
             for description_term in description_query_list:
                 if self.__description_cutoff > 0 and cutoff_counter == self.__description_cutoff:
@@ -114,8 +111,16 @@ class TriTermQueryGenerator(BaseQueryGenerator):
                     continue
                 
                 observed_stems.append(stemmed_term)
-                    
-                title_terms.append('{0} {1}'.format(title_term[0], description_term[0]))
+                
+                if get_terms == 2:
+                    if len(description_two) == 2:
+                        title_terms.append('{0} {1} {2}'.format(title_term[0], description_two[0], description_two[1]))
+                        description_two = [description_term[0]]
+                    else:
+                        description_two.append(description_term[0])
+                else:
+                    title_terms.append('{0} {1}'.format(title_term[0], description_term[0]))
+                
                 cutoff_counter = cutoff_counter + 1
             
             title_terms = self._rank_terms(title_terms, topic_language_model=topic_language_model)

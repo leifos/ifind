@@ -81,7 +81,7 @@ def register(request):
         vehicle = Vehicle.objects.get(pk=1)
 
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST) #initial={'equipment': scan.pk, 'vehicle': vehicle, 'tool': dig_eq.pk})
+        profile_form = UserProfileForm(data=request.POST)
 
 
         if user_form.is_valid() and profile_form.is_valid():

@@ -2,6 +2,14 @@
 class Block (object):
 
     def __init__(self, position, gold, cue):
+        """
+        Each mine is composed by an array of Block objects
+
+        :param position:
+        :param gold:
+        :param cue:
+        :return:
+        """
         self.pos = position
         self.gold = gold
         self.gold_extracted = 0

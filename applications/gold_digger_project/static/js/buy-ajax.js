@@ -16,6 +16,7 @@ $(document).ready(function(){
            statusCode:{
             200: function(response){
 
+                // Append the new image
                 $("#response_e"+id).append("<div class='alert alert-dismissable alert-success animated baunceInTop'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>").animate({opacity: 0.0}, 2000);
                 $("#scan").attr('src', response['image']).addClass("animated").addClass("fadeInRight");
                 $("#gold").animateNumbers(response['gold'], true, 200, "linear");
@@ -43,6 +44,7 @@ $(document).ready(function(){
            statusCode:{
             200: function(response){
 
+                // Append the new image
                 $("#response_t"+id).append("<div class='alert alert-dismissable alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>").animate({opacity: 0.0}, 2000);
                 $("#tool").attr('src', response['image']).addClass("animated").addClass("fadeInRight");
                 $("#gold").html('Gold: '+response['gold']);
@@ -72,6 +74,7 @@ $(document).ready(function(){
            statusCode:{
             200: function(response){
 
+                // Append the new image
                 $("#response_v"+id).append("<div class='alert alert-dismissable alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Good job!</strong> Item purchased!</div>").animate({opacity: 0.0}, 2000);
                 $("#vehicle").attr('src', response['image']).addClass("animated").addClass("fadeInRight");
                 $("#gold").html('Gold: '+response['gold']);
