@@ -15,11 +15,11 @@ class WhooshSearchInterface(BaseSearchInterface):
         
         self.__engine = WhooshTrecWeb(whoosh_index_dir=whoosh_index_dir,model=model,implicit_or=implicit_or)
     
-    def issue_query(self, query):
+    def issue_query(self, query, top=75):
         """
         Allows one to issue a query to the underlying search engine. Takes an ifind Query object.
         """
-        query.top = 75  # Will never get as low as this!
+        query.top = top  # Will never get as low as this!
         response = self.__engine.search(query)
         
         self._last_query = query
