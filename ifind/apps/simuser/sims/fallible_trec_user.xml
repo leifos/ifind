@@ -22,7 +22,7 @@
 		</documentClassifier>
 	</textClassifiers>
 
-	<decisionMaker class="TrecDepthDecisionMaker">
+	<decisionMaker class="FixedDepthDecisionMaker">
         <attribute name="depth" type="integer" value="1000" is_argument="true" />
 	</decisionMaker>
 
@@ -36,3 +36,4 @@
 	</logger>
 
 </userConfiguration>
+

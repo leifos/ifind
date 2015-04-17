@@ -1,5 +1,5 @@
 __author__ = 'leif'
-__author__ = 'leif'
+
 from text_classifiers.base_classifier import BaseTextClassifier
 from ifind.seeker.trec_qrel_handler import TrecQrelHandler
 from random import random
