@@ -18,8 +18,7 @@ class SingleTriInterleavedQueryGenerator(BaseQueryGenerator):
         """
         Given a Topic object, produces a list of query terms that could be issued by the simulated agent.
         """
-        print "this is the generated query list function"
-        
+
         single_queries = self.__single.generate_query_list(topic)
         tri_queries = self.__tri.generate_query_list(topic)
         

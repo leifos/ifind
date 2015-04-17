@@ -17,13 +17,18 @@ Date:   2014-09-13
 	</topics>
 	
 	<users>
-		<user configurationFile="sims/fallible_trec_user.xml" />
+		<user configurationFile="sims/trec_user.xml" />
+        <user configurationFile="sims/fallible_trec_user.xml" />
+         <user configurationFile="sims/perfect_user.xml" />
+        <user configurationFile="sims/random_user.xml" />
+        <user configurationFile="sims/querygen_test_user.xml" />
+        <user configurationFile="sims/smart_user.xml" />
 	</users>
 	
 	<searchInterface class="WhooshSearchInterface">
 		<attribute name="whoosh_index_dir" type="string" value="data/fullindex" is_argument="true" />
         <attribute name="implicit_or" type="boolean" value="1" is_argument="true" />
-		<attribute name="stopwords_file" type="string" value="data/stopwords.txt" is_argument="true" />
+
 	</searchInterface>
 	
 </simulationConfiguration>
