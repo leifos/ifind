@@ -30,5 +30,8 @@
 		<attribute name="serp_results_cost" type="integer" value="5" is_argument="true" />
 		<attribute name="mark_document_cost" type="integer" value="3" is_argument="true" />
 	</logger>
+	
+	<searchContext class="SearchContextRevisedRelevance">
+	</searchContext>
 
 </userConfiguration>
