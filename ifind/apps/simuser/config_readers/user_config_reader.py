@@ -42,3 +42,7 @@ class UserConfigReader(BaseConfigReader):
         # Logger
         empty_string_check(self._config_dict['logger']['@class'])
         check_attributes(self._config_dict['logger'])
+        
+        # Search Context
+        empty_string_check(self._config_dict['searchContext']['@class'])
+        check_attributes(self._config_dict['searchContext'])
