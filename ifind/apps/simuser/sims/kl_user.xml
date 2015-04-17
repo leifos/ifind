@@ -1,6 +1,6 @@
-<userConfiguration id="smartuser">
+<userConfiguration id="kluser">
 
-	<queryGenerator class="SmarterQueryGenerator">
+	<queryGenerator class="SingleTermQueryGenerator">
 		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
 	</queryGenerator>
 
@@ -22,10 +22,15 @@
 		</documentClassifier>
 	</textClassifiers>
 
-	<decisionMaker class="RandomDecisionMaker">
-        <attribute name="probability" type="float" value="0.75" is_argument="false" />
+	<decisionMaker class="DifferenceDecisionMaker">
+        <attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
+        <attribute name="threshold" type="float" value="2.0" is_argument="true" />
+        <attribute name="nonrel_only" type="boolean" value="False" is_argument="true" />
+        <attribute name="query_based" type="boolean" value="False" is_argument="true" />
+
+
 	</decisionMaker>
-	
+
 	<logger class="FixedCostLogger">
 		<attribute name="time_limit" type="integer" value="600" is_argument="true" />
 		<attribute name="query_cost" type="integer" value="10" is_argument="true" />
@@ -34,7 +39,7 @@
 		<attribute name="serp_results_cost" type="integer" value="5" is_argument="true" />
 		<attribute name="mark_document_cost" type="integer" value="3" is_argument="true" />
 	</logger>
-	
+
 	<searchContext class="SearchContextRevisedRelevance">
 	</searchContext>
 

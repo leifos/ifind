@@ -8,10 +8,10 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
     A concrete implementation of a decision maker.
     Using KL-Divergence to determine how "different" snippets/documents are to one another, makes a decision what to do next.
     """
-    def __init__(self, search_context, stopwords_filename, threshold, nonrel_only=False, query_based=True):
+    def __init__(self, search_context, stopword_file, threshold, nonrel_only=False, query_based=True):
         super(DifferenceDecisionMaker, self).__init__(search_context)
         
-        self.__stopwords = self.__get_stopwords_list(stopwords_filename)
+        self.__stopwords = self.__get_stopwords_list(stopword_file)
         self.__threshold = threshold
         self.__query_based = query_based  # Determines if the decision maker is query-based (i.e. only snippets/documents in a SERP) or session-based (i.e. all snippets/documents observed through a search session).
         self.__nonrel_only = nonrel_only
@@ -43,8 +43,19 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
 
         for snippet in remaining_snippets:
             seen_text = "{0} {1} {2}".format(seen_text, snippet.title, self.__clean_markup(snippet.content))
+        topic = self._search_context.get_topic()
+        seen_text = "{0} {1} {2}".format(seen_text, topic.title, self.__clean_markup(snippet.content))
+        seen_text = "{0} {1} {2}".format(seen_text, topic.content, self.__clean_markup(snippet.content))
 
-        if kl_divergence(new_text, seen_text) <= self.__threshold:
+
+        kl_score = kl_divergence( new_text,seen_text)
+        print "kl", kl_score
+        #print "SEEN:", seen_text
+        #print "NEW:", new_text
+        #print
+        #raw_input()
+
+        if kl_score < self.__threshold:
         # if the new text is too similar to the seen text then move to the next query
             return Actions.QUERY  # Too similar?
         # else move to the next snippet.

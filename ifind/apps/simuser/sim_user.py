@@ -149,7 +149,7 @@ class SimulatedUser(object):
             # This snippet has not been previously seen; check quality of snippet. Does it show some form of relevance?
             # If so, we return True - and if not, we return False, which moves the simulator to the next step.
             
-            print 'snippet', snippet.doc_id, self.__snippet_classifier.is_relevant(snippet)
+            #print 'snippet', snippet.doc_id, self.__snippet_classifier.is_relevant(snippet)
             
             if self.__snippet_classifier.is_relevant(snippet):
                 snippet.judgment = 1
@@ -168,7 +168,7 @@ class SimulatedUser(object):
             document = self.__search_context.get_current_document()
             self.__logger.log_action(Actions.DOC, status="EXAMINING_DOCUMENT", doc_id=document.doc_id)
             
-            print 'document', document.doc_id, self.__document_classifier.is_relevant(document)
+            #print 'document', document.doc_id, self.__document_classifier.is_relevant(document)
             
             if self.__document_classifier.is_relevant(document):
                 self.__logger.log_action(Actions.DOC, status="CONSIDERED_RELEVANT", doc_id=document.doc_id)
