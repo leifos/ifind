@@ -20,31 +20,36 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         """
         Determines whether the user should proceed to examine the subsequent snippet, or stop and issue a new query.
         """
-        existing = self._search_context.get_all_examined_snippets()
-        existing_str = ""
-        
+
+        seen_text = ""
+        existing = []
+
         if self.__query_based:  # If this is query-based, we look at only snippets that were examined in the current query.
             existing = self._search_context.get_examined_snippets()
-        
-        if len(existing) > 0:  # At least one snippet has been examined; we need to chop the last one off (as it is the current snippet).
-            existing = existing[:-1]
-            
-            if self.__nonrel_only:  # Filter to only nonrelevant documents using a list comprehension.
-                existing = [snippet for snippet in existing if snippet.judgment < 1]
-        
-        if len(existing) == 0:  # Nothing has been examined yet! So we just say proceed to the next snippet - nothing to compare against.
+        else:
+            existing = self._search_context.get_all_examined_snippets()
+
+        if self.__nonrel_only:  # Filter to only nonrelevant documents using a list comprehension.
+            existing = [snippet for snippet in existing if snippet.judgment < 1]
+
+        #if zero or one snippets have been examined, then move to the next snippet.
+        if len(existing) <= 1:
             return Actions.SNIPPET
-        
-        for snippet in existing:
-            existing_str = "{0} {1} {2}".format(existing_str, snippet.title, self.__clean_markup(snippet.content))
-        
-        current_snippet = self._search_context.get_current_snippet()
-        current_snippet_str = "{0} {1}".format(current_snippet.title, self.__clean_markup(current_snippet.content))
-        
-        if kl_divergence(current_snippet_str, existing_str) <= self.__threshold:
-            return Actions.QUERY  # Too similar? Abandon the query and move to the next one.
-        
-        return Actions.SNIPPET  # Very different, so proceed to examine the next snippet.
+
+        current_snippet = existing[-1]
+        remaining_snippets = existing[:-1]
+
+        new_text = "{0} {1}".format(current_snippet.title, self.__clean_markup(current_snippet.content))
+
+        for snippet in remaining_snippets:
+            seen_text = "{0} {1} {2}".format(seen_text, snippet.title, self.__clean_markup(snippet.content))
+
+        if kl_divergence(new_text, seen_text) <= self.__threshold:
+        # if the new text is too similar to the seen text then move to the next query
+            return Actions.QUERY  # Too similar?
+        # else move to the next snippet.
+        return Actions.SNIPPET  #  Different enough, so proceed to examine the next snippet.
+
     
     def __clean_markup(self, string_repr):
         """
