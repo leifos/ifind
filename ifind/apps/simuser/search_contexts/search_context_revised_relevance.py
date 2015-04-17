@@ -14,4 +14,11 @@ class SearchContextRevisedRelevance(SearchContext):
         Overrides the base search context's add_irrelevant_document() method.
         In the case of a document being considered non relevant, we change the snippet jugdement for said document to non-relevant, too.
         """
+        
+        snippets = self.get_examined_snippets()
+        
+        for snippet in snippets:
+            if document.doc_id == snippet.doc_id:
+                snippet.judgment = 0
+        
         super(SearchContextRevisedRelevance, self).add_irrelevant_document(document)
