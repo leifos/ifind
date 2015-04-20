@@ -95,12 +95,6 @@ class TermOverlapDifference(DifferenceHelper):
         new_text_length = len(new_text)
         overlap_count = 0.0
         
-        for t in self.vocab:
-            if t in seen_text:
-                seen_text[t] += 1
-            else:
-                seen_text[t] = 1.0
-        
         for term in new_text.keys():
             if term in seen_text.keys():
                 overlap_count += 1

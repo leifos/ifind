@@ -1,6 +1,6 @@
 from loggers import Actions
 from lxml.html.clean import Cleaner
-from utils.difference_methods import KLDifference
+from utils import difference_methods
 from decision_makers.base_decision_maker import BaseDecisionMaker
 
 class DifferenceDecisionMaker(BaseDecisionMaker):
@@ -8,7 +8,7 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
     A concrete implementation of a decision maker.
     Using KL-Divergence to determine how "different" snippets/documents are to one another, makes a decision what to do next.
     """
-    def __init__(self, search_context, stopword_file, threshold, nonrel_only=False, query_based=True):
+    def __init__(self, search_context, stopword_file, threshold, decision_maker=1, nonrel_only=False, query_based=True, vocab_file=None):
         super(DifferenceDecisionMaker, self).__init__(search_context)
         
         self.__stopwords = self.__get_stopwords_list(stopword_file)
@@ -16,7 +16,15 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         self.__query_based = query_based  # Determines if the decision maker is query-based (i.e. only snippets/documents in a SERP) or session-based (i.e. all snippets/documents observed through a search session).
         self.__nonrel_only = nonrel_only
         
-        self.__decision_maker = KLDifference()
+        decision_maker = decision_maker.lower()
+        
+        if decision_maker == 'kl':  # KL-Divergence
+            self.__decision_maker = difference_methods.KLDifference(stopword_file=stopword_file, vocab_file=vocab_file)
+        elif decision_maker == 'term_overlap':  # Default to the TermOverlapDecisionMaker
+            self.__decision_maker = difference_methods.TermOverlapDifference(stopword_file=stopword_file, vocab_file=vocab_file)
+        else:
+            raise ValueError("Invalid decision maker type specified.")
+        
         
     def decide(self):
         """
@@ -48,14 +56,14 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         seen_text = "{0} {1} {2}".format(seen_text, topic.title, self.__clean_markup(snippet.content))
         seen_text = "{0} {1} {2}".format(seen_text, topic.content, self.__clean_markup(snippet.content))
 
-        kl_score = self.__decision_maker.difference(new_text,seen_text)
-        print "kl", kl_score
+        score = self.__decision_maker.difference(new_text,seen_text)
+        print "diff", score
         #print "SEEN:", seen_text
         #print "NEW:", new_text
         #print
         #raw_input()
 
-        if kl_score < self.__threshold:
+        if score < self.__threshold:
         # if the new text is too similar to the seen text then move to the next query
             return Actions.QUERY  # Too similar?
         # else move to the next snippet.
