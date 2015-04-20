@@ -8,7 +8,7 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
     A concrete implementation of a decision maker.
     Using KL-Divergence to determine how "different" snippets/documents are to one another, makes a decision what to do next.
     """
-    def __init__(self, search_context, stopword_file, threshold, decision_maker=1, nonrel_only=False, query_based=True, vocab_file=None):
+    def __init__(self, search_context, stopword_file, threshold, decision_maker=1, nonrel_only=False, query_based=True, vocab_file=None, alpha=0.5):
         super(DifferenceDecisionMaker, self).__init__(search_context)
         
         self.__stopwords = self.__get_stopwords_list(stopword_file)
@@ -19,7 +19,7 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         decision_maker = decision_maker.lower()
         
         if decision_maker == 'kl':  # KL-Divergence
-            self.__decision_maker = difference_methods.KLDifference(stopword_file=stopword_file, vocab_file=vocab_file)
+            self.__decision_maker = difference_methods.KLDifference(stopword_file=stopword_file, vocab_file=vocab_file, alpha=alpha)
         elif decision_maker == 'term_overlap':  # Default to the TermOverlapDecisionMaker
             self.__decision_maker = difference_methods.TermOverlapDifference(stopword_file=stopword_file, vocab_file=vocab_file)
         else:
