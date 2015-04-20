@@ -16,7 +16,7 @@ class TermOverlapDecisionMaker(BaseDecisionMaker):
         self.__query_based = query_based  # Determines if the decision maker is query-based (i.e. only snippets/documents in a SERP) or session-based (i.e. all snippets/documents observed through a search session).
         self.__nonrel_only = nonrel_only
         
-        self.__decision_maker = TermOverlapDifference()
+        self.__decision_maker = TermOverlapDifference(vocab_file='/Users/david/Workspace/ifind/ifind/apps/simuser/data/vocab.txt')
         
     def decide(self):
         """
@@ -52,8 +52,8 @@ class TermOverlapDecisionMaker(BaseDecisionMaker):
         print "Term overlap score: {0:3.2f}".format(overlap_score)
         
         
-        if overlap_score >= self.__threshold:
-            return Actions.QUERY
+        #if overlap_score >= self.__threshold:
+        #    return Actions.QUERY
         
         return Actions.SNIPPET
 

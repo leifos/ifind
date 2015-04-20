@@ -39,12 +39,11 @@ class DifferenceHelper(object):
         :param vocab_file: Given a file which is a list of (word (string) ,count (int)) pairs on newlines
         :return: a dictionary of the words and their counts
         """
-
         vocab = {}
         if vocab_file:
             f = open(vocab_file, 'r')
             for line in f:
-                split_line=line.split()
+                split_line=line.strip().split(',')
                 term = split_line[0]
                 count = int(split_line[1])
                 vocab[term] = count
@@ -96,6 +95,12 @@ class TermOverlapDifference(DifferenceHelper):
         new_text_length = len(new_text)
         overlap_count = 0.0
         
+        for t in self.vocab:
+            if t in seen_text:
+                seen_text[t] += 1
+            else:
+                seen_text[t] = 1.0
+        
         for term in new_text.keys():
             if term in seen_text.keys():
                 overlap_count += 1
@@ -122,13 +127,20 @@ class KLDifference(DifferenceHelper):
 
         for t in seen_text:
             seen_text[t] =  seen_text[t] * self.alpha/(1-self.alpha)
-
+        
+        # dmax says: I don't understand this; and the results don't level off as well as the implementation below.
+        # for t in self.vocab:
+        #     if seen_text[t]:
+        #         seen_text[t] = seen_text[t] + self.vocab[t]
+        #     else:
+        #         seen_text[t] = self.vocab[t]
+        
         for t in self.vocab:
-            if seen_text[t]:
-                seen_text[t] = seen_text[t] + self.vocab[t]
+            if t in seen_text:
+                seen_text[t] += 1
             else:
-                seen_text[t] = self.vocab[t]
-
+                seen_text[t] = 1.0
+        
         return self.__kl_divergence(new_text,seen_text)
     
     

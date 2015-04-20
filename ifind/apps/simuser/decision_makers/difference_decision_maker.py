@@ -1,6 +1,6 @@
 from loggers import Actions
 from lxml.html.clean import Cleaner
-from decision_makers import kl_divergence
+from utils.difference_methods import KLDifference
 from decision_makers.base_decision_maker import BaseDecisionMaker
 
 class DifferenceDecisionMaker(BaseDecisionMaker):
@@ -16,11 +16,12 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         self.__query_based = query_based  # Determines if the decision maker is query-based (i.e. only snippets/documents in a SERP) or session-based (i.e. all snippets/documents observed through a search session).
         self.__nonrel_only = nonrel_only
         
+        self.__decision_maker = KLDifference()
+        
     def decide(self):
         """
         Determines whether the user should proceed to examine the subsequent snippet, or stop and issue a new query.
         """
-
         seen_text = ""
         existing = []
 
@@ -47,8 +48,7 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         seen_text = "{0} {1} {2}".format(seen_text, topic.title, self.__clean_markup(snippet.content))
         seen_text = "{0} {1} {2}".format(seen_text, topic.content, self.__clean_markup(snippet.content))
 
-
-        kl_score = kl_divergence( new_text,seen_text)
+        kl_score = self.__decision_maker.difference(new_text,seen_text)
         print "kl", kl_score
         #print "SEEN:", seen_text
         #print "NEW:", new_text
