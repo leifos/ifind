@@ -8,56 +8,29 @@ class TermOverlapDecisionMaker(BaseDecisionMaker):
     A concrete implementation of a decision maker.
     Uses term overlap counts from previously seen snippets and the current snippet to determine when to stop.
     """
-    def __init__(self, search_context, stopword_file, threshold):
-        super(DifferenceDecisionMaker, self).__init__(search_context)
+    def __init__(self, search_context, stopword_file, threshold, query_based=True):
+        super(TermOverlapDecisionMaker, self).__init__(search_context)
         
         self.__stopwords = self.__get_stopwords_list(stopword_file)
         self.__threshold = threshold
+        self.__query_based = query_based  # Determines if the decision maker is query-based (i.e. only snippets/documents in a SERP) or session-based (i.e. all snippets/documents observed through a search session).
         
     def decide(self):
         """
         Determines whether the user should proceed to examine the subsequent snippet, or stop and issue a new query.
         """
-
         seen_text = ""
         existing = []
-
+        
         if self.__query_based:  # If this is query-based, we look at only snippets that were examined in the current query.
             existing = self._search_context.get_examined_snippets()
         else:
             existing = self._search_context.get_all_examined_snippets()
-
-        if self.__nonrel_only:  # Filter to only nonrelevant documents using a list comprehension.
-            existing = [snippet for snippet in existing if snippet.judgment < 1]
-
-        #if zero or one snippets have been examined, then move to the next snippet.
-        if len(existing) <= 1:
-            return Actions.SNIPPET
-
-        current_snippet = existing[-1]
-        remaining_snippets = existing[:-1]
-
-        new_text = "{0} {1}".format(current_snippet.title, self.__clean_markup(current_snippet.content))
-
-        for snippet in remaining_snippets:
-            seen_text = "{0} {1} {2}".format(seen_text, snippet.title, self.__clean_markup(snippet.content))
-        topic = self._search_context.get_topic()
-        seen_text = "{0} {1} {2}".format(seen_text, topic.title, self.__clean_markup(snippet.content))
-        seen_text = "{0} {1} {2}".format(seen_text, topic.content, self.__clean_markup(snippet.content))
-
-
-        kl_score = kl_divergence( new_text,seen_text)
-        print "kl", kl_score
-        #print "SEEN:", seen_text
-        #print "NEW:", new_text
-        #print
-        #raw_input()
-
-        if kl_score < self.__threshold:
-        # if the new text is too similar to the seen text then move to the next query
-            return Actions.QUERY  # Too similar?
-        # else move to the next snippet.
-        return Actions.SNIPPET  #  Different enough, so proceed to examine the next snippet.
+        
+        print existing
+        
+        
+        return Actions.SNIPPET
 
     
     def __clean_markup(self, string_repr):

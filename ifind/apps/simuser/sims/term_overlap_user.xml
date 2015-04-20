@@ -1,4 +1,4 @@
-<userConfiguration id="kluser">
+<userConfiguration id="termoverlapuser">
 
 	<queryGenerator class="SingleTermQueryGenerator">
 		<attribute name="stopword_file" type="string" value="data/stopwords.txt" is_argument="true" />
