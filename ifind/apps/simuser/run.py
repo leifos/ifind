@@ -4,6 +4,8 @@ from sim_user import SimulatedUser
 from progress_indicator import ProgressIndicator
 from config_readers.simulation_config_reader import SimulationConfigReader
 import gc
+import logging
+
 
 def main(config_filename):
     """
@@ -11,13 +13,15 @@ def main(config_filename):
     For every configuration permutation, create a Simulated user object, and run the simulation (the while loop).
     Then save, report, and repeat ad naseum.
     """
+    logging.basicConfig(filename='sim.log',level=logging.DEBUG)
+
     config_reader = SimulationConfigReader(config_filename)
 
 
     
     for configuration in config_reader:
         user = SimulatedUser(configuration)
-        user.show_query_list()
+        user.log_query_list()
         progress = ProgressIndicator(configuration)
         
         configuration.output.display_config()

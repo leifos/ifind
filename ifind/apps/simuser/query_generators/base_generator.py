@@ -4,7 +4,9 @@ from ifind.common.query_ranker import QueryRanker
 from ifind.common.language_model import LanguageModel
 from ifind.common.query_generation import SingleQueryGeneration, BiTermQueryGeneration, TriTermQueryGeneration
 from ifind.common.smoothed_language_model import BayesLanguageModel
+import logging
 
+log = logging.getLogger('query_generators.base_generator')
 
 #TODO(leifos): queries are not being recorded in all classes, we need a solution that logs all queries in all classes
 # without having to add something like: self._log_queries(interleaved_queries)
@@ -109,6 +111,6 @@ class BaseQueryGenerator(object):
         count = 1
         
         for query in queries:
-            print query
+            log.debug( query )
             self._output_controller.log_query("{0} {1}".format(count, query[0]))
             count = count + 1

@@ -2,6 +2,9 @@ import os
 from loggers import Actions
 from ifind.search.query import Query
 from search_interfaces import Document
+import logging
+
+log = logging.getLogger('search_context.search_context')
 
 class SearchContext(object):
     """
@@ -59,6 +62,11 @@ class SearchContext(object):
     def show_query_list(self):
         for q in self._query_list:
             print q
+
+    def log_query_list(self):
+        for q in self._query_list:
+            log.debug(q)
+
 
     def get_last_action(self):
         """
