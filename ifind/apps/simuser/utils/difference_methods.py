@@ -1,23 +1,23 @@
 __author__ = 'leif'
 import re
+import abc
+import sys
 import math
 import collections
-import sys
 
-
-
-class kldifference(object):
-
-
-    def __init__(self, alpha = 0.5, stopword_file=None, vocab_file=None):
-
+class DifferenceHelper(object):
+    """
+    Abstract difference class.
+    Contains helper methods for setting up - the difference() method is abstract.
+    """
+    def __init__(self, stopword_file=None, vocab_file=None):
         self.vocab = self.__read_vocab_dict(vocab_file)
         self.stopwords = self.__read_stopwords_list(stopword_file)
+        
         if not self.stopwords:
             self.stopwords = ['and', 'for', 'if', 'the', 'then', 'be', 'is', 'are', 'will', 'in', 'it', 'to', 'that']
-        self.alpha = alpha # the mixing co-efficient
-
-
+    
+    
     def __read_stopwords_list(self, stopwords_file):
         """
         Given the stopwords instance variable, returns a list of stopwords to use.
@@ -51,7 +51,7 @@ class kldifference(object):
         return vocab
 
 
-    def __tokeniser(self,_str, stopwords=['and', 'for', 'if', 'the', 'then', 'be', 'is', 'are', 'will', 'in', 'it', 'to', 'that']):
+    def _tokeniser(self, _str, stopwords=['and', 'for', 'if', 'the', 'then', 'be', 'is', 'are', 'will', 'in', 'it', 'to', 'that']):
         """
         Given an input string and list of stopwords, returns a dictionary of frequency occurrences for terms in the given input string.
         From https://gist.github.com/mrorii/961963
@@ -70,11 +70,53 @@ class kldifference(object):
             tokens[m] += 1
 
         return tokens
-
-
+    
+    @abc.abstractmethod
     def difference(self, new_text, seen_text):
-        new_text = self.__tokeniser(new_text)
-        seen_text = self.__tokeniser(seen_text)
+        """
+        Abstract method for determining the difference between previously seen and unseen text.
+        """
+        return NotImplementedError()
+        
+
+class TermOverlapDifference(DifferenceHelper):
+    """
+    String difference implemenattion - determines the difference between two strings by counting term overlaps.
+    """
+    def __init__(self, stopword_file=None, vocab_file=None):
+        super(TermOverlapDifference, self).__init__(stopword_file, vocab_file)
+    
+    def difference(self, new_text, seen_text):
+        """
+        Concrete implementation - works out the term overlap between the two passed strings.
+        """
+        new_text = self._tokeniser(new_text)
+        seen_text = self._tokeniser(seen_text)
+        
+        new_text_length = len(new_text)
+        overlap_count = 0.0
+        
+        for term in new_text.keys():
+            if term in seen_text.keys():
+                overlap_count += 1
+        
+        return overlap_count / new_text_length
+
+class KLDifference(DifferenceHelper):
+    """
+    Implementation of KL-Divergence for determining the difference between two texts (strings).
+    """
+    def __init__(self, alpha = 0.5, stopword_file=None, vocab_file=None):
+        super(KLDifference, self).__init__(stopword_file, vocab_file)
+        self.alpha = alpha # the mixing co-efficient
+    
+    
+    def difference(self, new_text, seen_text):
+        """
+        Concrete implementation - works out the KL divergence between the two passed strings.
+        """
+        new_text = self._tokeniser(new_text)
+        seen_text = self._tokeniser(seen_text)
 
         # need to mix the seen text with the background text.
 
@@ -88,9 +130,8 @@ class kldifference(object):
                 seen_text[t] = self.vocab[t]
 
         return self.__kl_divergence(new_text,seen_text)
-
-
-
+    
+    
     def __kl_divergence(self,_s, _t):
         """
         An implementation of Kullback-Leibler divergence for comparing two strings (documents).
