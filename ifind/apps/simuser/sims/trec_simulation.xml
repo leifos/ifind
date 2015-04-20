@@ -17,7 +17,9 @@ Date:   2014-09-13
 	</topics>
 	
 	<users>
-        <user configurationFile="sims/kl_user.xml" />
+		<user configurationFile="sims/term_overlap_user.xml" />
+		
+        <!--<user configurationFile="sims/kl_user.xml" />-->
 
 		<!--user configurationFile="sims/trec_user.xml" />
         <user configurationFile="sims/fallible_trec_user.xml" />
