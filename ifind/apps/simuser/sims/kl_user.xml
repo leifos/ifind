@@ -27,7 +27,7 @@
 		<attribute name="vocab_file" type="string" value="data/vocab.txt" is_argument="true" />
 		<attribute name="decision_maker" type="string" value="kl" is_argument="true" />
 		
-        <attribute name="threshold" type="float" value="2.0" is_argument="true" />
+        <attribute name="threshold" type="float" value="0.0" is_argument="true" />
         <attribute name="nonrel_only" type="boolean" value="False" is_argument="true" />
         <attribute name="query_based" type="boolean" value="False" is_argument="true" />
 	</decisionMaker>

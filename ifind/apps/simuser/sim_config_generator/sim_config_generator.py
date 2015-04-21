@@ -112,7 +112,7 @@ def create_attribute_markup(attribute_dict):
     Given a dictionary representing an attribute, returns the associated XML markup for that attribute component.
     """
     attribute_markup = read_file_to_string('base_files/attribute.xml')
-    value = attribute_dict['@value'].replace('{{ base_dir }}', simulation_base_dir)
+    value = attribute_dict['@value'].replace('[[ base_dir ]]', simulation_base_dir)
     
     attribute_markup = attribute_markup.format(attribute_dict['@name'],
                                                attribute_dict['@type'],
@@ -206,7 +206,7 @@ def generate_markup(dict_repr, permutations):
         
         # Now work out the ID.
         user_base_id = dict_repr['simulation']['user']['@baseID']
-        tags = re.findall('{{(.*?)}}', user_base_id, re.DOTALL)
+        tags = re.findall('\[\[(.*?)\]\]', user_base_id, re.DOTALL)
         tags = map(lambda x: [x,None], tags)  # Convert [x,y,z] to [[x,None], [y,None], [z,None]]
         
         for tag in tags:
@@ -240,7 +240,7 @@ def generate_markup(dict_repr, permutations):
                         tag[1] = comp['@name']
             
             # Replace the string instance with the tag!
-            user_base_id = user_base_id.replace("{{" + tag[0] + "}}", tag[1])
+            user_base_id = user_base_id.replace("[[" + tag[0] + "]]", tag[1])
         
         user_files.append(os.path.join(dict_repr['simulation']['@baseDir'], "user-{0}.xml").format(user_base_id))
         

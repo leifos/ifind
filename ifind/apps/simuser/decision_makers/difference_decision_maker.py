@@ -65,7 +65,7 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         #print
         #raw_input()
 
-        if self.__comparator(score, threshold):
+        if self.__comparator(score, self.__threshold):
         # if the new text is too similar to the seen text then move to the next query
             return Actions.QUERY  # Too similar?
         # else move to the next snippet.
