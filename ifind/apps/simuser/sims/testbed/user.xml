@@ -18,8 +18,8 @@
 		</documentClassifier>
 	</textClassifiers>
 
-	<decisionMaker class="FixedDepthDecisionMaker">
-        <attribute name="depth" type="integer" value="10" is_argument="true" />
+	<decisionMaker class="SequentialNonrelDecisionMaker">
+        <attribute name="nonrelevant_threshold" type="integer" value="2" is_argument="true" />
 	</decisionMaker>
 
 	<logger class="FixedCostLogger">
