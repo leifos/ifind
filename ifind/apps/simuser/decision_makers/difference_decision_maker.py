@@ -20,8 +20,10 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         
         if decision_maker == 'kl':  # KL-Divergence
             self.__decision_maker = difference_methods.KLDifference(stopword_file=stopword_file, vocab_file=vocab_file, alpha=alpha)
+            self.__comparator = lambda score, threshold: score < threshold
         elif decision_maker == 'term_overlap':  # Default to the TermOverlapDecisionMaker
             self.__decision_maker = difference_methods.TermOverlapDifference(stopword_file=stopword_file, vocab_file=vocab_file)
+            self.__comparator = lambda score, threshold: score > threshold
         else:
             raise ValueError("Invalid decision maker type specified.")
         
@@ -63,7 +65,7 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         #print
         #raw_input()
 
-        if score < self.__threshold:
+        if self.__comparator(score, threshold):
         # if the new text is too similar to the seen text then move to the next query
             return Actions.QUERY  # Too similar?
         # else move to the next snippet.
