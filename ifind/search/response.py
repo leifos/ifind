@@ -148,15 +148,20 @@ class Response(object):
 
     def __eq__(self, other):
         """
-        Overrides '==' operator, returns True if both responses hash to the same value.
+        Overrides '==' operator, returns True if both objects are responses which hash to the same value,
+        otherwise returns False.
 
         Usage:
             response = Response("hello world")
             response2 = Response("hello world")
             print response == response2 --> False
+            print response == None --> False
 
         """
-        return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+        if type(other) == Response:
+            return tuple(self.__dict__.items()) == tuple(other.__dict__.items())
+        else:
+            return False
 
 
 class Result(object):
