@@ -120,7 +120,16 @@ class KLDifference(DifferenceHelper):
         # need to mix the seen text with the background text.
 
         for t in seen_text:
-            seen_text[t] =  seen_text[t] * self.alpha/(1-self.alpha)
+            print seen_text[t]
+            print self.alpha
+            print 1-self.alpha
+            print 
+            
+            try:
+                denominator = self.alpha/(1-self.alpha)
+                seen_text[t] =  seen_text[t] * self.alpha/(1-self.alpha)
+            except ZeroDivisionError:
+                seen_text[t] = 0
         
         # dmax says: I don't understand this; and the results don't level off as well as the implementation below.
         # for t in self.vocab:
