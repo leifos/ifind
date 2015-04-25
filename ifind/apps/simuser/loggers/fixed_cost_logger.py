@@ -23,21 +23,21 @@ class FixedCostLogger(BaseLogger):
         super(FixedCostLogger, self).__init__(output_controller)
         
         #  Series of costs (in seconds) for each interaction that the user can perform; these are fixed.
-        self.__query_cost = query_cost
-        self.__document_cost = document_cost
-        self.__snippet_cost = snippet_cost
-        self.__serp_results_cost = serp_results_cost
-        self.__mark_document_cost = mark_document_cost
+        self._query_cost = query_cost
+        self._document_cost = document_cost
+        self._snippet_cost = snippet_cost
+        self._serp_results_cost = serp_results_cost
+        self._mark_document_cost = mark_document_cost
         
-        self.__total_time = 0  # An elapsed counter of the number of seconds a user has been interacting for.
-        self.__time_limit = time_limit  # The maximum time that a user can search for in a session.
+        self._total_time = 0  # An elapsed counter of the number of seconds a user has been interacting for.
+        self._time_limit = time_limit  # The maximum time that a user can search for in a session.
     
     def get_progress(self):
         """
         Concrete implementation of the abstract get_progress() method.
         Returns a value between 0 and 1 representing how far through the current simulation the user is.
         """
-        return self.__total_time / float(self.__time_limit)
+        return self._total_time / float(self._time_limit)
     
     def is_finished(self):
         """
@@ -45,7 +45,7 @@ class FixedCostLogger(BaseLogger):
         Returns True if the user has reached their search "allowance".
         """
         # Include the super().is_finished() call to determine if there are any queries left to process.
-        return (not (self.__total_time < self.__time_limit)) or super(FixedCostLogger, self).is_finished()
+        return (not (self._total_time < self._time_limit)) or super(FixedCostLogger, self).is_finished()
     
     def _report(self, action, **kwargs):
         """
@@ -61,14 +61,14 @@ class FixedCostLogger(BaseLogger):
         }
         
         base = super(FixedCostLogger, self)._report(action, **kwargs)
-        self._output_controller.log("{0}{1} {2} {3}".format(base, self.__time_limit, self.__total_time, log_entry_mapper[action]))
+        self._output_controller.log("{0}{1} {2} {3}".format(base, self._time_limit, self._total_time, log_entry_mapper[action]))
     
     def _log_query(self, **kwargs):
         """
         Concrete implementation of the _log_query() method from the BaseLogger.
         Increments the __total_time counter with the cost of issuing a query.
         """
-        self.__total_time = self.__total_time + self.__query_cost
+        self._total_time = self._total_time + self._query_cost
         self._report(Actions.QUERY, **kwargs)
     
     def _log_serp(self, **kwargs):
@@ -76,7 +76,7 @@ class FixedCostLogger(BaseLogger):
         Concrete implementation of the _log_serp() method from the BaseLogger.
         Increments the __total_time counter with the cost of examining a SERP.
         """
-        self.__total_time = self.__total_time + self.__serp_results_cost
+        self._total_time = self._total_time + self._serp_results_cost
         self._report(Actions.SERP, **kwargs)
     
     def _log_snippet(self, **kwargs):
@@ -84,19 +84,19 @@ class FixedCostLogger(BaseLogger):
         A concrete implementation of the log_snippet() method from the BaseLogger.
         Increments __total_time to reflect the cost of examining a snippet.
         """
-        self.__total_time = self.__total_time + self.__snippet_cost
+        self._total_time = self._total_time + self._snippet_cost
         self._report(Actions.SNIPPET, **kwargs)
     
     def _log_assess(self, **kwargs):
         """
         Concrete implementation for assessing a document at a fixed cost.
         """
-        self.__total_time = self.__total_time + self.__document_cost
+        self._total_time = self._total_time + self._document_cost
         self._report(Actions.DOC, **kwargs)
     
     def _log_mark_document(self, **kwargs):
         """
         Concrete implementation for marking a document as relevant as a fixed cost.
         """
-        self.__total_time = self.__total_time + self.__mark_document_cost
+        self._total_time = self._total_time + self._mark_document_cost
         self._report(Actions.MARK, **kwargs)
