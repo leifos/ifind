@@ -50,13 +50,13 @@ class DifferenceDecisionMaker(BaseDecisionMaker):
         current_snippet = existing[-1]
         remaining_snippets = existing[:-1]
 
-        new_text = "{0} {1}".format(current_snippet.title, self.__clean_markup(current_snippet.content))
+        new_text = "{0} {1}".format(current_snippet.title, self.__clean_markup(current_snippet.content)).encode('utf-8')
 
         for snippet in remaining_snippets:
-            seen_text = "{0} {1} {2}".format(seen_text, snippet.title, self.__clean_markup(snippet.content))
+            seen_text = "{0} {1} {2}".format(seen_text, snippet.title, self.__clean_markup(snippet.content)).encode('utf-8')
         topic = self._search_context.get_topic()
-        seen_text = "{0} {1} {2}".format(seen_text, topic.title, self.__clean_markup(snippet.content))
-        seen_text = "{0} {1} {2}".format(seen_text, topic.content, self.__clean_markup(snippet.content))
+        seen_text = "{0} {1} {2}".format(seen_text, topic.title, self.__clean_markup(snippet.content)).encode('utf-8')
+        seen_text = "{0} {1} {2}".format(seen_text, topic.content, self.__clean_markup(snippet.content)).encode('utf-8')
 
         score = self.__decision_maker.difference(new_text,seen_text)
         print "diff", score
