@@ -27,7 +27,7 @@
         <attribute name="gain_threshold" type="float" value="0.015" is_argument="true" />
         <attribute name="discount" type="float" value="0.5" is_argument="true" />
         <attribute name="query_time" type="float" value="15.1" is_argument="true" />
-        <attribute name="doc_time" type="boolean" value="22.0" is_argument="true" />
+        <attribute name="doc_time" type="float" value="22.0" is_argument="true" />
 
 	</decisionMaker>
 
