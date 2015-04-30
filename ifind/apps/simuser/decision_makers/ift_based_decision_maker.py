@@ -43,7 +43,7 @@ class IftBasedDecisionMaker(BaseDecisionMaker):
             pos = pos + 1.0
             j = float(snippet.judgment)
             if j <0:
-                j =0
+                j = 0
             dis_cum_gain += (j)*(1.0/(pos**self.__discount))
 
         #The average rate of gain, ie. gain per second

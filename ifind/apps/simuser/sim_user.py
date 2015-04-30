@@ -206,4 +206,4 @@ class SimulatedUser(object):
         return self.__decision_maker.decide()
         
     def log_query_list(self):
-        self.__search_context.show_query_list()
+        self.__search_context.log_query_list()

@@ -11,6 +11,11 @@ from whoosh import highlight
 from whoosh import scoring
 from whoosh.highlight import highlight, HtmlFormatter, ContextFragmenter
 
+import logging
+
+log = logging.getLogger('ifind.search.engines.whooshtrecweb')
+
+
 class WhooshTrecWeb(Engine):
     """
     Whoosh based search engine.
@@ -41,17 +46,21 @@ class WhooshTrecWeb(Engine):
             if not hasattr(WhooshTrecWeb, 'docIndex'):
                 WhooshTrecWeb.docIndex = open_dir(whoosh_index_dir)
 
-            #print "Whoosh Document index open: ", whoosh_index_dir
-            #print "Documents in index: ", self.docIndex.doc_count()
+            log.debug("Whoosh Document index open: {0}".format(whoosh_index_dir))
+            log.debug("Documents in index: {0}".format( self.docIndex.doc_count()))
             if self.implicit_or:
                 self.parser = QueryParser("content", self.docIndex.schema, group=OrGroup)
+                log.debug("OR Query parser created")
             else:
                 self.parser = QueryParser("content", self.docIndex.schema, group=AndGroup)
+                log.debug("AND Query parser created")
 
             self.analyzer = self.docIndex.schema[self.parser.fieldname].analyzer
             self.fragmenter = ContextFragmenter(maxchars=200, surround=40)
             self.fragmenter.charlimit = 10000
             self.formatter = HtmlFormatter()
+            log.debug("About to set retrieval model")
+
             self.set_model(model)
 
         except:
@@ -62,20 +71,24 @@ class WhooshTrecWeb(Engine):
 
     def set_model(self, model, pval=None):
         self.scoring_model = scoring.BM25F(B=0.75)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
+        engine_name = "BM25 B={0}".format(0.75)
         if model == 0:
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
+            engine_name = "TFIDF"
         if model == 2:
             c = 10.0
             if pval:
                 c = pval
             self.scoring_model = scoring.PL2(c=c)  # Use PL2 with default values
+            engine_name = "BM25F c={0}".format(c)
         if model == 1:
             B = 0.75
             if pval:
                 B = pval
             self.scoring_model = scoring.BM25F(B=B) # BM25
+            engine_name = "BM25F B={0}".format(B)
 
-        print self.scoring_model
+        log.debug("Engine Created with: {0} retrieval model".format(engine_name))
         self.searcher = self.docIndex.searcher(weighting=self.scoring_model)
 
 
@@ -143,7 +156,9 @@ class WhooshTrecWeb(Engine):
         pagelen = query.top
         response = None
         results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
-        print query.parsed_terms
+
+        log.debug("Query Terms Issued: {0}".format(query.parsed_terms))
+
         results.fragmenter = self.fragmenter
         results.formatter = self.formatter
 
