@@ -22,5 +22,9 @@
 	<logger class="{9}">
 		{10}
 	</logger>
+	
+	<searchContext class="{11}">
+		{12}
+	</searchContext>
 
 </userConfiguration>

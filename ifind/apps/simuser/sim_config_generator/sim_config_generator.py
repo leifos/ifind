@@ -76,6 +76,7 @@ def tidy_dictionary(dict_repr):
     dict_repr['simulation']['user']['textClassifiers']['documentClassifier'] = to_list(dict_repr['simulation']['user']['textClassifiers']['documentClassifier'], 'documentClassifier')
     dict_repr['simulation']['user']['decisionMaker'] = to_list(dict_repr['simulation']['user']['decisionMaker'], 'decisionMaker')
     dict_repr['simulation']['user']['logger'] = to_list(dict_repr['simulation']['user']['logger'], 'logger')
+    dict_repr['simulation']['user']['searchContext'] = to_list(dict_repr['simulation']['user']['searchContext'], 'searchContext')
 
 def read_file_to_string(filename):
     """
@@ -100,12 +101,14 @@ def get_permutations(dict_repr):
     document_classifiers = dict_repr['simulation']['user']['textClassifiers']['documentClassifier']
     decision_makers = dict_repr['simulation']['user']['decisionMaker']
     loggers =  dict_repr['simulation']['user']['logger']
+    search_contexts = dict_repr['simulation']['user']['searchContext']
     
     return list(itertools.product(query_generators,
                                   snippet_classifiers,
                                   document_classifiers,
                                   decision_makers,
-                                  loggers))
+                                  loggers,
+                                  search_contexts))
 
 def create_attribute_markup(attribute_dict):
     """
@@ -185,6 +188,7 @@ def generate_markup(dict_repr, permutations):
             'documentClassifier': {'class': None, 'attributes': None, 'attributes_py': None},
             'decisionMaker': {'class': None, 'attributes': None, 'attributes_py': None},
             'logger': {'class': None, 'attributes': None, 'attributes_py': None},
+            'searchContext': {'class': None, 'attributes': None, 'attributes_py': None},
         }
         
         # Sort out the components for this iteration.
@@ -256,7 +260,9 @@ def generate_markup(dict_repr, permutations):
             user_markup_components['decisionMaker']['class'],
             user_markup_components['decisionMaker']['attributes'] if user_markup_components['decisionMaker']['attributes'] is not None else "",
             user_markup_components['logger']['class'],
-            user_markup_components['logger']['attributes'] if user_markup_components['logger']['attributes'] is not None else "")
+            user_markup_components['logger']['attributes'] if user_markup_components['logger']['attributes'] is not None else "",
+            user_markup_components['searchContext']['class'],
+            user_markup_components['searchContext']['attributes'] if user_markup_components['searchContext']['attributes'] is not None else "")
         
         user_file = open('output/user-{0}.xml'.format(user_base_id), 'w')
         user_file.write(user_markup)
