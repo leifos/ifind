@@ -1,5 +1,5 @@
 import os
-from search_context import SearchContext
+#from search_context import SearchContext
 from config_readers.component_generators.base_generator import BaseComponentGenerator
 
 class UserComponentGenerator(BaseComponentGenerator):
