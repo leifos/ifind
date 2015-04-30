@@ -14,7 +14,7 @@ class WhooshSearchInterface(BaseSearchInterface):
     """
     def __init__(self, whoosh_index_dir, model=2, implicit_or=True):
         super(WhooshSearchInterface, self).__init__()
-        log.debug("Whoosh Index to open: {0}",format(whoosh_index_dir))
+        log.debug("Whoosh Index to open: {0}".format(whoosh_index_dir))
         self.__index = open_dir(whoosh_index_dir)
         self.__reader = self.__index.reader()
         
