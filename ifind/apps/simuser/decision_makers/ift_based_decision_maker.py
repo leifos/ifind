@@ -46,6 +46,8 @@ class IftBasedDecisionMaker(BaseDecisionMaker):
         #The average rate of gain, ie. gain per second
         avg_dis_cum_gain = dis_cum_gain / float(self.__query_time) + (float(self.__doc_time)*pos)
 
+        log.debug("Query: {0} pos: {1} gain per second: {2}".format(self._search_context.get_last_query().terms, pos, avg_dis_cum_gain))
+
         if avg_dis_cum_gain >= self.__gain_threshold:
             return Actions.SNIPPET
         return Actions.QUERY
