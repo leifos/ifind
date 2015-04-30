@@ -3,7 +3,7 @@ from loggers import Actions
 from decision_makers.base_decision_maker import BaseDecisionMaker
 import logging
 
-log = logging.getLogger('decision_maker.ift_based_decision_makers')
+log = logging.getLogger('decsion_makers.ift_based_decision_makers')
 
 
 class IftBasedDecisionMaker(BaseDecisionMaker):
@@ -37,16 +37,20 @@ class IftBasedDecisionMaker(BaseDecisionMaker):
 
 
         dis_cum_gain = 0.0
-        pos = 0
+        pos = 0.0
         examined_snippets = self._search_context.get_examined_snippets()
         for snippet in examined_snippets:
-            pos += 1
-            dis_cum_gain += (float(snippet.judgment))*(1.0/float(pos)**self.__discount)
+            pos = pos + 1.0
+            j = float(snippet.judgment)
+            if j <0:
+                j =0
+            dis_cum_gain += (j)*(1.0/(pos**self.__discount))
 
         #The average rate of gain, ie. gain per second
-        avg_dis_cum_gain = dis_cum_gain / float(self.__query_time) + (float(self.__doc_time)*pos)
+        t = (float(self.__query_time) + (float(self.__doc_time)*pos))
+        avg_dis_cum_gain = dis_cum_gain / t
 
-        log.debug("Query: {0} pos: {1} gain per second: {2}".format(self._search_context.get_last_query().terms, pos, avg_dis_cum_gain))
+        log.debug("q: {0} pos: {1} gps: {2}, {3}, {4}".format(self._search_context.get_last_query().terms, pos, avg_dis_cum_gain, dis_cum_gain, t))
 
         if avg_dis_cum_gain >= self.__gain_threshold:
             return Actions.SNIPPET
