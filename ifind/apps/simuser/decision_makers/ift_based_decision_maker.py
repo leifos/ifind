@@ -1,6 +1,9 @@
 __author__ = 'leif'
 from loggers import Actions
 from decision_makers.base_decision_maker import BaseDecisionMaker
+import logging
+
+log = logging.getLogger('decision_maker.ift_based_decision_makers')
 
 
 class IftBasedDecisionMaker(BaseDecisionMaker):
@@ -14,7 +17,8 @@ class IftBasedDecisionMaker(BaseDecisionMaker):
     def __init__(self, search_context, gain_threshold=0.015, query_time=15.0, doc_time=20.0,discount=0.5, rank_threshold=1):
         super(IftBasedDecisionMaker, self).__init__(search_context)
         self.__rank_threshold = rank_threshold  # Before basing the decision on the gain recieved, examine this many documents first
-        self.__gain_threshold = gain_threshold  # The after rate of gain, if the current rate of gain does not exceed this... STOP
+        self.__gain_threshold = gain_threshold  # average gain per second
+        # The after rate of gain, if the current rate of gain does not exceed this... STOP
         self.__query_time = query_time
         self.__doc_time = doc_time
         self.__discount = discount # how much the gain a ranks is discounted
@@ -39,6 +43,7 @@ class IftBasedDecisionMaker(BaseDecisionMaker):
             pos += 1
             dis_cum_gain += (float(snippet.judgment))*(1.0/float(pos)**self.__discount)
 
+        #The average rate of gain, ie. gain per second
         avg_dis_cum_gain = dis_cum_gain / float(self.__query_time) + (float(self.__doc_time)*pos)
 
         if avg_dis_cum_gain >= self.__gain_threshold:
