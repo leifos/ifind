@@ -13,7 +13,9 @@ Date:   2014-09-13
 			trec_eval="true" />
 	
 	<topics>
-		<topic id="307" filename="data/topics/topic.307" qrelsFilename="data/trec2005.qrels.307" />
+		<!--topic id="307" filename="data/topics/topic.307" qrelsFilename="data/trec2005.qrels.307" /-->
+        		<topic id="367" filename="data/topics/topic.367" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="347" filename="data/topics/topic.347" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="435" filename="data/topics/topic.435" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="638" filename="data/topics/topic.638" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="639" filename="data/topics/topic.639" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="648" filename="data/topics/topic.648" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="650" filename="data/topics/topic.650" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="651" filename="data/topics/topic.651" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="658" filename="data/topics/topic.658" qrelsFilename="data/qrels/trec2005.qrels" /><topic id="689" filename="data/topics/topic.689" qrelsFilename="data/qrels/trec2005.qrels" />
+
 	</topics>
 	
 	<users>
@@ -21,7 +23,8 @@ Date:   2014-09-13
         <!-- user configurationFile="sims/kl_user.xml" / -->
         <!--<user configurationFile="sims/ift_user.xml" />-->
 		<user configurationFile="sims/ift_user_prerolled.xml" />
-		<!--user configurationFile="sims/trec_user.xml" />
+		<user configurationFile="sims/ift_user_t0.02.xml" />
+        <!--user configurationFile="sims/trec_user.xml" />
         <user configurationFile="sims/fallible_trec_user.xml" />
         <user configurationFile="sims/perfect_user.xml" />
         <user configurationFile="sims/random_user.xml" />
