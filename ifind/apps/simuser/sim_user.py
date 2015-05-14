@@ -171,10 +171,12 @@ class SimulatedUser(object):
             #print 'document', document.doc_id, self.__document_classifier.is_relevant(document)
             
             if self.__document_classifier.is_relevant(document):
+                document.judgment = 1
                 self.__logger.log_action(Actions.DOC, status="CONSIDERED_RELEVANT", doc_id=document.doc_id)
                 self.__search_context.add_relevant_document(document)
                 return True
             else:
+                document.judgment = 0
                 self.__search_context.add_irrelevant_document(document)
                 self.__logger.log_action(Actions.DOC, status="CONSIDERED_NOT_RELEVANT", doc_id=document.doc_id)
                 return False
