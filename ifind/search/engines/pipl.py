@@ -3,10 +3,10 @@ import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.utils.encoding import encode_symbols
-from ifind.search.exceptions import QueryParamException
+from ifind.search.exceptions import QueryParamException, EngineAPIKeyException, EngineConnectionException
 
 
-API_ENDPOINT = "http://api.pipl.com/search/v3/json/"
+API_ENDPOINT = "https://api.pipl.com/search/v3/json/"
 
 DEFAULT_COUNTRY = 'GB'
 
@@ -64,7 +64,7 @@ class Pipl(Engine):
             country (str): Two letter country code: e.g. GB, US.
             state (str): A US or Canada state code, e.g. CO
             city (str): A city name associated with the target.
-            raw_name (str): An unparsed version of the name. Bult from query terms if no first and last name provided.
+            raw_name (str): An unparsed version of the name. Built from query terms if no first and last name provided.
             raw_address (str): An unparsed address.
             from_age (int): Lower limit on the age of the target.
             to_age(int) Upper limit on the age of the target.
