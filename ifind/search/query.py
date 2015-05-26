@@ -28,6 +28,8 @@ class Query(object):
         self.terms = Query.check_input(terms, strip_punctuation=strip_punctuation)
         self.parsed_terms = None
         self.result_type = result_type.lower()
+        if not self.result_type:
+            self.result_type = None
         self.lang = lang
         self.top = top
         self.skip = 0

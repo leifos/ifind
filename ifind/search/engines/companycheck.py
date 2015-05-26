@@ -38,6 +38,11 @@ class Companycheck(Engine):
         if not self.api_key:
             raise EngineAPIKeyException(self.name, "'api_key=' keyword argument not specified")
 
+        self.default_result_type = kwargs.get('default_result_type', DEFAULT_RESULT_TYPE)
+        # Catch empty strings and such.
+        if not self.default_result_type:
+            self.default_result_type = DEFAULT_RESULT_TYPE
+
     def _search(self, query):
         """
         Concrete method of Engine's interface method 'search'.
@@ -93,7 +98,7 @@ class Companycheck(Engine):
         if response.status_code != 200:
             raise EngineConnectionException(self.name, "", code=response.status_code)
 
-        return Companycheck._parse_json_response(query, response)
+        return self._parse_json_response(query, response)
 
     def _create_query_string(self, query):
         """
@@ -113,10 +118,9 @@ class Companycheck(Engine):
 
         """
 
-        # Check for a result type, if none found, set it to default.
-        result_type = query.__dict__.get('result_type', DEFAULT_RESULT_TYPE)
-        if result_type == '':
-            result_type = DEFAULT_RESULT_TYPE
+        result_type = query.result_type
+        if not result_type:
+            result_type = self.default_result_type
 
         # Check to if the result type is valid
         if result_type:
@@ -179,8 +183,7 @@ class Companycheck(Engine):
 
         return {'postcode_list': postcodes, 'summary': postcodes_sum}
 
-    @staticmethod
-    def _parse_json_response(query, results):
+    def _parse_json_response(self, query, results):
         """
         Parses Companycheck's JSON response and returns as an ifind Response.
 
@@ -202,10 +205,9 @@ class Companycheck(Engine):
         url_base = 'http://companycheck.co.uk/'
 
         # Since the object isn't mutated, set the default again if there is nothing present.
-        if query.result_type:
-            result_type = query.result_type
-        else:
-            result_type = DEFAULT_RESULT_TYPE
+        result_type = query.result_type
+        if not result_type:
+            result_type = self.default_result_type
 
 
         # CompanyCheck returns all the results it has, it has no further results.

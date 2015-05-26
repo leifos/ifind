@@ -109,6 +109,9 @@ class Neutrinogeoaddress(Engine):
         Args:
             query (ifind Query): object encapsulating details of a search query.
 
+        Query Kwargs:
+            address: (str) The address string. If this is not found terms will be used instead.
+
         Returns:
             str: query string for Neutrinogeoaddress API request
 
@@ -120,7 +123,7 @@ class Neutrinogeoaddress(Engine):
 
         """
 
-        address = query.terms
+        address = query.__dict__.get('address', query.terms)
 
         # Throw an exception if we have no search terms.
         if not address:

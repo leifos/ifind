@@ -45,6 +45,11 @@ class Bing(Engine):
 
             # TODO pull api key from keys.py
 
+        self.default_result_type = kwargs.get('default_result_type', DEFAULT_RESULT_TYPE)
+        # Catch empty strings and such.
+        if not self.default_result_type:
+            self.default_result_type = DEFAULT_RESULT_TYPE
+
     def _search(self, query):
         """
         Concrete method of Engine's interface method 'search'.
@@ -109,7 +114,7 @@ class Bing(Engine):
         if response.status_code != 200:
             raise EngineConnectionException(self.name, "", code=response.status_code)
 
-        return Bing._parse_json_response(query, response)
+        return self._parse_json_response(query, response)
 
     def _auto_request(self, query):
         """
@@ -167,11 +172,10 @@ class Bing(Engine):
 
         """
         result_type = query.result_type
-
         if not result_type:
-            result_type = DEFAULT_RESULT_TYPE
+            result_type = self.default_result_type
 
-        if result_type not in RESULT_TYPES:
+        if result_type and result_type not in RESULT_TYPES:
             raise QueryParamException(self.name, "Engine doesn't support query result type '{0}'"
                                                  .format(query.result_type))
         if not query.skip:
@@ -192,8 +196,7 @@ class Bing(Engine):
 
         return API_ENDPOINT + encode_symbols(result_string + '&' + query_string)
 
-    @staticmethod
-    def _parse_json_response(query, results):
+    def _parse_json_response(self, query, results):
         """
         Parses Bing's JSON response and returns as an ifind Response.
 
@@ -209,21 +212,23 @@ class Bing(Engine):
 
         """
         response = Response(query.terms, query)
-
-
         content = json.loads(results.text)
-		
+
+        result_type = query.result_type
+        if not result_type:
+            result_type = self.default_result_type
+
         rank_counter = 1
 
-        if query.result_type == 'web' or not query.result_type:
+        if result_type == 'web' or not query.result_type:
             for result in content[u'd'][u'results'][0][u'Web']:
                 response.add_result(title=result[u'Title'], url=result[u'Url'], summary=result[u'Description'], rank=rank_counter)
                 #print result[u'Title']
                 #print rank_counter
                 #print ' '
                 rank_counter+=1
-				
-        if query.result_type == 'image':
+
+        if result_type == 'image':
             for result in content[u'd'][u'results'][0][u'Image']:
                 file_size = str(int(result[u'FileSize']) / 1024)  # in kilobytes
                 width = result[u'Width']
@@ -235,7 +240,7 @@ class Bing(Engine):
                 response.add_result(file_size=file_size, width=width, height=height, media_url=media_url,
                                     thumb_url=thumb_url, source_url=source_url, title=title)
 
-        if query.result_type == 'video':
+        if result_type == 'video':
             for result in content[u'd'][u'results'][0][u'Video']:
                 run_time = Bing._get_video_length(int(result[u'RunTime']))
                 title = result[u'Title']

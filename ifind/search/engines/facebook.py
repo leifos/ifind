@@ -2,7 +2,7 @@ import json
 import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
+from ifind.search.exceptions import InvalidQueryException, EngineAPIKeyException, QueryParamException, EngineConnectionException
 from ifind.utils.encoding import encode_symbols
 
 
@@ -37,6 +37,11 @@ class Facebook(Engine):
 
         if not self.api_key:
             raise EngineAPIKeyException(self.name, "'api_key=' keyword argument not specified")
+
+        self.default_result_type = kwargs.get('default_result_type', DEFAULT_RESULT_TYPE)
+        # Catch empty strings and such.
+        if not self.default_result_type:
+            self.default_result_type = DEFAULT_RESULT_TYPE
 
     def _search(self, query):
         """
@@ -92,7 +97,7 @@ class Facebook(Engine):
         if response.status_code != 200:
             raise EngineConnectionException(self.name, "", code=response.status_code)
 
-        return Facebook._parse_json_response(query, response)
+        return self._parse_json_response(query, response)
 
     def _create_query_string(self, query):
         """
@@ -114,7 +119,7 @@ class Facebook(Engine):
         # Check for a result type, if none found, set it to default.
         result_type = query.result_type
         if not result_type:
-            result_type = DEFAULT_RESULT_TYPE
+            result_type = self.default_result_type
 
         # Check to if the result type is valid
         if result_type not in RESULT_TYPES:
@@ -130,8 +135,7 @@ class Facebook(Engine):
         return API_ENDPOINT + encode_symbols(query_append)
 
 
-    @staticmethod
-    def _check_errors(json_loaded):
+    def _check_errors(self, json_loaded):
         """
         Checks for errors from the Facebook API. Raises an InvalidQueryException if there is an error,
         otherwise it does nothing.
@@ -152,8 +156,7 @@ class Facebook(Engine):
         except KeyError:
             pass
 
-    @staticmethod
-    def _parse_json_response(query, results):
+    def _parse_json_response(self, query, results):
         """
         Parses Facebook's JSON response and returns as an ifind Response.
 
@@ -171,13 +174,17 @@ class Facebook(Engine):
         response = Response(query.terms, query)
         content = json.loads(results.text)
 
+        result_type = query.result_type
+        if not result_type:
+            result_type = self.default_result_type
+
         # Check to see if the response contains any API errors.
-        Facebook._check_errors(content)
+        self._check_errors(content)
 
         # By default, Facebook returns 5000 results. While it returns a pagination key, it seems to do nothing.
         response.no_more_results = True
 
-        if query.result_type == 'user' or not query.result_type:
+        if result_type== 'user' or not query.result_type:
             # Sample response
             #     {
             # "data": [

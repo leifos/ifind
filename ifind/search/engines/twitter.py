@@ -50,6 +50,11 @@ class Twitter(Engine):
         if not CONSUMER_KEY or not CONSUMER_SECRET or not ACCESS_TOKEN_KEY or not ACCESS_TOKEN_SECRET:
             raise EngineAPIKeyException(self.name, 'OAuth details not supplied')
 
+        self.default_result_type = kwargs.get('default_result_type', DEFAULT_RESULT_TYPE)
+        # Catch empty strings and such.
+        if not self.default_result_type:
+            self.default_result_type = DEFAULT_RESULT_TYPE
+
     def _search(self, query):
         """
         Concrete method of Engine's interface method 'search'.
@@ -139,7 +144,7 @@ class Twitter(Engine):
             # Check for a result type, if none found, set it to default.
             result_type = query.result_type
             if not result_type:
-                result_type = DEFAULT_RESULT_TYPE
+                result_type = self.default_result_type
 
             # Check to if the result type is valid
             if result_type not in RESULT_TYPES:
