@@ -36,6 +36,7 @@ class Twitter(Engine):
         Twitter engine constructor.
 
         Kwargs:
+            default_result_type (str): Optionally provide a default result type.
             See Engine.
 
         Raises:

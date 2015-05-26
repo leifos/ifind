@@ -25,6 +25,7 @@ class Googleplus(Engine):
 
         Kwargs:
             api_key (str): string representation of api key needed to access bing search api
+            default_result_type (str): Optionally provide a default result type.
             See Engine.
 
         Raises:
