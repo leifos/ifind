@@ -12,6 +12,7 @@ RESULT_TYPES = ('people', 'activities', 'person_lookup')
 DEFAULT_RESULT_TYPE = 'people'
 MAX_PAGE_SIZE = {'people': 50, 'activities': 20, 'person_lookup': 1}
 
+
 class Googleplus(Engine):
     """
     Googleplus search engine.
@@ -24,6 +25,7 @@ class Googleplus(Engine):
 
         Kwargs:
             api_key (str): string representation of api key needed to access bing search api
+            default_result_type (str): Optionally provide a default result type.
             See Engine.
 
         Raises:
@@ -38,6 +40,11 @@ class Googleplus(Engine):
 
         if not self.api_key:
             raise EngineAPIKeyException(self.name, "'api_key=' keyword argument not specified")
+
+        self.default_result_type = kwargs.get('default_result_type', DEFAULT_RESULT_TYPE)
+        # Catch empty strings and such.
+        if not self.default_result_type:
+            self.default_result_type = DEFAULT_RESULT_TYPE
 
     def _search(self, query):
         """
@@ -114,11 +121,10 @@ class Googleplus(Engine):
 
         """
 
-        # Set the result type
-        if query.result_type:
-            result_type = query.result_type
-        else:
-            result_type = DEFAULT_RESULT_TYPE
+        # Check for a result type, if none found, set it to default.
+        result_type = query.result_type
+        if not result_type:
+            result_type = self.default_result_type
 
         # Check to if the result type is valid
         if result_type not in RESULT_TYPES:
@@ -258,10 +264,9 @@ class Googleplus(Engine):
 
         # The query object wasn't mutated earlier and the result type isn't passed to this function.
         # Check for a result_type or set it to default.
-        if query.result_type:
-            result_type = query.result_type
-        else:
-            result_type = DEFAULT_RESULT_TYPE
+        result_type = query.result_type
+        if not result_type:
+            result_type = self.default_result_type
 
         # Check for a next page token.
         next_page_token = content.get(u'nextPageToken')
