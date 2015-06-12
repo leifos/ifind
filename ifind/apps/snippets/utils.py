@@ -25,10 +25,15 @@ def run_queries(filename):
                 fout.write(snippets + "\n")
 
 
+def save_result_list(result_list, filename):
+
+    with open(filename, "r+") as out_file:
+        for result in result_list:
+            out_file.write(result + "\n")
+
+
 def format_results(results):
-
     pass
-
 
 
 def run_query(search_terms):
@@ -73,13 +78,12 @@ def run_query(search_terms):
     # The username MUST be a blank string, and put in your API key!
     username = ''
 
-
     # Create a 'password manager' which handles authentication for us.
     password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
     password_mgr.add_password(None, search_url, username, BING_API_KEY)
 
     # Create our results list which we'll populate.
-    snippets = []
+    results = []
 
     try:
         # Prepare for connecting to Bing's servers.
@@ -94,17 +98,27 @@ def run_query(search_terms):
         json_response = json.loads(response)
 
         # Loop through each page returned, populating out results list.
+        # for result in json_response['d']['results']:
+        # s = result['Description'].encode("ascii", "ignore")
+        #     snippets.append(s)
+        rank = 1
         for result in json_response['d']['results']:
-            s = result['Description'].encode("ascii", "ignore")
-            snippets.append(s)
+            results.append({
+                'query': search_terms,
+                'rank': rank,
+                'title': result['Title'],
+                'link': result['Url'],
+                'summary': result['Description']})
+            rank += 1
 
     # Catch a URLError exception - something went wrong when connecting!
     except urllib2.URLError, e:
         print "Error when querying the Bing API: ", e
 
     # Return the list of results to the calling function.
-    #print type(snippets[0])
-    return snippets[0]
+    # print type(snippets[0])
+    return results
+
 
 def analyse_snippets(filename):
     """
@@ -135,25 +149,28 @@ def reduce_snippets(percentage=50):
         listing of snippets
     """
     with open("snippets.txt", "r+") as fin, open("snippets-halved.txt", "w+") as fout:
-            for snippet in fin:
-                word_list = snippet.split()
-                word_count = len(word_list)
-                percent = percentage / 100.0
-                new_len = int(round(word_count * percent))
+        for snippet in fin:
+            word_list = snippet.split()
+            word_count = len(word_list)
+            percent = percentage / 100.0
+            new_len = int(round(word_count * percent))
 
-                new_line = word_list[:new_len]
+            new_line = word_list[:new_len]
 
-                fout.write(" ".join(new_line) + "\n")
+            fout.write(" ".join(new_line) + "\n")
 
 
 def remove_stop_words():
     stop = stopwords.words('english')
     sentence = "this is a foo bar sentence"
     print [i for i in sentence.split() if i not in stop]
+
+
 # preserve the Info Content, by removing stop words
 # input: file of snippet, file of stop words (one per file)
 # output: listing of snippets 
 
 def extract_entities():
     pass
+
 # uses NLTK to extract out the Noun Phrases and other meaningful phrases.
