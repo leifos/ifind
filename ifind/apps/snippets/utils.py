@@ -18,6 +18,7 @@ def run_queries(in_filename):
 
     """
 
+    # A list of SERPs
     result_list = []
 
     with open(in_filename, "r+") as query_file:
@@ -136,7 +137,7 @@ def run_query(search_terms):
     return results
 
 
-def analyse_snippets(filename):
+def analyse_snippets(in_filename, out_filename):
     """
         Analyzes  the content of the snippets, length in terms, characters, etc.
 
@@ -146,8 +147,8 @@ def analyse_snippets(filename):
     Returns:
         file of snippets features/characteristics
     """
-    with open(filename, "r+") as fin:
-        with open("features.txt", "w") as fout:
+    with open(in_filename, "r+") as fin:
+        with open(out_filename, "w") as fout:
             for line in fin:
                 characters = len(line)
                 words = len(line.split())
@@ -155,7 +156,7 @@ def analyse_snippets(filename):
                 fout.write("C " + str(characters) + " W " + str(words) + "\n")
 
 
-def reduce_snippets(percentage=50):
+def reduce_snippets(in_filename, out_filename, percentage=50):
     # Should I reduce TO a percentage or BY a percentage
     """
         Halves their length (or reduces them by whatever percentage) 
@@ -164,8 +165,8 @@ def reduce_snippets(percentage=50):
     Returns: 
         listing of snippets
     """
-    with open("snippets.txt", "r+") as fin,\
-            open("snippets-halved.txt", "w+") as fout:
+    with open(in_filename, "r+") as fin,\
+            open(out_filename, "w+") as fout:
         for snippet in fin:
             word_list = snippet.split()
             word_count = len(word_list)
@@ -178,6 +179,7 @@ def reduce_snippets(percentage=50):
 
 
 def remove_stop_words():
+    #TODO ifind utils contains stopwords.txt
     stop = stopwords.words('english')
     sentence = "this is a foo bar sentence"
     print [i for i in sentence.split() if i not in stop]
