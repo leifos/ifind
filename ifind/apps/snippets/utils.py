@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 from keys import BING_API_KEY
 
 
-def run_queries(filename):
+def run_queries(in_filename):
     """
         A wrapper method that takes a file containing queries and saves
         the first snippets for every query to a new file (i.e. snippets.txt)
@@ -18,22 +18,38 @@ def run_queries(filename):
 
     """
 
-    with open(filename, "r+") as fin:
-        with open("snippets.txt", "w+") as fout:
-            for line in fin:
-                snippets = run_query(line)
-                fout.write(snippets + "\n")
+    result_list = []
+
+    with open(in_filename, "r+") as query_file:
+        for query in query_file:
+            result = run_query(query)
+            result_list.append(result)
+
+    return result_list
 
 
-def save_result_list(result_list, filename):
+def save_result_list(result_list, out_filename):
+    """
 
-    with open(filename, "r+") as out_file:
-        for result in result_list:
-            out_file.write(result + "\n")
+    :param result_list: A list of SERPs (a list of results)
+    :param out_filename: A JSON representation of the SERPs
+    :return:
+    """
+    with open(out_filename, "r+") as out_file:
+        for serp in result_list:
+            json_results = format_results(serp)
+            out_file.write(json_results)
 
 
 def format_results(results):
-    pass
+    """
+        Formats results into JSON
+    :param results:
+    :return:
+    """
+    new_format = json.dumps(results, indent=0)
+
+    return new_format
 
 
 def run_query(search_terms):
@@ -100,7 +116,7 @@ def run_query(search_terms):
         # Loop through each page returned, populating out results list.
         # for result in json_response['d']['results']:
         # s = result['Description'].encode("ascii", "ignore")
-        #     snippets.append(s)
+        # snippets.append(s)
         rank = 1
         for result in json_response['d']['results']:
             results.append({
@@ -148,7 +164,8 @@ def reduce_snippets(percentage=50):
     Returns: 
         listing of snippets
     """
-    with open("snippets.txt", "r+") as fin, open("snippets-halved.txt", "w+") as fout:
+    with open("snippets.txt", "r+") as fin,\
+            open("snippets-halved.txt", "w+") as fout:
         for snippet in fin:
             word_list = snippet.split()
             word_count = len(word_list)
