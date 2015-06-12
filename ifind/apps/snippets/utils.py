@@ -27,6 +27,12 @@ def run_queries(filename):
                 fout.write(snippets + "\n")
 
 
+def format_results(results):
+
+    pass
+
+
+
 def run_query(search_terms):
     """
         Interfaces with the BING API
