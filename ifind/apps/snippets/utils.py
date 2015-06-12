@@ -1,10 +1,8 @@
-#!/usr/bin/python
 import json
 import urllib
 import urllib2
 from nltk.corpus import stopwords
-
-BING_API_KEY = 'aJ0YCL+uH3LMaVvPfRw7lXyZb/o28PTrQE7aB2Q5FxY'
+from keys import BING_API_KEY
 
 
 def run_queries(filename):
@@ -105,7 +103,7 @@ def run_query(search_terms):
         print "Error when querying the Bing API: ", e
 
     # Return the list of results to the calling function.
-    #print type(summaries[0])
+    #print type(snippets[0])
     return snippets[0]
 
 def analyse_snippets(filename):
