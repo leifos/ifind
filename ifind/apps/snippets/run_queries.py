@@ -15,12 +15,8 @@ def main(query_filename,out_filename):
 
     Assume that for each query 10 results snippets per query.
     """
-
-   # with open(query_filename, "r+") as fquery:
-   #     for line in fquery:
-   #         print line
-   #list = run_queries(query_filename)
-   #save_result_list(list,out_filename)
+   list = run_queries(query_filename)
+   save_result_list(list,out_filename)
 
 
 
