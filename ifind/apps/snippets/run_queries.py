@@ -15,8 +15,8 @@ def main(query_filename,out_filename):
 
     Assume that for each query 10 results snippets per query.
     """
-   list = run_queries(query_filename)
-   save_result_list(list,out_filename)
+    result_list = run_queries(query_filename)
+    save_result_list(result_list,out_filename)
 
 
 
