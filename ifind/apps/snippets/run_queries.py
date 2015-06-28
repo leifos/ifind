@@ -1,5 +1,5 @@
 __author__ = 'leif'
-from utils import run_queries
+from utils import run_queries, save_result_list
 
 import sys
 
