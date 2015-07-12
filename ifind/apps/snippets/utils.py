@@ -1,8 +1,10 @@
 import json
-import urllib
-import urllib2
-from nltk.corpus import stopwords
+import nltk
+from nltk.corpus import stopwords, state_union
+from nltk.tokenize import word_tokenize, sent_tokenize
+from ifind.search import Query, EngineFactory, exceptions
 from keys import BING_API_KEY
+
 
 
 def run_queries(in_filename):
@@ -18,13 +20,16 @@ def run_queries(in_filename):
 
     """
 
+    e = EngineFactory("Bing", api_key=BING_API_KEY)
+
     # A list of SERPs
     result_list = []
 
     with open(in_filename, "r+") as query_file:
-        for query in query_file:
-            result = run_query(query)
-            result_list.append(result)
+        for item in query_file:
+            query = Query(item, top=10)
+            results = e.search(query)
+            #result_list.append(results)
 
     return result_list
 
@@ -51,90 +56,6 @@ def format_results(results):
     new_format = json.dumps(results, indent=0)
 
     return new_format
-
-
-def run_query(search_terms):
-    """
-        Interfaces with the BING API
-    
-    Args:
-        search_terms (str): query words, phrases or a sentence
-
-    Returns:
-        snippet (str): returns the first snippet for a set search_terms
-
-        could also return a list of snippets
-
-    """
-
-    # Specify the base
-    root_url = 'https://api.datamarket.azure.com/Bing/Search/'
-    source = 'Web'
-
-    # Specify how many results we wish to be returned per page.
-    # Offset specifies where in the results list to start from.
-    # With results_per_page = 10 and offset = 11, this would start from page 2.
-    results_per_page = 10
-    offset = 0
-
-    # Wrap quotes around our query terms as required by the Bing API.
-    # The query we will then use is stored within variable query.
-    query = "'{0}'".format(search_terms)
-    query = urllib.quote(query)
-
-    # Construct the latter part of our request's URL.
-    # Sets the format of the response to JSON and sets other properties.
-    search_url = "{0}{1}?$format=json&$top={2}&$skip={3}&Query={4}".format(
-        root_url,
-        source,
-        results_per_page,
-        offset,
-        query)
-
-    # Setup authentication with the Bing servers.
-    # The username MUST be a blank string, and put in your API key!
-    username = ''
-
-    # Create a 'password manager' which handles authentication for us.
-    password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    password_mgr.add_password(None, search_url, username, BING_API_KEY)
-
-    # Create our results list which we'll populate.
-    results = []
-
-    try:
-        # Prepare for connecting to Bing's servers.
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
-        urllib2.install_opener(opener)
-
-        # Connect to the server and read the response generated.
-        response = urllib2.urlopen(search_url).read()
-
-        # Convert the string response to a Python dictionary object.
-        json_response = json.loads(response)
-
-        # Loop through each page returned, populating out results list.
-        # for result in json_response['d']['results']:
-        # s = result['Description'].encode("ascii", "ignore")
-        # snippets.append(s)
-        rank = 1
-        for result in json_response['d']['results']:
-            results.append({
-                'query': search_terms,
-                'rank': rank,
-                'title': result['Title'],
-                'link': result['Url'],
-                'summary': result['Description']})
-            rank += 1
-
-    # Catch a URLError exception - something went wrong when connecting!
-    except urllib2.URLError, e:
-        print "Error when querying the Bing API: ", e
-
-    # Return the list of results to the calling function.
-    # print type(snippets[0])
-    return results
 
 
 def analyse_snippets(in_filename, out_filename):
@@ -178,18 +99,65 @@ def reduce_snippets(in_filename, out_filename, percentage=50):
             fout.write(" ".join(new_line) + "\n")
 
 
-def remove_stop_words():
-    #TODO ifind utils contains stopwords.txt
-    stop = stopwords.words('english')
-    sentence = "this is a foo bar sentence"
-    print [i for i in sentence.split() if i not in stop]
+def remove_stopwords(snippet):
+    """
+
+    :param snippet:
+    :return: filtered snippet: list of words in snippet excluding stopwords
+    """
+    words = word_tokenize(snippet)
+    stop_words = set(stopwords.words("english"))
+    filtered_snippet = [word for word in words if word not in stop_words]
+
+    return filtered_snippet
 
 
 # preserve the Info Content, by removing stop words
 # input: file of snippet, file of stop words (one per file)
-# output: listing of snippets 
+# output: listing of snippets
 
-def extract_entities():
-    pass
+#sample_text = state_union.raw("2006-GWBush.txt")
 
-# uses NLTK to extract out the Noun Phrases and other meaningful phrases.
+def extract_entities(snippet_list):
+    # uses NLTK to extract out the Noun Phrases and other meaningful phrases.
+
+    try:
+        for s in sent_tokenize(snippet_list):
+            words = word_tokenize(s)
+            tagged = nltk.pos_tag(words)
+
+            named_entity = nltk.ne_chunk(tagged, binary=True)
+            named_entity.draw()
+
+    finally:
+        pass
+
+
+def reduce_snippet():
+
+    # build a list of term frequencies (look at nltk)
+    # if you dont have a background vocabulary, take the top 50 or 100 bing results,
+    # i.e. all the snippets. Then count the number of times each term occurs. Store this in a dict()
+    btc = dict()
+    snippet_list = []
+    for word in snippet_list():
+        btc[word] = frequency_count(word, snippet_list)
+
+
+def frequency_count(filename):
+    """
+    Extracts a list of term frequencies from a text file (aquaint.txt)
+    :param filename:
+    """
+    btc = dict()
+    lines = [line.rstrip('\n') for line in open(filename)]
+
+    for line in lines:
+
+        tokens = line.split()
+        word = tokens[0]
+        frequency = tokens[1]
+
+        btc[word] = int(frequency)
+
+    print btc
