@@ -4,8 +4,7 @@ from utils import run_queries, save_result_list
 import sys
 
 
-
-def main(query_filename,out_filename):
+def main(query_filename, out_filename):
     """
 
     :param query_filename: list of queries, one per line
@@ -16,10 +15,7 @@ def main(query_filename,out_filename):
     Assume that for each query 10 results snippets per query.
     """
     result_list = run_queries(query_filename)
-    save_result_list(result_list,out_filename)
-
-
-
+    save_result_list(result_list, out_filename)
 
 
 def usage(script_name):
