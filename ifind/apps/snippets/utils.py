@@ -165,6 +165,7 @@ def frequency_count(filename):
 
     return btc
 
+
 def frequency_count2(filename):
     """
     Generates word frequencies from a textfile (snippets.txt)
@@ -217,3 +218,10 @@ def probs(snippet, term_frequency_file):
 
     for k, v in word_probs.items():
         print k, v
+
+
+# def test():
+#    assert frequency_count() == expected_output
+#    assert frequency_count() == 
+#    assert probs() == exp_probs
+#	 return "tests pass"
