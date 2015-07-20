@@ -1,13 +1,13 @@
-#! /usr/bin/env python
 import json
 import nltk
+from collections import defaultdict, Counter
 from nltk.corpus import stopwords, state_union
 from nltk.tokenize import word_tokenize, sent_tokenize
 from ifind.search import Query, EngineFactory
 from keys import BING_API_KEY
 
 
-def run_queries(in_filename):
+def run_queries(filename):
     """
         A wrapper method that takes a file containing queries and saves
         the first snippets for every query to a new file (i.e. snippets.txt)
@@ -25,7 +25,7 @@ def run_queries(in_filename):
     # A list of SERPs
     result_list = []
 
-    with open(in_filename, 'r+') as query_file:
+    with open(filename, 'r+') as query_file:
         for item in query_file:
             query = Query(item, top=10)
             results = e.search(query)
@@ -80,8 +80,11 @@ def analyse_snippets(in_filename, out_filename):
 def reduce_snippets(in_filename, out_filename, percentage=50):
     # Should I reduce TO a percentage or BY a percentage
     """
-        Halves their length (or reduces them by whatever percentage) 
-    Args: 
+        Halves their length (or reduces them by whatever percentage)
+    :param out_filename:
+    :param percentage:
+    :param in_filename:
+    Args:
         file of snippets, percent reduction
     Returns: 
         listing of snippets
@@ -176,10 +179,9 @@ def frequency_count2(filename):
     word_count = defaultdict(int)
     with open(filename, 'r+') as file_in:
         for word in file_in.read().split():
-            wordcount[word] += 1
+            word_count[word] += 1
 
     return word_count
-
 
 
 def probability(snippet, word_count):
@@ -193,26 +195,32 @@ def probability(snippet, word_count):
     total_word_count = 1.0
 
     for word in word_tokenize(snippet):
-        if not word in word_counts:
-            word_counts[word.lower()] = 1
-            for i in word_counts:
-                word_counts[i] += 1
-        total_word_count += word_counts[word]
+        if not word in word_count:
+            word_count[word.lower()] = 1
+            for i in word_count:
+                word_count[i] += 1
+        total_word_count += word_count[word]
 
     word_probs = {}
 
     for word in word_tokenize(snippet):
-        probability = word_counts[word] / total_word_count
+        probability = word_count[word] / total_word_count
 
         word_probs[word] = probability
 
-    for k, v in word_counts.items():
+    for k, v in word_count.items():
         print k, v
 
     for k, v in word_probs.items():
         print k, v
 
+
 def test_remove_stopwords():
+    """
+
+
+    :return:
+    """
     snippet = 'The town in the states'
     filtered_snippet = ['town', 'states']
     assert remove_stopwords(snippet) == filtered_snippet

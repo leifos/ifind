@@ -1,5 +1,4 @@
 Django==1.5.4
-PIL==1.1.7
 Whoosh==2.5.5
 datrie==0.6.1
 feedparser==5.1.3
