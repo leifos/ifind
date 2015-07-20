@@ -108,16 +108,15 @@ def remove_stopwords(snippet):
     :param snippet:
     :return: filtered snippet: list of words in snippet excluding stopwords
     """
+    # preserve the Info Content, by removing stop words
+    # input: file of snippet, file of stop words (one per file)
+    # output: listing of snippets
     words = word_tokenize(snippet.lower())
     stop_words = set(stopwords.words('english'))
     filtered_snippet = [word for word in words if word not in stop_words]
 
     return filtered_snippet
 
-
-# preserve the Info Content, by removing stop words
-# input: file of snippet, file of stop words (one per file)
-# output: listing of snippets
 
 #sample_text = state_union.raw("2006-GWBush.txt")
 
@@ -188,6 +187,7 @@ def probability(snippet, word_count):
     """
         Evaluates the probability of the words in a snippet
         based on term frequencies provided
+    :param word_count:
     :param snippet:
     :return:
     """
@@ -225,6 +225,28 @@ def test_remove_stopwords():
     filtered_snippet = ['town', 'states']
     assert remove_stopwords(snippet) == filtered_snippet
     return 'test passes'
+
+
+def file_read(filename):
+
+    with open(filename) as f:
+        document = f.read()
+
+    return document
+
+
+def gen_snippet(query_term, document, length=3):
+    """
+    Generates a snippet given a document
+    :param query_term: currently works with ONE query term
+    :param document: string representation of a document
+    :param length: default length of the snippet is set to 3 sentences
+    :return: a string representation of the snippet
+    """
+    sentences = sent_tokenize(document)
+    snippet = [sentence for sentence in sentences if query_term in sentence]
+    return ' '.join(snippet[:length])
+
 
 # def test():
 #    assert frequency_count() == expected_output
