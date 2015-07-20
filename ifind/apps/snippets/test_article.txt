@@ -1,0 +1,17 @@
+It said that fewer than 50% of emails which it scanned during June were junk - the lowest percentage it had seen in over a decade.
+The fall suggests that cyber-thieves are looking to other ways to make money from people going online.
+The security firm said legal action against the criminal networks that pipe spam to people had helped to cut junk.
+However, it said the fall in spam had been offset by a rise in the amount of malware being made.
+Malware move
+In June only 49.7% of the billions of messages monitored by Symantec were spam, it said in its latest monthly threat report. While the amount of spam being sent had been declining for some time, this was the first time since 2003 that it had dipped below 50%, said Ben Nahorney in the report.
+Since the report was issued, spam levels have continued to decline further. On 14 July, of the 25 billion messages monitored by Symantec only 46.4% were junk.
+It said the decline was caused by action against botnets, networks of hijacked computers that have historically been the route through which spam has been sent.
+In the last 10 months, UK police forces have been involved in takedowns of seven separate botnets - many of which funnelled spam to victims. In addition, many European internet providers have joined together to share information about botnet activity to limit their effectiveness.
+Symantec said other formerly popular scams, such as phishing for passwords and email with malware attached, also saw a decline in June.
+However, Symantec said it had seen a significant rise in the amount of malware variants being produced. In June it caught about 57.6 million individual pieces of malware - almost double what it saw in April.
+Ransomware also proved more popular: Symantec's monitoring systems caught almost 500,000 attacks based around this type of malware in June.
+"This increase in activity lends more evidence to the idea that, with the continued drops in email-based malicious activity, attackers are simply moving to other areas of the threat landscape," wrote Mr Nahorney.
+Andrew Conway, a research analyst at security company Cloudmark, said it was "challenging" to accurately measure global spam levels because many companies did not sample nations where junk mail levels were still very high.
+Despite this, he said, successful law enforcement operations had led to steep drops in some types of spam. For instance, he said, action by the US Federal Trade Commission against one spammer resulted in an 80% drop in junk mail peddling diet pills.
+Mr Conway added that spammers in China and Eastern Europe still relied on email to tempt people to buy counterfeit goods and bootleg pharmaceuticals.
+"We are in a constant arms race," he said. "with spammers continually coming up with new techniques that we have to deal with, and it would be hubris to declare victory."

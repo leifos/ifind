@@ -1,7 +1,6 @@
 __author__ = 'leif'
-from utils import run_queries, save_result_list
-
 import sys
+from utils import run_queries, save_result_list
 
 
 def main(query_filename, out_filename):

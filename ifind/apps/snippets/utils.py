@@ -1,10 +1,10 @@
+#! /usr/bin/env python
 import json
 import nltk
 from nltk.corpus import stopwords, state_union
 from nltk.tokenize import word_tokenize, sent_tokenize
-from ifind.search import Query, EngineFactory, exceptions
+from ifind.search import Query, EngineFactory
 from keys import BING_API_KEY
-
 
 
 def run_queries(in_filename):
@@ -20,12 +20,12 @@ def run_queries(in_filename):
 
     """
 
-    e = EngineFactory("Bing", api_key=BING_API_KEY)
+    e = EngineFactory('Bing', api_key=BING_API_KEY)
 
     # A list of SERPs
     result_list = []
 
-    with open(in_filename, "r+") as query_file:
+    with open(in_filename, 'r+') as query_file:
         for item in query_file:
             query = Query(item, top=10)
             results = e.search(query)
@@ -41,7 +41,7 @@ def save_result_list(result_list, out_filename):
     :param out_filename: A JSON representation of the SERPs
     :return:
     """
-    with open(out_filename, "r+") as out_file:
+    with open(out_filename, 'r+') as out_file:
         for serp in result_list:
             json_results = format_results(serp)
             out_file.write(json_results)
@@ -68,8 +68,8 @@ def analyse_snippets(in_filename, out_filename):
     Returns:
         file of snippets features/characteristics
     """
-    with open(in_filename, "r+") as fin:
-        with open(out_filename, "w") as fout:
+    with open(in_filename, 'r+') as fin:
+        with open(out_filename, 'w') as fout:
             for line in fin:
                 characters = len(line)
                 words = len(line.split())
@@ -86,8 +86,8 @@ def reduce_snippets(in_filename, out_filename, percentage=50):
     Returns: 
         listing of snippets
     """
-    with open(in_filename, "r+") as fin,\
-            open(out_filename, "w+") as fout:
+    with open(in_filename, 'r+') as fin,\
+            open(out_filename, 'w+') as fout:
         for snippet in fin:
             word_list = snippet.split()
             word_count = len(word_list)
@@ -96,7 +96,7 @@ def reduce_snippets(in_filename, out_filename, percentage=50):
 
             new_line = word_list[:new_len]
 
-            fout.write(" ".join(new_line) + "\n")
+            fout.write(' '.join(new_line) + '\n')
 
 
 def remove_stopwords(snippet):
@@ -105,8 +105,8 @@ def remove_stopwords(snippet):
     :param snippet:
     :return: filtered snippet: list of words in snippet excluding stopwords
     """
-    words = word_tokenize(snippet)
-    stop_words = set(stopwords.words("english"))
+    words = word_tokenize(snippet.lower())
+    stop_words = set(stopwords.words('english'))
     filtered_snippet = [word for word in words if word not in stop_words]
 
     return filtered_snippet
@@ -173,22 +173,16 @@ def frequency_count2(filename):
     :return:
     """
 
-    file_in = open(filename, "r+")
-
-    wordcount = {}
-    for word in file_in.read().split():
-        if word not in wordcount:
-            wordcount[word] = 1
-        else:
+    word_count = defaultdict(int)
+    with open(filename, 'r+') as file_in:
+        for word in file_in.read().split():
             wordcount[word] += 1
 
-    for k, v in wordcount.items():
-        print k, v
-
-    file_in.close()
+    return word_count
 
 
-def probs(snippet, term_frequency_file):
+
+def probability(snippet, word_count):
     """
         Evaluates the probability of the words in a snippet
         based on term frequencies provided
@@ -196,7 +190,6 @@ def probs(snippet, term_frequency_file):
     :return:
     """
 
-    word_counts = frequency_count(term_frequency_file)
     total_word_count = 1.0
 
     for word in word_tokenize(snippet):
@@ -219,6 +212,11 @@ def probs(snippet, term_frequency_file):
     for k, v in word_probs.items():
         print k, v
 
+def test_remove_stopwords():
+    snippet = 'The town in the states'
+    filtered_snippet = ['town', 'states']
+    assert remove_stopwords(snippet) == filtered_snippet
+    return 'test passes'
 
 # def test():
 #    assert frequency_count() == expected_output
