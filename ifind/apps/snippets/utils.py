@@ -5,7 +5,7 @@ from nltk.corpus import stopwords, state_union
 from nltk.tokenize import word_tokenize, sent_tokenize
 from ifind.search import Query, EngineFactory
 from keys import BING_API_KEY
-
+import re
 
 def run_queries(filename):
     """
@@ -146,7 +146,7 @@ def extract_entities(snippet_list):
 #         btc[word] = frequency_count(word, snippet_list)
 
 
-def frequency_count(filename):
+def import_term_frequency(filename):
     """
     Extracts a list of words and their frequencies from a text file (aquaint.txt)
     :param filename:
@@ -168,25 +168,23 @@ def frequency_count(filename):
     return btc
 
 
-def frequency_count2(filename):
+def calc_term_frequency(document):
     """
-    Generates word frequencies from a textfile (snippets.txt)
-    :param filename:
+    Generates word frequencies from a document (snippets.txt)
+    :param document:
     :return:
     """
 
-    word_count = defaultdict(int)
-    with open(filename, 'r+') as file_in:
-        for word in file_in.read().split():
-            word_count[word] += 1
+    non_word_and_digit = re.compile('[\W_\d]+')
+    word_count = Counter([non_word_and_digit.sub('', word.lower()) for word in sorted(document.split())])
 
     return word_count
 
 
 def probability(snippet, word_count):
     """
-        Evaluates the probability of the words in a snippet
-        based on term frequencies provided
+    Evaluates the probability of the words in a snippet
+    based on term frequencies provided
     :param word_count:
     :param snippet:
     :return:
