@@ -170,7 +170,7 @@ def generate_search_interface_markup(dict_repr):
     
     return interface_markup.format(dict_repr['simulation']['searchInterface']['class'], attribute_markup_concat)
     
-def generate_markup(dict_repr, permutations):
+def generate_markup(dict_repr, permutations, gen_filename):
     """
     Given a tuple of dictionary objects, generates the markup for the associated simulation and its users.
     """
@@ -281,7 +281,17 @@ def generate_markup(dict_repr, permutations):
                                                  users,
                                                  search_interface)
     
-    simulation_file = open('output/simulation-{0}.xml'.format(dict_repr['simulation']['@baseID']), 'w')
+    # New - handle generators with different bits at the end
+    gen_filenamesplit = gen_filename.split('-')
+    
+    if len(gen_filenamesplit) > 1:
+        end_filename = '-'.join(gen_filenamesplit[1:])
+        end_filename = end_filename[:-4]
+    else:
+        end_filename = dict_repr['simulation']['@baseID']
+    # End new
+    
+    simulation_file = open('output/simulation-{0}.xml'.format(end_filename), 'w')
     simulation_file.write(simulation_markup)
     simulation_file.close()
 
@@ -298,7 +308,8 @@ def clear_output_dir():
         except Exception, e:
             print e
     
-    os.makedirs('output/out/')
+    if not os.path.exists('output/out'):
+        os.makedirs('output/out/')
     f = open('output/out/CREATED', 'w')
     f.close()
 
@@ -309,7 +320,7 @@ def usage(filename):
     print "Usage: python {0} <xml_source>".format(filename)
     print "Where:"
     print "  <xml_source>: the source XML file from which to generate simulation configuration files. See example.xml."
-    
+
 if __name__ == '__main__':
     if len(sys.argv) > 1 and len(sys.argv) < 3:
         clear_output_dir()
@@ -317,7 +328,7 @@ if __name__ == '__main__':
         tidy_dictionary(dict_repr)
         
         permutations = get_permutations(dict_repr)
-        generate_markup(dict_repr, permutations)
+        generate_markup(dict_repr, permutations, sys.argv[1])
         
         sys.exit(0)
     
