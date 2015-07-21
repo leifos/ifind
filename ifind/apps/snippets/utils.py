@@ -146,25 +146,13 @@ def extract_entities(snippet_list):
 #         btc[word] = frequency_count(word, snippet_list)
 
 
-def import_term_frequency(filename):
+def import_term_frequency(document):
     """
     Extracts a list of words and their frequencies from a text file (aquaint.txt)
     :param filename:
     """
-    btc = dict()
-    # with open('filename') as f:
-    # lines = f.readlines()
 
-    lines = [line.rstrip('\n') for line in open(filename)]
-
-    for line in lines:
-
-        tokens = line.split()
-        word = tokens[0]
-        frequency = tokens[1]
-
-        btc[word] = int(frequency)
-
+    btc = dict([line.split() for line in document.split('\n')])
     return btc
 
 
