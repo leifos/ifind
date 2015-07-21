@@ -213,7 +213,7 @@ def test_remove_stopwords():
     return 'test passes'
 
 
-def file_read(filename):
+def read_file(filename):
 
     with open(filename) as f:
         document = f.read()

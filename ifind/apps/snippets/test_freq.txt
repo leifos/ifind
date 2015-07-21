@@ -1,0 +1,3 @@
+mickey 10
+meras 20
+jonell 1
