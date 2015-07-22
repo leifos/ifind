@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+
+{% block exp_block %}
+<script>
+$(document).ready(function(){
+    $('.surveySubmitButton').click(function(){
+        $(this).hide()
+    });
+})
+</script>
+
+<p> <h1> Experiment Instructions </h1></p>
+
+<p>
+    First of all, <strong>thank you</strong> for agreeing to participate in this study! During the course of this study if you have any questions or wish to discontinue participating in this study,
+    please let the study moderater know.
+
+</p>
+        <p>This study will take approximately one and half hours to complete.</p>
+
+<p>
+<h2><b>Scenario</b></h2>
+        <p>You are working with a group of scholars who are investigating the differences in
+            how several topics have been described in the news at, or near, the end of term for
+            the last three U.S. presidents:  Clinton, Bush and Obama.
+            You have been asked to focus on the news coverage of the topics during the final
+            term of the Clinton administration, specifically 1996-2000.</p>
+
+<p>You have set aside time today to <strong>create a list of news articles
+    relevant to four topics</strong> that were published from <strong>1996-2000</strong>.</p>
+
+
+<h2><b>The Search System</b></h2>
+    <p>You will search for relevant news articles using <strong>NewsSearch</strong>, an international news archive, that will
+        show you articles published in <em>The New York Times, The Associated Press and Xinhua News Agency</em> between 1996 and 2000.</p>
+<p>
+The NewsSearch system looks similar to a web search engine.</p>
+<p>
+ <strong>When you view an article, you can mark the news article as relevant, and the
+    NewSearch system adds it to your list of saved relevant news articles</strong>.
+</p>
+
+
+
+<h2> <b>Study Outline</b></h2>
+    <p>So that you can get acquainted with the search system and the news archive,
+        you will start with a <strong>practice task</strong>.</p>
+
+<p>Then, you’ll move on to the <strong>four search tasks</strong>.</p>
+<p>        For each search task, you will complete a <strong>pre-task questionnaire</strong> about the topic.
+Then you will search for articles taking as much time as you need to create the lists of relevant articles.</p>
+<p>        After your search, you will complete a <strong>post-task questionnaire</strong>
+    about your experiences during the task.</p>
+<p>After you have completed the fourth task, you will complete an <strong>exit questionnaire</strong>.</p>
+
+ <p>       Once you have completed the exit questionnaire,
+        please get the study moderator for the final interview and debriefing.
+  </p>
+<!---
+<hr/>
+<h2><b>Confirmation of Participation and Commitment</b></h2>
+
+<p>Please remember that the data you provide will be anonymised, and will be used only for the purposes of this research.</p>
+<p><strong> If you are happy to undertake the experiment described above and committed to doing your best on the search tasks, then please click the <em>Next</em> button below.</strong></p>
+
+<p> If you have any questions, please ask the moderator now.</p>
+-->
+<div class="surveySubmitButton">
+    <a href="/treconomics/next/"> <button class="largebutton" type="next" > Next </button></a>
+</div>
+
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}}
+{% endblock %}

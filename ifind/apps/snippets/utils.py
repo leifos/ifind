@@ -1,11 +1,11 @@
 import json
 import nltk
+import re
 from collections import defaultdict, Counter
 from nltk.corpus import stopwords, state_union
-from nltk.tokenize import word_tokenize, sent_tokenize
 from ifind.search import Query, EngineFactory
 from keys import BING_API_KEY
-import re
+
 
 def run_queries(filename):
     """
@@ -111,7 +111,7 @@ def remove_stopwords(snippet):
     # preserve the Info Content, by removing stop words
     # input: file of snippet, file of stop words (one per file)
     # output: listing of snippets
-    words = word_tokenize(snippet.lower())
+    words = nltk.word_tokenize(snippet.lower())
     stop_words = set(stopwords.words('english'))
     filtered_snippet = [word for word in words if word not in stop_words]
 
@@ -169,7 +169,7 @@ def calc_term_frequency(document):
     return word_count
 
 
-def probability(snippet, word_count):
+def calc_term_probability(snippet, word_count):
     """
     Evaluates the probability of the words in a snippet
     based on term frequencies provided
@@ -177,40 +177,23 @@ def probability(snippet, word_count):
     :param snippet:
     :return:
     """
+    #TODO this version does not produce expected output
 
-    total_word_count = 1.0
+    total_word_count = sum(word_count.itervalues())
 
-    for word in word_tokenize(snippet):
-        if not word in word_count:
-            word_count[word.lower()] = 1
-            for i in word_count:
-                word_count[i] += 1
-        total_word_count += word_count[word]
+    print total_word_count
 
     word_probs = {}
 
-    for word in word_tokenize(snippet):
+    for word in nltk.word_tokenize(snippet):
         probability = word_count[word] / total_word_count
 
         word_probs[word] = probability
 
-    for k, v in word_count.items():
-        print k, v
+    #for k, v in word_probs.iteritems():
+    #    print k, v
 
-    for k, v in word_probs.items():
-        print k, v
-
-
-def test_remove_stopwords():
-    """
-
-
-    :return:
-    """
-    snippet = 'The town in the states'
-    filtered_snippet = ['town', 'states']
-    assert remove_stopwords(snippet) == filtered_snippet
-    return 'test passes'
+    return word_probs
 
 
 def read_file(filename):
@@ -229,13 +212,6 @@ def gen_snippet(query_term, document, length=3):
     :param length: default length of the snippet is set to 3 sentences
     :return: a string representation of the snippet
     """
-    sentences = sent_tokenize(document)
+    sentences = nltk.sent_tokenize(document)
     snippet = [sentence for sentence in sentences if query_term in sentence]
     return ' '.join(snippet[:length])
-
-
-# def test():
-#    assert frequency_count() == expected_output
-#    assert frequency_count() == 
-#    assert probs() == exp_probs
-#	 return "tests pass"

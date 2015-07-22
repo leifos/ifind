@@ -1,0 +1,236 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+{% block exp_block %}
+
+<div>
+<div class="experimentPageTitle">
+<h2>Factor Comparison</h2>    
+<p>Okay, now we’d like to ask you compare the importance of each of the items regarding their contribution to
+    your overall workload when using the system to complete the search tasks in this study.</p>
+    <p>Recall the questions were:
+    <ul>
+    <li>MENTAL DEMAND: How mentally demanding was it to use this system to complete the search tasks?</li>
+    <li>PHYSICAL DEMAND: How physically demanding was it to use this system to complete the search tasks?</li>
+    <li>TEMPORAL DEMAND: How hurried or rushed did you feel when using this system to complete the search tasks?</li>
+    <li>PERFORMANCE: How successful were you using this system to complete the search tasks?</li>
+    <li>EFFORT: How hard did you have to work to accomplish your level of performance with this system?</li>
+    <li>FRUSTRATION: How insecure, discouraged, irritated, stressed, and annoyed were you while using this system?</li>
+</ul>
+    </p>
+
+<p>  You will be presented with pairs of items, for example, Mental Demand and Effort.
+    We'd like you to select the item that contributed <b>THE MOST</b> to your workload when using
+    the system to complete the search tasks.</p>
+</div>
+<div>
+    
+    <script>
+    $(document).ready(function(){
+        $(".next_links").click(function(){
+           //console.log(this)
+           var rowname = $(this).attr("row");
+           // console.log("row: "+rowname);
+           $("#"+rowname).show().siblings().hide();
+           var nextlink = $(this).attr("nextlink");
+           //console.log("link: "+nextlink)
+           $("#"+nextlink).show();
+           $(this).hide();
+           
+        });  
+    
+        $(".next_links").hide();
+        $("#link1").show();
+        $(".nasa_row").hide();
+        $("#row1").show();
+    });
+    </script>
+
+<div class="survey">   
+    <form id="survey_form" method="post" action="{{action}}">
+        {% csrf_token %}
+<table class="survey_radio" cellpadding="20">     
+    	<tr id="row1" class="nasa_row"><td class="matrix">
+            <b>15 comparisons to go</b>
+                <label for="id_nasa_mental_physical_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_mental_physical_0"><input type="radio" id="id_nasa_mental_physical_0" value="M" name="nasa_mental_physical" /> Mental Demand</label></li>
+    <li><label for="id_nasa_mental_physical_1"><input type="radio" id="id_nasa_mental_physical_1" value="P" name="nasa_mental_physical" /> Physical Demand</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row2" class="nasa_row"><td class="matrix">
+                <b>14 comparisons to go</b>
+                <label for="id_nasa_performance_frustration_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_performance_frustration_0"><input type="radio" id="id_nasa_performance_frustration_0" value="S" name="nasa_performance_frustration" /> Performance</label></li>
+    <li><label for="id_nasa_performance_frustration_1"><input type="radio" id="id_nasa_performance_frustration_1" value="E" name="nasa_performance_frustration" /> Frustration</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row3" class="nasa_row"><td class="matrix">
+                <b>13 comparisons to go</b>
+                <label for="id_nasa_mental_temporal_0"></label>
+
+     	        <ul>
+    <li><label for="id_nasa_mental_temporal_0"><input type="radio" id="id_nasa_mental_temporal_0" value="M" name="nasa_mental_temporal" /> Mental Demand</label></li>
+    <li><label for="id_nasa_mental_temporal_1"><input type="radio" id="id_nasa_mental_temporal_1" value="T" name="nasa_mental_temporal" /> Temporal Demand</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row4" class="nasa_row"><td class="matrix">
+                <b>12 comparisons to go</b>
+                <label for="id_nasa_physical_effort_0"></label>
+     	        <ul>
+
+    <li><label for="id_nasa_physical_effort_0"><input type="radio" id="id_nasa_physical_effort_0" value="P" name="nasa_physical_effort" /> Physical Demand</label></li>
+    <li><label for="id_nasa_physical_effort_1"><input type="radio" id="id_nasa_physical_effort_1" value="E" name="nasa_physical_effort" /> Effort</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row5" class="nasa_row"><td class="matrix">
+                <b>11 comparisons to go</b>
+                <label for="id_nasa_temporal_performance_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_temporal_performance_0"><input type="radio" id="id_nasa_temporal_performance_0" value="T" name="nasa_temporal_performance" /> Temporal Demand</label></li>
+
+    <li><label for="id_nasa_temporal_performance_1"><input type="radio" id="id_nasa_temporal_performance_1" value="S" name="nasa_temporal_performance" /> Performance</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row6" class="nasa_row"><td class="matrix">
+                <b>10 comparisons to go</b>
+                <label for="id_nasa_mental_effort_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_mental_effort_0"><input type="radio" id="id_nasa_mental_effort_0" value="M" name="nasa_mental_effort" /> Mental Demand</label></li>
+    <li><label for="id_nasa_mental_effort_1"><input type="radio" id="id_nasa_mental_effort_1" value="E" name="nasa_mental_effort" /> Effort</label></li>
+
+    </ul>
+    	</td></tr>
+
+    	<tr id="row7" class="nasa_row"><td class="matrix">
+                <b>9 comparisons to go</b>
+                <label for="id_nasa_physical_frustration_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_physical_frustration_0"><input type="radio" id="id_nasa_physical_frustration_0" value="P" name="nasa_physical_frustration" /> Physical Demand</label></li>
+    <li><label for="id_nasa_physical_frustration_1"><input type="radio" id="id_nasa_physical_frustration_1" value="F" name="nasa_physical_frustration" /> Frustration</label></li>
+    </ul>
+    	</td></tr>
+
+
+    	<tr id="row8" class="nasa_row"><td class="matrix">
+                   <b>8 comparisons to go</b>
+                <label for="id_nasa_performance_effort_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_performance_effort_0"><input type="radio" id="id_nasa_performance_effort_0" value="S" name="nasa_performance_effort" /> Performance</label></li>
+    <li><label for="id_nasa_performance_effort_1"><input type="radio" id="id_nasa_performance_effort_1" value="E" name="nasa_performance_effort" /> Effort</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row9" class="nasa_row"><td class="matrix">
+                <b>7 comparisons to go</b>
+                <label for="id_nasa_temporal_effort_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_temporal_effort_0"><input type="radio" id="id_nasa_temporal_effort_0" value="T" name="nasa_temporal_effort" /> Temporal Demand</label></li>
+    <li><label for="id_nasa_temporal_effort_1"><input type="radio" id="id_nasa_temporal_effort_1" value="E" name="nasa_temporal_effort" /> Effort</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row10" class="nasa_row"><td class="matrix">
+                <b>6 comparisons to go</b>
+                <label for="id_nasa_mental_frustration_0"></label>
+
+     	        <ul>
+    <li><label for="id_nasa_mental_frustration_0"><input type="radio" id="id_nasa_mental_frustration_0" value="M" name="nasa_mental_frustration" /> Mental Demand</label></li>
+    <li><label for="id_nasa_mental_frustration_1"><input type="radio" id="id_nasa_mental_frustration_1" value="F" name="nasa_mental_frustration" /> Frustration</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row11" class="nasa_row"><td class="matrix">
+                <b>5 comparisons to go</b>
+                <label for="id_nasa_physical_performance_0"></label>
+     	        <ul>
+
+    <li><label for="id_nasa_physical_performance_0"><input type="radio" id="id_nasa_physical_performance_0" value="P" name="nasa_physical_performance" /> Physical Demand</label></li>
+    <li><label for="id_nasa_physical_performance_1"><input type="radio" id="id_nasa_physical_performance_1" value="S" name="nasa_physical_performance" /> Performance</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row12" class="nasa_row"><td class="matrix">
+                <b>4 comparisons to go</b>
+                <label for="id_nasa_physical_temporal_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_physical_temporal_0"><input type="radio" id="id_nasa_physical_temporal_0" value="P" name="nasa_physical_temporal" /> Physical Demand</label></li>
+
+    <li><label for="id_nasa_physical_temporal_1"><input type="radio" id="id_nasa_physical_temporal_1" value="T" name="nasa_physical_temporal" /> Temporal Demand</label></li>
+    </ul>
+    	</td></tr>
+
+    	<tr id="row13" class="nasa_row"><td class="matrix">
+                <b>3 comparisons to go</b>
+                <label for="id_nasa_temporal_frustration_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_temporal_frustration_0"><input type="radio" id="id_nasa_temporal_frustration_0" value="T" name="nasa_temporal_frustration" /> Temporal Demand</label></li>
+    <li><label for="id_nasa_temporal_frustration_1"><input type="radio" id="id_nasa_temporal_frustration_1" value="F" name="nasa_temporal_frustration" /> Frustration</label></li>
+
+    </ul>
+    	</td></tr>
+
+    	<tr id="row14" class="nasa_row"><td class="matrix">
+                <b>2 comparisons to go</b>
+                <label for="id_nasa_mental_performance_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_mental_performance_0"><input type="radio" id="id_nasa_mental_performance_0" value="M" name="nasa_mental_performance" /> Mental Demand</label></li>
+    <li><label for="id_nasa_mental_performance_1"><input type="radio" id="id_nasa_mental_performance_1" value="S" name="nasa_mental_performance" /> Performance</label></li>
+    </ul>
+    	</td></tr>
+
+
+    	<tr id="row15" class="nasa_row"><td class="matrix">
+                <b>1 comparisons to go</b>
+                <label for="id_nasa_effort_frustration_0"></label>
+     	        <ul>
+    <li><label for="id_nasa_effort_frustration_0"><input type="radio" id="id_nasa_effort_frustration_0" value="E" name="nasa_effort_frustration" /> Effort</label></li>
+    <li><label for="id_nasa_effort_frustration_1"><input type="radio" id="id_nasa_effort_frustration_1" value="E" name="nasa_effort_frustration" /> Frustration</label></li>
+    </ul>
+    	</td></tr>
+    </table>
+    
+    
+    <div class="surveySubmitButton">
+
+         
+ <input id="link16" class="next_links" class="largebutton" type="submit" name="submit" value="Submit" />
+</div>
+    </form>
+    
+    
+        <div class="surveySubmitButton">
+    <a id="link1" class="next_links" href="#" row="row2" nextlink="link2"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link2" class="next_links" href="#" row="row3" nextlink="link3"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link3" class="next_links" href="#" row="row4" nextlink="link4"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link4" class="next_links" href="#" row="row5" nextlink="link5"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link5" class="next_links" href="#" row="row6" nextlink="link6"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link6" class="next_links" href="#" row="row7" nextlink="link7"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link7" class="next_links" href="#" row="row8" nextlink="link8"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link8" class="next_links" href="#" row="row9" nextlink="link9"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link9" class="next_links" href="#" row="row10" nextlink="link10"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link10" class="next_links" href="#" row="row11" nextlink="link11"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link11" class="next_links" href="#" row="row12" nextlink="link12"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link12" class="next_links" href="#" row="row13" nextlink="link13"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link13" class="next_links" href="#" row="row14" nextlink="link14"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link14" class="next_links" href="#" row="row15" nextlink="link15"><button class="largebutton" type="next" > Next </button></a>
+    <a id="link15" class="next_links" href="#" row="row16" nextlink="link16"><button class="largebutton" type="next" > Next </button></a>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}}
+{% endblock %}
