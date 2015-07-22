@@ -120,30 +120,33 @@ def remove_stopwords(snippet):
 
 #sample_text = state_union.raw("2006-GWBush.txt")
 
-def extract_entities(snippet_list):
+def extract_entities(document):
     # uses NLTK to extract out the Noun Phrases and other meaningful phrases.
 
-    try:
-        for s in sent_tokenize(snippet_list):
-            words = word_tokenize(s)
-            tagged = nltk.pos_tag(words)
+    sentences = nltk.sent_tokenize(document)
+    tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
+    tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
+    chunked_sentences = nltk.ne_chunk_sents(tagged_sentences, binary=True)
 
-            named_entity = nltk.ne_chunk(tagged, binary=True)
-            named_entity.draw()
+    entity_names = []
+    for tree in chunked_sentences:
+        entity_names.extend(_extract_entity_names(tree))
 
-    finally:
-        pass
+    return set(entity_names)
 
 
-# def reduce_snippet():
-#
-#     # build a list of term frequencies (look at nltk)
-#     # if you dont have a background vocabulary, take the top 50 or 100 bing results,
-#     # i.e. all the snippets. Then count the number of times each term occurs. Store this in a dict()
-#     btc = dict()
-#     snippet_list = []
-#     for word in snippet_list():
-#         btc[word] = frequency_count(word, snippet_list)
+def _extract_entity_names(tree):
+
+    entity_names = []
+
+    if hasattr(tree, 'label') and tree.label:
+        if tree.label() == 'NE':
+            entity_names.append(' '.join([child[0] for child in tree]))
+        else:
+            for child in tree:
+                entity_names.extend(_extract_entity_names(child))
+
+    return entity_names
 
 
 def import_term_frequency(document):
