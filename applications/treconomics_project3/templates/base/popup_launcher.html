@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block exp_block %}
+<div class="topmargin">
+
+<script type="text/javascript">
+popupURL = "{% url 'treconomics.views.view_next' %}";
+popupWidth = {% if popup_width %}{{ popup_width }}{% else %}undefined{% endif %};
+popupHeight = {% if popup_height %}{{ popup_height }}{% else %}undefined{% endif %};
+
+launchPopup(popupURL, popupWidth, popupHeight);
+</script>
+
+<div id="instructions_text">
+    <div style="text-align: center; font-size: 14pt;"><strong>The experiment should now automatically launch in a new popup window.</strong></div>
+    <div style="text-align: center; margin-top: 8px;">If you cannot see the popup, your web browser has most likely stopped it from appearing. Click <a href="#" onmouseup="launchPopup(popupURL, popupWidth, popupHeight);">here</a> if the popup doesn't appear.</div>
+
+    <noscript>
+        <span style="color: #F00;"><strong>Please ensure JavaScript is enabled on your browser. The experiment will not function without JavaScript.</strong></span>
+    </noscript>
+</div>
+
+</div>
+{% endblock %}

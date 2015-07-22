@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load treconomics_tags %}
+
+{% block exp_info_block %}
+ <p>
+     {% if backtoassessment %}
+     <a href="/treconomics/saved/">Back to Saved Documents</a> |
+     {% else %}
+     <a href="{{current_search}}">Back to Results</a> |
+     <a href="/treconomics/saved/">View Saved</a> |
+     {% endif %}
+     <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
+     <a href="/treconomics/next/" id="end-task-link"> End Task</a>
+</p>
+{% endblock %}
+
+
+{% block document_content %}
+<div style="width: 90%;">
+<h1 class="document_title">{{ title }}  </h1>
+<p class="document_source_date"><b>{{doc_source}}</b> <span> <b>{{doc_date}}</b></span></p>
+<div class="article"> {% autoescape off %} {{ content|linebreaksbrbr:doc_source }} {% endautoescape %}  </div>
+</div>
+
+
+<div id="marked">
+     {% if backtoassessment %}
+        <button class="largebutton" onclick="window.location.href='/treconomics/saved/'">Back to Saved Documents</button>
+     {% else %}
+        <button class="largebutton" onclick="window.location.href='{{current_search}}'">Back to Results</button>
+     {% endif %}
+<div id="mark">
+     {% if user_judgement  == 1 %}
+
+         Marked Relevant
+
+     {% else %}
+        <button class="largebutton" type="relevant" value="{{ docid }}" name="{{ docid }}" onclick="markRelevant()" > Mark as Relevant </button>
+     {% endif %}
+     </div>
+</div>
+
+<script>
+function markRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=1&docid="+{{docid}}+"&rank="+{{rank}}, complete: function(data){
+    $('#mark').replaceWith('<div id="mark">Marked Relevant </div>');
+     } }); }
+function markNonRelevant(){$.ajax({ url:"/treconomics/"+{{docid}}+"?judge=0&docid="+{{docid}}+"&rank="+{{rank}}, complete: function(data){
+     $('#mark').replaceWith('<div id="mark">  <button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markRelevant()" >Mark as Relevant </button></div>');
+     } }); }
+</script>
+
+{% endblock %}
+
+
+<!-- ><button class="largebutton" type="relevant" value="{{docid}}" name="{{docid}}" onclick="markNonRelevant()" >Mark as Not Relevant </button> -->
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}} - TREC DocID: {{ docnum }} - Whoosh DocNum: {{ docid }}
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+{% block exp_block %}
+
+<div>
+<div class="experimentPageTitle">
+
+    <h1>Consent to Participate in a Research Study</h1>
+
+    <p><strong>Title of Study</strong>: Search System Evaluation</p>
+    <p><strong>Principal Investigator</strong>: Anita Crescenzi (<em>amcc@email.unc.edu</em>)</p>
+    <p><strong>Co-Investigator and Faculty Advisor</strong>: Dr. Diane Kelly (<em>dianek@email.unc.edu</em>) </p>
+<hr/>
+    <p><strong>What are some general things you should know about research studies? </strong>
+    You are being asked to take part in a research study.
+    To join the study is <em>voluntary</em>.
+    You may refuse to join, or you may withdraw your consent to be in the study,
+    for any reason, without penalty. Details about this study are discussed below.
+    It is important that you understand this information so that you can make an informed
+    choice about being in this research study.</p>
+
+    <p><strong>What is the purpose of this study?</strong>
+        The purpose of this research study is to evaluate an
+        information search system using search tasks.</p>
+
+    <p><strong>How many people will take part in this study?</strong>
+        If you decide to be in this study,
+        you will be one of approximately 46 people in this research study.</p>
+
+    <p><strong>What will happen if you take part in the study?</strong>
+        Your part in this study will last approximately one and a half hours.
+        You will be asked to use a search system to find documents relevant to four search tasks,
+        which we will give you. While you search, we will log your actions with the system on the server.
+        Before and after search tasks and at the end of the session, we will ask you to complete questionnaires.
+        </p>
+
+<p>All the steps involved in this study are listed below. You will:
+<ol>
+<li>1. Consent to participate.</li>
+<li>2. Complete a practice task using the system.</li>
+<li>3. Complete a pre-search questionnaire about your first assigned search topic.</li>
+<li>4. Use a search system to find documents relevant to the search topic.</li>
+<li>5. Complete a post-search questionnaire after you finish the search topic.</li>
+<li>6. Repeat Steps 3-5 with three other search topics.</li>
+<li>7. Complete a final questionnaire at the end of the study.</li>
+<li>8. Participate in a final interview and study debrief.</li>
+</ol>
+With your consent, we will record the final interview.
+</p>
+
+<p><strong>What are the benefits from being in this study?</strong>
+    Research is designed to benefit society by gaining new knowledge.
+    You may not benefit personally from being in this research study.</p>
+
+
+<p><strong>What are the possible risks or discomforts involved from being in this study?</strong>
+    We do not anticipate any risks in the study.
+    </p>
+
+<p><strong>How will your privacy be protected?</strong>
+    All the data you provide will be stored anonymously,
+    using a randomly assigned participant id number.
+    We will not associate your name or any other personal information with the data,
+    and you will not be personally identified in any report or publication about this study.
+    </p>
+
+<p><strong>What if you want to stop before your part in the study is complete?</strong>
+    You can withdraw from this study at any time, without penalty and skip any question for any reason.
+    The investigators also have the right to stop your participation if you do not follow instructions.
+    </p>
+
+<p><strong>Will you receive anything for being in this study?</strong>
+    Will it cost anything? You will receive $20 cash for taking part in this study.
+    If you are unable to complete the entire study, you will be compensated $5.00 per half-hour.
+    If we discontinue your participation for not following instructions, you will receive nothing.
+    There are no costs associated with being in the study.
+    </p>
+
+<p><strong>What if you are a UNC student?</strong>
+    You may choose not to be in the study or to stop being in the study before it is over at any time.
+    This will not affect your class standing or grades at UNC-Chapel Hill.
+    You will not be offered or receive any special consideration if you take part in this research.</p>
+
+<p><strong>What if you have questions about this study?</strong>
+    You have the right to ask, and have answered, any questions you may have about this research.
+    Please let us know if you have questions or if you would like to discuss anything on the form.
+    We are also happy to give you a print copy of this form for your records.</p>
+
+<p><strong>What if you have questions about your rights as a research participant?</strong>
+    All research on human volunteers is reviewed by a committee that works to protect your rights and welfare.
+    If you have questions or concerns, or if you would like to obtain information or offer input,
+    please contact the Institutional Review Board at 919-966-3113 or by email to <em>IRB_subjects@unc.edu</em>.
+    </p>
+
+
+
+</div>
+</div>
+
+<div class="survey">
+
+    <div id='survey_form_errorloc' class='error_strings' style="color: #F00; text-align: center;"></div>
+
+    <form id="survey_form" method="post" action="{{action}}">
+        {% csrf_token %}
+<table class="survey_radio" cellpadding="20">
+
+               {# Include the hidden fields #}
+    {% for hidden in formset.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    {# Include the visible fields #}
+    {% for field in formset.visible_fields %}
+	<tr>
+	<td class="matrix">
+            {{ field.errors }}
+            {{ field.label_tag }}
+ 	    {{ field }}
+	</td>
+        </tr>
+
+    {% endfor %}
+    </table>
+
+ <!--   <script type="text/javascript">
+        var frmvalidator = new Validator("survey_form");
+        {% for field in formset.visible_fields %}
+        frmvalidator.addValidation("{{field.html_name}}", "selectradio", "{{ field.label }}");
+        {% endfor %}
+    frmvalidator.EnableOnPageErrorDisplaySingleBox();
+    frmvalidator.EnableMsgsTogether();
+    frmvalidator.EnableFocusOnError(true);
+
+    </script>
+-->
+
+<div class="surveySubmitButton">
+ <input class="largebutton" type="submit" name="submit" value="Submit" />
+</div>
+    </form>
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}}
+{% endblock %}
+
+
+
+
+

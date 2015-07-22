@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block exp_info_block %}
+ <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+{% endblock %}
+
+{% block exp_block %}
+<form method="post" action="{{action}}">
+    {% csrf_token %}
+    {{ formset }}
+    
+    <input class="button" type="submit" name="submit" value="Submit" />
+</form>
+
+{% endblock %}
+
+
+{% block exp_footer_block %}
+Participant: {{participant}}  - Condition: {{condition}}
+{% endblock %}
