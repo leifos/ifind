@@ -1,0 +1,544 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 15px;
+	line-height: 20px;
+	color: #333;
+	}
+
+/** JQUERY AUTOCOMPLETE WIDGET **/
+.ui-widget {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+p.autocomplete-item {
+    margin: 0;
+    padding: 0;
+}
+
+/** PLEASE WAIT BOX **/
+div#full-grey-out {
+    display: none;
+    position: fixed;
+    z-index: 30000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(94, 110, 160, 0.8);
+}
+
+div#wait-box {
+    position: fixed;
+    z-index: 30001;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 250px;
+    margin-left: -250px;
+    margin-top: -125px;
+    background-color: #FFF;
+    border-radius: 4px;
+    border: 1px solid #000;
+}
+
+div#wait-box p {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    line-height: 45px;
+    margin-top: 80px;
+}
+
+/** CONTAINER **/
+
+.container {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -10px; /* the bottom margin is the negative value of the footer's height */
+	}
+
+.header {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	background-color: blue;
+	color: white;
+	padding: 10px 20px;
+	z-index: 2;
+	}
+
+
+.header a, .header a:visited {
+	font-size: 25px;
+	text-decoration: none;
+	color: #ffffff;
+	}
+
+.header a:hover {
+	color: white;
+	}
+
+.header h1 {
+	color: #ccccff;
+}
+
+/** INFO BLOCK **/
+
+.info_block {
+	position: absolute;
+	top: 0px;
+	right: 60px;
+	color: white;
+	font-size: 12px;
+}
+
+.info_block a {
+	font-weight: bold;
+	font-size: 12px;
+	color: #ccc;
+	text-decoration: none;
+	}
+
+#info_block a:hover {
+	font-weight: bold;
+	color: white;
+	text-decoration: underline;
+	}
+
+/** SEARCH**/
+
+input {
+    border-radius: 4px;
+}
+
+.search {
+	position: relative;
+	top: 70px;
+	padding-bottom: 100px;
+	}
+
+#search_box_area{
+	position: relative;
+	height: 140px;
+	margin: 0 auto 0 auto;
+	}
+
+/** MULTIFIELD SEARCH STYLES **/
+
+.addButton {
+	border: 1px solid #999;
+	background: #eee;
+	font-weight: bold;
+	color: #666;
+	height: 34px;
+	width: 34px;
+}
+.smallsearchbox {
+	border: 1px solid #999;
+	height: 30px;
+	width: 60px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	margin-right: 2px;
+	color: #666;
+	}
+
+.hidden {
+	display: none;
+}
+
+
+/** QUERY SUGGESTION AREA **/
+
+#query_suggestion_area {
+	position: absolute;
+	top: 80px;
+	width: 60%;
+	left: 20%;
+	}
+
+#query_suggestion_area a {
+	text-decoration: none;
+	}
+
+#query_suggestion_area a:hover {
+	text-decoration: underline;
+	}
+
+#query_suggestion_area h2 {
+	text-transform: none;
+	margin-bottom: 5px;
+}
+
+.query span{
+	float: right;
+}
+
+.results {
+	width: 100%;
+	margin: 0px auto;
+}
+
+.results_squash {
+    width: 75%;
+    margin: 0 auto 0 auto;
+}
+
+.document_content, .experiment{
+	width: 80%;
+	margin: 0 auto 0 auto;
+}
+
+#rightnav {
+	position: absolute;
+	top: 0px;
+	width: 200px;
+	left: 800px;
+	}
+
+.result_nav {
+	position: relative;
+	top: 30px;
+	text-align: center;
+	padding-bottom: 30px;
+	}
+
+.result_nav a {
+	color: blue;
+	}
+
+.title {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	}
+
+h1.document_title {
+	margin: 40px 40px;
+	font-size: 30px;
+	line-height: 35px;
+	color: #6699ff;
+	}
+
+table {
+	margin: 0 auto;
+}
+
+.article {
+	margin: 20px 40px;
+	line-height: 28px;
+	font-size: 16px;
+	text-align: justify;
+	}
+
+.document_source_date {
+	margin: 20px 40px;
+	line-height: 30px;
+	font-size: 16px;
+	font-style: italic;
+	}
+
+.document_source_date span {
+	float: right;
+	}
+
+
+h1, h2, h3 {
+	margin: 0;
+	font-weight: normal;
+	line-height: 20px;
+	}
+
+h2 {
+	text-transform: uppercase;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 20px 0px 0px 0px;
+	}
+
+td.searchlabel {
+	text-align: right;
+	padding-right: 10px;
+	font-size: 14px;
+	}
+
+p.result_title a {
+	font-size: 18px;
+	color: blue;
+	}
+
+p.result_title a:visited {
+	color: #6611cc;
+	}
+
+div.byline {
+	color: green;
+	margin-top: -12px;
+	}
+
+p.summary {
+	margin-top: -12px;
+    line-height: 22px;
+	}
+
+
+/* Footer */
+
+.footer, .push {
+	height: 10px; /* .push must be the same height as .footer */
+}
+
+
+.footer {
+	border-top: 1px solid #666;
+	color: #666;
+	padding: 10px 0px;
+	text-align: center;
+	display: block;
+	}
+
+.experimentHeader p, .footer p{
+	font-weight: bold;
+	font-size: 13px;
+	}
+
+
+
+.button {
+	border: 1px solid #999;
+	background: #eee;
+	font-weight: bold;
+	color: #666;
+	height: 34px;
+	width: 70px;
+	border-radius: 4px;
+    cursor: pointer;
+	}
+
+.button:hover {
+	background: #fff !important;
+	color: black !important;
+	}
+
+.largebutton {
+	border: 1px solid #999;
+	background: #eee;
+	font-weight: bold;
+	color: #666;
+	height: 34px;
+	width: 150px;
+	margin: 0px 5px;
+	border-radius: 4px;
+    cursor: pointer;
+	}
+
+.largebutton:hover {
+	background: #fff;
+	color: black;
+	}
+
+.largebuttonright {
+    	border: 1px solid #999;
+    	background: #eee;
+    	font-weight: bold;
+    	color: #666;
+    	height: 34px;
+    	width: 150px;
+    	margin: 0px 5px;
+    	border-radius: 4px;
+    	float: right;
+}
+
+.largebuttonright:hover {
+    background: #fff;
+    color: black;
+}
+
+.navButton {
+    cursor: pointer;
+}
+
+.searchbox {
+	border: 1px solid #999;
+	height: 30px;
+	width: 420px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	color: #666;
+	z-index: 2000;
+	}
+
+.loginbox {
+	border: 1px solid #999;
+	height: 30px;
+	width: 420px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	color: #666;
+	z-index: 2000;
+	}
+
+#marked {
+	position: fixed;
+	top: 112px;
+	width: 190px;
+	right: 20px;
+    text-align: center;
+    font-size: 16pt;
+    line-height: 30px;
+	}
+
+#marked .largebutton {
+	margin: 0;
+}
+
+
+.topmargin {
+	margin-top: 80px;
+	}
+
+
+.floatright {
+    float: right;
+}
+
+.errorlist {
+    color: white;
+    letter-spacing: 1px;
+    font-weight: bold;
+    background-color: red;
+    padding: 10px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+
+/** SURVEYS **/
+
+
+.experimentPageTitle {
+	margin: 0px 0px 30px 20px;
+}
+
+.survey {
+	width: 800px;
+	margin: 0px auto;
+}
+
+.survey input {
+	border: 1px solid #999;
+	height: 30px;
+	width: 300px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	color: #666;
+	}
+
+
+
+#id_age, #id_search_freq {
+	width: 50px;
+}
+
+.survey select {
+	border: 1px solid #999;
+	height: 30px;
+	width: 310px;
+	font-size: 16px;
+	font-family: Helvetica, Arial, sans-serif;
+	padding-left: 5px;
+	color: #666;
+	}
+
+
+.surveySubmitButton {
+	text-align: center;
+	margin: 30px 0px 50px 0px;
+
+}
+
+
+.surveySubmitButton input {
+	width: 130px;
+}
+
+.survey table {
+	border-collapse: collapse;
+}
+
+.odd {
+	background-color: #eee;
+}
+
+.survey table tr {
+	vertical-align: center;
+	font-weight: bold;
+}
+
+
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style: none;
+	font-weight: normal;
+}
+
+
+.survey_radio tr td ul li label input {
+	width: 30px;
+	height: 15px;
+	margin-left: 50px;
+    background-color: #C0C0C0;
+	}
+
+.survey_radio tr td ul {
+	padding-top: 10px;
+}
+
+
+.matrix ul li {
+	display: inline;
+}
+
+
+.matrix li label {
+	float: left;
+	padding-right: 5px;
+}
+
+
+.survey_radio tr td.matrix ul li label input {
+    float: left;
+	height: 15px;
+	margin-left: 7px;
+	}
+
+
+td#nasa_load ul li label input {
+	float: left;
+	width: 16px;
+	height: 15px;
+	margin-left: 5px;
+	}
+
+td#search_experience ul li label input, td#search_engagement ul li label input, td#preTaskQuestions ul li label input, td#postTask ul li label input {
+	float: left;
+	height: 15px;
+	margin: 0 25px;
+	}
