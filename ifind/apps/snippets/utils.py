@@ -1,17 +1,24 @@
+"""
+A collection of utilities intended to manipulate document summaries (snippets)
+"""
 import json
-import nltk
 import re
-from collections import defaultdict, Counter
-from nltk.corpus import stopwords, state_union
+from collections import Counter
+
+from nltk import word_tokenize, sent_tokenize
+from nltk import pos_tag, ne_chunk_sents
+from nltk.corpus import stopwords
+
 from ifind.search import Query, EngineFactory
 from keys import BING_API_KEY
 
 
 def run_queries(filename):
     """
-        A wrapper method that takes a file containing queries and saves
-        the first snippets for every query to a new file (i.e. snippets.txt)
+    A wrapper method that takes a file containing queries and saves
+    the first snippets for every query to a new file (i.e. snippets.txt)
 
+    :param filename:
     Args:
         filename (str): file of queries (one per line)
 
@@ -25,11 +32,12 @@ def run_queries(filename):
     # A list of SERPs
     result_list = []
 
+    # TODO fix this function
     with open(filename, 'r+') as query_file:
         for item in query_file:
-            query = Query(item, top=10)
+            query = Query(item)
             results = e.search(query)
-            #result_list.append(results)
+            result_list.append(results)
 
     return result_list
 
@@ -59,9 +67,13 @@ def format_results(results):
 
 
 def analyse_snippets(in_filename, out_filename):
-    """
-        Analyzes  the content of the snippets, length in terms, characters, etc.
+    # TODO refactor
 
+    """
+    Analyzes  the content of the snippets, length in terms, characters, etc.
+
+    :param out_filename:
+    :param in_filename:
     Args:
         file of snippets
 
@@ -86,10 +98,10 @@ def reduce_snippets(in_filename, out_filename, percentage=50):
     :param in_filename:
     Args:
         file of snippets, percent reduction
-    Returns: 
+    Returns:
         listing of snippets
     """
-    with open(in_filename, 'r+') as fin,\
+    with open(in_filename, 'r+') as fin, \
             open(out_filename, 'w+') as fout:
         for snippet in fin:
             word_list = snippet.split()
@@ -111,22 +123,27 @@ def remove_stopwords(snippet):
     # preserve the Info Content, by removing stop words
     # input: file of snippet, file of stop words (one per file)
     # output: listing of snippets
-    words = nltk.word_tokenize(snippet.lower())
+    words = word_tokenize(snippet.lower())
     stop_words = set(stopwords.words('english'))
     filtered_snippet = [word for word in words if word not in stop_words]
 
     return filtered_snippet
 
 
-#sample_text = state_union.raw("2006-GWBush.txt")
+# sample_text = state_union.raw("2006-GWBush.txt")
 
 def extract_entities(document):
     # uses NLTK to extract out the Noun Phrases and other meaningful phrases.
 
-    sentences = nltk.sent_tokenize(document)
-    tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
-    tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
-    chunked_sentences = nltk.ne_chunk_sents(tagged_sentences, binary=True)
+    """
+
+    :param document:
+    :return:
+    """
+    sentences = sent_tokenize(document)
+    tokenized_sentences = [word_tokenize(sentence) for sentence in sentences]
+    tagged_sentences = [pos_tag(sentence) for sentence in tokenized_sentences]
+    chunked_sentences = ne_chunk_sents(tagged_sentences, binary=True)
 
     entity_names = []
     for tree in chunked_sentences:
@@ -136,7 +153,6 @@ def extract_entities(document):
 
 
 def _extract_entity_names(tree):
-
     entity_names = []
 
     if hasattr(tree, 'label') and tree.label:
@@ -152,7 +168,7 @@ def _extract_entity_names(tree):
 def import_term_frequency(document):
     """
     Extracts a list of words and their frequencies from a text file (aquaint.txt)
-    :param filename:
+    :param document:
     """
 
     btc = dict([line.split() for line in document.split('\n')])
@@ -180,7 +196,7 @@ def calc_term_probability(snippet, word_count):
     :param snippet:
     :return:
     """
-    #TODO this version does not produce expected output
+    # TODO this version does not produce expected output
 
     total_word_count = sum(word_count.itervalues())
 
@@ -188,19 +204,23 @@ def calc_term_probability(snippet, word_count):
 
     word_probs = {}
 
-    for word in nltk.word_tokenize(snippet):
+    for word in word_tokenize(snippet):
         probability = word_count[word] / total_word_count
 
         word_probs[word] = probability
 
-    #for k, v in word_probs.iteritems():
+    # for k, v in word_probs.iteritems():
     #    print k, v
 
     return word_probs
 
 
 def read_file(filename):
+    """
 
+    :param filename:
+    :return:
+    """
     with open(filename) as f:
         document = f.read()
 
@@ -215,6 +235,6 @@ def gen_snippet(query_term, document, length=3):
     :param length: default length of the snippet is set to 3 sentences
     :return: a string representation of the snippet
     """
-    sentences = nltk.sent_tokenize(document)
+    sentences = sent_tokenize(document)
     snippet = [sentence for sentence in sentences if query_term in sentence]
     return ' '.join(snippet[:length])

@@ -1,4 +1,6 @@
-__author__ = 'mickeypash'
+"""
+Test suit for my snippet utilities
+"""
 import unittest
 import utils
 
