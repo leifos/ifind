@@ -6,6 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+
 from experiment_configuration import experiment_setups
 
 
@@ -19,8 +20,8 @@ def test_permutations(experiment, verbose=False):
     Set verbose=True for a detailed printout of the test as it is being run.
     """
     topics = experiment.topics
-    no_topics = len(topics) # The total number of topics used for the given experiment.
-    no_permutations = experiment.n # The total number of possible permutations.
+    no_topics = len(topics)  # The total number of topics used for the given experiment.
+    no_permutations = experiment.n  # The total number of possible permutations.
 
     if verbose:
         print "Topics: {0} (total of {1})".format(topics, no_topics)
@@ -54,7 +55,6 @@ def test_permutations(experiment, verbose=False):
 
 
 class PermutationTest(TestCase):
-
     def test_permutations(self):
         # Tests each experiment's topic permutations in turn.
         # Experiments are obtained from experiment_configuration.experiment_setups.

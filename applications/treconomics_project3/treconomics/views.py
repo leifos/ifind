@@ -2,27 +2,25 @@ from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from models import DocumentsExamined
-from models import TaskDescription
-from models_experiments import USDemographicsSurvey, UKDemographicsSurvey
-from models_experiments import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
-from models_experiments import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
-
-from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad
-from models_experiments import SearchEfficacy
-from models_experiments import ConceptListingSurvey
-from models_experiments import ShortStressSurvey
-
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from models import DocumentsExamined
+from models import TaskDescription
+from models_experiments import USDemographicsSurvey
+from models_experiments import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
+from models_experiments import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
+from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad
+from models_experiments import SearchEfficacy
+from models_experiments import ConceptListingSurvey
+from models_experiments import ShortStressSurvey
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
 
 
 def view_reset_test_users(request):
-    usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4', 'd1', 'd2', 'd3', 'd4','d5','d6','d7','d8']
+    usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8']
 
     for un in usernames:
         print un
@@ -44,7 +42,8 @@ def view_reset_test_users(request):
         stess = ShortStressSurvey.objects.filter(user=temp_user).delete()
         concepts = ConceptListingSurvey.objects.filter(user=temp_user).delete()
         request.session['current_step'] = '0'
-    return HttpResponse("<script type='text/javascript'>setTimeout(function(){window.location='/treconomics/'}, 1500);</script>Test users reset, redirecting to login...")
+    return HttpResponse(
+        "<script type='text/javascript'>setTimeout(function(){window.location='/treconomics/'}, 1500);</script>Test users reset, redirecting to login...")
 
 
 def view_login(request):
@@ -102,7 +101,7 @@ def view_next(request):
     print_experiment_context(ec)
     step = int(ec["current_step"])
 
-    #Record the completed step
+    # Record the completed step
     uname = request.user.username
     u = User.objects.get(username=uname)
     profile = u.get_profile()
@@ -125,16 +124,16 @@ def view_next(request):
         next_step = step
 
     url_to_visit_next = workflow[next_step]
-    print "view_next - step : "+ str(next_step) + " url to vist next: " + url_to_visit_next
+    print "view_next - step : " + str(next_step) + " url to vist next: " + url_to_visit_next
     #request.session['current_url'] = url_to_visit_next
-    return HttpResponseRedirect( url_to_visit_next )
+    return HttpResponseRedirect(url_to_visit_next)
 
 
 @login_required
 def view_pre_task(request, taskid):
     context = RequestContext(request)
     # Set the tasks id
-    request.session['taskid']  = taskid
+    request.session['taskid'] = taskid
 
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -146,14 +145,16 @@ def view_pre_task(request, taskid):
     # else we can provide a link to a hosted questionarre
 
     # provide link to search interface / next system
-    return render_to_response('base/pre_task.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description }, context)
+    return render_to_response('base/pre_task.html',
+                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
+                               'tasktitle': t.title, 'taskdescription': t.description}, context)
 
 
 @login_required
 def view_pre_practice_task(request, taskid):
     context = RequestContext(request)
     # Set the tasks id
-    request.session['taskid']  = taskid
+    request.session['taskid'] = taskid
 
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -162,7 +163,10 @@ def view_pre_practice_task(request, taskid):
     t = TaskDescription.objects.get(topic_num=topicnum)
 
     # provide link to search interface / next system
-    return render_to_response('base/pre_practice_task.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description }, context)
+    return render_to_response('base/pre_practice_task.html',
+                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
+                               'tasktitle': t.title, 'taskdescription': t.description}, context)
+
 
 @login_required
 def view_post_practice_task(request, taskid):
@@ -185,15 +189,15 @@ def view_post_practice_task(request, taskid):
 
     # if participant has completed all the tasks, go to the post experiment view
     # else direct the participant to the pre task view
-    return render_to_response('base/post_practice_task.html', {'participant': uname, 'condition': condition, 'task': taskid }, context)
-
+    return render_to_response('base/post_practice_task.html',
+                              {'participant': uname, 'condition': condition, 'task': taskid}, context)
 
 
 @login_required
 def view_pre_task_with_questions(request, taskid):
     context = RequestContext(request)
     # Set the tasks id manually from request
-    request.session['taskid']  = taskid
+    request.session['taskid'] = taskid
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -205,7 +209,7 @@ def view_pre_task_with_questions(request, taskid):
     u = User.objects.get(username=uname)
 
 
-    #handle post within this element. save data to survey table,
+    # handle post within this element. save data to survey table,
     if request.method == 'POST':
         form = PreTaskTopicKnowledgeSurveyForm(request.POST)
         if form.is_valid():
@@ -229,10 +233,13 @@ def view_pre_task_with_questions(request, taskid):
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionarre
 
-    action = '/treconomics/pretaskquestions/'+taskid+'/'
+    action = '/treconomics/pretaskquestions/' + taskid + '/'
 
     # provide link to search interface / next system
-    return render_to_response('base/pre_task_with_questions.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey, 'action': action, 'errors' : errors  }, context)
+    return render_to_response('base/pre_task_with_questions.html',
+                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
+                               'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey,
+                               'action': action, 'errors': errors}, context)
 
 
 @login_required
@@ -243,11 +250,13 @@ def view_show_task(request):
     condition = ec["condition"]
     topicnum = ec["topicnum"]
     taskid = ec["taskid"]
-    t = TaskDescription.objects.get( topic_num = topicnum )
+    t = TaskDescription.objects.get(topic_num=topicnum)
 
     log_event(event="VIEW_TASK", request=request)
 
-    return render_to_response('base/show_task.html', {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description }, context)
+    return render_to_response('base/show_task.html',
+                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
+                               'tasktitle': t.title, 'taskdescription': t.description}, context)
 
 
 @login_required
@@ -273,7 +282,9 @@ def view_post_task(request, taskid):
 
     # if participant has completed all the tasks, go to the post experiment view
     # else direct the participant to the pre task view
-    return render_to_response('base/post_task.html', {'participant': uname, 'condition': condition, 'task': taskid }, context)
+    return render_to_response('base/post_task.html', {'participant': uname, 'condition': condition, 'task': taskid},
+                              context)
+
 
 @login_required
 def view_post_task_with_questions(request, taskid):
@@ -288,7 +299,7 @@ def view_post_task_with_questions(request, taskid):
     profile = u.get_profile()
     errors = ""
 
-##################
+    # #################
     #handle post within this element. save data to survey table,
     if request.method == 'POST':
         form = PostTaskTopicRatingSurveyForm(request.POST)
@@ -315,11 +326,13 @@ def view_post_task_with_questions(request, taskid):
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionarre
 
-    action = '/treconomics/posttaskquestions/'+taskid+'/'
+    action = '/treconomics/posttaskquestions/' + taskid + '/'
 
     # if participant has completed all the tasks, go to the post experiment view
     # else direct the participant to the pre task view
-    return render_to_response('base/post_task_with_questions.html', {'participant': uname, 'condition': condition, 'task': taskid, 'formset': survey, 'action': action, 'errors' : errors }, context)
+    return render_to_response('base/post_task_with_questions.html',
+                              {'participant': uname, 'condition': condition, 'task': taskid, 'formset': survey,
+                               'action': action, 'errors': errors}, context)
 
 
 @login_required
@@ -330,11 +343,13 @@ def view_pre_experiment(request, version):
     condition = ec["condition"]
 
     if version == 'AN':
-        return render_to_response('base/anita_pre_experiment.html', {'participant': uname, 'condition': condition }, context)
+        return render_to_response('base/anita_pre_experiment.html', {'participant': uname, 'condition': condition},
+                                  context)
     if version == 'US':
-        return render_to_response('base/pre_experiment_us.html', {'participant': uname, 'condition': condition }, context)
+        return render_to_response('base/pre_experiment_us.html', {'participant': uname, 'condition': condition},
+                                  context)
     else:
-        return render_to_response('base/pre_experiment.html', {'participant': uname, 'condition': condition }, context)
+        return render_to_response('base/pre_experiment.html', {'participant': uname, 'condition': condition}, context)
 
 
 @login_required
@@ -347,8 +362,7 @@ def view_post_experiment(request):
     # else we can provide a link to a hosted questionnaire
 
     # Provide debriefing
-    return render_to_response('base/post_experiment.html', {'participant': uname, 'condition': condition }, context)
-
+    return render_to_response('base/post_experiment.html', {'participant': uname, 'condition': condition}, context)
 
 
 @login_required
@@ -361,7 +375,7 @@ def view_task_spacer(request):
     # else we can provide a link to a hosted questionnaire
 
     # Provide debriefing
-    return render_to_response('base/task_spacer.html', {'participant': uname, 'condition': condition }, context)
+    return render_to_response('base/task_spacer.html', {'participant': uname, 'condition': condition}, context)
 
 
 @login_required
@@ -374,7 +388,7 @@ def view_end_experiment(request):
     # else we can provide a link to a hosted questionnaire
 
     # Provide debriefing
-    return render_to_response('base/end_experiment.html', {'participant': uname, 'condition': condition }, context)
+    return render_to_response('base/end_experiment.html', {'participant': uname, 'condition': condition}, context)
 
 
 @login_required
@@ -385,7 +399,8 @@ def view_session_completed(request):
     condition = ec["condition"]
     print "SESSION COMPLETED"
     log_event(event="SESSION_COMPLETED", request=request)
-    return render_to_response('base/session_completed.html', {'participant': uname, 'condition': condition }, context)
+    return render_to_response('base/session_completed.html', {'participant': uname, 'condition': condition}, context)
+
 
 @login_required
 def view_commence_session(request):
@@ -395,9 +410,7 @@ def view_commence_session(request):
     condition = ec["condition"]
     print "SESSION COMMENCED"
     log_event(event="SESSION_COMMENCED", request=request)
-    return render_to_response('base/session_commenced.html', {'participant': uname, 'condition': condition }, context)
-
-
+    return render_to_response('base/session_commenced.html', {'participant': uname, 'condition': condition}, context)
 
 
 @login_required

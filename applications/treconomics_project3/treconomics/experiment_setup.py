@@ -1,6 +1,7 @@
 __author__ = 'leif'
 from ifind.common.rotation_ordering import PermutatedRotationOrdering
 
+
 class ExperimentSetup(object):
     """
     The 0th task is the practice task, then 1st task is next, etc, in each list i.e. interface, engine, timeout, etc.
@@ -11,17 +12,17 @@ class ExperimentSetup(object):
                  workflow,
                  engine,
                  timeout=0,
-                 topics=['347','344'],
+                 topics=['347', '344'],
                  practice_topic='367',
                  practice_interface=1,
                  rpp=10,
-                 interface=[1,2,3],
+                 interface=[1, 2, 3],
                  description='',
                  delay_results=0,
                  delay_docview=0,
-                 rotation_type = 0,
+                 rotation_type=0,
                  autocomplete=False,
-                 tasks = 2,
+                 tasks=2,
                  trie=None):
         self.timeout = timeout
         self.topics = topics
@@ -53,7 +54,6 @@ class ExperimentSetup(object):
     def _get_check_i(self, items, i):
         return i % self.pro.number_of_orderings(items)
 
-
     def _get_value(self, var, t):
         if type(var) is list:
             return var[t]
@@ -77,7 +77,7 @@ class ExperimentSetup(object):
         if self.rotation_type == 0:
             ith = self._get_check_i(self.topics, i)
             rotations = self.pro.get_ordering(self.topics, ith)
-            t = t -1
+            t -= 1
             return rotations[t]
         else:
             return self.get_topic(t)
@@ -92,46 +92,46 @@ class ExperimentSetup(object):
         if self.rotation_type == 1:
             ith = self._get_check_i(self.interface, i)
             rotations = self.pro.get_ordering(self.interface, ith)
-            t = t -1
+            t -= 1
             return rotations[t]
         else:
             return self.get_interface(t)
 
     def get_topic(self, t=0):
 
-        if t==0:
+        if t == 0:
             return self.practice_topic
         else:
-            t = t - 1
-            return self._get_value(self.topics,t)
+            t -= 1
+            return self._get_value(self.topics, t)
 
     def get_interface(self, t=0):
 
-        if t==0:
+        if t == 0:
             return self.practice_interface
         else:
-            t = t-1
-            return self._get_value(self.interface,t)
+            t -= 1
+            return self._get_value(self.interface, t)
 
     def get_engine(self, t=0):
-        return self._get_value(self.engine,t)
+        return self._get_value(self.engine, t)
 
     def get_timeout(self, t=0):
-        return self._get_value(self.timeout,t)
+        return self._get_value(self.timeout, t)
 
     def get_trie(self):
         return self.trie
 
-    def get_result_delay(self,t=0):
-        return self._get_value(self.delay_results,t)
+    def get_result_delay(self, t=0):
+        return self._get_value(self.delay_results, t)
 
-    def get_docview_delay(self,t=0):
-        return self._get_value(self.delay_docview,t)
+    def get_docview_delay(self, t=0):
+        return self._get_value(self.delay_docview, t)
 
-    def get_rpp(self,t=0):
-        return self._get_value(self.rpp,t)
+    def get_rpp(self, t=0):
+        return self._get_value(self.rpp, t)
 
-    def get_exp_dict(self,t=0,i=0):
+    def get_exp_dict(self, t=0, i=0):
 
         exp = {'engine': self.get_engine(t),
                'interface': self.get_interface(t),
@@ -143,136 +143,122 @@ class ExperimentSetup(object):
                'autocomplete': self.autocomplete,
                'trie': self.trie,
 
-               }
-        if t == 0 :
+        }
+        if t == 0:
             exp['topic'] = self.practice_topic
             exp['interface'] = self.practice_interface
             exp['desc'] = 'practice'
         else:
             if self.rotation_type == 0:
-                exp['topic']= self.get_rotation_topic(i,t)
+                exp['topic'] = self.get_rotation_topic(i, t)
                 exp['interface'] = self.get_interface(t)
             else:
-                exp['interface'] = self.get_rotation_interface(i,t)
+                exp['interface'] = self.get_rotation_interface(i, t)
                 exp['topic'] = self.get_topic(t)
 
-            exp['desc']= 'real'
+            exp['desc'] = 'real'
 
         return exp
 
-
     def __str__(self):
         return self.description
-
-
 
 
 import unittest
 import logging
 import sys
 
-class TestDefaultExpSetup(unittest.TestCase):
 
+class TestDefaultExpSetup(unittest.TestCase):
     def setUp(self):
         self.logger = logging.getLogger("TestExpSetup")
-        self.es = ExperimentSetup(None,None,delay_results=[0,5,2])
-
+        self.es = ExperimentSetup(None, None, delay_results=[0, 5, 2])
 
     def test_practice_topic(self):
         self.logger.debug("Test Practice Topic")
-        e = self.es.get_exp_dict(0,0)
+        e = self.es.get_exp_dict(0, 0)
 
-        self.assertEquals(e['topic'],'367')
-
+        self.assertEquals(e['topic'], '367')
 
     def test_real_topic(self):
         self.logger.debug("Test Real Topic")
-        e = self.es.get_exp_dict(1,0)
+        e = self.es.get_exp_dict(1, 0)
         t1 = e['topic']
 
-        e = self.es.get_exp_dict(2,1)
+        e = self.es.get_exp_dict(2, 1)
         t2 = e['topic']
 
-        self.assertEquals(t1,t2)
+        self.assertEquals(t1, t2)
 
     def test_result_delay(self):
         self.logger.debug("Test results delay")
-        e = self.es.get_exp_dict(1,0)
+        e = self.es.get_exp_dict(1, 0)
         d = e['result_delay']
 
-        self.assertEquals(d,5)
-        e = self.es.get_exp_dict(2,1)
+        self.assertEquals(d, 5)
+        e = self.es.get_exp_dict(2, 1)
         d = e['result_delay']
 
-        self.assertEquals(2,2)
+        self.assertEquals(2, 2)
+
 
 class TestExistingExpSetup(unittest.TestCase):
-
     def setUp(self):
         self.logger = logging.getLogger("TestExpSetup")
-        self.es = ExperimentSetup(None,None,delay_results=9,rpp=10)
-
+        self.es = ExperimentSetup(None, None, delay_results=9, rpp=10)
 
     def test_practice_topic(self):
         self.logger.debug("Test Practice Topic")
-        e = self.es.get_exp_dict(0,0)
+        e = self.es.get_exp_dict(0, 0)
 
-        self.assertEquals(e['topic'],'367')
-
+        self.assertEquals(e['topic'], '367')
 
     def test_rpp(self):
         self.logger.debug("Test Rpp")
-        e = self.es.get_exp_dict(1,0)
+        e = self.es.get_exp_dict(1, 0)
         rpp = e['rpp']
-        self.assertEquals(rpp,10)
-        e = self.es.get_exp_dict(2,1)
+        self.assertEquals(rpp, 10)
+        e = self.es.get_exp_dict(2, 1)
         rpp = e['rpp']
 
-        self.assertEquals(rpp,10)
+        self.assertEquals(rpp, 10)
 
     def test_result_delay(self):
         self.logger.debug("Test results delay")
-        e = self.es.get_exp_dict(1,0)
+        e = self.es.get_exp_dict(1, 0)
         d = e['result_delay']
 
-        self.assertEquals(d,9)
-        e = self.es.get_exp_dict(2,1)
+        self.assertEquals(d, 9)
+        e = self.es.get_exp_dict(2, 1)
         d = e['result_delay']
 
-        self.assertEquals(d,9)
+        self.assertEquals(d, 9)
 
 
 class TestInterfaceSetup(unittest.TestCase):
-
     def setUp(self):
         self.logger = logging.getLogger("TestInterfaceExpSetup")
-        self.es = ExperimentSetup(None, None, interface=[1,2,3] ,practice_interface=37, rpp=10)
-
+        self.es = ExperimentSetup(None, None, interface=[1, 2, 3], practice_interface=37, rpp=10)
 
     def test_practice_topic(self):
         self.logger.debug("Test Practice Topic")
-        e = self.es.get_exp_dict(0,0)
+        e = self.es.get_exp_dict(0, 0)
 
-        self.assertEquals(e['topic'],'367')
+        self.assertEquals(e['topic'], '367')
 
-
-    def test_interface_get_practive(self):
+    def test_interface_get_practice(self):
         self.logger.debug("Test Interface Get Practice")
         interface = self.es.get_interface(0)
-        self.assertEquals(interface,37)
-
-
+        self.assertEquals(interface, 37)
 
     def test_interface_get(self):
         self.logger.debug("Test Interface Get")
         interface = self.es.get_interface(1)
-        self.assertEquals(interface,1)
+        self.assertEquals(interface, 1)
         interface = self.es.get_interface(2)
-        self.assertEquals(interface,2)
+        self.assertEquals(interface, 2)
         interface = self.es.get_interface(3)
-        self.assertEquals(interface,3)
-
-
+        self.assertEquals(interface, 3)
 
 
 if __name__ == '__main__':
@@ -280,11 +266,9 @@ if __name__ == '__main__':
     logging.getLogger("TestExperimentSetup").setLevel(logging.DEBUG)
     unittest.main(exit=False)
 
-
-    es = ExperimentSetup(None,None)
+    es = ExperimentSetup(None, None)
     es.rotation_type = 1
-    for r in range(0,12):
-        for t in range(0,3):
-
-            des = es.get_exp_dict(t,r)
-            print t,r,des['topic'], des['interface']
+    for r in range(0, 12):
+        for t in range(0, 3):
+            des = es.get_exp_dict(t, r)
+            print t, r, des['topic'], des['interface']

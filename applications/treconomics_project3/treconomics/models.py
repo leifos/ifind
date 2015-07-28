@@ -1,11 +1,6 @@
 from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-import models_experiments
-import models_anita_experiments
-# Create your models here.
+
 
 class DocumentsExamined(models.Model):
     user = models.ForeignKey(User)
@@ -17,15 +12,19 @@ class DocumentsExamined(models.Model):
     judgement_date = models.DateTimeField('Date Examined')
     task = models.IntegerField(default=0)
     topic_num = models.IntegerField(default=0)
+
     def __unicode__(self):
         return self.docid
+
 
 class TaskDescription(models.Model):
     topic_num = models.IntegerField(default=0)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1500)
+
     def __unicode__(self):
         return '%s' % (self.title)
+
 
 class TopicQuerySuggestion(models.Model):
     topic_num = models.IntegerField(default=0)
@@ -50,8 +49,8 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
-#def create_user_profile(sender, instance, created, **kwargs):
-#    if created:
-#        UserProfile.objects.create(user=instance)
+        # def create_user_profile(sender, instance, created, **kwargs):
+        # if created:
+        #        UserProfile.objects.create(user=instance)
 
-#post_save.connect(create_user_profile, sender=User)
+        #post_save.connect(create_user_profile, sender=User)

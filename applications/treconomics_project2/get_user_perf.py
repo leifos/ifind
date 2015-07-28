@@ -1,8 +1,8 @@
 __author__ = 'david'
 import os
-import sys
 
 from ifind.seeker.trec_qrel_handler import TrecQrelHandler
+
 
 def ratio(rels, nonrels):
     """ expect two floats
@@ -13,7 +13,12 @@ def ratio(rels, nonrels):
     else:
         return 0.0
 
+
 def get_perf():
+    """
+
+
+    """
     OUT_FILE = 'user_perf.txt'
     out_f = open(OUT_FILE, 'w')
 
@@ -21,7 +26,7 @@ def get_perf():
 
     topics = [347, 435]
 
-    #users = get_newssearch_users()
+    # users = get_newssearch_users()
     users = UserProfile.objects.all()
 
     for user in users:
@@ -50,10 +55,10 @@ def get_perf():
                     user_judgement = False
 
                 if assessor_judgement and user_judgement:
-                    rel_correct = rel_correct + 1
+                    rel_correct += 1
 
                 if not assessor_judgement and user_judgement:
-                    rel_incorrect = rel_incorrect + 1
+                    rel_incorrect += 1
 
             out_f.write("{:<12}{:< 8}{:<8}{:<8}{:<8}{:10.2f}\n".format(
                 username,
@@ -66,6 +71,7 @@ def get_perf():
 
     out_f.close()
 
+
 def get_newssearch_users():
     profiles = UserProfile.objects.all()
     search = []
@@ -77,13 +83,10 @@ def get_newssearch_users():
                 search.append(user)
 
     return search
-    
-    
-    
-    
+
+
 if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'treconomics_project.settings')
-    from django.contrib.auth.models import User
     from treconomics.models import UserProfile, DocumentsExamined
+
     get_perf()
-    

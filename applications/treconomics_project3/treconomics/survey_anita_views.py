@@ -1,26 +1,24 @@
 __author__ = 'leif'
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from experiment_functions import get_experiment_context
 from experiment_functions import log_event
-
 from survey_views import handle_survey
-from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask0SurveyForm, AnitaPostTask1SurveyForm, AnitaPostTask2SurveyForm,AnitaPostTask3SurveyForm
-from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm, AnitaExit2SurveyForm, AnitaExit3SurveyForm
+from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask0SurveyForm, AnitaPostTask1SurveyForm, \
+    AnitaPostTask2SurveyForm, AnitaPostTask3SurveyForm
+from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm, AnitaExit2SurveyForm, \
+    AnitaExit3SurveyForm
 from models_anita_experiments import AnitaConsentForm
 from models import TaskDescription
 
 
-
 def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, action, template, show_topic=True):
-
     context = RequestContext(request)
-    request.session['taskid']  = taskid
+    request.session['taskid'] = taskid
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -30,7 +28,7 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
     uname = request.user.username
     u = User.objects.get(username=uname)
 
-    #handle post within this element. save data to survey table,
+    # handle post within this element. save data to survey table,
     if request.method == 'POST':
         form = SurveyForm(request.POST)
         if form.is_valid():
@@ -54,49 +52,67 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionarre
 
-    action_url = action+taskid+'/'
+    action_url = action + taskid + '/'
 
     # provide link to search interface / next system
-    return render_to_response(template, {'participant': uname, 'condition': condition, 'task': taskid, 'topic':t.topic_num, 'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey, 'action': action_url, 'errors' : errors, 'show_topic': show_topic  }, context)
-
-
-
-@login_required
-def view_anita_pretask_survey( request, taskid ):
-    return handle_task_and_questions_survey(request, taskid, AnitaPreTaskSurveyForm, 'ANITA_PRETASK', '/treconomics/anitapretasksurvey/', 'survey/anita_pretask_survey.html')
+    return render_to_response(template,
+                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
+                               'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey,
+                               'action': action_url, 'errors': errors, 'show_topic': show_topic}, context)
 
 
 @login_required
-def view_anita_posttask0_survey( request, taskid ):
-    return handle_task_and_questions_survey(request, taskid, AnitaPostTask0SurveyForm, 'ANITA_POSTTASK0', '/treconomics/anitaposttask0survey/', 'survey/anita_posttask_survey.html')
+def view_anita_pretask_survey(request, taskid):
+    return handle_task_and_questions_survey(request, taskid, AnitaPreTaskSurveyForm, 'ANITA_PRETASK',
+                                            '/treconomics/anitapretasksurvey/', 'survey/anita_pretask_survey.html')
+
 
 @login_required
-def view_anita_posttask1_survey( request, taskid ):
-    return handle_task_and_questions_survey(request, taskid, AnitaPostTask1SurveyForm, 'ANITA_POSTTASK1', '/treconomics/anitaposttask1survey/', 'survey/anita_posttask_survey.html')
+def view_anita_posttask0_survey(request, taskid):
+    return handle_task_and_questions_survey(request, taskid, AnitaPostTask0SurveyForm, 'ANITA_POSTTASK0',
+                                            '/treconomics/anitaposttask0survey/', 'survey/anita_posttask_survey.html')
+
 
 @login_required
-def view_anita_posttask2_survey( request, taskid ):
-    return handle_task_and_questions_survey(request, taskid, AnitaPostTask2SurveyForm, 'ANITA_POSTTASK2', '/treconomics/anitaposttask2survey/', 'survey/anita_posttask_survey.html')
+def view_anita_posttask1_survey(request, taskid):
+    return handle_task_and_questions_survey(request, taskid, AnitaPostTask1SurveyForm, 'ANITA_POSTTASK1',
+                                            '/treconomics/anitaposttask1survey/', 'survey/anita_posttask_survey.html')
+
 
 @login_required
-def view_anita_posttask3_survey( request, taskid ):
-    return handle_task_and_questions_survey(request, taskid, AnitaPostTask3SurveyForm, 'ANITA_POSTTASK3', '/treconomics/anitaposttask3survey/', 'survey/anita_posttask_survey.html')
+def view_anita_posttask2_survey(request, taskid):
+    return handle_task_and_questions_survey(request, taskid, AnitaPostTask2SurveyForm, 'ANITA_POSTTASK2',
+                                            '/treconomics/anitaposttask2survey/', 'survey/anita_posttask_survey.html')
+
+
+@login_required
+def view_anita_posttask3_survey(request, taskid):
+    return handle_task_and_questions_survey(request, taskid, AnitaPostTask3SurveyForm, 'ANITA_POSTTASK3',
+                                            '/treconomics/anitaposttask3survey/', 'survey/anita_posttask_survey.html')
+
 
 @login_required
 def view_anita_demographic_survey(request):
-    return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/', 'survey/anita_demographics_survey.html')
+    return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/',
+                         'survey/anita_demographics_survey.html')
+
 
 @login_required
 def view_anita_exit1_survey(request):
-    return handle_survey(request, AnitaExit1SurveyForm, 'EXIT1', '/treconomics/anitaexit1survey/', 'survey/anita_exit1_survey.html')
+    return handle_survey(request, AnitaExit1SurveyForm, 'EXIT1', '/treconomics/anitaexit1survey/',
+                         'survey/anita_exit1_survey.html')
+
 
 @login_required
 def view_anita_exit2_survey(request):
-    return handle_survey(request, AnitaExit2SurveyForm, 'EXIT2', '/treconomics/anitaexit2survey/', 'survey/anita_exit2_survey.html')
+    return handle_survey(request, AnitaExit2SurveyForm, 'EXIT2', '/treconomics/anitaexit2survey/',
+                         'survey/anita_exit2_survey.html')
+
 
 @login_required
 def view_anita_exit3_survey(request):
-    return handle_survey(request, AnitaExit3SurveyForm, 'EXIT3', '/treconomics/anitaexit3survey/', 'survey/anita_exit3_survey.html')
+    return handle_survey(request, AnitaExit3SurveyForm, 'EXIT3', '/treconomics/anitaexit3survey/',
+                         'survey/anita_exit3_survey.html')
 
 
 @login_required
@@ -108,13 +124,13 @@ def view_anita_time_instructions(request, version):
     pressure_condition = False
     if version == "TC":
         pressure_condition = True
-    return render_to_response('base/anita_time_constraint_instructions.html', {'participant': uname, 'condition': condition, 'pressure_condition': pressure_condition}, context)
-
+    return render_to_response('base/anita_time_constraint_instructions.html',
+                              {'participant': uname, 'condition': condition, 'pressure_condition': pressure_condition},
+                              context)
 
 
 @login_required
 def view_anita_consent(request):
-
     context = RequestContext(request)
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -122,7 +138,7 @@ def view_anita_consent(request):
     errors = ""
     uname = request.user.username
     u = User.objects.get(username=uname)
-   #handle post within this element. save data to survey table,
+    # handle post within this element. save data to survey table,
     if request.method == 'POST':
         form = AnitaConsentForm(request.POST)
         if form.is_valid():
@@ -142,5 +158,6 @@ def view_anita_consent(request):
 
     # provide link to search interface / next system
     return render_to_response('survey/anita_consent_form.html', {'participant': uname, 'condition': condition,
-                                          'formset': survey, 'action': '/treconomics/consent/', 'errors' : errors}, context)
+                                                                 'formset': survey, 'action': '/treconomics/consent/',
+                                                                 'errors': errors}, context)
 

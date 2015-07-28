@@ -1,9 +1,7 @@
 __author__ = 'leif'
-from django.core.cache import cache
-import pickle
-from Queue import Queue
 from threading import Thread
 
+from django.core.cache import cache
 
 
 class Worker(Thread):
@@ -20,13 +18,12 @@ class Worker(Thread):
 
 
 def do_cache_pages(query, search_engine, num_pages):
-    for i in range(1,num_pages):
+    for i in range(1, num_pages):
         query.skip = query.skip + 1
-        w = Worker(query,search_engine)
+        w = Worker(query, search_engine)
         w.setDaemon(True)
         w.start()
         print w
-
 
 
 def get_response(query, search_engine):
@@ -40,6 +37,7 @@ def get_response(query, search_engine):
     else:
         print "response fetched from cache"
     return (in_cache, response)
+
 
 # takes a query and makes a key
 def make_key(query, search_engine):
@@ -55,6 +53,7 @@ def make_key(query, search_engine):
     print key
     return key
 
+
 def get_results_from_cache(key):
     """
     returns the ifind response object, else returns None if results are not in cache
@@ -66,7 +65,7 @@ def get_results_from_cache(key):
 
 
 def put_results_in_cache(key, response):
-    cache.set(key,response, None)
+    cache.set(key, response, None)
 
 
 

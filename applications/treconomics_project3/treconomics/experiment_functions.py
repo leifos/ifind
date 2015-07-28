@@ -1,24 +1,22 @@
 __author__ = 'leif'
 
 import datetime
-import logging
-import logging.config
-import logging.handlers
-from ifind.seeker.trec_qrel_handler import TrecQrelHandler
 
 from django.contrib.auth.models import User
-from models import DocumentsExamined
-from experiment_configuration import event_logger, qrels_file
-from experiment_configuration import experiment_setups
 from pytz import timezone
 from django.conf import settings
+
+from ifind.seeker.trec_qrel_handler import TrecQrelHandler
+from models import DocumentsExamined
+from experiment_configuration import event_logger, qrels_file, experiment_setups
+
 
 settings_timezone = timezone(settings.TIME_ZONE)
 qrels = TrecQrelHandler(qrels_file)
 
+
 def get_experiment_context(request):
-    ec = {}
-    ec["username"] = request.user.username
+    ec = {"username": request.user.username}
     u = User.objects.get(username=ec["username"])
     profile = u.get_profile()
     ec["rotation"] = profile.rotation
@@ -30,7 +28,7 @@ def get_experiment_context(request):
         ec["current_step"] = int(request.session['current_step'])
     else:
         # in the profile steps_completed is zero.
-        #if the user logs in again, then if the session variable is not set, we take the one from the datbase
+        # if the user logs in again, then if the session variable is not set, we take the one from the datbase
         steps_completed = ec["completed_steps"]
         ec["current_step"] = steps_completed
         request.session['current_step'] = steps_completed
@@ -49,6 +47,7 @@ def get_experiment_context(request):
         ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
 
     return ec
+
 
 def print_experiment_context(ec):
     print "username: " + ec["username"]
@@ -91,13 +90,16 @@ def log_performance(request, perf):
     event_logger.info(msg)
 
 
-def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0, metrics=None):
+def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", rank=-2, page=-2, doc_length=0,
+              metrics=None):
     ec = get_experiment_context(request)
 
-    msg = ec["username"] + " " + str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(ec["topicnum"]) + " " + event
+    msg = ec["username"] + " " + str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(
+        ec["topicnum"]) + " " + event
 
     if whooshid > -1:
-        event_logger.info(msg + " " + str(whooshid) + " " + trecid + " " + str(doc_length) + " " + str(judgement) + " " + str(rank))
+        event_logger.info(
+            msg + " " + str(whooshid) + " " + trecid + " " + str(doc_length) + " " + str(judgement) + " " + str(rank))
     else:
         if page > 0:
             event_logger.info(msg + " " + str(page))
@@ -129,16 +131,19 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
     topicnum = ec["topicnum"]
 
     if judgement == 1:
-        #write_to_log("DOC_MARKED_RELEVANT", whooshid )
-        log_event(event="DOC_MARKED_RELEVANT", request=request, whooshid=whooshid, judgement=1, trecid=trecid, rank=rank, doc_length=doc_length)
+        # write_to_log("DOC_MARKED_RELEVANT", whooshid )
+        log_event(event="DOC_MARKED_RELEVANT", request=request, whooshid=whooshid, judgement=1, trecid=trecid,
+                  rank=rank, doc_length=doc_length)
         print "DOC_MARKED_RELEVANT " + str(whooshid) + " " + trecid + " " + str(rank)
     if judgement == 0:
-        #write_to_log("DOC_MARKED_NONRELEVANT", whooshid )
+        # write_to_log("DOC_MARKED_NONRELEVANT", whooshid )
         print "DOC_MARKED_NONRELEVANT " + str(whooshid) + " " + trecid + " " + str(rank)
-        log_event(event="DOC_MARKED_NONRELEVANT", request=request, whooshid=whooshid, judgement=0, trecid=trecid, rank=rank, doc_length=doc_length)
+        log_event(event="DOC_MARKED_NONRELEVANT", request=request, whooshid=whooshid, judgement=0, trecid=trecid,
+                  rank=rank, doc_length=doc_length)
     if judgement < 0:
         # write_to_log("DOC_VIEWED"), whooshid )
-        log_event(event="DOC_MARKED_VIEWED", whooshid=whooshid, request=request, trecid=trecid, rank=rank, doc_length=doc_length)
+        log_event(event="DOC_MARKED_VIEWED", whooshid=whooshid, request=request, trecid=trecid, rank=rank,
+                  doc_length=doc_length)
         print "DOC_VIEWED " + str(whooshid) + " " + trecid + " " + str(rank)
 
     # check if user has marked the document or not
@@ -158,7 +163,9 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
         # create an entry to show the document has been judged
         # print "no doc found in db"
         if judgement > -1:
-            doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/'+whooshid+'/', task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement, judgement_date=datetime.datetime.now(tz=settings_timezone))
+            doc = DocumentsExamined(user=u, title=title, docid=whooshid, url='/treconomics/' + whooshid + '/',
+                                    task=task, topic_num=topicnum, doc_num=trecid, judgement=judgement,
+                                    judgement_date=datetime.datetime.now(tz=settings_timezone))
             doc.save()
 
     return judgement
@@ -173,16 +180,13 @@ def assessPerformance(topic_num, doc_list):
         val = qrels.get_value(topic_num, doc)
         if val:
             if int(val) >= 1:
-                rels_found = rels_found + 1
+                rels_found += 1
             else:
-                non_rels_found = non_rels_found + 1
+                non_rels_found += 1
         else:
-            non_rels_found = non_rels_found + 1
+            non_rels_found += 1
 
-    performance = {}
-    performance['topicnum'] = topic_num
-    performance['rels'] = rels_found
-    performance['nons'] = non_rels_found
+    performance = {'topicnum': topic_num, 'rels': rels_found, 'nons': non_rels_found}
     return performance
 
 
@@ -203,11 +207,15 @@ def getQueryResultPerformance(results, topic_num):
     i = 0
     rels_found = 0
     for r in results:
-        i = i + 1
-        val = qrels.get_value(topic_num, r.docid)
-        if val > 0:
-            rels_found = rels_found + 1
+        i += 1
+        if qrels.get_value(topic_num, r.docid) > 0:
+            rels_found += 1
+
+    # rels_found = sum(qrels.get_value(topic_num, r.docid) > 0 for r in results)
+    # return [rels_found, len(results)]
+
     return [rels_found, i]
+
 
 def get_topic_relevant_count(topic_num):
     """
@@ -217,9 +225,11 @@ def get_topic_relevant_count(topic_num):
 
     for document in qrels.get_doc_list(topic_num):
         if qrels.get_value(topic_num, document) > 0:
-            count = count + 1
+            count += 1
 
+    # sum(qrels.get_value(topic_num, doc) > 0 for doc in qrels.get_doc_list(topic_num))
     return count
+
 
 def calculate_precision(results, topic_num, k):
     """
@@ -232,10 +242,12 @@ def calculate_precision(results, topic_num, k):
 
 def get_query_performance_metrics(results, topic_num):
     """
-    Returns performance metrics for a given list of results, results, and a TREC topic, topic_num.
-    List returned is in the format [p@1, p@2, p@3, p@4, p@5, p@10, p@15, p@20, p@125, p@30, p@40, p@50, Rprec, total rel. docs]
+    Returns performance metrics for a given list of results,
+    results, and a TREC topic, topic_num.
+    List returned is in the format [p@1, p@2, p@3, p@4, p@5,
+     p@10, p@15, p@20, p@125, p@30, p@40, p@50, Rprec, total rel. docs]
     """
-    
+
     total_relevant_docs = get_topic_relevant_count(topic_num)
 
     p_at_1 = calculate_precision(results, topic_num, 1)
@@ -252,4 +264,9 @@ def get_query_performance_metrics(results, topic_num):
     p_at_50 = calculate_precision(results, topic_num, 50)
     r_prec = int(calculate_precision(results, topic_num, total_relevant_docs))
 
-    return [p_at_1, p_at_2, p_at_3, p_at_4, p_at_5, p_at_10, p_at_15, p_at_20, p_at_25, p_at_30, p_at_40, p_at_50, r_prec, total_relevant_docs]
+    p_at_1_to_5 = [calculate_precision(results, topic_num, i) for i in xrange(1, 6)]
+    p_at_10_to_25 = [calculate_precision(results, topic_num, i) for i in xrange(10, 26, 5)]
+    p_at_30_to_50 = [calculate_precision(results, topic_num, i) for i in xrange(30, 51, 10)]
+
+    return [p_at_1, p_at_2, p_at_3, p_at_4, p_at_5, p_at_10, p_at_15, p_at_20, p_at_25, p_at_30, p_at_40, p_at_50,
+            r_prec, total_relevant_docs]
