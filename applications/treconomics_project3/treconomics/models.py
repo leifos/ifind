@@ -8,8 +8,8 @@ class DocumentsExamined(models.Model):
     docid = models.CharField(max_length=30)
     doc_num = models.CharField(max_length=30)
     judgement = models.IntegerField()
-    url = models.CharField(max_length=200)
     judgement_date = models.DateTimeField('Date Examined')
+    url = models.CharField(max_length=200)
     task = models.IntegerField(default=0)
     topic_num = models.IntegerField(default=0)
 

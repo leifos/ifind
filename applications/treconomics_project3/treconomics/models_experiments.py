@@ -64,7 +64,6 @@ class UKDemographicsSurveyForm(ModelForm):
                                                label="What year are you in?",
                                                required=False)
 
-
     def clean(self):
         cleaned_data = self.cleaned_data
         if not cleaned_data.get("age"):

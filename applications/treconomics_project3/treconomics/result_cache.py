@@ -19,7 +19,7 @@ class Worker(Thread):
 
 def do_cache_pages(query, search_engine, num_pages):
     for i in range(1, num_pages):
-        query.skip = query.skip + 1
+        query.skip += 1
         w = Worker(query, search_engine)
         w.setDaemon(True)
         w.start()
@@ -36,7 +36,7 @@ def get_response(query, search_engine):
         put_results_in_cache(key, response)
     else:
         print "response fetched from cache"
-    return (in_cache, response)
+    return in_cache, response
 
 
 # takes a query and makes a key

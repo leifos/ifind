@@ -211,7 +211,6 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     result_dict['query'] = query_terms
     search_engine = experiment_setups[condition].get_engine()
 
-    response = None
     log_event(event="QUERY_START", request=request, query=query_terms)
     response = search_engine.search(query)
     """

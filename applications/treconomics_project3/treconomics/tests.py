@@ -6,8 +6,10 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from django.http import HttpRequest
 
 from experiment_configuration import experiment_setups
+from .views import view_login
 
 
 def test_permutations(experiment, verbose=False):
@@ -60,3 +62,14 @@ class PermutationTest(TestCase):
         # Experiments are obtained from experiment_configuration.experiment_setups.
         for experiment in experiment_setups:
             self.assertEquals(test_permutations(experiment), True)
+
+
+class HomePageViewTest(TestCase):
+
+    def test_home_page_returns_valid_html(self):
+        request = HttpRequest()
+        response = view_login(request)
+
+        # self.assertIn('<title>NewsSearch</title>', response.content)
+        self.assertTrue(response.content.startswith('<html>'))
+        self.assertTrue(response.content.endswith('</html>'))
