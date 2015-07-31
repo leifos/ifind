@@ -600,7 +600,7 @@ class ShortStressSurveyForm(ModelForm):
 
     class Meta:
         model = ShortStressSurvey
-        exclude = ('user')
+        exclude = ('user',)
 
 
 class ConceptListingSurvey(models.Model):
@@ -707,10 +707,9 @@ class ModifiedStressSurveyForm(ModelForm):
                                            label="I was committed to attaining my performance goals for these search tasks.",
                                            required=False)
 
-
     def clean(self):
         return clean_to_zero(self)
 
     class Meta:
         model = ModifiedStressSurvey
-        exclude = ('user')
+        exclude = ('user', )

@@ -40,10 +40,15 @@ def add_task(topic_num, title, description):
 
 
 if __name__ == '__main__':
-    print "Starting Anita Treconomics population script..."
+    import django
+
+    print "Starting Mickey's Treconomics population script..."
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'treconomics_project.settings')
+
+    django.setup()
     from treconomics.models import TaskDescription
     from treconomics.models import UserProfile
     from django.contrib.auth.models import User
+
 
     populate()

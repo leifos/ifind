@@ -25,6 +25,7 @@ class TaskDescriptionForm(forms.ModelForm):
 
     class Meta:
         model = TaskDescription
+        fields = ('description', )
 
 
 class TaskDescriptionAdmin(admin.ModelAdmin):
@@ -35,6 +36,7 @@ class TaskDescriptionAdmin(admin.ModelAdmin):
 class TopicQuerySuggestionForm(forms.ModelForm):
     class Meta:
         model = TopicQuerySuggestion
+        fields = ('title', )
 
 
 class TopicQuerySuggestionAdmin(admin.ModelAdmin):
