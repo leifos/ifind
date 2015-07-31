@@ -10,17 +10,17 @@ from django.contrib.auth.decorators import login_required
 
 from treconomics.experiment_functions import get_experiment_context
 from treconomics.experiment_functions import log_event
-from treconomics.models_experiments import UKDemographicsSurveyForm
-from treconomics.models_experiments import USDemographicsSurveyForm
-from treconomics.models_experiments import NasaSystemLoadForm
-from treconomics.models_experiments import NasaQueryLoadForm
-from treconomics.models_experiments import NasaNavigationLoadForm
-from treconomics.models_experiments import NasaAssessmentLoadForm
-from treconomics.models_experiments import NasaFactorCompareForm
-from treconomics.models_experiments import SearchEfficacyForm
-from treconomics.models_experiments import ConceptListingSurveyForm
-from treconomics.models_experiments import ShortStressSurveyForm
-from treconomics.models_experiments import ModifiedStressSurveyForm
+from .models import UKDemographicsSurveyForm
+from .models import USDemographicsSurveyForm
+from .models import NasaSystemLoadForm
+from .models import NasaQueryLoadForm
+from .models import NasaNavigationLoadForm
+from .models import NasaAssessmentLoadForm
+from .models import NasaFactorCompareForm
+from .models import SearchEfficacyForm
+from .models import ConceptListingSurveyForm
+from .models import ShortStressSurveyForm
+from .models import ModifiedStressSurveyForm
 from treconomics.models import TaskDescription
 
 

@@ -6,10 +6,10 @@ from django import forms
 from models import DocumentsExamined
 from models import UserProfile
 from models import TaskDescription, TopicQuerySuggestion
-from models_experiments import USDemographicsSurvey, UKDemographicsSurvey
-from models_experiments import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
-from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
-from models_experiments import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
+from survey.models import USDemographicsSurvey, UKDemographicsSurvey
+from survey.models import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
+from survey.models import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
+from survey.models import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
 from models_anita_experiments import AnitaPreTaskSurvey, AnitaPostTask0Survey, AnitaPostTask1Survey, \
     AnitaPostTask2Survey, AnitaPostTask3Survey
 from models_anita_experiments import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey, AnitaDemographicsSurvey
