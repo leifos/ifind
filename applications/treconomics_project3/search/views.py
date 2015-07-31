@@ -7,8 +7,8 @@ import datetime
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from models import DocumentsExamined
-from models import TaskDescription
+from treconomics.models import DocumentsExamined
+from treconomics.models import TaskDescription
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
@@ -26,12 +26,14 @@ from django.core import cache
 import timeit
 
 # Experiments
-from experiment_functions import get_topic_relevant_count
-from experiment_functions import get_experiment_context
-from experiment_functions import mark_document, log_event
-from experiment_functions import time_search_experiment_out, getPerformance, getQueryResultPerformance, log_performance
-from experiment_configuration import my_whoosh_doc_index_dir, data_dir
-from experiment_configuration import experiment_setups
+from treconomics.experiment_functions import get_topic_relevant_count
+from treconomics.experiment_functions import get_experiment_context
+from treconomics.experiment_functions import mark_document, log_event
+from treconomics.experiment_functions import time_search_experiment_out
+from treconomics.experiment_functions import getPerformance
+from treconomics.experiment_functions import getQueryResultPerformance, log_performance
+from treconomics.experiment_configuration import my_whoosh_doc_index_dir, data_dir
+from treconomics.experiment_configuration import experiment_setups
 from time import sleep
 import json
 

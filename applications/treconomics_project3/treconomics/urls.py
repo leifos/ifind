@@ -1,9 +1,9 @@
 __author__ = 'leif'
 
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 
 import views
-import search_views
+from search import views as search_views
 from survey import views as survey_views
 import survey_anita_views
 
@@ -46,17 +46,19 @@ urlpatterns = patterns('',
                        (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
                        (r'^timeout/$', views.show_timeout_message),
 
-                       (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),
-                       (r'^searchefficacysurvey/$', survey_views.view_search_efficacy_survey),
-                       (r'^nasaloadsurvey/$', survey_views.view_nasa_load_survey),
-                       (r'^nasaqueryloadsurvey/$', survey_views.view_nasa_query_load_survey),
-                       (r'^nasanavigationloadsurvey/$', survey_views.view_nasa_navigation_load_survey),
-                       (r'^nasaassessmentloadsurvey/$', survey_views.view_nasa_assessment_load_survey),
-                       (r'^nasafactorcomparesurvey/$', survey_views.view_nasa_factor_compare_survey),
-                       (r'^conceptlistingsurvey/(?P<taskid>\d+)/(?P<when>[A-Z]{3})/$',
-                        survey_views.view_concept_listing_survey),
-                       (r'^shortstresssurvey/$', survey_views.view_short_stress_survey),
-                       (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
+                       url(r'^survey/', include('survey.urls')),
+
+                       # (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),
+                       # (r'^searchefficacysurvey/$', survey_views.view_search_efficacy_survey),
+                       # (r'^nasaloadsurvey/$', survey_views.view_nasa_load_survey),
+                       # (r'^nasaqueryloadsurvey/$', survey_views.view_nasa_query_load_survey),
+                       # (r'^nasanavigationloadsurvey/$', survey_views.view_nasa_navigation_load_survey),
+                       # (r'^nasaassessmentloadsurvey/$', survey_views.view_nasa_assessment_load_survey),
+                       # (r'^nasafactorcomparesurvey/$', survey_views.view_nasa_factor_compare_survey),
+                       # (r'^conceptlistingsurvey/(?P<taskid>\d+)/(?P<when>[A-Z]{3})/$',
+                       #  survey_views.view_concept_listing_survey),
+                       # (r'^shortstresssurvey/$', survey_views.view_short_stress_survey),
+                       # (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
 
                        (r'^anitapretasksurvey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_pretask_survey),
                        (r'^anitaposttask0survey/(?P<taskid>\d+)/$', survey_anita_views.view_anita_posttask0_survey),
