@@ -68,11 +68,11 @@ def show_document(request, whoosh_docid):
     fields = ixr.stored_fields(int(whoosh_docid))
     title = fields["title"]
     content = fields["content"]
-    docnum = fields["docid"]
+    doc_num = fields["docid"]
     doc_date = fields["timedate"]
     doc_source = fields["source"]
-    docid = whoosh_docid
-    topicnum = ec["topicnum"]
+    doc_id = whoosh_docid
+    topic_num = ec["topicnum"]
 
     def get_document_rank():
         """
@@ -103,7 +103,7 @@ def show_document(request, whoosh_docid):
 
             # marks that the document has been marked rel or nonrel
             doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
-            user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
+            user_judgement = mark_document(request, doc_id, user_judgement, title, doc_num, rank, doc_length)
             # mark_document handles logging of this event
         return HttpResponse(simplejson.dumps(user_judgement), mimetype='application/javascript')
     else:
@@ -113,15 +113,15 @@ def show_document(request, whoosh_docid):
             # marks that the document has been viewed
             rank = get_document_rank()
 
-            doc_length = ixr.doc_field_length(long(docid), 'content')
-            user_judgement = mark_document(request, docid, user_judgement, title, docnum, rank, doc_length)
+            doc_length = ixr.doc_field_length(long(doc_id), 'content')
+            user_judgement = mark_document(request, doc_id, user_judgement, title, doc_num, rank, doc_length)
 
             context_dict = {'participant': uname,
                             'task': taskid,
                             'condition': condition,
                             'current_search': current_search,
-                            'docid': docid,
-                            'docnum': docnum,
+                            'docid': doc_id,
+                            'docnum': doc_num,
                             'title': title,
                             'doc_date': doc_date,
                             'doc_source': doc_source,
