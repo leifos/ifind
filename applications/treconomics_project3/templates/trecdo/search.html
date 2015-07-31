@@ -3,29 +3,31 @@
 {% load static %}
 
 {% block exp_info_block %}
-     <script type="text/javascript">
-    var APP_ROOT = '{{ application_root }}';
+    <script type="text/javascript">
+        var APP_ROOT = '{{ application_root }}';
 
     </script>
 
-    {% if autocomplete %}<script type="text/javascript" src="{% static 'javascripts/autocomplete.js' %}"></script>{% endif %}
+    {% if autocomplete %}
+        <script type="text/javascript" src="{% static 'javascripts/autocomplete.js' %}"></script>{% endif %}
 
     <script type="text/javascript" src="{% static 'javascripts/search_helpers.js' %}"></script>
-    <input type="hidden" id="interface_type" value="{{ interface }}" />
-    <input type="hidden" id="delay_results" value="{{ delay_results }}" />
-    <input type="hidden" id="delay_docview" value="{{ delay_docview }}" />
-    <input type="hidden" id="is_fast" value="{{ is_fast }}" />
-    <input type="hidden" id="focus_querybox" value="{% if focus_querybox %}{{ focus_querybox }}{% else %}true{% endif %}" />
+    <input type="hidden" id="interface_type" value="{{ interface }}"/>
+    <input type="hidden" id="delay_results" value="{{ delay_results }}"/>
+    <input type="hidden" id="delay_docview" value="{{ delay_docview }}"/>
+    <input type="hidden" id="is_fast" value="{{ is_fast }}"/>
+    <input type="hidden" id="focus_querybox"
+           value="{% if focus_querybox %}{{ focus_querybox }}{% else %}true{% endif %}"/>
 
-     <p>
-         <a href="/treconomics/saved/">View Saved</a> |
-         <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
-         <a href="/treconomics/next/" id="end-task-link"> End Task</a>
-     </p>
+    <p>
+        <a href="/treconomics/saved/">View Saved</a> |
+        <a href="JavaScript:taskPopup('/treconomics/showtask/');">Show Task</a> |
+        <a href="/treconomics/next/" id="end-task-link"> End Task</a>
+    </p>
 {% endblock %}
 
 {% block wait-box %}
-        <!--
+    <!--
 <div id="full-grey-out">
    <!-- <div id="wait-box">
         <p>
@@ -39,29 +41,34 @@
 {% endblock %}
 
 {% block query_box %}
-	<div class="entry" id="search_box_area">
-		<form id="search_form" action="/treconomics/search/" method="post">
-	        {% csrf_token %} 								
-	        <!-- cross-site request forgery protection -->
-	            <table>
-		        <tr><td class="searchlabel">Enter your query here</td>
+    <div class="entry" id="search_box_area">
+        <form id="search_form" action="/treconomics/search/" method="post">
+            {% csrf_token %}
+            <!-- cross-site request forgery protection -->
+            <table>
+                <tr>
+                    <td class="searchlabel">Enter your query here</td>
 
-		        {% if query %}
-	                <td><input class="searchbox" type="text" name="query" value="{{ query }}" id="query" size="50" /></td>
-		        {% else %}
-		            <td><input class="searchbox" type="text" name="query" value="" id="query" size="50" /></td>
-		        <td> <input type="hidden" name="newquery" value="true" /> <input class="button" type="submit" name="submit" value="Search" id="search-button" /> </td></tr>
-	            <!--<tr><td></td><td>You can use AND, OR and NOT operators in your query.</td><td></td></tr>-->
-                {% endif %}
-                </table>
+                    {% if query %}
+                        <td><input class="searchbox" type="text" name="query" value="{{ query }}" id="query" size="50"/>
+                        </td>
+                    {% else %}
+                        <td><input class="searchbox" type="text" name="query" value="" id="query" size="50"/></td>
+                        <td><input type="hidden" name="newquery" value="true"/>
+                            <input class="button" type="submit"
+                                   name="submit" value="Search"
+                                   id="search-button"/></td></tr>
+                        <!--<tr><td></td><td>You can use AND, OR and NOT operators in your query.</td><td></td></tr>-->
+                    {% endif %}
+            </table>
         </form>
 
-</div>
+    </div>
 
 {% endblock %}
 
 
 
 {% block exp_footer_block %}
-Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}} - Topic: {{topicno}}
+    Participant: {{ participant }}  - Condition: {{ condition }} - Task: {{ task }} - Topic: {{ topicno }}
 {% endblock %}
