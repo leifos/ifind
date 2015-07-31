@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from experiment_functions import get_experiment_context
 from experiment_functions import log_event
-from survey_views import handle_survey
+from survey.views import handle_survey
 from models_anita_experiments import AnitaPreTaskSurveyForm, AnitaPostTask0SurveyForm, AnitaPostTask1SurveyForm, \
     AnitaPostTask2SurveyForm, AnitaPostTask3SurveyForm
 from models_anita_experiments import AnitaDemographicsSurveyForm, AnitaExit1SurveyForm, AnitaExit2SurveyForm, \

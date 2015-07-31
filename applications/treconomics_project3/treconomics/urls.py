@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 
 import views
 import search_views
-import survey_views
+from survey import views as survey_views
 import survey_anita_views
 
 
