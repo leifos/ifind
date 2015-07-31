@@ -8,13 +8,13 @@ from django.contrib.auth.decorators import login_required
 
 from models import DocumentsExamined
 from models import TaskDescription
-from models_experiments import USDemographicsSurvey
-from models_experiments import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
-from models_experiments import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
-from models_experiments import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad
-from models_experiments import SearchEfficacy
-from models_experiments import ConceptListingSurvey
-from models_experiments import ShortStressSurvey
+from survey.models import USDemographicsSurvey
+from survey.models import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
+from survey.models import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
+from survey.models import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad
+from survey.models import SearchEfficacy
+from survey.models import ConceptListingSurvey
+from survey.models import ShortStressSurvey
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
 
