@@ -25,8 +25,8 @@ def view_reset_test_users(request):
 
     for un in usernames:
         print un
-        temp_user = User.objects.get(username=un)
-        profile = temp_user.get_profile()
+        u = User.objects.get(username=un)
+        profile = u.profile
         profile.steps_completed = 0
         profile.tasks_completed = 0
         profile.save()
@@ -70,6 +70,7 @@ def view_start_experiment(request):
                 context_dict = {
                     'popup_width': 1024,
                     'popup_height': 1024,
+                    'test': 1022,
                 }
 
                 # return HttpResponseRedirect("/treconomics/next/")
@@ -83,7 +84,7 @@ def view_start_experiment(request):
             print "invalid login details " + username + " " + password
             return render(request, 'base/login.html', {'invalid': True})
     else:
-        return render(request, 'base/login.html', {})
+        return render(request, 'base/login.html')
 
 
 @login_required
@@ -105,7 +106,7 @@ def view_next(request):
     # Record the completed step
     uname = request.user.username
     u = User.objects.get(username=uname)
-    profile = u.get_profile()
+    profile = u.profile
     profile.steps_completed = step
     profile.save()
 
@@ -191,7 +192,7 @@ def view_post_practice_task(request, taskid):
     # Save out to profile what task has just been completed
     # This is probably not necessary ---- as the step  and taskid coming defines this.
     u = User.objects.get(username=uname)
-    profile = u.get_profile()
+    profile = u.profile
     profile.tasks_completed = int(taskid)
     profile.save()
 
@@ -291,7 +292,7 @@ def view_post_task(request, taskid):
     # Save out to profile what task has just been completed
     # This is probably not neccessary ---- as the step  and taskid coming defines this.
     u = User.objects.get(username=uname)
-    profile = u.get_profile()
+    profile = u.profile
     profile.tasks_completed = int(taskid)
     profile.save()
 
@@ -318,7 +319,7 @@ def view_post_task_with_questions(request, taskid):
     # Save out to profile what task has just been completed
     # This is probably not neccessary ---- as the step  and taskid coming defines this.
     u = User.objects.get(username=uname)
-    profile = u.get_profile()
+    profile = u.profile
     errors = ""
 
     # #################

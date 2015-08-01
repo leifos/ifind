@@ -37,7 +37,7 @@ class TopicQuerySuggestion(models.Model):
 
 class UserProfile(models.Model):
     # This field is required.
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name='profile')
     # Other fields here
     data = models.CharField(max_length=200, null=True, blank=True)
     experiment = models.IntegerField(default=0)
