@@ -100,7 +100,7 @@ function changeInteractionStatus(enableInterface, useBox) {
         }
         else {
             // Turn off the search button
-            $('#search-button').attr('disabled', 'disabled');
+            //$('#search-button').attr('disabled', 'disabled');
             $('#search-button').attr('value', 'Loading...');
             $('#search-button').css('background-color', '#8B3A3A');
             $('#search-button').css('color', 'white');
