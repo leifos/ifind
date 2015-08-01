@@ -1,39 +1,39 @@
 {% extends 'base/base.html' %}
 
 {% block exp_info_block %}
- <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+    <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
 {% endblock %}
 
 {% block exp_block %}
 
-        {% load static %}
+    {% load static %}
 
-<script>
-$(document).ready(function(){
-    $('.surveySubmitButton').click(function(){
-        $(this).hide()
-    });
-})
-</script>
+    <script>
+        $(document).ready(function () {
+            $('.surveySubmitButton').click(function () {
+                $(this).hide()
+            });
+        })
+    </script>
 
-<p> <h1>  Before you begin </h1></p>
+    <p> <h1> Before you begin </h1></p>
 
-       {% if pressure_condition %}
-        <img src="{% static 'images/attention-sign.png' %}" />
+    {% if pressure_condition %}
+        <img src="{% static 'images/attention-sign.png' %}"/>
 
         <p>
-        You just received a message that your research meeting has been just rescheduled for tomorrow
-        and you only have 20 minutes today to create your lists of articles on each topic.
+            You just received a message that your research meeting has been just rescheduled for tomorrow
+            and you only have 20 minutes today to create your lists of articles on each topic.
         </p>
         <p>
-        Since you only have 20 minutes,
-        you decide to limit yourself to search for <strong>5 minutes per topic</strong>.
-        The system will let you know when you have searched for 5 minutes.
+            Since you only have 20 minutes,
+            you decide to limit yourself to search for <strong>5 minutes per topic</strong>.
+            The system will let you know when you have searched for 5 minutes.
         </p>
-        {% else %}
+    {% else %}
         <p>You are ready to begin your first search task.</p>
-        {% endif %}
-<!--
+    {% endif %}
+    <!--
 <p>
 Now that you have had an opportunity to practice using the <em> NewsSearch system</em>,
     you are almost ready to start preparing for your meeting with the scholars.
@@ -48,7 +48,7 @@ Now that you have had an opportunity to practice using the <em> NewsSearch syste
 {% endif %}
 </p>
 --->
-<!--
+    <!--
 <p>Some things to keep in mind:
 
 <ul>
@@ -63,15 +63,17 @@ Now that you have had an opportunity to practice using the <em> NewsSearch syste
 </p>
 
  -->
-<p>Click "Next" to start the first search task.</p>
+    <p>Click "Next" to start the first search task.</p>
 
 
-<div class="surveySubmitButton">
-<a href="/treconomics/next/"> <button class="largebutton" type="next" > Next </button></a>
-</div>
+    <div class="surveySubmitButton">
+        <a href="{% url 'next' %}">
+            <button class="largebutton" type="next"> Next</button>
+        </a>
+    </div>
 {% endblock %}
 
 
 {% block exp_footer_block %}
-Participant: {{participant}}  - Condition: {{condition}}
+    Participant: {{ participant }}  - Condition: {{ condition }}
 {% endblock %}

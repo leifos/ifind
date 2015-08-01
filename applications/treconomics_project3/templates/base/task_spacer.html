@@ -1,30 +1,32 @@
 {% extends 'base/base.html' %}
 
 {% block exp_info_block %}
- <p> <!-- a href="/treconomics/logout">Logout</a> -->
- </p>
+    <p> <!-- a href="/treconomics/logout">Logout</a> -->
+    </p>
 {% endblock %}
 
 {% block exp_block %}
 
-<script>
-$(document).ready(function(){
-    $('.surveySubmitButton').click(function(){
-        $(this).hide()
-    });
-})
-</script>
+    <script>
+        $(document).ready(function () {
+            $('.surveySubmitButton').click(function () {
+                $(this).hide()
+            });
+        })
+    </script>
 
 
 
-<div class="experimentPageTitle">
-    <p> When you are ready click the "next" button to continue to the next task: </p>
-</div>
+    <div class="experimentPageTitle">
+        <p> When you are ready click the "next" button to continue to the next task: </p>
+    </div>
 
-<div class="surveySubmitButton">
-<a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
+    <div class="surveySubmitButton">
+        <a href="{% url 'next' %}">
+            <button class="button" type="next"> Next</button>
+        </a>
 
-</div>
+    </div>
 
 
 
@@ -32,5 +34,5 @@ $(document).ready(function(){
 
 
 {% block exp_footer_block %}
-Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}}
+    Participant: {{ participant }}  - Condition: {{ condition }} - Task: {{ task }}
 {% endblock %}

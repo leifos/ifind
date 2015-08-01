@@ -1,24 +1,34 @@
 {% extends 'base/base.html' %}
 
 {% block exp_block %}
-<script type="text/javascript">$(function() {$('#username').focus()});</script>
-<div class="topmargin">
+    <script type="text/javascript">$(function () {
+        $('#username').focus()
+    });</script>
+    <div class="topmargin">
 
-{% if invalid %}
-<div style="margin-bottom: 20px; text-align: center; color: red; font-size: 14pt; font-weight: bold;">Invalid participant details supplied.</div>
-{% endif %}
+        {% if invalid %}
+            <div style="margin-bottom: 20px; text-align: center; color: red; font-size: 14pt; font-weight: bold;">
+                Invalid participant details supplied.
+            </div>
+        {% endif %}
 
-<form action="/treconomics/startexperiment/"  method="post">
-	{% csrf_token %} 								<!-- cross-site request forgery protection -->
-	<table class="searchtable">	
-		<tr><td class="searchlabel">Participant ID:</td><td><input class="loginbox" type="text" name="username" value="" id="username" size="50" tabindex="1" /></td>
-		    <td> <input  class="button" type="submit" name="submit" value="Login" tabindex="3" /> </td>
-		    </tr>
-		
-		<tr>
-		    <td class="searchlabel">Login Code:</td><td><input  class="loginbox" type="text" name="password" value="" id="password" size="50" tabindex="2" /></td></tr>
-	</table>
-</form>
+        <form action="{% url 'start-experiment' %}" method="post">
+            {% csrf_token %}                                <!-- cross-site request forgery protection -->
+            <table class="searchtable">
+                <tr>
+                    <td class="searchlabel">Participant ID:</td>
+                    <td><input class="loginbox" type="text" name="username" value="" id="username" size="50"
+                               tabindex="1"/></td>
+                    <td><input class="button" type="submit" name="submit" value="Login" tabindex="3"/></td>
+                </tr>
 
-</div>
+                <tr>
+                    <td class="searchlabel">Login Code:</td>
+                    <td><input class="loginbox" type="text" name="password" value="" id="password" size="50"
+                               tabindex="2"/></td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
 {% endblock %}

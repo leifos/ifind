@@ -2,27 +2,28 @@
 {% load static %}
 
 {% block exp_info_block %}
- <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
+    <p> <!-- a href="/treconomics/logout">Logout</a> --> </p>
 {% endblock %}
 
 {% block exp_block %}
-Below is a description of the search task that we would like you to undertake. The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.
+    Below is a description of the search task that we would like you to undertake. The search task is a description of
+    the topic, and the type of information within documents that would be relevant to this specific topic.
 
-<hr />
+    <hr/>
 
-<p> {% if task == 0 %}<strong style="padding-right: 15px;">Practice Task</strong>
-    {% else %}Search Task: <strong style="padding-right: 15px;">{{task}}{% endif %}</strong>
-    <!--Search Topic: <strong>{{topic}}</strong>--></p>
+    <p>{% if task == 0 %}<strong style="padding-right: 15px;">Practice Task</strong>
+    {% else %}Search Task: <strong style="padding-right: 15px;">{{ task }}{% endif %}</strong>
+        <!--Search Topic: <strong>{{topic}}</strong>--></p>
 
-<p><b> {{tasktitle}} </b><p>
+    <p><b> {{ tasktitle }} </b><p>
 
-<p> {% autoescape off %} <em>{{taskdescription}}</em> {% endautoescape %}</p>
+    <p> {% autoescape off %} <em>{{ taskdescription }}</em> {% endautoescape %}</p>
 
-<script type="text/javascript" src="{% static 'javascripts/show_task.js' %}"></script>
+    <script type="text/javascript" src="{% static 'javascripts/show_task.js' %}"></script>
 
 {% endblock %}
 
 
 {% block exp_footer_block %}
-Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}}
+    Participant: {{ participant }}  - Condition: {{ condition }} - Task: {{ task }}
 {% endblock %}

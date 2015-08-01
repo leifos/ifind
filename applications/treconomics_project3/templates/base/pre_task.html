@@ -1,37 +1,46 @@
 {% extends 'base/base.html' %}
 
 {% block exp_info_block %}
- <p> <!-- a href="/treconomics/logout">Logout</a> -->
- </p>
+    <p> <!-- a href="/treconomics/logout">Logout</a> -->
+    </p>
 {% endblock %}
 
 {% block exp_block %}
 
 
-Below is a description of the search task that we would like you to undertake. The search task is a description of the topic, and the type of information within documents that would be relevant to this specific topic.
+    Below is a description of the search task that we would like you to undertake. The search task is a description of
+    the topic, and the type of information within documents that would be relevant to this specific topic.
 
-<hr/>
+    <hr/>
 
-<div class="query" > <b> {{tasktitle}} </b> <span>Search Task: {{task}} Search Topic: {{topic}}</span></div>
+    <div class="query">
+        <b> {{ tasktitle }} </b>
+        <span>Search Task: {{ task }} Search Topic: {{ topic }}</span>
+    </div>
 
-<p>{% autoescape off %} {{taskdescription}} {% endautoescape %} </p>
+    <p>{% autoescape off %} {{ taskdescription }} {% endautoescape %} </p>
 
 
-<p> With this search task in mind, please complete the  <a href="http://surveydirector.qualtrics.com/SD/?Q_SDID=SD_cRX68Lfnk3V6Zec" target="_blank" onclick="$('div.post-survey').show()">Pre-Task Questionnaire</a><p>
+    <p> With this search task in mind, please complete the <a
+            href="http://surveydirector.qualtrics.com/SD/?Q_SDID=SD_cRX68Lfnk3V6Zec" target="_blank"
+            onclick="$('div.post-survey').show()">Pre-Task Questionnaire</a><p>
 
-<div class="post-survey">
-<hr/>
-<p>Now that you have completed the survey, we would like you to try and find as many relevant documents as possible.</p>
+    <div class="post-survey">
+        <hr/>
+        <p>Now that you have completed the survey, we would like you to try and find as many relevant documents as
+            possible.</p>
 
-<p> Click the next button to start the task: </p>
+        <p> Click the next button to start the task: </p>
 
-<a href="/treconomics/next/"> <button class="button" type="next" > Next </button></a>
+        <a href="{% url 'next' %}">
+            <button class="button" type="next"> Next</button>
+        </a>
 
-</div>
+    </div>
 
 {% endblock %}
 
 
 {% block exp_footer_block %}
-Participant: {{participant}}  - Condition: {{condition}} - Task: {{task}}
+    Participant: {{ participant }}  - Condition: {{ condition }} - Task: {{ task }}
 {% endblock %}
