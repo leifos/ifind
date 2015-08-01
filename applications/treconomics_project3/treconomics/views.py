@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 
 from models import DocumentsExamined
 from models import TaskDescription
@@ -88,7 +89,7 @@ def view_start_experiment(request):
 @login_required
 def view_logout(request):
     log_event(event='EXPERIMENT_COMPLETED', request=request)
-    pid = request.user.username
+    # pid = request.user.username
     logout(request)
     # Redirect to a success page.
     return render(request, 'base/logout.html', {})
@@ -124,19 +125,21 @@ def view_next(request):
         next_step = step
 
     url_to_visit_next = workflow[next_step]
-    print "view_next - step : " + str(next_step) + " url to vist next: " + url_to_visit_next
+    print "view_next - step : " + str(next_step) + " url to visit next: " + url_to_visit_next
     # request.session['current_url'] = url_to_visit_next
     return HttpResponseRedirect(url_to_visit_next)
 
 
 @login_required
 def view_pre_task(request, taskid):
+    # TODO Could benefit from a generic view
     # Set the tasks id
     request.session['taskid'] = taskid
 
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
+
     topicnum = ec["topicnum"]
     t = TaskDescription.objects.get(topic_num=topicnum)
 
@@ -145,9 +148,13 @@ def view_pre_task(request, taskid):
 
     # provide link to search interface / next system
 
-    context_dict = {'participant': uname, 'condition': condition,
-                    'task': taskid, 'topic': t.topic_num,
-                    'tasktitle': t.title, 'taskdescription': t.description}
+    context_dict = {'participant': uname,
+                    'condition': condition,
+                    'task': taskid,
+                    'topic': t.topic_num,
+                    'tasktitle': t.title,
+                    'taskdescription': t.description}
+
     return render(request, 'base/pre_task.html', context_dict)
 
 
@@ -159,6 +166,7 @@ def view_pre_practice_task(request, taskid):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
+
     topicnum = ec["topicnum"]
     t = TaskDescription.objects.get(topic_num=topicnum)
 
@@ -181,7 +189,7 @@ def view_post_practice_task(request, taskid):
     condition = ec["condition"]
 
     # Save out to profile what task has just been completed
-    # This is probably not neccessary ---- as the step  and taskid coming defines this.
+    # This is probably not necessary ---- as the step  and taskid coming defines this.
     u = User.objects.get(username=uname)
     profile = u.get_profile()
     profile.tasks_completed = int(taskid)
@@ -205,7 +213,7 @@ def view_pre_task_with_questions(request, taskid):
     # Set the tasks id manually from request
     request.session['taskid'] = taskid
     ec = get_experiment_context(request)
-    uname = ec["username"]
+    # uname = ec["username"]
     condition = ec["condition"]
     topicnum = ec["topicnum"]
     t = TaskDescription.objects.get(topic_num=topicnum)
@@ -324,7 +332,7 @@ def view_post_task_with_questions(request, taskid):
             obj.topic_num = ec["topicnum"]
             obj.save()
             log_event(event="POST_TASK_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
+            return HttpResponseRedirect(reverse_lazy('next'))
         else:
             print form.errors
             errors = form.errors
