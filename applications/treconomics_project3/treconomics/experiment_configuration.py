@@ -96,9 +96,17 @@ suggestion_trie = AutocompleteTrie(
 bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=1, newschema=True)
 bm25.key_name = 'bm25'
 
-exp_test = ExperimentSetup(workflow=exp_work_flows[0], engine=bm25, practice_topic='341', topics=['347', '367', '354'],
-                           rpp=10, practice_interface=1, interface=[1, 2, 3], rotation_type=1,
-                           description='standard condition bm25 test', trie=suggestion_trie, autocomplete=True,
+exp_test = ExperimentSetup(workflow=exp_work_flows[0],
+                           engine=bm25,
+                           practice_topic='341',
+                           topics=['347', '367', '354'],
+                           rpp=10,
+                           practice_interface=1,
+                           interface=[1, 2, 3],
+                           rotation_type=1,
+                           description='standard condition bm25 test',
+                           trie=suggestion_trie,
+                           autocomplete=True,
                            timeout=300)
 
 

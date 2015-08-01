@@ -1,5 +1,5 @@
 from django.template.context import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -47,8 +47,7 @@ def view_reset_test_users(request):
 
 
 def view_login(request):
-    context = RequestContext(request)
-    return render_to_response('base/login.html', {}, context)
+    return render(request, 'base/login.html', {})
 
 
 def view_start_experiment(request):
