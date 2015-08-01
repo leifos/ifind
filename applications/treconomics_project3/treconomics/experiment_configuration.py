@@ -14,8 +14,7 @@ work_dir = os.getcwd()
 # when deployed this needs to match up with the hostname, and directory to where the project is
 
 if socket.gethostname() == 'newssearch':
-    # TODO fix the working dir
-    work_dir = '/opt/tango/ifind/applications/treconomics_project2/'
+    work_dir = '/opt/tango/ifind/applications/treconomics_project3/'
 
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/test100index/')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")

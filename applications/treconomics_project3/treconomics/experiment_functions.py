@@ -18,7 +18,7 @@ qrels = TrecQrelHandler(qrels_file)
 def get_experiment_context(request):
     ec = {"username": request.user.username}
     u = User.objects.get(username=ec["username"])
-    profile = u.get_profile()
+    profile = u.profile
     ec["rotation"] = profile.rotation
     ec["condition"] = profile.condition
     ec["completed_steps"] = profile.steps_completed

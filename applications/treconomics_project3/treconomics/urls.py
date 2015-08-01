@@ -47,7 +47,7 @@ urlpatterns = \
 
              (r'^reset/$', views.view_reset_test_users),
              (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
-             (r'^timeout/$', views.show_timeout_message),
+             url(r'^timeout/$', views.show_timeout_message, 'timeout'),
 
              url(r'^survey/', include('survey.urls')),
 
