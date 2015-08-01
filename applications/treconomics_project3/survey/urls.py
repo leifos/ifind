@@ -15,4 +15,4 @@ urlpatterns = patterns('',
                         survey_views.view_concept_listing_survey),
                        (r'^shortstresssurvey/$', survey_views.view_short_stress_survey),
                        (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
-                       )
+)
