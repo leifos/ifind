@@ -3,7 +3,7 @@ __author__ = 'leif'
 # Can access them all methods but they need to be prefaced with os or datetime for example
 # Django
 from django.template.context import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -46,9 +46,8 @@ def handle_survey(request, SurveyForm, survey_name, action, template):
         log_event(event=survey_name.upper() + "_SURVEY_STARTED", request=request)
         survey = SurveyForm()
 
-    return render_to_response(template,
-                              {'participant': uname, 'condition': condition, 'formset': survey, 'action': action},
-                              context)
+    context_dict = {'participant': uname, 'condition': condition, 'formset': survey, 'action': action}
+    return render(request, template, context_dict)
 
 
 @login_required
