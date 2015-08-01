@@ -197,10 +197,10 @@ class WhooshTrecNews(Engine):
             url = "/treconomics/" + str(result.docnum)
             if newschema:
                 summary = result.highlights("alltext")
-                content = result('alltext')
+                content = result['alltext']
             else:
                 summary = result.highlights("content")
-                content = result('content')
+                content = result['content']
 
             trecid = result["docid"]
             trecid = trecid.strip()
