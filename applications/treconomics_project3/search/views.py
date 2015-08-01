@@ -1,17 +1,18 @@
+from django.core.urlresolvers import reverse_lazy
+
 __author__ = 'leif'
 
 import os
 import sys
 import datetime
 # Django
-from django.template.context import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from treconomics.models import DocumentsExamined
 from treconomics.models import TaskDescription
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.utils import simplejson
+from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query
 from urllib import urlencode
@@ -54,7 +55,6 @@ def show_document(request, whoosh_docid):
     if time_search_experiment_out(request):
         return HttpResponseRedirect('/treconomics/timeout/')
 
-    context = RequestContext(request)
     ec = get_experiment_context(request)
     uname = ec["username"]
     taskid = ec["taskid"]
@@ -74,7 +74,7 @@ def show_document(request, whoosh_docid):
     doc_date = fields["timedate"]
     doc_source = fields["source"]
     doc_id = whoosh_docid
-    topic_num = ec["topicnum"]
+    # topic_num = ec["topicnum"]
 
     def get_document_rank():
         """
@@ -95,7 +95,7 @@ def show_document(request, whoosh_docid):
 
     # check if there are any get parameters.
     user_judgement = -2
-    rank = 0
+    # rank = 0
     if request.is_ajax():
         getdict = request.GET
 
@@ -107,7 +107,7 @@ def show_document(request, whoosh_docid):
             doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
             user_judgement = mark_document(request, doc_id, user_judgement, title, doc_num, rank, doc_length)
             # mark_document handles logging of this event
-        return HttpResponse(simplejson.dumps(user_judgement), mimetype='application/javascript')
+        return HttpResponse(json.dumps(user_judgement), mimetype='application/javascript')
     else:
         if time_search_experiment_out(request):
             return HttpResponseRedirect('/treconomics/next/')
@@ -134,16 +134,16 @@ def show_document(request, whoosh_docid):
             if request.GET.get('backtoassessment', False):
                 context_dict['backtoassessment'] = True
 
-            return render_to_response('trecdo/document.html', context_dict, context)
+            return render(request, 'trecdo/document.html', context_dict)
 
 
 @login_required
 def show_saved_documents(request):
-    context = RequestContext(request)
 
     # Timed out?
     if time_search_experiment_out(request):
-        return HttpResponseRedirect('/treconomics/timeout/')
+
+        return HttpResponseRedirect(reverse_lazy('timeout'))
 
     ec = get_experiment_context(request)
     taskid = ec['taskid']
@@ -175,9 +175,9 @@ def show_saved_documents(request):
     # Get documents that are for this task, and for this user
     u = User.objects.get(username=uname)
     docs = DocumentsExamined.objects.filter(user=u).filter(task=taskid)
-    return render_to_response('trecdo/saved_documents.html',
+    return render(request, 'trecdo/saved_documents.html',
                               {'participant': uname, 'task': taskid, 'condition': condition,
-                               'current_search': current_search, 'docs': docs}, context)
+                               'current_search': current_search, 'docs': docs})
 
 
 @login_required
@@ -341,7 +341,7 @@ def search(request, taskid=-1):
         return HttpResponseRedirect('/treconomics/timeout/')
     else:
         """show base index view"""
-        context = RequestContext(request)
+
         ec = get_experiment_context(request)
 
         uname = ec["username"]
@@ -410,7 +410,7 @@ def search(request, taskid=-1):
             # If the user poses a blank query, we just send back a results page saying so.
             if user_query == '':
                 result_dict['blank_query'] = True
-                return render_to_response('trecdo/results.html', result_dict, context)
+                return render(request, 'trecdo/results.html', result_dict)
             else:
                 # Get some results! Call this wrapper function which uses the Django cache backend.
                 get_results(request, result_dict,
@@ -451,10 +451,10 @@ def search(request, taskid=-1):
 
                 log_event(event='VIEW_SEARCH_RESULTS_PAGE', request=request, page=page)
                 request.session['last_request_time'] = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
-                return render_to_response('trecdo/results.html', result_dict, context)
+                return render(request, 'trecdo/results.html', result_dict)
         else:
             log_event(event='VIEW_SEARCH_BOX', request=request, page=page)
-            return render_to_response('trecdo/search.html', result_dict, context)
+            return render(request, 'trecdo/search.html', result_dict)
 
 
 @login_required
@@ -478,14 +478,13 @@ def view_log_query_focus(request):
         log_event(event="EXPERIMENT_TIMEOUT", request=request)
         return HttpResponseBadRequest(json.dumps({'timeout': True}), content_type='application/json')
 
-    context = RequestContext(request)
     log_event(event='QUERY_FOCUS', request=request)
     return HttpResponse(1)
 
 
 @login_required
 def view_performance(request):
-    context = RequestContext(request)
+
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -518,8 +517,8 @@ def view_performance(request):
     for p in performances:
         print p
 
-    return render_to_response('base/performance_experiment.html',
-                              {'participant': uname, 'condition': condition, 'performances': performances}, context)
+    context_dict = {'participant': uname, 'condition': condition, 'performances': performances}
+    return render(request, 'base/performance_experiment.html', context_dict)
 
 
 @login_required
@@ -569,7 +568,8 @@ def view_log_hover(request):
                   judgement=judgement,
                   doc_length=doc_length)
 
-    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+    return JsonResponse({'logged': True})
+    # return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
@@ -584,7 +584,9 @@ def suggestion_selected(request):
 
     new_query = request.GET.get('new_query')
     log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
-    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+
+    return JsonResponse({'logged': True})
+    # return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
@@ -600,7 +602,9 @@ def suggestion_hover(request):
     rank = int(request.GET.get('rank'))
 
     log_event(event='AUTOCOMPLETE_QUERY_HOVER', query=suggestion, rank=rank, request=request)
-    return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+
+    return JsonResponse({'logged': True})
+    # return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
@@ -645,15 +649,16 @@ def autocomplete_suggestion(request):
             'results': results,
         }
 
-        return HttpResponse(json.dumps(response_data), content_type='application/json')
+        return JsonResponse(response_data)
+        # return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-    return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')
+    return JsonResponse({'error': True})
+    # return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')
 
 
 def view_run_queries(request, topic_num):
-    from experiment_configuration import bm25
+    # from experiment_configuration import bm25
 
-    context = RequestContext(request)
     num = 0
     query_file_name = os.path.join(data_dir, topic_num + '.queries')
     print query_file_name
@@ -669,13 +674,13 @@ def view_run_queries(request, topic_num):
             # print line
             parts = line.partition(' ')
             # print parts
-            query_num = parts[0]
+            # query_num = parts[0]
             query_str = unicode(parts[2])
             if query_str:
                 print query_str
                 q = Query(query_str)
                 q.skip = 1
-                response = bm25.search(q)
+                # response = bm25.search(q)
                 query_list.append(query_str)
             else:
                 break
@@ -684,4 +689,5 @@ def view_run_queries(request, topic_num):
 
     seconds = timeit.default_timer() - start_time
 
-    return render_to_response('base/query_test.html', {'topic_num': topic_num, 'seconds': seconds, 'num': num}, context)
+    context_dict = {'topic_num': topic_num, 'seconds': seconds, 'num': num}
+    return render(request, 'base/query_test.html', context_dict)
