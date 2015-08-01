@@ -212,7 +212,8 @@ class WhooshTrecNews(Engine):
                                 source=source,
                                 rank=rank,
                                 whooshid=result.docnum,
-                                score=result.score)
+                                score=result.score,
+                                content=result["content"])
 
         response.result_total = len(results)
 
