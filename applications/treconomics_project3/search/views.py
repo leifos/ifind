@@ -37,6 +37,7 @@ from treconomics.experiment_configuration import my_whoosh_doc_index_dir, data_d
 from treconomics.experiment_configuration import experiment_setups
 from time import sleep
 import json
+import treconomics.nltk_entity_extraction as nee
 
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
@@ -139,10 +140,8 @@ def show_document(request, whoosh_docid):
 
 @login_required
 def show_saved_documents(request):
-
     # Timed out?
     if time_search_experiment_out(request):
-
         return HttpResponseRedirect(reverse_lazy('timeout'))
 
     ec = get_experiment_context(request)
@@ -176,8 +175,8 @@ def show_saved_documents(request):
     u = User.objects.get(username=uname)
     docs = DocumentsExamined.objects.filter(user=u).filter(task=taskid)
     return render(request, 'trecdo/saved_documents.html',
-                              {'participant': uname, 'task': taskid, 'condition': condition,
-                               'current_search': current_search, 'docs': docs})
+                  {'participant': uname, 'task': taskid, 'condition': condition,
+                   'current_search': current_search, 'docs': docs})
 
 
 @login_required
@@ -188,15 +187,12 @@ def task(request, taskid):
     return HttpResponse(pid + " your task is set to: " + taskid + ". <a href='/treconomics/saved/'>click here</a>")
 
 
-def reduce_snippet(response, percent):
-    for s in response.results:
-        print s
-        summary = s.summary
-        l = len(summary)
-        p = l
-        if l > 5:
-            p = int(float(l) * (percent / 100.0)) + 2
-        s.summary = summary[:p]
+def reduce_snippet(response):
+    for result in response.results:
+        summary = result.summary
+        entities = nee.extract_entities(summary.decode("utf-8"))
+        result.summary = (' '.join(entities))
+
     return response
 
 
@@ -220,14 +216,14 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     based on the interface.
     """
     if interface == 1:
-        pass
         # no change to length
+        pass
     if interface == 2:
         # call a method that takes response and process it for interface 1, etc
-        response = reduce_snippet(response, 10)
+        response = reduce_snippet(response)
 
     if interface == 3:
-        response = reduce_snippet(response, 50)
+        response = reduce_snippet(response)
 
     """
     Add in your code here.
@@ -484,7 +480,6 @@ def view_log_query_focus(request):
 
 @login_required
 def view_performance(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -586,7 +581,6 @@ def suggestion_selected(request):
     log_event(event='AUTOCOMPLETE_QUERY_SELECTED', query=new_query, request=request)
 
     return JsonResponse({'logged': True})
-    # return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
@@ -604,7 +598,6 @@ def suggestion_hover(request):
     log_event(event='AUTOCOMPLETE_QUERY_HOVER', query=suggestion, rank=rank, request=request)
 
     return JsonResponse({'logged': True})
-    # return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
@@ -650,10 +643,8 @@ def autocomplete_suggestion(request):
         }
 
         return JsonResponse(response_data)
-        # return HttpResponse(json.dumps(response_data), content_type='application/json')
 
     return JsonResponse({'error': True})
-    # return HttpResponseBadRequest(json.dumps({'error': True}), content_type='application/json')
 
 
 def view_run_queries(request, topic_num):
@@ -666,8 +657,7 @@ def view_run_queries(request, topic_num):
     start_time = timeit.default_timer()
     query_list = []
 
-    try:
-        query_file = open(query_file_name, "r")
+    with open(query_file_name, "r") as query_file:
         while query_file and num < 200:
             num += 1
             line = query_file.readline()
@@ -684,8 +674,6 @@ def view_run_queries(request, topic_num):
                 query_list.append(query_str)
             else:
                 break
-    except:
-        pass
 
     seconds = timeit.default_timer() - start_time
 
