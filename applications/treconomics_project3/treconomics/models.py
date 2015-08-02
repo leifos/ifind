@@ -23,7 +23,7 @@ class TaskDescription(models.Model):
     description = models.CharField(max_length=1500)
 
     def __unicode__(self):
-        return '%s' % (self.title)
+        return self.title
 
 
 class TopicQuerySuggestion(models.Model):

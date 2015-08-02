@@ -5,6 +5,7 @@ __author__ = 'leif'
 import os
 import sys
 import datetime
+import logging
 # Django
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
@@ -42,6 +43,8 @@ import treconomics.nltk_entity_extraction as nee
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
 
+# logging.basicConfig(level=logging.DEBUG)
+
 
 @login_required
 def show_document(request, whoosh_docid):
@@ -54,7 +57,7 @@ def show_document(request, whoosh_docid):
     """
     sys.stdout.flush()
     if time_search_experiment_out(request):
-        return HttpResponseRedirect('/treconomics/timeout/')
+        return reverse_lazy('timeout')
 
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -156,7 +159,7 @@ def show_saved_documents(request):
 
         if 'judge' not in getdict and 'docid' not in getdict:
             # Log only if user is entering the page, not after clicking a relevant button
-            print "LOG_VIEW_SAVED_DOCS"
+            logging.debug('LOG_VIEW_SAVED_DOCS')
             log_event(event="VIEW_SAVED_DOCS", request=request)
 
         if 'judge' in getdict:
@@ -174,14 +177,19 @@ def show_saved_documents(request):
     # Get documents that are for this task, and for this user
     u = User.objects.get(username=uname)
     docs = DocumentsExamined.objects.filter(user=u).filter(task=taskid)
-    return render(request, 'trecdo/saved_documents.html',
-                  {'participant': uname, 'task': taskid, 'condition': condition,
-                   'current_search': current_search, 'docs': docs})
+
+    context_dict = {'participant': uname,
+                    'task': taskid,
+                    'condition': condition,
+                    'current_search': current_search,
+                    'docs': docs}
+
+    return render(request, 'trecdo/saved_documents.html', context_dict)
 
 
 @login_required
 def task(request, taskid):
-    print "TASK_SET_TO " + taskid
+    logging.debug('TASK_SET_TO %d', taskid)
     request.session['taskid'] = taskid
     pid = request.user.username
     return HttpResponse(pid + " your task is set to: " + taskid + ". <a href='/treconomics/saved/'>click here</a>")
@@ -201,7 +209,7 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     if page < 1:
         page = 1
 
-    ec = get_experiment_context(request)
+    # TODO ec = get_experiment_context(request)
 
     query = Query(query_terms)
     query.skip = page
@@ -237,8 +245,7 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     result_dict['trec_search'] = False
     result_dict['num_pages'] = num_pages
 
-    print "PAGE"
-    print num_pages
+    logging.debug('PAGE %d', num_pages)
 
     if num_pages > 0:
         result_dict['trec_search'] = True
@@ -376,7 +383,7 @@ def search(request, taskid=-1):
         # to go back to!
         if not request.session.get('queryurl'):
             queryurl = result_dict['application_root'] + 'search/'
-            print "Set queryurl to : " + queryurl
+            logging.debug('Set queryurl to : %s', queryurl)
             request.session['queryurl'] = queryurl
 
         suggestions = False
@@ -432,7 +439,7 @@ def search(request, taskid=-1):
 
                 query_params = urlencode({'query': user_query, 'page': page, 'noperf': 'true'})
                 queryurl = '/treconomics/search/?' + query_params
-                print "Set queryurl to : " + queryurl
+                logging.debug('Set queryurl to : %s', queryurl)
                 request.session['queryurl'] = queryurl
 
                 result_dict['display_query'] = result_dict['query']
@@ -483,7 +490,7 @@ def view_performance(request):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
-    rotation = ec["rotation"]
+    # rotation = ec["rotation"]
 
     def ratio(rels, nonrels):
         """ expect two floats
@@ -510,9 +517,11 @@ def view_performance(request):
         performances.append(perf)
 
     for p in performances:
-        print p
+        logging.debug(p)
 
-    context_dict = {'participant': uname, 'condition': condition, 'performances': performances}
+    context_dict = {'participant': uname,
+                    'condition': condition,
+                    'performances': performances}
     return render(request, 'base/performance_experiment.html', context_dict)
 
 
@@ -652,7 +661,7 @@ def view_run_queries(request, topic_num):
 
     num = 0
     query_file_name = os.path.join(data_dir, topic_num + '.queries')
-    print query_file_name
+    logging.debug(query_file_name)
 
     start_time = timeit.default_timer()
     query_list = []
@@ -664,13 +673,13 @@ def view_run_queries(request, topic_num):
             # print line
             parts = line.partition(' ')
             # print parts
-            # query_num = parts[0]
+            # TODO query_num = parts[0]
             query_str = unicode(parts[2])
             if query_str:
-                print query_str
+                logging.debug(query_str)
                 q = Query(query_str)
                 q.skip = 1
-                # response = bm25.search(q)
+                # TODO response = bm25.search(q)
                 query_list.append(query_str)
             else:
                 break

@@ -1,4 +1,3 @@
-from django.template.context import RequestContext
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -18,6 +17,7 @@ from survey.models import ConceptListingSurvey
 from survey.models import ShortStressSurvey
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
+import logging
 
 
 def view_reset_test_users(request):
@@ -25,23 +25,23 @@ def view_reset_test_users(request):
 
     for un in usernames:
         print un
-        u = User.objects.get(username=un)
-        profile = u.profile
+        temp_user = User.objects.get(username=un)
+        profile = temp_user.profile
         profile.steps_completed = 0
         profile.tasks_completed = 0
         profile.save()
-        docs = DocumentsExamined.objects.filter(user=temp_user).delete()
-        pre_tasks = PreTaskTopicKnowledgeSurvey.objects.filter(user=temp_user).delete()
-        post_tasks = PostTaskTopicRatingSurvey.objects.filter(user=temp_user).delete()
-        USdemo = USDemographicsSurvey.objects.filter(user=temp_user).delete()
-        UKdemo = USDemographicsSurvey.objects.filter(user=temp_user).delete()
-        nasa = NasaSystemLoad.objects.filter(user=temp_user).delete()
-        nasaq = NasaQueryLoad.objects.filter(user=temp_user).delete()
-        nasan = NasaNavigationLoad.objects.filter(user=temp_user).delete()
-        nasaa = NasaAssessmentLoad.objects.filter(user=temp_user).delete()
-        eff = SearchEfficacy.objects.filter(user=temp_user).delete()
-        stess = ShortStressSurvey.objects.filter(user=temp_user).delete()
-        concepts = ConceptListingSurvey.objects.filter(user=temp_user).delete()
+        DocumentsExamined.objects.filter(user=temp_user).delete()
+        PreTaskTopicKnowledgeSurvey.objects.filter(user=temp_user).delete()
+        PostTaskTopicRatingSurvey.objects.filter(user=temp_user).delete()
+        USDemographicsSurvey.objects.filter(user=temp_user).delete()
+        USDemographicsSurvey.objects.filter(user=temp_user).delete()
+        NasaSystemLoad.objects.filter(user=temp_user).delete()
+        NasaQueryLoad.objects.filter(user=temp_user).delete()
+        NasaNavigationLoad.objects.filter(user=temp_user).delete()
+        NasaAssessmentLoad.objects.filter(user=temp_user).delete()
+        SearchEfficacy.objects.filter(user=temp_user).delete()
+        ShortStressSurvey.objects.filter(user=temp_user).delete()
+        ConceptListingSurvey.objects.filter(user=temp_user).delete()
         request.session['current_step'] = '0'
     return HttpResponse(
         "<script type='text/javascript'>"
@@ -114,7 +114,7 @@ def view_next(request):
     workflow = ec["workflow"]
     num_of_steps = len(workflow)
 
-    #current_url = ec["current_url"]
+    # current_url = ec["current_url"]
     # find the position of the current_url in the workflow,
     # increment that position and move subject to the next step...
     # this does not solve the back button issue entirely
@@ -126,8 +126,10 @@ def view_next(request):
         next_step = step
 
     url_to_visit_next = workflow[next_step]
-    print "view_next - step : " + str(next_step) + " url to visit next: " + url_to_visit_next
-    # request.session['current_url'] = url_to_visit_next
+
+    msg = ('view_next - step : ', next_step, 'url to visit next: ', url_to_visit_next)
+    logging.debug('{0} {1} {2} {3}'.format(msg))
+    # TODO request.session['current_url'] = url_to_visit_next
     return HttpResponseRedirect(url_to_visit_next)
 
 
@@ -184,7 +186,6 @@ def view_pre_practice_task(request, taskid):
 
 @login_required
 def view_post_practice_task(request, taskid):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -210,7 +211,6 @@ def view_post_practice_task(request, taskid):
 
 @login_required
 def view_pre_task_with_questions(request, taskid):
-
     # Set the tasks id manually from request
     request.session['taskid'] = taskid
     ec = get_experiment_context(request)
@@ -264,7 +264,6 @@ def view_pre_task_with_questions(request, taskid):
 
 @login_required
 def view_show_task(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -284,7 +283,6 @@ def view_show_task(request):
 
 @login_required
 def view_post_task(request, taskid):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -312,7 +310,6 @@ def view_post_task(request, taskid):
 
 @login_required
 def view_post_task_with_questions(request, taskid):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -323,7 +320,7 @@ def view_post_task_with_questions(request, taskid):
     errors = ""
 
     # #################
-    #handle post within this element. save data to survey table,
+    # handle post within this element. save data to survey table,
     if request.method == 'POST':
         form = PostTaskTopicRatingSurveyForm(request.POST)
         if form.is_valid():
@@ -366,7 +363,6 @@ def view_post_task_with_questions(request, taskid):
 
 @login_required
 def view_pre_experiment(request, version):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -387,7 +383,6 @@ def view_pre_experiment(request, version):
 
 @login_required
 def view_post_experiment(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -403,7 +398,6 @@ def view_post_experiment(request):
 
 @login_required
 def view_task_spacer(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -419,7 +413,6 @@ def view_task_spacer(request):
 
 @login_required
 def view_end_experiment(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -435,7 +428,6 @@ def view_end_experiment(request):
 
 @login_required
 def view_session_completed(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -448,11 +440,10 @@ def view_session_completed(request):
 
 @login_required
 def view_commence_session(request):
-
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
-    print "SESSION COMMENCED"
+    logging.debug('SESSION COMMENCED')
     log_event(event="SESSION_COMMENCED", request=request)
 
     context_dict = {'participant': uname, 'condition': condition}
@@ -467,4 +458,4 @@ def show_timeout_message(request):
     """
     log_event(event="EXPERIMENT_TIMEOUT", request=request)
 
-    return render(request, 'base/timeout.html', {})
+    return render(request, 'base/timeout.html')

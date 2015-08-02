@@ -1,3 +1,5 @@
+import logging
+
 __author__ = 'leif'
 
 import datetime
@@ -50,13 +52,9 @@ def get_experiment_context(request):
 
 
 def print_experiment_context(ec):
-    print "username: " + ec["username"]
-    print "rotation: " + str(ec["rotation"])
-    print "condition: " + str(ec["condition"])
-    print "completed steps: " + str(ec["completed_steps"])
-    print "current step: " + str(ec["current_step"])
-    print "taskid: " + str(ec["taskid"])
-    print "topicnum: " + str(ec["topicnum"])
+    for key, value in ec.iteritems():
+        if key is not 'workflow':
+            logging.debug('%s: %s', key, str(value))
 
 
 def time_search_experiment_out(request):
@@ -64,7 +62,7 @@ def time_search_experiment_out(request):
     ec = get_experiment_context(request)
     task_id = ec["taskid"]
     timeout = experiment_setups[ec['condition']].get_timeout(task_id)
-    print "timeout", timeout
+    logging.debug('%s %d' % ('timeout:', timeout))
 
     if timeout == 0:
         return False
@@ -94,8 +92,7 @@ def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", ra
               metrics=None):
     ec = get_experiment_context(request)
 
-    msg = ec["username"] + " " + str(ec["condition"]) + " " + str(ec["taskid"]) + " " + str(
-        ec["topicnum"]) + " " + event
+    msg = '%s %d %d %d' % (ec["username"], ec["condition"], ec["taskid"], ec["topicnum"], event)
 
     if whooshid > -1:
         event_logger.info(

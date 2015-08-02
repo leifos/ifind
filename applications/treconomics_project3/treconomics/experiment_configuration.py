@@ -29,7 +29,7 @@ print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
 print "Stopword file: " + stopword_file
 
 event_logger = logging.getLogger('event_log')
-event_logger.setLevel(logging.INFO)
+event_logger.setLevel(logging.WARNING)
 event_logger_handler = logging.FileHandler(os.path.join(my_experiment_log_dir, 'experiment.log'))
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)
