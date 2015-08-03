@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,18 +8,20 @@ from django.core.urlresolvers import reverse_lazy
 from models import DocumentsExamined
 from models import TaskDescription
 from survey.models import USDemographicsSurvey
-from survey.models import PreTaskTopicKnowledgeSurvey, PreTaskTopicKnowledgeSurveyForm
-from survey.models import PostTaskTopicRatingSurvey, PostTaskTopicRatingSurveyForm
+from survey.models import PreTaskTopicKnowledgeSurvey
+from survey.models import PostTaskTopicRatingSurvey
 from survey.models import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad
 from survey.models import SearchEfficacy
 from survey.models import ConceptListingSurvey
 from survey.models import ShortStressSurvey
+from survey.forms import PreTaskTopicKnowledgeSurveyForm
+from survey.forms import PostTaskTopicRatingSurveyForm
 from experiment_functions import get_experiment_context, print_experiment_context
 from experiment_functions import log_event
 import logging
 
 
-def view_reset_test_users(request):
+def reset_test_users(request):
     usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8']
 
     for un in usernames:
@@ -51,10 +52,10 @@ def view_reset_test_users(request):
 
 
 def view_login(request):
-    return render(request, 'base/login.html', {})
+    return render(request, 'base/login.html')
 
 
-def view_start_experiment(request):
+def start_experiment(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -93,7 +94,7 @@ def view_logout(request):
     # pid = request.user.username
     logout(request)
     # Redirect to a success page.
-    return render(request, 'base/logout.html', {})
+    return render(request, 'base/logout.html')
 
 
 @login_required
@@ -110,7 +111,7 @@ def view_next(request):
     profile.steps_completed = step
     profile.save()
 
-    # KNOWN ISSUE HERE - Clicking the back button will mean this can get out of sync.
+    # TODO KNOWN ISSUE HERE - Clicking the back button will mean this can get out of sync.
     workflow = ec["workflow"]
     num_of_steps = len(workflow)
 
@@ -127,14 +128,14 @@ def view_next(request):
 
     url_to_visit_next = workflow[next_step]
 
-    msg = ('view_next - step : ', next_step, 'url to visit next: ', url_to_visit_next)
-    logging.debug('{0} {1} {2} {3}'.format(msg))
+    # msg = ('view_next - step : ', next_step, 'url to visit next: ', url_to_visit_next)
+    # logging.debug('{0} {1} {2} {3}'.format(msg))
     # TODO request.session['current_url'] = url_to_visit_next
     return HttpResponseRedirect(url_to_visit_next)
 
 
 @login_required
-def view_pre_task(request, taskid):
+def pre_task(request, taskid):
     # TODO Could benefit from a generic view
     # Set the tasks id
     request.session['taskid'] = taskid
@@ -160,9 +161,60 @@ def view_pre_task(request, taskid):
 
     return render(request, 'base/pre_task.html', context_dict)
 
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from django.views.generic.base import ContextMixin
+
+
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view)
+
+
+class ExperimentContextMixin(LoginRequiredMixin, ContextMixin):
+    """
+    ExperiemntContextMixin requires LoginRequiredMixin conceptually:
+    You have to be logged in for get_experiment_context to be defined!
+    """
+    def get_context_data(self, **kwargs):
+        context = super(ExperimentContextMixin, self).get_context_data(**kwargs)
+
+        # I'd just do this and change the templates:
+        # context['experiment'] = get_experiment_context(self.request)
+
+        # But you seem to currently want:
+        ec = get_experiment_context(self.request)
+        context['participant'] = ec['username']
+        context['condition'] = ec['condition']
+
+        return context
+
+
+class PreExperimentView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/pre_experiment.html'
+
+
+class PostExperimentView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/post_experiment.html'
+
+
+class TaskSpacerView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/task_spacer.html'
+
+
+class EndExperimentView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/end_experiment.html'
+
+
+class SessionCompletedView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/session_completed.html'
+    print "SESSION COMPLETED"
+    # log_event(event="SESSION_COMPLETED", request=self.request)
 
 @login_required
-def view_pre_practice_task(request, taskid):
+def pre_practice_task(request, taskid):
     # Set the tasks id
     request.session['taskid'] = taskid
 
@@ -185,7 +237,7 @@ def view_pre_practice_task(request, taskid):
 
 
 @login_required
-def view_post_practice_task(request, taskid):
+def post_practice_task(request, taskid):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -198,7 +250,7 @@ def view_post_practice_task(request, taskid):
     profile.save()
 
     # write_to_log
-    print "PRACTICE SEARCH TASK COMPLETED"
+    logging.debug('PRACTICE SEARCH TASK COMPLETED')
     log_event(event="PRACTICE_SEARCH_TASK_COMPLETED", request=request)
 
     # if participant has completed all the tasks, go to the post experiment view
@@ -210,7 +262,7 @@ def view_post_practice_task(request, taskid):
 
 
 @login_required
-def view_pre_task_with_questions(request, taskid):
+def pre_task_with_questions(request, taskid):
     # Set the tasks id manually from request
     request.session['taskid'] = taskid
     ec = get_experiment_context(request)
@@ -233,7 +285,7 @@ def view_pre_task_with_questions(request, taskid):
             obj.topic_num = ec["topicnum"]
             obj.save()
             log_event(event="PRE_TASK_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
+            return reverse_lazy('next')
         else:
             print form.errors
             errors = form.errors
@@ -263,7 +315,7 @@ def view_pre_task_with_questions(request, taskid):
 
 
 @login_required
-def view_show_task(request):
+def show_task(request):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -275,14 +327,16 @@ def view_show_task(request):
 
     context_dict = {'participant': uname,
                     'condition': condition,
-                    'task': taskid, 'topic': t.topic_num,
-                    'tasktitle': t.title, 'taskdescription': t.description}
+                    'task': taskid,
+                    'topic': t.topic_num,
+                    'tasktitle': t.title,
+                    'taskdescription': t.description}
 
     return render(request, 'base/show_task.html', context_dict)
 
 
 @login_required
-def view_post_task(request, taskid):
+def post_task(request, taskid):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -309,7 +363,7 @@ def view_post_task(request, taskid):
 
 
 @login_required
-def view_post_task_with_questions(request, taskid):
+def post_task_with_questions(request, taskid):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -361,85 +415,85 @@ def view_post_task_with_questions(request, taskid):
     return render(request, 'base/post_task_with_questions.html', context_dict)
 
 
+# @login_required
+# def pre_experiment(request, version):
+#     ec = get_experiment_context(request)
+#     uname = ec["username"]
+#     condition = ec["condition"]
+#
+#     if version == 'AN':
+#         return render(request,
+#                       'base/anita_pre_experiment.html',
+#                       {'participant': uname, 'condition': condition})
+#     if version == 'US':
+#         return render(request,
+#                       'base/pre_experiment_us.html',
+#                       {'participant': uname, 'condition': condition})
+#     else:
+#         return render(request,
+#                       'base/pre_experiment.html',
+#                       {'participant': uname, 'condition': condition})
+
+
+# @login_required
+# def post_experiment(request):
+#     ec = get_experiment_context(request)
+#     uname = ec["username"]
+#     condition = ec["condition"]
+#     # if we had post task survey we could ask them here
+#     # else we can provide a link to a hosted questionnaire
+#
+#     # Provide debriefing
+#
+#     context_dict = {'participant': uname, 'condition': condition}
+#
+#     return render(request, 'base/post_experiment.html', context_dict)
+
+
+# @login_required
+# def task_spacer(request):
+#     ec = get_experiment_context(request)
+#     uname = ec["username"]
+#     condition = ec["condition"]
+#     # if we had post task survey we could ask them here
+#     # else we can provide a link to a hosted questionnaire
+#
+#     # Provide debriefing
+#
+#     context_dict = {'participant': uname, 'condition': condition}
+#
+#     return render(request, 'base/task_spacer.html', context_dict)
+
+
+# @login_required
+# def end_experiment(request):
+#     ec = get_experiment_context(request)
+#     uname = ec["username"]
+#     condition = ec["condition"]
+#     # if we had post task survey we could ask them here
+#     # else we can provide a link to a hosted questionnaire
+#
+#     # Provide debriefing
+#
+#     context_dict = {'participant': uname, 'condition': condition}
+#
+#     return render(request, 'base/end_experiment.html', context_dict)
+
+
+# @login_required
+# def session_completed(request):
+#     ec = get_experiment_context(request)
+#     uname = ec["username"]
+#     condition = ec["condition"]
+#     print "SESSION COMPLETED"
+#     log_event(event="SESSION_COMPLETED", request=request)
+#
+#     context_dict = {'participant': uname, 'condition': condition}
+#     return render(request, 'base/session_completed.html', context_dict)
+
+
 @login_required
-def view_pre_experiment(request, version):
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-
-    if version == 'AN':
-        return render(request,
-                      'base/anita_pre_experiment.html',
-                      {'participant': uname, 'condition': condition})
-    if version == 'US':
-        return render(request,
-                      'base/pre_experiment_us.html',
-                      {'participant': uname, 'condition': condition})
-    else:
-        return render(request,
-                      'base/pre_experiment.html',
-                      {'participant': uname, 'condition': condition})
-
-
-@login_required
-def view_post_experiment(request):
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    # if we had post task survey we could ask them here
-    # else we can provide a link to a hosted questionnaire
-
-    # Provide debriefing
-
-    context_dict = {'participant': uname, 'condition': condition}
-
-    return render(request, 'base/post_experiment.html', context_dict)
-
-
-@login_required
-def view_task_spacer(request):
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    # if we had post task survey we could ask them here
-    # else we can provide a link to a hosted questionnaire
-
-    # Provide debriefing
-
-    context_dict = {'participant': uname, 'condition': condition}
-
-    return render(request, 'base/task_spacer.html', context_dict)
-
-
-@login_required
-def view_end_experiment(request):
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    # if we had post task survey we could ask them here
-    # else we can provide a link to a hosted questionnaire
-
-    # Provide debriefing
-
-    context_dict = {'participant': uname, 'condition': condition}
-
-    return render(request, 'base/end_experiment.html', context_dict)
-
-
-@login_required
-def view_session_completed(request):
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    print "SESSION COMPLETED"
-    log_event(event="SESSION_COMPLETED", request=request)
-
-    context_dict = {'participant': uname, 'condition': condition}
-    return render(request, 'base/session_completed.html', context_dict)
-
-
-@login_required
-def view_commence_session(request):
+def commence_session(request):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]

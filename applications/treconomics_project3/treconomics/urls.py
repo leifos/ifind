@@ -2,9 +2,13 @@ __author__ = 'leif'
 
 from django.conf.urls import patterns, url, include
 
-import views
+from . import views
+from .views import PreExperimentView
+from .views import PostExperimentView
+from .views import TaskSpacerView
+from .views import EndExperimentView
+from .views import SessionCompletedView
 from search import views as search_views
-from survey import views as survey_views
 import survey_anita_views
 
 
@@ -15,27 +19,29 @@ urlpatterns = \
              url(r'^logout/$', views.view_logout, name='logout'),
              url(r'^next/$', views.view_next, name='next'),
 
-             url(r'^startexperiment/$', views.view_start_experiment, name='start-experiment'),
-             url(r'^preexperiment/(?P<version>[A-Z]{2})/$', views.view_pre_experiment, name='pre-experiment'),
-             url(r'^pretask/(?P<taskid>\d+)/$', views.view_pre_task),
-             url(r'^prepracticetask/(?P<taskid>\d+)/$', views.view_pre_practice_task),
-             url(r'^pretaskquestions/(?P<taskid>\d+)/$', views.view_pre_task_with_questions),
+             url(r'^startexperiment/$', views.start_experiment, name='start-experiment'),
+
+             url(r'^preexperiment/(?P<version>[A-Z]{2})/$', PreExperimentView.as_view(), name='pre-experiment'),
+
+             url(r'^pretask/(?P<taskid>\d+)/$', views.pre_task, name='pre-task'),
+             url(r'^prepracticetask/(?P<taskid>\d+)/$', views.pre_practice_task),
+             url(r'^pretaskquestions/(?P<taskid>\d+)/$', views.pre_task_with_questions),
              url(r'^(?P<whoosh_docid>\d+)/$', search_views.show_document),
              url(r'^saved/$', search_views.show_saved_documents, name='saved'),
 
              url(r'^search/$', search_views.search, name='search'),
              url(r'^search/(?P<taskid>\d+)/$', search_views.search),
-             (r'^posttask/(?P<taskid>\d+)/$', views.view_post_task),
-             (r'^postpracticetask/(?P<taskid>\d+)/$', views.view_post_practice_task),
-             (r'^posttaskquestions/(?P<taskid>\d+)/$', views.view_post_task_with_questions),
-             (r'^taskspacer/$', views.view_task_spacer),
+             url(r'^posttask/(?P<taskid>\d+)/$', views.post_task, name='post-task'),
+             (r'^postpracticetask/(?P<taskid>\d+)/$', views.post_practice_task),
+             (r'^posttaskquestions/(?P<taskid>\d+)/$', views.post_task_with_questions),
+             url(r'^taskspacer/$', TaskSpacerView.as_view()),
 
-             (r'^showtask/$', views.view_show_task),
-             (r'^sessioncommence/$', views.view_commence_session),
-             (r'^sessioncompleted/$', views.view_session_completed),
+             (r'^showtask/$', views.show_task),
+             (r'^sessioncommence/$', views.commence_session),
+             url(r'^sessioncompleted/$', SessionCompletedView.as_view()),
 
-             (r'^postexperiment/$', views.view_post_experiment),
-             (r'^endexperiment/$', views.view_end_experiment),
+             url(r'^postexperiment/$', PostExperimentView.as_view()),
+             url(r'^endexperiment/$', EndExperimentView.as_view()),
              (r'^performance/$', search_views.view_performance),
 
              (r'^suggestion_selected/$', search_views.suggestion_selected),
@@ -45,7 +51,7 @@ urlpatterns = \
              (r'^autocomplete/$', search_views.autocomplete_suggestion),
              # (r'^docview_delay/$', search_views.docview_delay),
 
-             (r'^reset/$', views.view_reset_test_users),
+             (r'^reset/$', views.reset_test_users),
              (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
              url(r'^timeout/$', views.show_timeout_message, name='timeout'),
 
