@@ -5,8 +5,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 SEX_CHOICES = (('N', 'Not Indicated'),
-               ('M', 'Male'), ('F', 'Female')
-)
+               ('M', 'Male'), ('F', 'Female'))
 
 
 class UKDemographicsSurvey(models.Model):
@@ -109,7 +108,6 @@ class PreTaskTopicKnowledgeSurvey(models.Model):
     topic_interest = models.IntegerField(default=0)
     topic_searched = models.IntegerField(default=0)
     topic_difficulty = models.IntegerField(default=0)
-
 
     def __unicode__(self):
         return self.user.username
