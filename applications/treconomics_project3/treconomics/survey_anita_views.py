@@ -1,6 +1,6 @@
 __author__ = 'leif'
 from django.template.context import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -17,7 +17,7 @@ from models import TaskDescription
 
 
 def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, action, template, show_topic=True):
-    context = RequestContext(request)
+
     request.session['taskid'] = taskid
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -55,10 +55,17 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
     action_url = action + taskid + '/'
 
     # provide link to search interface / next system
-    return render_to_response(template,
-                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
-                               'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey,
-                               'action': action_url, 'errors': errors, 'show_topic': show_topic}, context)
+    context_dict = {'participant': uname,
+                    'condition': condition,
+                    'task': taskid,
+                    'topic': t.topic_num,
+                    'tasktitle': t.title,
+                    'taskdescription': t.description,
+                    'formset': survey,
+                    'action': action_url,
+                    'errors': errors,
+                    'show_topic': show_topic}
+    return render(request, template, context_dict)
 
 
 @login_required
@@ -131,7 +138,7 @@ def view_anita_time_instructions(request, version):
 
 @login_required
 def view_anita_consent(request):
-    context = RequestContext(request)
+
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
@@ -157,7 +164,10 @@ def view_anita_consent(request):
         survey = AnitaConsentForm()
 
     # provide link to search interface / next system
-    return render_to_response('survey/anita_consent_form.html', {'participant': uname, 'condition': condition,
-                                                                 'formset': survey, 'action': '/treconomics/consent/',
-                                                                 'errors': errors}, context)
+    context_dict = {'participant': uname,
+                    'condition': condition,
+                    'formset': survey,
+                    'action': '/treconomics/consent/',
+                    'errors': errors}
+    return render(request, 'survey/anita_consent_form.html', context_dict)
 
