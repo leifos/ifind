@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django import forms
 from django.forms.widgets import RadioSelect
 
-from survey.models import clean_to_zero
+from survey.forms import clean_to_zero
 
 
 SEX_CHOICES = ( ('N', 'Not Indicated'),

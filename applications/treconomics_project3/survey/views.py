@@ -10,17 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 from treconomics.experiment_functions import get_experiment_context
 from treconomics.experiment_functions import log_event
-from .models import UKDemographicsSurveyForm
-from .models import USDemographicsSurveyForm
-from .models import NasaSystemLoadForm
-from .models import NasaQueryLoadForm
-from .models import NasaNavigationLoadForm
-from .models import NasaAssessmentLoadForm
-from .models import NasaFactorCompareForm
-from .models import SearchEfficacyForm
-from .models import ConceptListingSurveyForm
-from .models import ShortStressSurveyForm
-from .models import ModifiedStressSurveyForm
+from .forms import *
 from treconomics.models import TaskDescription
 
 
@@ -152,7 +142,14 @@ def view_concept_listing_survey(request, taskid, when):
     action = '/treconomics/conceptlistingsurvey/' + taskid + '/' + when + '/'
 
     # provide link to search interface / next system
-    return render_to_response('survey/concept_listing_survey.html',
-                              {'participant': uname, 'condition': condition, 'task': taskid, 'topic': t.topic_num,
-                               'tasktitle': t.title, 'taskdescription': t.description, 'formset': survey,
-                               'action': action, 'errors': errors}, context)
+    context_dict = {'participant': uname,
+                    'condition': condition,
+                    'task': taskid,
+                    'topic': t.topic_num,
+                    'tasktitle': t.title,
+                    'taskdescription': t.description,
+                    'formset': survey,
+                    'action': action,
+                    'errors': errors}
+
+    return render(request, 'survey/concept_listing_survey.html', context_dict)
