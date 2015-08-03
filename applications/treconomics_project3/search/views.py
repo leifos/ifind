@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse_lazy
+from __future__ import absolute_import
 
 __author__ = 'leif'
 
@@ -13,6 +13,7 @@ from treconomics.models import DocumentsExamined
 from treconomics.models import TaskDescription
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query
@@ -38,7 +39,7 @@ from treconomics.experiment_configuration import my_whoosh_doc_index_dir, data_d
 from treconomics.experiment_configuration import experiment_setups
 from time import sleep
 import json
-import treconomics.nltk_entity_extraction as nee
+import snippets.nltk_entity_extraction as nee
 
 ix = open_dir(my_whoosh_doc_index_dir)
 ixr = ix.reader()
@@ -341,16 +342,12 @@ def search(request, taskid=-1):
 
     # check for timeout
     if time_search_experiment_out(request):
-        return HttpResponseRedirect('/treconomics/timeout/')
+        return HttpResponseRedirect(reverse_lazy('timeout'))
     else:
         """show base index view"""
 
         ec = get_experiment_context(request)
-
-        uname = ec["username"]
         condition = ec["condition"]
-        taskid = ec["taskid"]
-        topic_num = ec["topicnum"]
         rotation = ec["rotation"]
         es = experiment_setups[condition]
         exp = es.get_exp_dict(taskid, rotation)
@@ -358,25 +355,19 @@ def search(request, taskid=-1):
         page_len = exp['rpp']
         page = 1
 
-        def setup_result_dict(uname, taskid, condition, interface, experiment, topic_num):
-            result_dict = {}
-            result_dict['participant'] = uname
-            result_dict['task'] = taskid
-            result_dict['topicno'] = topic_num
-            result_dict['condition'] = condition
-            result_dict['interface'] = interface
-            result_dict['application_root'] = '/treconomics/'
-            result_dict['ajax_search_url'] = 'searcha/'
-            result_dict['autocomplete'] = experiment['autocomplete']
-            result_dict['is_fast'] = 'true'
-            result_dict['delay_results'] = exp['result_delay']
-            result_dict['delay_docview'] = exp['docview_delay']
-            if experiment['result_delay'] == 0:
+        result_dict = {'participant': ec["username"],
+                       'task': ec["taskid"],
+                       'topicno': ec["topicnum"],
+                       'condition': condition,
+                       'interface': interface,
+                       'application_root': '/treconomics/',
+                       'ajax_search_url': 'searcha/',
+                       'autocomplete': exp['autocomplete'],
+                       'is_fast': 'true'
+                       }
+
+        if exp['result_delay'] == 0:
                 result_dict['is_fast'] = 'false'
-            return result_dict
-
-
-        result_dict = setup_result_dict(uname, taskid, condition, interface, exp, topic_num)
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
@@ -430,7 +421,7 @@ def search(request, taskid=-1):
                     result_dict['focus_querybox'] = 'true'
 
                 if result_dict['trec_results']:
-                    qrp = query_result_performance(result_dict['trec_results'], topic_num)
+                    qrp = query_result_performance(result_dict['trec_results'], ec["topicnum"])
                     log_event(event='SEARCH_RESULTS_PAGE_QUALITY',
                               request=request,
                               whooshid=page,
