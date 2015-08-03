@@ -32,8 +32,8 @@ from treconomics.experiment_functions import get_topic_relevant_count
 from treconomics.experiment_functions import get_experiment_context
 from treconomics.experiment_functions import mark_document, log_event
 from treconomics.experiment_functions import time_search_experiment_out
-from treconomics.experiment_functions import getPerformance
-from treconomics.experiment_functions import getQueryResultPerformance, log_performance
+from treconomics.experiment_functions import get_performance
+from treconomics.experiment_functions import query_result_performance, log_performance
 from treconomics.experiment_configuration import my_whoosh_doc_index_dir, data_dir
 from treconomics.experiment_configuration import experiment_setups
 from time import sleep
@@ -430,7 +430,7 @@ def search(request, taskid=-1):
                     result_dict['focus_querybox'] = 'true'
 
                 if result_dict['trec_results']:
-                    qrp = getQueryResultPerformance(result_dict['trec_results'], topic_num)
+                    qrp = query_result_performance(result_dict['trec_results'], topic_num)
                     log_event(event='SEARCH_RESULTS_PAGE_QUALITY',
                               request=request,
                               whooshid=page,
@@ -505,7 +505,7 @@ def view_performance(request):
 
     performances = []
     for t in topics:
-        perf = getPerformance(uname, t)
+        perf = get_performance(uname, t)
         topic_desc = TaskDescription.objects.get(topic_num=t).title
         perf["num"] = t
         perf["title"] = topic_desc
