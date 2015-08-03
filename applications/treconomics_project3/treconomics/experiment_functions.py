@@ -92,7 +92,7 @@ def log_event(event, request, query="", whooshid=-2, judgement=-2, trecid="", ra
               metrics=None):
     ec = get_experiment_context(request)
 
-    msg = '%s %d %d %d' % (ec["username"], ec["condition"], ec["taskid"], ec["topicnum"], event)
+    msg = "{0} {1} {2} {3} {4}".format(ec["username"], ec["condition"], ec["taskid"], ec["topicnum"], event)
 
     if whooshid > -1:
         event_logger.info(
@@ -187,7 +187,7 @@ def assessPerformance(topic_num, doc_list):
     return performance
 
 
-def getPerformance(username, topic_num):
+def get_performance(username, topic_num):
     u = User.objects.get(username=username)
     docs = DocumentsExamined.objects.filter(user=u).filter(topic_num=topic_num)
     print "Documents to Judge for topic %s " % (topic_num)
@@ -200,7 +200,7 @@ def getPerformance(username, topic_num):
     return assessPerformance(str(topic_num), doc_list)
 
 
-def getQueryResultPerformance(results, topic_num):
+def query_result_performance(results, topic_num):
     i = 0
     rels_found = 0
     for r in results:
@@ -208,7 +208,7 @@ def getQueryResultPerformance(results, topic_num):
         if qrels.get_value(topic_num, r.docid) > 0:
             rels_found += 1
 
-    # rels_found = sum(qrels.get_value(topic_num, r.docid) > 0 for r in results)
+    # TODO rels_found = sum(qrels.get_value(topic_num, r.docid) > 0 for r in results)
     # return [rels_found, len(results)]
 
     return [rels_found, i]
@@ -224,7 +224,7 @@ def get_topic_relevant_count(topic_num):
         if qrels.get_value(topic_num, document) > 0:
             count += 1
 
-    # sum(qrels.get_value(topic_num, doc) > 0 for doc in qrels.get_doc_list(topic_num))
+    # TODO return sum(qrels.get_value(topic_num, doc) > 0 for doc in qrels.get_doc_list(topic_num))
     return count
 
 
@@ -233,7 +233,7 @@ def calculate_precision(results, topic_num, k):
     Returns a float representing the precision @ k for a given topic, topic_num, and set of results, results.
     """
     results = results[0:k]
-    no_relevant = getQueryResultPerformance(results, topic_num)[0]
+    no_relevant = query_result_performance(results, topic_num)[0]
     return no_relevant / float(k)
 
 

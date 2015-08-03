@@ -14,7 +14,7 @@ work_dir = os.getcwd()
 # when deployed this needs to match up with the hostname, and directory to where the project is
 
 if socket.gethostname() == 'newssearch':
-    work_dir = '/opt/tango/ifind/applications/treconomics_project3/'
+    work_dir = '/ifind/applications/treconomics_project3/'
 
 my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/test100index/')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
@@ -38,7 +38,7 @@ event_logger.addHandler(event_logger_handler)
 # workflow must always start with /treconomics/startexperiment/
 
 exp_work_flows = [
-    ['/treconomics/startexperiment/', '/treconomics/preexperiment/UK/',
+    ['/treconomics/startexperiment/', '/treconomics/consent', '/treconomics/preexperiment/UK/',
      '/treconomics/prepracticetask/0/', '/treconomics/search/0/', '/treconomics/postpracticetask/0/',
      '/treconomics/pretaskquestions/1/', '/treconomics/search/1/', '/treconomics/posttaskquestions/1/',
      '/treconomics/pretaskquestions/2/', '/treconomics/search/2/', '/treconomics/posttaskquestions/2/',
