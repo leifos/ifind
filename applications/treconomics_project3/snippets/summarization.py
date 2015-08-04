@@ -3,6 +3,7 @@ from pyteaser import Summarize
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser
 from whoosh import scoring
+from whoosh.scoring import TF_IDF
 from blessings import Terminal
 import re
 import itertools
@@ -15,7 +16,8 @@ ix = open_dir(my_whoosh_doc_index_dir)
 
 t = Terminal()
 
-with ix.searcher(weighting=scoring.BM25F()) as mysearcher:
+
+with ix.searcher(weighting=scoring.TF_IDF()) as mysearcher:
 
     qp = QueryParser("content", ix.schema)
     query_list = ['airport', 'wildlife', 'privacy', 'news']
@@ -23,7 +25,7 @@ with ix.searcher(weighting=scoring.BM25F()) as mysearcher:
     for query in itertools.islice(query_list, 0, 10):
 
         q = qp.parse(unicode('id:1'))
-        bm25f = scoring.BM25F()
+        bm25f = scoring.TF_IDF()
 
         matcher = q.matcher(mysearcher)
         bm25f_scorer = bm25f.scorer(mysearcher, 'alltext', query)
