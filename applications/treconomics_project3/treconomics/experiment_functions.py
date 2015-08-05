@@ -132,11 +132,13 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
         log_event(event="DOC_MARKED_RELEVANT", request=request, whooshid=whooshid, judgement=1, trecid=trecid,
                   rank=rank, doc_length=doc_length)
         print "DOC_MARKED_RELEVANT " + str(whooshid) + " " + trecid + " " + str(rank)
+
     if judgement == 0:
         # write_to_log("DOC_MARKED_NONRELEVANT", whooshid )
         print "DOC_MARKED_NONRELEVANT " + str(whooshid) + " " + trecid + " " + str(rank)
         log_event(event="DOC_MARKED_NONRELEVANT", request=request, whooshid=whooshid, judgement=0, trecid=trecid,
                   rank=rank, doc_length=doc_length)
+
     if judgement < 0:
         # write_to_log("DOC_VIEWED"), whooshid )
         log_event(event="DOC_MARKED_VIEWED", whooshid=whooshid, request=request, trecid=trecid, rank=rank,

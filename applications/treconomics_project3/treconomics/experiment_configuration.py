@@ -40,9 +40,9 @@ event_logger.addHandler(event_logger_handler)
 exp_work_flows = [
     ['/treconomics/startexperiment/', '/treconomics/preexperiment/UK/',
      '/treconomics/prepracticetask/0/', '/treconomics/search/0/', '/treconomics/postpracticetask/0/',
-     '/treconomics/pretaskquestions/1/', '/treconomics/search/1/', '/treconomics/posttaskquestions/1/',
-     '/treconomics/pretaskquestions/2/', '/treconomics/search/2/', '/treconomics/posttaskquestions/2/',
-     '/treconomics/pretaskquestions/3/', '/treconomics/search/3/', '/treconomics/posttaskquestions/3/',
+     '/treconomics/pretaskquestions/1/', '/treconomics/search/1/', '/treconomics/mickeyposttask/1/',
+     '/treconomics/pretaskquestions/2/', '/treconomics/search/2/', '/treconomics/mickeyposttask/2/',
+     '/treconomics/pretaskquestions/3/', '/treconomics/search/3/', '/treconomics/mickeyposttask/3/',
      '/treconomics/logout/'],
     ['/treconomics/startexperiment/', '/treconomics/consent', '/treconomics/preexperiment/AN/',
      '/treconomics/prepracticetask/0/', '/treconomics/search/0/', '/treconomics/postpracticetask/0/',
@@ -83,6 +83,15 @@ exp_work_flows = [
      '/treconomics/anitademographicssurvey/', '/treconomics/logout/'],
 ]
 
+mickeys_flow = [
+    '/treconomics/startexperiment/', '/treconomics/preexperiment/UK/',
+    '/treconomics/prepracticetask/0/', '/treconomics/search/0/', '/treconomics/postpracticetask/0/',
+    '/treconomics/anitapretasksurvey/1/', '/treconomics/search/1/', '/treconomics/mickeyposttask/1/',
+    '/treconomics/anitapretasksurvey/2/', '/treconomics/search/2/', '/treconomics/mickeyposttask/2/',
+    '/treconomics/anitapretasksurvey/3/', '/treconomics/search/3/', '/treconomics/mickeyposttask/3/',
+    '/treconomics/logout/'
+]
+
 suggestion_trie = AutocompleteTrie(
     min_occurrences=3,
     suggestion_count=8,
@@ -95,7 +104,7 @@ suggestion_trie = AutocompleteTrie(
 bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=1, newschema=True)
 bm25.key_name = 'bm25'
 
-exp_test = ExperimentSetup(workflow=exp_work_flows[0],
+exp_test = ExperimentSetup(workflow=mickeys_flow,
                            engine=bm25,
                            practice_topic='341',
                            topics=['347', '367', '354'],
@@ -106,7 +115,7 @@ exp_test = ExperimentSetup(workflow=exp_work_flows[0],
                            description='standard condition bm25 test',
                            trie=suggestion_trie,
                            autocomplete=True,
-                           timeout=300)
+                           timeout=600)
 
 
 # these correspond to conditions

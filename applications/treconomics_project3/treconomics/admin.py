@@ -10,9 +10,9 @@ from survey.models import USDemographicsSurvey, UKDemographicsSurvey
 from survey.models import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
 from survey.models import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
 from survey.models import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
-from models_anita_experiments import AnitaPreTaskSurvey, AnitaPostTask0Survey, AnitaPostTask1Survey, \
-    AnitaPostTask2Survey, AnitaPostTask3Survey
-from models_anita_experiments import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey, AnitaDemographicsSurvey
+from models_mickey import AnitaPreTaskSurvey, AnitaPostTask0Survey, AnitaPostTask1Survey, \
+    AnitaPostTask2Survey, AnitaPostTask3Survey, MickeyPostTaskSurvey
+from models_mickey import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey, AnitaDemographicsSurvey
 
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -85,7 +85,7 @@ admin.site.register(SearchEfficacy, UserSurveyAdmin)
 admin.site.register(ConceptListingSurvey, UserSurveyAdmin)
 admin.site.register(ShortStressSurvey, UserSurveyAdmin)
 admin.site.register(ModifiedStressSurvey, UserSurveyAdmin)
-admin.site.register(AnitaPreTaskSurvey, TaskQuestionSurveyAdmin)
+
 admin.site.register(AnitaPostTask0Survey, TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask1Survey, TaskQuestionSurveyAdmin)
 admin.site.register(AnitaPostTask2Survey, TaskQuestionSurveyAdmin)
@@ -94,3 +94,7 @@ admin.site.register(AnitaExit1Survey, UserSurveyAdmin)
 admin.site.register(AnitaExit2Survey, UserSurveyAdmin)
 admin.site.register(AnitaExit3Survey, UserSurveyAdmin)
 admin.site.register(AnitaDemographicsSurvey, UserSurveyAdmin)
+
+# Important
+admin.site.register(AnitaPreTaskSurvey, TaskQuestionSurveyAdmin)
+admin.site.register(MickeyPostTaskSurvey, TaskQuestionSurveyAdmin)

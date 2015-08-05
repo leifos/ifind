@@ -396,6 +396,7 @@ class PostTaskTopicRatingSurveyForm(ModelForm):
         exclude = ('user', 'task_id', 'topic_num')
 
 
+
 STRESS_CHOICES = ((1, 'Not at all'), (2, ''), (3, ''), (4, ''), (5, 'Extremely'))
 
 
