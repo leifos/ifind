@@ -112,7 +112,8 @@ def show_document(request, whoosh_docid):
             doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
             user_judgement = mark_document(request, doc_id, user_judgement, title, doc_num, rank, doc_length)
             # mark_document handles logging of this event
-        return HttpResponse(json.dumps(user_judgement), mimetype='application/javascript')
+        return JsonResponse(user_judgement)
+        # return HttpResponse(json.dumps(user_judgement), mimetype='application/javascript')
     else:
         if time_search_experiment_out(request):
             return HttpResponseRedirect('/treconomics/next/')
@@ -196,12 +197,27 @@ def task(request, taskid):
     return HttpResponse(pid + " your task is set to: " + taskid + ". <a href='/treconomics/saved/'>click here</a>")
 
 
-def reduce_snippet(response):
+def entity_snippet(response):
     for result in response.results:
         summary = result.summary
         entities = nee.extract_entities(summary.decode("utf-8"))
-        result.summary = (' '.join(entities))
+        result.summary = ('>'.join(entities))
+        print "Enitity snippet"
 
+    return response
+
+
+def reduce_snippet(response, percent):
+    for s in response.results:
+        print s
+        summary = s.summary
+        l = len(summary)
+        p = l
+        if l > 5:
+            p = int(float(l) * (percent / 100.0)) + 2
+        s.summary = summary[:p]
+
+    print "Reduced snippet"
     return response
 
 
@@ -228,13 +244,11 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
         # no change to length
         pass
     if interface == 2:
-        pass
         # call a method that takes response and process it for interface 1, etc
-        # response = reduce_snippet(response)
+        response = reduce_snippet(response, 50)
 
     if interface == 3:
-        pass
-        # response = reduce_snippet(response)
+        response = entity_snippet(response)
 
     """
     Add in your code here.
