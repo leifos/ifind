@@ -228,11 +228,13 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
         # no change to length
         pass
     if interface == 2:
+        pass
         # call a method that takes response and process it for interface 1, etc
-        response = reduce_snippet(response)
+        # response = reduce_snippet(response)
 
     if interface == 3:
-        response = reduce_snippet(response)
+        pass
+        # response = reduce_snippet(response)
 
     """
     Add in your code here.
