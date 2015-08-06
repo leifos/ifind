@@ -24,10 +24,11 @@ pip install -r requirements.txt
 ```
 
 ### Database population
-Create a database with the predefined modules (synchronize)
+Create a database with the predefined models (old synchronize)
 ```
-python manage.py syndb
+python manage.py migrate
 ```
+
 Use the `populate_treconomics_db.py` to add data
 ```
 python populate_treconomics_db.py
@@ -47,6 +48,13 @@ which you can do by insert the following line at the bottom of your `.bashrc`
 ```
 export PYTHONPATH=/Users/mickeypash/ifind/:/Users/mickeypash/ifind/applications/slowsearch_project:$PYTHONPATH
 ```
+
+### Downloading the NLTK corpus
+```
+python -c "import nltk; nltk.download()
+```
+A GUI window should pop-up with download options.
+Preferably install the whole corpus (this will take a few minutes/
 
 ## Deployment
 
