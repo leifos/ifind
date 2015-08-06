@@ -192,27 +192,6 @@ class ExperimentContextMixin(LoginRequiredMixin, ContextMixin):
         return context
 
 
-class PreExperimentView(ExperimentContextMixin, TemplateView):
-    template_name = 'base/pre_experiment.html'
-
-
-class PostExperimentView(ExperimentContextMixin, TemplateView):
-    template_name = 'base/post_experiment.html'
-
-
-class TaskSpacerView(ExperimentContextMixin, TemplateView):
-    template_name = 'base/task_spacer.html'
-
-
-class EndExperimentView(ExperimentContextMixin, TemplateView):
-    template_name = 'base/end_experiment.html'
-
-
-class SessionCompletedView(ExperimentContextMixin, TemplateView):
-    template_name = 'base/session_completed.html'
-    print "SESSION COMPLETED"
-    # log_event(event="SESSION_COMPLETED", request=self.request)
-
 @login_required
 def pre_practice_task(request, taskid):
     # Set the tasks id
@@ -480,16 +459,16 @@ def post_task_with_questions(request, taskid):
 #     return render(request, 'base/end_experiment.html', context_dict)
 
 
-# @login_required
-# def session_completed(request):
-#     ec = get_experiment_context(request)
-#     uname = ec["username"]
-#     condition = ec["condition"]
-#     print "SESSION COMPLETED"
-#     log_event(event="SESSION_COMPLETED", request=request)
-#
-#     context_dict = {'participant': uname, 'condition': condition}
-#     return render(request, 'base/session_completed.html', context_dict)
+@login_required
+def session_completed(request):
+    ec = get_experiment_context(request)
+    uname = ec["username"]
+    condition = ec["condition"]
+    print "SESSION COMPLETED"
+    log_event(event="SESSION_COMPLETED", request=request)
+
+    context_dict = {'participant': uname, 'condition': condition}
+    return render(request, 'base/session_completed.html', context_dict)
 
 
 @login_required
@@ -513,3 +492,28 @@ def show_timeout_message(request):
     log_event(event="EXPERIMENT_TIMEOUT", request=request)
 
     return render(request, 'base/timeout.html')
+
+
+class PreExperimentView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/pre_experiment.html'
+
+
+class PostExperimentView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/post_experiment.html'
+
+
+class TaskSpacerView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/task_spacer.html'
+
+
+class EndExperimentView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/end_experiment.html'
+
+
+class SessionCompletedView(ExperimentContextMixin, TemplateView):
+    template_name = 'base/session_completed.html'
+    print "SESSION COMPLETED"
+
+    def dispatch(self, request, *args, **kwargs):
+        log_event(event="SESSION_COMPLETED", request=self.request)
+        pass

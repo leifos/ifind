@@ -38,7 +38,7 @@ urlpatterns = \
 
              (r'^showtask/$', views.show_task),
              (r'^sessioncommence/$', views.commence_session),
-             url(r'^sessioncompleted/$', SessionCompletedView.as_view()),
+             url(r'^sessioncompleted/$', views.session_completed, name='session-completed'),
 
              url(r'^postexperiment/$', PostExperimentView.as_view()),
              url(r'^endexperiment/$', EndExperimentView.as_view()),

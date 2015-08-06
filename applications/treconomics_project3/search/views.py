@@ -112,11 +112,11 @@ def show_document(request, whoosh_docid):
             doc_length = ixr.doc_field_length(long(request.GET.get('docid', 0)), 'content')
             user_judgement = mark_document(request, doc_id, user_judgement, title, doc_num, rank, doc_length)
             # mark_document handles logging of this event
-        return JsonResponse(user_judgement)
+        return JsonResponse(user_judgement, safe=False)
         # return HttpResponse(json.dumps(user_judgement), mimetype='application/javascript')
     else:
         if time_search_experiment_out(request):
-            return HttpResponseRedirect('/treconomics/next/')
+            return HttpResponseRedirect(reverse_lazy('next'))
         else:
             # marks that the document has been viewed
             rank = get_document_rank()
@@ -209,7 +209,7 @@ def entity_snippet(response):
 
 def reduce_snippet(response, percent):
     for s in response.results:
-        print s
+        # print s
         summary = s.summary
         l = len(summary)
         p = l
@@ -580,7 +580,7 @@ def view_log_hover(request):
                   doc_length=doc_length)
 
     return JsonResponse({'logged': True})
-    # return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
+    # TODO return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
