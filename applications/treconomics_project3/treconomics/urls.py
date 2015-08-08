@@ -9,7 +9,7 @@ from .views import TaskSpacerView
 from .views import EndExperimentView
 from .views import SessionCompletedView
 from search import views as search_views
-import survey_mickey_views
+import views_mickey
 
 
 urlpatterns = \
@@ -69,19 +69,19 @@ urlpatterns = \
              # (r'^shortstresssurvey/$', survey_views.view_short_stress_survey),
              # (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
 
-             url(r'^mickeyposttask/(?P<taskid>\d+)/$', survey_mickey_views.mickey_posttask),
+             url(r'^mickeyposttask/(?P<taskid>\d+)/$', views_mickey.mickey_posttask),
 
-             (r'^anitapretasksurvey/(?P<taskid>\d+)/$', survey_mickey_views.view_anita_pretask_survey),
-             (r'^anitaposttask0survey/(?P<taskid>\d+)/$', survey_mickey_views.view_anita_posttask0_survey),
-             (r'^anitaposttask1survey/(?P<taskid>\d+)/$', survey_mickey_views.view_anita_posttask1_survey),
-             (r'^anitaposttask2survey/(?P<taskid>\d+)/$', survey_mickey_views.view_anita_posttask2_survey),
-             (r'^anitaposttask3survey/(?P<taskid>\d+)/$', survey_mickey_views.view_anita_posttask3_survey),
-             (r'^anitademographicssurvey/$', survey_mickey_views.view_anita_demographic_survey),
-             (r'^anitaexit1survey/$', survey_mickey_views.view_anita_exit1_survey),
-             (r'^anitaexit2survey/$', survey_mickey_views.view_anita_exit2_survey),
-             (r'^anitaexit3survey/$', survey_mickey_views.view_anita_exit3_survey),
+             (r'^anitapretasksurvey/(?P<taskid>\d+)/$', views_mickey.view_anita_pretask_survey),
+             (r'^anitaposttask0survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask0_survey),
+             (r'^anitaposttask1survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask1_survey),
+             (r'^anitaposttask2survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask2_survey),
+             (r'^anitaposttask3survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask3_survey),
+             (r'^anitademographicssurvey/$', views_mickey.view_anita_demographic_survey),
+             (r'^anitaexit1survey/$', views_mickey.view_anita_exit1_survey),
+             (r'^anitaexit2survey/$', views_mickey.view_anita_exit2_survey),
+             (r'^anitaexit3survey/$', views_mickey.view_anita_exit3_survey),
              (r'^anitatimeinstructions/(?P<version>[A-Z]+)/$',
-             survey_mickey_views.view_anita_time_instructions),
-             (r'^consent/$', survey_mickey_views.view_anita_consent),
+             views_mickey.view_anita_time_instructions),
+             (r'^consent/$', views_mickey.view_anita_consent),
 
     )

@@ -10,7 +10,7 @@ import itertools
 import os
 
 work_dir = os.getcwd()
-my_whoosh_doc_index_dir = '/Users/mickeypash/ifind/applications/treconomics_project3/data/test100index/'
+my_whoosh_doc_index_dir = '../data/test100index/'
 
 ix = open_dir(my_whoosh_doc_index_dir)
 
