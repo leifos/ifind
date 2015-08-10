@@ -51,10 +51,17 @@ export PYTHONPATH=/Users/mickeypash/ifind/:/Users/mickeypash/ifind/applications/
 
 ### Downloading the NLTK corpus
 ```
-python -c "import nltk; nltk.download()
+python -c "import nltk; nltk.download()"
 ```
 A GUI window should pop-up with download options.
-Preferably install the whole corpus (this will take a few minutes.
+Alternatively you will see a CLI which will require you to specify and option.
+Type `d` for Download and then `book` to download the book corpus (that is all you need).
+You could also select  `all` and install the whole corpus (this will take a few minutes).
+
+The files will be installed in 
+    - `/Users/<username>/nltk_data` (Mac)
+    - `/usr/share/nltk_data` (Unix)
+    - `C:\nltk_data` (Windows)
 
 ## Deployment
 
