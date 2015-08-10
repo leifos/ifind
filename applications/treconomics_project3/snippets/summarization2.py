@@ -18,12 +18,11 @@ if __name__ == "__main__":
     url = "http://en.wikipedia.org/wiki/Automatic_summarization"
     # parser = HtmlParser.from_url(url, Tokenizer(LANGUAGE))
     # or for plain text files
-    parser = PlaintextParser.from_file("document.txt", Tokenizer(LANGUAGE))
+    parser = PlaintextParser.from_file("document2.txt", Tokenizer(LANGUAGE))
     stemmer = Stemmer(LANGUAGE)
 
     summarizer = Summarizer(stemmer)
     summarizer.stop_words = get_stop_words(LANGUAGE)
 
     for sentence in summarizer(parser.document, SENTENCES_COUNT):
-        pass
-        # print sentence
+        print(sentence)

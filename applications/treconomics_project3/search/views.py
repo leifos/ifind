@@ -202,7 +202,7 @@ def entity_snippet(response):
         summary = result.summary
         entities = nee.extract_entities(summary.decode("utf-8"))
         result.summary = ('>'.join(entities))
-        print "Enitity snippet"
+    print "Enitity snippet"
 
     return response
 
@@ -240,6 +240,7 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     Now that we have the response, we can iterate through it, and modify the snippets
     based on the interface.
     """
+
     if interface == 1:
         # no change to length
         pass
@@ -363,11 +364,19 @@ def search(request, taskid=-1):
         """show base index view"""
 
         ec = get_experiment_context(request)
+        print "CONTEXT DICT"
+        print ec
         condition = ec["condition"]
         rotation = ec["rotation"]
         es = experiment_setups[condition]
         exp = es.get_exp_dict(taskid, rotation)
         interface = exp['interface']
+        print taskid, rotation, interface
+        print '--------'
+
+        ec['yermaw'] = 'hello'
+
+
         page_len = exp['rpp']
         page = 1
 
@@ -423,6 +432,8 @@ def search(request, taskid=-1):
                 return render(request, 'trecdo/results.html', result_dict)
             else:
                 # Get some results! Call this wrapper function which uses the Django cache backend.
+                print 'WE WANT TO GET A QUERY BACK'
+                print "INTERFACE IS {0}".format(interface)
                 get_results(request, result_dict,
                             page,
                             page_len,

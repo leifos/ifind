@@ -29,7 +29,7 @@ print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
 print "Stopword file: " + stopword_file
 
 event_logger = logging.getLogger('event_log')
-event_logger.setLevel(logging.DEBUG)
+event_logger.setLevel(logging.WARNING)
 event_logger_handler = logging.FileHandler(os.path.join(my_experiment_log_dir, 'experiment.log'))
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)
@@ -92,6 +92,13 @@ mickeys_flow = [
     '/treconomics/logout/'
 ]
 
+test_flow = [
+    '/treconomics/search/0/',
+    '/treconomics/search/1/',
+    '/treconomics/search/2/',
+    '/treconomics/search/3/',
+]
+
 suggestion_trie = AutocompleteTrie(
     min_occurrences=3,
     suggestion_count=8,
@@ -101,21 +108,27 @@ suggestion_trie = AutocompleteTrie(
     vocab_path=os.path.join(work_dir, "data/vocab.txt"),
     vocab_trie_path=os.path.join(work_dir, "data/vocab_trie.dat"))
 
-bm25 = WhooshTrecNews(whoosh_index_dir=my_whoosh_doc_index_dir, stopwords_file=stopword_file, model=1, newschema=True)
+bm25 = WhooshTrecNews(
+    whoosh_index_dir=my_whoosh_doc_index_dir,
+    stopwords_file=stopword_file,
+    model=1,
+    newschema=True)
+
 bm25.key_name = 'bm25'
 
-exp_test = ExperimentSetup(workflow=mickeys_flow,
-                           engine=bm25,
-                           practice_topic='341',
-                           topics=['347', '367', '354'],
-                           rpp=10,
-                           practice_interface=1,
-                           interface=[1, 2, 3],
-                           rotation_type=1,
-                           description='standard condition bm25 test',
-                           trie=suggestion_trie,
-                           autocomplete=True,
-                           timeout=600)
+exp_test = ExperimentSetup(
+    workflow=mickeys_flow,
+    engine=bm25,
+    practice_topic='341',
+    topics=['347', '367', '354'],
+    rpp=10,
+    practice_interface=1,
+    interface=[1, 2, 3],
+    rotation_type=1,
+    description='standard condition bm25 test',
+    trie=suggestion_trie,
+    autocomplete=True,
+    timeout=300)
 
 
 # these correspond to conditions
