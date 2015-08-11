@@ -368,16 +368,18 @@ def search(request, taskid=-1):
         print ec
         condition = ec["condition"]
         rotation = ec["rotation"]
-        es = experiment_setups[condition]
-        exp = es.get_exp_dict(taskid, rotation)
-        interface = exp['interface']
+        interface = ec["interface"]
+
+        #      es = experiment_setups[condition]
+        #      exp = es.get_exp_dict(taskid, rotation)
+        #    interface = exp['interface']
         print taskid, rotation, interface
         print '--------'
 
-        ec['yermaw'] = 'hello'
+        ec['yermaw'] = 'hello' # really? WTF?
 
 
-        page_len = exp['rpp']
+        page_len = ec["rpp"]
         page = 1
 
         result_dict = {'participant': ec["username"],
@@ -387,12 +389,12 @@ def search(request, taskid=-1):
                        'interface': interface,
                        'application_root': '/treconomics/',
                        'ajax_search_url': 'searcha/',
-                       'autocomplete': exp['autocomplete'],
+                       'autocomplete': ec['autocomplete'],
                        'is_fast': 'true'
                        }
 
-        if exp['result_delay'] == 0:
-                result_dict['is_fast'] = 'false'
+        #if exp['result_delay'] == 0:
+        #        result_dict['is_fast'] = 'false'
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
@@ -464,9 +466,9 @@ def search(request, taskid=-1):
                 if len(result_dict['query']) > 50:
                     result_dict['display_query'] = result_dict['query'][0:50] + '...'
 
-                if exp['result_delay'] > 0 and is_from_search_request(page):
-                    log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
-                    sleep(exp['result_delay'])
+                #if exp['result_delay'] > 0 and is_from_search_request(page):
+                #    log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
+                #    sleep(exp['result_delay'])
 
                 set_results_session_var(request, result_dict)
 
