@@ -35,6 +35,23 @@ def get_experiment_context(request):
         ec["current_step"] = steps_completed
         request.session['current_step'] = steps_completed
 
+
+    if "taskid" in request.session:
+        ec["taskid"] = int(request.session['taskid'])
+    else:
+        ec["taskid"] = 0
+
+
+    es = experiment_setups[ec['condition']]
+    esd = es.get_exp_dict(ec["taskid"],ec["rotation"])
+    ec["topicnum"] = esd["topic"]
+    ec["interface"] = esd["interface"]
+    ec["rpp"] = esd["rpp"]
+    ec["autocomplete"] = esd["autocomplete"]
+
+    return ec
+
+    """
     if "taskid" in request.session:
         ec["taskid"] = int(request.session['taskid'])
         t = ec["taskid"] - 1
@@ -47,8 +64,9 @@ def get_experiment_context(request):
         ec["taskid"] = 0
         request.session["taskid"] = 0
         ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
+    """
 
-    return ec
+
 
 
 def print_experiment_context(ec):
