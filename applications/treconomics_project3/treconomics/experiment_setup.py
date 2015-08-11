@@ -163,3 +163,20 @@ class ExperimentSetup(object):
     def __str__(self):
         return self.description
 
+
+if __name__ == '__main__':
+
+    es = ExperimentSetup(None, None, practice_topic='341',
+                           topics=['347', '367', '354'],
+                           rpp=10,
+                           practice_interface=1,
+                           interface=[1, 2, 3],
+                           rotation_type=1)
+
+
+    for r in range(0, 6):
+        print "User on rotation", r
+        for t in range(0, 4):
+            des = es.get_exp_dict(t, r)
+
+            print "Taskno: {0} Rotation: {1} Topic: {2} Interface: {3}".format(t,  r, des['topic'], des['interface'])
