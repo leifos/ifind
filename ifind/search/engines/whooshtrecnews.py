@@ -53,7 +53,10 @@ class WhooshTrecNews(Engine):
             print "Whoosh Document index open: ", whoosh_index_dir
             print "Documents in index: ", self.docIndex.doc_count()
             if newschema:
-                self.parser = QueryParser("alltext", self.docIndex.schema)
+                if 'alltext' in self.docIndex.schema:
+                    self.parser = QueryParser("alltext", self.docIndex.schema)
+                else:
+                    self.parser = QueryParser('content', self.docIndex.schema)
             else:
                 self.parser = QueryParser("content", self.docIndex.schema)
 
@@ -196,8 +199,12 @@ class WhooshTrecNews(Engine):
 
             url = "/treconomics/" + str(result.docnum)
             if newschema:
-                summary = result.highlights("alltext")
-                content = result['alltext']
+                if 'alltext' in WhooshTrecNews.docIndex.schema:
+                    summary = result.highlights("alltext")
+                    content = result['alltext']
+                else:
+                    summary = result.highlights('content')
+                    content = result['content']
             else:
                 summary = result.highlights("content")
                 content = result['content']
