@@ -37,7 +37,6 @@ from treconomics.experiment_functions import get_performance
 from treconomics.experiment_functions import query_result_performance, log_performance
 from treconomics.experiment_configuration import my_whoosh_doc_index_dir, data_dir
 from treconomics.experiment_configuration import experiment_setups
-from time import sleep
 import json
 import snippets.nltk_entity_extraction as nee
 

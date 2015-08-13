@@ -67,8 +67,6 @@ def get_experiment_context(request):
     """
 
 
-
-
 def print_experiment_context(ec):
     for key, value in ec.iteritems():
         if key is not 'workflow':

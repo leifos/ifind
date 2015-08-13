@@ -16,7 +16,7 @@ work_dir = os.getcwd()
 if socket.gethostname() == 'newssearch':
     work_dir = '~/ifind/applications/treconomics_project3/'
 
-my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/test100index/')
+my_whoosh_doc_index_dir = os.path.join(work_dir, 'data/fullindex/')
 my_whoosh_query_index_dir = os.path.join(work_dir, "/trec_query_index/index")
 my_experiment_log_dir = work_dir
 qrels_file = os.path.join(work_dir, "data/TREC2005.qrels.txt")
@@ -29,7 +29,7 @@ print "my_whoosh_doc_index_dir: " + my_whoosh_doc_index_dir
 print "Stopword file: " + stopword_file
 
 event_logger = logging.getLogger('event_log')
-event_logger.setLevel(logging.WARNING)
+event_logger.setLevel(logging.INFO)
 event_logger_handler = logging.FileHandler(os.path.join(my_experiment_log_dir, 'experiment.log'))
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 event_logger_handler.setFormatter(formatter)

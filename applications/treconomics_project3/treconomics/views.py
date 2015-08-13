@@ -20,6 +20,7 @@ from experiment_functions import get_experiment_context, print_experiment_contex
 from experiment_functions import log_event
 import logging
 
+logging.basicConfig(level=logging.WARNING)
 
 def reset_test_users(request):
     usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8']
@@ -126,7 +127,14 @@ def view_next(request):
     else:
         next_step = step
 
-    url_to_visit_next = workflow[next_step]
+    # Does this work correctly?
+    try:
+        url_to_visit_next = workflow[next_step]
+    except IndexError:
+        url_to_visit_next = workflow[next_step-1]
+
+    print 'view_next - step : ' + str(next_step)
+    print 'url to visit next: ' + str(url_to_visit_next)
 
     # msg = ('view_next - step : ', next_step, 'url to visit next: ', url_to_visit_next)
     # logging.debug('{0} {1} {2} {3}'.format(msg))
@@ -321,7 +329,7 @@ def post_task(request, taskid):
     condition = ec["condition"]
 
     # Save out to profile what task has just been completed
-    # This is probably not neccessary ---- as the step  and taskid coming defines this.
+    # This is probably not necessary ---- as the step  and taskid coming defines this.
     u = User.objects.get(username=uname)
     profile = u.profile
     profile.tasks_completed = int(taskid)
@@ -331,7 +339,7 @@ def post_task(request, taskid):
     print "SEARCH TASK COMPLETED"
     log_event(event="SEARCH_TASK_COMPLETED", request=request)
     # if we had post task survey we could ask them here
-    # else we can provide a link to a hosted questionairre
+    # else we can provide a link to a hosted questionnaire
 
     # if participant has completed all the tasks, go to the post experiment view
     # else direct the participant to the pre task view
@@ -512,7 +520,7 @@ class EndExperimentView(ExperimentContextMixin, TemplateView):
 
 class SessionCompletedView(ExperimentContextMixin, TemplateView):
     template_name = 'base/session_completed.html'
-    print "SESSION COMPLETED"
+    # TODO print "SESSION COMPLETED"
 
     def dispatch(self, request, *args, **kwargs):
         log_event(event="SESSION_COMPLETED", request=self.request)
