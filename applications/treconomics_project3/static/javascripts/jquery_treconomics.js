@@ -1,3 +1,5 @@
+var timeoutFlag = false;
+
 $(document).ready(function()
 {  
      $('.survey table tr').filter(':odd').addClass('odd');
@@ -25,8 +27,12 @@ $(document).ready(function()
                 var responseData = $.parseJSON(data.responseText);
 
                 if ('timeout' in responseData) {
-                    alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-                    window.location = APP_ROOT + 'next/';
+                    if (!timeoutFlag) {
+                        alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                        window.location = APP_ROOT + 'next/';
+                    }
+
+                    timeoutFlag = true;
                 }
                 else {
                     console.log("Server error on AJAX request: " + data.responseText);
