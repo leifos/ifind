@@ -129,9 +129,9 @@ def view_next(request):
 
     # Does this work correctly?
     try:
-        url_to_visit_next = workflow[next_step]
+        url_to_visit_next = '/treconomics/' + workflow[next_step]
     except IndexError:
-        url_to_visit_next = workflow[next_step-1]
+        url_to_visit_next = '/treconomics/' + workflow[next_step-1]
 
     print 'view_next - step : ' + str(next_step)
     print 'url to visit next: ' + str(url_to_visit_next)
