@@ -7,13 +7,13 @@ import sys
 import datetime
 import logging
 # Django
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseBadRequest
 from treconomics.models import DocumentsExamined
 from treconomics.models import TaskDescription
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query
@@ -115,7 +115,8 @@ def show_document(request, whoosh_docid):
         # return HttpResponse(json.dumps(user_judgement), mimetype='application/javascript')
     else:
         if time_search_experiment_out(request):
-            return HttpResponseRedirect(reverse_lazy('next'))
+            return redirect('next')
+            #TODO return HttpResponseRedirect(reverse_lazy('next'))
         else:
             # marks that the document has been viewed
             rank = get_document_rank()
@@ -146,7 +147,8 @@ def show_document(request, whoosh_docid):
 def show_saved_documents(request):
     # Timed out?
     if time_search_experiment_out(request):
-        return HttpResponseRedirect(reverse_lazy('timeout'))
+        return redirect('timeout')
+        #TODO return HttpResponseRedirect(reverse_lazy('timeout'))
 
     ec = get_experiment_context(request)
     taskid = ec['taskid']
@@ -172,7 +174,10 @@ def show_saved_documents(request):
             doc_length = ixr.doc_field_length(docid, 'content')
             trecid = ixr.stored_fields(docid)['docid']
 
-            user_judgement = mark_document(request=request, whooshid=docid, trecid=trecid, judgement=user_judgement,
+            user_judgement = mark_document(request=request,
+                                           whooshid=docid,
+                                           trecid=trecid,
+                                           judgement=user_judgement,
                                            doc_length=doc_length)
 
     # Get documents that are for this task, and for this user
@@ -200,7 +205,7 @@ def entity_snippet(response):
     for result in response.results:
         summary = result.summary
         entities = nee.extract_entities(summary.decode("utf-8"))
-        result.summary = ('>'.join(entities))
+        result.summary = (', '.join(entities))
     print "Enitity snippet"
 
     return response
@@ -249,10 +254,6 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
 
     if interface == 3:
         response = entity_snippet(response)
-
-    """
-    Add in your code here.
-    """
 
     log_event(event="QUERY_END", request=request, query=query_terms)
     num_pages = response.total_pages
@@ -338,9 +339,10 @@ def search(request, taskid=-1):
                 page = int(item[1])
 
         if request.POST.get('newquery') == 'true':
-            return '/treconomics/search/' in request.META['HTTP_REFERER']
+            return reverse('search') in request.META['HTTP_REFERER']
+            #TODO return '/treconomics/search/' in request.META['HTTP_REFERER']
 
-        return '/treconomics/search/' in request.META['HTTP_REFERER'] and new_page_no == page
+        return reverse('search') in request.META['HTTP_REFERER'] and new_page_no == page
 
     if isinstance(taskid, unicode):
         taskid = int(taskid)
@@ -358,13 +360,14 @@ def search(request, taskid=-1):
 
     # check for timeout
     if time_search_experiment_out(request):
-        return HttpResponseRedirect(reverse_lazy('timeout'))
+        return redirect('timeout')
+        #TODO return HttpResponseRedirect(reverse_lazy('timeout'))
     else:
         """show base index view"""
 
         ec = get_experiment_context(request)
-        print "CONTEXT DICT"
-        print ec
+        # print "CONTEXT DICT"
+        # print ec
         condition = ec["condition"]
         rotation = ec["rotation"]
         interface = ec["interface"]
@@ -374,9 +377,6 @@ def search(request, taskid=-1):
         #    interface = exp['interface']
         print taskid, rotation, interface
         print '--------'
-
-        ec['yermaw'] = 'hello' # really? WTF?
-
 
         page_len = ec["rpp"]
         page = 1
@@ -399,9 +399,9 @@ def search(request, taskid=-1):
         # This means that if a user clicks "View Saved" before posing a query, there will be something
         # to go back to!
         if not request.session.get('queryurl'):
-            queryurl = result_dict['application_root'] + 'search/'
-            logging.debug('Set queryurl to : %s', queryurl)
-            request.session['queryurl'] = queryurl
+            query_url = result_dict['application_root'] + 'search/'
+            logging.debug('Set queryurl to : %s', query_url)
+            request.session['queryurl'] = query_url
 
         suggestions = False
         query_flag = False
@@ -457,17 +457,14 @@ def search(request, taskid=-1):
                               judgement=qrp[1])
 
                 query_params = urlencode({'query': user_query, 'page': page, 'noperf': 'true'})
-                queryurl = '/treconomics/search/?' + query_params
-                logging.debug('Set queryurl to : %s', queryurl)
-                request.session['queryurl'] = queryurl
+                #TODO query_url = reverse('search', query_params)
+                query_url = '/treconomics/search/' + query_params
+                logging.debug('Set queryurl to : %s', query_url)
+                request.session['queryurl'] = query_url
 
                 result_dict['display_query'] = result_dict['query']
                 if len(result_dict['query']) > 50:
                     result_dict['display_query'] = result_dict['query'][0:50] + '...'
-
-                #if exp['result_delay'] > 0 and is_from_search_request(page):
-                #    log_event(event='DELAY_RESULTS_PAGE', request=request, page=page)
-                #    sleep(exp['result_delay'])
 
                 set_results_session_var(request, result_dict)
 
@@ -573,23 +570,19 @@ def view_log_hover(request):
         judgement = -2
 
     if status == 'in':
-        log_event(event="DOCUMENT_HOVER_IN",
-                  request=request,
-                  whooshid=whoosh_id,
-                  trecid=trec_id,
-                  rank=rank,
-                  page=page,
-                  judgement=judgement,
-                  doc_length=doc_length)
+        msg = "DOCUMENT_HOVER_IN"
+
     elif status == 'out':
-        log_event(event="DOCUMENT_HOVER_OUT",
-                  request=request,
-                  whooshid=whoosh_id,
-                  trecid=trec_id,
-                  rank=rank,
-                  page=page,
-                  judgement=judgement,
-                  doc_length=doc_length)
+        msg = "DOCUMENT_HOVER_OUT"
+
+    log_event(event=msg,
+              request=request,
+              whooshid=whoosh_id,
+              trecid=trec_id,
+              rank=rank,
+              page=page,
+              judgement=judgement,
+              doc_length=doc_length)
 
     return JsonResponse({'logged': True})
     # TODO return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
