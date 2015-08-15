@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+import re
 
 __author__ = 'leif'
 
@@ -13,7 +14,7 @@ from treconomics.models import DocumentsExamined
 from treconomics.models import TaskDescription
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query
@@ -57,7 +58,7 @@ def show_document(request, whoosh_docid):
     """
     sys.stdout.flush()
     if time_search_experiment_out(request):
-        return reverse_lazy('timeout')
+        return reverse('timeout')
 
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -116,7 +117,6 @@ def show_document(request, whoosh_docid):
     else:
         if time_search_experiment_out(request):
             return redirect('next')
-            #TODO return HttpResponseRedirect(reverse_lazy('next'))
         else:
             # marks that the document has been viewed
             rank = get_document_rank()
@@ -148,7 +148,6 @@ def show_saved_documents(request):
     # Timed out?
     if time_search_experiment_out(request):
         return redirect('timeout')
-        #TODO return HttpResponseRedirect(reverse_lazy('timeout'))
 
     ec = get_experiment_context(request)
     taskid = ec['taskid']
@@ -215,12 +214,11 @@ def reduce_snippet(response, percent):
     for s in response.results:
         # print s
         summary = s.summary
-        l = len(summary)
+        l = len(summary.split())
         p = l
         if l > 5:
             p = int(float(l) * (percent / 100.0)) + 2
         s.summary = summary[:p]
-
     print "Reduced snippet"
     return response
 
@@ -229,8 +227,6 @@ def run_query(request, result_dict, query_terms='', page=1, page_len=10, conditi
     # Stops an AWFUL lot of problems when people get up to mischief
     if page < 1:
         page = 1
-
-    # TODO ec = get_experiment_context(request)
 
     query = Query(query_terms)
     query.skip = page
@@ -317,32 +313,31 @@ def set_task(request, taskid=-1):
             log_event(event="SEARCH_TASK_COMMENCED", request=request)
 
 
+def is_from_search_request(request, new_page_no):
+    """
+    Returns True if the URL of the referer is a standard search request.
+    This is used to determine if we should delay results appearing.
+
+    The new page number of required to check against the page number from the referer.
+    If they match, we don't delay - if they don't, we do.
+    """
+    http_referer = request.META['HTTP_REFERER']
+    http_referer = http_referer.strip().split('&')
+    page = 1
+
+    for item in http_referer:
+        if 'page=' in item:
+            item = item.split('=')
+            page = int(item[1])
+
+    if request.POST.get('newquery') == 'true':
+        return reverse('search') in request.META['HTTP_REFERER']
+
+    return reverse('search') in request.META['HTTP_REFERER'] and new_page_no == page
+
 @login_required
 def search(request, taskid=-1):
     sys.stdout.flush()
-
-    def is_from_search_request(new_page_no):
-        """
-        Returns True iif the URL of the referer is a standard search request.
-        This is used to determine if we should delay results appearing.
-
-        The new page number of required to check against the page number from the referer.
-        If they match, we don't delay - if they don't, we do.
-        """
-        http_referer = request.META['HTTP_REFERER']
-        http_referer = http_referer.strip().split('&')
-        page = 1
-
-        for item in http_referer:
-            if 'page=' in item:
-                item = item.split('=')
-                page = int(item[1])
-
-        if request.POST.get('newquery') == 'true':
-            return reverse('search') in request.META['HTTP_REFERER']
-            #TODO return '/treconomics/search/' in request.META['HTTP_REFERER']
-
-        return reverse('search') in request.META['HTTP_REFERER'] and new_page_no == page
 
     if isinstance(taskid, unicode):
         taskid = int(taskid)
@@ -361,7 +356,6 @@ def search(request, taskid=-1):
     # check for timeout
     if time_search_experiment_out(request):
         return redirect('timeout')
-        #TODO return HttpResponseRedirect(reverse_lazy('timeout'))
     else:
         """show base index view"""
 
@@ -400,6 +394,7 @@ def search(request, taskid=-1):
         # to go back to!
         if not request.session.get('queryurl'):
             query_url = result_dict['application_root'] + 'search/'
+            # TODO revese
             logging.debug('Set queryurl to : %s', query_url)
             request.session['queryurl'] = query_url
 
@@ -456,9 +451,10 @@ def search(request, taskid=-1):
                               rank=qrp[0],
                               judgement=qrp[1])
 
+                #TODO fix this using url-resolvers (reverse())
                 query_params = urlencode({'query': user_query, 'page': page, 'noperf': 'true'})
-                #TODO query_url = reverse('search', query_params)
-                query_url = '/treconomics/search/' + query_params
+                query_url = '/treconomics/search/?' + query_params
+
                 logging.debug('Set queryurl to : %s', query_url)
                 request.session['queryurl'] = query_url
 
@@ -585,7 +581,6 @@ def view_log_hover(request):
               doc_length=doc_length)
 
     return JsonResponse({'logged': True})
-    # TODO return HttpResponse(json.dumps({'logged': True}), content_type='application/json')
 
 
 @login_required
