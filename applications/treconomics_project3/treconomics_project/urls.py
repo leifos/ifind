@@ -15,8 +15,11 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^', include('treconomics.urls')),
-    # url(r'^treconomics/', include('treconomics.urls')),
+    url(r'', include('treconomics.urls')),
+    url(r'^treconomics/', include('treconomics.urls')),
+
+    #TODO Remove /treconomics/ from everything
+    # url(r'^', include('treconomics.urls')),
 
     url(r'', include('survey.urls')),
     url(r'^survey/', include('survey.urls')),

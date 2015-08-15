@@ -21,6 +21,7 @@ from experiment_functions import log_event
 import logging
 
 logging.basicConfig(level=logging.WARNING)
+APP_NAME = '/treconomics/'
 
 
 def reset_test_users(request):
@@ -130,9 +131,9 @@ def view_next(request):
 
     # Does this work correctly?
     try:
-        url_to_visit_next = workflow[next_step]
+        url_to_visit_next = APP_NAME + workflow[next_step]
     except IndexError:
-        url_to_visit_next = workflow[next_step-1]
+        url_to_visit_next = APP_NAME + workflow[next_step-1]
 
     print 'view_next - step : ' + str(next_step)
     print 'url to visit next: ' + str(url_to_visit_next)
@@ -286,7 +287,7 @@ def pre_task_with_questions(request, taskid):
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionnaire
 
-    action = '/treconomics/pretaskquestions/' + taskid + '/'
+    action = APP_NAME + 'pretaskquestions/' + taskid + '/'
 
     # provide link to search interface / next system
 
