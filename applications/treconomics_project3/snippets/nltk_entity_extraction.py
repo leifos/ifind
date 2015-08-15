@@ -1,6 +1,8 @@
 __author__ = 'mickeypash'
 from nltk import word_tokenize, sent_tokenize
-from nltk import pos_tag, ne_chunk_sents
+from nltk import ne_chunk_sents
+import nltk.data, nltk.tag
+tagger = nltk.data.load(nltk.tag._POS_TAGGER)
 
 stop_words = ['Agence France Presse',
               'Associated Press',
@@ -20,7 +22,7 @@ def extract_entities(document):
     """
     sentences = sent_tokenize(document)
     tokenized_sentences = [word_tokenize(sentence) for sentence in sentences]
-    tagged_sentences = [pos_tag(sentence) for sentence in tokenized_sentences]
+    tagged_sentences = [tagger.tag(sentence) for sentence in tokenized_sentences]
     chunked_sentences = ne_chunk_sents(tagged_sentences, binary=True)
 
     entity_names = []
