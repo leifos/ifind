@@ -19,6 +19,7 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from ifind.search import Query
 from urllib import urlencode
+from bs4 import BeautifulSoup
 
 # Whoosh
 from whoosh.index import open_dir
@@ -213,12 +214,16 @@ def entity_snippet(response):
 def reduce_snippet(response, percent):
     for s in response.results:
         # print s
-        summary = s.summary
-        l = len(summary.split())
+        soup = BeautifulSoup(s.summary)
+        text = soup.get_text()
+        tokens = text.split()
+        print tokens
+        l = len(tokens)
+        print
         p = l
         if l > 5:
-            p = int(float(l) * (percent / 100.0)) + 2
-        s.summary = summary[:p]
+            p = int(float(l) * (percent / 100.0))
+        s.summary = ' '.join(tokens[:p]) + '...'
     print "Reduced snippet"
     return response
 

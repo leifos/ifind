@@ -85,7 +85,7 @@ exp_work_flows = [
 
 mickeys_flow = [
     'startexperiment/', 'preexperiment/UK/',
-    #'anitademographicssurvey/',
+    'anitademographicssurvey/',
     'prepracticetask/0/', 'search/0/', 'postpracticetask/0/',
     'anitapretasksurvey/1/', 'search/1/', 'mickeyposttask/1/',
         'taskspacer',
