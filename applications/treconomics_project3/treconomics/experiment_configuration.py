@@ -85,6 +85,7 @@ exp_work_flows = [
 
 mickeys_flow = [
     'startexperiment/', 'preexperiment/UK/',
+    'demographicssurvey/UK/',
     'prepracticetask/0/', 'search/0/', 'postpracticetask/0/',
     'anitapretasksurvey/1/', 'search/1/', 'mickeyposttask/1/',
     'anitapretasksurvey/2/', 'search/2/', 'mickeyposttask/2/',
@@ -130,7 +131,7 @@ exp_test = ExperimentSetup(
     description='standard condition bm25 test',
     trie=suggestion_trie,
     autocomplete=True,
-    timeout=300)
+    timeout=1200)  # 300s = 5min; 600s = 10min; 1200s = 20min
 
 
 # these correspond to conditions

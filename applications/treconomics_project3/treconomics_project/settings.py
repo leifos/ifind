@@ -3,7 +3,7 @@ import os
 import socket
 PROJECT_PATH = os.getcwd()
 if socket.gethostname()=='newssearch':
-    PROJECT_PATH = '/opt/tango/ifind/applications/treconomics_project2/'
+    PROJECT_PATH = '~/ifind/applications/treconomics_project3/'
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 STATIC_PATH = os.path.join(PROJECT_PATH,'static')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'treconomics.db')
