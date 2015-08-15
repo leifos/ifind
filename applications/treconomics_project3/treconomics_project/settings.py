@@ -197,3 +197,5 @@ FIXTURE_PATH = os.path.join(PROJECT_PATH, 'treconomics/fixtures')
 FIXTURE_DIRS = (
    FIXTURE_PATH,
 )
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
