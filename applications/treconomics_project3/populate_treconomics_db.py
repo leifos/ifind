@@ -8,9 +8,9 @@ def populate():
              title='Airport Security',
              description='<p>In this practice task, '
                          'your job is to find articles '
-                         'that discuss procedures airports '
-                         'worldwide have taken to better '
-                         'scrutinize passengers and their carry-on and checked luggage.</p>')
+                         'that discuss procedures taken by international '
+                         'airports, to better screen passengers '
+                         'and their carry-on luggage.</p>')
     add_task(topic_num='347',
              title='Wildlife Extinction',
              description='<p>For this task, your job is '
