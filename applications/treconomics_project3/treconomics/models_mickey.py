@@ -130,7 +130,7 @@ class AnitaDemographicsSurveyForm(ModelForm):
     #            required=False)
     status = forms.CharField(
         widget=forms.Select(choices=STATUS_CHOICES),
-        label="What is your status at UNC?",
+        label="What is your status at University of Glasgow?",
         required=False)
 
     work = forms.CharField(

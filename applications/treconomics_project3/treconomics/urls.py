@@ -19,46 +19,39 @@ urlpatterns = \
              url(r'^login/$', views.view_login, name='login'),
              url(r'^logout/$', views.view_logout, name='logout'),
              url(r'^next/$', views.view_next, name='next'),
-
              url(r'^startexperiment/$', views.start_experiment, name='start-experiment'),
-
              url(r'^preexperiment/(?P<version>[A-Z]{2})/$', PreExperimentView.as_view(), name='pre-experiment'),
-
              url(r'^pretask/(?P<taskid>\d+)/$', views.pre_task, name='pre-task'),
              url(r'^prepracticetask/(?P<taskid>\d+)/$', views.pre_practice_task),
              url(r'^pretaskquestions/(?P<taskid>\d+)/$', views.pre_task_with_questions),
              url(r'^(?P<whoosh_docid>\d+)/$', search_views.show_document),
              url(r'^saved/$', search_views.show_saved_documents, name='saved'),
-
              url(r'^search/$', search_views.search, name='search'),
-             url(r'^search/(?P<taskid>\d+)/$', search_views.search),
+             url(r'^search/(?P<taskid>\d+)/$', search_views.search, name='search-task'),
              url(r'^posttask/(?P<taskid>\d+)/$', views.post_task, name='post-task'),
-             (r'^postpracticetask/(?P<taskid>\d+)/$', views.post_practice_task),
-             (r'^posttaskquestions/(?P<taskid>\d+)/$', views.post_task_with_questions),
+             url(r'^postpracticetask/(?P<taskid>\d+)/$', views.post_practice_task),
+             url(r'^posttaskquestions/(?P<taskid>\d+)/$', views.post_task_with_questions),
              url(r'^taskspacer/$', TaskSpacerView.as_view()),
 
-             (r'^showtask/$', views.show_task),
-             (r'^sessioncommence/$', views.commence_session),
+             url(r'^showtask/$', views.show_task),
+             url(r'^sessioncommence/$', views.commence_session),
              url(r'^sessioncompleted/$', views.session_completed, name='session-completed'),
 
              url(r'^postexperiment/$', PostExperimentView.as_view()),
              url(r'^endexperiment/$', EndExperimentView.as_view()),
-             (r'^performance/$', search_views.view_performance),
+             url(r'^performance/$', search_views.view_performance),
 
              (r'^suggestion_selected/$', search_views.suggestion_selected),
              (r'^suggestion_hover/$', search_views.suggestion_hover),
              (r'^query_focus/$', search_views.view_log_query_focus),
              (r'^hover/$', search_views.view_log_hover),
              (r'^autocomplete/$', search_views.autocomplete_suggestion),
-             # (r'^docview_delay/$', search_views.docview_delay),
 
              (r'^reset/$', views.reset_test_users),
              (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
              url(r'^timeout/$', views.show_timeout_message, name='timeout'),
 
-             # url(r'^survey/', include('survey.urls')),
-
-             (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),
+             # (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),
              # (r'^searchefficacysurvey/$', survey_views.view_search_efficacy_survey),
              # (r'^nasaloadsurvey/$', survey_views.view_nasa_load_survey),
              # (r'^nasaqueryloadsurvey/$', survey_views.view_nasa_query_load_survey),
