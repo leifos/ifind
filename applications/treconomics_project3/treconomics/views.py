@@ -22,6 +22,7 @@ import logging
 
 logging.basicConfig(level=logging.WARNING)
 
+
 def reset_test_users(request):
     usernames = ['t1', 't2', 't3', 't4', 'a1', 'a2', 'a3', 'a4', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8']
 
@@ -385,7 +386,7 @@ def post_task_with_questions(request, taskid):
         log_event(event="POST_TASK_SURVEY_STARTED", request=request)
 
     # if we had a survey questions we could ask them here
-    # else we can provide a link to a hosted questionarre
+    # else we can provide a link to a hosted questionnaire
 
     action = '/treconomics/posttaskquestions/' + taskid + '/'
 

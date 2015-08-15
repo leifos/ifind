@@ -2,6 +2,7 @@ __author__ = 'mickeypash'
 import unittest
 import logging
 import sys
+from treconomics.experiment_setup import ExperimentSetup
 
 
 class TestDefaultExpSetup(unittest.TestCase):

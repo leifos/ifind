@@ -1,9 +1,9 @@
 __author__ = 'leif'
-from django.template.context import RequestContext
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 
 from experiment_functions import get_experiment_context
 from experiment_functions import log_event
@@ -21,7 +21,6 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
 
     request.session['taskid'] = taskid
     ec = get_experiment_context(request)
-    uname = ec["username"]
     condition = ec["condition"]
     topicnum = ec["topicnum"]
     t = TaskDescription.objects.get(topic_num=topicnum)
@@ -39,7 +38,7 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
             obj.topic_num = ec["topicnum"]
             obj.save()
             log_event(event=survey_name.upper() + "_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
+            return HttpResponseRedirect(reverse_lazy('next'))
         else:
             print form.errors
             errors = form.errors
@@ -49,10 +48,8 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
         log_event(event=survey_name.upper() + "_SURVEY_STARTED", request=request)
         survey = SurveyForm()
 
-
     # if we had a survey questions we could ask them here
-    # else we can provide a link to a hosted questionarre
-
+    # else we can provide a link to a hosted questionnaire
     action_url = action + taskid + '/'
 
     # provide link to search interface / next system
@@ -125,16 +122,17 @@ def view_anita_exit3_survey(request):
 
 @login_required
 def view_anita_time_instructions(request, version):
-    context = RequestContext(request)
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
     pressure_condition = False
     if version == "TC":
         pressure_condition = True
-    return render_to_response('base/anita_time_constraint_instructions.html',
-                              {'participant': uname, 'condition': condition, 'pressure_condition': pressure_condition},
-                              context)
+
+    context_dict = {'participant': uname,
+                    'condition': condition,
+                    'pressure_condition': pressure_condition}
+    return render(request, 'base/anita_time_constraint_instructions.html', context_dict)
 
 
 @login_required

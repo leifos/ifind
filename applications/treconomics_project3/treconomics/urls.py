@@ -10,6 +10,7 @@ from .views import EndExperimentView
 from .views import SessionCompletedView
 from search import views as search_views
 import views_mickey
+import survey.views as survey_views
 
 
 urlpatterns = \
@@ -55,9 +56,9 @@ urlpatterns = \
              (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
              url(r'^timeout/$', views.show_timeout_message, name='timeout'),
 
-             url(r'^survey/', include('survey.urls')),
+             # url(r'^survey/', include('survey.urls')),
 
-             # (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),
+             (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),
              # (r'^searchefficacysurvey/$', survey_views.view_search_efficacy_survey),
              # (r'^nasaloadsurvey/$', survey_views.view_nasa_load_survey),
              # (r'^nasaqueryloadsurvey/$', survey_views.view_nasa_query_load_survey),
