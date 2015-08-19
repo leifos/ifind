@@ -133,7 +133,7 @@ exp_test = ExperimentSetup(
     description='standard condition bm25 test',
     trie=suggestion_trie,
     autocomplete=True,
-    timeout=1200)  # 300s = 5min; 600s = 10min; 1200s = 20min
+    timeout=600)  # 300s = 5min; 600s = 10min; 1200s = 20min
 
 
 # these correspond to conditions
