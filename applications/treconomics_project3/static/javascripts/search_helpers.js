@@ -204,8 +204,11 @@ function bindResultHovering() {
                 var responseData = $.parseJSON(data.responseText);
 
                 if ('timeout' in responseData) {
-                    alert("Your time for this task has expired. We will now redirect you to the next step.");
-                    window.location = '/treconomics/next/';
+                    if (!timeoutFlag) {
+                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+                        window.location = APP_ROOT + 'next/';
+                    }
+                    timeoutFlag = true;
                 }
             });
         },
@@ -227,11 +230,7 @@ function bindResultHovering() {
                         //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
                         window.location = APP_ROOT + 'next/';
                     }
-
                     timeoutFlag = true;
-
-                    //alert("Your time for this task has expired. We will now redirect you to the next step.");
-                    //window.location = '/treconomics/next/';
                 }
             });
     });

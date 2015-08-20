@@ -102,11 +102,7 @@ $(function() {
                                 alert('Your time for this exercise has expired. We will now redirect you to the next step.');
                                 window.location = APP_ROOT + 'next/';
                             }
-
                             timeoutFlag = true;
-
-                            //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-                            //window.location = APP_ROOT + 'next/';
                         }
                         else {
                             alert("Something went wrong with your request!");
