@@ -41,14 +41,14 @@ urlpatterns = \
              url(r'^endexperiment/$', EndExperimentView.as_view()),
              url(r'^performance/$', search_views.view_performance),
 
-             (r'^suggestion_selected/$', search_views.suggestion_selected),
-             (r'^suggestion_hover/$', search_views.suggestion_hover),
-             (r'^query_focus/$', search_views.view_log_query_focus),
-             (r'^hover/$', search_views.view_log_hover),
-             (r'^autocomplete/$', search_views.autocomplete_suggestion),
+             url(r'^suggestion_selected/$', search_views.suggestion_selected),
+             url(r'^suggestion_hover/$', search_views.suggestion_hover),
+             url(r'^query_focus/$', search_views.view_log_query_focus),
+             url(r'^hover/$', search_views.view_log_hover),
+             url(r'^autocomplete/$', search_views.autocomplete_suggestion),
 
-             (r'^reset/$', views.reset_test_users),
-             (r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
+             url(r'^reset/$', views.reset_test_users),
+             url(r'^querytest/(?P<topic_num>\d+)/$', search_views.view_run_queries),
              url(r'^timeout/$', views.show_timeout_message, name='timeout'),
 
              # (r'^demographicssurvey/(?P<country>[A-Z]{2})/$', survey_views.view_demographics_survey),

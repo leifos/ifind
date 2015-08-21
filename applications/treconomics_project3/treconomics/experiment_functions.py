@@ -51,20 +51,18 @@ def get_experiment_context(request):
 
     return ec
 
-    """
-    if "taskid" in request.session:
-        ec["taskid"] = int(request.session['taskid'])
-        t = ec["taskid"] - 1
-        r = ec["rotation"] - 1
-        if t >= 0:
-            ec["topicnum"] = experiment_setups[ec['condition']].get_rotation_topic(r, t)
-        else:
-            ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
-    else:
-        ec["taskid"] = 0
-        request.session["taskid"] = 0
-        ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
-    """
+    # if "taskid" in request.session:
+    #     ec["taskid"] = int(request.session['taskid'])
+    #     t = ec["taskid"] - 1
+    #     r = ec["rotation"] - 1
+    #     if t >= 0:
+    #         ec["topicnum"] = experiment_setups[ec['condition']].get_rotation_topic(r, t)
+    #     else:
+    #         ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
+    # else:
+    #     ec["taskid"] = 0
+    #     request.session["taskid"] = 0
+    #     ec["topicnum"] = experiment_setups[ec['condition']].practice_topic
 
 
 def print_experiment_context(ec):
@@ -186,7 +184,7 @@ def mark_document(request, whooshid, judgement, title="", trecid="", rank=0, doc
     return judgement
 
 
-def assessPerformance(topic_num, doc_list):
+def assess_performance(topic_num, doc_list):
     rels_found = 0
     non_rels_found = 0
 
@@ -215,7 +213,7 @@ def get_performance(username, topic_num):
             doc_list.append(d.doc_num)
             print str(d.topic_num) + " " + d.doc_num
 
-    return assessPerformance(str(topic_num), doc_list)
+    return assess_performance(str(topic_num), doc_list)
 
 
 def query_result_performance(results, topic_num):
