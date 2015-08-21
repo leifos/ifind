@@ -17,7 +17,7 @@ function disableClick(event) {
 }
 
 $(function() {
-    bindDocumentClicks();
+    //bindDocumentClicks();
     bindResultHovering();
     bindFormSubmit();
 
@@ -203,13 +203,13 @@ function bindResultHovering() {
             }).fail(function(data) {
                 var responseData = $.parseJSON(data.responseText);
 
-                if ('timeout' in responseData) {
-                    if (!timeoutFlag) {
-                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-                        window.location = APP_ROOT + 'next/';
-                    }
-                    timeoutFlag = true;
-                }
+//                if ('timeout' in responseData) {
+//                    if (!timeoutFlag) {
+//                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+//                        window.location = APP_ROOT + 'next/';
+//                    }
+//                    timeoutFlag = true;
+//                }
             });
         },
         function(event) {
@@ -224,14 +224,14 @@ function bindResultHovering() {
                 data: {'status': 'out', 'trecID': trecID, 'whooshID': whooshID, 'rank': rank, 'page': page}
             }).fail(function(data) {
                 var responseData = $.parseJSON(data.responseText);
-
-                if ('timeout' in responseData) {
-                    if (!timeoutFlag) {
-                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-                        window.location = APP_ROOT + 'next/';
-                    }
-                    timeoutFlag = true;
-                }
+//
+//                if ('timeout' in responseData) {
+//                    if (!timeoutFlag) {
+//                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+//                        window.location = APP_ROOT + 'next/';
+//                    }
+//                    timeoutFlag = true;
+//                }
             });
     });
 }

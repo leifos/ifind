@@ -91,24 +91,25 @@ $(function() {
                                 label: getSuggestionString(difference, item, selectedElement, currFieldValue, rank),
                                 value: item}
                             }));
-                    },
-                    error: function(data) {
-                        // If the experiment's time has been reached, we alert the user and redirect.
-                        var responseData = $.parseJSON(data.responseText);
-
-                        if ('timeout' in responseData) {
-
-                            if (!timeoutFlag) {
-                                alert('Your time for this exercise has expired. We will now redirect you to the next step.');
-                                window.location = APP_ROOT + 'next/';
-                            }
-                            timeoutFlag = true;
-                        }
-                        else {
-                            alert("Something went wrong with your request!");
-                            console.log("Server error on AJAX request: " + data.responseText);
-                        }
-                    }});
+                    }
+//                    , error: function(data) {
+//                        // If the experiment's time has been reached, we alert the user and redirect.
+//                        var responseData = $.parseJSON(data.responseText);
+//
+//                        if ('timeout' in responseData) {
+//
+//                            if (!timeoutFlag) {
+//                                alert('Your time for this exercise has expired. We will now redirect you to the next step.');
+//                                window.location = APP_ROOT + 'next/';
+//                            }
+//                            timeoutFlag = true;
+//                        }
+//                        else {
+//                            alert("Something went wrong with your request!");
+//                            console.log("Server error on AJAX request: " + data.responseText);
+//                        }
+//                    }
+                });
             }
         },
         //autoFocus: true, // Focus on the first element by default
@@ -211,27 +212,28 @@ $(function() {
                 data: {
                     added_term: selectedItem,
                     new_query: newFieldValue
-                },
-                error: function(data) {
-                    // If the experiment's time has been reached, we alert the user and redirect.
-                    var responseData = $.parseJSON(data.responseText);
-
-                    if ('timeout' in responseData) {
-
-                        if (!timeoutFlag) {
-                            alert('timeout');
-                            window.location = APP_ROOT + 'next/';
-                        }
-
-                        timeoutFlag = true;
-
-                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
-                        //window.location = APP_ROOT + 'next/';
-                    }
-                    else {
-                        console.log("Server error on AJAX request: " + data.responseText);
-                    }
-            }});
+                }
+//                , error: function(data) {
+//                    // If the experiment's time has been reached, we alert the user and redirect.
+//                    var responseData = $.parseJSON(data.responseText);
+//
+//                    if ('timeout' in responseData) {
+//
+//                        if (!timeoutFlag) {
+//                            alert('timeout');
+//                            window.location = APP_ROOT + 'next/';
+//                        }
+//
+//                        timeoutFlag = true;
+//
+//                        //alert("Your time for this exercise has expired. We will now redirect you to the next step.");
+//                        //window.location = APP_ROOT + 'next/';
+//                    }
+//                    else {
+//                        console.log("Server error on AJAX request: " + data.responseText);
+//                    }
+//            }
+            });
       }
     });
 
