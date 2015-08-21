@@ -58,8 +58,8 @@ def show_document(request, whoosh_docid):
     :return:
     """
     sys.stdout.flush()
-    if time_search_experiment_out(request):
-        return reverse('timeout')
+    # if time_search_experiment_out(request):
+    #     return reverse('timeout')
 
     ec = get_experiment_context(request)
     uname = ec["username"]
@@ -342,6 +342,7 @@ def is_from_search_request(request, new_page_no):
 
     return reverse('search') in request.META['HTTP_REFERER'] and new_page_no == page
 
+
 @login_required
 def search(request, taskid=-1):
     sys.stdout.flush()
@@ -509,7 +510,7 @@ def view_performance(request):
     ec = get_experiment_context(request)
     uname = ec["username"]
     condition = ec["condition"]
-    # rotation = ec["rotation"]
+    #TODO rotation = ec["rotation"]
 
     def ratio(rels, nonrels):
         """ expect two floats
@@ -572,6 +573,7 @@ def view_log_hover(request):
     except ObjectDoesNotExist:
         judgement = -2
 
+    msg = ''
     if status == 'in':
         msg = "DOCUMENT_HOVER_IN"
 
