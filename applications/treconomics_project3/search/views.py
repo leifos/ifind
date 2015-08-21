@@ -114,10 +114,10 @@ def show_document(request, whoosh_docid):
             user_judgement = mark_document(request, doc_id, user_judgement, title, doc_num, rank, doc_length)
             # mark_document handles logging of this event
         return JsonResponse(user_judgement, safe=False)
-        # return HttpResponse(json.dumps(user_judgement), mimetype='application/javascript')
     else:
         if time_search_experiment_out(request):
-            return redirect('next')
+            # TODO I think I might have fixed it
+            return redirect('timeout')
         else:
             # marks that the document has been viewed
             rank = get_document_rank()
@@ -198,7 +198,9 @@ def task(request, taskid):
     logging.debug('TASK_SET_TO %d', taskid)
     request.session['taskid'] = taskid
     pid = request.user.username
-    return HttpResponse(pid + " your task is set to: " + taskid + ". <a href='/treconomics/saved/'>click here</a>")
+    link = "<a href='/treconomics/saved/'>click here</a>"
+    msg = '{0} your task is set to: {1}. {2}'.format(pid, taskid, link)
+    return HttpResponse(msg)
 
 
 def entity_snippet(response):
@@ -206,15 +208,15 @@ def entity_snippet(response):
         summary = result.summary
         entities = nee.extract_entities(summary.decode("utf-8"))
         result.summary = (', '.join(entities))
-    print "Enitity snippet"
+    print "Entity snippet"
 
     return response
 
 
 def reduce_snippet(response, percent):
-    for s in response.results:
+    for result in response.results:
         # print s
-        soup = BeautifulSoup(s.summary)
+        soup = BeautifulSoup(result.summary)
         text = soup.get_text()
         tokens = text.split()
         print tokens
@@ -223,7 +225,7 @@ def reduce_snippet(response, percent):
         p = l
         if l > 5:
             p = int(float(l) * (percent / 100.0))
-        s.summary = ' '.join(tokens[:p]) + '...'
+        result.summary = ' '.join(tokens[:p]) + '...'
     print "Reduced snippet"
     return response
 
