@@ -4,10 +4,12 @@ class SearchContextRevisedRelevance(SearchContext):
     """
     The memory of the simulated user - who decides that documents are not relevant have their snippets not relevant to.
     """
-    def __init__(self, search_interface, output_controller, topic, query_list=[]):
+    def __init__(self, search_interface, output_controller, topic, query_list=[], query_limit=None):
         super(SearchContextRevisedRelevance, self).__init__(search_interface,
                                                             output_controller,
-                                                            topic,query_list)
+                                                            topic,
+                                                            query_list,
+                                                            query_limit)
         
     def add_irrelevant_document(self, document):
         """

@@ -6,9 +6,10 @@ class BaseLogger(object):
     An abstract logger class. Contains the skeleton code and abstract methods to implement a full logger.
     Inherit from this class to create a different logger.
     """
-    def __init__(self, output_controller):
+    def __init__(self, output_controller, search_context):
         self._output_controller = output_controller
-        self.__queries_exhausted = False
+        self._search_context = search_context
+        self._queries_exhausted = False
     
     def log_action(self, action_name, **kwargs):
         """
@@ -45,14 +46,14 @@ class BaseLogger(object):
         Extend this method to include additional checks to see if the user has reached the limit to what they can do.
         Depending on the implemented logger, this could be the number of queries issued, a time limit, etc...
         """
-        return self.__queries_exhausted
+        return self._queries_exhausted
     
     def queries_exhausted(self):
         """
         This method is called when the list of queries to be issued has been exhausted.
         Sets an internal flag within the Logger, meaning that the next call to .is_finished() will stop the process.
         """
-        self.__queries_exhausted = True
+        self._queries_exhausted = True
     
     def _report(self, action, **kwargs):
         """

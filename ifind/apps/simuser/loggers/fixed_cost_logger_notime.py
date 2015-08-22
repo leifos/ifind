@@ -7,6 +7,7 @@ class FixedCostLoggerNoTime(FixedCostLogger):
     """
     def __init__(self,
                  output_controller,
+                 search_context,
                  query_cost=10,
                  document_cost=20,
                  snippet_cost=3,
@@ -17,6 +18,7 @@ class FixedCostLoggerNoTime(FixedCostLogger):
         Note that this does not enforce the time limit...
         """
         super(FixedCostLoggerNoTime, self).__init__(output_controller,
+                                                    search_context,
                                                     query_cost,
                                                     document_cost,
                                                     snippet_cost,
@@ -28,12 +30,11 @@ class FixedCostLoggerNoTime(FixedCostLogger):
         Concrete implementation of the abstract get_progress() method.
         Returns a value between 0 and 1 representing how far through the current simulation the user is.
         """
-        return 0
+        return len(self._search_context.get_issued_queries()) / float(len(self._search_context.get_all_queries()))
     
     def is_finished(self):
         """
         Concrete implementation of the is_finished() method from the BaseLogger.
         Returns True if the user has exhausted the generated query list - no time limit.
         """
-        # Include the super().is_finished() call to determine if there are any queries left to process.
-        return super(FixedCostLogger, self).is_finished()
+        return self._queries_exhausted
