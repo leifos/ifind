@@ -31,16 +31,15 @@ urlpatterns = \
              url(r'^posttask/(?P<taskid>\d+)/$', views.post_task, name='post-task'),
              url(r'^postpracticetask/(?P<taskid>\d+)/$', views.post_practice_task),
              url(r'^posttaskquestions/(?P<taskid>\d+)/$', views.post_task_with_questions),
-             url(r'^taskspacer/$', TaskSpacerView.as_view()),
 
              url(r'^showtask/$', views.show_task),
              url(r'^sessioncommence/$', views.commence_session),
-             url(r'^sessioncompleted/$', views.session_completed, name='session-completed'),
-
+             url(r'^taskspacer/$', TaskSpacerView.as_view()),
+             url(r'^sessioncompleted/$', SessionCompletedView.as_view(), name='session-completed'),
              url(r'^postexperiment/$', PostExperimentView.as_view()),
              url(r'^endexperiment/$', EndExperimentView.as_view()),
-             url(r'^performance/$', search_views.view_performance),
 
+             url(r'^performance/$', search_views.view_performance),
              url(r'^suggestion_selected/$', search_views.suggestion_selected),
              url(r'^suggestion_hover/$', search_views.suggestion_hover),
              url(r'^query_focus/$', search_views.view_log_query_focus),

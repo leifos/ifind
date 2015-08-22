@@ -1,11 +1,12 @@
 # Django settings for treconomics_project project.
 import os
 import socket
+
 PROJECT_PATH = os.getcwd()
-if socket.gethostname()=='newssearch':
+if socket.gethostname() == 'newssearch':
     PROJECT_PATH = '~/ifind/applications/treconomics_project3/'
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
-STATIC_PATH = os.path.join(PROJECT_PATH,'static')
+STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'treconomics.db')
 CACHE_DIR = os.path.join(PROJECT_PATH, 'cache')
 LOGIN_URL = '/treconomics/?notloggedin=true'
@@ -23,22 +24,22 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': DATABASE_PATH,                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': DATABASE_PATH,  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
 # Add caches for autocomplete suggestions and query results
 CACHES = {
-    'default' : {
-        'BACKEND' : 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION' : CACHE_DIR,
-        'OPTIONS' :{
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': CACHE_DIR,
+        'OPTIONS': {
             'MAX_ENTRIES': 10000
         }
     },
@@ -90,7 +91,7 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = ''
-if socket.gethostname()=='newssearch':
+if socket.gethostname() == 'newssearch':
     STATIC_ROOT = STATIC_PATH
 
 # URL prefix for static files.
@@ -110,7 +111,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -120,7 +121,7 @@ SECRET_KEY = 's43@wn56y3_9$*3qzo=$)k)ax9y%b^s=xtx$qruu(nwc3(61iz'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -195,7 +196,7 @@ LOGGING = {
 FIXTURE_PATH = os.path.join(PROJECT_PATH, 'treconomics/fixtures')
 
 FIXTURE_DIRS = (
-   FIXTURE_PATH,
+    FIXTURE_PATH,
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'

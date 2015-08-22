@@ -18,6 +18,12 @@ qrels = TrecQrelHandler(qrels_file)
 
 
 def get_experiment_context(request):
+    """
+    This is a helper function that returns the correct experimental context
+    based on the request provided.
+    :param request:
+    :return: experimental context dictionary
+    """
     ec = {"username": request.user.username}
     u = User.objects.get(username=ec["username"])
     profile = u.profile
@@ -35,12 +41,10 @@ def get_experiment_context(request):
         ec["current_step"] = steps_completed
         request.session['current_step'] = steps_completed
 
-
     if "taskid" in request.session:
         ec["taskid"] = int(request.session['taskid'])
     else:
         ec["taskid"] = 0
-
 
     es = experiment_setups[ec['condition']]
     esd = es.get_exp_dict(ec["taskid"],ec["rotation"])
@@ -206,7 +210,7 @@ def assess_performance(topic_num, doc_list):
 def get_performance(username, topic_num):
     u = User.objects.get(username=username)
     docs = DocumentsExamined.objects.filter(user=u).filter(topic_num=topic_num)
-    print "Documents to Judge for topic %s " % (topic_num)
+    print "Documents to Judge for topic %s " % topic_num
     doc_list = []
     for d in docs:
         if d.judgement > 0:

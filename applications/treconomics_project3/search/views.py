@@ -146,6 +146,10 @@ def show_document(request, whoosh_docid):
 
 @login_required
 def show_saved_documents(request):
+    """
+    Displays a list of all the documents that were marked as relevant
+    by the user.
+    """
     # Timed out?
     if time_search_experiment_out(request):
         return redirect('timeout')
@@ -204,6 +208,9 @@ def task(request, taskid):
 
 
 def entity_snippet(response):
+    """
+    Helper function that parses snippets and extract named entities.
+    """
     for result in response.results:
         summary = result.summary
         entities = nee.extract_entities(summary.decode("utf-8"))
@@ -214,14 +221,16 @@ def entity_snippet(response):
 
 
 def reduce_snippet(response, percent):
+    """
+    Helper function that reduces the length of a snippet by
+     a set percentage. It does this by words rather than str len.
+    :param percent:
+    """
     for result in response.results:
-        # print s
         soup = BeautifulSoup(result.summary)
         text = soup.get_text()
         tokens = text.split()
-        print tokens
         l = len(tokens)
-        print
         p = l
         if l > 5:
             p = int(float(l) * (percent / 100.0))
@@ -231,6 +240,16 @@ def reduce_snippet(response, percent):
 
 
 def run_query(request, result_dict, query_terms='', page=1, page_len=10, condition=0, interface=1):
+    """
+    Helper method which populates the results dictionary, and send the user to the right interface.
+    :param result_dict: dictionary with query terms
+    :param query_terms:
+    :param page:
+    :param page_len:
+    :param condition:
+    :param interface:
+    :return:
+    """
     # Stops an AWFUL lot of problems when people get up to mischief
     if page < 1:
         page = 1
@@ -361,22 +380,17 @@ def search(request, taskid=-1):
         else:
             log_event(event="SEARCH_TASK_COMMENCED", request=request)
 
-    # check for timeout
+    #FIXME this might cause issues check for timeout
     if time_search_experiment_out(request):
         return redirect('timeout')
     else:
         """show base index view"""
 
         ec = get_experiment_context(request)
-        # print "CONTEXT DICT"
-        # print ec
         condition = ec["condition"]
         rotation = ec["rotation"]
         interface = ec["interface"]
 
-        #      es = experiment_setups[condition]
-        #      exp = es.get_exp_dict(taskid, rotation)
-        #    interface = exp['interface']
         print taskid, rotation, interface
         print '--------'
 
@@ -393,9 +407,6 @@ def search(request, taskid=-1):
                        'autocomplete': ec['autocomplete'],
                        'is_fast': 'true'
                        }
-
-        #if exp['result_delay'] == 0:
-        #        result_dict['is_fast'] = 'false'
 
         # Ensure that we set a queryurl.
         # This means that if a user clicks "View Saved" before posing a query, there will be something
@@ -480,7 +491,6 @@ def search(request, taskid=-1):
             return render(request, 'trecdo/search.html', result_dict)
 
 
-@login_required
 def set_results_session_var(request, result_dict):
     """
     A helper function which sets a session variable containing the Whoosh document IDs for a given

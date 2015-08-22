@@ -2,8 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
+
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy
+from django.views.generic import TemplateView
+from django.views.generic.base import ContextMixin
 
 from models import DocumentsExamined
 from models import TaskDescription
@@ -171,36 +175,6 @@ def pre_task(request, taskid):
 
     return render(request, 'base/pre_task.html', context_dict)
 
-from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
-from django.views.generic.base import ContextMixin
-
-
-class LoginRequiredMixin(object):
-    @classmethod
-    def as_view(cls, **initkwargs):
-        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
-        return login_required(view)
-
-
-class ExperimentContextMixin(LoginRequiredMixin, ContextMixin):
-    """
-    ExperiemntContextMixin requires LoginRequiredMixin conceptually:
-    You have to be logged in for get_experiment_context to be defined!
-    """
-    def get_context_data(self, **kwargs):
-        context = super(ExperimentContextMixin, self).get_context_data(**kwargs)
-
-        # I'd just do this and change the templates:
-        # context['experiment'] = get_experiment_context(self.request)
-
-        # But you seem to currently want:
-        ec = get_experiment_context(self.request)
-        context['participant'] = ec['username']
-        context['condition'] = ec['condition']
-
-        return context
-
 
 @login_required
 def pre_practice_task(request, taskid):
@@ -274,7 +248,7 @@ def pre_task_with_questions(request, taskid):
             obj.topic_num = ec["topicnum"]
             obj.save()
             log_event(event="PRE_TASK_SURVEY_COMPLETED", request=request)
-            return reverse_lazy('next')
+            return reverse('next')
         else:
             print form.errors
             errors = form.errors
@@ -373,7 +347,7 @@ def post_task_with_questions(request, taskid):
             obj.topic_num = ec["topicnum"]
             obj.save()
             log_event(event="POST_TASK_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect(reverse_lazy('next'))
+            return redirect('next')
         else:
             print form.errors
             errors = form.errors
@@ -389,7 +363,7 @@ def post_task_with_questions(request, taskid):
     # if we had a survey questions we could ask them here
     # else we can provide a link to a hosted questionnaire
 
-    action = '/treconomics/posttaskquestions/' + taskid + '/'
+    action = APP_NAME + 'posttaskquestions/' + taskid + '/'
 
     # if participant has completed all the tasks, go to the post experiment view
     # else direct the participant to the pre task view
@@ -403,82 +377,16 @@ def post_task_with_questions(request, taskid):
 
     return render(request, 'base/post_task_with_questions.html', context_dict)
 
-
 # @login_required
-# def pre_experiment(request, version):
+# def session_completed(request):
 #     ec = get_experiment_context(request)
 #     uname = ec["username"]
 #     condition = ec["condition"]
-#
-#     if version == 'AN':
-#         return render(request,
-#                       'base/anita_pre_experiment.html',
-#                       {'participant': uname, 'condition': condition})
-#     if version == 'US':
-#         return render(request,
-#                       'base/pre_experiment_us.html',
-#                       {'participant': uname, 'condition': condition})
-#     else:
-#         return render(request,
-#                       'base/pre_experiment.html',
-#                       {'participant': uname, 'condition': condition})
-
-
-# @login_required
-# def post_experiment(request):
-#     ec = get_experiment_context(request)
-#     uname = ec["username"]
-#     condition = ec["condition"]
-#     # if we had post task survey we could ask them here
-#     # else we can provide a link to a hosted questionnaire
-#
-#     # Provide debriefing
+#     print "SESSION COMPLETED"
+#     log_event(event="SESSION_COMPLETED", request=request)
 #
 #     context_dict = {'participant': uname, 'condition': condition}
-#
-#     return render(request, 'base/post_experiment.html', context_dict)
-
-
-# @login_required
-# def task_spacer(request):
-#     ec = get_experiment_context(request)
-#     uname = ec["username"]
-#     condition = ec["condition"]
-#     # if we had post task survey we could ask them here
-#     # else we can provide a link to a hosted questionnaire
-#
-#     # Provide debriefing
-#
-#     context_dict = {'participant': uname, 'condition': condition}
-#
-#     return render(request, 'base/task_spacer.html', context_dict)
-
-
-# @login_required
-# def end_experiment(request):
-#     ec = get_experiment_context(request)
-#     uname = ec["username"]
-#     condition = ec["condition"]
-#     # if we had post task survey we could ask them here
-#     # else we can provide a link to a hosted questionnaire
-#
-#     # Provide debriefing
-#
-#     context_dict = {'participant': uname, 'condition': condition}
-#
-#     return render(request, 'base/end_experiment.html', context_dict)
-
-
-@login_required
-def session_completed(request):
-    ec = get_experiment_context(request)
-    uname = ec["username"]
-    condition = ec["condition"]
-    print "SESSION COMPLETED"
-    log_event(event="SESSION_COMPLETED", request=request)
-
-    context_dict = {'participant': uname, 'condition': condition}
-    return render(request, 'base/session_completed.html', context_dict)
+#     return render(request, 'base/session_completed.html', context_dict)
 
 
 @login_required
@@ -504,6 +412,32 @@ def show_timeout_message(request):
     return render(request, 'base/timeout.html')
 
 
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view)
+
+
+class ExperimentContextMixin(LoginRequiredMixin, ContextMixin):
+    """
+    ExperiemntContextMixin requires LoginRequiredMixin conceptually:
+    You have to be logged in for get_experiment_context to be defined!
+    """
+    def get_context_data(self, **kwargs):
+        context = super(ExperimentContextMixin, self).get_context_data(**kwargs)
+
+        # I'd just do this and change the templates:
+        # context['experiment'] = get_experiment_context(self.request)
+
+        # But you seem to currently want:
+        ec = get_experiment_context(self.request)
+        context['participant'] = ec['username']
+        context['condition'] = ec['condition']
+
+        return context
+
+
 class PreExperimentView(ExperimentContextMixin, TemplateView):
     template_name = 'base/pre_experiment.html'
 
@@ -526,4 +460,16 @@ class SessionCompletedView(ExperimentContextMixin, TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         log_event(event="SESSION_COMPLETED", request=self.request)
+        pass
+
+
+class EndExperimentView(ExperimentContextMixin, TemplateView):
+    """
+    Used to display a simple page indicating the user to the fact that their time for a task has expired.
+    After a 5 second delay, the page automatically redirects to /treconomics/next/.
+    """
+    template_name = 'base/end_experiment.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        log_event(event="EXPERIMENT_TIMEOUT", request=request)
         pass
