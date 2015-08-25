@@ -17,8 +17,11 @@ class FixedCostLoggerNoTime(FixedCostLogger):
         Instantiates the BaseLogger class and sets up additional instance variables for the FixedCostLogger.
         Note that this does not enforce the time limit...
         """
+        time_limit = 0
+        
         super(FixedCostLoggerNoTime, self).__init__(output_controller,
                                                     search_context,
+                                                    time_limit,
                                                     query_cost,
                                                     document_cost,
                                                     snippet_cost,
