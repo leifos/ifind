@@ -1,9 +1,8 @@
 __author__ = 'leif'
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
 
 from experiment_functions import get_experiment_context
 from experiment_functions import log_event
@@ -38,7 +37,7 @@ def handle_task_and_questions_survey(request, taskid, SurveyForm, survey_name, a
             obj.topic_num = ec["topicnum"]
             obj.save()
             log_event(event=survey_name.upper() + "_SURVEY_COMPLETED", request=request)
-            return HttpResponseRedirect(reverse_lazy('next'))
+            return redirect('next')
         else:
             print form.errors
             errors = form.errors
@@ -152,7 +151,7 @@ def view_anita_consent(request):
             obj.user = u
             obj.save()
             log_event("CONSENT_COMPLETED", request=request)
-            return HttpResponseRedirect('/treconomics/next/')
+            return redirect('next')
         else:
             print form.errors
             errors = form.errors

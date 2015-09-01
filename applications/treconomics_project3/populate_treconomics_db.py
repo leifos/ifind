@@ -17,7 +17,7 @@ def populate():
                          'to find articles that discuss efforts '
                          'made by countries other than the United States '
                          'to prevent the extinction of wildlife species '
-                         'native to their countries.  </p>')
+                         'native to their countries. </p>')
     add_task(topic_num='354',
              title='Journalist Risks',
              description='<p>For this task, your job is to find '

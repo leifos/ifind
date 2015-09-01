@@ -9,7 +9,6 @@ from ifind.common.autocomplete_trie import AutocompleteTrie
 from ifind.search.engines.whooshtrecnews import WhooshTrecNews
 from experiment_setup import ExperimentSetup
 
-
 work_dir = os.getcwd()
 # when deployed this needs to match up with the hostname, and directory to where the project is
 
@@ -38,12 +37,6 @@ event_logger.addHandler(event_logger_handler)
 # workflow must always start with startexperiment/
 
 exp_work_flows = [
-    ['startexperiment/', 'preexperiment/UK/',
-     'prepracticetask/0/', 'search/0/', 'postpracticetask/0/',
-     'pretaskquestions/1/', 'search/1/', 'mickeyposttask/1/',
-     'pretaskquestions/2/', 'search/2/', 'mickeyposttask/2/',
-     'pretaskquestions/3/', 'search/3/', 'mickeyposttask/3/',
-     'logout/'],
     ['startexperiment/', 'consent', 'preexperiment/AN/',
      'prepracticetask/0/', 'search/0/', 'postpracticetask/0/',
      'anitatimeinstructions/TC/',

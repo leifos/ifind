@@ -160,6 +160,7 @@ INSTALLED_APPS = (
     'treconomics',
     'survey',
     'search',
+    'import_export',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
