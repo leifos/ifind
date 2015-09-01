@@ -625,3 +625,19 @@ class MickeyPostTaskSurveyForm(ModelForm):
     class Meta:
         model = MickeyPostTaskSurvey
         exclude = ('user', 'task_id', 'topic_num')
+
+from import_export import resources
+
+
+class AnitaPreTaskResource(resources.ModelResource):
+
+    class Meta:
+        model = AnitaPreTaskSurvey
+        exclude = ('id',)
+
+
+class MickeyPostTaskResource(resources.ModelResource):
+
+    class Meta:
+        model = MickeyPostTaskSurvey
+        exclude = ('id',)

@@ -331,7 +331,7 @@ def post_task_with_questions(request, taskid):
     uname = ec["username"]
     condition = ec["condition"]
     # Save out to profile what task has just been completed
-    # This is probably not neccessary ---- as the step  and taskid coming defines this.
+    # This is probably not necessary ---- as the step  and taskid coming defines this.
     u = User.objects.get(username=uname)
     profile = u.profile
     errors = ""
@@ -463,12 +463,12 @@ class SessionCompletedView(ExperimentContextMixin, TemplateView):
         pass
 
 
-class EndExperimentView(ExperimentContextMixin, TemplateView):
+class TimeoutView(ExperimentContextMixin, TemplateView):
     """
     Used to display a simple page indicating the user to the fact that their time for a task has expired.
     After a 5 second delay, the page automatically redirects to /treconomics/next/.
     """
-    template_name = 'base/end_experiment.html'
+    template_name = 'base/timeout.html'
 
     def dispatch(self, request, *args, **kwargs):
         log_event(event="EXPERIMENT_TIMEOUT", request=request)
