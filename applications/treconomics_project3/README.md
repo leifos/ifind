@@ -59,9 +59,9 @@ Type `d` for Download and then `book` to download the book corpus (that is all y
 You could also select  `all` and install the whole corpus (this will take a few minutes).
 
 The files will be installed in 
-    - `/Users/<username>/nltk_data` (Mac)
-    - `/usr/share/nltk_data` (Unix)
-    - `C:\nltk_data` (Windows)
+ + `/Users/<username>/nltk_data` (Mac)
+ + `/usr/share/nltk_data` (Unix)
+ + `C:\nltk_data` (Windows)
 
 ## Deployment
 
@@ -70,4 +70,4 @@ In order to run the application
 python manage.py runserver
 ```
 
-Simply navigate to `http://localhost:8000`
+Simply navigate to [http://localhost:8000](http://localhost:8000)

@@ -11,7 +11,7 @@ class SearchContext(object):
     The "memory" of the simulated user. Contains details such as the documents that have been examined by the user.
     This class also provides a link between the simulated user and the search engine interface - allowing one to retrieve the next document, snippet, etc.
     """
-    def __init__(self, search_interface, output_controller, topic, query_list=[]):
+    def __init__(self, search_interface, output_controller, topic, query_list=[], query_limit=None):
         """
         Several instance variables here to track the different aspects of the search process.
         """
@@ -40,6 +40,9 @@ class SearchContext(object):
         
         self._relevant_documents = []            # All documents marked relevant throughout the search session.
         self._irrelevant_documents = []          # All documents marked irrelevant throughout the search session.
+        
+        if type(query_limit) == int and query_limit > 0:
+            self._query_list = self._query_list[0:query_limit]
     
     def report(self):
         """
@@ -321,3 +324,15 @@ class SearchContext(object):
         An empty list indicates that no documents have been examined for the current query.
         """
         return self._documents_examined
+    
+    def get_all_queries(self):
+        """
+        Returns a list of all queries generated.
+        """
+        return self._query_list
+    
+    def get_issued_queries(self):
+        """
+        Returns a list of all queries that have been issued for the given search session.
+        """
+        return self._issued_queries

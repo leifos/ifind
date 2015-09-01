@@ -46,7 +46,8 @@ class UserComponentGenerator(BaseComponentGenerator):
         # Generate the logger object for the simulation.
         self.logger = self._get_object_reference(config_details=self._config_dict['logger'],
                                                          package='loggers',
-                                                         components=[('output_controller', self.__simulation_components.output)])
+                                                         components=[('output_controller', self.__simulation_components.output),
+                                                                     ('search_context', self.search_context)])
     
     def prettify(self):
         """

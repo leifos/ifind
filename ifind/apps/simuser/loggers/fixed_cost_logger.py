@@ -10,6 +10,7 @@ class FixedCostLogger(BaseLogger):
     """
     def __init__(self,
                  output_controller,
+                 search_context,
                  time_limit=300,
                  query_cost=10,
                  document_cost=20,
@@ -20,7 +21,7 @@ class FixedCostLogger(BaseLogger):
         Instantiates the BaseLogger class and sets up additional instance variables for the FixedCostLogger.
         Note that this does not enforce the time limit...
         """
-        super(FixedCostLogger, self).__init__(output_controller)
+        super(FixedCostLogger, self).__init__(output_controller, search_context)
         
         #  Series of costs (in seconds) for each interaction that the user can perform; these are fixed.
         self._query_cost = query_cost
