@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 
 from treconomics.experiment_functions import get_experiment_context
 from treconomics.experiment_functions import log_event
@@ -97,7 +98,8 @@ def view_alt_posttask3_survey(request, taskid):
 
 @login_required
 def view_alt_demographic_survey(request):
-    return handle_survey(request, AnitaDemographicsSurveyForm, 'DEMOGRAPHICS', '/treconomics/anitademographicssurvey/',
+    name = 'demographics'
+    return handle_survey(request, AnitaDemographicsSurveyForm, name, reverse(name),
                          'survey/anita_demographics_survey.html')
 
 
