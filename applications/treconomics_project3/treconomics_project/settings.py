@@ -159,6 +159,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'treconomics',
     'survey',
+    'snippets',
     'search',
     'import_export',
 )

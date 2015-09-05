@@ -223,23 +223,43 @@ EVF = ( ('E', 'Effort'), ('E', 'Frustration') )
 
 
 class NasaAssessmentLoadForm(ModelForm):
-    nasa_mental_demand = forms.ChoiceField(widget=RadioSelect, choices=NASA_LOW_CHOICES,
-                                           label="MENTAL DEMAND: How mentally demanding was it to assess and judge documents for relevance?",
+    nasa_mental_demand = forms.ChoiceField(widget=RadioSelect,
+                                           choices=NASA_LOW_CHOICES,
+                                           label="MENTAL DEMAND: "
+                                                 "How mentally demanding was it to assess"
+                                                 " and judge documents for relevance?",
                                            required=False)
-    nasa_physical_demand = forms.ChoiceField(widget=RadioSelect, choices=NASA_LOW_CHOICES,
-                                             label="PHYSICAL DEMAND: How physically demanding was it to assess and judge documents for relevance?",
+
+    nasa_physical_demand = forms.ChoiceField(widget=RadioSelect,
+                                             choices=NASA_LOW_CHOICES,
+                                             label="PHYSICAL DEMAND: "
+                                                   "How physically demanding was it to assess"
+                                                   " and judge documents for relevance?",
                                              required=False)
-    nasa_temporal = forms.ChoiceField(widget=RadioSelect, choices=NASA_LOW_CHOICES,
-                                      label="TERMPORAL DEMAND: How hurried or rushed did you feel when assessing and judging documents for relevance?",
+    nasa_temporal = forms.ChoiceField(widget=RadioSelect,
+                                      choices=NASA_LOW_CHOICES,
+                                      label="TEMPORAL DEMAND: "
+                                            "How hurried or rushed did you feel when assessing"
+                                            " and judging documents for relevance?",
                                       required=False)
-    nasa_performance = forms.ChoiceField(widget=RadioSelect, choices=NASA_PERFECT_CHOICES,
-                                         label="PERFORMANCE: How successful were you at assessing and judging documents for relevance?",
+    nasa_performance = forms.ChoiceField(widget=RadioSelect,
+                                         choices=NASA_PERFECT_CHOICES,
+                                         label="PERFORMANCE: "
+                                               "How successful were you at assessing"
+                                               " and judging documents for relevance?",
                                          required=False)
-    nasa_effort = forms.ChoiceField(widget=RadioSelect, choices=NASA_LOW_CHOICES,
-                                    label="EFFORT: How hard did you have to work to assess and judge documents for relevance?",
+    nasa_effort = forms.ChoiceField(widget=RadioSelect,
+                                    choices=NASA_LOW_CHOICES,
+                                    label="EFFORT: "
+                                          "How hard did you have to work to assess"
+                                          " and judge documents for relevance?",
                                     required=False)
-    nasa_frustration = forms.ChoiceField(widget=RadioSelect, choices=NASA_LOW_CHOICES,
-                                         label="FRUSTRATION: How insecure, discouraged, irrtated, stressed, and annoyed were you while assessing and judgin documents for relevance?",
+    nasa_frustration = forms.ChoiceField(widget=RadioSelect,
+                                         choices=NASA_LOW_CHOICES,
+                                         label="FRUSTRATION: How insecure, "
+                                               "discouraged, irritated, stressed, "
+                                               "and annoyed were you while assessing "
+                                               "and judging documents for relevance?",
                                          required=False)
 
     def clean(self):
@@ -280,10 +300,9 @@ class NasaFactorCompareForm(ModelForm):
 
 
 class SearchEfficacyForm(ModelForm):
-
     EFF_CONFIDENT_CHOICES = (
-    (1, 'Totally Unconfident'), (2, ''), (3, ''), (4, ''), (5, ''), (6, ''), (7, ''), (8, ''), (9, ''),
-    (10, 'Totally Confident')  )
+        (1, 'Totally Unconfident'), (2, ''), (3, ''), (4, ''), (5, ''), (6, ''), (7, ''), (8, ''), (9, ''),
+        (10, 'Totally Confident')  )
 
     efficacy_identify_requirements = forms.ChoiceField(widget=RadioSelect(attrs={'class': 'special'}),
                                                        choices=EFF_CONFIDENT_CHOICES,
@@ -301,12 +320,14 @@ class SearchEfficacyForm(ModelForm):
     efficacy_many_relevant = forms.ChoiceField(widget=RadioSelect, choices=EFF_CONFIDENT_CHOICES,
                                                label="Develop a search query which will retrieved a large number of appropriate results.",
                                                required=False)
-    efficacy_enough_results = forms.ChoiceField(widget=RadioSelect, choices=EFF_CONFIDENT_CHOICES,
+    efficacy_enough_results = forms.ChoiceField(widget=RadioSelect,
+                                                choices=EFF_CONFIDENT_CHOICES,
                                                 label="Find an adequate number of results.", required=False)
     efficacy_like_a_pro = forms.ChoiceField(widget=RadioSelect, choices=EFF_CONFIDENT_CHOICES,
                                             label="Find results similar in quality to those obtained by a professional searcher.",
                                             required=False)
-    efficacy_few_irrelevant = forms.ChoiceField(widget=RadioSelect, choices=EFF_CONFIDENT_CHOICES,
+    efficacy_few_irrelevant = forms.ChoiceField(widget=RadioSelect,
+                                                choices=EFF_CONFIDENT_CHOICES,
                                                 label="Devise a query which will result in a very small percentage of irrelevant itesm on my list.",
                                                 required=False)
     efficacy_structure_time = forms.ChoiceField(widget=RadioSelect, choices=EFF_CONFIDENT_CHOICES,

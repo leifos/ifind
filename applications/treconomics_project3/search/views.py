@@ -216,7 +216,6 @@ def entity_snippet(response):
         entities = nee.extract_entities(summary.decode("utf-8"))
         result.summary = (', '.join(entities))
     print "Entity snippet"
-
     return response
 
 
@@ -341,7 +340,7 @@ def set_task(request, taskid=-1):
 
 def is_from_search_request(request, new_page_no):
     """
-    Returns True if the URL of the referer is a standard search request.
+    Returns True if the URL of the referrer is a standard search request.
     This is used to determine if we should delay results appearing.
 
     The new page number of required to check against the page number from the referer.

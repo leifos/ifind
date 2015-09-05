@@ -1,6 +1,8 @@
+from snippets import views
+
 __author__ = 'leif'
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url
 
 from . import views
 from .views import PreExperimentView
@@ -9,8 +11,7 @@ from .views import TaskSpacerView
 from .views import EndExperimentView
 from .views import SessionCompletedView
 from search import views as search_views
-import views_mickey
-import survey.views as survey_views
+from snippets import views as snippet
 
 
 urlpatterns = \
@@ -62,19 +63,17 @@ urlpatterns = \
              # (r'^shortstresssurvey/$', survey_views.view_short_stress_survey),
              # (r'^modifiedstresssurvey/$', survey_views.view_modified_stress_survey),
 
-             url(r'^mickeyposttask/(?P<taskid>\d+)/$', views_mickey.mickey_posttask),
+             url(r'^mickeyposttask/(?P<taskid>\d+)/$', snippet.view_snippet_posttask),
 
-             (r'^anitapretasksurvey/(?P<taskid>\d+)/$', views_mickey.view_anita_pretask_survey),
-             (r'^anitaposttask0survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask0_survey),
-             (r'^anitaposttask1survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask1_survey),
-             (r'^anitaposttask2survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask2_survey),
-             (r'^anitaposttask3survey/(?P<taskid>\d+)/$', views_mickey.view_anita_posttask3_survey),
-             (r'^anitademographicssurvey/$', views_mickey.view_anita_demographic_survey),
-             (r'^anitaexit1survey/$', views_mickey.view_anita_exit1_survey),
-             (r'^anitaexit2survey/$', views_mickey.view_anita_exit2_survey),
-             (r'^anitaexit3survey/$', views_mickey.view_anita_exit3_survey),
-             (r'^anitatimeinstructions/(?P<version>[A-Z]+)/$',
-             views_mickey.view_anita_time_instructions),
-             (r'^consent/$', views_mickey.view_anita_consent),
+             (r'^anitapretasksurvey/(?P<taskid>\d+)/$', snippet.view_alt_pretask_survey),
+             (r'^anitaposttask0survey/(?P<taskid>\d+)/$', snippet.view_alt_posttask0_survey),
+             (r'^anitaposttask1survey/(?P<taskid>\d+)/$', snippet.view_alt_posttask1_survey),
+             (r'^anitaposttask2survey/(?P<taskid>\d+)/$', snippet.view_anita_posttask2_survey),
+             (r'^anitaposttask3survey/(?P<taskid>\d+)/$', snippet.view_alt_posttask3_survey),
+             (r'^anitademographicssurvey/$', snippet.view_alt_demographic_survey),
+             (r'^anitaexit1survey/$', snippet.view_alt_exit1_survey),
+             (r'^anitaexit2survey/$', snippet.view_alt_exit2_survey),
+             (r'^anitaexit3survey/$', snippet.view_alt_exit3_survey),
+             (r'^consent/$', snippet.view_consent),
 
     )

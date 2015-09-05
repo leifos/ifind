@@ -5,18 +5,10 @@ from django import forms
 from import_export.admin import ImportExportModelAdmin
 
 from models import DocumentsExamined
-from models import UserProfile
 from models import TaskDescription, TopicQuerySuggestion
-from survey.models import USDemographicsSurvey, UKDemographicsSurvey
-from survey.models import PreTaskTopicKnowledgeSurvey, PostTaskTopicRatingSurvey
-from survey.models import NasaSystemLoad, NasaQueryLoad, NasaNavigationLoad, NasaAssessmentLoad, NasaFactorCompare
-from survey.models import SearchEfficacy, ConceptListingSurvey, ShortStressSurvey, ModifiedStressSurvey
-from models_mickey import AnitaPreTaskSurvey, AnitaPreTaskResource
-from models_mickey import AnitaPostTask0Survey, AnitaPostTask1Survey
-from models_mickey import AnitaPostTask2Survey, AnitaPostTask3Survey
-
-from models_mickey import MickeyPostTaskSurvey, MickeyPostTaskResource
-from models_mickey import AnitaExit1Survey, AnitaExit2Survey, AnitaExit3Survey, AnitaDemographicsSurvey
+from snippets.models import AnitaPreTaskSurvey, AnitaPreTaskResource
+from snippets.models import MickeyPostTaskSurvey, MickeyPostTaskResource
+from snippets.models import AnitaDemographicsSurvey
 
 
 class AnitaPreTaskAdmin(ImportExportModelAdmin):

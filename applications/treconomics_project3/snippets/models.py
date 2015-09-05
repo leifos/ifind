@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 from django.forms.widgets import RadioSelect
+from import_export import resources
 
 from survey.forms import clean_to_zero
 
@@ -625,8 +626,6 @@ class MickeyPostTaskSurveyForm(ModelForm):
     class Meta:
         model = MickeyPostTaskSurvey
         exclude = ('user', 'task_id', 'topic_num')
-
-from import_export import resources
 
 
 class AnitaPreTaskResource(resources.ModelResource):
