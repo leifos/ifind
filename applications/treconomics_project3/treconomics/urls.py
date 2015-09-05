@@ -70,7 +70,7 @@ urlpatterns = \
              (r'^anitaposttask1survey/(?P<taskid>\d+)/$', snippet.view_alt_posttask1_survey),
              (r'^anitaposttask2survey/(?P<taskid>\d+)/$', snippet.view_anita_posttask2_survey),
              (r'^anitaposttask3survey/(?P<taskid>\d+)/$', snippet.view_alt_posttask3_survey),
-             (r'^anitademographicssurvey/$', snippet.view_alt_demographic_survey),
+             (r'^demographicssurvey/$', snippet.view_alt_demographic_survey),
              (r'^anitaexit1survey/$', snippet.view_alt_exit1_survey),
              (r'^anitaexit2survey/$', snippet.view_alt_exit2_survey),
              (r'^anitaexit3survey/$', snippet.view_alt_exit3_survey),
