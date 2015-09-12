@@ -1,4 +1,0 @@
-URL                                      query                rank       score     
- https://www.gov.uk/driving-a-minibus     drive minibus        1          1.00      
- https://www.gov.uk/driving-a-minibus     able drive           9          1.00      
- https://www.gov.uk/driving-a-minibus     driving minibus      1          1.00      
