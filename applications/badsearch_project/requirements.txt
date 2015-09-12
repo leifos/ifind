@@ -1,8 +1,0 @@
-BeautifulSoup==3.2.0
-Django==1.5.4
-Pillow==2.4.0
-jsonpickle==0.7.1
-lxml==2.3
-redis==2.10.1
-requests==2.3.0
-wsgiref==0.1.2

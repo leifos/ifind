@@ -1,7 +1,0 @@
-Django==1.5.4
-Pillow==2.3.0
-django-sslify==0.2.3
-jsonpickle==0.7.1
-redis==2.10.1
-requests==2.3.0
-six==1.6.1

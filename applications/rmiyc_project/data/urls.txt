@@ -1,9 +1,0 @@
-http://www.gla.ac.uk/undergraduate/degrees/aeronauticalengineering/
-http://www.gla.ac.uk/undergraduate/degrees/aeronauticalengineeringsit/
-http://www.gla.ac.uk/undergraduate/degrees/aerospacesystemssit/
-http://www.gla.ac.uk/undergraduate/degrees/biomedicalengineering/
-http://www.gla.ac.uk/undergraduate/degrees/civilengineering/
-http://www.gla.ac.uk/undergraduate/degrees/civilengineeringwitharchitecture/
-http://www.gla.ac.uk/undergraduate/degrees/electronicsoftwareengineering/
-http://www.gla.ac.uk/undergraduate/degrees/electronicswithmusic/
-http://www.gla.ac.uk/undergraduate/degrees/productdesignengineering/
