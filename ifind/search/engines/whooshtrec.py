@@ -1,22 +1,30 @@
+__author__ = 'leif'
+from ifind.seeker.list_reader import ListReader
 from ifind.search.engine import Engine
 from ifind.search.response import Response
-from ifind.seeker.list_reader import ListReader
 from ifind.search.exceptions import EngineConnectionException, QueryParamException
 from whoosh.index import open_dir
 from whoosh.query import *
 from whoosh.qparser import QueryParser
+from whoosh.qparser import OrGroup, AndGroup
+from whoosh import scoring
 from whoosh.qparser import MultifieldParser
 from whoosh import highlight
 from whoosh import scoring
 from whoosh.highlight import highlight, HtmlFormatter, ContextFragmenter
 
+import logging
 
-class WhooshTrecNews(Engine):
+log = logging.getLogger('ifind.search.engines.whooshtrec')
+
+
+
+class Whooshtrec(Engine):
     """
     Whoosh based search engine.
 
     """
-    def __init__(self, whoosh_index_dir='', stopwords_file='', model=1, implicit_or=False, newschema=False, **kwargs):
+    def __init__(self, whoosh_index_dir='', stopwords_file='', model=1, implicit_or=False, **kwargs):
         """
         Whoosh engine constructor.
 
@@ -37,30 +45,38 @@ class WhooshTrecNews(Engine):
         if self.stopwords_file:
             self.stopwords = ListReader(self.stopwords_file)  # Open the stopwords file, read into a ListReader
 
-        self.newschema = newschema
+
 
         self.implicit_or=implicit_or
 
         try:
-            # This creates a static docIndex for ALL instance of WhooshTrecNews.
+            # This creates a static docIndex for ALL instance of WhooshTrec.
             # This will not work if you want indexes from multiple sources.
             # As this currently is not the case, this is a suitable fix.
-            if not hasattr(WhooshTrecNews, 'docIndex'):
-                WhooshTrecNews.docIndex = open_dir(whoosh_index_dir)
+            if not hasattr(Whooshtrec, 'docIndex'):
+                Whooshtrec.docIndex = open_dir(whoosh_index_dir)
 
-            print "Whoosh Document index open: ", whoosh_index_dir
-            print "Documents in index: ", self.docIndex.doc_count()
-            if newschema:
-                if 'alltext' in self.docIndex.schema:
-                    self.parser = QueryParser("alltext", self.docIndex.schema)
-                else:
-                    self.parser = QueryParser('content', self.docIndex.schema)
+            log.debug("Whoosh Document index open: {0}".format(whoosh_index_dir))
+            log.debug("Documents in index: {0}".format( self.docIndex.doc_count()))
+
+
+            self._field = 'content'
+            if 'alltext' in self.docIndex.schema:
+                self._field = 'alltext'
+                log.debug("Using all text field")
+
+            if self.implicit_or:
+                self.parser = QueryParser(self._field, self.docIndex.schema, group=OrGroup)
+                log.debug("OR Query parser created")
             else:
-                self.parser = QueryParser("content", self.docIndex.schema)
+                self.parser = QueryParser(self._field, self.docIndex.schema, group=AndGroup)
+                log.debug("AND Query parser created")
+
 
             self.analyzer = self.docIndex.schema[self.parser.fieldname].analyzer
-            self.fragmenter = ContextFragmenter(maxchars=200, surround=40)
-            self.fragmenter.charlimit = 10000
+            # for some reason these are actually being applied.
+            self.fragmenter = ContextFragmenter(maxchars=100, surround=40)
+            self.fragmenter.charlimit = 100
             self.formatter = HtmlFormatter()
             self.set_model(model)
 
@@ -73,20 +89,23 @@ class WhooshTrecNews(Engine):
     def set_model(self, model, pval=None):
         self.scoring_model = scoring.BM25F(B=0.75)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
         if model == 0:
+            engine_name = "TFIDF"
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module
         if model == 2:
             c = 10.0
             if pval:
                 c = pval
-            self.scoring_model = scoring.PL2()  # Use PL2 with default values
+            engine_name = "PL2 c={0}".format(c)
+            self.scoring_model = scoring.PL2(c=c)  # Use PL2
         if model == 1:
             B = 0.75
             if pval:
                 B = pval
-            self.scoring_model = scoring.BM25F(B=B) # BM25
+            engine_name = "BM25F B={0}".format(B)
+            self.scoring_model = scoring.BM25F(B=B) # Use BM25
 
-        print self.scoring_model
         self.searcher = self.docIndex.searcher(weighting=self.scoring_model)
+        log.debug("Engine Created with: {0} retrieval model".format(engine_name))
 
 
     def _search(self, query):
@@ -149,22 +168,23 @@ class WhooshTrecNews(Engine):
         """
         #try:
 
-        page = query.skip
-        pagelen = query.top
         response = None
-        print query.parsed_terms
+        page = query.skip + 1
+        pagelen = query.top
+
+        log.debug("Query Issued: {0} Page: {1} Page Length: {2}".format(query.parsed_terms, page, pagelen))
         results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
         results.fragmenter = self.fragmenter
         results.formatter = self.formatter
 
         setattr(results, 'actual_page', page)
 
-        response = self._parse_whoosh_response(query, results, self.newschema)
+        response = self._parse_whoosh_response(query, results, self._field, self.formatter, self.fragmenter)
 
         return response
 
     @staticmethod
-    def _parse_whoosh_response(query, results, newschema):
+    def _parse_whoosh_response(query, results, field, formatter, fragmenter):
         """
         Parses Whoosh's response and returns as an ifind Response.
 
@@ -196,16 +216,9 @@ class WhooshTrecNews(Engine):
             rank = ((int(results.pagenum)-1) * results.pagelen) + r
 
             url = "/treconomics/" + str(result.docnum)
-            if newschema:
-                if 'alltext' in WhooshTrecNews.docIndex.schema:
-                    summary = result.highlights("alltext")
-                    content = result['alltext']
-                else:
-                    summary = result.highlights('content')
-                    content = result['content']
-            else:
-                summary = result.highlights("content")
-                content = result['content']
+
+            summary = result.highlights(field)
+            content = result[field]
 
             trecid = result["docid"]
             trecid = trecid.strip()

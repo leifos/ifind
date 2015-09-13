@@ -25,4 +25,8 @@ def display_results(response):
     :return:
     """
     for result in response:
-        print result
+
+        print '{0}: {1}'.format(result.rank,result.title)
+        print result.url
+        print result.summary
+        print ''
