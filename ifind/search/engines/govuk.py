@@ -103,14 +103,15 @@ class Govuk(Engine):
 
         # The base url - results do not provide a full link.
         base_url = "https://www.gov.uk"
+        rank = 0
 
         for result in content[u'results']:
             text = result.get(u'description', '')
             title = result[u'title']
             url = base_url + result[u'link']
-
+            rank = rank + 1
             # Add the result to the ifind response
-            response.add_result(title=title, url=url, summary=text)
+            response.add_result(title=title, url=url, summary=text, rank=rank)
 
             if len(response) == query.top:
                 break

@@ -11,8 +11,6 @@ from whoosh import scoring
 from whoosh.highlight import highlight, HtmlFormatter, ContextFragmenter
 
 
-FORWARD_LOOK_PAGES = 10  # How many pages do we look forward to cache?
-
 class WhooshTrecNews(Engine):
     """
     Whoosh based search engine.
