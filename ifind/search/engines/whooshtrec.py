@@ -87,7 +87,10 @@ class Whooshtrec(Engine):
 
 
     def set_model(self, model, pval=None):
-        self.scoring_model = scoring.BM25F(B=0.75)  # Use the BM25F scoring module (B=0.75 is default for Whoosh)
+        self.scoring_model = scoring.BM25F(B=0.75)
+        engine_name = "BM25F B={0}".format(0.75)
+        # Use the BM25F scoring module (B=0.75 is default for Whoosh)
+
         if model == 0:
             engine_name = "TFIDF"
             self.scoring_model = scoring.TF_IDF()  # Use the TFIDF scoring module

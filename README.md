@@ -3,6 +3,8 @@ ifind
 
 This library contains a series of components for search and search related operations.
 
+It requires Python 2.7+.
+
 You will need to add ifind to your PYTHONPATH.
 
 
