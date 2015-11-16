@@ -3,7 +3,7 @@ import requests
 from ifind.search.engine import Engine
 from ifind.search.response import Response
 from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, EngineConnectionException
-from ifind.utils.encoding import encode_symbols
+from ifind.common.encoding import encode_symbols
 from copy import copy
 
 API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
