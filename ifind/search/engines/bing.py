@@ -6,8 +6,8 @@ from ifind.search.exceptions import EngineAPIKeyException, QueryParamException, 
 from ifind.common.encoding import encode_symbols
 from copy import copy
 
-API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite'
-WEB_ONLY_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/SearchWeb/v1/'
+API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
+WEB_ONLY_API_ENDPOINT = 'https://api.datamarket.azure.com/Bing/Search/v1/'
 RESULT_TYPES = ('web', 'image', 'video')
 DEFAULT_RESULT_TYPE = 'web'
 
@@ -195,7 +195,10 @@ class Bing(Engine):
         for key, value in params.iteritems():
             query_string += '&' + key + '=' + str(value)
 
-        return API_ENDPOINT + encode_symbols(result_string + '&' + query_string)
+        query_string = API_ENDPOINT + encode_symbols(result_string + '&' + query_string)
+        print query_string
+        return query_string
+
 
     def _parse_json_response(self, query, results):
         """
@@ -212,6 +215,7 @@ class Bing(Engine):
             Private method.
 
         """
+        print results
         response = Response(query.terms, query)
         content = json.loads(results.text)
 

@@ -9,9 +9,10 @@ from whoosh.qparser import QueryParser
 from whoosh.qparser import OrGroup, AndGroup
 from whoosh import scoring
 from whoosh.qparser import MultifieldParser
-from whoosh import highlight
 from whoosh import scoring
-from whoosh.highlight import highlight, HtmlFormatter, ContextFragmenter
+from whoosh import highlight
+
+#    , HtmlFormatter, ContextFragmenter, PinpointFragmenter, WholeFragmenter
 
 import logging
 
@@ -45,7 +46,7 @@ class Whooshtrec(Engine):
         if self.stopwords_file:
             self.stopwords = ListReader(self.stopwords_file)  # Open the stopwords file, read into a ListReader
 
-
+        self.snippet_size = 3
 
         self.implicit_or=implicit_or
 
@@ -74,10 +75,8 @@ class Whooshtrec(Engine):
 
 
             self.analyzer = self.docIndex.schema[self.parser.fieldname].analyzer
-            # for some reason these are actually being applied.
-            self.fragmenter = ContextFragmenter(maxchars=100, surround=40)
-            self.fragmenter.charlimit = 100
-            self.formatter = HtmlFormatter()
+            #self.fragmenter = highlight.WholeFragmenter() #PinpointFragmenter(maxchars=300, surround=50)
+            #self.formatter = highlight.HtmlFormatter()
             self.set_model(model)
 
         except:
@@ -177,17 +176,17 @@ class Whooshtrec(Engine):
 
         log.debug("Query Issued: {0} Page: {1} Page Length: {2}".format(query.parsed_terms, page, pagelen))
         results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
-        results.fragmenter = self.fragmenter
-        results.formatter = self.formatter
+        #results.fragmenter = self.fragmenter
+        #results.formatter = self.formatter
 
         setattr(results, 'actual_page', page)
 
-        response = self._parse_whoosh_response(query, results, self._field, self.formatter, self.fragmenter)
+        response = self._parse_whoosh_response(query, results, self._field, self.snippet_size)
 
         return response
 
     @staticmethod
-    def _parse_whoosh_response(query, results, field, formatter, fragmenter):
+    def _parse_whoosh_response(query, results, field, snippet_size):
         """
         Parses Whoosh's response and returns as an ifind Response.
 
@@ -220,7 +219,7 @@ class Whooshtrec(Engine):
 
             url = "/treconomics/" + str(result.docnum)
 
-            summary = result.highlights(field)
+            summary = result.highlights(field,top=snippet_size)
             content = result[field]
 
             trecid = result["docid"]
