@@ -171,7 +171,7 @@ class Whooshtrec(Engine):
         #try:
 
         response = None
-        page = query.skip + 1
+        page = query.skip
         pagelen = query.top
 
         log.debug("Query Issued: {0} Page: {1} Page Length: {2}".format(query.parsed_terms, page, pagelen))
