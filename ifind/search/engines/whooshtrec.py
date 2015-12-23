@@ -75,7 +75,9 @@ class Whooshtrec(Engine):
 
 
             self.analyzer = self.docIndex.schema[self.parser.fieldname].analyzer
-            #self.fragmenter = highlight.WholeFragmenter() #PinpointFragmenter(maxchars=300, surround=50)
+
+            self.set_fragmenter()
+
             #self.formatter = highlight.HtmlFormatter()
             self.set_model(model)
 
@@ -83,6 +85,30 @@ class Whooshtrec(Engine):
             msg = "Could not open Whoosh index at: " + whoosh_index_dir
             raise EngineConnectionException(self.name, msg)
 
+
+    def set_fragmenter(self, frag_type=0, max_chars=200, surround=20):
+
+        def make_context_frag(max_chars, surround):
+            log.debug("Context Fragmenter with max_chars:{0} surround:{1}".format(max_chars,surround))
+            return highlight.ContextFragmenter(max_chars, surround)
+
+        def make_sentence_frag(max_chars, surround):
+            log.debug("Sentence Fragmenter with max_chars:{0} surround:{1}".format(max_chars,surround))
+            return highlight.SentenceFragmenter(max_chars)
+
+        def make_pinpoint_frag(max_chars, surround):
+            log.debug("Pinpoint Fragmenter with max_chars:{0} surround:{1}".format(max_chars,surround))
+            return highlight.PinpointFragmenter(max_chars, surround, True)
+
+        frags = {0: make_context_frag,
+                 1: make_sentence_frag,
+                 2: make_pinpoint_frag}
+
+
+        if frag_type in frags:
+            self.fragmenter = frags[frag_type](max_chars, surround)
+        else:
+            self.fragmenter = frags[0](max_chars, surround)
 
 
     def set_model(self, model, pval=None):
@@ -175,18 +201,15 @@ class Whooshtrec(Engine):
         pagelen = query.top
 
         log.debug("Query Issued: {0} Page: {1} Page Length: {2}".format(query.parsed_terms, page, pagelen))
-        results = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
-        #results.fragmenter = self.fragmenter
-        #results.formatter = self.formatter
+        search_page = self.searcher.search_page(query.parsed_terms, page, pagelen=pagelen)
+        setattr(search_page, 'actual_page', page)
 
-        setattr(results, 'actual_page', page)
-
-        response = self._parse_whoosh_response(query, results, self._field, self.snippet_size)
+        response = self._parse_whoosh_response(query, search_page, self._field, self.fragmenter, self.snippet_size)
 
         return response
 
     @staticmethod
-    def _parse_whoosh_response(query, results, field, snippet_size):
+    def _parse_whoosh_response(query, search_page, field, fragmenter, snippet_size):
         """
         Parses Whoosh's response and returns as an ifind Response.
 
@@ -204,7 +227,14 @@ class Whooshtrec(Engine):
 
         response = Response(query.terms)
         r = 0
-        for result in results:
+
+
+
+
+        search_page.results.fragmenter = fragmenter
+
+
+        for result in search_page.results:
             r = r + 1
             title = result["title"]
             if title:
@@ -215,7 +245,7 @@ class Whooshtrec(Engine):
             if title == '':
                 title = "Untitled"
 
-            rank = ((int(results.pagenum)-1) * results.pagelen) + r
+            rank = ((int(search_page.pagenum)-1) * search_page.pagelen) + r
 
             url = "/treconomics/" + str(result.docnum)
 
@@ -237,12 +267,12 @@ class Whooshtrec(Engine):
                                 score=result.score,
                                 content=content)
 
-        response.result_total = len(results)
+        response.result_total = len(search_page)
 
         # Add the total number of pages from the results object as an attribute of our response object.
         # We also add the total number of results shown on the page.
-        setattr(response, 'total_pages', results.pagecount)
-        setattr(response, 'results_on_page', results.pagelen)
-        setattr(response, 'actual_page', results.actual_page)
+        setattr(response, 'total_pages', search_page.pagecount)
+        setattr(response, 'results_on_page', search_page.pagelen)
+        setattr(response, 'actual_page', search_page.actual_page)
         return response
 
