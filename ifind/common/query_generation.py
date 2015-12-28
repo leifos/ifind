@@ -10,6 +10,8 @@ from string import rsplit
 from collections import Counter
 from re import sub
 from nltk import clean_html, regexp_tokenize
+from bs4 import BeautifulSoup
+
 from pipeline import TermPipeline
 from pipeline import TermProcessor,AlphaTermProcessor,StopwordTermProcessor,SpecialCharProcessor,\
     LengthTermProcessor,PunctuationTermProcessor
@@ -31,8 +33,11 @@ class QueryGeneration(object):
         :param url: the html from which the queries are to be constructed
         :return: list of queries
         """
-        content = clean_html(html)
-        content = ' '.join(content.split())
+
+        soup = BeautifulSoup(html,'html.parser')
+
+        content = soup.get_text()
+        #content = ' '.join(content.split())
         return self.extract_queries_from_text(content)
 
     def extract_queries_from_text(self, text):
@@ -141,6 +146,10 @@ class BiTermQueryGeneration(QueryGeneration):
 
             for term in term_list:
                 query = prev_term + ' ' + term
+                qlist = [prev_term, term]
+                qlist.sort()
+                query = ' '.join(qlist)
+
                 if query in self.query_count:
                     self.query_count[query] = self.query_count[query] + 1
                 else:
@@ -174,7 +183,9 @@ class TriTermQueryGeneration(QueryGeneration):
         term_list= term_list[2:len(term_list)]
 
         for term in term_list:
-            query = prev_prev_term + ' ' +prev_term + ' ' + term
+            qlist = [prev_prev_term, prev_term, term]
+            qlist.sort()
+            query = ' '.join(qlist)
             if query in self.query_count:
                 self.query_count[query] = self.query_count[query] + 1
             else:

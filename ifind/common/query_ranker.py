@@ -33,7 +33,10 @@ class QueryRanker(object):
         return (score / len)
 
     def _calculate_term_score(self, term):
-        return math.log(self.lm.get_term_prob(term),2)
+        try:
+            return math.log(self.lm.get_term_prob(term),2.0)
+        except:
+            return 0.0
 
     def calculate_query_list_probabilities(self, query_list):
         """

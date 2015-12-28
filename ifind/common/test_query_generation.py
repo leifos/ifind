@@ -80,11 +80,11 @@ class TestBiTermQueryGeneration(unittest.TestCase):
     def test_extract_queries_from_html(self):
         self.logger.debug("Extraction of BiTerm (non) duplicate queries")
         html = '<HTML><b>Test</b> <h1>Extract</h2> Queries <b>Test</b> <h1>Extract</h2></HTML>'
-        expected = ['test extract','extract queries', 'queries test']
+        expected = ['extract test','extract queries', 'queries test']
         actual = self.qg.extract_queries_from_html(html)
         self.assertItemsEqual(expected, actual)
 
-        counts = {'test extract':2, 'extract queries': 1, 'queries test':1}
+        counts = {'extract test':2, 'extract queries': 1, 'queries test':1}
         self.assertItemsEqual(self.qg.query_count, counts)
 
 
