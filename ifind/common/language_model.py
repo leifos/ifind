@@ -37,7 +37,7 @@ class LanguageModel(object):
         """
         counts the total number of term occurrences in occurrence_dict
         """
-        for term, count in self.occurrence_dict.items():
+        for term, count in self.occurrence_dict.iteritems():
             self.total_occurrences += count
 
     def get_total_occurrences(self):
