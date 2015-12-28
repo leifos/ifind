@@ -147,8 +147,13 @@ class BiTermQueryGeneration(QueryGeneration):
             for term in term_list:
                 query = prev_term + ' ' + term
                 qlist = [prev_term, term]
+
+
+                sqlist = set(qlist)
+                qlist = list(sqlist)
                 qlist.sort()
                 query = ' '.join(qlist)
+
 
                 if query in self.query_count:
                     self.query_count[query] = self.query_count[query] + 1
@@ -184,6 +189,10 @@ class TriTermQueryGeneration(QueryGeneration):
 
         for term in term_list:
             qlist = [prev_prev_term, prev_term, term]
+
+
+            sqlist = set(qlist)
+            qlist = list(sqlist)
             qlist.sort()
             query = ' '.join(qlist)
             if query in self.query_count:
