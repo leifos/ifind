@@ -234,8 +234,7 @@ class Whooshtrec(Engine):
         search_page.results.fragmenter = fragmenter
 
 
-        for result in search_page.results:
-            r = r + 1
+        for result in search_page:
             title = result["title"]
             if title:
                 title = title.strip()
@@ -245,7 +244,7 @@ class Whooshtrec(Engine):
             if title == '':
                 title = "Untitled"
 
-            rank = ((int(search_page.pagenum)-1) * search_page.pagelen) + r
+            rank = result.rank + 1
 
             url = "/treconomics/" + str(result.docnum)
 
