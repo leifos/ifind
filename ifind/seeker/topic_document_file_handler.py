@@ -36,6 +36,8 @@ class TopicDocumentFileHandler(object):
                     break
                 else:
                     self._put_in_line(line)
+        else:
+            raise IOError("The topic/document judgement file '" + filename + "' was not found.")
 
     def save_file(self, filename, append=False):
         if append:
@@ -55,19 +57,29 @@ class TopicDocumentFileHandler(object):
         if topic not in self.data:
             return 0
         
-        if self.data[topic][doc]:
+        if doc in self.data[topic]:
             return int(self.data[topic][doc])
         else:
             return 0
+        
+        # if self.data[topic][doc]:
+        #     return int(self.data[topic][doc])
+        # else:
+        #     return 0
     
     def get_value_if_exists(self, topic, doc):
         if topic not in self.data:
             return None
         
-        if self.data[topic][doc]:
+        if doc in self.data[topic]:
             return int(self.data[topic][doc])
         else:
             return None
+        
+        # if self.data[topic][doc]:
+        #     return int(self.data[topic][doc])
+        # else:
+        #     return None
 
     def get_doc_list(self, topic):
         if self.data[topic]:
