@@ -58,6 +58,7 @@ class QueryGeneration(object):
         """
         if text:
             text = text.lower()
+            text = text.replace('-', ' ')
             text = text.split()
             cleaned = []
             cleaner_pipeline = TermPipeline()
