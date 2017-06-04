@@ -17,7 +17,6 @@ class RedisConn(object):
     """
 
     def __init__(self, host="localhost", port=6379, db=0, limit=10000000, password=''):
-
         self.host = host
         self.port = port
         self.password = password

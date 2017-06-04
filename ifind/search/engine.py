@@ -40,7 +40,7 @@ class Engine(object):
         # instantiate querycache if necessary
         self.cache_type = cache
         if cache:
-            self._cache = QueryCache(self)
+            self._cache = QueryCache(self, **kwargs)
 
         # throttle value
         self.throttle = throttle
