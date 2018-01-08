@@ -65,3 +65,54 @@ class EntityQrelHandler(object):
                 entities.append(entity)
         
         return entities
+
+
+class EntityNameHandler(object):
+    """
+    Helper class, used in data analysis scripts.
+    Takes a list of entities, and provides a dictionary object for easy parsing of the data.
+    """
+    
+    def __init__(self, path):
+        self.path = path
+        self.__ds = {}
+        
+        self.__load()
+    
+    
+    def __load(self):
+        """
+        Instantiates the data structure.
+        """
+        f = open(self.path, 'r')
+        
+        for line in f:
+            line = line.strip().split(',')
+            topic = line[0]
+            entity_id = line[1]
+            entity_terms = line[2]
+            
+            if topic not in self.__ds:
+                self.__ds[topic] = {}
+            
+            self.__ds[topic][entity_id] = entity_terms
+        
+        f.close()
+    
+    
+    def get_topic_list(self):
+        """
+        Returns a list of topics that are present within the data structure.
+        """
+        return self.__ds.keys()
+    
+    
+    def get_entities_for_topic(self, topic_num):
+        """
+        Given a topic number, returns a dictionary of entities -- keys as IDs, values as the terms.
+        If the topic does not exist, None is returned.
+        """
+        if topic_num in self.__ds.keys():
+            return self.__ds[topic_num]
+        
+        return None
