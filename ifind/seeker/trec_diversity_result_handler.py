@@ -1,7 +1,7 @@
 # TODO: refactor this to extend from the base topic/document handler.
 # This requires some major refactoring of the base class, so has been left for now.
 
-class EntitiesQRELsHandler(object):
+class EntityQrelHandler(object):
     """
     Creates a data structure for the diversity QRELs.
     Should probably be handed by an ifind document/topic thing, but for now...
