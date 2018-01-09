@@ -8,6 +8,7 @@ class EntityQrelHandler(object):
     """
     def __init__(self, entities_qrels_path):
         self.__ds = {}
+        self.path = entities_qrels_path
         self.__load(entities_qrels_path)
     
     def __load(self, entities_qrels_path):
